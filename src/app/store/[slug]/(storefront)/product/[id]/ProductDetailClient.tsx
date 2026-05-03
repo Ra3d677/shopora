@@ -60,7 +60,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
         
         {product.images.length > 1 && (
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-            {product.images.map((img, idx) => (
+            {product.images.map((img: string, idx: number) => (
               <button 
                 key={idx}
                 onClick={() => setSelectedImage(img)}
@@ -96,7 +96,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mb-10">
           <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Color Selection</h3>
           <div className="flex gap-4">
-            {product.colors.map(color => (
+            {product.colors.map((color: string) => (
               <button
                 key={color}
                 onClick={() => setSelectedColor(color)}
@@ -121,7 +121,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
             <button className="text-xs font-bold underline hover:text-blue-600 transition-colors">Size Guide</button>
           </div>
           <div className="grid grid-cols-4 gap-4">
-            {product.sizes.map(size => (
+            {product.sizes.map((size: string) => (
               <button
                 key={size}
                 onClick={() => setSelectedSize(size)}
