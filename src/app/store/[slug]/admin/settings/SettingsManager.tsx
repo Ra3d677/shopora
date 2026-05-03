@@ -681,7 +681,7 @@ export default function SettingsManager({
                     <h3 className="text-lg font-bold">Client Testimonials</h3>
                     <button 
                       type="button"
-                      onClick={() => setSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), testimonials: [...(settings.signatureSettings?.testimonials || []), {id: Date.now().toString(), name: '', role: '', content: ''}]}})}
+                      onClick={() => setSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), testimonials: [...(settings.signatureSettings?.testimonials || []), {name: '', role: '', content: ''}]}})}
                       className="text-xs font-black uppercase tracking-widest text-blue-600 border border-blue-600 px-4 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-all"
                     >
                       + Add Testimonial

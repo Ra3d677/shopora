@@ -56,6 +56,7 @@ export interface StoreSettings {
   };
   signatureSettings?: {
     testimonials?: {
+      id?: string;
       name: string;
       role: string;
       content: string;

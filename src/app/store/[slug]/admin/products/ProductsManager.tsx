@@ -28,7 +28,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
   };
 
   const handleRemoveSize = (index: number) => {
-    setFormData({ ...formData, sizes: (formData.sizes || []).filter((_, i) => i !== index) });
+    setFormData({ ...formData, sizes: (formData.sizes || []).filter((_: any, i: number) => i !== index) });
   };
 
   const handleAddColor = (e: React.KeyboardEvent | React.MouseEvent) => {
@@ -40,7 +40,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
   };
 
   const handleRemoveColor = (index: number) => {
-    setFormData({ ...formData, colors: (formData.colors || []).filter((_, i) => i !== index) });
+    setFormData({ ...formData, colors: (formData.colors || []).filter((_: any, i: number) => i !== index) });
   };
 
   const defaultCategoryId = categories.length > 0 ? categories[0].id : "";
