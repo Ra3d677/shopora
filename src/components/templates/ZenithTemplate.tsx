@@ -65,29 +65,30 @@ export default function ZenithTemplate({
               >
                 <div className="text-white/60 text-[10px] uppercase tracking-[0.6em] mb-6 block font-sans font-black">
                   <EditableText 
-                    text={settings?.establishedText || "Established 2026"} 
-                    field="establishedText" 
+                    content={settings?.establishedText || "Established 2026"} 
+                    settingsKey="establishedText" 
                     slug={slug} 
                   />
                 </div>
                 <div className="text-5xl md:text-8xl font-light text-white mb-8 tracking-tighter leading-tight max-w-4xl italic uppercase">
                   <EditableText 
-                    text={topBanners[0].title} 
-                    field="heroTitle" 
+                    content={topBanners[0].title} 
+                    settingsKey="heroTitle" 
                     slug={slug} 
                   />
                 </div>
                 <div className="text-white/80 text-lg md:text-xl font-sans font-light tracking-wide mb-12 max-w-2xl mx-auto leading-relaxed">
                   <EditableText 
-                    text={topBanners[0].subtitle} 
-                    field="heroSubtitle" 
+                    content={topBanners[0].subtitle} 
+                    settingsKey="heroSubtitle" 
                     slug={slug} 
                   />
                 </div>
                 <div className="flex justify-center">
                   <EditableButton
-                    text={topBanners[0].buttonText || "View Collection"}
-                    field="heroButtonText"
+                    label={topBanners[0].buttonText || "View Collection"}
+                    link={`/store/${slug}/products`}
+                    settingsKey="heroButtonText"
                     slug={slug}
                     className="group relative inline-flex items-center gap-4 text-white text-[10px] uppercase tracking-[0.5em] font-sans font-black hover:text-[#c5a368] transition-colors"
                   />
@@ -119,16 +120,16 @@ export default function ZenithTemplate({
         >
           <div className="text-3xl md:text-4xl font-light mb-12 leading-relaxed italic">
             <EditableText 
-              text={settings?.introQuote || "\"We believe in the beauty of the essential. Every piece we create is a dialogue between timeless elegance and modern restraint.\""} 
-              field="introQuote" 
+              content={settings?.introQuote || "\"We believe in the beauty of the essential. Every piece we create is a dialogue between timeless elegance and modern restraint.\""} 
+              settingsKey="introQuote" 
               slug={slug} 
             />
           </div>
           <div className="w-12 h-[1px] bg-[#c5a368] mx-auto mb-12" />
           <div className="font-sans text-[10px] uppercase tracking-[0.4em] text-[#c5a368] font-bold">
             <EditableText 
-              text={settings?.introTagline || "The Zenith Philosophy"} 
-              field="introTagline" 
+              content={settings?.introTagline || "The Zenith Philosophy"} 
+              settingsKey="introTagline" 
               slug={slug} 
             />
           </div>
@@ -166,15 +167,15 @@ export default function ZenithTemplate({
             <div className="max-w-xl">
               <div className="text-[#c5a368] text-[10px] uppercase tracking-[0.4em] font-black mb-4 block">
                 <EditableText 
-                  text={settings?.productsTagline || "Curated Essentials"} 
-                  field="productsTagline" 
+                  content={settings?.productsTagline || "Curated Essentials"} 
+                  settingsKey="productsTagline" 
                   slug={slug} 
                 />
               </div>
               <div className="text-4xl md:text-5xl font-light tracking-tight italic">
                 <EditableText 
-                  text={settings?.productsTitle || "Timeless Pieces for the Discerning Individual"} 
-                  field="productsTitle" 
+                  content={settings?.productsTitle || "Timeless Pieces for the Discerning Individual"} 
+                  settingsKey="productsTitle" 
                   slug={slug} 
                 />
               </div>
@@ -262,8 +263,8 @@ export default function ZenithTemplate({
         <div className="relative text-center text-white px-6">
           <div className="text-4xl md:text-6xl font-light mb-8 italic tracking-tight">
             <EditableText 
-              text={settings?.calloutText || "Elegance is not being noticed, it's being remembered."} 
-              field="calloutText" 
+              content={settings?.calloutText || "Elegance is not being noticed, it's being remembered."} 
+              settingsKey="calloutText" 
               slug={slug} 
             />
           </div>
