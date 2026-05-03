@@ -109,14 +109,20 @@ export default function EditableText({
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      await updateStoreSettings(slug, {
+      const res = await updateStoreSettings(slug, {
         [settingsKey]: text,
         [`${settingsKey}_styles`]: styles
       });
+      
+      if (res && res.success === false) {
+        alert("Failed to save to database: " + res.error);
+      }
+      
       setIsEditing(false);
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Save failed:", error);
+      alert("Network error while saving: " + error?.message);
     } finally {
       setIsSaving(false);
     }
