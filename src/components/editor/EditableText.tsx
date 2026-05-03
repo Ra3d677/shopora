@@ -6,6 +6,7 @@ import { Settings2, Check, X, Loader2, Move, Type, Palette, Maximize2, AlignLeft
 import { updateStoreSettings } from "@/app/store/[slug]/admin/actions";
 import { useEditorStore } from "@/store/editor";
 import { createPortal } from "react-dom";
+import { useRouter } from "next/navigation";
 
 interface TextStyle {
   fontSize?: string;
@@ -57,6 +58,7 @@ export default function EditableText({
   as: Component = 'div' 
 }: EditableTextProps) {
   const { isEditMode } = useEditorStore();
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(content);
   const [isSaving, setIsSaving] = useState(false);
@@ -112,6 +114,7 @@ export default function EditableText({
         [`${settingsKey}_styles`]: styles
       });
       setIsEditing(false);
+      router.refresh();
     } catch (error) {
       console.error("Save failed:", error);
     } finally {
