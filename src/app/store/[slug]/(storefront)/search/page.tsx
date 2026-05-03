@@ -1,5 +1,7 @@
 import { getStoreBySlug } from "@/lib/data";
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 
 export default async function SearchPage({ 
   params, 
@@ -12,14 +14,14 @@ export default async function SearchPage({
   const { q } = await searchParams;
   const query = q?.toLowerCase() || "";
 
-  const store = getStoreBySlug(slug);
+  const store = await getStoreBySlug(slug);
   if (!store) {
     notFound();
   }
 
   const displayedProducts = store.products.filter((product) =>
     product.name.toLowerCase().includes(query) ||
-    product.description.toLowerCase().includes(query) ||
+    (product.description && product.description.toLowerCase().includes(query)) ||
     product.category_id.toLowerCase().includes(query)
   );
 

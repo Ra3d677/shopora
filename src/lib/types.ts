@@ -108,7 +108,7 @@ export interface Category {
   id: string;
   storeId: string; // Linked to the store
   name: string;
-  description: string;
+  description: string | null;
   image: string;
   created_at?: string;
 }

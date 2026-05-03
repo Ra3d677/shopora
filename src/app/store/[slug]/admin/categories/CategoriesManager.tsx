@@ -171,7 +171,7 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {layouts.map((l) => {
+          {layouts.map((l: any) => {
             const isCurrent = activeTab === 'home' ? homeLayout === l.id : collectionsLayout === l.id;
             return (
               <button
@@ -248,7 +248,7 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {categories.map(category => (
+              {categories.map((category: Category) => (
                 <tr key={category.id} className="hover:bg-slate-50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">

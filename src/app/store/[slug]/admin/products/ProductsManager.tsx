@@ -173,7 +173,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                   <p className="text-xs text-slate-500 mb-4">Add product sizes (e.g., Small, 44, 10.5)</p>
                   
                   <div className="flex flex-wrap gap-2 mb-3">
-                    {formData.sizes?.map((size, index) => (
+                    {formData.sizes?.map((size: string, index: number) => (
                       <div key={index} className="flex items-center gap-1 bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm">
                         <span className="text-sm font-bold">{size}</span>
                         <button type="button" onClick={() => handleRemoveSize(index)} className="ml-1 text-slate-400 hover:text-red-500 transition-colors">
@@ -202,7 +202,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                   <p className="text-xs text-slate-500 mb-4">Add colors by name (e.g. black, blue) or HEX code (#FF0000)</p>
                   
                   <div className="flex flex-wrap gap-2 mb-3">
-                    {formData.colors?.map((color, index) => (
+                    {formData.colors?.map((color: string, index: number) => (
                       <div key={index} className="flex items-center gap-2 bg-white border border-slate-200 pl-2 pr-3 py-1.5 rounded-full shadow-sm">
                         <span className="w-4 h-4 rounded-full border border-slate-200 shadow-inner" style={{backgroundColor: color}}></span>
                         <span className="text-xs font-bold capitalize">{color}</span>
@@ -325,11 +325,11 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                   <td className="px-6 py-4">
                     <div className="flex flex-col gap-1.5">
                       <div className="flex items-center gap-1">
-                        {product.sizes?.length > 0 ? product.sizes.slice(0, 3).map((s, i) => <span key={i} className="text-[10px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded uppercase">{s}</span>) : <span className="text-xs text-slate-400">-</span>}
+                        {product.sizes?.length > 0 ? product.sizes.slice(0, 3).map((s: string, i: number) => <span key={i} className="text-[10px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded uppercase">{s}</span>) : <span className="text-xs text-slate-400">-</span>}
                         {product.sizes?.length > 3 && <span className="text-[10px] font-bold text-slate-400">+{product.sizes.length - 3}</span>}
                       </div>
                       <div className="flex items-center gap-1">
-                        {product.colors?.length > 0 ? product.colors.slice(0, 3).map((c, i) => <span key={i} className="w-3 h-3 rounded-full border border-slate-200" style={{ backgroundColor: c }} title={c} />) : null}
+                        {product.colors?.length > 0 ? product.colors.slice(0, 3).map((c: string, i: number) => <span key={i} className="w-3 h-3 rounded-full border border-slate-200" style={{ backgroundColor: c }} title={c} />) : null}
                         {product.colors?.length > 3 && <span className="text-[10px] font-bold text-slate-400">+{product.colors.length - 3}</span>}
                       </div>
                     </div>

@@ -18,6 +18,7 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
   const handleAddBanner = () => {
     const newBanner: Banner = {
       id: `b-${Date.now()}`,
+      storeId: "", // Will be set on server side or we can pass it from props
       imageUrl: "",
       title: "New Banner",
       subtitle: "Add a catchy subtitle here",
