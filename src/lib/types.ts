@@ -83,6 +83,15 @@ export interface StoreSettings {
   tiktokPixelId?: string;
   snapchatPixelId?: string;
   googleAnalyticsId?: string;
+  footerMinimalDesc?: string;
+  footerAppleDisclaimer1?: string;
+  footerAppleDisclaimer2?: string;
+  footerAppleCopyright?: string;
+  footerMarketingTitle?: string;
+  footerMarketingDesc?: string;
+  footerLuxuryAddress1?: string;
+  footerLuxuryAddress2?: string;
+  [key: string]: any; 
 }
 
 export interface BannerSettings {

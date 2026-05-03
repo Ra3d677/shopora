@@ -38,7 +38,7 @@ export default function ModernTemplate({ banners, settings, products, slug }: Te
     <div className="flex flex-col w-full font-sans">
       {/* 2. Hero Section */}
       {topBanners.length > 0 ? (
-        <HeroSlider banners={topBanners} settings={settings.bannerSettings} />
+        <HeroSlider banners={topBanners} slug={slug} settings={settings.bannerSettings} />
       ) : (
         <section className="relative h-[80vh] w-full flex items-center bg-slate-900 overflow-hidden">
           <div className="absolute inset-0 opacity-40">

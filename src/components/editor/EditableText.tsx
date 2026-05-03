@@ -8,6 +8,8 @@ import { useEditorStore } from "@/store/editor";
 import { createPortal } from "react-dom";
 
 interface TextStyle {
+  fontSize?: string;
+  fontFamily?: string;
   color?: string;
   backgroundColor?: string;
   borderRadius?: string;
@@ -15,7 +17,7 @@ interface TextStyle {
   fontWeight?: string;
   x?: number;
   y?: number;
-  textAlign?: 'left' | 'center' | 'right';
+  textAlign?: 'left' | 'center' | 'right' | 'inherit';
   textShadow?: string;
   lineHeight?: string;
   letterSpacing?: string;

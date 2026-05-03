@@ -39,7 +39,7 @@ export default function AmazonTemplate({ banners, settings, products, slug }: Te
       {/* 1. Hero Section */}
       <section className="relative bg-[#232F3E]">
         {topBanners.length > 0 ? (
-          <HeroSlider banners={topBanners} settings={{ ...settings.bannerSettings, transition: 'fade' }} />
+          <HeroSlider banners={topBanners} slug={slug} settings={{ ...settings.bannerSettings, transition: 'fade' }} />
         ) : (
           <div className="relative h-[400px] w-full flex items-center bg-gradient-to-r from-[#232F3E] to-[#131921] overflow-hidden">
             <div className="container mx-auto px-6 relative z-10">
