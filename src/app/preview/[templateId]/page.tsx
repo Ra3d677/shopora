@@ -89,7 +89,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
   };
 
   return (
-    <StoreProvider store={{ ...DUMMY_STORE, template: templateId } as any}>
+    <StoreProvider store={{ ...DUMMY_STORE, template: templateId } as any} user={null}>
       <div 
         className={`theme-${templateId} min-h-screen flex flex-col relative transition-colors duration-500`}
         style={{
