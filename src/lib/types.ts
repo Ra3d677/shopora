@@ -117,16 +117,16 @@ export interface Product {
   id: string;
   storeId: string; // Linked to the store
   name: string;
-  description: string;
+  description: string | null;
   category_id: string;
   price: number;
   discount_price: number | null;
-  sizes: string[];
-  colors: string[];
-  images: string[];
+  sizes: any;
+  colors: any;
+  images: any;
   stock_quantity: number;
-  status: 'active' | 'inactive';
-  created_at?: string;
+  status: string;
+  created_at?: any;
 }
 
 export interface CartItem {
