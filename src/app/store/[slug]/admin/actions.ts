@@ -156,9 +156,9 @@ export async function saveStoreSettings(slug: string, settings: any) {
         settings: JSON.stringify(updatedSettings)
       }
     });
-    
-    revalidatePath(`/store/${slug}`, 'layout');
+    revalidatePath(`/store/${slug}`, 'page');
     revalidatePath(`/store/${slug}/admin/colors`);
+    revalidatePath(`/`, 'layout');
     
     return { success: true };
   } catch (error) {
@@ -265,8 +265,8 @@ export async function updateStoreSettings(slug: string, updates: Record<string, 
         settings: JSON.stringify(settings)
       }
     });
-    
-    revalidatePath(`/store/${slug}`, 'layout');
+    revalidatePath(`/store/${slug}`, 'page');
+    revalidatePath(`/`, 'layout');
     return { success: true };
   } catch (error) {
     console.error("Failed to update store settings:", error);
