@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getStoreMedia } from "@/lib/data";
-import { ImageIcon, Plus, X, Search, CheckCircle2, Link as LinkIcon, Library } from "lucide-react";
+import { ImageIcon, Plus, X, Search, CheckCircle2, Link as LinkIcon, Library, Loader2 } from "lucide-react";
 import { Media } from "@prisma/client";
 
 interface MediaPickerProps {
