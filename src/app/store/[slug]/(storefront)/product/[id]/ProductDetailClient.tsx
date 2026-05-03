@@ -141,7 +141,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
           {isAdding ? (
             <Link 
-              href={`/store/${product.store_id}/cart`}
+              href={`/store/${store.slug}/cart`}
               className="w-full bg-green-600 hover:bg-green-700 text-white h-16 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all shadow-xl shadow-green-600/20"
             >
               <Check className="h-5 w-5" /> Added! View Cart <ArrowRight className="h-5 w-5" />
