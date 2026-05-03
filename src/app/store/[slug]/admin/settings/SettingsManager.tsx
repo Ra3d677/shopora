@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { saveStoreSettings } from "../actions";
-import { Settings, Loader2, Save, X } from "lucide-react";
+import { Settings, Loader2, Save, X, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { StoreSettings } from "@/lib/types";
 

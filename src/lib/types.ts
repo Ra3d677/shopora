@@ -67,6 +67,7 @@ export interface StoreSettings {
       enabled: boolean;
       interval: number;
     };
+    testimonialInterval?: number;
   };
   businessSettings?: {
     shippingRates?: {
