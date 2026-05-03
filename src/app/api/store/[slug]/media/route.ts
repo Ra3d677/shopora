@@ -23,3 +23,40 @@ export async function GET(
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
+
+export async function POST(
+  req: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params;
+  
+  try {
+    const store = await prisma.store.findUnique({
+      where: { slug }
+    });
+
+    if (!store) {
+      return NextResponse.json({ error: "Store not found" }, { status: 404 });
+    }
+
+    const { url, name, type } = await req.json();
+
+    if (!url) {
+      return NextResponse.json({ error: "URL is required" }, { status: 400 });
+    }
+
+    const media = await prisma.media.create({
+      data: {
+        url,
+        name: name || "Uploaded Image",
+        type: type || "image",
+        storeId: store.id
+      }
+    });
+
+    return NextResponse.json(media);
+  } catch (error) {
+    console.error("API MEDIA POST ERROR:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}

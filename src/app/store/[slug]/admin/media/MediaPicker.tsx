@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getStoreMedia } from "@/lib/data";
-import { ImageIcon, Plus, X, Search, CheckCircle2, Link as LinkIcon, Library, Loader2 } from "lucide-react";
+import { ImageIcon, Plus, X, Search, CheckCircle2, Link as LinkIcon, Library, Loader2, UploadCloud } from "lucide-react";
 import { Media } from "@prisma/client";
 
 interface MediaPickerProps {
@@ -16,6 +16,9 @@ export default function MediaPicker({ value, onChange, slug }: MediaPickerProps)
   const [media, setMedia] = useState<Media[]>([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
+
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchMedia = async () => {
     setLoading(true);
@@ -36,6 +39,74 @@ export default function MediaPicker({ value, onChange, slug }: MediaPickerProps)
     }
   }, [isOpen]);
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+
+    try {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = async (event) => {
+        const base64Url = event.target?.result as string;
+        
+        const img = new Image();
+        img.src = base64Url;
+        img.onload = async () => {
+          const canvas = document.createElement("canvas");
+          const MAX_WIDTH = 1200;
+          const MAX_HEIGHT = 1200;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+
+          const res = await fetch(`/api/store/${slug}/media`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              url: compressedBase64,
+              name: file.name,
+              type: "image"
+            })
+          });
+
+          if (res.ok) {
+            const newMedia = await res.json();
+            onChange(newMedia.url);
+            setMedia(prev => [newMedia, ...prev]);
+          } else {
+            alert("Failed to upload image.");
+          }
+          setUploading(false);
+          if (fileInputRef.current) fileInputRef.current.value = '';
+        };
+      };
+    } catch (error) {
+      console.error(error);
+      alert("Error uploading file.");
+      setUploading(false);
+    }
+  };
+
   const filteredMedia = media.filter(m => m.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
@@ -51,6 +122,21 @@ export default function MediaPicker({ value, onChange, slug }: MediaPickerProps)
             className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
           />
         </div>
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          onChange={handleFileChange} 
+          accept="image/*" 
+          className="hidden" 
+        />
+        <button 
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          className="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-blue-100 transition-colors border border-blue-200 disabled:opacity-50"
+        >
+          {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />} Upload
+        </button>
         <button 
           type="button"
           onClick={() => setIsOpen(true)}

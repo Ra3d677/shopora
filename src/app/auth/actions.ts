@@ -13,25 +13,30 @@ export async function loginUser(formData: FormData) {
     return { error: "Please provide both email and password." };
   }
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
 
-  if (!user || !user.password) {
-    return { error: "Invalid email or password." };
+    if (!user || !user.password) {
+      return { error: "Invalid email or password." };
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return { error: "Invalid email or password." };
+    }
+
+    const cookieStore = await cookies();
+    cookieStore.set("userId", user.id, { 
+      path: "/",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24 * 30 // 30 days
+    });
+  } catch (error: any) {
+    console.error("Login Error:", error);
+    return { error: "Database connection error. Please check your Supabase settings." };
   }
-
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-
-  if (!isPasswordValid) {
-    return { error: "Invalid email or password." };
-  }
-
-  const cookieStore = await cookies();
-  cookieStore.set("userId", user.id, { 
-    path: "/",
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24 * 30 // 30 days
-  });
 
   redirect("/dashboard");
 }
@@ -45,29 +50,34 @@ export async function registerUser(formData: FormData) {
     return { error: "Please fill in all fields." };
   }
 
-  const existingUser = await prisma.user.findUnique({ where: { email } });
+  try {
+    const existingUser = await prisma.user.findUnique({ where: { email } });
 
-  if (existingUser) {
-    return { error: "User with this email already exists." };
-  }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  const user = await prisma.user.create({
-    data: {
-      name,
-      email,
-      password: hashedPassword
+    if (existingUser) {
+      return { error: "User with this email already exists." };
     }
-  });
 
-  const cookieStore = await cookies();
-  cookieStore.set("userId", user.id, { 
-    path: "/",
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24 * 30
-  });
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword
+      }
+    });
+
+    const cookieStore = await cookies();
+    cookieStore.set("userId", user.id, { 
+      path: "/",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24 * 30
+    });
+  } catch (error: any) {
+    console.error("Registration Error:", error);
+    return { error: "Database connection error. Please check your Vercel Environment Variables for DATABASE_URL." };
+  }
 
   redirect("/dashboard");
 }
