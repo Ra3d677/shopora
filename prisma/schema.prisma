@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id       String  @id @default(cuid())
+  email    String  @unique
+  name     String?
+  password String? // Optional because they might use Google Auth later
+  role     String  @default("user") // "user" or "superadmin"
+  stores   Store[]
+  orders   Order[] @relation("CustomerOrders")
+}
+
+model Store {
+  id           String     @id @default(cuid())
+  name         String
+  slug         String     @unique
+  template     String     @default("modern")
+  primaryColor String     @default("#3b82f6")
+  settings     String     @default("{}") // JSON string
+  ownerId      String
+  isActive     Boolean    @default(true)
+  owner        User       @relation(fields: [ownerId], references: [id])
+  products     Product[]
+  categories   Category[]
+  banners      Banner[]
+  facebookPixelId  String?
+  tiktokPixelId    String?
+  snapchatPixelId  String?
+  googleAnalyticsId String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  media        Media[]
+  orders       Order[]
+  visits       Visit[]
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  url       String
+  name      String
+  type      String   @default("image") // image, video
+  storeId   String
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id             String      @id @default(cuid())
+  name           String
+  description    String?
+  price          Float
+  discount_price Float?
+  images         String      @default("[]") // JSON string of image URLs
+  sizes          String      @default("[]") // JSON string of available sizes
+  colors         String      @default("[]") // JSON string of available colors
+  category_id    String
+  category       Category    @relation(fields: [category_id], references: [id])
+  storeId        String
+  store          Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  status         String      @default("active")
+  stock_quantity Int         @default(0)
+  orderItems     OrderItem[]
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  image       String?
+  storeId     String
+  store       Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  products    Product[]
+}
+
+model Banner {
+  id         String  @id @default(cuid())
+  imageUrl   String
+  title      String
+  subtitle   String?
+  buttonText String?
+  buttonLink String?
+  isActive   Boolean @default(true)
+  order      Int     @default(0)
+  position   String  @default("top")
+  storeId    String
+  store      Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  storeId         String
+  store           Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  shippingAddress String
+  notes           String?
+  totalAmount     Float
+  status          String      @default("pending") // pending, processing, shipped, delivered, cancelled
+  items           OrderItem[]
+  userId          String?     // The customer's user ID (optional for guest checkout)
+  user            User?       @relation("CustomerOrders", fields: [userId], references: [id])
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float // Price at the time of purchase
+  size      String?
+  color     String?
+}
+
+model Visit {
+  id        String   @id @default(cuid())
+  storeId   String
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}

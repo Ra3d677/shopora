@@ -1,0 +1,23 @@
+import { create } from 'zustand';
+
+// Mock User type for frontend development
+export interface User {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL: string | null;
+}
+
+interface AuthState {
+  user: User | null;
+  isLoading: boolean;
+  setUser: (user: User | null) => void;
+  setLoading: (isLoading: boolean) => void;
+}
+
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  isLoading: false,
+  setUser: (user) => set({ user }),
+  setLoading: (isLoading) => set({ isLoading }),
+}));

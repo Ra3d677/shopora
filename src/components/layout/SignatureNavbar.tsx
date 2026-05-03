@@ -1,0 +1,121 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { ShoppingBag, Search, X, ArrowRight, Menu } from "lucide-react";
+import SmartSearch from "@/components/ui/premium/SmartSearch";
+import { useCartStore } from "@/store/cart";
+
+interface SignatureNavbarProps {
+  storeName: string;
+  logoUrl?: string;
+  slug: string;
+  products: any[];
+  session?: any;
+}
+
+export default function SignatureNavbar({ storeName, logoUrl, slug, products, session }: SignatureNavbarProps) {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const items = useCartStore((state) => state.items);
+
+  const cartItemCount = items.filter(i => products.some(p => p.id === i.product?.id)).reduce((acc, item) => acc + item.quantity, 0);
+
+  useEffect(() => {
+    setMounted(true);
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <>
+      <SmartSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} products={products} />
+      
+      {/* Side Menu Overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            className="fixed inset-y-0 right-0 w-full md:w-[500px] z-[250] bg-white shadow-2xl p-12 flex flex-col"
+          >
+            <div className="flex justify-between items-center mb-24">
+              <span className="text-xl font-black uppercase tracking-tighter">{storeName}</span>
+              <button onClick={() => setIsMenuOpen(false)} className="p-4 hover:bg-slate-100 rounded-full transition-colors">
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="flex flex-col gap-8 text-5xl font-black tracking-tighter uppercase">
+              <Link href={`/store/${slug}`} onClick={() => setIsMenuOpen(false)} className="hover:text-blue-600 transition-colors flex items-center group">
+                Home <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 transition-all" />
+              </Link>
+              <Link href={`/store/${slug}/categories`} onClick={() => setIsMenuOpen(false)} className="hover:text-blue-600 transition-colors flex items-center group">
+                Shop <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 transition-all" />
+              </Link>
+              {session ? (
+                <Link href={`/store/${slug}/account`} onClick={() => setIsMenuOpen(false)} className="hover:text-blue-600 transition-colors flex items-center group">
+                  Account <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 transition-all" />
+                </Link>
+              ) : (
+                <Link href={`/store/${slug}/login`} onClick={() => setIsMenuOpen(false)} className="hover:text-blue-600 transition-colors flex items-center group">
+                  Login <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 transition-all" />
+                </Link>
+              )}
+            </div>
+
+            <div className="mt-auto">
+               <div className="flex gap-8 text-xs font-bold uppercase tracking-widest text-slate-400">
+                  <Link href="#">Instagram</Link>
+                  <Link href="#">Twitter</Link>
+                  <Link href="#">Facebook</Link>
+               </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <nav className={`fixed top-0 w-full z-[150] px-8 py-8 flex justify-between items-center transition-all duration-500 ${scrolled ? 'bg-white/80 backdrop-blur-xl border-b border-slate-100 py-6' : 'bg-transparent mix-blend-difference text-white'}`}>
+         <div className="flex items-center gap-12">
+           <Link href={`/store/${slug}`} className={`text-2xl font-black tracking-tighter uppercase ${scrolled ? 'text-slate-900' : 'text-white'}`}>
+              {logoUrl ? (
+                <img src={logoUrl} alt={storeName} className={`h-8 w-auto ${scrolled ? '' : 'invert'}`} />
+              ) : (
+                storeName
+              )}
+           </Link>
+           <div className={`hidden md:flex items-center gap-8 text-[10px] font-black uppercase tracking-widest ${scrolled ? 'text-slate-500' : 'text-white'}`}>
+              <Link href={`/store/${slug}`} className="hover:opacity-50 transition-opacity">Home</Link>
+              <Link href={`/store/${slug}/categories`} className="hover:opacity-50 transition-opacity">Shop</Link>
+           </div>
+         </div>
+         <div className={`flex items-center gap-8 ${scrolled ? 'text-slate-900' : 'text-white'}`}>
+            <button 
+              onClick={() => setIsSearchOpen(true)}
+              className="p-2 hover:opacity-50 rounded-full transition-all hover:scale-110"
+            >
+              <Search size={24} />
+            </button>
+            <Link href={`/store/${slug}/cart`} className="relative p-2 hover:opacity-50 rounded-full transition-all hover:scale-110 group">
+              <ShoppingBag size={24} />
+              {mounted && cartItemCount > 0 && (
+                <span className="absolute top-0 right-0 h-5 w-5 rounded-full bg-red-600 shadow-sm text-[10px] font-bold text-white flex items-center justify-center transform group-hover:scale-110 transition-transform -mt-1 -mr-1">
+                  {cartItemCount}
+                </span>
+              )}
+            </Link>
+            <button onClick={() => setIsMenuOpen(true)} className="flex flex-col gap-1.5 group">
+               <div className={`w-8 h-0.5 transition-all group-hover:w-4 ${scrolled ? 'bg-slate-900' : 'bg-white'}`} />
+               <div className={`w-8 h-0.5 ${scrolled ? 'bg-slate-900' : 'bg-white'}`} />
+            </button>
+         </div>
+      </nav>
+    </>
+  );
+}
