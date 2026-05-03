@@ -45,7 +45,7 @@ export default function ColorsManager({ slug, initialSettings }: { slug: string,
   const colors = allColors[selectedTemplate] || defaultColors;
 
   const handleColorChange = (key: string, value: string) => {
-    setAllColors(prev => ({
+    setAllColors((prev: any) => ({
       ...prev,
       [selectedTemplate]: {
         ...(prev[selectedTemplate] || defaultColors),
@@ -104,7 +104,7 @@ export default function ColorsManager({ slug, initialSettings }: { slug: string,
               onChange={(e) => setSelectedTemplate(e.target.value)}
               className="bg-slate-50 border-none outline-none font-medium px-4 py-2 rounded-lg cursor-pointer"
             >
-              {templates.map(t => (
+              {templates.map((t: any) => (
                 <option key={t.id} value={t.id}>{t.name} Template</option>
               ))}
             </select>
@@ -121,7 +121,7 @@ export default function ColorsManager({ slug, initialSettings }: { slug: string,
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {colorFields.map((field) => (
+        {colorFields.map((field: any) => (
           <div key={field.key} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
             <div className="flex justify-between items-start mb-4">
               <div>
