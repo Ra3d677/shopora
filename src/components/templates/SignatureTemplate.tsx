@@ -111,12 +111,15 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
             <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="absolute inset-0">
               {/* Fallback to image if video not available, but UI looks premium */}
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60 z-10 pointer-events-none" />
-              <EditableImage 
+              <SmartImage 
                 src={sigSettings.heroImage || topBanners[0]?.imageUrl || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1600&q=80"} 
-                slug={slug} 
-                settingsKey="signatureSettings.heroImage" 
-                className="w-full h-full object-cover"
-                alt="Hero"
+                alt="Hero Desktop"
+                className="hidden md:block w-full h-full object-cover"
+              />
+              <SmartImage 
+                src={topBanners[0]?.mobileImageUrl || sigSettings.heroImage || topBanners[0]?.imageUrl || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1600&q=80"} 
+                alt="Hero Mobile"
+                className="md:hidden w-full h-full object-cover"
               />
               {/* Animated Overlay Text */}
               <div className="absolute inset-0 flex flex-col items-center justify-center z-20 text-white px-4 pointer-events-none">
@@ -455,24 +458,29 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
       {middleBanners.length > 0 && (
         <section className="py-20 px-8 max-w-[1800px] mx-auto">
           {middleBanners.map((banner: any) => (
-            <div key={banner.id} className="relative group overflow-hidden rounded-[3rem] aspect-[21/9] mb-12 last:mb-0 shadow-2xl">
+            <div key={banner.id} className="relative group overflow-hidden rounded-[2rem] md:rounded-[3rem] aspect-[4/5] md:aspect-[21/9] mb-12 last:mb-0 shadow-2xl">
               <SmartImage 
                 src={banner.imageUrl} 
                 alt={banner.title} 
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110" 
+                className="hidden md:block absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110" 
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-transparent p-16 flex flex-col justify-center text-white">
+              <SmartImage 
+                src={banner.mobileImageUrl || banner.imageUrl} 
+                alt={banner.title} 
+                className="md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-transparent p-8 md:p-16 flex flex-col justify-center text-white">
                 <motion.div
                   initial={{ opacity: 0, x: -50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 1 }}
                 >
-                  <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 uppercase italic">{banner.title}</h2>
-                  <p className="text-xl text-white/70 max-w-xl mb-10 font-light leading-relaxed">{banner.subtitle}</p>
+                  <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 uppercase italic">{banner.title}</h2>
+                  <p className="text-lg md:text-xl text-white/70 max-w-xl mb-10 font-light leading-relaxed">{banner.subtitle}</p>
                   {banner.buttonText && (
                     <Link 
                       href={banner.buttonLink || `/store/${slug}/products`}
-                      className="inline-block px-12 py-6 bg-white text-black text-xs font-black uppercase tracking-widest rounded-full hover:bg-slate-200 transition-all shadow-xl"
+                      className="inline-block px-10 py-5 md:px-12 md:py-6 bg-white text-black text-xs font-black uppercase tracking-widest rounded-full hover:bg-slate-200 transition-all shadow-xl"
                     >
                       {banner.buttonText}
                     </Link>
@@ -566,13 +574,18 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
       {bottomBanners.length > 0 && (
         <section className="w-full">
           {bottomBanners.map((banner: any) => (
-            <div key={banner.id} className="relative w-full h-[400px] md:h-[500px] overflow-hidden group border-t border-slate-100">
+            <div key={banner.id} className="relative w-full aspect-[4/5] md:h-[500px] md:aspect-auto overflow-hidden group border-t border-slate-100">
               <SmartImage 
                 src={banner.imageUrl} 
                 alt={banner.title} 
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
+                className="hidden md:block absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
               />
-              <div className="absolute inset-0 bg-black/40 p-12 flex flex-col items-center justify-center text-center text-white">
+              <SmartImage 
+                src={banner.mobileImageUrl || banner.imageUrl} 
+                alt={banner.title} 
+                className="md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
+              />
+              <div className="absolute inset-0 bg-black/40 p-8 md:p-12 flex flex-col items-center justify-center text-center text-white">
                 <Reveal>
                   <h3 className="text-4xl md:text-7xl font-black uppercase tracking-tighter mb-6 italic">{banner.title}</h3>
                 </Reveal>

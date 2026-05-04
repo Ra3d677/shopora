@@ -108,12 +108,15 @@ export default function AppleTemplate({ banners, settings, products, slug }: Tem
               </div>
             </div>
             <div className="absolute bottom-0 w-full max-w-5xl h-[400px] md:h-[500px]">
-              <EditableImage 
+              <SmartImage 
                 src={topBanners[0].imageUrl} 
                 alt="Hero Product" 
-                slug={slug}
-                settingsKey="appleSettings.heroImage"
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[400px] md:h-[500px] object-cover object-top"
+                className="hidden md:block absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[400px] md:h-[500px] object-cover object-top"
+              />
+              <SmartImage 
+                src={topBanners[0].mobileImageUrl || topBanners[0].imageUrl} 
+                alt="Hero Product Mobile" 
+                className="md:hidden absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[400px] md:h-[500px] object-cover object-top"
               />
             </div>
           </section>
@@ -188,10 +191,15 @@ export default function AppleTemplate({ banners, settings, products, slug }: Tem
       {middleBanners.length > 0 && (
         <section className="w-full px-3 py-3 grid grid-cols-1 gap-3">
           {middleBanners.map((banner: any) => (
-            <div key={banner.id} className="relative h-[400px] md:h-[500px] bg-[#f5f5f7] rounded-[2rem] overflow-hidden flex flex-col items-center justify-center text-center p-8 group">
+            <div key={banner.id} className="relative aspect-[4/5] md:h-[500px] md:aspect-auto bg-[#f5f5f7] rounded-[2rem] overflow-hidden flex flex-col items-center justify-center text-center p-8 group">
               <SmartImage 
                 src={banner.imageUrl} 
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
+                className="hidden md:block absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
+                alt={banner.title}
+              />
+              <SmartImage 
+                src={banner.mobileImageUrl || banner.imageUrl} 
+                className="md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
                 alt={banner.title}
               />
               <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
@@ -247,10 +255,15 @@ export default function AppleTemplate({ banners, settings, products, slug }: Tem
       {bottomBanners.length > 0 && (
         <section className="w-full">
           {bottomBanners.map((banner: any) => (
-            <div key={banner.id} className="relative w-full h-[400px] md:h-[500px] overflow-hidden group border-t border-slate-100">
+            <div key={banner.id} className="relative w-full aspect-[4/5] md:h-[500px] md:aspect-auto overflow-hidden group border-t border-slate-100">
               <SmartImage 
                 src={banner.imageUrl} 
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
+                className="hidden md:block absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
+                alt={banner.title}
+              />
+              <SmartImage 
+                src={banner.mobileImageUrl || banner.imageUrl} 
+                className="md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
                 alt={banner.title}
               />
               <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-8">

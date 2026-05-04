@@ -40,12 +40,15 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
       {/* 1. HERO SECTION */}
       <section className="relative h-[90vh] w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <EditableImage 
+          <SmartImage 
             src={hybSettings.heroImage || (topBanners.length > 0 ? topBanners[0].imageUrl : "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&q=80")} 
-            alt="Hero Background" 
-            slug={slug}
-            settingsKey="hybridSettings.heroImage"
-            className="absolute inset-0 w-full h-full object-cover opacity-40 scale-105" 
+            alt="Hero Background Desktop" 
+            className="hidden md:block absolute inset-0 w-full h-full object-cover opacity-40 scale-105" 
+          />
+          <SmartImage 
+            src={(topBanners.length > 0 ? (topBanners[0].mobileImageUrl || topBanners[0].imageUrl) : hybSettings.heroImage) || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&q=80"} 
+            alt="Hero Background Mobile" 
+            className="md:hidden absolute inset-0 w-full h-full object-cover opacity-40 scale-105" 
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f0f]/20 via-transparent to-[#0f0f0f]"></div>
         </div>
@@ -253,17 +256,26 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
           <div className="max-w-screen-2xl mx-auto space-y-24">
             {middleBanners.map((banner: any) => (
               <div key={banner.id} className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div className="relative aspect-video rounded-[3rem] overflow-hidden group">
-                  <SmartImage src={banner.imageUrl} alt={banner.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" />
+                <div className="relative aspect-[4/5] md:aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden group">
+                  <SmartImage 
+                    src={banner.imageUrl} 
+                    alt={banner.title} 
+                    className="hidden md:block absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" 
+                  />
+                  <SmartImage 
+                    src={banner.mobileImageUrl || banner.imageUrl} 
+                    alt={banner.title} 
+                    className="md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" 
+                  />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
                 </div>
-                <div className="space-y-8">
-                  <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none italic">{banner.title}</h2>
-                  <p className="text-xl text-white/40 font-medium leading-relaxed">{banner.subtitle}</p>
+                <div className="space-y-6 md:space-y-8">
+                  <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-none italic">{banner.title}</h2>
+                  <p className="text-lg md:text-xl text-white/40 font-medium leading-relaxed">{banner.subtitle}</p>
                   {banner.buttonText && (
                     <Link 
                       href={banner.buttonLink || `/store/${slug}/products`}
-                      className="inline-block px-12 py-5 bg-white text-black font-black uppercase tracking-widest text-xs rounded-full hover:bg-white/80 transition-all"
+                      className="inline-block px-10 py-4 md:px-12 md:py-5 bg-white text-black font-black uppercase tracking-widest text-xs rounded-full hover:bg-white/80 transition-all"
                     >
                       {banner.buttonText}
                     </Link>
@@ -317,19 +329,24 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
       {bottomBanners.length > 0 && (
         <section className="w-full">
           {bottomBanners.map((banner: any) => (
-            <div key={banner.id} className="relative w-full h-[400px] md:h-[550px] overflow-hidden group">
+            <div key={banner.id} className="relative w-full aspect-[4/5] md:h-[550px] md:aspect-auto overflow-hidden group">
               <SmartImage 
                 src={banner.imageUrl} 
-                className="absolute inset-0 w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 transition-all duration-[2s]" 
                 alt={banner.title}
+                className="hidden md:block absolute inset-0 w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 transition-all duration-[2s]" 
               />
-              <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-center p-12 text-white">
-                <h3 className="text-5xl md:text-8xl font-black uppercase tracking-tighter mb-8 italic">{banner.title}</h3>
+              <SmartImage 
+                src={banner.mobileImageUrl || banner.imageUrl} 
+                alt={banner.title}
+                className="md:hidden absolute inset-0 w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 transition-all duration-[2s]" 
+              />
+              <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-center p-8 md:p-12 text-white">
+                <h3 className="text-4xl md:text-8xl font-black uppercase tracking-tighter mb-8 italic">{banner.title}</h3>
                 <p className="text-xl md:text-2xl text-white/60 max-w-3xl mb-12 font-medium">{banner.subtitle}</p>
                 {banner.buttonText && (
                   <Link 
                     href={banner.buttonLink || `/store/${slug}/products`}
-                    className="px-16 py-5 bg-white text-black font-black uppercase tracking-widest text-xs rounded-full hover:bg-white/80 transition-all"
+                    className="px-12 py-4 md:px-16 md:py-5 bg-white text-black font-black uppercase tracking-widest text-xs rounded-full hover:bg-white/80 transition-all"
                   >
                     {banner.buttonText}
                   </Link>

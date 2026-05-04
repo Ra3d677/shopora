@@ -51,7 +51,12 @@ export default function ZenithTemplate({
                 <SmartImage 
                   src={topBanners[0].imageUrl} 
                   alt={topBanners[0].title}
-                  className="absolute inset-0 w-full h-full object-cover opacity-70"
+                  className="hidden md:block absolute inset-0 w-full h-full object-cover opacity-70"
+                />
+                <SmartImage 
+                  src={topBanners[0].mobileImageUrl || topBanners[0].imageUrl} 
+                  alt={topBanners[0].title}
+                  className="md:hidden absolute inset-0 w-full h-full object-cover opacity-70"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
               </motion.div>
@@ -221,14 +226,19 @@ export default function ZenithTemplate({
         <section className="py-24 px-8 bg-[#f9f9f8]">
           <div className="container mx-auto space-y-16">
             {middleBanners.map((banner: any) => (
-              <div key={banner.id} className="relative aspect-[21/9] overflow-hidden group shadow-2xl rounded-sm">
+              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group shadow-2xl rounded-sm">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110" 
+                  className="hidden md:block absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110" 
+                />
+                <SmartImage 
+                  src={banner.mobileImageUrl || banner.imageUrl} 
+                  alt={banner.title} 
+                  className="md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110" 
                 />
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-12">
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-6 md:p-12">
                   <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -281,13 +291,18 @@ export default function ZenithTemplate({
       {bottomBanners.length > 0 && (
         <section className="w-full">
           {bottomBanners.map((banner: any) => (
-            <div key={banner.id} className="relative w-full h-[450px] md:h-[600px] overflow-hidden group">
+            <div key={banner.id} className="relative w-full aspect-[4/5] md:h-[600px] md:aspect-auto overflow-hidden group">
               <SmartImage 
                 src={banner.imageUrl} 
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
+                className="hidden md:block absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
                 alt={banner.title}
               />
-              <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center text-white p-12">
+              <SmartImage 
+                src={banner.mobileImageUrl || banner.imageUrl} 
+                className="md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
+                alt={banner.title}
+              />
+              <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center text-white p-8 md:p-12">
                 <h3 className="text-5xl md:text-8xl font-light italic mb-8 tracking-tighter">{banner.title}</h3>
                 <p className="text-xl md:text-2xl font-sans font-light tracking-widest opacity-80 mb-12 max-w-3xl">{banner.subtitle}</p>
                 {banner.buttonText && (

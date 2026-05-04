@@ -57,7 +57,7 @@ export default function ObsidianTemplate({
                 </div>
               </motion.div>
             </div>
-            {/* Right: Immersive Image */}
+             {/* Right: Immersive Image */}
             <div className="w-full lg:w-1/2 relative h-[70vh] lg:h-auto overflow-hidden">
               <motion.div 
                 initial={{ scale: 1.2, opacity: 0 }}
@@ -65,12 +65,15 @@ export default function ObsidianTemplate({
                 transition={{ duration: 1.5 }}
                 className="absolute inset-0"
               >
-                 <EditableImage 
+                 <SmartImage 
                   src={topBanners[0].imageUrl} 
-                  alt="Hero"
-                  slug={slug}
-                  settingsKey="heroBannerImage"
-                  className="absolute inset-0 w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 transition-all duration-1000"
+                  alt="Hero Desktop"
+                  className="hidden md:block absolute inset-0 w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 transition-all duration-1000"
+                />
+                <SmartImage 
+                  src={topBanners[0].mobileImageUrl || topBanners[0].imageUrl} 
+                  alt="Hero Mobile"
+                  className="md:hidden absolute inset-0 w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 transition-all duration-1000"
                 />
               </motion.div>
               
@@ -129,13 +132,18 @@ export default function ObsidianTemplate({
         <section className="py-20 bg-[#0a0a0a]">
           <div className="container mx-auto px-8">
             {middleBanners.map((banner: any) => (
-              <div key={banner.id} className="relative group overflow-hidden rounded-3xl aspect-[21/9] mb-12 last:mb-0">
+              <div key={banner.id} className="relative group overflow-hidden rounded-3xl aspect-[4/5] md:aspect-[21/9] mb-12 last:mb-0">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+                  className="hidden md:block absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
                 />
-                <div className="absolute inset-0 bg-black/40 p-12 flex flex-col justify-center">
+                <SmartImage 
+                  src={banner.mobileImageUrl || banner.imageUrl} 
+                  alt={banner.title} 
+                  className="md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+                />
+                <div className="absolute inset-0 bg-black/40 p-6 md:p-12 flex flex-col justify-center">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -242,13 +250,18 @@ export default function ObsidianTemplate({
       {bottomBanners.length > 0 && (
         <section className="w-full">
           {bottomBanners.map((banner: any) => (
-            <div key={banner.id} className="relative w-full h-[400px] md:h-[600px] overflow-hidden group">
+            <div key={banner.id} className="relative w-full aspect-[4/5] md:h-[600px] md:aspect-auto overflow-hidden group">
               <SmartImage 
                 src={banner.imageUrl} 
                 alt={banner.title} 
-                className="absolute inset-0 w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 transition-transform duration-[2s] group-hover:scale-105" 
+                className="hidden md:block absolute inset-0 w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 transition-transform duration-[2s] group-hover:scale-105" 
               />
-              <div className="absolute inset-0 bg-black/20 p-12 flex flex-col items-center justify-center text-center">
+              <SmartImage 
+                src={banner.mobileImageUrl || banner.imageUrl} 
+                alt={banner.title} 
+                className="md:hidden absolute inset-0 w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 transition-transform duration-[2s] group-hover:scale-105" 
+              />
+              <div className="absolute inset-0 bg-black/20 p-8 md:p-12 flex flex-col items-center justify-center text-center">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}

@@ -147,19 +147,24 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
         <section className="py-24 px-12 bg-white border-y border-zinc-100">
           <div className="max-w-screen-2xl mx-auto space-y-12">
             {middleBanners.map((banner: any) => (
-              <div key={banner.id} className="relative aspect-[21/9] overflow-hidden group">
+              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 
-                  className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-[2s] group-hover:scale-105" 
+                  className="hidden md:block absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-[2s] group-hover:scale-105" 
                 />
-                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-12 text-white">
-                  <h2 className="text-6xl font-bold uppercase tracking-tighter mb-4">{banner.title}</h2>
-                  <p className="text-xl font-light italic opacity-80 mb-8">{banner.subtitle}</p>
+                <SmartImage 
+                  src={banner.mobileImageUrl || banner.imageUrl} 
+                  alt={banner.title} 
+                  className="md:hidden absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-[2s] group-hover:scale-105" 
+                />
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-6 md:p-12 text-white">
+                  <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tighter mb-4">{banner.title}</h2>
+                  <p className="text-lg md:text-xl font-light italic opacity-80 mb-8">{banner.subtitle}</p>
                   {banner.buttonText && (
                     <Link 
                       href={banner.buttonLink || `/store/${slug}/products`}
-                      className="px-10 py-4 bg-white text-black text-[10px] font-black uppercase tracking-[0.4em] hover:bg-black hover:text-white transition-all duration-500"
+                      className="px-8 py-3 md:px-10 md:py-4 bg-white text-black text-[10px] font-black uppercase tracking-[0.4em] hover:bg-black hover:text-white transition-all duration-500"
                     >
                       {banner.buttonText}
                     </Link>
@@ -214,19 +219,24 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
       {bottomBanners.length > 0 && (
         <section className="w-full">
           {bottomBanners.map((banner: any) => (
-            <div key={banner.id} className="relative w-full h-[400px] md:h-[500px] overflow-hidden group">
+            <div key={banner.id} className="relative w-full aspect-[4/5] md:h-[500px] md:aspect-auto overflow-hidden group">
               <SmartImage 
                 src={banner.imageUrl} 
-                className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[2s]" 
+                className="hidden md:block absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[2s]" 
                 alt={banner.title}
               />
-              <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center p-12 text-white">
-                <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter mb-6">{banner.title}</h2>
+              <SmartImage 
+                src={banner.mobileImageUrl || banner.imageUrl} 
+                className="md:hidden absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[2s]" 
+                alt={banner.title}
+              />
+              <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center p-8 md:p-12 text-white">
+                <h2 className="text-4xl md:text-7xl font-bold uppercase tracking-tighter mb-6">{banner.title}</h2>
                 <p className="text-xl font-light italic opacity-80 mb-10 max-w-2xl">{banner.subtitle}</p>
                 {banner.buttonText && (
                   <Link 
                     href={banner.buttonLink || `/store/${slug}/products`}
-                    className="px-12 py-4 bg-white text-black text-[12px] font-black uppercase tracking-[0.4em] hover:bg-black hover:text-white transition-all duration-500"
+                    className="px-10 py-4 md:px-12 md:py-4 bg-white text-black text-[12px] font-black uppercase tracking-[0.4em] hover:bg-black hover:text-white transition-all duration-500"
                   >
                     {banner.buttonText}
                   </Link>

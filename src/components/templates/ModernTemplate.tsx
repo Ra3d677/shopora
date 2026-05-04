@@ -192,11 +192,20 @@ export default function ModernTemplate({ banners, settings, products, slug }: Te
         <section className="py-24 px-8 bg-slate-50">
           <div className="container mx-auto space-y-24">
             {middleBanners.map((banner: any) => (
-              <div key={banner.id} className="relative aspect-[21/9] rounded-[3rem] overflow-hidden shadow-2xl group">
-                <SmartImage src={banner.imageUrl} alt={banner.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" />
+              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl group">
+                <SmartImage 
+                  src={banner.imageUrl} 
+                  alt={banner.title} 
+                  className="hidden md:block absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
+                />
+                <SmartImage 
+                  src={banner.mobileImageUrl || banner.imageUrl} 
+                  alt={banner.title} 
+                  className="md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
+                />
                 <div className="absolute inset-0 bg-slate-900/40 group-hover:bg-slate-900/20 transition-colors" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 text-white">
-                  <h2 className="text-5xl md:text-8xl font-black tracking-tighter leading-none mb-6 italic">{banner.title}</h2>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 md:p-12 text-white">
+                  <h2 className="text-4xl md:text-8xl font-black tracking-tighter leading-none mb-6 italic">{banner.title}</h2>
                   <p className="text-xl md:text-2xl font-medium opacity-90 max-w-2xl mb-10">{banner.subtitle}</p>
                   {banner.buttonText && (
                     <Link 
@@ -266,13 +275,18 @@ export default function ModernTemplate({ banners, settings, products, slug }: Te
       {bottomBanners.length > 0 && (
         <section className="w-full">
           {bottomBanners.map((banner: any) => (
-            <div key={banner.id} className="relative w-full h-[450px] md:h-[600px] overflow-hidden group">
+            <div key={banner.id} className="relative w-full aspect-[4/5] md:h-[600px] md:aspect-auto overflow-hidden group">
               <SmartImage 
                 src={banner.imageUrl} 
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
+                className="hidden md:block absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
                 alt={banner.title}
               />
-              <div className="absolute inset-0 bg-slate-900/60 flex flex-col items-center justify-center text-center p-12 text-white">
+              <SmartImage 
+                src={banner.mobileImageUrl || banner.imageUrl} 
+                className="md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
+                alt={banner.title}
+              />
+              <div className="absolute inset-0 bg-slate-900/60 flex flex-col items-center justify-center text-center p-8 md:p-12 text-white">
                 <h2 className="text-6xl md:text-9xl font-black tracking-tighter leading-none mb-8 italic">{banner.title}</h2>
                 <p className="text-xl md:text-3xl font-medium opacity-90 max-w-4xl mb-12">{banner.subtitle}</p>
                 {banner.buttonText && (

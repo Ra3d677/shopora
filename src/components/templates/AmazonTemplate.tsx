@@ -214,11 +214,20 @@ export default function AmazonTemplate({ banners, settings, products, slug }: Te
           <div className="space-y-6 mb-8">
             {middleBanners.map((banner: any) => (
               <div key={banner.id} className="bg-white rounded-md shadow-sm overflow-hidden flex flex-col md:flex-row h-auto md:h-[350px]">
-                <div className="w-full md:w-2/3 relative h-[300px] md:h-full">
-                  <SmartImage src={banner.imageUrl} alt={banner.title} className="absolute inset-0 w-full h-full object-cover" />
+                <div className="w-full md:w-2/3 relative aspect-[4/5] md:aspect-auto h-auto md:h-full">
+                  <SmartImage 
+                    src={banner.imageUrl} 
+                    alt={banner.title} 
+                    className="hidden md:block absolute inset-0 w-full h-full object-cover" 
+                  />
+                  <SmartImage 
+                    src={banner.mobileImageUrl || banner.imageUrl} 
+                    alt={banner.title} 
+                    className="md:hidden absolute inset-0 w-full h-full object-cover" 
+                  />
                 </div>
-                <div className="w-full md:w-1/3 p-8 flex flex-col justify-center">
-                  <h3 className="text-3xl font-bold mb-4">{banner.title}</h3>
+                <div className="w-full md:w-1/3 p-6 md:p-8 flex flex-col justify-center">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-4">{banner.title}</h3>
                   <p className="text-gray-600 mb-8">{banner.subtitle}</p>
                   {banner.buttonText && (
                     <Link 
@@ -278,25 +287,34 @@ export default function AmazonTemplate({ banners, settings, products, slug }: Te
         {/* Bottom Banners */}
         {bottomBanners.length > 0 && (
           <div className="space-y-6 mt-8">
-            {bottomBanners.map((banner: any) => (
-              <div key={banner.id} className="bg-white rounded-md shadow-sm overflow-hidden flex flex-col md:flex-row h-auto md:h-[400px]">
-                <div className="w-full md:w-2/3 relative h-[300px] md:h-full">
-                   <SmartImage src={banner.imageUrl} alt={banner.title} className="absolute inset-0 w-full h-full object-cover" />
-                </div>
-                <div className="w-full md:w-1/3 p-10 flex flex-col justify-center">
-                  <h3 className="text-4xl font-bold mb-4">{banner.title}</h3>
-                  <p className="text-gray-600 text-lg mb-8">{banner.subtitle}</p>
-                  {banner.buttonText && (
-                    <Link 
-                      href={banner.buttonLink || `/store/${slug}/products`}
-                      className="bg-[#FFD814] hover:bg-[#F7CA00] text-black px-10 py-4 rounded-md font-bold text-center transition-colors shadow-sm"
-                    >
-                      {banner.buttonText}
-                    </Link>
-                  )}
-                </div>
+          {bottomBanners.map((banner: any) => (
+            <div key={banner.id} className="bg-white rounded-md shadow-sm overflow-hidden flex flex-col md:flex-row h-auto md:h-[400px]">
+              <div className="w-full md:w-2/3 relative aspect-[4/5] md:aspect-auto h-auto md:h-full">
+                 <SmartImage 
+                  src={banner.imageUrl} 
+                  alt={banner.title} 
+                  className="hidden md:block absolute inset-0 w-full h-full object-cover" 
+                />
+                <SmartImage 
+                  src={banner.mobileImageUrl || banner.imageUrl} 
+                  alt={banner.title} 
+                  className="md:hidden absolute inset-0 w-full h-full object-cover" 
+                />
               </div>
-            ))}
+              <div className="w-full md:w-1/3 p-8 md:p-10 flex flex-col justify-center">
+                <h3 className="text-3xl md:text-4xl font-bold mb-4">{banner.title}</h3>
+                <p className="text-gray-600 text-lg mb-8">{banner.subtitle}</p>
+                {banner.buttonText && (
+                  <Link 
+                    href={banner.buttonLink || `/store/${slug}/products`}
+                    className="bg-[#FFD814] hover:bg-[#F7CA00] text-black px-10 py-4 rounded-md font-bold text-center transition-colors shadow-sm"
+                  >
+                    {banner.buttonText}
+                  </Link>
+                )}
+              </div>
+            </div>
+          ))}
           </div>
         )}
       </div>
