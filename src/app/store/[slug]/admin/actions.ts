@@ -182,6 +182,7 @@ export async function saveBanners(slug: string, banners: any[]) {
       await prisma.banner.createMany({
         data: banners.map(banner => ({
           imageUrl: banner.imageUrl,
+          mobileImageUrl: banner.mobileImageUrl || null,
           title: banner.title,
           subtitle: banner.subtitle || "",
           buttonText: banner.buttonText || "",

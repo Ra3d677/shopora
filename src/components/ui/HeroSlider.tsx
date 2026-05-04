@@ -44,7 +44,7 @@ export default function HeroSlider({ banners, slug, settings }: HeroSliderProps)
   if (!banners || banners.length === 0) return null;
 
   return (
-    <div className="relative h-[80vh] md:h-[90vh] w-full overflow-hidden group">
+    <div className="relative w-full overflow-hidden group aspect-[4/5] md:aspect-[21/9] max-h-[700px] bg-slate-900">
       <AnimatePresence initial={false} mode="wait">
         {banners.map((banner, index) => (
           index === currentIndex && (
@@ -57,10 +57,17 @@ export default function HeroSlider({ banners, slug, settings }: HeroSliderProps)
               className="absolute inset-0 w-full h-full"
             >
               <div className="absolute inset-0 z-0">
+                {/* Desktop Image */}
                 <SmartImage
                   src={banner.imageUrl}
                   alt={banner.title}
-                  className="w-full h-full object-cover"
+                  className="hidden md:block w-full h-full object-cover"
+                />
+                {/* Mobile Image (Fallback to Desktop if no mobile image provided) */}
+                <SmartImage
+                  src={banner.mobileImageUrl || banner.imageUrl}
+                  alt={banner.title}
+                  className="md:hidden w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black/40 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
               </div>

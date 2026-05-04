@@ -83,6 +83,7 @@ model Category {
 model Banner {
   id         String  @id @default(cuid())
   imageUrl   String
+  mobileImageUrl String?
   title      String
   subtitle   String?
   buttonText String?

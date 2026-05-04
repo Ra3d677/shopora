@@ -179,15 +179,22 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
           banners.map((banner, index) => (
             <div key={banner.id} className="bg-card rounded-2xl border border-border/50 shadow-sm overflow-hidden flex flex-col md:flex-row">
               {/* Preview Side */}
-              <div className="w-full md:w-1/3 bg-slate-100 relative min-h-[200px] flex items-center justify-center border-b md:border-b-0 md:border-r border-border/50">
-                {banner.imageUrl ? (
-                  <Image 
-                    src={banner.imageUrl} 
-                    alt="Banner preview" 
-                    fill 
-                    className="object-cover" 
-                    unoptimized={banner.imageUrl.startsWith('http')}
-                  />
+              <div className="w-full md:w-1/2 bg-slate-900 relative aspect-[21/9] flex items-center justify-center border-b md:border-b-0 md:border-r border-border/50 overflow-hidden">
+                {banner.imageUrl || banner.mobileImageUrl ? (
+                  <div className="relative w-full h-full">
+                    <Image 
+                      src={banner.imageUrl || banner.mobileImageUrl || ""} 
+                      alt="Banner preview" 
+                      fill 
+                      className="object-cover" 
+                      unoptimized={(banner.imageUrl || banner.mobileImageUrl || "").startsWith('http')}
+                    />
+                    {banner.mobileImageUrl && (
+                      <div className="absolute bottom-2 right-2 bg-purple-600 text-white p-1 rounded-md shadow-lg" title="Mobile Optimized version included">
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <span className="text-muted-foreground text-sm flex items-center gap-2">
                     <ImageIcon className="w-4 h-4" /> No Image
@@ -241,14 +248,29 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="col-span-1 md:col-span-2">
-                    <label className="block text-xs font-medium text-slate-500 mb-1">Banner Image</label>
-                    <MediaPicker 
-                      slug={slug}
-                      value={banner.imageUrl} 
-                      onChange={url => updateBanner(index, 'imageUrl', url)} 
-                    />
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 col-span-1 md:col-span-2">
+                    <div>
+                      <div className="flex justify-between items-end mb-1">
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest">Desktop Banner (Web)</label>
+                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Rec: 1920x800px</span>
+                      </div>
+                      <MediaPicker 
+                        slug={slug}
+                        value={banner.imageUrl} 
+                        onChange={url => updateBanner(index, 'imageUrl', url)} 
+                      />
+                    </div>
+                    <div>
+                      <div className="flex justify-between items-end mb-1">
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest">Mobile Banner (Phone)</label>
+                        <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">Rec: 800x1200px</span>
+                      </div>
+                      <MediaPicker 
+                        slug={slug}
+                        value={banner.mobileImageUrl || ""} 
+                        onChange={url => updateBanner(index, 'mobileImageUrl', url)} 
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-slate-500 mb-1">Title</label>
