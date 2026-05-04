@@ -11,6 +11,8 @@ import EditableButton from "@/components/editor/EditableButton";
 import { useEditorStore } from "@/store/editor";
 import SmartImage from "@/components/ui/SmartImage";
 
+import EditableImage from "@/components/editor/EditableImage";
+
 interface TemplateProps {
   store: any;
   banners: any[];
@@ -37,10 +39,12 @@ export default function SennoTemplate({ store, banners = [], settings, products,
          <div className="absolute bottom-40 right-20 w-64 h-64 bg-[#f06292]/10 rounded-full blur-3xl opacity-40" />
          
          <div className="container mx-auto h-full px-6 md:px-12 relative z-10 flex items-center">
-            {/* Image Placeholder / Main Image (Left) */}
+            {/* Image (Left) */}
             <div className="absolute inset-0 md:relative md:w-1/2 h-full z-0 md:z-auto">
-               <SmartImage 
+               <EditableImage 
                  src={senSettings.heroImage || "https://images.unsplash.com/photo-1596462502278-27bfac4033c8?w=1600&q=80"} 
+                 slug={slug}
+                 settingsKey="sennoSettings.heroImage"
                  className="w-full h-full object-cover object-center" 
                  alt="Hero"
                />
@@ -71,9 +75,20 @@ export default function SennoTemplate({ store, banners = [], settings, products,
                      settingsKey="sennoSettings.heroTitle" 
                    />
                  </h1>
-                 <p className="text-lg md:text-xl text-slate-600 mb-10 flex items-center gap-3">
-                   Helpline number : <span className="font-bold border-b-2 border-slate-300"><EditableText content={senSettings.heroHelpline || "(+06) 059 030 095"} slug={slug} settingsKey="sennoSettings.heroHelpline" /></span>
-                 </p>
+                 <div className="text-lg md:text-xl text-slate-600 mb-10 flex flex-wrap items-center gap-3">
+                   <EditableText 
+                     content={senSettings.heroHelplineLabel || "Helpline number : "} 
+                     slug={slug} 
+                     settingsKey="sennoSettings.heroHelplineLabel" 
+                   />
+                   <span className="font-bold border-b-2 border-slate-300">
+                     <EditableText 
+                       content={senSettings.heroHelplineNumber || "(+06) 059 030 095"} 
+                       slug={slug} 
+                       settingsKey="sennoSettings.heroHelplineNumber" 
+                     />
+                   </span>
+                 </div>
                  <div className="flex gap-4">
                    <EditableButton 
                      label="SHOP COLLECTION" 
@@ -93,8 +108,20 @@ export default function SennoTemplate({ store, banners = [], settings, products,
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div>
-               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-2">Our Best Picks</h2>
-               <p className="text-slate-500 font-medium italic">Premium beauty care for your daily routine.</p>
+               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-2">
+                 <EditableText 
+                   content={senSettings.productsTitle || "Our Best Picks"} 
+                   slug={slug} 
+                   settingsKey="sennoSettings.productsTitle" 
+                 />
+               </h2>
+               <p className="text-slate-500 font-medium italic">
+                 <EditableText 
+                   content={senSettings.productsSubtitle || "Premium beauty care for your daily routine."} 
+                   slug={slug} 
+                   settingsKey="sennoSettings.productsSubtitle" 
+                 />
+               </p>
             </div>
             <div className="flex gap-4 overflow-x-auto pb-4 md:pb-0 scrollbar-hide">
                {['All', 'New Arrivals', 'Best Sellers', 'Skin Care'].map(tab => (
@@ -116,29 +143,51 @@ export default function SennoTemplate({ store, banners = [], settings, products,
       {/* 5. HOTSPOTS SECTION */}
       <section className="py-20 px-6 bg-[#fcf2f4]">
         <div className="container mx-auto flex flex-col lg:flex-row items-center gap-20">
-           <div className="w-full lg:w-1/2 relative group rounded-[3rem] overflow-hidden shadow-2xl">
-              <SmartImage src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1000&q=80" className="w-full h-full object-cover transition-transform duration-[5s] group-hover:scale-110" alt="Hotspots" />
+           <div className="w-full lg:w-1/2 relative group rounded-[3rem] overflow-hidden shadow-2xl min-h-[400px]">
+              <EditableImage 
+                 src={senSettings.hotspotImage || "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1000&q=80"} 
+                 slug={slug}
+                 settingsKey="sennoSettings.hotspotImage"
+                 className="w-full h-full object-cover transition-transform duration-[5s] group-hover:scale-110" 
+                 alt="Hotspots" 
+              />
               <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2">
                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-2xl cursor-pointer hover:scale-110 transition-transform group/dot">
                     <div className="w-3 h-3 bg-[#f06292] rounded-full animate-ping" />
                     <div className="absolute bottom-12 left-1/2 -translate-x-1/2 bg-white p-3 rounded-xl shadow-2xl w-40 opacity-0 group-hover/dot:opacity-100 transition-opacity pointer-events-none">
-                       <p className="text-[10px] font-black uppercase mb-1">Night Recovery Serum</p>
-                       <p className="text-[#f06292] font-black text-xs">$39.00</p>
+                       <p className="text-[10px] font-black uppercase mb-1">
+                         <EditableText content={senSettings.hotspotLabel || "Night Recovery Serum"} slug={slug} settingsKey="sennoSettings.hotspotLabel" />
+                       </p>
+                       <p className="text-[#f06292] font-black text-xs">
+                         <EditableText content={senSettings.hotspotPrice || "$39.00"} slug={slug} settingsKey="sennoSettings.hotspotPrice" />
+                       </p>
                     </div>
                  </div>
               </div>
            </div>
            <div className="w-full lg:w-1/2">
-              <h2 className="text-5xl md:text-7xl font-black text-slate-800 leading-tight mb-8">Crafted for your glowing skin.</h2>
-              <p className="text-slate-500 text-lg mb-12 leading-relaxed">Our products are made from organic ingredients, carefully selected to provide the best care for your skin without any harsh chemicals.</p>
+              <h2 className="text-5xl md:text-7xl font-black text-slate-800 leading-tight mb-8">
+                 <EditableText content={senSettings.featureTitle || "Crafted for your glowing skin."} slug={slug} settingsKey="sennoSettings.featureTitle" />
+              </h2>
+              <p className="text-slate-500 text-lg mb-12 leading-relaxed">
+                 <EditableText content={senSettings.featureDesc || "Our products are made from organic ingredients, carefully selected to provide the best care for your skin without any harsh chemicals."} slug={slug} settingsKey="sennoSettings.featureDesc" />
+              </p>
               <div className="grid grid-cols-2 gap-8 mb-12">
                  <div className="border-l-4 border-[#f06292] pl-6">
-                    <h4 className="text-2xl font-black">99%</h4>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Natural Extraction</p>
+                    <h4 className="text-2xl font-black">
+                       <EditableText content={senSettings.stat1Val || "99%"} slug={slug} settingsKey="sennoSettings.stat1Val" />
+                    </h4>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                       <EditableText content={senSettings.stat1Label || "Natural Extraction"} slug={slug} settingsKey="sennoSettings.stat1Label" />
+                    </p>
                  </div>
                  <div className="border-l-4 border-slate-900 pl-6">
-                    <h4 className="text-2xl font-black">100%</h4>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Vegan Formula</p>
+                    <h4 className="text-2xl font-black">
+                       <EditableText content={senSettings.stat2Val || "100%"} slug={slug} settingsKey="sennoSettings.stat2Val" />
+                    </h4>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                       <EditableText content={senSettings.stat2Label || "Vegan Formula"} slug={slug} settingsKey="sennoSettings.stat2Label" />
+                    </p>
                  </div>
               </div>
               <button className="px-10 py-5 bg-slate-900 text-white font-black uppercase tracking-widest text-[10px] hover:bg-[#f06292] transition-all rounded shadow-xl">DISCOVER MORE</button>
