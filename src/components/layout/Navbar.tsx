@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart, Search, Menu, X, User as UserIcon, LogOut, LayoutDashboard, Globe, ChevronDown, Home, ShoppingBag, Heart, User } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, User as UserIcon, LogOut, LayoutDashboard, Globe, ChevronDown, Home, ShoppingBag, Heart, User, Mail } from "lucide-react";
 import { useCartStore } from "@/store/cart";
 import { useState, useEffect, FormEvent, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -60,6 +60,8 @@ export default function Navbar({
         logoUrl={storeSettings?.logoUrl} 
         slug={slug || ''} 
         cartItemCount={cartItemCount}
+        session={session}
+        storeSettings={storeSettings}
       />
     );
   }
@@ -424,7 +426,7 @@ function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount }: any) {
   );
 }
 
-function SennoNavbar({ storeName, logoUrl, slug, cartItemCount }: any) {
+function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSettings }: any) {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
@@ -438,44 +440,83 @@ function SennoNavbar({ storeName, logoUrl, slug, cartItemCount }: any) {
 
   return (
     <>
-      <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 ${scrolled ? 'bg-white shadow-sm py-4' : (isHome ? 'bg-transparent py-6' : 'bg-white py-4')}`}>
-        <div className="container mx-auto px-6 flex justify-between items-center text-slate-900">
-          <button className="p-2 -ml-2">
-            <Menu className="w-6 h-6" />
-          </button>
+      {/* 1. TOP ANNOUNCEMENT BAR */}
+      <div className="bg-[#1c1c1b] text-white py-2.5 px-6 md:px-12 flex justify-between items-center text-[11px] font-medium tracking-wide z-[110] relative">
+         <div className="hidden md:flex items-center gap-6">
+            <div className="flex items-center gap-2">
+               <Mail size={12} className="text-[#f06292]" />
+               <span>Email now : {storeSettings?.contactInfo?.email || 'demo@demo.com'}</span>
+            </div>
+         </div>
+         <div className="flex-1 text-center md:text-right flex justify-center md:justify-end items-center gap-8">
+            <p className="uppercase tracking-widest"><span className="text-[#f06292]">Save 50% off</span> cosmetic beauty discount</p>
+            <div className="hidden md:flex items-center gap-4 border-l border-white/20 pl-4 uppercase">
+               <button className="flex items-center gap-1">USD $ <ChevronDown size={10} /></button>
+               <button className="flex items-center gap-1">ENGLISH <ChevronDown size={10} /></button>
+            </div>
+         </div>
+      </div>
 
-          <Link href={`/store/${slug}`} className="flex items-center">
-            {logoUrl ? (
-              <img src={logoUrl} alt={storeName} className="h-8 md:h-10 w-auto object-contain" />
-            ) : (
-              <h1 className="text-2xl md:text-3xl font-serif font-black tracking-tight italic">{storeName}</h1>
-            )}
-          </Link>
+      {/* 2. MAIN NAVBAR */}
+      <nav className={`w-full z-[100] transition-all duration-500 bg-white border-b border-slate-100 py-6 px-6 md:px-12 ${scrolled ? 'fixed top-0 shadow-sm' : 'relative'}`}>
+         <div className="container mx-auto flex justify-between items-center">
+            {/* Logo */}
+            <Link href={`/store/${slug}`} className="flex items-center gap-2 group">
+               <div className="w-8 h-8 bg-[#f06292] rounded-full flex items-center justify-center group-hover:rotate-12 transition-transform">
+                  <div className="w-4 h-4 bg-white rounded-full" />
+               </div>
+               {logoUrl ? (
+                 <img src={logoUrl} alt={storeName} className="h-8 w-auto" />
+               ) : (
+                 <h1 className="text-3xl font-black tracking-tighter uppercase text-slate-900">{storeName}</h1>
+               )}
+            </Link>
 
-          <div className="flex items-center gap-4">
-             <button className="p-2"><Search className="w-5 h-5" /></button>
-             <Link href={`/store/${slug}/cart`} className="p-2 relative">
-                <ShoppingBag className="w-5 h-5" />
-                {cartItemCount > 0 && (
-                  <span className="absolute top-0 right-0 w-4 h-4 bg-[#e6518e] text-white text-[8px] font-black rounded-full flex items-center justify-center">
-                    {cartItemCount}
-                  </span>
-                )}
-             </Link>
-          </div>
-        </div>
+            {/* Nav Links (Desktop) */}
+            <div className="hidden lg:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-900">
+               <Link href={`/store/${slug}`} className={`${pathname === `/store/${slug}` ? 'text-[#f06292]' : 'hover:text-[#f06292]'} transition-colors flex items-center gap-1`}>HOME <ChevronDown size={10} /></Link>
+               <Link href={`/store/${slug}/categories`} className="hover:text-[#f06292] transition-colors flex items-center gap-1">SHOP <span className="bg-[#f06292] text-white text-[8px] px-1.5 py-0.5 rounded ml-1 animate-pulse">SALE</span> <ChevronDown size={10} /></Link>
+               <Link href={`/store/${slug}/products`} className="hover:text-[#f06292] transition-colors">PRODUCTS</Link>
+               <Link href="#" className="hover:text-[#f06292] transition-colors">BLOGS</Link>
+               <Link href="#" className="hover:text-[#f06292] transition-colors flex items-center gap-1">PAGES <ChevronDown size={10} /></Link>
+            </div>
+
+            {/* Icons */}
+            <div className="flex items-center gap-5 text-slate-900">
+               <button className="p-1 hover:text-[#f06292] transition-colors"><Search size={20} strokeWidth={2.5} /></button>
+               <Link href={`/store/${slug}/account`} className="p-1 hover:text-[#f06292] transition-colors"><User size={20} strokeWidth={2.5} /></Link>
+               <button className="p-1 hover:text-[#f06292] transition-colors relative">
+                  <Heart size={20} strokeWidth={2.5} />
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#f06292] text-white text-[8px] font-black rounded-full flex items-center justify-center">0</span>
+               </button>
+               <Link href={`/store/${slug}/cart`} className="flex items-center gap-2 group">
+                  <div className="relative p-1 group-hover:text-[#f06292] transition-colors">
+                     <ShoppingBag size={20} strokeWidth={2.5} />
+                     {cartItemCount > 0 && (
+                       <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#f06292] text-white text-[8px] font-black rounded-full flex items-center justify-center">
+                         {cartItemCount}
+                       </span>
+                     )}
+                  </div>
+                  <div className="hidden md:block">
+                     <p className="text-[10px] font-bold text-slate-400 uppercase leading-none">Cart</p>
+                     <p className="text-[11px] font-black text-slate-900 leading-tight">$0.00</p>
+                  </div>
+               </Link>
+            </div>
+         </div>
       </nav>
 
       {/* MOBILE BOTTOM NAV */}
       <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] z-[200]">
         <div className="bg-white/90 backdrop-blur-xl rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-white/50 p-2 flex items-center justify-between px-6">
-           <Link href={`/store/${slug}`} className={`p-3 ${pathname === `/store/${slug}` ? 'text-[#e6518e]' : 'text-slate-400'}`}><Home className="w-6 h-6" /></Link>
+           <Link href={`/store/${slug}`} className={`p-3 ${pathname === `/store/${slug}` ? 'text-[#f06292]' : 'text-slate-400'}`}><Home className="w-6 h-6" /></Link>
            <button className="p-3 text-slate-400"><Search className="w-6 h-6" /></button>
-           <Link href={`/store/${slug}/products`} className="p-5 bg-[#e6518e] text-white rounded-full shadow-lg -translate-y-6">
+           <Link href={`/store/${slug}/products`} className="p-5 bg-[#f06292] text-white rounded-full shadow-lg -translate-y-6">
               <ShoppingBag className="w-6 h-6" />
            </Link>
            <button className="p-3 text-slate-400"><Heart className="w-6 h-6" /></button>
-           <Link href={`/store/${slug}/account`} className={`p-3 ${pathname.includes('/account') ? 'text-[#e6518e]' : 'text-slate-400'}`}><User className="w-6 h-6" /></Link>
+           <Link href={`/store/${slug}/account`} className={`p-3 ${pathname.includes('/account') ? 'text-[#f06292]' : 'text-slate-400'}`}><User className="w-6 h-6" /></Link>
         </div>
       </div>
     </>
