@@ -211,7 +211,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
                   </div>
                   <span className="font-mono text-sm">${product.price}</span>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </div>
