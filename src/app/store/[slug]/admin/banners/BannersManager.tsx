@@ -243,13 +243,11 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="col-span-1 md:col-span-2">
-                    <label className="block text-xs font-medium text-slate-500 mb-1">Image URL</label>
-                    <input 
-                      type="text" 
+                    <label className="block text-xs font-medium text-slate-500 mb-1">Banner Image</label>
+                    <MediaPicker 
+                      slug={slug}
                       value={banner.imageUrl} 
-                      onChange={e => updateBanner(index, 'imageUrl', e.target.value)} 
-                      className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm"
-                      placeholder="https://example.com/image.jpg"
+                      onChange={url => updateBanner(index, 'imageUrl', url)} 
                     />
                   </div>
                   <div>

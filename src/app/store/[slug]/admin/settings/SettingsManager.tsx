@@ -5,6 +5,7 @@ import { saveStoreSettings } from "../actions";
 import { Settings, Loader2, Save, X, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { StoreSettings } from "@/lib/types";
+import MediaPicker from "../media/MediaPicker";
 
 export default function SettingsManager({ 
   initialSettings, 
@@ -92,12 +93,11 @@ export default function SettingsManager({
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">Logo URL</label>
-                      <input 
-                        type="text" 
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Store Logo</label>
+                      <MediaPicker 
+                        slug={slug}
                         value={settings.logoUrl || ''} 
-                        onChange={e => setSettings({...settings, logoUrl: e.target.value})} 
-                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" 
+                        onChange={url => setSettings({...settings, logoUrl: url})} 
                       />
                     </div>
                   </div>
