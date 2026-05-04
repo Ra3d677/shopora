@@ -27,7 +27,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
     };
   });
 
-  if (store.activeTemplate === 'senno') {
+  if (store.template === 'senno') {
     return (
       <SennoCategories slug={slug} collections={COLLECTIONS} />
     );
@@ -208,5 +208,4 @@ function SennoCategories({ slug, collections }: any) {
        </div>
     </div>
   );
-}
 }

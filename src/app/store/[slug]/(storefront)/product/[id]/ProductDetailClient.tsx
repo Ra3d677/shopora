@@ -37,7 +37,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
     trackAddToCart(product, 1, store);
   };
 
-  if (store.activeTemplate === 'senno') {
+  if (store.template === 'senno') {
     return (
       <SennoProductDetail 
         product={product} 
@@ -379,5 +379,4 @@ function SennoProductDetail({
        </div>
     </div>
   );
-}
 }

@@ -54,7 +54,7 @@ export default async function ProductsPage({
   }
 
 
-  if (store.activeTemplate === 'senno') {
+  if (store.template === 'senno') {
     return (
       <SennoProducts 
         slug={slug} 
@@ -257,4 +257,3 @@ function Star({ className }: any) {
 }
 
 import { ShoppingBag, Search, Heart } from "lucide-react";
-}
