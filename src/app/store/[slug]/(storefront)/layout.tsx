@@ -8,6 +8,7 @@ import Link from "next/link";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import CustomCursor from "@/components/ui/premium/CustomCursor";
 import AdminEditorBar from "@/components/editor/AdminEditorBar";
+import PreviewWrapper from "@/components/editor/PreviewWrapper";
 import { getSession } from "@/lib/auth";
 import VisitorTracker from "@/components/layout/VisitorTracker";
 import PixelTracker from "@/components/layout/PixelTracker";
@@ -96,24 +97,26 @@ export default async function StorefrontLayout({
       <Suspense fallback={null}>
         <AdminEditorBar slug={slug} isOwner={isOwner} store={store} />
       </Suspense>
-      <Navbar 
-        activeTemplate={store.template as any} 
-        storeSettings={{
-            ...store.settings,
-            storeName: store.settings.storeName || store.name,
-            primaryColor: store.settings.colorSystem?.brand?.primary || store.primaryColor,
-        }} 
-        categories={store.categories}
-        products={store.products}
-        lang={lang} 
-        slug={slug}
-        session={session}
-      />
-      <main className="flex-grow flex flex-col">
-        {children}
-      </main>
-      <Footer />
-      <WhatsAppButton />
+      <PreviewWrapper isOwner={isOwner}>
+        <Navbar 
+          activeTemplate={store.template as any} 
+          storeSettings={{
+              ...store.settings,
+              storeName: store.settings.storeName || store.name,
+              primaryColor: store.settings.colorSystem?.brand?.primary || store.primaryColor,
+          }} 
+          categories={store.categories}
+          products={store.products}
+          lang={lang} 
+          slug={slug}
+          session={session}
+        />
+        <main className="flex-grow flex flex-col">
+          {children}
+        </main>
+        <Footer />
+        <WhatsAppButton />
+      </PreviewWrapper>
     </div>
   );
 }

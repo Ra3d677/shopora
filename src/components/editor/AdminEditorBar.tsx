@@ -1,14 +1,14 @@
 "use client";
 
 import { useEditorStore } from "@/store/editor";
-import { Edit3, Eye, Settings, LayoutDashboard, Save, X } from "lucide-react";
+import { Edit3, Eye, Settings, LayoutDashboard, Save, X, Monitor, Smartphone } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AddElementMenu from "./AddElementMenu";
 
 export default function AdminEditorBar({ slug, isOwner, store }: { slug: string, isOwner: boolean, store: any }) {
-  const { isEditMode, toggleEditMode, setEditMode } = useEditorStore();
+  const { isEditMode, toggleEditMode, setEditMode, device, setDevice } = useEditorStore();
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -49,6 +49,25 @@ export default function AdminEditorBar({ slug, isOwner, store }: { slug: string,
             </button>
           </div>
         )}
+        
+        <div className="h-4 w-px bg-white/10 mx-2" />
+        
+        <div className="flex items-center bg-white/5 rounded-full p-1 border border-white/5">
+          <button 
+            onClick={() => setDevice('desktop')}
+            className={`p-1.5 rounded-full transition-all ${device === 'desktop' ? 'bg-white text-slate-900 shadow-lg' : 'text-slate-400 hover:text-white'}`}
+            title="Desktop View"
+          >
+            <Monitor size={16} />
+          </button>
+          <button 
+            onClick={() => setDevice('mobile')}
+            className={`p-1.5 rounded-full transition-all ${device === 'mobile' ? 'bg-white text-slate-900 shadow-lg' : 'text-slate-400 hover:text-white'}`}
+            title="Mobile View"
+          >
+            <Smartphone size={16} />
+          </button>
+        </div>
       </div>
 
       <div className="flex items-center gap-4">
