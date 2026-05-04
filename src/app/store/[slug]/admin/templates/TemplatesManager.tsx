@@ -42,6 +42,12 @@ const AVAILABLE_TEMPLATES = [
     name: "Signature Brand",
     description: "A high-end, typography-focused template for luxury brands and signature collections.",
     preview: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80"
+  },
+  {
+    id: "senno",
+    name: "Senno Multipurpose",
+    description: "A high-end, minimalist ecommerce template with a peach-pink aesthetic, serif typography, and interactive hotspots. Perfect for beauty and boutique brands.",
+    preview: "https://images.unsplash.com/photo-1596462502278-27bfac4033c8?w=800&q=80"
   }
 ];
 

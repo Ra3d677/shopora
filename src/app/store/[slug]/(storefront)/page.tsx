@@ -13,6 +13,7 @@ import ZenithTemplate from "@/components/templates/ZenithTemplate";
 import ObsidianTemplate from "@/components/templates/ObsidianTemplate";
 import ModernTemplate from "@/components/templates/ModernTemplate";
 import AmazonTemplate from "@/components/templates/AmazonTemplate";
+import SennoTemplate from "@/components/templates/SennoTemplate";
 
 export const dynamic = 'force-dynamic';
 
@@ -63,6 +64,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
     if (activeTemplate === 'obsidian') return <ObsidianTemplate {...props} />;
     if (activeTemplate === 'modern') return <ModernTemplate {...props} />;
     if (activeTemplate === 'amazon') return <AmazonTemplate {...props} />;
+    if (activeTemplate === 'senno') return <SennoTemplate {...props} store={store} />;
     
     // Default fallback (Signature is now the default)
     return (

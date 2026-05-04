@@ -1,7 +1,7 @@
 "use client";
 
 import { useEditorStore } from "@/store/editor";
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { useSearchParams, usePathname } from "next/navigation";
 
 export default function PreviewWrapper({ children, isOwner }: { children: ReactNode, isOwner: boolean }) {
@@ -9,8 +9,18 @@ export default function PreviewWrapper({ children, isOwner }: { children: ReactN
   const searchParams = useSearchParams();
   const pathname = usePathname();
   
-  // If we are currently inside the iframe, just render the content normally
-  if (searchParams.get('preview') === 'mobile') {
+  // Use state to detect if we are in an iframe to prevent hydration mismatch
+  const [isInIframe, setIsInIframe] = useState(false);
+
+  useEffect(() => {
+    // Detect if we are inside an iframe
+    if (typeof window !== 'undefined' && window.self !== window.top) {
+      setIsInIframe(true);
+    }
+  }, []);
+
+  // If we are currently inside the iframe or have the preview param, just render the content normally
+  if (isInIframe || searchParams.get('preview') === 'mobile') {
     return <>{children}</>;
   }
 
@@ -50,8 +60,8 @@ export default function PreviewWrapper({ children, isOwner }: { children: ReactN
       </div>
       
       {/* Help text */}
-      <div className="absolute bottom-8 text-white/50 text-sm font-medium">
-        Mobile Preview Mode - Changes inside this frame will not be saved automatically.
+      <div className="absolute bottom-8 text-white/50 text-sm font-medium text-center px-6">
+        Mobile Preview Mode - Links within the frame will stay in mobile view.
       </div>
     </div>
   );

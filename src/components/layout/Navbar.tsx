@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart, Search, Menu, X, User as UserIcon, LogOut, LayoutDashboard, Globe, ChevronDown } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, User as UserIcon, LogOut, LayoutDashboard, Globe, ChevronDown, Home, ShoppingBag, Heart, User } from "lucide-react";
 import { useCartStore } from "@/store/cart";
 import { useState, useEffect, FormEvent, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -38,6 +38,9 @@ export default function Navbar({
   };
 
   
+  const items = useCartStore((state) => state.items);
+  const cartItemCount = items.filter(i => products?.some(p => p.id === i.product?.id)).reduce((acc, item) => acc + item.quantity, 0);
+
   if (activeTemplate === 'signature') {
     return (
       <SignatureNavbar 
@@ -50,12 +53,22 @@ export default function Navbar({
     );
   }
 
+  if (activeTemplate === 'senno') {
+    return (
+      <SennoNavbar 
+        storeName={storeSettings?.storeName || 'Store'} 
+        logoUrl={storeSettings?.logoUrl} 
+        slug={slug || ''} 
+        cartItemCount={cartItemCount}
+      />
+    );
+  }
+
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const items = useCartStore((state) => state.items);
   const { user, setUser } = useAuthStore();
   const router = useRouter();
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -89,8 +102,6 @@ export default function Navbar({
     router.refresh();
     setIsUserMenuOpen(false);
   };
-
-  const cartItemCount = items.filter(i => products?.some(p => p.id === i.product?.id)).reduce((acc, item) => acc + item.quantity, 0);
 
   // Common User Menu Dropdown
   const UserMenuDropdown = () => (
@@ -410,5 +421,63 @@ function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount }: any) {
         </div>
       </div>
     </nav>
+  );
+}
+
+function SennoNavbar({ storeName, logoUrl, slug, cartItemCount }: any) {
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const isHome = pathname === `/store/${slug}`;
+
+  return (
+    <>
+      <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 ${scrolled ? 'bg-white shadow-sm py-4' : (isHome ? 'bg-transparent py-6' : 'bg-white py-4')}`}>
+        <div className="container mx-auto px-6 flex justify-between items-center text-slate-900">
+          <button className="p-2 -ml-2">
+            <Menu className="w-6 h-6" />
+          </button>
+
+          <Link href={`/store/${slug}`} className="flex items-center">
+            {logoUrl ? (
+              <img src={logoUrl} alt={storeName} className="h-8 md:h-10 w-auto object-contain" />
+            ) : (
+              <h1 className="text-2xl md:text-3xl font-serif font-black tracking-tight italic">{storeName}</h1>
+            )}
+          </Link>
+
+          <div className="flex items-center gap-4">
+             <button className="p-2"><Search className="w-5 h-5" /></button>
+             <Link href={`/store/${slug}/cart`} className="p-2 relative">
+                <ShoppingBag className="w-5 h-5" />
+                {cartItemCount > 0 && (
+                  <span className="absolute top-0 right-0 w-4 h-4 bg-[#e6518e] text-white text-[8px] font-black rounded-full flex items-center justify-center">
+                    {cartItemCount}
+                  </span>
+                )}
+             </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* MOBILE BOTTOM NAV */}
+      <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] z-[200]">
+        <div className="bg-white/90 backdrop-blur-xl rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-white/50 p-2 flex items-center justify-between px-6">
+           <Link href={`/store/${slug}`} className={`p-3 ${pathname === `/store/${slug}` ? 'text-[#e6518e]' : 'text-slate-400'}`}><Home className="w-6 h-6" /></Link>
+           <button className="p-3 text-slate-400"><Search className="w-6 h-6" /></button>
+           <Link href={`/store/${slug}/products`} className="p-5 bg-[#e6518e] text-white rounded-full shadow-lg -translate-y-6">
+              <ShoppingBag className="w-6 h-6" />
+           </Link>
+           <button className="p-3 text-slate-400"><Heart className="w-6 h-6" /></button>
+           <Link href={`/store/${slug}/account`} className={`p-3 ${pathname.includes('/account') ? 'text-[#e6518e]' : 'text-slate-400'}`}><User className="w-6 h-6" /></Link>
+        </div>
+      </div>
+    </>
   );
 }
