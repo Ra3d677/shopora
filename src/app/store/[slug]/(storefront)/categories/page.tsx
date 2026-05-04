@@ -27,6 +27,12 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
     };
   });
 
+  if (store.activeTemplate === 'senno') {
+    return (
+      <SennoCategories slug={slug} collections={COLLECTIONS} />
+    );
+  }
+
   return (
     <div className="min-h-screen pb-24 transition-colors duration-500" style={{ backgroundColor: 'var(--color-bg-categories)', color: 'var(--color-text-primary)' }}>
       {/* Header */}
@@ -152,4 +158,55 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
       </div>
     </div>
   );
+}
+
+function SennoCategories({ slug, collections }: any) {
+  return (
+    <div className="min-h-screen bg-white pb-32">
+       {/* Header */}
+       <div className="bg-[#fcf2f4] py-32 px-6">
+          <div className="container mx-auto text-center">
+             <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">
+                <Link href={`/store/${slug}`} className="hover:text-[#f06292]">Home</Link>
+                <span>/</span>
+                <span className="text-slate-900">Collections</span>
+             </div>
+             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-8 tracking-tighter uppercase">Our Collections</h1>
+             <p className="text-slate-500 max-w-2xl mx-auto text-xl font-medium italic leading-relaxed">
+               Carefully curated beauty essentials for every skin type and routine. Discover your perfect match.
+             </p>
+          </div>
+       </div>
+
+       <div className="container mx-auto px-6 md:px-12 -mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+             {collections.map((cat: any) => (
+               <Link 
+                 href={`/store/${slug}/products?category=${cat.id}`} 
+                 key={cat.id}
+                 className="flex flex-col items-center group"
+               >
+                 <div className="relative w-full aspect-square rounded-full p-3 border border-slate-100 group-hover:border-[#f06292] transition-all duration-700 mb-10 bg-white shadow-2xl group-hover:shadow-[#f06292]/20">
+                   <div className="w-full h-full rounded-full overflow-hidden relative">
+                     <SmartImage src={cat.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s]" alt={cat.name} />
+                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 flex items-center justify-center">
+                        <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-500 shadow-xl">
+                           <ArrowRight className="text-[#f06292] w-6 h-6" />
+                        </div>
+                     </div>
+                   </div>
+                 </div>
+                 <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900 group-hover:text-[#f06292] transition-colors">{cat.name}</h3>
+                 <div className="flex items-center gap-2 mt-3">
+                    <div className="w-8 h-[1px] bg-slate-200" />
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{cat.itemCount} Products</span>
+                    <div className="w-8 h-[1px] bg-slate-200" />
+                 </div>
+               </Link>
+             ))}
+          </div>
+       </div>
+    </div>
+  );
+}
 }

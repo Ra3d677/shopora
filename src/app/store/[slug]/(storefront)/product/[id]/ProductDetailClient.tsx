@@ -37,6 +37,23 @@ export default function ProductDetailClient({ product, store }: { product: Produ
     trackAddToCart(product, 1, store);
   };
 
+  if (store.activeTemplate === 'senno') {
+    return (
+      <SennoProductDetail 
+        product={product} 
+        store={store} 
+        selectedImage={selectedImage} 
+        setSelectedImage={setSelectedImage}
+        selectedSize={selectedSize}
+        setSelectedSize={setSelectedSize}
+        selectedColor={selectedColor}
+        setSelectedColor={setSelectedColor}
+        isAdding={isAdding}
+        handleAddToCart={handleAddToCart}
+      />
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
       {/* Left: Images */}
@@ -186,4 +203,181 @@ export default function ProductDetailClient({ product, store }: { product: Produ
       </div>
     </div>
   );
+}
+
+function SennoProductDetail({ 
+  product, 
+  store, 
+  selectedImage, 
+  setSelectedImage,
+  selectedSize,
+  setSelectedSize,
+  selectedColor,
+  setSelectedColor,
+  isAdding,
+  handleAddToCart
+}: any) {
+  const pink = "#f06292";
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start pb-32">
+       {/* Left: Images */}
+       <div className="flex flex-col gap-6 sticky top-32">
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={selectedImage}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="relative aspect-[3/4] w-full rounded-[2.5rem] overflow-hidden bg-[#fcf2f4] shadow-2xl"
+            >
+               <SmartImage src={selectedImage} alt={product.name} className="absolute inset-0 w-full h-full object-cover" />
+               {product.discount_price && (
+                 <div className="absolute top-8 left-8 bg-[#f06292] text-white text-[10px] font-black px-4 py-1.5 rounded-full shadow-xl uppercase tracking-widest">Sale Offer</div>
+               )}
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+             {product.images.map((img: string, idx: number) => (
+               <button 
+                 key={idx}
+                 onClick={() => setSelectedImage(img)}
+                 className={cn(
+                   "relative h-32 w-24 rounded-2xl overflow-hidden border-2 transition-all duration-500",
+                   selectedImage === img ? "border-[#f06292] scale-105 shadow-xl shadow-[#f06292]/20" : "border-transparent opacity-40 hover:opacity-100"
+                 )}
+               >
+                 <SmartImage src={img} alt={`Thumb ${idx}`} className="w-full h-full object-cover" />
+               </button>
+             ))}
+          </div>
+       </div>
+
+       {/* Right: Info */}
+       <div className="flex flex-col pt-4">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+             <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">
+                <Link href={`/store/${store.slug}`} className="hover:text-[#f06292]">Home</Link>
+                <span>/</span>
+                <Link href={`/store/${store.slug}/products`} className="hover:text-[#f06292]">Shop</Link>
+                <span>/</span>
+                <span className="text-slate-900">{product.name}</span>
+             </div>
+             <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-8 tracking-tighter leading-none">{product.name}</h1>
+             
+             <div className="flex items-center gap-6 mb-12">
+                {product.discount_price ? (
+                  <>
+                    <span className="text-5xl font-black text-[#f06292]">${product.discount_price}</span>
+                    <span className="text-2xl text-slate-300 line-through font-medium">${product.price}</span>
+                  </>
+                ) : (
+                  <span className="text-5xl font-black text-slate-900">${product.price}</span>
+                )}
+             </div>
+          </motion.div>
+
+          <div className="space-y-12">
+             {/* Colors */}
+             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+                <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-4">
+                   Select Color <div className="flex-1 h-[1px] bg-slate-100" />
+                </h3>
+                <div className="flex gap-4">
+                   {product.colors.map((color: string) => (
+                     <button
+                       key={color}
+                       onClick={() => setSelectedColor(color)}
+                       className={cn(
+                         "h-12 w-12 rounded-full border border-slate-100 flex items-center justify-center transition-all duration-500",
+                         selectedColor === color ? "ring-2 ring-[#f06292] ring-offset-4 scale-110 shadow-xl shadow-[#f06292]/20" : "hover:scale-110"
+                       )}
+                       style={{ backgroundColor: color }}
+                     >
+                       {selectedColor === color && (
+                         <Check className={cn("h-6 w-6", color === '#ffffff' ? "text-slate-900" : "text-white")} />
+                       )}
+                     </button>
+                   ))}
+                </div>
+             </motion.div>
+
+             {/* Sizes */}
+             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+                <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-4">
+                   Select Size <div className="flex-1 h-[1px] bg-slate-100" />
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                   {product.sizes.map((size: string) => (
+                     <button
+                       key={size}
+                       onClick={() => setSelectedSize(size)}
+                       className={cn(
+                         "px-8 py-4 border-2 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-500",
+                         selectedSize === size 
+                           ? "border-slate-900 bg-slate-900 text-white shadow-2xl" 
+                           : "border-slate-100 text-slate-400 hover:border-[#f06292] hover:text-[#f06292]"
+                       )}
+                     >
+                       {size}
+                     </button>
+                   ))}
+                </div>
+             </motion.div>
+
+             {/* Add to Cart */}
+             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+                <button 
+                  onClick={handleAddToCart}
+                  disabled={isAdding}
+                  className={cn(
+                    "w-full h-20 rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-4 transition-all duration-700",
+                    isAdding 
+                      ? "bg-green-600 text-white" 
+                      : "bg-[#f06292] text-white hover:bg-slate-900 hover:scale-[1.02] shadow-2xl shadow-[#f06292]/20"
+                  )}
+                >
+                   {isAdding ? (
+                     <><Check size={20} /> Success! Added to Bag</>
+                   ) : (
+                     <><ShoppingBag size={20} /> Add to Shopping Bag</>
+                   )}
+                </button>
+             </motion.div>
+
+             {/* Description */}
+             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="pt-12 border-t border-slate-100">
+                <p className="text-slate-500 leading-loose text-sm italic">
+                   {product.description}
+                </p>
+             </motion.div>
+
+             {/* Features */}
+             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-12 border-t border-slate-100">
+                <div className="flex flex-col items-center gap-4 group">
+                   <div className="w-16 h-16 rounded-full bg-[#fcf2f4] text-[#f06292] flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Truck size={24} />
+                   </div>
+                   <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Global Shipping</p>
+                </div>
+                <div className="flex flex-col items-center gap-4 group">
+                   <div className="w-16 h-16 rounded-full bg-[#fcf2f4] text-[#f06292] flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Shield size={24} />
+                   </div>
+                   <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Product Guarantee</p>
+                </div>
+                <div className="flex flex-col items-center gap-4 group">
+                   <div className="w-16 h-16 rounded-full bg-[#fcf2f4] text-[#f06292] flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <RefreshCcw size={24} />
+                   </div>
+                   <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Easy Returns</p>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+  );
+}
 }

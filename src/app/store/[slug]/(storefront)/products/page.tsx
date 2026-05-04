@@ -54,6 +54,19 @@ export default async function ProductsPage({
   }
 
 
+  if (store.activeTemplate === 'senno') {
+    return (
+      <SennoProducts 
+        slug={slug} 
+        store={store} 
+        products={displayedProducts} 
+        category={category} 
+        pageTitle={pageTitle} 
+        pageDescription={pageDescription} 
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen pb-16 transition-colors duration-500" style={{ backgroundColor: 'var(--color-bg-shop)', color: 'var(--color-text-primary)' }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -139,4 +152,109 @@ export default async function ProductsPage({
       </div>
     </div>
   );
+}
+
+function SennoProducts({ slug, store, products, category, pageTitle, pageDescription }: any) {
+  const pink = "#f06292";
+
+  return (
+    <div className="min-h-screen bg-white pb-32">
+       {/* Header */}
+       <div className="bg-[#fcf2f4] py-24 px-6">
+          <div className="container mx-auto">
+             <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">
+                <Link href={`/store/${slug}`} className="hover:text-[#f06292]">Home</Link>
+                <span>/</span>
+                <span className="text-slate-900">{pageTitle}</span>
+             </div>
+             <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-6 tracking-tighter uppercase">{pageTitle}</h1>
+             <p className="text-slate-500 max-w-xl text-lg font-medium italic leading-relaxed">{pageDescription}</p>
+          </div>
+       </div>
+
+       <div className="container mx-auto px-6 md:px-12 -mt-8">
+          {/* Filters */}
+          <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 p-8 mb-20 flex flex-col md:flex-row justify-between items-center gap-8 border border-slate-100">
+             <div className="flex gap-4 overflow-x-auto w-full md:w-auto scrollbar-hide pb-2 md:pb-0">
+                <Link 
+                  href={`/store/${slug}/products`} 
+                  className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${!category ? 'bg-[#f06292] text-white shadow-lg' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}
+                >
+                  All Items
+                </Link>
+                {store.categories.map((cat: any) => (
+                  <Link 
+                    key={cat.id}
+                    href={`/store/${slug}/products?category=${cat.id}`} 
+                    className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${category === cat.id ? 'bg-[#f06292] text-white shadow-lg' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}
+                  >
+                    {cat.name}
+                  </Link>
+                ))}
+             </div>
+             <div className="flex items-center gap-4 w-full md:w-auto">
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Sort by</span>
+                <SortDropdown />
+             </div>
+          </div>
+
+          {/* Grid */}
+          {products.length === 0 ? (
+             <div className="text-center py-32">
+                <h3 className="text-3xl font-black text-slate-900 mb-4">Empty Collection</h3>
+                <p className="text-slate-400 mb-8 italic">We couldn't find any products in this selection.</p>
+                <Link href={`/store/${slug}/products`} className="inline-block px-10 py-4 bg-slate-900 text-white font-black uppercase tracking-widest text-[10px] rounded-full">Explore All</Link>
+             </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-16">
+              {products.map((product: any) => (
+                <div key={product.id} className="group flex flex-col">
+                   <Link href={`/store/${slug}/product/${product.id}`} className="relative aspect-[3/4] rounded-3xl overflow-hidden bg-[#f5f5f5] mb-6 shadow-sm group-hover:shadow-2xl transition-all duration-700">
+                      <SmartImage src={product.images[0]} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt={product.name} />
+                      {product.discount_price && (
+                        <div className="absolute top-4 left-4 bg-[#f06292] text-white text-[9px] font-black px-3 py-1 rounded shadow-md">SALE</div>
+                      )}
+                      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all transform translate-y-6 group-hover:translate-y-0 duration-500">
+                         <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-xl hover:bg-[#f06292] hover:text-white transition-all"><Search size={18} /></div>
+                         <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-xl hover:bg-[#f06292] hover:text-white transition-all"><ShoppingBag size={18} /></div>
+                         <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-xl hover:bg-[#f06292] hover:text-white transition-all"><Heart size={18} /></div>
+                      </div>
+                   </Link>
+
+                   <div className="text-center">
+                      <Link href={`/store/${slug}/product/${product.id}`}>
+                        <h3 className="text-sm font-black uppercase tracking-tight mb-2 hover:text-[#f06292] transition-colors">{product.name}</h3>
+                      </Link>
+                      <div className="flex items-center justify-center gap-1 mb-2">
+                         {[1,2,3,4,5].map(s => <Star key={s} className="w-2.5 h-2.5 fill-[#f06292] text-[#f06292]" />)}
+                      </div>
+                      <div className="flex items-center justify-center gap-3">
+                         {product.discount_price ? (
+                           <>
+                             <span className="text-[#f06292] font-black text-lg">${product.discount_price}</span>
+                             <span className="text-slate-300 line-through text-sm font-medium">${product.price}</span>
+                           </>
+                         ) : (
+                           <span className="text-slate-900 font-black text-lg">${product.price}</span>
+                         )}
+                      </div>
+                   </div>
+                </div>
+              ))}
+            </div>
+          )}
+       </div>
+    </div>
+  );
+}
+
+function Star({ className }: any) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+    </svg>
+  );
+}
+
+import { ShoppingBag, Search, Heart } from "lucide-react";
 }
