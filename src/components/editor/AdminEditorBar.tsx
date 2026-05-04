@@ -18,7 +18,7 @@ export default function AdminEditorBar({ slug, isOwner, store }: { slug: string,
     setMounted(true);
   }, []);
 
-  if (!mounted || !isOwner || isCustomerMode) return null;
+  if (!mounted || !isOwner || isCustomerMode || searchParams.get('preview') === 'mobile') return null;
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[1000] bg-slate-900 text-white flex items-center justify-between px-6 py-2 shadow-2xl border-b border-white/10 backdrop-blur-md bg-slate-900/90">
