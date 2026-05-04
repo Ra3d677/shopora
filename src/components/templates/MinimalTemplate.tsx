@@ -33,11 +33,11 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
   return (
     <div className="flex flex-col w-full font-light antialiased">
       {/* 2. Hero Section */}
-      <section className="py-32 px-12 border-b border-zinc-100">
+      <section className="py-16 md:py-32 px-6 md:px-12 border-b border-zinc-100 overflow-hidden">
         <div className="max-w-screen-2xl mx-auto">
           <div className="flex flex-col lg:flex-row items-end justify-between gap-12">
             <div className="max-w-2xl">
-              <div className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 mb-8 block">
+              <div className="text-[10px] md:text-xs font-black uppercase tracking-[0.4em] text-zinc-400 mb-6 md:mb-8 block">
                 <EditableText 
                   content={minSettings.heroBadge || "Collection Nº 01"} 
                   slug={slug} 
@@ -46,7 +46,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
                   className="text-zinc-400 text-[10px] font-black uppercase tracking-[0.4em]" 
                 />
               </div>
-              <div className="text-7xl md:text-[10vw] font-bold leading-[0.85] tracking-tighter uppercase mb-12">
+              <div className="text-6xl md:text-[10vw] font-bold leading-[0.85] tracking-tighter uppercase mb-8 md:mb-12">
                 <EditableText 
                   content={minSettings.heroTitle || "Pure Form."} 
                   slug={slug} 
@@ -55,7 +55,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
                   className="text-7xl md:text-[10vw] font-bold leading-[0.85] tracking-tighter uppercase" 
                 />
               </div>
-              <div className="text-xl md:text-2xl text-zinc-500 leading-relaxed italic max-w-lg">
+              <div className="text-lg md:text-2xl text-zinc-500 leading-relaxed italic max-w-lg">
                 <EditableText 
                   content={minSettings.heroSubtitle || "“Design is not just what it looks like and feels like. Design is how it works.”"} 
                   slug={slug} 
@@ -65,7 +65,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
                 />
               </div>
             </div>
-            <div className="flex flex-wrap items-center gap-6">
+            <div className="flex flex-wrap items-center gap-4 md:gap-6 w-full lg:w-auto justify-center lg:justify-end mt-8 lg:mt-0">
                {Array.isArray(minSettings.heroButtons) && minSettings.heroButtons.map((btn: any, index: number) => (
                  <EditableButton 
                    key={btn.id || index}
@@ -107,7 +107,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
                    link={`/store/${slug}/products`} 
                    slug={slug}
                    settingsKey="minimalSettings.heroButton"
-                   className="w-48 h-48 rounded-full border border-zinc-200 flex items-center justify-center text-[10px] font-black uppercase tracking-widest hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-all duration-500"
+                   className="w-32 h-32 md:w-48 md:h-48 rounded-full border border-zinc-200 flex items-center justify-center text-[10px] font-black uppercase tracking-widest hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-all duration-500"
                  />
                )}
             </div>
@@ -121,7 +121,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
       )}
 
       {/* 3. Series (Categories) */}
-      <section className="py-24 px-12 bg-zinc-50">
+      <section className="py-16 md:py-24 px-6 md:px-12 bg-zinc-50">
         <div className="max-w-screen-2xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-1">
             {displayCategories.map((cat: any) => (
@@ -144,7 +144,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
 
       {/* Middle Banners */}
       {middleBanners.length > 0 && (
-        <section className="py-24 px-12 bg-white border-y border-zinc-100">
+        <section className="py-16 md:py-24 px-6 md:px-12 bg-white border-y border-zinc-100">
           <div className="max-w-screen-2xl mx-auto space-y-12">
             {middleBanners.map((banner: any) => (
               <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group">
@@ -177,31 +177,33 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
       )}
 
       {/* 4. The Archive (Products) */}
-      <section className="py-32 px-12">
+      <section className="py-20 md:py-32 px-6 md:px-12">
         <div className="max-w-screen-2xl mx-auto">
           <div className="flex items-baseline justify-between mb-20 border-b border-zinc-200 pb-12">
-             <div className="text-5xl font-bold tracking-tighter uppercase">
-                <EditableText 
-                  content={minSettings.productsTitle || "The Archive"} 
-                  slug={slug} 
-                  settingsKey="minimalSettings.productsTitle" 
-                  initialStyles={minSettings.productsTitle_styles}
-                  className="text-5xl font-bold tracking-tighter uppercase" 
-                />
-             </div>
-             <div className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Available Pieces</div>
+             <div className="text-4xl md:text-5xl font-bold uppercase tracking-tighter mb-4">
+               <EditableText 
+                 content={minSettings.productsTitle || "The Archive"} 
+                 slug={slug} 
+                 settingsKey="minimalSettings.productsTitle" 
+                 initialStyles={minSettings.productsTitle_styles}
+                 className="text-4xl md:text-5xl font-bold uppercase tracking-tighter" 
+               />
+            </div>
+            <p className="text-zinc-400 uppercase tracking-[0.3em] text-[10px] font-bold">Scroll to Explore ({products.length} Items)</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
-            {featuredProducts.map((product) => (
-              <Link href={`/store/${slug}/product/${product.id}`} key={product.id} className="group flex flex-col">
-                <div className="aspect-square bg-zinc-100 overflow-hidden mb-8 relative grayscale hover:grayscale-0 transition-all duration-700">
-                  <SmartImage 
-                    src={product.images[0]} 
-                    alt={product.name} 
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
-                  />
-                </div>
+            {featuredProducts.map((product: any) => (
+              <div key={product.id} className="group flex flex-col">
+                <Link href={`/store/${slug}/product/${product.id}`} className="block">
+                  <div className="relative aspect-[4/5] bg-zinc-100 overflow-hidden mb-6">
+                    <SmartImage 
+                      src={product.images[0]} 
+                      alt={product.name} 
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 grayscale group-hover:grayscale-0" 
+                    />
+                  </div>
+                </Link>
                 <div className="flex justify-between items-baseline">
                   <div>
                     <h3 className="text-lg font-bold uppercase tracking-tight mb-1">{product.name}</h3>

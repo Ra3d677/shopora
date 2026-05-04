@@ -229,7 +229,7 @@ export default function Navbar({
         className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-zinc-100 font-light antialiased transition-colors"
         style={{ backgroundColor: 'var(--color-header-bg, rgba(255,255,255,0.9))', color: 'var(--color-header-text, #18181b)' }}
       >
-        <div className="max-w-screen-2xl mx-auto px-12">
+        <div className="max-w-screen-2xl mx-auto px-6 md:px-12">
           <div className="flex h-24 items-center justify-between">
             <Link href={`/store/${slug}`} className="text-3xl font-bold tracking-tighter uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
               {storeSettings?.logoUrl ? (
