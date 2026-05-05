@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+// Vercel Deployment Trigger: Reverting to stable state 2026-05-05 20:53
 import { Cairo } from "next/font/google";
 import { getLang } from "@/lib/i18n";
 
