@@ -276,7 +276,7 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                     <label className="block text-xs font-medium text-slate-500 mb-1">Title</label>
                     <input 
                       type="text" 
-                      value={banner.title} 
+                      value={banner.title || ""} 
                       onChange={e => updateBanner(index, 'title', e.target.value)} 
                       className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm font-bold"
                     />
@@ -285,7 +285,7 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                     <label className="block text-xs font-medium text-slate-500 mb-1">Subtitle</label>
                     <input 
                       type="text" 
-                      value={banner.subtitle} 
+                      value={banner.subtitle || ""} 
                       onChange={e => updateBanner(index, 'subtitle', e.target.value)} 
                       className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm"
                     />
@@ -294,7 +294,7 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                     <label className="block text-xs font-medium text-slate-500 mb-1">Button Text</label>
                     <input 
                       type="text" 
-                      value={banner.buttonText} 
+                      value={banner.buttonText || ""} 
                       onChange={e => updateBanner(index, 'buttonText', e.target.value)} 
                       className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm"
                     />
@@ -303,7 +303,7 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                     <label className="block text-xs font-medium text-slate-500 mb-1">Button Link</label>
                     <input 
                       type="text" 
-                      value={banner.buttonLink} 
+                      value={banner.buttonLink || ""} 
                       onChange={e => updateBanner(index, 'buttonLink', e.target.value)} 
                       className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm"
                     />
