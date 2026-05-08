@@ -63,7 +63,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
                   <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}>
                     <span className="text-xs uppercase tracking-[0.5em] text-white/40 mb-8 block font-bold">HYBRID SERIES</span>
                     <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none mb-10 uppercase italic">
-                      <EditableText content={topBanners[0]?.title || modSettings.heroTitle || "FUTURE."} slug={slug} settingsKey="hybridSettings.heroTitle" />
+                      <EditableText content={topBanners[0]?.title || hybSettings.heroTitle || "FUTURE."} slug={slug} settingsKey="hybridSettings.heroTitle" />
                     </h1>
                     <div className="flex gap-6">
                       <Link href={`/store/${slug}/products`} className="px-12 py-5 bg-white text-black font-black uppercase tracking-widest text-[10px] hover:bg-zinc-200 transition-all">
