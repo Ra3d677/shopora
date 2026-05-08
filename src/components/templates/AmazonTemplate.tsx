@@ -11,6 +11,7 @@ import { updateStoreSettingByKey } from "@/app/store/[slug]/admin/actions";
 import SmartImage from "@/components/ui/SmartImage";
 import HeroSlider from "@/components/ui/HeroSlider";
 import SaleSection from "@/components/ui/SaleSection";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TemplateProps {
   banners: any[];
