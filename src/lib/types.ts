@@ -106,7 +106,7 @@ export interface Banner {
   id: string;
   storeId: string;
   imageUrl: string;
-  mobileImageUrl?: string;
+  mobileImageUrl?: string | null;
   title: string;
   subtitle: string;
   buttonText: string;

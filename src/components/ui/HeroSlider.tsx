@@ -10,12 +10,12 @@ import { motion, AnimatePresence } from "framer-motion";
 interface HeroSliderProps {
   banners: Banner[];
   slug: string;
-  settings: {
-    autoPlay: boolean;
-    interval: number;
-    transition: 'slide' | 'fade';
-    showArrows: boolean;
-    showDots: boolean;
+  settings?: {
+    autoPlay?: boolean;
+    interval?: number;
+    transition?: 'slide' | 'fade';
+    showArrows?: boolean;
+    showDots?: boolean;
   };
 }
 
@@ -36,11 +36,11 @@ export default function HeroSlider({ banners = [], slug, settings }: HeroSliderP
   };
 
   useEffect(() => {
-    if (settings.autoPlay && banners.length > 1) {
+    if (settings?.autoPlay && banners.length > 1) {
       const timer = setInterval(nextSlide, settings.interval || 5000);
       return () => clearInterval(timer);
     }
-  }, [settings.autoPlay, settings.interval, nextSlide, banners.length]);
+  }, [settings?.autoPlay, settings?.interval, nextSlide, banners.length]);
 
   if (!banners || banners.length === 0) return null;
 
@@ -51,9 +51,9 @@ export default function HeroSlider({ banners = [], slug, settings }: HeroSliderP
           index === currentIndex && (
             <motion.div
               key={banner.id}
-              initial={settings.transition === 'fade' ? { opacity: 0 } : { x: '100%' }}
-              animate={settings.transition === 'fade' ? { opacity: 1 } : { x: 0 }}
-              exit={settings.transition === 'fade' ? { opacity: 0 } : { x: '-100%' }}
+              initial={settings?.transition === 'fade' ? { opacity: 0 } : { x: '100%' }}
+              animate={settings?.transition === 'fade' ? { opacity: 1 } : { x: 0 }}
+              exit={settings?.transition === 'fade' ? { opacity: 0 } : { x: '-100%' }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="absolute inset-0 w-full h-full"
             >
@@ -102,7 +102,7 @@ export default function HeroSlider({ banners = [], slug, settings }: HeroSliderP
       </AnimatePresence>
 
       {/* Navigation Arrows */}
-      {settings.showArrows && banners.length > 1 && (
+      {settings?.showArrows && banners.length > 1 && (
         <>
           <button 
             onClick={prevSlide}
@@ -120,7 +120,7 @@ export default function HeroSlider({ banners = [], slug, settings }: HeroSliderP
       )}
 
       {/* Pagination Dots */}
-      {settings.showDots && banners.length > 1 && (
+      {settings?.showDots && banners.length > 1 && (
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex items-center gap-4">
           {banners.map((_, index) => (
             <button
