@@ -11,6 +11,7 @@ import SmartImage from "@/components/ui/SmartImage";
 import HeroSlider from "@/components/ui/HeroSlider";
 import StoreMarquee from "@/components/ui/StoreMarquee";
 import SaleSection from "@/components/ui/SaleSection";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TemplateProps {
   banners: any[];
