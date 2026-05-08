@@ -30,7 +30,7 @@ export default function AmazonTemplate({ banners, settings, products, slug, cate
   const middleBanners = banners.filter((b: any) => b.position === 'middle');
   const bottomBanners = banners.filter((b: any) => b.position === 'bottom');
   
-  const categories = products.reduce((acc: any[], p: any) => {
+  const derivedCategories = products.reduce((acc: any[], p: any) => {
     if (!acc.find(c => c.id === p.category_id)) {
       acc.push({ id: p.category_id, name: p.category_id });
     }
@@ -238,7 +238,7 @@ export default function AmazonTemplate({ banners, settings, products, slug, cate
           return (
             <div key={section.id} className={`container mx-auto px-4 relative z-20 ${isFirstAfterHero ? '-mt-20' : 'mt-8'}`}>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {categories.map((cat: any) => (
+                {(categories.length > 0 ? categories : derivedCategories).map((cat: any) => (
                   <div key={cat.id} className="bg-white p-5 shadow-sm h-[420px] flex flex-col rounded-sm">
                     <h2 className="text-xl font-bold mb-4 capitalize text-left">{cat.name}</h2>
                     <div className="flex-grow relative mb-4">
