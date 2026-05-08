@@ -19,9 +19,10 @@ interface TemplateProps {
   settings: any;
   products: any[];
   slug: string;
+  categories: any[];
 }
 
-export default function AppleTemplate({ banners, settings, products, slug }: TemplateProps) {
+export default function AppleTemplate({ banners, settings, products, slug, categories = [] }: TemplateProps) {
   const { isEditMode } = useEditorStore();
   const featuredProducts = products.slice(0, 4);
   const secondaryProducts = products.slice(4, 10);

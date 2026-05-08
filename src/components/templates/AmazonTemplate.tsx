@@ -18,9 +18,10 @@ interface TemplateProps {
   settings: any;
   products: any[];
   slug: string;
+  categories: any[];
 }
 
-export default function AmazonTemplate({ banners, settings, products, slug }: TemplateProps) {
+export default function AmazonTemplate({ banners, settings, products, slug, categories = [] }: TemplateProps) {
   const { isEditMode } = useEditorStore();
   const featuredProducts = products.slice(0, 10);
   const amzSettings = settings.amazonSettings || {};
