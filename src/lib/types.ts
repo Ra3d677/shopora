@@ -108,13 +108,13 @@ export interface Banner {
   imageUrl: string;
   mobileImageUrl?: string | null;
   title: string;
-  subtitle: string;
-  buttonText: string;
-  buttonLink: string;
+  subtitle?: string | null;
+  buttonText?: string | null;
+  buttonLink?: string | null;
   isActive: boolean;
   order: number;
-  position: string;
-  targetPage?: 'home' | 'collections';
+  position?: string | null;
+  targetPage?: 'home' | 'collections' | null;
 }
 
 export interface Category {
