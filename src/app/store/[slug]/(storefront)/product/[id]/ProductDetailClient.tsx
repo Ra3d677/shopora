@@ -57,7 +57,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
       {/* Left: Images */}
-      <div className="flex flex-col gap-6 sticky top-32">
+      <div className="flex flex-col gap-6 lg:sticky lg:top-32">
         <AnimatePresence mode="wait">
           <motion.div 
             key={selectedImage}
@@ -222,7 +222,7 @@ function SennoProductDetail({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start pb-32">
        {/* Left: Images */}
-       <div className="flex flex-col gap-6 sticky top-32">
+       <div className="flex flex-col gap-6 lg:sticky lg:top-32">
           <AnimatePresence mode="wait">
             <motion.div 
               key={selectedImage}

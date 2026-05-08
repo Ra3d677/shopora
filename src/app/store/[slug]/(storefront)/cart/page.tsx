@@ -94,7 +94,7 @@ export default function CartPage() {
           </div>
 
           <div className="lg:col-span-1">
-            <div className="bg-muted/30 rounded-2xl p-8 border border-border/50 sticky top-24">
+            <div className="bg-muted/30 rounded-2xl p-8 border border-border/50 lg:sticky lg:top-24">
               <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
               
               <div className="flex justify-between mb-4 text-muted-foreground">

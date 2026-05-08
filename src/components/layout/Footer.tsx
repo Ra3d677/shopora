@@ -217,15 +217,19 @@ export default function Footer() {
            </div>
            <div className="space-y-6">
               <p className="text-white mb-8">Client Service</p>
-              <Link href="#" className="block hover:text-white">Shipping & Returns</Link>
-              <Link href="#" className="block hover:text-white">Track Order</Link>
-              <Link href="#" className="block hover:text-white">Appointments</Link>
+              <Link href={`/store/${slug}/shipping`} className="block hover:text-white">Shipping & Returns</Link>
+              <Link href={`/store/${slug}/account`} className="block hover:text-white">Track Order</Link>
+              <Link href={`/store/${slug}/contact`} className="block hover:text-white">Appointments</Link>
            </div>
            <div className="space-y-6">
               <p className="text-white mb-8">House Matters</p>
-              <Link href="#" className="block hover:text-white">Sustainability</Link>
-              <Link href="#" className="block hover:text-white">Heritage</Link>
-              <Link href="#" className="block hover:text-white">Careers</Link>
+              <Link href={`/store/${slug}/about`} className="block hover:text-white">Sustainability</Link>
+              <Link href={`/store/${slug}/about`} className="block hover:text-white">Heritage</Link>
+              <Link href={`/store/${slug}/about`} className="block hover:text-white">Careers</Link>
+              <div className="pt-4 mt-4 border-t border-white/5 space-y-4">
+                <Link href={`/store/${slug}/terms`} className="block hover:text-white">Terms of Service</Link>
+                <Link href={`/store/${slug}/privacy`} className="block hover:text-white">Privacy Policy</Link>
+              </div>
            </div>
         </div>
         

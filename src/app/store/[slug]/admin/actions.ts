@@ -177,29 +177,36 @@ export async function saveBanners(slug: string, banners: any[]) {
       where: { storeId: store.id }
     });
 
-    // Create new banners
-    if (banners.length > 0) {
-      await prisma.banner.createMany({
-        data: banners.map(banner => ({
-          imageUrl: banner.imageUrl,
-          mobileImageUrl: banner.mobileImageUrl || null,
-          title: banner.title,
-          subtitle: banner.subtitle || "",
-          buttonText: banner.buttonText || "",
-          buttonLink: banner.buttonLink || "",
-          isActive: banner.isActive,
-          order: banner.order,
-          position: banner.position || "top",
-          storeId: store.id
-        }))
-      });
+    // Create new banners (Using a loop because SQLite doesn't support createMany)
+    if (banners && Array.isArray(banners) && banners.length > 0) {
+      for (const banner of banners) {
+        if (!banner) continue;
+        await prisma.banner.create({
+          data: {
+            imageUrl: banner.imageUrl || "",
+            mobileImageUrl: banner.mobileImageUrl || null,
+            title: banner.title || "",
+            subtitle: banner.subtitle || "",
+            buttonText: banner.buttonText || "",
+            buttonLink: banner.buttonLink || "",
+            isActive: banner.isActive !== false,
+            order: typeof banner.order === 'number' ? banner.order : 0,
+            position: banner.position || "top",
+            targetPage: banner.targetPage || "home",
+            storeId: store.id
+          }
+        });
+      }
     }
 
     revalidatePath(`/store/${slug}`, 'layout');
+    revalidatePath(`/store/${slug}/admin/banners`);
+    revalidatePath(`/store/${slug}/(storefront)`, 'layout');
+    revalidatePath(`/`, 'layout');
     return { success: true };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to save banners:", error);
-    return { success: false, error: "Failed to save banners" };
+    return { success: false, error: "Failed to save banners: " + (error.message || "Unknown error") };
   }
 }
 
@@ -281,5 +288,35 @@ export async function getStoreMedia(slug: string) {
     include: { media: { orderBy: { createdAt: 'desc' } } }
   });
   return store?.media || [];
+}
+
+export async function deleteTemplateAction(templateId: string) {
+  // Check if any store is using this template
+  const storesUsing = await prisma.store.findMany({
+    where: { template: templateId }
+  });
+
+  if (storesUsing.length > 0) {
+    return { 
+      success: false, 
+      error: `Cannot delete: ${storesUsing.length} stores are currently using this template.` 
+    };
+  }
+
+  await prisma.template.delete({
+    where: { id: templateId }
+  });
+
+  revalidatePath("/", "layout");
+  return { success: true };
+}
+
+export async function toggleTemplateStatusAction(templateId: string, currentStatus: boolean) {
+  await prisma.template.update({
+    where: { id: templateId },
+    data: { isActive: !currentStatus }
+  });
+  revalidatePath("/", "layout");
+  return { success: true };
 }
 

@@ -25,7 +25,9 @@ async function main() {
     });
   }
 
-  // Clear existing products and categories for this store to cleanly add the 7x6 items
+  // Clear existing data in correct order to respect foreign key constraints
+  await prisma.orderItem.deleteMany({ where: { order: { storeId: store.id } } });
+  await prisma.order.deleteMany({ where: { storeId: store.id } });
   await prisma.product.deleteMany({ where: { storeId: store.id } });
   await prisma.category.deleteMany({ where: { storeId: store.id } });
 

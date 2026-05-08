@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import SmartImage from "@/components/ui/SmartImage";
 import { ArrowRight } from "lucide-react";
+import HeroSlider from "@/components/ui/HeroSlider";
 
 export const dynamic = 'force-dynamic';
 
@@ -14,6 +15,10 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
   if (!store) {
     notFound();
   }
+
+  const collectionsBanners = store.banners
+    .filter(b => b.isActive && b.targetPage === 'collections')
+    .sort((a, b) => a.order - b.order);
 
   const COLLECTIONS = store.categories.map(cat => {
     // Count products for this category
@@ -29,19 +34,24 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
 
   if (store.template === 'senno') {
     return (
-      <SennoCategories slug={slug} collections={COLLECTIONS} />
+      <SennoCategories slug={slug} collections={COLLECTIONS} banners={collectionsBanners} settings={store.settings} />
     );
   }
 
   return (
     <div className="min-h-screen pb-24 transition-colors duration-500" style={{ backgroundColor: 'var(--color-bg-categories)', color: 'var(--color-text-primary)' }}>
-      {/* Header */}
-      <div className="bg-slate-950 py-24 text-center">
-        <h1 className="text-5xl font-extrabold tracking-widest text-white mb-6 uppercase">Collections</h1>
-        <p className="text-slate-300 max-w-2xl mx-auto text-lg font-light">
-          Explore our curated ranges of premium fashion. Each collection is thoughtfully designed to elevate your personal style.
-        </p>
-      </div>
+      {/* Header / Banner */}
+      {collectionsBanners.length > 0 ? (
+        <HeroSlider 
+          banners={collectionsBanners} 
+          slug={slug} 
+          settings={store.settings?.bannerSettings || { autoPlay: true, interval: 5000, transition: 'fade' }} 
+        />
+      ) : (
+        <div className="bg-slate-950 py-24 text-center">
+          <h1 className="text-5xl font-extrabold tracking-widest text-white uppercase">Collections</h1>
+        </div>
+      )}
 
       {/* Dynamic Grid */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-10 mb-24">
@@ -160,25 +170,30 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
   );
 }
 
-function SennoCategories({ slug, collections }: any) {
+function SennoCategories({ slug, collections, banners, settings }: any) {
   return (
     <div className="min-h-screen bg-white pb-32">
-       {/* Header */}
-       <div className="bg-[#fcf2f4] py-32 px-6">
-          <div className="container mx-auto text-center">
-             <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">
-                <Link href={`/store/${slug}`} className="hover:text-[#f06292]">Home</Link>
-                <span>/</span>
-                <span className="text-slate-900">Collections</span>
-             </div>
-             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-8 tracking-tighter uppercase">Our Collections</h1>
-             <p className="text-slate-500 max-w-2xl mx-auto text-xl font-medium italic leading-relaxed">
-               Carefully curated beauty essentials for every skin type and routine. Discover your perfect match.
-             </p>
-          </div>
-       </div>
+       {/* Header / Banner */}
+       {banners && banners.length > 0 ? (
+         <HeroSlider 
+           banners={banners} 
+           slug={slug} 
+           settings={settings?.bannerSettings || { autoPlay: true, interval: 5000, transition: 'fade' }} 
+         />
+       ) : (
+         <div className="bg-[#fcf2f4] py-32 px-6">
+            <div className="container mx-auto text-center">
+               <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">
+                  <Link href={`/store/${slug}`} className="hover:text-[#f06292]">Home</Link>
+                  <span>/</span>
+                  <span className="text-slate-900">Collections</span>
+               </div>
+               <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-8 tracking-tighter uppercase">Our Collections</h1>
+            </div>
+         </div>
+       )}
 
-       <div className="container mx-auto px-6 md:px-12 -mt-16">
+       <div className="container mx-auto px-6 md:px-12 -mt-16 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
              {collections.map((cat: any) => (
                <Link 

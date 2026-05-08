@@ -33,6 +33,7 @@ const SECTION_DEFINITIONS = [
   { id: 'banners', name: 'Banners Slider', icon: ImageIcon, defaultStyle: 'default' },
   { id: 'categories', name: 'Categories', icon: Tag, defaultStyle: 'grid' },
   { id: 'featured_products', name: 'Featured Products', icon: ShoppingBag, defaultStyle: 'grid' },
+  { id: 'sale', name: 'Sale Offers', icon: Tag, defaultStyle: 'grid' },
   { id: 'testimonials', name: 'Testimonials', icon: MessageSquare, defaultStyle: 'cards' },
   { id: 'text_block', name: 'Rich Text', icon: Type, defaultStyle: 'centered' },
 ];
@@ -41,7 +42,6 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
   // Initialize with a default layout if none exists
   const defaultLayout: LayoutSection[] = [
     { id: 'sec-1', type: 'hero', style: 'luxury', config: { title: 'Welcome to our store', subtitle: 'Discover amazing products' } },
-    { id: 'sec-2', type: 'banners', style: 'default', config: {} },
     { id: 'sec-3', type: 'categories', style: 'grid', config: { title: 'Shop by Category' } },
     { id: 'sec-4', type: 'featured_products', style: 'grid', config: { title: 'Trending Now' } },
     { id: 'sec-5', type: 'testimonials', style: 'cards', config: { title: 'What our customers say' } }
@@ -234,7 +234,7 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     {/* Render specific styles based on section type */}
-                    {activeSection.type === 'hero' && ['luxury', 'split', 'centered', 'minimal'].map(style => (
+                    {activeSection.type === 'hero' && ['luxury', 'split', 'centered', 'minimal', 'campaign', 'abstract', 'immersive'].map(style => (
                       <button 
                         key={style}
                         onClick={() => updateSection(activeSection.id, { style })}
@@ -313,7 +313,45 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                     </div>
                   )}
 
-                   {activeSection.type === 'text_block' && (
+                  {activeSection.type === 'sale' && (
+                    <div className="space-y-6">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Section Style</label>
+                        <select 
+                          value={activeSection.style || 'grid'} 
+                          onChange={(e) => updateSection(activeSection.id, { style: e.target.value })}
+                          className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all appearance-none cursor-pointer"
+                        >
+                          <option value="bento">Bento Grid (Premium)</option>
+                          <option value="grid">Standard Grid</option>
+                          <option value="horizontal">Horizontal List</option>
+                          <option value="scroll">Horizontal Scroll Bar</option>
+                          <option value="list">Minimal List</option>
+                          <option value="bubbles">Circle Bubbles</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Background Color Override</label>
+                        <div className="flex items-center gap-3">
+                           <input 
+                              type="color" 
+                              value={activeSection.config?.backgroundColor || '#ffffff'} 
+                              onChange={(e) => updateSectionConfig(activeSection.id, 'backgroundColor', e.target.value)}
+                              className="w-12 h-12 rounded-lg cursor-pointer border-2 border-slate-100"
+                           />
+                           <input 
+                              type="text" 
+                              value={activeSection.config?.backgroundColor || '#ffffff'} 
+                              onChange={(e) => updateSectionConfig(activeSection.id, 'backgroundColor', e.target.value)}
+                              className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm uppercase"
+                           />
+                        </div>
+                        <p className="text-[10px] text-slate-400 mt-2 italic">Tip: Leave as #ffffff for default theme background.</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeSection.type === 'text_block' && (
                     <div>
                       <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Paragraph Text</label>
                       <textarea 

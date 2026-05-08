@@ -240,7 +240,7 @@ export default function CheckoutPage() {
           </div>
 
           <div className="lg:col-span-5">
-            <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-200/60 sticky top-32 overflow-hidden">
+            <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-200/60 lg:sticky lg:top-32 overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-2 bg-slate-900" />
               <h2 className="text-2xl font-black uppercase tracking-tighter mb-10 pb-6 border-b border-slate-100">Summary</h2>
             

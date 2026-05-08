@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -40,6 +40,15 @@ model Store {
   media        Media[]
   orders       Order[]
   visits       Visit[]
+}
+
+model Template {
+  id          String   @id
+  name        String
+  description String
+  preview     String
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
 }
 
 model Media {
@@ -91,6 +100,7 @@ model Banner {
   isActive   Boolean @default(true)
   order      Int     @default(0)
   position   String  @default("top")
+  targetPage String  @default("home")
   storeId    String
   store      Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
 }

@@ -45,11 +45,11 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
 
   const activeTemplate = store.template;
   const settings = { ...store.settings, storeName: store.name };
-  const allBanners = store.banners;
-  const products = store.products;
+  const allBanners = store.banners || [];
+  const products = store.products || [];
   const banners = allBanners
-    .filter(b => b.isActive)
-    .sort((a, b) => a.order - b.order);
+    .filter(b => b && b.isActive)
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
   
   // Removed the "No products yet" fallback so the template always renders.
 

@@ -5,8 +5,8 @@ import { saveBanners, updateStoreSettings } from "../actions";
 import { Banner, BannerSettings } from "@/lib/types";
 import { Loader2, Plus, Save, Trash2, ArrowUp, ArrowDown, Image as ImageIcon, Settings2, Clock, Play, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import MediaPicker from "../media/MediaPicker";
+import SmartImage from "@/components/ui/SmartImage";
 
 export default function BannersManager({ initialBanners, slug, initialSettings }: { initialBanners: Banner[], slug: string, initialSettings: BannerSettings }) {
   const [banners, setBanners] = useState<Banner[]>(initialBanners.sort((a, b) => a.order - b.order));
@@ -26,7 +26,8 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
       buttonLink: "/products",
       isActive: true,
       order: banners.length,
-      position: "top"
+      position: "top",
+      targetPage: "home"
     };
     setBanners([...banners, newBanner]);
   };
@@ -182,12 +183,10 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
               <div className="w-full md:w-1/2 bg-slate-900 relative aspect-[21/9] flex items-center justify-center border-b md:border-b-0 md:border-r border-border/50 overflow-hidden">
                 {banner.imageUrl || banner.mobileImageUrl ? (
                   <div className="relative w-full h-full">
-                    <Image 
+                    <SmartImage 
                       src={banner.imageUrl || banner.mobileImageUrl || ""} 
                       alt="Banner preview" 
-                      fill 
-                      className="object-cover" 
-                      unoptimized={(banner.imageUrl || banner.mobileImageUrl || "").startsWith('http')}
+                      className="w-full h-full object-cover" 
                     />
                     {banner.mobileImageUrl && (
                       <div className="absolute bottom-2 right-2 bg-purple-600 text-white p-1 rounded-md shadow-lg" title="Mobile Optimized version included">
@@ -309,18 +308,33 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                       className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm"
                     />
                   </div>
-                  <div className="col-span-1 md:col-span-2 mt-2 pt-2 border-t border-slate-100">
-                    <label className="block text-xs font-medium text-slate-500 mb-1">Banner Position (Where to display?)</label>
-                    <select 
-                      value={banner.position || "top"} 
-                      onChange={e => updateBanner(index, 'position', e.target.value)} 
-                      className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm bg-white"
-                    >
-                      <option value="top">Top Header (Hero Slider)</option>
-                      <option value="middle">Middle Page (After Products)</option>
-                      <option value="bottom">Bottom Page (Above Footer)</option>
-                    </select>
-                    <p className="text-[10px] text-muted-foreground mt-1">Choose where exactly this banner should appear on your store's homepage.</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-1 md:col-span-2 mt-2 pt-2 border-t border-slate-100">
+                    <div>
+                      <label className="block text-xs font-medium text-slate-500 mb-1 italic">Target Page (Which page?)</label>
+                      <select 
+                        value={banner.targetPage || "home"} 
+                        onChange={e => updateBanner(index, 'targetPage', e.target.value)} 
+                        className="w-full px-3 py-2 border-slate-200 border-2 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm bg-slate-50 font-black uppercase tracking-tight"
+                      >
+                        <option value="home">🏠 Home Page</option>
+                        <option value="collections">📦 Collections Page</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-slate-500 mb-1 italic">Banner Position (Where on page?)</label>
+                      <select 
+                        value={banner.position || "top"} 
+                        onChange={e => updateBanner(index, 'position', e.target.value)} 
+                        className="w-full px-3 py-2 border-slate-200 border-2 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm bg-slate-50 font-black uppercase tracking-tight"
+                      >
+                        <option value="top">Top Section</option>
+                        <option value="middle">Middle Section</option>
+                        <option value="bottom">Bottom Section</option>
+                      </select>
+                    </div>
+                    <p className="col-span-1 md:col-span-2 text-[10px] text-muted-foreground mt-1">
+                      Choose which page and where exactly this banner should appear.
+                    </p>
                   </div>
                 </div>
               </div>

@@ -1,11 +1,12 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 import React from "react";
 
 export default function SortDropdown() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { slug } = useParams();
   
   const currentSort = searchParams.get('sort') || 'featured';
 
@@ -19,7 +20,7 @@ export default function SortDropdown() {
       params.set('sort', newSort);
     }
     
-    router.push(`/products?${params.toString()}`);
+    router.push(`/store/${slug}/products?${params.toString()}`);
   };
 
   return (

@@ -1,0 +1,77 @@
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
+const TEMPLATES = [
+  {
+    id: "signature",
+    name: "Signature Brand",
+    description: "A high-end, typography-focused template for luxury brands and signature collections.",
+    preview: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80"
+  },
+  {
+    id: "minimal",
+    name: "Pure Minimal",
+    description: "Stripped back to the essentials. High contrast, mono-tonal, and bold typography for high-end brands.",
+    preview: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80"
+  },
+  {
+    id: "apple",
+    name: "Premium Tech",
+    description: "Sleek, product-focused design with vast whitespace, clean sans-serif typography, and polished aesthetic.",
+    preview: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=800&q=80"
+  },
+  {
+    id: "hybrid",
+    name: "Hybrid Dark",
+    description: "A perfect blend of luxury branding and high-conversion e-commerce elements.",
+    preview: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&q=80"
+  },
+  {
+    id: "zenith",
+    name: "Zenith Luxury",
+    description: "The pinnacle of minimalist luxury. Features cinematic transitions, elegant serif typography, and a sophisticated cream palette.",
+    preview: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&q=80"
+  },
+  {
+    id: "obsidian",
+    name: "Obsidian Brutalist",
+    description: "High-impact, modern brutalist design. Features asymmetrical layouts, dark mode aesthetics, and bold typography for boundary-pushing brands.",
+    preview: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&q=80"
+  },
+  {
+    id: "modern",
+    name: "Modern Commerce",
+    description: "A clean, modern layout with a focus on usability and large product imagery.",
+    preview: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80"
+  },
+  {
+    id: "amazon",
+    name: "Amazon Marketplace",
+    description: "High-efficiency, conversion-optimized layout inspired by major marketplaces.",
+    preview: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80"
+  },
+  {
+    id: "senno",
+    name: "Senno Multipurpose",
+    description: "A high-end, minimalist ecommerce template with a peach-pink aesthetic, serif typography, and interactive hotspots. Perfect for beauty and boutique brands.",
+    preview: "https://images.unsplash.com/photo-1596462502278-27bfac4033c8?w=800&q=80"
+  }
+];
+
+async function seed() {
+  console.log("Seeding templates to Supabase...");
+  for (const t of TEMPLATES) {
+    await prisma.template.upsert({
+      where: { id: t.id },
+      update: t,
+      create: t,
+    });
+    console.log(`- Seeded template: ${t.id}`);
+  }
+  console.log("Done!");
+}
+
+seed().catch(e => {
+  console.error(e);
+  process.exit(1);
+});

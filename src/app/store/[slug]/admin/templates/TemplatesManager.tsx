@@ -1,63 +1,31 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { updateActiveTemplateAction } from "../actions";
-import { Check, LayoutTemplate, Loader2 } from "lucide-react";
+import { updateActiveTemplateAction, deleteTemplateAction, toggleTemplateStatusAction } from "../actions";
+import { Check, LayoutTemplate, Loader2, Trash2, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-const AVAILABLE_TEMPLATES = [
-  {
-    id: "minimal",
-    name: "Pure Minimal",
-    description: "Stripped back to the essentials. High contrast, mono-tonal, and bold typography for high-end brands.",
-    preview: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80"
-  },
-  {
-    id: "apple",
-    name: "Premium Tech",
-    description: "Sleek, product-focused design with vast whitespace, clean sans-serif typography, and polished aesthetic.",
-    preview: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=800&q=80"
-  },
-  {
-    id: "hybrid",
-    name: "Hybrid Dark",
-    description: "A perfect blend of luxury branding and high-conversion e-commerce elements.",
-    preview: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&q=80"
-  },
-  {
-    id: "zenith",
-    name: "Zenith Luxury",
-    description: "The pinnacle of minimalist luxury. Features cinematic transitions, elegant serif typography, and a sophisticated cream palette.",
-    preview: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&q=80"
-  },
-  {
-    id: "obsidian",
-    name: "Obsidian Brutalist",
-    description: "High-impact, modern brutalist design. Features asymmetrical layouts, dark mode aesthetics, and bold typography for boundary-pushing brands.",
-    preview: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&q=80"
-  },
-  {
-    id: "signature",
-    name: "Signature Brand",
-    description: "A high-end, typography-focused template for luxury brands and signature collections.",
-    preview: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80"
-  },
-  {
-    id: "senno",
-    name: "Senno Multipurpose",
-    description: "A high-end, minimalist ecommerce template with a peach-pink aesthetic, serif typography, and interactive hotspots. Perfect for beauty and boutique brands.",
-    preview: "https://images.unsplash.com/photo-1596462502278-27bfac4033c8?w=800&q=80"
-  }
-];
-
-export default function TemplatesManager({ slug, initialTemplate }: { slug: string, initialTemplate: string }) {
+export default function TemplatesManager({ 
+  slug, 
+  initialTemplate, 
+  templates: initialTemplates,
+  isSuperAdmin 
+}: { 
+  slug: string, 
+  initialTemplate: string,
+  templates: any[],
+  isSuperAdmin: boolean
+}) {
   const [activeTemplate, setActiveTemplateState] = useState(initialTemplate);
+  const [templates, setTemplates] = useState(initialTemplates);
   const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSelectTemplate = (templateId: string) => {
     if (templateId === activeTemplate) return;
+    setError("");
     
     startTransition(async () => {
       await updateActiveTemplateAction(slug, templateId);
@@ -66,26 +34,85 @@ export default function TemplatesManager({ slug, initialTemplate }: { slug: stri
     });
   };
 
+  const handleDeleteTemplate = async (templateId: string) => {
+    if (!confirm("Are you sure you want to delete this template forever? This action cannot be undone.")) return;
+    setError("");
+
+    startTransition(async () => {
+      const result = await deleteTemplateAction(templateId);
+      if (result.success) {
+        setTemplates(templates.filter(t => t.id !== templateId));
+        router.refresh();
+      } else {
+        setError(result.error || "Failed to delete template");
+      }
+    });
+  };
+
+  const handleToggleStatus = async (templateId: string, currentStatus: boolean) => {
+    startTransition(async () => {
+      const result = await toggleTemplateStatusAction(templateId, currentStatus);
+      if (result.success) {
+        setTemplates(templates.map(t => t.id === templateId ? { ...t, isActive: !currentStatus } : t));
+        router.refresh();
+      }
+    });
+  };
+
   return (
     <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight text-primary flex items-center gap-3">
-          <LayoutTemplate className="w-8 h-8" /> Store Templates
-        </h1>
-        <p className="text-muted-foreground mt-1">Select the look and feel of your storefront.</p>
+      <div className="mb-8 flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-primary flex items-center gap-3">
+            <LayoutTemplate className="w-8 h-8" /> Store Templates
+          </h1>
+          <p className="text-muted-foreground mt-1">Select the look and feel of your storefront.</p>
+        </div>
+        
+        {isSuperAdmin && (
+           <div className="bg-blue-50 text-blue-700 px-4 py-2 rounded-xl border border-blue-100 flex items-center gap-2 text-xs font-bold uppercase tracking-widest">
+              <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+              Super Admin Mode
+           </div>
+        )}
       </div>
 
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-2xl text-sm font-medium">
+          {error}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {AVAILABLE_TEMPLATES.map((template) => {
+        {templates.map((template) => {
           const isActive = activeTemplate === template.id;
           return (
             <div 
               key={template.id} 
-              className={`relative bg-card rounded-2xl border-2 overflow-hidden transition-all duration-300 ${isActive ? 'border-primary shadow-xl ring-4 ring-primary/10' : 'border-border/50 shadow-sm hover:border-slate-300'}`}
+              className={`relative bg-card rounded-2xl border-2 overflow-hidden transition-all duration-300 ${isActive ? 'border-primary shadow-xl ring-4 ring-primary/10' : 'border-border/50 shadow-sm hover:border-slate-300'} ${!template.isActive ? 'opacity-70 grayscale-[0.5]' : ''}`}
             >
               {isActive && (
                 <div className="absolute top-4 right-4 z-10 bg-primary text-white p-1.5 rounded-full shadow-lg">
                   <Check className="w-5 h-5" />
+                </div>
+              )}
+
+              {isSuperAdmin && (
+                <div className="absolute top-4 left-4 z-20 flex gap-2">
+                  <button 
+                    onClick={() => handleToggleStatus(template.id, template.isActive)}
+                    className={`p-2 rounded-full shadow-lg transition-all ${template.isActive ? 'bg-white text-slate-600 hover:bg-slate-100' : 'bg-slate-900 text-white hover:bg-black'}`}
+                    title={template.isActive ? "Hide from users" : "Show to users"}
+                  >
+                    {template.isActive ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                  </button>
+                  <button 
+                    onClick={() => handleDeleteTemplate(template.id)}
+                    className="p-2 bg-red-500 text-white rounded-full shadow-lg hover:bg-red-600 transition-all"
+                    title="Delete forever"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               )}
               
@@ -96,6 +123,11 @@ export default function TemplatesManager({ slug, initialTemplate }: { slug: stri
                   fill 
                   className="object-cover"
                 />
+                {!template.isActive && (
+                   <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] flex items-center justify-center">
+                      <span className="bg-slate-900 text-white px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest">Hidden from Users</span>
+                   </div>
+                )}
               </div>
               
               <div className="p-6">
@@ -106,7 +138,7 @@ export default function TemplatesManager({ slug, initialTemplate }: { slug: stri
                   ) : (
                     <button 
                       onClick={() => handleSelectTemplate(template.id)}
-                      disabled={isPending}
+                      disabled={isPending || !template.isActive}
                       className="bg-slate-900 text-white px-4 py-1.5 rounded-full text-sm font-medium hover:bg-slate-800 transition-colors flex items-center gap-2 disabled:opacity-50"
                     >
                       {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Apply Template'}
@@ -114,6 +146,10 @@ export default function TemplatesManager({ slug, initialTemplate }: { slug: stri
                   )}
                 </div>
                 <p className="text-muted-foreground">{template.description}</p>
+                <div className="mt-4 pt-4 border-t border-slate-100 flex items-center gap-2">
+                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Template ID:</span>
+                   <code className="text-[10px] bg-slate-50 px-2 py-1 rounded font-mono text-slate-600">{template.id}</code>
+                </div>
               </div>
             </div>
           );

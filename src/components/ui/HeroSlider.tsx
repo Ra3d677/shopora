@@ -19,12 +19,13 @@ interface HeroSliderProps {
   };
 }
 
-export default function HeroSlider({ banners, slug, settings }: HeroSliderProps) {
+export default function HeroSlider({ banners = [], slug, settings }: HeroSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = useCallback(() => {
+    if (!banners || banners.length === 0) return;
     setCurrentIndex((prevIndex) => (prevIndex === banners.length - 1 ? 0 : prevIndex + 1));
-  }, [banners.length]);
+  }, [banners?.length]);
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? banners.length - 1 : prevIndex - 1));
