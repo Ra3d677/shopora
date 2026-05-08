@@ -10,6 +10,7 @@ import EditableText from '@/components/editor/EditableText';
 import EditableButton from '@/components/editor/EditableButton';
 import EditableImage from '@/components/editor/EditableImage';
 import SaleSection from '@/components/ui/SaleSection';
+import StoreMarquee from '@/components/ui/StoreMarquee';
 
 export default function ObsidianTemplate({ 
   banners, 
