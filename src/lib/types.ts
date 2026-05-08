@@ -114,7 +114,7 @@ export interface Banner {
   isActive: boolean;
   order: number;
   position?: string | null;
-  targetPage?: 'home' | 'collections' | null;
+  targetPage?: string | null;
 }
 
 export interface Category {
