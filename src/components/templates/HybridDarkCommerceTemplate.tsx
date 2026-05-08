@@ -12,6 +12,7 @@ import SmartImage from "@/components/ui/SmartImage";
 import HeroSlider from "@/components/ui/HeroSlider";
 import { motion } from "framer-motion";
 import SaleSection from "@/components/ui/SaleSection";
+import StoreMarquee from "@/components/ui/StoreMarquee";
 
 interface TemplateProps {
   store: any;
