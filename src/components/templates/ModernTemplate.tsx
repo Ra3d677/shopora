@@ -297,7 +297,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
           }
 
           if (section.type === 'sale') {
-            return <SaleSection key={section.id} products={products} slug={slug} settings={settings} />;
+            return <SaleSection key={section.id} section={section} products={products} slug={slug} template="modern" />;
           }
 
           if (section.type === 'video') {
