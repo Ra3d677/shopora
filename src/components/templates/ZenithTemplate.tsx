@@ -57,7 +57,7 @@ export default function ZenithTemplate({
           if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
 
-          if (topBanners.length > 1) {
+            if (heroStyle === 'slider') {
             return <HeroSlider key={section.id} banners={topBanners} slug={slug} settings={settings.bannerSettings} />;
           }
 
@@ -227,7 +227,7 @@ export default function ZenithTemplate({
 
           return (
             <div key={section.id}>
-              {topBanners.length > 1 ? (
+              {heroStyle === 'slider' ? (
                 <HeroSlider banners={topBanners} slug={slug} settings={settings.bannerSettings} />
               ) : (
                 <section className="relative h-screen w-full overflow-hidden bg-transparent -mt-24">
@@ -426,7 +426,7 @@ export default function ZenithTemplate({
         }
 
         if (section.type === 'banners') {
-          const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
+          const bannersToShow = middleBanners.length > 0 ? middleBanners : (heroStyle === 'slider' ? [] : topBanners);
           return (
             <section key={section.id} className="py-1  bg-[#f9f9f8]">
               <div className="w-full space-y-1">

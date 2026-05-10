@@ -118,7 +118,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
         if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
 
-          if (topBanners.length > 1) {
+          if (heroStyle === 'slider') {
             return <HeroSlider key={section.id} banners={topBanners} slug={slug} settings={settings.bannerSettings} />;
           }
 
@@ -498,7 +498,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
         }
 
         if (section.type === 'banners') {
-          const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
+          const bannersToShow = middleBanners.length > 0 ? middleBanners : (heroStyle === 'slider' ? [] : topBanners);
           return (
             <div key={section.id}>
               <section className="py-1  w-full bg-transparent">

@@ -239,7 +239,7 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     {/* Render specific styles based on section type */}
-                    {activeSection.type === 'hero' && ['luxury', 'split', 'centered', 'minimal', 'campaign', 'abstract', 'immersive'].map(style => (
+                    {activeSection.type === 'hero' && ['slider', 'luxury', 'split', 'centered', 'minimal', 'campaign', 'abstract', 'immersive'].map(style => (
                       <button 
                         key={style}
                         onClick={() => updateSection(activeSection.id, { style })}

@@ -55,7 +55,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
           if (section.type === 'hero') {
             const heroStyle = section.style || 'luxury';
 
-            if (topBanners.length > 1) {
+            if (heroStyle === 'slider') {
               return <HeroSlider key={section.id} banners={topBanners} slug={slug} settings={settings.bannerSettings} />;
             }
             
@@ -67,18 +67,22 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                       initial={{ opacity: 0, x: -30 }}
                       whileInView={{ opacity: 1, x: 0 }}
                     >
-                      <span className="inline-block px-4 py-1.5 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full mb-6">
-                        <EditableText content={modSettings.heroBadge ?? ""} slug={slug} settingsKey="modernSettings.heroBadge" />
-                      </span>
+                      {(modSettings.heroBadge || isEditMode) && (
+                        <span className="inline-block px-4 py-1.5 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full mb-6">
+                          <EditableText content={modSettings.heroBadge ?? ""} slug={slug} settingsKey="modernSettings.heroBadge" />
+                        </span>
+                      )}
                       <h1 className="text-6xl md:text-8xl font-black text-slate-900 leading-[0.9] tracking-tighter mb-8 italic">
                         <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
                       </h1>
                       <p className="text-xl text-slate-500 max-w-md mb-12">
                         <EditableText content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? ""} slug={slug} settingsKey="modernSettings.heroSubtitle" />
                       </p>
-                      <Link href={`/store/${slug}/products`} className="inline-flex items-center gap-4 bg-slate-900 text-white px-12 py-5 rounded-2xl font-black text-sm hover:bg-blue-600 transition-all shadow-xl">
-                        EXPLORE NOW <ArrowRight size={20} />
-                      </Link>
+                      <div className="flex flex-wrap items-center gap-4">
+                        {Array.isArray(modSettings.heroButtons) && modSettings.heroButtons.map((btn: any, btnIndex: number) => (
+                          <EditableButton key={btn.id || btnIndex} label={btn.label} link={btn.link} slug={slug} settingsKey={`modernSettings.heroButtons.${btnIndex}`} style={btn.style} className="inline-flex items-center gap-4 bg-slate-900 text-white px-12 py-5 rounded-2xl font-black text-sm hover:bg-blue-600 transition-all shadow-xl" />
+                        ))}
+                      </div>
                     </motion.div>
                   </div>
                   <div className="w-full md:w-1/2 relative h-full">
@@ -101,9 +105,11 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                     <p className="text-2xl md:text-3xl text-white font-medium max-w-3xl mx-auto mb-12 italic">
                       <EditableText content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? ""} slug={slug} settingsKey="modernSettings.heroSubtitle" />
                     </p>
-                    <Link href={`/store/${slug}/products`} className="inline-block px-16 py-6 bg-blue-600 text-white font-black uppercase tracking-widest text-sm hover:bg-white hover:text-slate-900 transition-all rounded-full shadow-2xl">
-                      DISCOVER MORE
-                    </Link>
+                    <div className="flex justify-center flex-wrap items-center gap-4">
+                      {Array.isArray(modSettings.heroButtons) && modSettings.heroButtons.map((btn: any, btnIndex: number) => (
+                        <EditableButton key={btn.id || btnIndex} label={btn.label} link={btn.link} slug={slug} settingsKey={`modernSettings.heroButtons.${btnIndex}`} style={btn.style} className="inline-block px-16 py-6 bg-blue-600 text-white font-black uppercase tracking-widest text-sm hover:bg-white hover:text-slate-900 transition-all rounded-full shadow-2xl" />
+                      ))}
+                    </div>
                   </motion.div>
                 </section>
               );
@@ -113,18 +119,22 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
               return (
                 <section key={section.id} className="relative h-[60vh] w-full bg-transparent flex items-center justify-center px-6">
                   <div className="text-center max-w-3xl">
-                    <div className="w-12 h-12 border-2 border-slate-900 mx-auto mb-8 flex items-center justify-center">
-                      <div className="w-6 h-6 bg-blue-600" />
-                    </div>
+                    {(modSettings.heroBadge || isEditMode) && (
+                      <div className="w-12 h-12 border-2 border-slate-900 mx-auto mb-8 flex items-center justify-center">
+                        <div className="w-6 h-6 bg-blue-600" />
+                      </div>
+                    )}
                     <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter mb-8 uppercase leading-none">
                       <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
                     </h1>
                     <p className="text-xl text-slate-500 font-medium mb-12 leading-relaxed">
                       <EditableText content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? ""} slug={slug} settingsKey="modernSettings.heroSubtitle" />
                     </p>
-                    <Link href={`/store/${slug}/products`} className="text-blue-600 font-black uppercase tracking-widest text-sm hover:tracking-[0.2em] transition-all">
-                      VIEW PRODUCTS
-                    </Link>
+                    <div className="flex justify-center flex-wrap items-center gap-4">
+                      {Array.isArray(modSettings.heroButtons) && modSettings.heroButtons.map((btn: any, btnIndex: number) => (
+                        <EditableButton key={btn.id || btnIndex} label={btn.label} link={btn.link} slug={slug} settingsKey={`modernSettings.heroButtons.${btnIndex}`} style={btn.style} className="text-blue-600 font-black uppercase tracking-widest text-sm hover:tracking-[0.2em] transition-all" />
+                      ))}
+                    </div>
                   </div>
                 </section>
               );
@@ -138,10 +148,14 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                   </div>
                   <div className="w-full md:w-1/2 flex flex-col justify-center p-12 md:p-24 bg-white">
                     <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}>
-                       <div className="flex items-center gap-4 mb-8">
-                          <span className="w-12 h-0.5 bg-blue-600" />
-                          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">COLLECTION 2026</span>
-                       </div>
+                       {(modSettings.heroBadge || isEditMode) && (
+                         <div className="flex items-center gap-4 mb-8">
+                            <span className="w-12 h-0.5 bg-blue-600" />
+                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">
+                              <EditableText content={modSettings.heroBadge ?? ""} slug={slug} settingsKey="modernSettings.heroBadge" />
+                            </span>
+                         </div>
+                       )}
                        <h1 className="text-7xl md:text-[10rem] font-black text-slate-900 leading-[0.8] tracking-tighter mb-12 uppercase italic">
                           <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
                        </h1>
@@ -168,13 +182,15 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                 </div>
                 <div className="container mx-auto px-8 relative z-10">
                   <div className="max-w-3xl text-left">
-                    <span className="inline-block px-4 py-1.5 bg-blue-600 text-white text-xs font-black uppercase tracking-widest rounded-full mb-6">
-                      <EditableText 
-                        content={modSettings.heroBadge ?? ""} 
-                        slug={slug} 
-                        settingsKey="modernSettings.heroBadge" 
-                      />
-                    </span>
+                    {(modSettings.heroBadge || isEditMode) && (
+                      <span className="inline-block px-4 py-1.5 bg-blue-600 text-white text-xs font-black uppercase tracking-widest rounded-full mb-6">
+                        <EditableText 
+                          content={modSettings.heroBadge ?? ""} 
+                          slug={slug} 
+                          settingsKey="modernSettings.heroBadge" 
+                        />
+                      </span>
+                    )}
                     <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter mb-8 italic">
                       <EditableText 
                         content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} 
@@ -311,7 +327,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
           }
 
           if (section.type === 'banners') {
-            const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
+            const bannersToShow = middleBanners.length > 0 ? middleBanners : (heroStyle === 'slider' ? [] : topBanners);
             return (
               <section key={section.id} className="py-1 bg-transparent border-y border-slate-100">
                 <div className="w-full space-y-1">
