@@ -21,15 +21,12 @@ export default function ColorsManager({ slug, initialSettings }: { slug: string,
   };
 
   const templates = [
-    { id: 'minimal', name: 'Pure Minimal' },
-    { id: 'apple', name: 'Premium Tech' },
-    { id: 'hybrid', name: 'Hybrid Dark' },
+    { id: 'modern', name: 'Modern Commerce' },
     { id: 'zenith', name: 'Zenith Luxury' },
-    { id: 'obsidian', name: 'Obsidian Brutalist' },
     { id: 'signature', name: 'Signature Brand' }
   ];
 
-  const [selectedTemplate, setSelectedTemplate] = useState('minimal');
+  const [selectedTemplate, setSelectedTemplate] = useState('modern');
   
   // Initialize colors object.
   const parsedColors = initialSettings?.colors || {};

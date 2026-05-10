@@ -17,12 +17,9 @@ export default function CreateStorePage() {
   const [error, setError] = useState<string | null>(null);
 
   const templates = [
-    { id: 'minimal', name: 'Pure Minimal', desc: 'Clean, airy, focus on whitespace.', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80' },
-    { id: 'apple', name: 'Premium Tech', desc: 'Sleek, product-centric, polished.', img: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=400&q=80' },
-    { id: 'hybrid', name: 'Hybrid Dark', desc: 'Luxury brand + High-conversion.', img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&q=80' },
+    { id: 'modern', name: 'Modern Commerce', desc: 'Clean lines, premium materials, unparalleled comfort.', img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&q=80' },
     { id: 'zenith', name: 'Zenith Luxury', desc: 'Cinematic, minimalist, ultra high-end.', img: 'https://images.unsplash.com/photo-1505529848141-144c6747d765?w=400&q=80' },
-    { id: 'obsidian', name: 'Obsidian Brutalist', desc: 'Bold, asymmetrical, brutalist impact.', img: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=400&q=80' },
-    { id: 'signature', name: 'Signature Brand', desc: 'A high-end, typography-focused template.', img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&q=80' }
+    { id: 'signature', name: 'Signature Brand', desc: 'A high-end, typography-focused template.', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80' }
   ];
 
   const handleCreate = async (e: React.FormEvent) => {

@@ -1,10 +1,6 @@
-import React from 'react';
-import MinimalTemplate from '@/components/templates/MinimalTemplate';
-import AppleTemplate from '@/components/templates/AppleTemplate';
-import HybridDarkCommerceTemplate from '@/components/templates/HybridDarkCommerceTemplate';
 import SignatureTemplate from '@/components/templates/SignatureTemplate';
 import ZenithTemplate from '@/components/templates/ZenithTemplate';
-import ObsidianTemplate from '@/components/templates/ObsidianTemplate';
+import ModernTemplate from '@/components/templates/ModernTemplate';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Link from 'next/link';
@@ -78,12 +74,9 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
     };
 
     switch (templateId) {
-      case 'minimal': return <MinimalTemplate {...commonProps} />;
-      case 'apple': return <AppleTemplate {...commonProps} />;
-      case 'hybrid': return <HybridDarkCommerceTemplate {...commonProps} />;
+      case 'modern': return <ModernTemplate {...commonProps} />;
       case 'signature': return <SignatureTemplate {...commonProps} />;
       case 'zenith': return <ZenithTemplate {...commonProps} />;
-      case 'obsidian': return <ObsidianTemplate {...commonProps} />;
       default: return <SignatureTemplate {...commonProps} />;
     }
   };

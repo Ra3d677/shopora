@@ -68,13 +68,13 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                       whileInView={{ opacity: 1, x: 0 }}
                     >
                       <span className="inline-block px-4 py-1.5 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full mb-6">
-                        <EditableText content={modSettings.heroBadge ?? "NEW ERA"} slug={slug} settingsKey="modernSettings.heroBadge" />
+                        <EditableText content={modSettings.heroBadge ?? ""} slug={slug} settingsKey="modernSettings.heroBadge" />
                       </span>
                       <h1 className="text-6xl md:text-8xl font-black text-slate-900 leading-[0.9] tracking-tighter mb-8 italic">
-                        <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? "STYLE."} slug={slug} settingsKey="modernSettings.heroTitle" />
+                        <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
                       </h1>
                       <p className="text-xl text-slate-500 max-w-md mb-12">
-                        <EditableText content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? "Innovation meets design in our latest drop."} slug={slug} settingsKey="modernSettings.heroSubtitle" />
+                        <EditableText content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? ""} slug={slug} settingsKey="modernSettings.heroSubtitle" />
                       </p>
                       <Link href={`/store/${slug}/products`} className="inline-flex items-center gap-4 bg-slate-900 text-white px-12 py-5 rounded-2xl font-black text-sm hover:bg-blue-600 transition-all shadow-xl">
                         EXPLORE NOW <ArrowRight size={20} />
@@ -90,16 +90,16 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
 
             if (heroStyle === 'centered') {
               return (
-                <section key={section.id} className="relative h-[80vh] w-full flex flex-col items-center justify-center bg-slate-900 overflow-hidden text-center px-6">
-                  <div className="absolute inset-0 opacity-40">
+                <section key={section.id} className="relative h-[80vh] w-full flex flex-col items-center justify-center bg-transparent overflow-hidden text-center px-6">
+                  <div className="absolute inset-0">
                     <SmartImage src={topBanners[0]?.imageUrl || modSettings.heroImage || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80"} className="w-full h-full object-cover" alt="Hero Bg" />
                   </div>
                   <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} className="max-w-5xl z-10">
                     <h1 className="text-7xl md:text-[10rem] font-black text-white leading-none tracking-tighter mb-10 uppercase">
-                      <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? settings.storeName} slug={slug} settingsKey="modernSettings.heroTitle" />
+                      <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
                     </h1>
-                    <p className="text-2xl md:text-3xl text-slate-300 font-medium max-w-3xl mx-auto mb-12 italic">
-                      <EditableText content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? "The pinnacle of craftsmanship."} slug={slug} settingsKey="modernSettings.heroSubtitle" />
+                    <p className="text-2xl md:text-3xl text-white font-medium max-w-3xl mx-auto mb-12 italic">
+                      <EditableText content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? ""} slug={slug} settingsKey="modernSettings.heroSubtitle" />
                     </p>
                     <Link href={`/store/${slug}/products`} className="inline-block px-16 py-6 bg-blue-600 text-white font-black uppercase tracking-widest text-sm hover:bg-white hover:text-slate-900 transition-all rounded-full shadow-2xl">
                       DISCOVER MORE
@@ -117,10 +117,10 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                       <div className="w-6 h-6 bg-blue-600" />
                     </div>
                     <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter mb-8 uppercase leading-none">
-                      <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? settings.storeName} slug={slug} settingsKey="modernSettings.heroTitle" />
+                      <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
                     </h1>
                     <p className="text-xl text-slate-500 font-medium mb-12 leading-relaxed">
-                      <EditableText content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? "Less is more. Quality is everything."} slug={slug} settingsKey="modernSettings.heroSubtitle" />
+                      <EditableText content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? ""} slug={slug} settingsKey="modernSettings.heroSubtitle" />
                     </p>
                     <Link href={`/store/${slug}/products`} className="text-blue-600 font-black uppercase tracking-widest text-sm hover:tracking-[0.2em] transition-all">
                       VIEW PRODUCTS
@@ -132,10 +132,9 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
 
             if (heroStyle === 'campaign') {
               return (
-                <section key={section.id} className="relative h-screen w-full bg-slate-900 overflow-hidden flex flex-col md:flex-row">
+                <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex flex-col md:flex-row">
                   <div className="w-full md:w-1/2 relative h-full">
                     <SmartImage src={topBanners[0]?.imageUrl || modSettings.heroImage || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80"} className="absolute inset-0 w-full h-full object-cover" alt="Campaign" />
-                    <div className="absolute inset-0 bg-blue-600/20 mix-blend-multiply" />
                   </div>
                   <div className="w-full md:w-1/2 flex flex-col justify-center p-12 md:p-24 bg-white">
                     <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}>
@@ -144,7 +143,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                           <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">COLLECTION 2026</span>
                        </div>
                        <h1 className="text-7xl md:text-[10rem] font-black text-slate-900 leading-[0.8] tracking-tighter mb-12 uppercase italic">
-                          <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? "URBAN."} slug={slug} settingsKey="modernSettings.heroTitle" />
+                          <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
                        </h1>
                        <div className="flex gap-4">
                           {Array.isArray(modSettings.heroButtons) && modSettings.heroButtons.map((btn: any, btnIndex: number) => (
@@ -159,8 +158,8 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
 
             // Default: Luxury (The original design)
             return (
-              <section key={section.id} className="relative h-[80vh] w-full flex items-center bg-slate-900 overflow-hidden">
-                <div className="absolute inset-0 opacity-40">
+              <section key={section.id} className="relative h-[80vh] w-full flex items-center bg-transparent overflow-hidden">
+                <div className="absolute inset-0">
                   <SmartImage 
                     src={topBanners[0]?.imageUrl || modSettings.heroImage || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&q=80"} 
                     alt="Hero Background" 
@@ -171,21 +170,21 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                   <div className="max-w-3xl text-left">
                     <span className="inline-block px-4 py-1.5 bg-blue-600 text-white text-xs font-black uppercase tracking-widest rounded-full mb-6">
                       <EditableText 
-                        content={modSettings.heroBadge ?? "New Arrival 2026"} 
+                        content={modSettings.heroBadge ?? ""} 
                         slug={slug} 
                         settingsKey="modernSettings.heroBadge" 
                       />
                     </span>
                     <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter mb-8 italic">
                       <EditableText 
-                        content={topBanners[0]?.title ?? modSettings.heroTitle ?? "THE FUTURE OF STYLE."} 
+                        content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} 
                         slug={slug} 
                         settingsKey="modernSettings.heroTitle" 
                       />
                     </h1>
-                    <p className="text-xl text-slate-300 max-w-xl mb-10 leading-relaxed">
+                    <p className="text-xl text-white max-w-xl mb-10 leading-relaxed">
                       <EditableText 
-                        content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? "Elevate your wardrobe with our latest collection of premium essentials."} 
+                        content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? ""} 
                         slug={slug} 
                         settingsKey="modernSettings.heroSubtitle" 
                       />

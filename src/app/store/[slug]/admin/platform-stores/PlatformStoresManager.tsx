@@ -14,13 +14,8 @@ export default function PlatformStoresManager({ stores }: { stores: any[] }) {
   const slug = params.slug as string;
 
   const templates = [
-    { id: 'minimal', name: 'Minimal' },
     { id: 'modern', name: 'Modern' },
-    { id: 'apple', name: 'Apple' },
-    { id: 'amazon', name: 'Amazon' },
-    { id: 'hybrid', name: 'Hybrid Dark' },
     { id: 'zenith', name: 'Zenith' },
-    { id: 'obsidian', name: 'Obsidian' },
     { id: 'signature', name: 'Signature' },
   ];
 

@@ -5,15 +5,9 @@ import { getTranslation } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 
 // Import Templates
-import MinimalTemplate from "@/components/templates/MinimalTemplate";
-import AppleTemplate from "@/components/templates/AppleTemplate";
-import HybridDarkCommerceTemplate from "@/components/templates/HybridDarkCommerceTemplate";
 import SignatureTemplate from "@/components/templates/SignatureTemplate";
 import ZenithTemplate from "@/components/templates/ZenithTemplate";
-import ObsidianTemplate from "@/components/templates/ObsidianTemplate";
 import ModernTemplate from "@/components/templates/ModernTemplate";
-import AmazonTemplate from "@/components/templates/AmazonTemplate";
-import SennoTemplate from "@/components/templates/SennoTemplate";
 
 export const dynamic = 'force-dynamic';
 
@@ -57,14 +51,8 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
   
   // FORCE TEMPLATE RENDERING (Step 4)
   const renderTemplate = () => {
-    if (activeTemplate === 'apple') return <AppleTemplate {...props} />;
-    if (activeTemplate === 'hybrid') return <HybridDarkCommerceTemplate {...props} store={store} />;
-    if (activeTemplate === 'minimal') return <MinimalTemplate {...props} />;
     if (activeTemplate === 'zenith') return <ZenithTemplate {...props} />;
-    if (activeTemplate === 'obsidian') return <ObsidianTemplate {...props} />;
     if (activeTemplate === 'modern') return <ModernTemplate {...props} />;
-    if (activeTemplate === 'amazon') return <AmazonTemplate {...props} />;
-    if (activeTemplate === 'senno') return <SennoTemplate {...props} store={store} />;
     
     // Default fallback (Signature is now the default)
     return (
