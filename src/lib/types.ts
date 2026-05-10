@@ -100,6 +100,7 @@ export interface StoreSettings {
   footerLuxuryAddress1?: string;
   footerLuxuryAddress2?: string;
   dividerStyle?: string;
+  dividerColor?: string;
   [key: string]: any; 
 }
 

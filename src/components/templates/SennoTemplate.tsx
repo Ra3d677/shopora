@@ -48,7 +48,7 @@ export default function SennoTemplate({ store, banners = [], settings, products,
         const divider = index > 0 && settings.dividerStyle && settings.dividerStyle !== 'none' ? (
           <SectionDivider 
             style={settings.dividerStyle} 
-            color={settings.colorSystem?.brand?.primary || '#f06292'} 
+            color={settings.dividerColor || settings.colorSystem?.brand?.primary || '#f06292'} 
           />
         ) : null;
 

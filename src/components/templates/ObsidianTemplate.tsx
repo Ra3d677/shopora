@@ -40,7 +40,7 @@ export default function ObsidianTemplate({
         const divider = index > 0 && settings.dividerStyle && settings.dividerStyle !== 'none' ? (
           <SectionDivider 
             style={settings.dividerStyle} 
-            color={settings.colorSystem?.brand?.primary || '#ffffff'} 
+            color={settings.dividerColor || settings.colorSystem?.brand?.primary || '#ffffff'} 
           />
         ) : null;
 

@@ -49,7 +49,7 @@ export default function ZenithTemplate({
         const divider = index > 0 && settings.dividerStyle && settings.dividerStyle !== 'none' ? (
           <SectionDivider 
             style={settings.dividerStyle} 
-            color={settings.colorSystem?.brand?.primary || '#c5a368'} 
+            color={settings.dividerColor || settings.colorSystem?.brand?.primary || '#c5a368'} 
           />
         ) : null;
 
