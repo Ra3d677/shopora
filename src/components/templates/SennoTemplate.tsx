@@ -41,7 +41,7 @@ export default function SennoTemplate({ store, banners = [], settings, products,
   ];
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-800 selection:bg-[#f06292] selection:text-white">
+    <div className="min-h-screen bg-transparent font-sans text-slate-800 selection:bg-[#f06292] selection:text-white">
       {homepageLayout.map((section: any) => {
         if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
@@ -52,7 +52,7 @@ export default function SennoTemplate({ store, banners = [], settings, products,
 
           if (heroStyle === 'split') {
             return (
-              <section key={section.id} className="relative h-[600px] md:h-[800px] bg-white overflow-hidden flex flex-col md:flex-row">
+              <section key={section.id} className="relative h-[600px] md:h-[800px] bg-transparent overflow-hidden flex flex-col md:flex-row">
                 <div className="w-full md:w-1/2 relative h-full">
                    <EditableImage src={senSettings.heroImage || "https://images.unsplash.com/photo-1596462502278-27bfac4033c8?w=1600&q=80"} slug={slug} settingsKey="sennoSettings.heroImage" className="w-full h-full object-cover" alt="Hero" />
                 </div>
@@ -95,7 +95,7 @@ export default function SennoTemplate({ store, banners = [], settings, products,
 
           if (heroStyle === 'minimal') {
             return (
-              <section key={section.id} className="relative h-[400px] md:h-[500px] bg-white flex items-center justify-center px-6 border-b border-[#fcf2f4]">
+              <section key={section.id} className="relative h-[400px] md:h-[500px] bg-transparent flex items-center justify-center px-6 border-b border-[#fcf2f4]">
                 <div className="text-center max-w-2xl">
                   <h1 className="text-4xl md:text-6xl font-black text-slate-800 mb-6 uppercase">
                     <EditableText content={topBanners[0]?.title || senSettings.heroTitle || settings.storeName} slug={slug} settingsKey="sennoSettings.heroTitle" />
@@ -145,7 +145,7 @@ export default function SennoTemplate({ store, banners = [], settings, products,
 
           if (heroStyle === 'abstract') {
             return (
-              <section key={section.id} className="relative h-screen w-full bg-white overflow-hidden flex items-center justify-center">
+              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex items-center justify-center">
                  <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
                     <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[#f06292] rounded-full blur-[150px]" />
                     <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-pink-200 rounded-full blur-[150px]" />
@@ -267,7 +267,7 @@ export default function SennoTemplate({ store, banners = [], settings, products,
 
         if (section.type === 'featured_products' || section.type === 'products') {
           return (
-            <section key={section.id} className="py-24 px-6 md:px-12 bg-white">
+            <section key={section.id} className="py-24 px-6 md:px-12 bg-transparent">
               <div className="container mx-auto">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
                   <div>
@@ -365,7 +365,7 @@ export default function SennoTemplate({ store, banners = [], settings, products,
 
         if (section.type === 'categories') {
           return (
-            <section key={section.id} className="py-20 px-6 bg-white">
+            <section key={section.id} className="py-20 px-6 bg-transparent">
               <div className="container mx-auto">
                  <h2 className="text-3xl font-black mb-12 uppercase tracking-tighter">
                    {section.config?.title || "Shop by Category"}
@@ -389,7 +389,7 @@ export default function SennoTemplate({ store, banners = [], settings, products,
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
             <div key={section.id}>
-              <section className="py-1 bg-white">
+              <section className="py-1 bg-transparent">
                 <div className="w-full ">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {bannersToShow.length > 0 ? bannersToShow.slice(0, 2).map((banner: any) => (
@@ -420,7 +420,7 @@ export default function SennoTemplate({ store, banners = [], settings, products,
 
         if (section.type === 'text_block') {
           return (
-            <section key={section.id} className="py-20 px-6 bg-white border-y border-slate-50">
+            <section key={section.id} className="py-20 px-6 bg-transparent border-y border-slate-50">
                <div className="container mx-auto max-w-4xl text-center">
                   <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-8 leading-tight">
                     {section.config?.title || "Luxury Beauty Experience"}

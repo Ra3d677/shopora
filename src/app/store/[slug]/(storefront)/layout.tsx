@@ -56,8 +56,11 @@ export default async function StorefrontLayout({
     );
   }
   const storeSettings = (store.settings as any) || {};
+  const tpl = store.template;
+  const defaultHomeBg = (tpl === 'obsidian' || tpl === 'hybrid' || tpl === 'zenith') ? '#0a0a0a' : (tpl === 'apple' ? '#f5f5f7' : '#ffffff');
+
   const colorSystem = storeSettings.colorSystem || {
-    backgrounds: { home: '#ffffff', shop: '#f8fafc', categories: '#ffffff' },
+    backgrounds: { home: defaultHomeBg, shop: '#f8fafc', categories: '#ffffff' },
     text: { primary: '#0f172a', secondary: '#64748b' },
     brand: { primary: store.primaryColor },
     footer: { background: '#0f172a', text: '#ffffff' },
@@ -66,7 +69,7 @@ export default async function StorefrontLayout({
 
   const customStyles = {
     '--dynamic-primary': colorSystem.brand?.primary || store.primaryColor,
-    '--color-bg-home': colorSystem.backgrounds?.home || '#ffffff',
+    '--color-bg-home': colorSystem.backgrounds?.home || defaultHomeBg,
     '--color-bg-shop': colorSystem.backgrounds?.shop || '#ffffff',
     '--color-bg-categories': colorSystem.backgrounds?.categories || '#ffffff',
     '--color-text-primary': colorSystem.text?.primary || '#000000',

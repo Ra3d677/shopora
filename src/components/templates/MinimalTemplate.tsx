@@ -41,7 +41,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
   ];
 
   return (
-    <div className="flex flex-col w-full font-light antialiased bg-white">
+    <div className="flex flex-col w-full font-light antialiased bg-transparent">
       {homepageLayout.map((section: any) => {
         if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
@@ -52,7 +52,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
 
           if (heroStyle === 'split') {
             return (
-              <section key={section.id} className="relative h-[80vh] w-full flex flex-col md:flex-row bg-white overflow-hidden border-b">
+              <section key={section.id} className="relative h-[80vh] w-full flex flex-col md:flex-row bg-transparent overflow-hidden border-b">
                 <div className="w-full md:w-1/2 flex flex-col items-start justify-center p-12 md:p-24 text-left">
                   <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="max-w-xl">
                     <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-zinc-900 mb-8 leading-[0.85] uppercase">
@@ -93,7 +93,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
 
           if (heroStyle === 'minimal') {
             return (
-              <section key={section.id} className="relative h-[50vh] w-full bg-white flex items-center justify-center px-6">
+              <section key={section.id} className="relative h-[50vh] w-full bg-transparent flex items-center justify-center px-6">
                 <div className="text-center max-w-2xl border-x border-zinc-100 px-12 py-12">
                   <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-black mb-6 uppercase">
                     <EditableText content={topBanners[0]?.title || minSettings.heroTitle || settings.storeName} slug={slug} settingsKey="minimalSettings.heroTitle" />
@@ -111,7 +111,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
 
           if (heroStyle === 'campaign') {
             return (
-              <section key={section.id} className="relative h-screen w-full bg-white flex flex-col md:flex-row border-b border-zinc-100 mt-2">
+              <section key={section.id} className="relative h-screen w-full bg-transparent flex flex-col md:flex-row border-b border-zinc-100 mt-2">
                  <div className="w-full md:w-1/2 p-12 md:p-24 flex flex-col justify-center">
                     <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}>
                        <span className="text-[10px] font-black uppercase tracking-[0.6em] text-zinc-400 mb-10 block">EDITION № 01</span>
@@ -156,7 +156,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
 
           if (heroStyle === 'immersive') {
             return (
-               <section key={section.id} className="relative h-[80vh] w-full flex items-center justify-center overflow-hidden bg-white">
+               <section key={section.id} className="relative h-[80vh] w-full flex items-center justify-center overflow-hidden bg-transparent">
                   <div className="absolute inset-0">
                      <SmartImage src={topBanners[0]?.imageUrl || minSettings.heroImage || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&q=80"} className="w-full h-full object-cover opacity-60 scale-110 grayscale" alt="Immersive" />
                      <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white/40" />
@@ -283,7 +283,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           
           return (
-            <section key={section.id} className="py-1 md:py-1  md: bg-white border-y border-zinc-100">
+            <section key={section.id} className="py-1 md:py-1  md: bg-transparent border-y border-zinc-100">
               <div className="max-w-screen-2xl mx-auto space-y-1">
                 {bannersToShow.map((banner: any) => (
                   <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group">
@@ -316,7 +316,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
 
         if (section.type === 'featured_products' || section.type === 'products') {
           return (
-            <section key={section.id} className="py-20 md:py-32 px-6 md:px-12 bg-white">
+            <section key={section.id} className="py-20 md:py-32 px-6 md:px-12 bg-transparent">
               <div className="max-w-screen-2xl mx-auto text-left">
                 <div className="flex items-baseline justify-between mb-20 border-b border-zinc-200 pb-12">
                    <div className="text-4xl md:text-5xl font-bold uppercase tracking-tighter mb-4">
@@ -382,7 +382,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-1  md: bg-white border-t border-zinc-100">
+        <section className="py-1  md: bg-transparent border-t border-zinc-100">
           <div className="max-w-screen-2xl mx-auto space-y-1">
             {bottomBanners.map((banner: any) => (
               <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group border border-zinc-100">

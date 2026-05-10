@@ -123,7 +123,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
           if (heroStyle === 'split') {
             return (
-              <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex flex-col md:flex-row bg-black overflow-hidden">
+              <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex flex-col md:flex-row bg-transparent overflow-hidden">
                 <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-12 md:p-24 text-center md:text-left bg-zinc-900">
                   <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} className="max-w-xl">
                     <span className="text-[10px] uppercase font-black tracking-[0.5em] text-white/40 mb-8 block">
@@ -150,7 +150,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
           if (heroStyle === 'centered') {
             return (
-              <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex flex-col items-center justify-center bg-black overflow-hidden text-center px-6">
+              <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex flex-col items-center justify-center bg-transparent overflow-hidden text-center px-6">
                 <div className="absolute inset-0 opacity-40">
                   <SmartImage src={topBanners[0]?.imageUrl || sigSettings.heroImage || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&q=80"} className="w-full h-full object-cover" alt="Hero Bg" />
                 </div>
@@ -175,7 +175,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
           if (heroStyle === 'minimal') {
             return (
-              <section key={section.id} className="relative min-h-[60vh] w-full bg-white flex items-center justify-center px-6">
+              <section key={section.id} className="relative min-h-[60vh] w-full bg-transparent flex items-center justify-center px-6">
                 <div className="text-center max-w-4xl">
                   <span className="text-[10px] uppercase font-black tracking-[0.3em] text-slate-300 mb-8 block">THE SIGNATURE COLLECTION</span>
                   <h1 className="text-6xl md:text-[8rem] font-black text-black leading-none tracking-tighter mb-12 uppercase italic">
@@ -193,7 +193,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
           if (heroStyle === 'campaign') {
             return (
-              <section key={section.id} className="relative h-screen w-full bg-slate-950 overflow-hidden flex flex-col md:flex-row">
+              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex flex-col md:flex-row">
                 <div className="w-full md:w-1/2 relative h-full overflow-hidden">
                   <motion.div 
                     initial={{ scale: 1.2 }} 
@@ -230,7 +230,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
           if (heroStyle === 'abstract') {
             return (
-              <section key={section.id} className="relative h-screen w-full bg-white overflow-hidden flex items-center justify-center p-8">
+              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex items-center justify-center p-8">
                  <div className="absolute top-24 left-24 w-64 h-64 bg-blue-50 rounded-full blur-[100px]" />
                  <div className="absolute bottom-24 right-24 w-64 h-64 bg-slate-100 rounded-full blur-[100px]" />
                  
@@ -266,7 +266,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
           if (heroStyle === 'immersive') {
             return (
-              <section key={section.id} className="relative h-screen w-full bg-black overflow-hidden flex items-end">
+              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex items-end">
                 <div className="absolute inset-0">
                   <SmartImage src={topBanners[0]?.imageUrl || sigSettings.heroImage || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1600&q=80"} className="w-full h-full object-cover opacity-70" alt="Immersive" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
@@ -299,7 +299,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
           // Default: Luxury (Original Design)
           return (
-            <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+            <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex items-center justify-center overflow-hidden bg-transparent">
               <motion.div 
                 initial={{ opacity: 1 }}
                 whileInView={{ opacity: 1 }}
@@ -396,7 +396,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
         if (section.type === 'sale_products') {
           return (
-            <section key={section.id} className="py-32 px-8 max-w-[1800px] mx-auto bg-white">
+            <section key={section.id} className="py-32 px-8 max-w-[1800px] mx-auto bg-transparent">
               <Reveal>
                 <div className="flex items-end justify-between mb-16">
                   <EditableText 
@@ -449,7 +449,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
         if (section.type === 'text_block' || section.type === 'showcase') {
           return (
-            <section key={section.id} className="py-32 bg-white">
+            <section key={section.id} className="py-32 bg-transparent">
               <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
                   <div className="relative">
                     <Reveal>
@@ -500,7 +500,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
             <div key={section.id}>
-              <section className="py-1  w-full bg-white">
+              <section className="py-1  w-full bg-transparent">
                 {bannersToShow.length > 0 ? bannersToShow.map((banner: any) => (
                   <div key={banner.id} className="relative group overflow-hidden  md: aspect-[4/5] md:aspect-[21/9] mb-12 last:mb-0 shadow-2xl">
                     <SmartImage 
@@ -537,7 +537,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
         if (section.type === 'featured_products' || section.type === 'products') {
           return (
-            <section key={section.id} className="py-32 px-8 max-w-7xl mx-auto bg-white">
+            <section key={section.id} className="py-32 px-8 max-w-7xl mx-auto bg-transparent">
               <div className="flex items-end justify-between mb-24">
                 <Reveal>
                   <h2 className="text-5xl font-black tracking-tighter uppercase">
@@ -627,7 +627,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
         if (section.type === 'categories') {
           return (
-            <section key={section.id} className="py-20 px-8 bg-white">
+            <section key={section.id} className="py-20 px-8 bg-transparent">
                <div className="max-w-7xl mx-auto">
                   <h2 className="text-4xl font-black uppercase tracking-tighter mb-12">
                     {section.config?.title || "Explore Collections"}
@@ -652,7 +652,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-1  w-full bg-white border-t border-slate-100">
+        <section className="py-1  w-full bg-transparent border-t border-slate-100">
           <div className="space-y-12">
             {bottomBanners.map((banner: any) => (
               <div key={banner.id} className="relative group overflow-hidden  md: aspect-[4/5] md:aspect-[21/9] shadow-2xl">

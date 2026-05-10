@@ -33,7 +33,7 @@ export default function ObsidianTemplate({
   ];
 
   return (
-    <div className="min-h-screen font-sans selection:bg-white selection:text-black bg-[#0a0a0a] text-white">
+    <div className="min-h-screen font-sans selection:bg-transparent selection:text-black bg-transparent text-white">
       {homepageLayout.map((section: any) => {
         if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
@@ -44,7 +44,7 @@ export default function ObsidianTemplate({
 
           if (heroStyle === 'split') {
             return (
-              <section key={section.id} className="relative min-h-[80vh] flex flex-col lg:flex-row bg-[#0a0a0a] border-b border-white/5">
+              <section key={section.id} className="relative min-h-[80vh] flex flex-col lg:flex-row bg-transparent border-b border-white/5">
                 <div className="w-full lg:w-1/2 flex items-center justify-center p-12 lg:p-24 z-10">
                   <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}>
                     <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white/40 mb-8 block">THE OBSIDIAN SERIES</span>
@@ -65,7 +65,7 @@ export default function ObsidianTemplate({
 
           if (heroStyle === 'centered') {
             return (
-              <section key={section.id} className="relative h-screen w-full flex items-center bg-black overflow-hidden">
+              <section key={section.id} className="relative h-screen w-full flex items-center bg-transparent overflow-hidden">
                   <div className="absolute inset-0 opacity-40 grayscale">
                     <EditableImage 
                       src={topBanners[0]?.imageUrl || "https://images.unsplash.com/photo-1511499767390-903390e6fbc1?w=1600&q=80"} 
@@ -89,7 +89,7 @@ export default function ObsidianTemplate({
 
           if (heroStyle === 'minimal') {
             return (
-              <section key={section.id} className="relative min-h-[50vh] w-full bg-black flex items-center justify-center px-6">
+              <section key={section.id} className="relative min-h-[50vh] w-full bg-transparent flex items-center justify-center px-6">
                 <div className="text-center max-w-4xl border border-white/10 p-20">
                   <h1 className="text-5xl md:text-[8rem] font-black text-white leading-none tracking-tighter mb-12 uppercase italic">
                     <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "OBSIDIAN"} slug={slug} settingsKey="storeName" />
@@ -104,7 +104,7 @@ export default function ObsidianTemplate({
 
           if (heroStyle === 'campaign') {
             return (
-              <section key={section.id} className="relative h-screen w-full bg-black overflow-hidden flex flex-col md:flex-row border-b border-white/5">
+              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex flex-col md:flex-row border-b border-white/5">
                  <div className="w-full md:w-1/3 flex flex-col justify-center p-12 md:p-20 z-10">
                     <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }}>
                        <span className="text-[10px] font-black uppercase tracking-[0.8em] text-white/30 mb-8 block">CAMPAIGN V.01</span>
@@ -131,7 +131,7 @@ export default function ObsidianTemplate({
 
           if (heroStyle === 'abstract') {
             return (
-              <section key={section.id} className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
+              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex items-center justify-center">
                  <div className="absolute inset-0 opacity-40">
                     <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-[100px]" />
                     <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-[100px]" />
@@ -156,7 +156,7 @@ export default function ObsidianTemplate({
 
           if (heroStyle === 'immersive') {
             return (
-              <section key={section.id} className="relative h-screen w-full bg-black overflow-hidden">
+              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden">
                  <div className="absolute inset-0">
                     <SmartImage src={topBanners[0]?.imageUrl || "https://images.unsplash.com/photo-1511499767390-903390e6fbc1?w=1600&q=80"} className="w-full h-full object-cover opacity-40 scale-110 grayscale" alt="Immersive" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60" />
@@ -259,7 +259,7 @@ export default function ObsidianTemplate({
 
         if (section.type === 'featured_products' || section.type === 'products') {
           return (
-            <section key={section.id} className="py-40 overflow-hidden bg-[#0a0a0a]">
+            <section key={section.id} className="py-40 overflow-hidden bg-transparent">
               <div className="container mx-auto px-8 mb-20">
                  <div className="flex justify-between items-end text-left">
                     <div>
@@ -299,7 +299,7 @@ export default function ObsidianTemplate({
         if (section.type === 'banners') {
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
-            <section key={section.id} className="py-1 bg-[#0a0a0a]">
+            <section key={section.id} className="py-1 bg-transparent">
               <div className="w-full ">
                 {bannersToShow.map((banner: any) => (
                   <div key={banner.id} className="relative group overflow-hidden  aspect-[4/5] md:aspect-[21/9] mb-12 last:mb-0">
@@ -332,7 +332,7 @@ export default function ObsidianTemplate({
 
         if (section.type === 'text_block' || section.type === 'story') {
           return (
-            <section key={section.id} className="py-40 bg-white text-black">
+            <section key={section.id} className="py-40 bg-transparent text-black">
               <div className="container mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
                  <div className="lg:col-span-7 relative">
                     <div className="grid grid-cols-2 gap-4">
@@ -425,7 +425,7 @@ export default function ObsidianTemplate({
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-1  bg-[#0a0a0a] border-t border-white/5">
+        <section className="py-1  bg-transparent border-t border-white/5">
           <div className="w-full space-y-1">
             {bottomBanners.map((banner: any) => (
               <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group shadow-2xl  border border-white/5">

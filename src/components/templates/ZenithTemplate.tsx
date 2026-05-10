@@ -42,7 +42,7 @@ export default function ZenithTemplate({
   ];
 
   return (
-    <div className="min-h-screen font-serif selection:bg-[#c5a368] selection:text-white bg-white text-[#1a1a1a]">
+    <div className="min-h-screen font-serif selection:bg-[#c5a368] selection:text-white bg-transparent text-[#1a1a1a]">
       {homepageLayout.map((section: any) => {
         if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
@@ -53,7 +53,7 @@ export default function ZenithTemplate({
 
           if (heroStyle === 'split') {
             return (
-              <section key={section.id} className="relative h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden -mt-24">
+              <section key={section.id} className="relative h-screen w-full flex flex-col md:flex-row bg-transparent overflow-hidden -mt-24">
                 <div className="w-full md:w-1/2 flex flex-col items-start justify-center p-12 md:p-24 text-left bg-zinc-50">
                   <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}>
                     <span className="text-[10px] uppercase tracking-[0.4em] text-[#c5a368] mb-8 block font-black">THE ZENITH COLLECTION</span>
@@ -74,7 +74,7 @@ export default function ZenithTemplate({
 
           if (heroStyle === 'centered') {
             return (
-              <section key={section.id} className="relative h-screen w-full flex flex-col items-center justify-center bg-black overflow-hidden text-center px-6 -mt-24">
+              <section key={section.id} className="relative h-screen w-full flex flex-col items-center justify-center bg-transparent overflow-hidden text-center px-6 -mt-24">
                 <div className="absolute inset-0 opacity-40">
                   <SmartImage src={topBanners[0]?.imageUrl || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&q=80"} className="w-full h-full object-cover" alt="Hero Bg" />
                 </div>
@@ -91,7 +91,7 @@ export default function ZenithTemplate({
 
           if (heroStyle === 'minimal') {
             return (
-              <section key={section.id} className="relative h-[60vh] w-full bg-white flex items-center justify-center px-6 -mt-24">
+              <section key={section.id} className="relative h-[60vh] w-full bg-transparent flex items-center justify-center px-6 -mt-24">
                 <div className="text-center max-w-4xl border-y border-zinc-100 py-24">
                   <h1 className="text-6xl md:text-[10rem] font-light text-zinc-900 leading-none tracking-tighter mb-12 italic uppercase">
                     <EditableText content={topBanners[0]?.title || settings.storeName || "ZENITH"} slug={slug} settingsKey="storeName" />
@@ -106,7 +106,7 @@ export default function ZenithTemplate({
 
           if (heroStyle === 'campaign') {
             return (
-              <section key={section.id} className="relative h-screen w-full bg-white overflow-hidden -mt-24 flex flex-col md:flex-row">
+              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden -mt-24 flex flex-col md:flex-row">
                 <div className="absolute top-32 right-12 hidden lg:block">
                   <div className="[writing-mode:vertical-lr] text-[10rem] font-light text-zinc-100 select-none uppercase tracking-tighter leading-none">
                     {new Date().getFullYear()}
@@ -171,7 +171,7 @@ export default function ZenithTemplate({
 
           if (heroStyle === 'immersive') {
             return (
-              <section key={section.id} className="relative h-screen w-full bg-black overflow-hidden -mt-24">
+              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden -mt-24">
                 <div className="absolute inset-0">
                   <SmartImage src={topBanners[0]?.imageUrl || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&q=80"} className="w-full h-full object-cover opacity-60 scale-105" alt="Immersive" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
@@ -220,7 +220,7 @@ export default function ZenithTemplate({
               {topBanners.length > 1 ? (
                 <HeroSlider banners={topBanners} slug={slug} settings={settings.bannerSettings} />
               ) : (
-                <section className="relative h-screen w-full overflow-hidden bg-black -mt-24">
+                <section className="relative h-screen w-full overflow-hidden bg-transparent -mt-24">
                   <AnimatePresence mode="wait">
                     <motion.div 
                       key={activeBanner}
@@ -302,7 +302,7 @@ export default function ZenithTemplate({
 
         if (section.type === 'text_block' || section.type === 'intro') {
           return (
-            <section key={section.id} className="py-32 container mx-auto px-8 md:px-16 text-center bg-white">
+            <section key={section.id} className="py-32 container mx-auto px-8 md:px-16 text-center bg-transparent">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -331,7 +331,7 @@ export default function ZenithTemplate({
 
         if (section.type === 'categories') {
           return (
-            <section key={section.id} className="pb-32 px-4 md:px-8 bg-white">
+            <section key={section.id} className="pb-32 px-4 md:px-8 bg-transparent">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {categories.slice(0, 2).map((cat: any) => (
                   <Link 
@@ -358,7 +358,7 @@ export default function ZenithTemplate({
 
         if (section.type === 'featured_products' || section.type === 'products') {
           return (
-            <section key={section.id} className="py-32 bg-white">
+            <section key={section.id} className="py-32 bg-transparent">
               <div className="container mx-auto px-8 md:px-16 text-left">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
                   <div className="max-w-xl">
@@ -465,7 +465,7 @@ export default function ZenithTemplate({
 
         if (section.type === 'callout') {
           return (
-            <section key={section.id} className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-black text-white">
+            <section key={section.id} className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-transparent text-white">
               <SmartImage 
                 src="https://images.unsplash.com/photo-1511499767390-903390e6fbc1?w=1600&q=80" 
                 alt="Parallax"
@@ -494,7 +494,7 @@ export default function ZenithTemplate({
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-1  bg-white border-t border-zinc-100">
+        <section className="py-1  bg-transparent border-t border-zinc-100">
           <div className="w-full space-y-1">
             {bottomBanners.map((banner: any) => (
               <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group shadow-2xl ">

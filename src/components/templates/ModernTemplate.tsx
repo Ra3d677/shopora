@@ -39,7 +39,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
   ];
 
   return (
-    <div className="flex flex-col w-full font-sans bg-white">
+    <div className="flex flex-col w-full font-sans bg-transparent">
       {homepageLayout.map((section: any) => {
         if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
@@ -50,7 +50,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
           
           if (heroStyle === 'split') {
             return (
-              <section key={section.id} className="relative h-[80vh] w-full flex flex-col md:flex-row bg-white overflow-hidden">
+              <section key={section.id} className="relative h-[80vh] w-full flex flex-col md:flex-row bg-transparent overflow-hidden">
                 <div className="w-full md:w-1/2 flex flex-col items-start justify-center p-12 md:p-24 text-left bg-slate-50">
                   <motion.div 
                     initial={{ opacity: 0, x: -30 }}
@@ -100,7 +100,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
 
           if (heroStyle === 'minimal') {
             return (
-              <section key={section.id} className="relative h-[60vh] w-full bg-white flex items-center justify-center px-6">
+              <section key={section.id} className="relative h-[60vh] w-full bg-transparent flex items-center justify-center px-6">
                 <div className="text-center max-w-3xl">
                   <div className="w-12 h-12 border-2 border-slate-900 mx-auto mb-8 flex items-center justify-center">
                     <div className="w-6 h-6 bg-blue-600" />
@@ -148,7 +148,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
 
           if (heroStyle === 'abstract') {
             return (
-              <section key={section.id} className="relative h-screen w-full bg-white overflow-hidden flex items-center justify-center p-12">
+              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex items-center justify-center p-12">
                  <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                     <div className="absolute top-20 right-20 w-96 h-96 bg-blue-600 rounded-full blur-[120px]" />
                     <div className="absolute bottom-20 left-20 w-96 h-96 bg-slate-200 rounded-full blur-[120px]" />
@@ -178,7 +178,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
 
           if (heroStyle === 'immersive') {
             return (
-               <section key={section.id} className="relative h-screen w-full bg-slate-950 overflow-hidden">
+               <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden">
                   <div className="absolute inset-0">
                      <SmartImage src={topBanners[0]?.imageUrl || modSettings.heroImage || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&q=80"} className="w-full h-full object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-[3s]" alt="Immersive" />
                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/20 to-slate-950" />
@@ -292,7 +292,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
 
         if (section.type === 'categories') {
           return (
-            <section key={section.id} className="py-24 bg-white">
+            <section key={section.id} className="py-24 bg-transparent">
               <div className="container mx-auto px-8">
                 <div className="flex justify-between items-end mb-12">
                   <div>
@@ -398,7 +398,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
 
         if (section.type === 'text_block') {
           return (
-            <section key={section.id} className="py-24 bg-white border-y border-slate-100">
+            <section key={section.id} className="py-24 bg-transparent border-y border-slate-100">
               <div className="container mx-auto px-8 max-w-4xl text-center">
                 <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-none mb-10 italic">
                   {section.config?.title || "EXCELLENCE IN EVERY DETAIL."}
@@ -414,7 +414,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
         if (section.type === 'banners') {
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
-            <section key={section.id} className="py-1  bg-white border-y border-slate-100">
+            <section key={section.id} className="py-1  bg-transparent border-y border-slate-100">
               <div className="w-full space-y-1">
                 {bannersToShow.map((banner: any) => (
                   <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9]  md: overflow-hidden shadow-2xl group">
@@ -454,7 +454,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
 
         if (section.type === 'testimonials') {
           return (
-            <section key={section.id} className="py-24 bg-white border-y border-slate-100">
+            <section key={section.id} className="py-24 bg-transparent border-y border-slate-100">
                <div className="container mx-auto px-8">
                   <div className="text-center mb-16">
                      <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter uppercase italic mb-4">

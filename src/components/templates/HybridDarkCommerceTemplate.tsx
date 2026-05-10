@@ -46,7 +46,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
   ];
 
   return (
-    <div className="min-h-screen font-sans selection:bg-white selection:text-black bg-[#0a0a0a] text-white">
+    <div className="min-h-screen font-sans selection:bg-transparent selection:text-black bg-transparent text-white">
       {homepageLayout.map((section: any) => {
         if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
@@ -57,7 +57,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
 
           if (heroStyle === 'split') {
             return (
-              <section key={section.id} className="relative h-[80vh] w-full flex flex-col md:flex-row bg-[#0a0a0a] overflow-hidden border-b border-white/5">
+              <section key={section.id} className="relative h-[80vh] w-full flex flex-col md:flex-row bg-transparent overflow-hidden border-b border-white/5">
                 <div className="w-full md:w-1/2 relative h-full">
                   <SmartImage src={topBanners[0]?.imageUrl || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80"} className="absolute inset-0 w-full h-full object-cover opacity-60" alt="Hero" />
                 </div>
@@ -80,7 +80,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
 
           if (heroStyle === 'centered') {
             return (
-              <section key={section.id} className="relative h-screen w-full flex flex-col items-center justify-center bg-black overflow-hidden text-center px-6">
+              <section key={section.id} className="relative h-screen w-full flex flex-col items-center justify-center bg-transparent overflow-hidden text-center px-6">
                 <div className="absolute inset-0 opacity-20">
                   <SmartImage src={topBanners[0]?.imageUrl || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&q=80"} className="w-full h-full object-cover" alt="Hero Bg" />
                 </div>
@@ -97,7 +97,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
 
           if (heroStyle === 'minimal') {
             return (
-              <section key={section.id} className="relative h-[400px] w-full bg-[#0a0a0a] flex items-center justify-center px-6 border-y border-white/5">
+              <section key={section.id} className="relative h-[400px] w-full bg-transparent flex items-center justify-center px-6 border-y border-white/5">
                 <div className="text-center max-w-4xl">
                   <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-8 uppercase italic">
                     <EditableText content={topBanners[0]?.title || settings.storeName || "HYBRID"} slug={slug} settingsKey="storeName" />
@@ -112,7 +112,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
 
           if (heroStyle === 'campaign') {
             return (
-              <section key={section.id} className="relative h-screen w-full bg-[#0a0a0a] overflow-hidden flex flex-col md:flex-row border-b border-white/5">
+              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex flex-col md:flex-row border-b border-white/5">
                  <div className="w-full md:w-2/3 relative h-full">
                     <SmartImage src={topBanners[0]?.imageUrl || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&q=80"} className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-luminosity" alt="Campaign" />
                     <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-transparent to-transparent" />
@@ -136,7 +136,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
 
           if (heroStyle === 'abstract') {
             return (
-              <section key={section.id} className="relative h-screen w-full bg-black flex items-center justify-center overflow-hidden">
+              <section key={section.id} className="relative h-screen w-full bg-transparent flex items-center justify-center overflow-hidden">
                  <div className="absolute inset-0">
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] bg-white opacity-5 rounded-full blur-[150px] animate-pulse" />
                  </div>
@@ -160,7 +160,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
 
           if (heroStyle === 'immersive') {
             return (
-               <section key={section.id} className="relative h-[80vh] w-full flex items-center justify-center overflow-hidden bg-black">
+               <section key={section.id} className="relative h-[80vh] w-full flex items-center justify-center overflow-hidden bg-transparent">
                   <div className="absolute inset-0">
                      <SmartImage src={topBanners[0]?.imageUrl || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&q=80"} className="w-full h-full object-cover opacity-60 scale-110 grayscale" alt="Immersive" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
@@ -301,7 +301,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
 
         if (section.type === 'featured_products' || section.type === 'products') {
           return (
-            <section key={section.id} className="py-32 px-6 md:px-12 bg-[#0a0a0a] text-left">
+            <section key={section.id} className="py-32 px-6 md:px-12 bg-transparent text-left">
               <div className="max-w-screen-2xl mx-auto">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
                   <div>
@@ -359,7 +359,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
         if (section.type === 'banners') {
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
-            <section key={section.id} className="py-1  md: bg-[#0a0a0a] text-left">
+            <section key={section.id} className="py-1  md: bg-transparent text-left">
               <div className="max-w-screen-2xl mx-auto space-y-1">
                 {bannersToShow.map((banner: any) => (
                   <div key={banner.id} className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -389,7 +389,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
 
         if (section.type === 'categories') {
           return (
-            <section key={section.id} className="py-32 px-6 md:px-12 border-t border-white/5 bg-[#0a0a0a] text-left">
+            <section key={section.id} className="py-32 px-6 md:px-12 border-t border-white/5 bg-transparent text-left">
               <div className="max-w-screen-2xl mx-auto">
                   <div className="text-3xl font-black tracking-tighter uppercase italic mb-8">
                     <EditableText 
@@ -428,7 +428,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
         if (section.type === 'banners') {
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
-            <section key={section.id} className="py-1  md: bg-black border-y border-white/5">
+            <section key={section.id} className="py-1  md: bg-transparent border-y border-white/5">
               <div className="max-w-screen-2xl mx-auto space-y-1">
                 {bannersToShow.map((banner: any) => (
                   <div key={banner.id} className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -462,7 +462,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
 
         if (section.type === 'testimonials') {
           return (
-            <section key={section.id} className="py-32 px-6 md:px-12 border-t border-white/5 bg-[#0a0a0a]">
+            <section key={section.id} className="py-32 px-6 md:px-12 border-t border-white/5 bg-transparent">
                <div className="max-w-screen-2xl mx-auto">
                   <div className="text-center mb-24">
                      <h2 className="text-4xl md:text-8xl font-black tracking-tighter uppercase italic mb-6">
@@ -502,7 +502,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-1  md: bg-[#0a0a0a] border-t border-white/5">
+        <section className="py-1  md: bg-transparent border-t border-white/5">
           <div className="max-w-screen-2xl mx-auto space-y-1">
             {bottomBanners.map((banner: any) => (
               <div key={banner.id} className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">

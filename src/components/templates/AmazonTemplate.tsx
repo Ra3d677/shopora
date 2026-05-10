@@ -97,7 +97,7 @@ export default function AmazonTemplate({ banners, settings, products, slug, cate
 
           if (heroStyle === 'minimal') {
             return (
-              <section key={section.id} className="relative h-[250px] w-full bg-white flex items-center justify-between px-12 border-b border-slate-200">
+              <section key={section.id} className="relative h-[250px] w-full bg-transparent flex items-center justify-between px-12 border-b border-slate-200">
                 <div className="max-w-xl">
                   <h1 className="text-4xl font-black text-[#232F3E] mb-4">
                     <EditableText content={topBanners[0]?.title || amzSettings.heroTitle || settings.storeName} slug={slug} settingsKey="amazonSettings.heroTitle" />

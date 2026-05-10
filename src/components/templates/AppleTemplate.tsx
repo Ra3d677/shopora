@@ -40,7 +40,7 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
   ];
 
   return (
-    <div className="flex flex-col w-full font-sans text-[#1d1d1f] antialiased bg-[#f5f5f7]">
+    <div className="flex flex-col w-full font-sans text-[#1d1d1f] antialiased bg-transparent">
       {/* 1. Marquee / Ribbon (Fixed at top or based on settings) */}
       <div className="bg-[#1d1d1f] text-white text-sm text-center py-3">
         <div className="flex items-center justify-center">
@@ -65,7 +65,7 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
 
           if (heroStyle === 'campaign') {
             return (
-              <section key={section.id} className="relative w-full h-screen bg-[#fafafa] flex flex-col md:flex-row overflow-hidden border-b border-zinc-100 mt-2">
+              <section key={section.id} className="relative w-full h-screen bg-transparent flex flex-col md:flex-row overflow-hidden border-b border-zinc-100 mt-2">
                  <div className="w-full md:w-1/2 flex flex-col justify-center p-12 md:p-24 z-10">
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}>
                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0071e3] mb-6 block">PRO SERIES</span>
@@ -88,7 +88,7 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
 
           if (heroStyle === 'abstract') {
             return (
-              <section key={section.id} className="relative w-full h-screen bg-white flex items-center justify-center overflow-hidden mt-2">
+              <section key={section.id} className="relative w-full h-screen bg-transparent flex items-center justify-center overflow-hidden mt-2">
                  <div className="text-center z-10 px-6">
                     <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }}>
                        <h1 className="text-7xl md:text-[12rem] font-semibold text-[#1d1d1f] tracking-tighter mb-12 uppercase leading-none italic">
@@ -108,7 +108,7 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
 
           if (heroStyle === 'immersive') {
             return (
-              <section key={section.id} className="relative w-full h-screen bg-black overflow-hidden flex items-center justify-center text-center mt-2">
+              <section key={section.id} className="relative w-full h-screen bg-transparent overflow-hidden flex items-center justify-center text-center mt-2">
                  <div className="absolute inset-0">
                     <SmartImage src={topBanners[0]?.imageUrl || appleSettings.heroImage || "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1600&q=80"} className="w-full h-full object-cover opacity-60" alt="Immersive" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black" />
@@ -131,7 +131,7 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
               {topBanners.length > 1 ? (
                 <HeroSlider banners={topBanners} slug={slug} settings={settings.bannerSettings} />
               ) : (
-                <section className="relative w-full h-[600px] md:h-[700px] flex flex-col items-center pt-16 overflow-hidden bg-white mt-2">
+                <section className="relative w-full h-[600px] md:h-[700px] flex flex-col items-center pt-16 overflow-hidden bg-transparent mt-2">
                   <div className="text-center z-10 px-4">
                     <div className="text-3xl md:text-5xl font-semibold tracking-tight mb-2">
                        <EditableText 
@@ -214,7 +214,7 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
 
         if (section.type === 'text_block' || section.type === 'secondary_hero') {
           return (
-            <section key={section.id} className="relative w-full h-[600px] md:h-[700px] flex flex-col items-center pt-16 overflow-hidden bg-black mt-3 text-white">
+            <section key={section.id} className="relative w-full h-[600px] md:h-[700px] flex flex-col items-center pt-16 overflow-hidden bg-transparent mt-3 text-white">
               <div className="text-center z-10 px-4">
                 <div className="text-3xl md:text-5xl font-semibold tracking-tight mb-2">
                    <EditableText 
@@ -258,7 +258,7 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
 
         if (section.type === 'featured_products' || section.type === 'products') {
           return (
-            <section key={section.id} className="max-w-[2560px] mx-auto w-full px-3 py-3 grid grid-cols-1 md:grid-cols-2 gap-3 bg-[#f5f5f7]">
+            <section key={section.id} className="max-w-[2560px] mx-auto w-full px-3 py-3 grid grid-cols-1 md:grid-cols-2 gap-3 bg-transparent">
               {products.slice(0, 6).map((product, idx) => (
                 <Link href={`/store/${slug}/product/${product.id}`} key={product.id} className={`relative h-[500px] md:h-[580px] overflow-hidden flex flex-col items-center pt-12 text-center group ${idx % 3 === 0 ? 'bg-black text-white' : 'bg-white text-[#1d1d1f]'}`}>
                   <h4 className="text-3xl font-semibold tracking-tight mb-2">{product.name}</h4>
@@ -317,7 +317,7 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
 
         if (section.type === 'categories' || section.type === 'carousel') {
           return (
-            <section key={section.id} className="bg-white py-16">
+            <section key={section.id} className="bg-transparent py-16">
                <div className="max-w-[1400px] mx-auto px-6 text-left">
                   <div className="text-3xl font-semibold tracking-tight mb-8">
                     <EditableText 
@@ -356,7 +356,7 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-1  bg-white border-t border-zinc-100">
+        <section className="py-1  bg-transparent border-t border-zinc-100">
           <div className="w-full space-y-1">
             {bottomBanners.map((banner: any) => (
               <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9]  overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-700">
