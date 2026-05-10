@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, Volume2, VolumeX, Youtube, ExternalLink, X } from "lucide-react";
+import { Play, Volume2, VolumeX, ExternalLink, X } from "lucide-react";
 
 interface VideoSectionProps {
   section: any;
@@ -111,7 +111,13 @@ function VideoCard({ video, style }: { video: any, style: string }) {
 
       {/* Info Overlay */}
       <div className="absolute top-6 left-6 flex items-center gap-2">
-         {info?.type === 'youtube' && <div className="bg-red-600 text-white p-1.5 rounded-lg shadow-lg"><Youtube size={14} /></div>}
+         {info?.type === 'youtube' && (
+           <div className="bg-red-600 text-white p-1.5 rounded-lg shadow-lg">
+             <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+               <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+             </svg>
+           </div>
+         )}
          {info?.type === 'tiktok' && <div className="bg-black text-white p-1.5 rounded-lg shadow-lg"><svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.89-.6-4.13-1.47-.13 5.35.13 10.71-.14 16.06-1.55 1.55-3.87 2.22-5.99 1.64-2.84-.64-4.87-3.52-4.38-6.37.28-2.2 1.93-4.08 4.09-4.5 1.02-.23 2.1-.11 3.03.3v-4.06c-2.45-.44-5.01-.22-7.3 1.01-1.74.96-3.13 2.5-3.83 4.36-1.34 3.73-.24 8.35 3.03 10.93 3.05 2.51 7.9 2.5 11 0 2.24-1.8 3.53-4.7 3.42-7.61V0c-1.33 0-2.67.01-4 0-.11 1.01-.64 1.97-1.47 2.58-.83.61-1.88.85-2.89.8V.02z"/></svg></div>}
          {info?.type === 'upload' && <div className="bg-blue-600 text-white p-1.5 rounded-lg shadow-lg"><Play size={14} /></div>}
       </div>
