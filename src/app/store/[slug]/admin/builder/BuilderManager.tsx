@@ -41,6 +41,7 @@ const SECTION_DEFINITIONS = [
   { id: 'testimonials', name: 'Testimonials', icon: MessageSquare, defaultStyle: 'cards' },
   { id: 'text_block', name: 'Rich Text', icon: Type, defaultStyle: 'centered' },
   { id: 'video', name: 'Video Section', icon: Video, defaultStyle: 'default' },
+  { id: 'marquee', name: 'Announcement Marquee', icon: Type, defaultStyle: 'default' },
 ];
 
 export default function BuilderManager({ initialSettings, slug }: { initialSettings: StoreSettings, slug: string }) {
@@ -90,7 +91,9 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
       id: `sec-${Date.now()}`,
       type,
       style: def.defaultStyle,
-      config: { title: `New ${def.name}` }
+      config: type === 'marquee' 
+        ? { enabled: true, items: [{ id: '1', text: 'New Announcement' }], backgroundColor: '#000000', textColor: '#ffffff', speed: 20 }
+        : { title: `New ${def.name}` }
     };
     
     setLayout([...layout, newSection]);
@@ -455,6 +458,117 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                           className="w-4 h-4 rounded text-blue-600"
                         />
                         <label htmlFor="autoPlay" className="text-sm font-medium text-slate-700">Loop Videos (where supported)</label>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeSection.type === 'marquee' && (
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between border-b pb-4 mb-4">
+                        <h3 className="text-sm font-bold text-slate-800">Visibility</h3>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <span className="text-sm font-bold text-slate-500">Enable</span>
+                          <input 
+                            type="checkbox" 
+                            checked={activeSection.config.enabled !== false} 
+                            onChange={e => updateSectionConfig(activeSection.id, 'enabled', e.target.checked)} 
+                            className="w-5 h-5 rounded text-blue-600 focus:ring-blue-600 accent-blue-600"
+                          />
+                        </label>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Background Color</label>
+                          <div className="flex gap-3">
+                            <input 
+                              type="color" 
+                              value={activeSection.config.backgroundColor || '#000000'} 
+                              onChange={e => updateSectionConfig(activeSection.id, 'backgroundColor', e.target.value)} 
+                              className="h-10 w-16 p-1 rounded-lg border border-slate-300 cursor-pointer bg-white" 
+                            />
+                            <input 
+                              type="text" 
+                              value={activeSection.config.backgroundColor || '#000000'} 
+                              onChange={e => updateSectionConfig(activeSection.id, 'backgroundColor', e.target.value)} 
+                              className="flex-1 px-4 py-2 border border-slate-300 rounded-lg outline-none font-mono text-sm uppercase" 
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Text Color</label>
+                          <div className="flex gap-3">
+                            <input 
+                              type="color" 
+                              value={activeSection.config.textColor || '#ffffff'} 
+                              onChange={e => updateSectionConfig(activeSection.id, 'textColor', e.target.value)} 
+                              className="h-10 w-16 p-1 rounded-lg border border-slate-300 cursor-pointer bg-white" 
+                            />
+                            <input 
+                              type="text" 
+                              value={activeSection.config.textColor || '#ffffff'} 
+                              onChange={e => updateSectionConfig(activeSection.id, 'textColor', e.target.value)} 
+                              className="flex-1 px-4 py-2 border border-slate-300 rounded-lg outline-none font-mono text-sm uppercase" 
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Animation Speed (s)</label>
+                          <input 
+                            type="number" 
+                            min="5" max="100"
+                            value={activeSection.config.speed || 20} 
+                            onChange={e => updateSectionConfig(activeSection.id, 'speed', Number(e.target.value))} 
+                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" 
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-6 border-t pt-6">
+                        <div className="flex justify-between items-center mb-4">
+                          <h3 className="text-sm font-bold text-slate-800">Scrolling Texts</h3>
+                          <button 
+                            type="button"
+                            onClick={() => {
+                              const newItems = [...(activeSection.config.items || [])];
+                              newItems.push({ id: Math.random().toString(36).substr(2, 9), text: 'New Announcement' });
+                              updateSectionConfig(activeSection.id, 'items', newItems);
+                            }}
+                            className="text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-all"
+                          >
+                            + Add Text
+                          </button>
+                        </div>
+                        <div className="space-y-3">
+                          {(activeSection.config.items || []).map((item: any, idx: number) => (
+                            <div key={item.id} className="flex gap-3">
+                              <input 
+                                type="text" 
+                                value={item.text} 
+                                onChange={e => {
+                                  const newItems = [...(activeSection.config.items || [])];
+                                  newItems[idx].text = e.target.value;
+                                  updateSectionConfig(activeSection.id, 'items', newItems);
+                                }}
+                                className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                              />
+                              <button 
+                                type="button"
+                                onClick={() => {
+                                  const newItems = [...(activeSection.config.items || [])];
+                                  newItems.splice(idx, 1);
+                                  updateSectionConfig(activeSection.id, 'items', newItems);
+                                }}
+                                className="text-red-500 hover:bg-red-50 p-2 rounded-lg transition-colors"
+                              >
+                                <Trash2 className="w-5 h-5" />
+                              </button>
+                            </div>
+                          ))}
+                          {(!activeSection.config.items || activeSection.config.items.length === 0) && (
+                            <p className="text-sm text-slate-500 text-center py-4 border-2 border-dashed rounded-xl">No texts added. Add one above.</p>
+                          )}
+                        </div>
                       </div>
                     </div>
                   )}

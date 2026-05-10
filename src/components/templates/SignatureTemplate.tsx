@@ -390,8 +390,8 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
         }
 
         if (section.type === 'marquee') {
-          return settings.marqueeSettings?.enabled && (
-            <StoreMarquee key={section.id} settings={settings.marqueeSettings} />
+          return section.config?.enabled !== false && (
+            <StoreMarquee key={section.id} settings={section.config as any} />
           );
         }
 

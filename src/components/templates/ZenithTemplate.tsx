@@ -305,8 +305,8 @@ export default function ZenithTemplate({
         }
 
         if (section.type === 'marquee') {
-          return settings.marqueeSettings?.enabled && (
-            <StoreMarquee key={section.id} settings={settings.marqueeSettings} />
+          return section.config?.enabled !== false && (
+            <StoreMarquee key={section.id} settings={section.config as any} />
           );
         }
 

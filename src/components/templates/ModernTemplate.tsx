@@ -226,7 +226,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
           }
 
           if (section.type === 'marquee') {
-            return <StoreMarquee key={section.id} settings={settings.marqueeSettings} />;
+            return section.config?.enabled !== false ? <StoreMarquee key={section.id} settings={section.config as any} /> : null;
           }
 
           if (section.type === 'categories') {
