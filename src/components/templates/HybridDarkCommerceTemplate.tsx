@@ -13,6 +13,7 @@ import SmartImage from "@/components/ui/SmartImage";
 import HeroSlider from "@/components/ui/HeroSlider";
 import { motion } from "framer-motion";
 import SaleSection from "@/components/ui/SaleSection";
+import VideoSection from "@/components/ui/VideoSection";
 import StoreMarquee from "@/components/ui/StoreMarquee";
 
 interface TemplateProps {
@@ -495,6 +496,11 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
                </div>
             </section>
           );
+        }
+
+        
+        if (section.type === 'video') {
+          return <VideoSection key={section.id} section={section} slug={slug} />;
         }
 
         return null;

@@ -18,8 +18,12 @@ import {
   Loader2,
   ChevronDown,
   ChevronUp,
-  Settings
+  Settings,
+  Video,
+  PlayCircle,
+  Link2
 } from "lucide-react";
+import MediaPicker from "../media/MediaPicker";
 
 export interface LayoutSection {
   id: string;
@@ -36,6 +40,7 @@ const SECTION_DEFINITIONS = [
   { id: 'sale', name: 'Sale Offers', icon: Tag, defaultStyle: 'grid' },
   { id: 'testimonials', name: 'Testimonials', icon: MessageSquare, defaultStyle: 'cards' },
   { id: 'text_block', name: 'Rich Text', icon: Type, defaultStyle: 'centered' },
+  { id: 'video', name: 'Video Section', icon: Video, defaultStyle: 'default' },
 ];
 
 export default function BuilderManager({ initialSettings, slug }: { initialSettings: StoreSettings, slug: string }) {
@@ -270,7 +275,16 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                         {style}
                       </button>
                     ))}
-                    {activeSection.type === 'text_block' && ['centered', 'left', 'split_with_image'].map(style => (
+                     {activeSection.type === 'text_block' && ['centered', 'left', 'split_with_image'].map(style => (
+                      <button 
+                        key={style}
+                        onClick={() => updateSection(activeSection.id, { style })}
+                        className={`p-3 rounded-xl border text-sm font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}
+                      >
+                        {style.replace(/_/g, ' ')}
+                      </button>
+                    ))}
+                    {activeSection.type === 'video' && ['default', 'full_width', 'tiktok_style'].map(style => (
                       <button 
                         key={style}
                         onClick={() => updateSection(activeSection.id, { style })}
@@ -360,6 +374,65 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                         className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all min-h-[120px]"
                         placeholder="Write your text here..."
                       />
+                    </div>
+                  )}
+
+                  {activeSection.type === 'video' && (
+                    <div className="space-y-6">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Video Source</label>
+                        <div className="flex gap-2">
+                           <button 
+                             onClick={() => updateSectionConfig(activeSection.id, 'sourceType', 'upload')}
+                             className={`flex-1 p-3 rounded-xl border text-xs font-bold uppercase transition-all ${activeSection.config.sourceType !== 'tiktok' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-slate-200 text-slate-500'}`}
+                           >
+                             Local Video
+                           </button>
+                           <button 
+                             onClick={() => updateSectionConfig(activeSection.id, 'sourceType', 'tiktok')}
+                             className={`flex-1 p-3 rounded-xl border text-xs font-bold uppercase transition-all ${activeSection.config.sourceType === 'tiktok' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-slate-200 text-slate-500'}`}
+                           >
+                             TikTok Link
+                           </button>
+                        </div>
+                      </div>
+
+                      {activeSection.config.sourceType === 'tiktok' ? (
+                        <div>
+                          <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">TikTok URL</label>
+                          <div className="relative">
+                            <Link2 className="absolute left-4 top-3.5 text-slate-400 w-4 h-4" />
+                            <input 
+                              type="text" 
+                              placeholder="https://www.tiktok.com/@user/video/..." 
+                              value={activeSection.config.videoUrl || ''} 
+                              onChange={(e) => updateSectionConfig(activeSection.id, 'videoUrl', e.target.value)}
+                              className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                           <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 text-blue-600">Local Video Asset</label>
+                           <MediaPicker 
+                              slug={slug}
+                              value={activeSection.config.videoUrl || ''} 
+                              onChange={(url) => updateSectionConfig(activeSection.id, 'videoUrl', url)}
+                           />
+                           <p className="text-[10px] text-slate-400 mt-2 italic">Select a video file (.mp4, .webm) from your media library or device.</p>
+                        </div>
+                      )}
+                      
+                      <div className="flex items-center gap-2">
+                        <input 
+                          type="checkbox" 
+                          id="autoPlay"
+                          checked={activeSection.config.autoPlay !== false} 
+                          onChange={(e) => updateSectionConfig(activeSection.id, 'autoPlay', e.target.checked)}
+                          className="w-4 h-4 rounded text-blue-600"
+                        />
+                        <label htmlFor="autoPlay" className="text-sm font-medium text-slate-700">Auto Play</label>
+                      </div>
                     </div>
                   )}
                   

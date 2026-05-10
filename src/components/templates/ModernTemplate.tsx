@@ -12,6 +12,7 @@ import SmartImage from "@/components/ui/SmartImage";
 import HeroSlider from "@/components/ui/HeroSlider";
 import StoreMarquee from "@/components/ui/StoreMarquee";
 import SaleSection from "@/components/ui/SaleSection";
+import VideoSection from "@/components/ui/VideoSection";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface TemplateProps {
@@ -484,6 +485,11 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                </div>
             </section>
           );
+        }
+
+        
+        if (section.type === 'video') {
+          return <VideoSection key={section.id} section={section} slug={slug} />;
         }
 
         return null;

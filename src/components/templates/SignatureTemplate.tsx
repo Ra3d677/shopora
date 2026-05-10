@@ -14,6 +14,7 @@ import EditableText from "@/components/editor/EditableText";
 import EditableImage from "@/components/editor/EditableImage";
 import EditableButton from "@/components/editor/EditableButton";
 import SaleSection from "@/components/ui/SaleSection";
+import VideoSection from "@/components/ui/VideoSection";
 import { useEditorStore } from "@/store/editor";
 import { updateStoreSettingByKey } from "@/app/store/[slug]/admin/actions";
 
@@ -645,6 +646,11 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                </div>
             </section>
           );
+        }
+
+        
+        if (section.type === 'video') {
+          return <VideoSection key={section.id} section={section} slug={slug} />;
         }
 
         return null;

@@ -13,6 +13,7 @@ import { useEditorStore } from "@/store/editor";
 import SmartImage from "@/components/ui/SmartImage";
 import HeroSlider from "@/components/ui/HeroSlider";
 import SaleSection from "@/components/ui/SaleSection";
+import VideoSection from "@/components/ui/VideoSection";
 
 import EditableImage from "@/components/editor/EditableImage";
 
@@ -431,6 +432,11 @@ export default function SennoTemplate({ store, banners = [], settings, products,
                </div>
             </section>
           );
+        }
+
+        
+        if (section.type === 'video') {
+          return <VideoSection key={section.id} section={section} slug={slug} />;
         }
 
         return null;

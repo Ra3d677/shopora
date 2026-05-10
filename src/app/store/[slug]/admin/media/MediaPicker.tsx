@@ -47,6 +47,39 @@ export default function MediaPicker({ value, onChange, slug }: MediaPickerProps)
     setUploading(true);
 
     try {
+      const isVideo = file.type.startsWith("video/");
+      
+      if (isVideo) {
+        // Direct upload for videos (no client-side compression for now)
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = async (event) => {
+          const base64Url = event.target?.result as string;
+          
+          const res = await fetch(`/api/store/${slug}/media`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              url: base64Url,
+              name: file.name,
+              type: "video"
+            })
+          });
+
+          if (res.ok) {
+            const newMedia = await res.json();
+            onChange(newMedia.url);
+            setMedia(prev => [newMedia, ...prev]);
+          } else {
+            alert("Failed to upload video.");
+          }
+          setUploading(false);
+          if (fileInputRef.current) fileInputRef.current.value = '';
+        };
+        return;
+      }
+
+      // Existing image logic
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = async (event) => {
@@ -115,7 +148,11 @@ export default function MediaPicker({ value, onChange, slug }: MediaPickerProps)
       {/* Current Preview or Empty State */}
       {value ? (
         <div className="group relative w-full aspect-video md:aspect-square max-w-[300px] rounded-3xl border-4 border-slate-100 overflow-hidden bg-slate-50 shadow-inner transition-all hover:border-blue-100">
-          <img src={value} alt="Preview" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          {value.includes("video") || value.includes(".mp4") || value.includes(".webm") ? (
+            <video src={value} className="w-full h-full object-cover" muted />
+          ) : (
+            <img src={value} alt="Preview" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          )}
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
             <button 
               type="button"
@@ -147,7 +184,7 @@ export default function MediaPicker({ value, onChange, slug }: MediaPickerProps)
           type="file" 
           ref={fileInputRef} 
           onChange={handleFileChange} 
-          accept="image/*" 
+          accept="image/*,video/*" 
           className="hidden" 
         />
         <button 
@@ -238,8 +275,12 @@ export default function MediaPicker({ value, onChange, slug }: MediaPickerProps)
                         setIsOpen(false);
                       }}
                       className={`group relative aspect-square rounded-[2rem] overflow-hidden border-4 transition-all hover:scale-[1.02] active:scale-[0.98] ${value === item.url ? 'border-blue-600 shadow-2xl shadow-blue-600/20' : 'border-white shadow-lg shadow-slate-200/50 hover:border-blue-100'}`}
-                    >
-                      <img src={item.url} alt={item.name} className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                     >
+                      {item.url.includes("video") || item.type === "video" ? (
+                        <video src={item.url} className="w-full h-full object-cover" muted />
+                      ) : (
+                        <img src={item.url} alt={item.name} className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                          <p className="text-[10px] font-black text-white uppercase tracking-widest truncate">{item.name}</p>
                       </div>

@@ -14,6 +14,7 @@ import HeroSlider from "@/components/ui/HeroSlider";
 import StoreMarquee from "@/components/ui/StoreMarquee";
 import { motion } from "framer-motion";
 import SaleSection from "@/components/ui/SaleSection";
+import VideoSection from "@/components/ui/VideoSection";
 
 interface TemplateProps {
   banners: any[];
@@ -375,6 +376,11 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
               </div>
             </section>
           );
+        }
+
+        
+        if (section.type === 'video') {
+          return <VideoSection key={section.id} section={section} slug={slug} />;
         }
 
         return null;

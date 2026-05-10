@@ -420,6 +420,11 @@ export default function ObsidianTemplate({
           );
         }
 
+        
+        if (section.type === 'video') {
+          return <VideoSection key={section.id} section={section} slug={slug} />;
+        }
+
         return null;
       })}
 

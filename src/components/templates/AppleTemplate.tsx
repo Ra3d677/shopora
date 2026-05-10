@@ -14,6 +14,7 @@ import { useEditorStore } from "@/store/editor";
 import { updateStoreSettingByKey } from "@/app/store/[slug]/admin/actions";
 import { motion } from "framer-motion";
 import SaleSection from "@/components/ui/SaleSection";
+import VideoSection from "@/components/ui/VideoSection";
 
 interface TemplateProps {
   banners: any[];
@@ -349,6 +350,11 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
 
         if (section.type === 'sale') {
           return <SaleSection key={section.id} section={section} products={products} slug={slug} template="apple" />;
+        }
+
+        
+        if (section.type === 'video') {
+          return <VideoSection key={section.id} section={section} slug={slug} />;
         }
 
         return null;

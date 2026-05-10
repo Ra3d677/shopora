@@ -12,6 +12,7 @@ import { updateStoreSettingByKey } from "@/app/store/[slug]/admin/actions";
 import SmartImage from "@/components/ui/SmartImage";
 import HeroSlider from "@/components/ui/HeroSlider";
 import SaleSection from "@/components/ui/SaleSection";
+import VideoSection from "@/components/ui/VideoSection";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface TemplateProps {
@@ -344,6 +345,11 @@ export default function AmazonTemplate({ banners, settings, products, slug, cate
 
         if (section.type === 'sale') {
           return <SaleSection key={section.id} section={section} products={products} slug={slug} template="amazon" />;
+        }
+
+        
+        if (section.type === 'video') {
+          return <VideoSection key={section.id} section={section} slug={slug} />;
         }
 
         return null;
