@@ -4,14 +4,16 @@ import { useState, useEffect, useRef } from "react";
 import { getStoreMedia } from "@/lib/data";
 import { ImageIcon, Plus, X, Search, CheckCircle2, Link as LinkIcon, Library, Loader2, UploadCloud } from "lucide-react";
 import { Media } from "@prisma/client";
+import { cn } from "@/lib/utils";
 
 interface MediaPickerProps {
   value: string;
   onChange: (url: string) => void;
   slug: string;
+  className?: string;
 }
 
-export default function MediaPicker({ value, onChange, slug }: MediaPickerProps) {
+export default function MediaPicker({ value, onChange, slug, className }: MediaPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [media, setMedia] = useState<Media[]>([]);
   const [loading, setLoading] = useState(false);
@@ -144,7 +146,7 @@ export default function MediaPicker({ value, onChange, slug }: MediaPickerProps)
   const filteredMedia = media.filter(m => m.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div className="space-y-4">
+    <div className={cn("space-y-4", className)}>
       {/* Current Preview or Empty State */}
       {value ? (
         <div className="group relative w-full aspect-video md:aspect-square max-w-[300px] rounded-3xl border-4 border-slate-100 overflow-hidden bg-slate-50 shadow-inner transition-all hover:border-blue-100">
