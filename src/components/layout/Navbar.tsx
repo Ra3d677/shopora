@@ -88,7 +88,8 @@ export default function Navbar({
 
   if (effectiveLayout === 'signature') {
     return (
-      <SignatureNavbar 
+      <>
+        <SignatureNavbar 
         storeName={storeSettings?.storeName || 'Store'} 
         logoUrl={storeSettings?.logoUrl} 
         slug={slug || ''} 
@@ -96,6 +97,7 @@ export default function Navbar({
         session={session}
         storeSettings={storeSettings}
       />
+      </>
     );
   }
 
@@ -289,7 +291,8 @@ export default function Navbar({
   // 1. MINIMAL NAVBAR
   if (effectiveLayout === 'minimal') {
     return (
-      <nav 
+      <>
+        <nav 
         className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-zinc-100 font-light antialiased transition-colors"
         style={{ backgroundColor: 'var(--color-header-bg, rgba(255,255,255,0.9))', color: 'var(--color-header-text, #18181b)' }}
       >
@@ -320,6 +323,7 @@ export default function Navbar({
         </div>
       </nav>
       <MobileMenuDrawer />
+      </>
 
     );
   }
@@ -327,7 +331,8 @@ export default function Navbar({
   // 2. APPLE NAVBAR
   if (effectiveLayout === 'apple') {
     return (
-      <nav 
+      <>
+        <nav 
         className="sticky top-0 z-50 w-full backdrop-blur-md font-sans text-xs antialiased border-b border-[#333336] transition-colors"
         style={{ backgroundColor: 'var(--color-header-bg, rgba(29,29,31,0.8))', color: 'var(--color-header-text, #f5f5f7)' }}
       >
@@ -356,6 +361,7 @@ export default function Navbar({
         </div>
       </nav>
       <MobileMenuDrawer />
+      </>
 
     );
   }
@@ -398,7 +404,8 @@ export default function Navbar({
   
   if (effectiveLayout === 'standard') {
     return (
-      <nav className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
+      <>
+        <nav className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex h-20 items-center justify-between">
             <Link href={`/store/${slug}`} className="flex-shrink-0 text-2xl font-black tracking-tighter uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
@@ -420,15 +427,15 @@ export default function Navbar({
         </div>
       </nav>
       <MobileMenuDrawer />
-
-      <MobileMenuDrawer />
+      </>
 
     );
   }
 
   if (effectiveLayout === 'centered') {
     return (
-      <nav className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
+      <>
+        <nav className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex h-24 items-center justify-between">
             <div className="hidden lg:flex flex-1 items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-600">
@@ -450,13 +457,15 @@ export default function Navbar({
         </div>
       </nav>
       <MobileMenuDrawer />
+      </>
 
     );
   }
 
   if (effectiveLayout === 'luxury') {
     return (
-      <nav className="sticky top-0 z-50 w-full backdrop-blur-2xl border-b border-slate-100 bg-white/95 text-slate-900 transition-colors py-4">
+      <>
+        <nav className="sticky top-0 z-50 w-full backdrop-blur-2xl border-b border-slate-100 bg-white/95 text-slate-900 transition-colors py-4">
         <div className="container mx-auto px-6 lg:px-12 flex flex-col items-center gap-6">
           <div className="w-full flex justify-between items-center relative">
              <div className="w-32 flex items-center gap-4">
@@ -479,12 +488,15 @@ export default function Navbar({
           </div>
         </div>
       </nav>
+      <MobileMenuDrawer />
+      </>
     );
   }
 
   if (effectiveLayout === 'hamburger') {
     return (
-      <nav className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
+      <>
+        <nav className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex h-20 items-center justify-between">
             <div className="flex-1 flex items-center gap-6">
@@ -498,12 +510,12 @@ export default function Navbar({
               <SearchBar />
               <UserMenuDropdown />
               <CartButton />
-            <button className="lg:hidden p-2 hover:bg-slate-100 rounded-full transition-colors" onClick={() => setIsMobileMenuOpen(true)}><Menu className="w-6 h-6" /></button>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
-    <MobileMenuDrawer />
+      </nav>
+      <MobileMenuDrawer />
+      </>
 
     );
   }
@@ -512,35 +524,39 @@ export default function Navbar({
 
   // DEFAULT (LUXURY)
   return (
-    <nav 
-      className="sticky top-0 z-50 w-full backdrop-blur-2xl border-b border-[#1a1a1a]/5 font-serif transition-colors"
-      style={{ backgroundColor: 'var(--color-header-bg, rgba(250,249,246,0.8))', color: 'var(--color-header-text, #1a1a1a)' }}
-    >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12">
-        <div className="flex h-28 items-center justify-between">
-          <div className="hidden lg:flex flex-1 items-center gap-10 text-[11px] uppercase tracking-[0.3em] font-sans font-bold">
-            {headerLinks.map((link: any) => (
-              <Link key={link.id} href={link.url} className="hover:opacity-40 transition-opacity">{link.label}</Link>
-            ))}
-          </div>
-          
-          <Link href={`/store/${slug}`} className="flex-1 text-center text-4xl font-light tracking-[0.2em] uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
-            {storeSettings?.logoUrl ? (
-              <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="h-16 mx-auto w-auto object-contain" />
-            ) : (
-              storeSettings?.storeName || 'Store'
-            )}
-          </Link>
-          
-          <div className="flex-1 flex items-center justify-end gap-6 text-[11px] uppercase tracking-[0.3em] font-sans font-bold">
-            <LanguageSwitcher />
-            <SearchBar />
-            <UserMenuDropdown />
-            <CartButton />
+    <>
+      <nav 
+        className="sticky top-0 z-50 w-full backdrop-blur-2xl border-b border-[#1a1a1a]/5 font-serif transition-colors"
+        style={{ backgroundColor: 'var(--color-header-bg, rgba(250,249,246,0.8))', color: 'var(--color-header-text, #1a1a1a)' }}
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12">
+          <div className="flex h-28 items-center justify-between">
+            <div className="hidden lg:flex flex-1 items-center gap-10 text-[11px] uppercase tracking-[0.3em] font-sans font-bold">
+              {headerLinks.map((link: any) => (
+                <Link key={link.id} href={link.url} className="hover:opacity-40 transition-opacity">{link.label}</Link>
+              ))}
+            </div>
+            
+            <Link href={`/store/${slug}`} className="flex-1 text-center text-4xl font-light tracking-[0.2em] uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
+              {storeSettings?.logoUrl ? (
+                <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="h-16 mx-auto w-auto object-contain" />
+              ) : (
+                storeSettings?.storeName || 'Store'
+              )}
+            </Link>
+            
+            <div className="flex-1 flex items-center justify-end gap-6 text-[11px] uppercase tracking-[0.3em] font-sans font-bold">
+              <LanguageSwitcher />
+              <SearchBar />
+              <UserMenuDropdown />
+              <CartButton />
+              <button className="lg:hidden p-2 hover:bg-slate-100 rounded-full transition-colors" onClick={() => setIsMobileMenuOpen(true)}><Menu className="w-6 h-6" /></button>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+      <MobileMenuDrawer />
+    </>
   );
 }
 
