@@ -327,7 +327,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                         alt={banner.title} 
                         className="md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
                       />
-                      <div className="absolute inset-0 bg-slate-900/40 group-hover:bg-slate-900/20 transition-colors" />
+                      <div className="absolute inset-0 bg-transparent transition-colors" />
                       <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 md:p-12 text-white">
                         <h2 className="text-4xl md:text-8xl font-black tracking-tighter leading-none mb-6 italic">{banner.title}</h2>
                         <p className="text-xl md:text-2xl font-medium opacity-90 max-w-2xl mb-10">{banner.subtitle}</p>
