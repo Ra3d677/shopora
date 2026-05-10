@@ -12,9 +12,11 @@ import { trackViewContent, trackAddToCart } from "@/lib/tracking";
 import Link from "next/link";
 
 export default function ProductDetailClient({ product, store }: { product: Product, store: any }) {
+  const productColors = Array.isArray(product.colors) ? product.colors.map(c => typeof c === 'string' ? { name: c, value: c, imageUrl: null } : c) : [];
+
   const [selectedImage, setSelectedImage] = useState(product.images[0] || "");
   const [selectedSize, setSelectedSize] = useState(product.sizes[0] || "");
-  const [selectedColor, setSelectedColor] = useState(product.colors[0] || "");
+  const [selectedColor, setSelectedColor] = useState<any>(productColors[0] || null);
   const [isAdding, setIsAdding] = useState(false);
   
   const addItem = useCartStore(state => state.addItem);
@@ -24,15 +26,22 @@ export default function ProductDetailClient({ product, store }: { product: Produ
     trackViewContent(product, store);
   }, [product, store]);
 
+  // Switch image when color changes
+  useEffect(() => {
+    if (selectedColor?.imageUrl) {
+      setSelectedImage(selectedColor.imageUrl);
+    }
+  }, [selectedColor]);
+
   const handleAddToCart = () => {
     setIsAdding(true);
     addItem({
-      id: `${product.id}-${selectedSize}-${selectedColor}`,
+      id: `${product.id}-${selectedSize}-${selectedColor?.name || selectedColor?.value || 'default'}`,
       storeId: product.storeId,
       product,
       quantity: 1,
       selectedSize,
-      selectedColor
+      selectedColor: selectedColor?.name || selectedColor?.value || 'default'
     });
     trackAddToCart(product, 1, store);
   };
@@ -48,6 +57,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
         setSelectedSize={setSelectedSize}
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
+        productColors={productColors}
         isAdding={isAdding}
         handleAddToCart={handleAddToCart}
       />
@@ -112,20 +122,20 @@ export default function ProductDetailClient({ product, store }: { product: Produ
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mb-10">
           <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Color Selection</h3>
-          <div className="flex gap-4">
-            {product.colors.map((color: string) => (
+          <div className="flex flex-wrap gap-4">
+            {productColors.map((color: any, idx: number) => (
               <button
-                key={color}
+                key={idx}
                 onClick={() => setSelectedColor(color)}
                 className={cn(
                   "h-12 w-12 rounded-full border border-slate-200 flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md",
-                  selectedColor === color ? "ring-2 ring-slate-900 ring-offset-4 scale-110" : "hover:scale-110"
+                  selectedColor?.value === color.value ? "ring-2 ring-slate-900 ring-offset-4 scale-110" : "hover:scale-110"
                 )}
-                style={{ backgroundColor: color }}
-                aria-label={`Select color ${color}`}
+                style={{ backgroundColor: color.value }}
+                aria-label={`Select color ${color.name}`}
               >
-                {selectedColor === color && (
-                  <Check className={cn("h-6 w-6", color === '#ffffff' ? "text-slate-900" : "text-white")} />
+                {selectedColor?.value === color.value && (
+                  <Check className={cn("h-6 w-6", color.value === '#ffffff' ? "text-slate-900" : "text-white")} />
                 )}
               </button>
             ))}
@@ -214,6 +224,7 @@ function SennoProductDetail({
   setSelectedSize,
   selectedColor,
   setSelectedColor,
+  productColors,
   isAdding,
   handleAddToCart
 }: any) {
@@ -285,22 +296,22 @@ function SennoProductDetail({
                 <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-4">
                    Select Color <div className="flex-1 h-[1px] bg-slate-100" />
                 </h3>
-                <div className="flex gap-4">
-                   {product.colors.map((color: string) => (
-                     <button
-                       key={color}
-                       onClick={() => setSelectedColor(color)}
-                       className={cn(
-                         "h-12 w-12 rounded-full border border-slate-100 flex items-center justify-center transition-all duration-500",
-                         selectedColor === color ? "ring-2 ring-[#f06292] ring-offset-4 scale-110 shadow-xl shadow-[#f06292]/20" : "hover:scale-110"
-                       )}
-                       style={{ backgroundColor: color }}
-                     >
-                       {selectedColor === color && (
-                         <Check className={cn("h-6 w-6", color === '#ffffff' ? "text-slate-900" : "text-white")} />
-                       )}
-                     </button>
-                   ))}
+                <div className="flex flex-wrap gap-4">
+                    {productColors.map((color: any, idx: number) => (
+                      <button
+                        key={idx}
+                        onClick={() => setSelectedColor(color)}
+                        className={cn(
+                          "h-12 w-12 rounded-full border border-slate-100 flex items-center justify-center transition-all duration-500",
+                          selectedColor?.value === color.value ? "ring-2 ring-[#f06292] ring-offset-4 scale-110 shadow-xl shadow-[#f06292]/20" : "hover:scale-110"
+                        )}
+                        style={{ backgroundColor: color.value }}
+                      >
+                        {selectedColor?.value === color.value && (
+                          <Check className={cn("h-6 w-6", color.value === '#ffffff' ? "text-slate-900" : "text-white")} />
+                        )}
+                      </button>
+                    ))}
                 </div>
              </motion.div>
 

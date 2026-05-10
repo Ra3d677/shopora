@@ -34,13 +34,29 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
   const handleAddColor = (e: React.KeyboardEvent | React.MouseEvent) => {
     e.preventDefault();
     if (!colorInput.trim()) return;
-    if ((formData.colors || []).includes(colorInput.trim())) { setColorInput(""); return; }
-    setFormData({ ...formData, colors: [...(formData.colors || []), colorInput.trim()] });
+    
+    const colors = Array.isArray(formData.colors) ? formData.colors : [];
+    // If it's old format (strings), convert it
+    const normalizedColors = colors.map((c: any) => typeof c === 'string' ? { name: c, value: c, imageUrl: null } : c);
+    
+    if (normalizedColors.some((c: any) => c.value === colorInput.trim())) { setColorInput(""); return; }
+    
+    setFormData({ 
+      ...formData, 
+      colors: [...normalizedColors, { name: colorInput.trim(), value: colorInput.trim(), imageUrl: null }] 
+    });
     setColorInput("");
   };
 
   const handleRemoveColor = (index: number) => {
-    setFormData({ ...formData, colors: (formData.colors || []).filter((_: any, i: number) => i !== index) });
+    const colors = Array.isArray(formData.colors) ? formData.colors : [];
+    setFormData({ ...formData, colors: colors.filter((_: any, i: number) => i !== index) });
+  };
+
+  const handleUpdateColorImage = (index: number, imageUrl: string | null) => {
+    const colors = [...(formData.colors || [])];
+    colors[index] = { ...colors[index], imageUrl };
+    setFormData({ ...formData, colors });
   };
 
   const defaultCategoryId = categories.length > 0 ? categories[0].id : "";
@@ -52,7 +68,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
     discount_price: null,
     category_id: defaultCategoryId,
     sizes: ["M", "L"],
-    colors: ["#000000"],
+    colors: [{ name: "Black", value: "#000000", imageUrl: null }],
     images: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80"],
     stock_quantity: 10,
     status: "active"
@@ -112,7 +128,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
       discount_price: null,
       category_id: defaultCategoryId,
       sizes: ["M", "L"],
-      colors: ["#000000"],
+      colors: [{ name: "Black", value: "#000000", imageUrl: null }],
       images: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80"],
       stock_quantity: 10,
       status: "active"
@@ -198,19 +214,68 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                 </div>
 
                 <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl">
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Colors Available</label>
-                  <p className="text-xs text-slate-500 mb-4">Add colors by name (e.g. black, blue) or HEX code (#FF0000)</p>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">Colors & Variation Images</label>
+                  <p className="text-xs text-slate-500 mb-4">Add colors and optionally link an image to each.</p>
                   
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {formData.colors?.map((color: string, index: number) => (
-                      <div key={index} className="flex items-center gap-2 bg-white border border-slate-200 pl-2 pr-3 py-1.5 rounded-full shadow-sm">
-                        <span className="w-4 h-4 rounded-full border border-slate-200 shadow-inner" style={{backgroundColor: color}}></span>
-                        <span className="text-xs font-bold capitalize">{color}</span>
-                        <button type="button" onClick={() => handleRemoveColor(index)} className="ml-1 text-slate-400 hover:text-red-500 transition-colors">
-                          <X className="w-3 h-3" />
-                        </button>
-                      </div>
-                    ))}
+                  <div className="space-y-3 mb-4">
+                    {formData.colors?.map((colorObj: any, index: number) => {
+                      const color = typeof colorObj === 'string' ? { name: colorObj, value: colorObj, imageUrl: null } : colorObj;
+                      return (
+                        <div key={index} className="bg-white border border-slate-200 p-3 rounded-xl shadow-sm flex flex-col gap-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <span className="w-6 h-6 rounded-full border border-slate-200 shadow-inner" style={{backgroundColor: color.value}}></span>
+                              <input 
+                                type="text" 
+                                value={color.name} 
+                                onChange={(e) => {
+                                  const newColors = [...formData.colors];
+                                  newColors[index] = { ...color, name: e.target.value };
+                                  setFormData({...formData, colors: newColors});
+                                }}
+                                className="text-xs font-bold capitalize bg-slate-50 border-none rounded px-2 py-1 outline-none focus:ring-1 focus:ring-primary w-24"
+                              />
+                            </div>
+                            <button type="button" onClick={() => handleRemoveColor(index)} className="text-slate-300 hover:text-red-500 transition-colors">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                          
+                          <div className="flex items-center gap-3">
+                             <div className="shrink-0">
+                                {color.imageUrl ? (
+                                  <div className="relative w-12 h-12 rounded-lg overflow-hidden border border-slate-100">
+                                     <Image src={color.imageUrl} alt="Variant" fill className="object-cover" />
+                                     <button 
+                                       type="button" 
+                                       onClick={() => handleUpdateColorImage(index, null)}
+                                       className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center text-white"
+                                     >
+                                       <X className="w-3 h-3" />
+                                     </button>
+                                  </div>
+                                ) : (
+                                  <div className="w-12 h-12 rounded-lg bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center text-slate-300">
+                                     <Plus className="w-4 h-4" />
+                                  </div>
+                                )}
+                             </div>
+                             <div className="flex-1">
+                                <select 
+                                  className="w-full text-[10px] font-bold uppercase tracking-widest bg-slate-50 border-none rounded-lg px-2 py-2"
+                                  value={color.imageUrl || ''}
+                                  onChange={(e) => handleUpdateColorImage(index, e.target.value || null)}
+                                >
+                                  <option value="">No linked image</option>
+                                  {formData.images?.map((img: string, i: number) => (
+                                    <option key={i} value={img}>Image {i + 1}</option>
+                                  ))}
+                                </select>
+                             </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                     {(!formData.colors || formData.colors.length === 0) && <span className="text-sm text-slate-400 italic">No colors added yet</span>}
                   </div>
                   
@@ -228,7 +293,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                         onChange={e => setColorInput(e.target.value)} 
                         onKeyDown={e => e.key === 'Enter' && handleAddColor(e)}
                         className="flex-1 px-4 py-2 border-0 outline-none" 
-                        placeholder="Type or pick a color..." 
+                        placeholder="Add new color..." 
                       />
                     </div>
                     <button type="button" onClick={handleAddColor} className="px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-black transition-colors text-sm font-medium">Add</button>
@@ -248,12 +313,38 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Product Image</label>
-                <MediaPicker 
-                  slug={slug}
-                  value={formData.images?.[0] || ''} 
-                  onChange={url => setFormData({...formData, images: [url]})} 
-                />
+                <label className="block text-sm font-medium mb-3">Product Images Gallery</label>
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  {(formData.images || []).map((img: string, i: number) => (
+                    <div key={i} className="relative aspect-square rounded-2xl overflow-hidden border-2 border-slate-100 group">
+                       <Image src={img} alt="Product" fill className="object-cover" />
+                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+                          <button 
+                            type="button" 
+                            onClick={() => {
+                              const newImgs = [...(formData.images || [])];
+                              newImgs.splice(i, 1);
+                              setFormData({...formData, images: newImgs});
+                            }}
+                            className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-all"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                          <span className="text-[10px] font-black text-white uppercase tracking-widest">Image {i + 1}</span>
+                       </div>
+                    </div>
+                  ))}
+                  <div className="aspect-square rounded-2xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center gap-2 hover:bg-slate-50 transition-colors cursor-pointer relative overflow-hidden">
+                    <Plus className="w-6 h-6 text-slate-300" />
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center px-4">Add More</span>
+                    <MediaPicker 
+                       slug={slug} 
+                       value="" 
+                       onChange={(url) => setFormData({...formData, images: [...(formData.images || []), url]})} 
+                       className="absolute inset-0 opacity-0"
+                    />
+                  </div>
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -329,7 +420,10 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                         {product.sizes?.length > 3 && <span className="text-[10px] font-bold text-slate-400">+{product.sizes.length - 3}</span>}
                       </div>
                       <div className="flex items-center gap-1">
-                        {product.colors?.length > 0 ? product.colors.slice(0, 3).map((c: string, i: number) => <span key={i} className="w-3 h-3 rounded-full border border-slate-200" style={{ backgroundColor: c }} title={c} />) : null}
+                        {product.colors?.length > 0 ? product.colors.slice(0, 3).map((c: any, i: number) => {
+                          const color = typeof c === 'string' ? { value: c } : c;
+                          return <span key={i} className="w-3 h-3 rounded-full border border-slate-200" style={{ backgroundColor: color.value }} title={color.name || color.value} />;
+                        }) : null}
                         {product.colors?.length > 3 && <span className="text-[10px] font-bold text-slate-400">+{product.colors.length - 3}</span>}
                       </div>
                     </div>
