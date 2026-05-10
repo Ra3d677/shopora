@@ -111,6 +111,10 @@ export interface Banner {
   subtitle?: string | null;
   buttonText?: string | null;
   buttonLink?: string | null;
+  showButton?: boolean;
+  buttonPosition?: string;
+  buttonShape?: string;
+  buttonColor?: string;
   isActive: boolean;
   order: number;
   position?: string | null;

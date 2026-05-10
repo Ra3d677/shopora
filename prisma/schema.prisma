@@ -97,6 +97,10 @@ model Banner {
   subtitle   String?
   buttonText String?
   buttonLink String?
+  showButton Boolean @default(true)
+  buttonPosition String @default("center")
+  buttonShape String @default("rounded")
+  buttonColor String @default("primary")
   isActive   Boolean @default(true)
   order      Int     @default(0)
   position   String  @default("top")

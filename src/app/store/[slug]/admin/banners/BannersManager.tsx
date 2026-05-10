@@ -24,6 +24,10 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
       subtitle: "Add a catchy subtitle here",
       buttonText: "Shop Now",
       buttonLink: "/products",
+      showButton: true,
+      buttonPosition: "center",
+      buttonShape: "rounded",
+      buttonColor: "primary",
       isActive: true,
       order: banners.length,
       position: "top",
@@ -307,6 +311,68 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                       onChange={e => updateBanner(index, 'buttonLink', e.target.value)} 
                       className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm"
                     />
+                  </div>
+                  
+                  {/* New Button Styling Controls */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-1 md:col-span-2 mt-2 pt-2 border-t border-slate-100">
+                    <div className="col-span-1 md:col-span-2">
+                       <label className="flex items-center gap-2 cursor-pointer">
+                          <input 
+                            type="checkbox" 
+                            checked={banner.showButton !== false} // default to true if undefined
+                            onChange={(e) => updateBanner(index, 'showButton', e.target.checked)}
+                            className="w-4 h-4 rounded text-primary focus:ring-primary accent-primary"
+                          />
+                          <span className="text-sm font-medium text-slate-700">Show Button on Banner</span>
+                       </label>
+                    </div>
+                    
+                    {banner.showButton !== false && (
+                      <>
+                        <div>
+                          <label className="block text-xs font-medium text-slate-500 mb-1">Button Position</label>
+                          <select 
+                            value={banner.buttonPosition || "center"} 
+                            onChange={e => updateBanner(index, 'buttonPosition', e.target.value)} 
+                            className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm bg-white"
+                          >
+                            <option value="top">Top</option>
+                            <option value="center">Center</option>
+                            <option value="bottom">Bottom</option>
+                            <option value="left">Left</option>
+                            <option value="right">Right</option>
+                            <option value="bottom-left">Bottom Left</option>
+                            <option value="bottom-right">Bottom Right</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-slate-500 mb-1">Button Shape</label>
+                          <select 
+                            value={banner.buttonShape || "rounded"} 
+                            onChange={e => updateBanner(index, 'buttonShape', e.target.value)} 
+                            className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm bg-white"
+                          >
+                            <option value="rounded">Rounded</option>
+                            <option value="square">Square</option>
+                            <option value="pill">Pill</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-slate-500 mb-1">Button Color</label>
+                          <select 
+                            value={banner.buttonColor || "primary"} 
+                            onChange={e => updateBanner(index, 'buttonColor', e.target.value)} 
+                            className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm bg-white"
+                          >
+                            <option value="primary">Primary Brand Color</option>
+                            <option value="secondary">Secondary Color</option>
+                            <option value="white">White</option>
+                            <option value="black">Black</option>
+                            <option value="transparent">Transparent (Outline)</option>
+                          </select>
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-1 md:col-span-2 mt-2 pt-2 border-t border-slate-100">
                     <div>

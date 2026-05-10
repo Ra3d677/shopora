@@ -86,15 +86,57 @@ export default function HeroSlider({ banners = [], slug, settings }: HeroSliderP
                   <p className="text-xl md:text-2xl text-white/80 mb-12 font-medium max-w-2xl mx-auto leading-relaxed">
                     {banner.subtitle}
                   </p>
-                  {banner.buttonText && (
+                  
+                  {/* Button is rendered here if position is center (default flow) */}
+                  {banner.showButton !== false && banner.buttonText && (!banner.buttonPosition || banner.buttonPosition === 'center') && (
                     <Link
                       href={banner.buttonLink || `/store/${slug}/products`}
-                      className="inline-flex items-center gap-4 bg-white text-black px-12 py-5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-slate-100 transition-all shadow-2xl"
+                      className={`inline-flex items-center gap-4 px-12 py-5 text-xs font-black uppercase tracking-widest transition-all shadow-2xl ${
+                        banner.buttonShape === 'square' ? 'rounded-none' : banner.buttonShape === 'rounded' ? 'rounded-xl' : 'rounded-full'
+                      } ${
+                        banner.buttonColor === 'primary' ? 'bg-primary text-primary-foreground hover:bg-primary/90' :
+                        banner.buttonColor === 'secondary' ? 'bg-secondary text-secondary-foreground hover:bg-secondary/90' :
+                        banner.buttonColor === 'black' ? 'bg-black text-white hover:bg-neutral-900' :
+                        banner.buttonColor === 'transparent' ? 'bg-transparent text-white border-2 border-white hover:bg-white/10' :
+                        'bg-white text-black hover:bg-slate-100'
+                      }`}
                     >
                       {banner.buttonText} <ArrowRight size={18} />
                     </Link>
                   )}
                 </motion.div>
+                
+                {/* Button is rendered here with absolute positioning if it's not center */}
+                {banner.showButton !== false && banner.buttonText && banner.buttonPosition && banner.buttonPosition !== 'center' && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6, duration: 0.8 }}
+                    className={`absolute z-20 ${
+                      banner.buttonPosition === 'top' ? 'top-8 left-1/2 -translate-x-1/2' :
+                      banner.buttonPosition === 'bottom' ? 'bottom-20 left-1/2 -translate-x-1/2' :
+                      banner.buttonPosition === 'left' ? 'left-8 top-1/2 -translate-y-1/2' :
+                      banner.buttonPosition === 'right' ? 'right-8 top-1/2 -translate-y-1/2' :
+                      banner.buttonPosition === 'bottom-left' ? 'bottom-20 left-8' :
+                      banner.buttonPosition === 'bottom-right' ? 'bottom-20 right-8' : ''
+                    }`}
+                  >
+                    <Link
+                      href={banner.buttonLink || `/store/${slug}/products`}
+                      className={`inline-flex items-center gap-4 px-12 py-5 text-xs font-black uppercase tracking-widest transition-all shadow-2xl ${
+                        banner.buttonShape === 'square' ? 'rounded-none' : banner.buttonShape === 'rounded' ? 'rounded-xl' : 'rounded-full'
+                      } ${
+                        banner.buttonColor === 'primary' ? 'bg-primary text-primary-foreground hover:bg-primary/90' :
+                        banner.buttonColor === 'secondary' ? 'bg-secondary text-secondary-foreground hover:bg-secondary/90' :
+                        banner.buttonColor === 'black' ? 'bg-black text-white hover:bg-neutral-900' :
+                        banner.buttonColor === 'transparent' ? 'bg-transparent text-white border-2 border-white hover:bg-white/10' :
+                        'bg-white text-black hover:bg-slate-100'
+                      }`}
+                    >
+                      {banner.buttonText} <ArrowRight size={18} />
+                    </Link>
+                  </motion.div>
+                )}
               </div>
             </motion.div>
           )
