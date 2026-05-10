@@ -45,6 +45,7 @@ export default function SettingsManager({
 
   const tabs = [
     { id: "general", label: "General" },
+    { id: "header", label: "Header & Navigation" },
     { id: "theme", label: "Theme & Colors" },
     { id: "signature", label: "Signature Template" },
     { id: "tracking", label: "Tracking & Pixels" },
@@ -278,6 +279,85 @@ export default function SettingsManager({
                       </div>
                     </div>
                   )}
+                </div>
+              </div>
+            {activeTab === 'header' && (
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                  <div className="flex justify-between items-center mb-6">
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-800">Navigation Links</h3>
+                      <p className="text-sm text-slate-500">Manage the links that appear in your store's header.</p>
+                    </div>
+                    <button 
+                      type="button"
+                      onClick={() => setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: [...(settings.headerSettings?.links || [{id: '1', label: 'Home', url: `/store/${slug}`}, {id: '2', label: 'Shop', url: `/store/${slug}/categories`}]), {id: Math.random().toString(36).substr(2, 9), label: 'New Link', url: '#'}]}})}
+                      className="text-xs font-black uppercase tracking-widest text-blue-600 border border-blue-600 px-4 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-all"
+                    >
+                      + Add Link
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {((settings.headerSettings?.links?.length ?? 0) > 0 ? settings.headerSettings!.links! : [
+                      {id: '1', label: 'Home', url: `/store/${slug}`},
+                      {id: '2', label: 'Shop', url: `/store/${slug}/categories`}
+                    ]).map((link: any, idx: number) => (
+                      <div key={link.id} className="flex gap-4 items-center p-3 bg-white border border-slate-200 rounded-xl">
+                        <div className="flex-1">
+                           <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Label</label>
+                           <input 
+                             type="text"
+                             value={link.label}
+                             onChange={(e) => {
+                               const currentLinks = (settings.headerSettings?.links?.length ?? 0) > 0 ? settings.headerSettings!.links! : [
+                                  {id: '1', label: 'Home', url: `/store/${slug}`},
+                                  {id: '2', label: 'Shop', url: `/store/${slug}/categories`}
+                               ];
+                               const newLinks = [...currentLinks];
+                               newLinks[idx].label = e.target.value;
+                               setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
+                             }}
+                             className="w-full px-3 py-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                           />
+                        </div>
+                        <div className="flex-[2]">
+                           <label className="block text-xs font-bold text-slate-500 uppercase mb-1">URL / Link</label>
+                           <input 
+                             type="text"
+                             value={link.url}
+                             onChange={(e) => {
+                               const currentLinks = (settings.headerSettings?.links?.length ?? 0) > 0 ? settings.headerSettings!.links! : [
+                                  {id: '1', label: 'Home', url: `/store/${slug}`},
+                                  {id: '2', label: 'Shop', url: `/store/${slug}/categories`}
+                               ];
+                               const newLinks = [...currentLinks];
+                               newLinks[idx].url = e.target.value;
+                               setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
+                             }}
+                             className="w-full px-3 py-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                           />
+                        </div>
+                        <div className="pt-5">
+                          <button 
+                            type="button"
+                            onClick={() => {
+                               const currentLinks = (settings.headerSettings?.links?.length ?? 0) > 0 ? settings.headerSettings!.links! : [
+                                  {id: '1', label: 'Home', url: `/store/${slug}`},
+                                  {id: '2', label: 'Shop', url: `/store/${slug}/categories`}
+                               ];
+                               const newLinks = [...currentLinks];
+                               newLinks.splice(idx, 1);
+                               setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
+                            }}
+                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                          >
+                            <Trash2 size={20} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}

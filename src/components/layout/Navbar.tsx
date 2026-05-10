@@ -38,6 +38,10 @@ export default function Navbar({
   };
 
   
+  const headerLinks = storeSettings?.headerSettings?.links || [
+    { id: 'home', label: t('home') || 'Home', url: `/store/${slug}` },
+    { id: 'shop', label: t('shop') || 'Shop', url: `/store/${slug}/categories` }
+  ];
   const items = useCartStore((state) => state.items);
   const cartItemCount = items.filter(i => products?.some(p => p.id === i.product?.id)).reduce((acc, item) => acc + item.quantity, 0);
 
@@ -49,6 +53,7 @@ export default function Navbar({
         slug={slug || ''} 
         products={products}
         session={session}
+        storeSettings={storeSettings}
       />
     );
   }
@@ -253,8 +258,9 @@ export default function Navbar({
             </Link>
             
             <div className="hidden lg:flex items-center space-x-12 text-[10px] font-black uppercase tracking-[0.3em]">
-              <Link href={`/store/${slug}`} className="hover:opacity-50 transition-opacity">{t('home')}</Link>
-              <Link href={`/store/${slug}/categories`} className="hover:opacity-50 transition-opacity">{t('shop')}</Link>
+              {headerLinks.map((link: any) => (
+                <Link key={link.id} href={link.url} className="hover:opacity-50 transition-opacity">{link.label}</Link>
+              ))}
             </div>
 
             <div className="flex items-center gap-8">
@@ -287,8 +293,9 @@ export default function Navbar({
             </Link>
             
             <div className="hidden md:flex items-center space-x-8 font-normal tracking-wide">
-              <Link href={`/store/${slug}`} className="hover:opacity-70 transition-opacity">{t('home')}</Link>
-              <Link href={`/store/${slug}/categories`} className="hover:opacity-70 transition-opacity">{t('shop')}</Link>
+              {headerLinks.map((link: any) => (
+                <Link key={link.id} href={link.url} className="hover:opacity-70 transition-opacity">{link.label}</Link>
+              ))}
             </div>
 
             <div className="flex items-center gap-6">
@@ -304,6 +311,7 @@ export default function Navbar({
   if (activeTemplate === 'obsidian') {
     return (
       <ObsidianNavbar 
+        storeSettings={storeSettings}
         storeName={storeSettings?.storeName || 'Store'} 
         logoUrl={storeSettings?.logoUrl} 
         slug={slug || ''} 
@@ -315,6 +323,7 @@ export default function Navbar({
   if (activeTemplate === 'zenith') {
     return (
       <ZenithNavbar 
+        storeSettings={storeSettings}
         storeName={storeSettings?.storeName || 'Store'} 
         logoUrl={storeSettings?.logoUrl} 
         slug={slug || ''} 
@@ -332,8 +341,9 @@ export default function Navbar({
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
         <div className="flex h-28 items-center justify-between">
           <div className="hidden lg:flex flex-1 items-center gap-10 text-[11px] uppercase tracking-[0.3em] font-sans font-bold">
-            <Link href={`/store/${slug}`} className="hover:opacity-40 transition-opacity">{t('home')}</Link>
-            <Link href={`/store/${slug}/categories`} className="hover:opacity-40 transition-opacity">{t('shop')}</Link>
+            {headerLinks.map((link: any) => (
+              <Link key={link.id} href={link.url} className="hover:opacity-40 transition-opacity">{link.label}</Link>
+            ))}
           </div>
           
           <Link href={`/store/${slug}`} className="flex-1 text-center text-4xl font-light tracking-[0.2em] uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
@@ -356,8 +366,9 @@ export default function Navbar({
   );
 }
 
-function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount }: any) {
+function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings }: any) {
   const [scrolled, setScrolled] = useState(false);
+  const headerLinks = storeSettings?.headerSettings?.links || [{ id: 'home', label: 'Home', url: `/store/${slug}` }, { id: 'shop', label: 'Shop', url: `/store/${slug}/categories` }];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -369,8 +380,9 @@ function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount }: any) {
     <nav className={`fixed top-0 w-full z-[100] transition-all duration-700 ${scrolled ? 'bg-white/80 backdrop-blur-xl py-4 shadow-sm text-[#1c1c1b]' : 'bg-transparent py-8 text-white'}`}>
       <div className="container mx-auto px-8 md:px-16 flex justify-between items-center">
         <div className="flex-1 hidden md:flex gap-12 text-[10px] uppercase tracking-[0.4em] font-sans font-bold">
-          <Link href={`/store/${slug}`} className="hover:text-[#c5a368] transition-colors">Home</Link>
-          <Link href={`/store/${slug}/categories`} className="hover:text-[#c5a368] transition-colors">Shop</Link>
+          {headerLinks.map((link: any) => (
+            <Link key={link.id} href={link.url} className="hover:text-[#c5a368] transition-colors">{link.label}</Link>
+          ))}
         </div>
 
         <Link href={`/store/${slug}`} className="flex-1 text-center">
@@ -396,13 +408,15 @@ function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount }: any) {
   );
 }
 
-function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount }: any) {
+function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings }: any) {
+  const headerLinks = storeSettings?.headerSettings?.links || [{ id: 'home', label: 'Home', url: `/store/${slug}` }, { id: 'shop', label: 'Shop', url: `/store/${slug}/categories` }];
   return (
     <nav className="fixed top-0 w-full z-[100] bg-transparent py-8 text-white">
       <div className="container mx-auto px-8 md:px-16 flex justify-between items-center">
         <div className="flex-1 hidden md:flex gap-10 text-[10px] font-black uppercase tracking-[0.5em]">
-          <Link href={`/store/${slug}`} className="hover:text-white/50 transition-colors">Home</Link>
-          <Link href={`/store/${slug}/categories`} className="hover:text-white/50 transition-colors">Shop</Link>
+          {headerLinks.map((link: any) => (
+            <Link key={link.id} href={link.url} className="hover:text-white/50 transition-colors">{link.label}</Link>
+          ))}
         </div>
 
         <Link href={`/store/${slug}`} className="flex-1 text-center">
@@ -437,6 +451,11 @@ function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSe
   }, []);
 
   const isHome = pathname === `/store/${slug}`;
+  const headerLinks = storeSettings?.headerSettings?.links || [
+    { id: '1', label: 'HOME', url: `/store/${slug}` },
+    { id: '2', label: 'SHOP', url: `/store/${slug}/categories` },
+    { id: '3', label: 'PRODUCTS', url: `/store/${slug}/products` }
+  ];
 
   return (
     <>
@@ -474,11 +493,11 @@ function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSe
 
             {/* Nav Links (Desktop) */}
             <div className="hidden lg:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-900">
-               <Link href={`/store/${slug}`} className={`${pathname === `/store/${slug}` ? 'text-[#f06292]' : 'hover:text-[#f06292]'} transition-colors flex items-center gap-1`}>HOME <ChevronDown size={10} /></Link>
-               <Link href={`/store/${slug}/categories`} className="hover:text-[#f06292] transition-colors flex items-center gap-1">SHOP <span className="bg-[#f06292] text-white text-[8px] px-1.5 py-0.5 rounded ml-1 animate-pulse">SALE</span> <ChevronDown size={10} /></Link>
-               <Link href={`/store/${slug}/products`} className="hover:text-[#f06292] transition-colors">PRODUCTS</Link>
-               <Link href="#" className="hover:text-[#f06292] transition-colors">BLOGS</Link>
-               <Link href="#" className="hover:text-[#f06292] transition-colors flex items-center gap-1">PAGES <ChevronDown size={10} /></Link>
+               {headerLinks.map((link: any) => (
+                 <Link key={link.id} href={link.url} className={`${pathname === link.url ? 'text-[#f06292]' : 'hover:text-[#f06292]'} transition-colors`}>
+                   {link.label}
+                 </Link>
+               ))}
             </div>
 
             {/* Icons */}

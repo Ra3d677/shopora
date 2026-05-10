@@ -26,6 +26,13 @@ export interface StoreSettings {
       text: string;
     };
   };
+  headerSettings?: {
+    links?: {
+      id: string;
+      label: string;
+      url: string;
+    }[];
+  };
   homepageLayout?: any[];
   categoriesLayout: 'grid' | 'list';
   categoryLayout?: {

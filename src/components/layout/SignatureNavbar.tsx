@@ -13,9 +13,10 @@ interface SignatureNavbarProps {
   slug: string;
   products: any[];
   session?: any;
+  storeSettings?: any;
 }
 
-export default function SignatureNavbar({ storeName, logoUrl, slug, products, session }: SignatureNavbarProps) {
+export default function SignatureNavbar({ storeName, logoUrl, slug, products, session, storeSettings }: SignatureNavbarProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -23,6 +24,11 @@ export default function SignatureNavbar({ storeName, logoUrl, slug, products, se
   const items = useCartStore((state) => state.items);
 
   const cartItemCount = items.filter(i => products.some(p => p.id === i.product?.id)).reduce((acc, item) => acc + item.quantity, 0);
+
+  const headerLinks = storeSettings?.headerSettings?.links || [
+    { id: 'home', label: 'Home', url: `/store/${slug}` },
+    { id: 'shop', label: 'Shop', url: `/store/${slug}/categories` }
+  ];
 
   useEffect(() => {
     setMounted(true);
@@ -53,12 +59,11 @@ export default function SignatureNavbar({ storeName, logoUrl, slug, products, se
             </div>
             
             <div className="flex flex-col gap-8 text-5xl font-black tracking-tighter uppercase">
-              <Link href={`/store/${slug}`} onClick={() => setIsMenuOpen(false)} className="hover:text-blue-600 transition-colors flex items-center group">
-                Home <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 transition-all" />
-              </Link>
-              <Link href={`/store/${slug}/categories`} onClick={() => setIsMenuOpen(false)} className="hover:text-blue-600 transition-colors flex items-center group">
-                Shop <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 transition-all" />
-              </Link>
+              {headerLinks.map((link: any) => (
+                <Link key={link.id} href={link.url} onClick={() => setIsMenuOpen(false)} className="hover:text-blue-600 transition-colors flex items-center group">
+                  {link.label} <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 transition-all" />
+                </Link>
+              ))}
               {session ? (
                 <Link href={`/store/${slug}/account`} onClick={() => setIsMenuOpen(false)} className="hover:text-blue-600 transition-colors flex items-center group">
                   Account <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 transition-all" />
@@ -91,8 +96,9 @@ export default function SignatureNavbar({ storeName, logoUrl, slug, products, se
               )}
            </Link>
            <div className={`hidden md:flex items-center gap-8 text-[10px] font-black uppercase tracking-widest ${scrolled ? 'text-slate-500' : 'text-white'}`}>
-              <Link href={`/store/${slug}`} className="hover:opacity-50 transition-opacity">Home</Link>
-              <Link href={`/store/${slug}/categories`} className="hover:opacity-50 transition-opacity">Shop</Link>
+              {headerLinks.map((link: any) => (
+                <Link key={link.id} href={link.url} className="hover:opacity-50 transition-opacity">{link.label}</Link>
+              ))}
            </div>
          </div>
          <div className={`flex items-center gap-8 ${scrolled ? 'text-slate-900' : 'text-white'}`}>
