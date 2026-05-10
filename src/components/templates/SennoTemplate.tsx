@@ -14,6 +14,7 @@ import SmartImage from "@/components/ui/SmartImage";
 import HeroSlider from "@/components/ui/HeroSlider";
 import SaleSection from "@/components/ui/SaleSection";
 import VideoSection from "@/components/ui/VideoSection";
+import SectionDivider from "@/components/ui/SectionDivider";
 
 import EditableImage from "@/components/editor/EditableImage";
 
@@ -43,7 +44,15 @@ export default function SennoTemplate({ store, banners = [], settings, products,
 
   return (
     <div className="min-h-screen bg-transparent font-sans text-slate-800 selection:bg-[#f06292] selection:text-white">
-      {homepageLayout.map((section: any) => {
+      {homepageLayout.map((section: any, index: number) => {
+        const divider = index > 0 && settings.dividerStyle && settings.dividerStyle !== 'none' ? (
+          <SectionDivider 
+            style={settings.dividerStyle} 
+            color={settings.colorSystem?.brand?.primary || '#f06292'} 
+          />
+        ) : null;
+
+        const renderSection = () => {
         if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
 
@@ -439,7 +448,15 @@ export default function SennoTemplate({ store, banners = [], settings, products,
           return <VideoSection key={section.id} section={section} slug={slug} />;
         }
 
-        return null;
+          return null;
+        };
+
+        return (
+          <React.Fragment key={section.id}>
+            {divider}
+            {renderSection()}
+          </React.Fragment>
+        );
       })}
 
       {/* Bottom Banners Section */}

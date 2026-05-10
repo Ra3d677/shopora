@@ -13,6 +13,7 @@ import HeroSlider from "@/components/ui/HeroSlider";
 import StoreMarquee from "@/components/ui/StoreMarquee";
 import SaleSection from "@/components/ui/SaleSection";
 import VideoSection from "@/components/ui/VideoSection";
+import SectionDivider from "@/components/ui/SectionDivider";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface TemplateProps {
@@ -41,8 +42,15 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
 
   return (
     <div className="flex flex-col w-full font-sans bg-transparent">
-      {homepageLayout.map((section: any) => {
-        if (section.type === 'hero') {
+      {homepageLayout.map((section: any, index: number) => {
+        const divider = index > 0 && settings.dividerStyle && settings.dividerStyle !== 'none' ? (
+          <SectionDivider 
+            style={settings.dividerStyle} 
+            color={settings.colorSystem?.brand?.primary || '#3b82f6'} 
+          />
+        ) : null;
+        const renderSection = () => {
+          if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
 
           if (topBanners.length > 1) {
@@ -493,6 +501,14 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
         }
 
         return null;
+      };
+
+      return (
+        <React.Fragment key={section.id}>
+          {divider}
+          {renderSection()}
+        </React.Fragment>
+      );
       })}
 
       {/* Bottom Banners Section */}

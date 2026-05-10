@@ -99,6 +99,7 @@ export interface StoreSettings {
   footerMarketingDesc?: string;
   footerLuxuryAddress1?: string;
   footerLuxuryAddress2?: string;
+  dividerStyle?: string;
   [key: string]: any; 
 }
 

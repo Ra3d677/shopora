@@ -13,6 +13,7 @@ import EditableButton from '@/components/editor/EditableButton';
 import EditableImage from '@/components/editor/EditableImage';
 import SaleSection from '@/components/ui/SaleSection';
 import StoreMarquee from '@/components/ui/StoreMarquee';
+import SectionDivider from '@/components/ui/SectionDivider';
 
 export default function ObsidianTemplate({ 
   banners, 
@@ -35,8 +36,16 @@ export default function ObsidianTemplate({
 
   return (
     <div className="min-h-screen font-sans selection:bg-transparent selection:text-black bg-transparent text-white">
-      {homepageLayout.map((section: any) => {
-        if (section.type === 'hero') {
+      {homepageLayout.map((section: any, index: number) => {
+        const divider = index > 0 && settings.dividerStyle && settings.dividerStyle !== 'none' ? (
+          <SectionDivider 
+            style={settings.dividerStyle} 
+            color={settings.colorSystem?.brand?.primary || '#ffffff'} 
+          />
+        ) : null;
+
+        const renderSection = () => {
+          if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
 
           if (topBanners.length > 1) {
@@ -426,7 +435,15 @@ export default function ObsidianTemplate({
           return <VideoSection key={section.id} section={section} slug={slug} />;
         }
 
-        return null;
+          return null;
+        };
+
+        return (
+          <React.Fragment key={section.id}>
+            {divider}
+            {renderSection()}
+          </React.Fragment>
+        );
       })}
 
       {/* Bottom Banners Section */}

@@ -12,6 +12,7 @@ import EditableButton from '@/components/editor/EditableButton';
 import StoreMarquee from '@/components/ui/StoreMarquee';
 import HeroSlider from '@/components/ui/HeroSlider';
 import SaleSection from '@/components/ui/SaleSection';
+import SectionDivider from '@/components/ui/SectionDivider';
 
 export default function ZenithTemplate({ 
   banners, 
@@ -44,8 +45,16 @@ export default function ZenithTemplate({
 
   return (
     <div className="min-h-screen font-serif selection:bg-[#c5a368] selection:text-white bg-transparent text-[#1a1a1a]">
-      {homepageLayout.map((section: any) => {
-        if (section.type === 'hero') {
+      {homepageLayout.map((section: any, index: number) => {
+        const divider = index > 0 && settings.dividerStyle && settings.dividerStyle !== 'none' ? (
+          <SectionDivider 
+            style={settings.dividerStyle} 
+            color={settings.colorSystem?.brand?.primary || '#c5a368'} 
+          />
+        ) : null;
+
+        const renderSection = () => {
+          if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
 
           if (topBanners.length > 1) {
@@ -490,7 +499,15 @@ export default function ZenithTemplate({
             </section>
           );
         }
+          return null;
+        };
 
+        return (
+          <React.Fragment key={section.id}>
+            {divider}
+            {renderSection()}
+          </React.Fragment>
+        );
       })}
 
       {/* Bottom Banners Section */}
