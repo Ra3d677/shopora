@@ -281,6 +281,8 @@ export default function SettingsManager({
                   )}
                 </div>
               </div>
+            )}
+            
             {activeTab === 'header' && (
               <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
