@@ -27,6 +27,7 @@ export interface StoreSettings {
     };
   };
   headerSettings?: {
+    layout?: 'default' | 'standard' | 'centered' | 'minimal' | 'luxury' | 'hamburger';
     links?: {
       id: string;
       label: string;

@@ -285,6 +285,47 @@ export default function SettingsManager({
             
             {activeTab === 'header' && (
               <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                {/* Header Layout */}
+                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                  <h3 className="text-lg font-bold text-slate-800 mb-2">Header Layout Shape</h3>
+                  <p className="text-sm text-slate-500 mb-6">Choose the visual structure of your store's navigation bar.</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {[
+                      { id: 'default', name: 'Template Default', desc: 'Uses the active template original header.' },
+                      { id: 'standard', name: 'Standard Layout', desc: 'Logo Left, Links Center, Icons Right.' },
+                      { id: 'centered', name: 'Centered Logo', desc: 'Links Left, Logo Center, Icons Right.' },
+                      { id: 'minimal', name: 'Minimalist', desc: 'Logo Left, Hamburger Menu Right.' },
+                      { id: 'luxury', name: 'Luxury Stacked', desc: 'Logo Top Center, Links Bottom Center.' },
+                      { id: 'hamburger', name: 'Modern Hamburger', desc: 'Hamburger Left, Logo Center, Icons Right.' }
+                    ].map((layout) => (
+                      <label 
+                        key={layout.id} 
+                        className={`cursor-pointer p-4 rounded-xl border-2 transition-all ${
+                          (settings.headerSettings?.layout || 'default') === layout.id 
+                            ? 'border-blue-600 bg-blue-50/50' 
+                            : 'border-slate-200 bg-white hover:border-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <input 
+                            type="radio" 
+                            name="headerLayout"
+                            value={layout.id}
+                            checked={(settings.headerSettings?.layout || 'default') === layout.id}
+                            onChange={(e) => setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), layout: e.target.value as any}})}
+                            className="mt-1 w-4 h-4 text-blue-600 focus:ring-blue-600"
+                          />
+                          <div>
+                            <p className="font-bold text-slate-900">{layout.name}</p>
+                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">{layout.desc}</p>
+                          </div>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
                   <div className="flex justify-between items-center mb-6">
                     <div>
