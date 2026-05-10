@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, Search, Menu, X, User as UserIcon, LogOut, LayoutDashboard, Globe, ChevronDown, Home, ShoppingBag, Heart, User, Mail } from "lucide-react";
 import { useCartStore } from "@/store/cart";
 import { useState, useEffect, FormEvent, useRef } from "react";
@@ -49,6 +50,42 @@ export default function Navbar({
   const effectiveLayout = (rawLayout && rawLayout !== 'default') ? rawLayout : activeTemplate;
   const originalTemplate = activeTemplate;
 
+  
+  const MobileMenuDrawer = () => (
+    <AnimatePresence>
+      {isMobileMenuOpen && (
+        <motion.div
+          initial={{ x: "-100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "-100%" }}
+          transition={{ type: "spring", damping: 30, stiffness: 300 }}
+          className="fixed inset-y-0 left-0 w-[80%] max-w-[320px] z-[9999] bg-white shadow-2xl p-8 flex flex-col font-sans text-slate-900"
+        >
+          <div className="flex justify-between items-center mb-12">
+            <Link href={`/store/${slug}`} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-black uppercase tracking-tighter" style={{ color: 'var(--color-primary-accent, inherit)' }}>
+              {storeSettings?.logoUrl ? <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="h-8 w-auto object-contain" /> : (storeSettings?.storeName || 'Store')}
+            </Link>
+            <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-500 hover:text-slate-900">
+              <X size={24} />
+            </button>
+          </div>
+          
+          <div className="flex flex-col gap-6 text-lg font-bold tracking-widest uppercase">
+            {headerLinks.map((link: any) => (
+              <Link key={link.id} href={link.url} onClick={() => setIsMobileMenuOpen(false)} className="hover:text-blue-600 transition-colors flex items-center border-b border-slate-100 pb-4">
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          
+          <div className="mt-auto pt-8 border-t border-slate-100">
+             <LanguageSwitcher />
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+
   if (effectiveLayout === 'signature') {
     return (
       <SignatureNavbar 
@@ -64,19 +101,24 @@ export default function Navbar({
 
   if (effectiveLayout === 'senno') {
     return (
-      <SennoNavbar 
-        storeName={storeSettings?.storeName || 'Store'} 
-        logoUrl={storeSettings?.logoUrl} 
-        slug={slug || ''} 
-        cartItemCount={cartItemCount}
-        session={session}
-        storeSettings={storeSettings}
-      />
+      <>
+        <SennoNavbar 
+          storeName={storeSettings?.storeName || 'Store'} 
+          logoUrl={storeSettings?.logoUrl} 
+          slug={slug || ''} 
+          cartItemCount={cartItemCount}
+          session={session}
+          storeSettings={storeSettings}
+          onMenuClick={() => setIsMobileMenuOpen(true)}
+        />
+        <MobileMenuDrawer />
+      </>
     );
   }
 
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -272,10 +314,13 @@ export default function Navbar({
               <SearchBar />
               <UserMenuDropdown />
               <CartButton />
+              <button className="lg:hidden p-2 hover:bg-slate-100 rounded-full transition-colors" onClick={() => setIsMobileMenuOpen(true)}><Menu className="w-6 h-6" /></button>
             </div>
           </div>
         </div>
       </nav>
+      <MobileMenuDrawer />
+
     );
   }
 
@@ -305,34 +350,45 @@ export default function Navbar({
             <div className="flex items-center gap-6">
               <SearchBar dark />
               <CartButton />
+              <button className="lg:hidden p-2 hover:bg-slate-100 rounded-full transition-colors" onClick={() => setIsMobileMenuOpen(true)}><Menu className="w-6 h-6" /></button>
             </div>
           </div>
         </div>
       </nav>
+      <MobileMenuDrawer />
+
     );
   }
 
   if (effectiveLayout === 'obsidian') {
     return (
-      <ObsidianNavbar 
-        storeSettings={storeSettings}
-        storeName={storeSettings?.storeName || 'Store'} 
-        logoUrl={storeSettings?.logoUrl} 
-        slug={slug || ''} 
-        cartItemCount={cartItemCount}
-      />
+      <>
+        <ObsidianNavbar 
+          storeSettings={storeSettings}
+          storeName={storeSettings?.storeName || 'Store'} 
+          logoUrl={storeSettings?.logoUrl} 
+          slug={slug || ''} 
+          cartItemCount={cartItemCount}
+          onMenuClick={() => setIsMobileMenuOpen(true)}
+        />
+        <MobileMenuDrawer />
+      </>
     );
   }
 
   if (effectiveLayout === 'zenith') {
     return (
-      <ZenithNavbar 
-        storeSettings={storeSettings}
-        storeName={storeSettings?.storeName || 'Store'} 
-        logoUrl={storeSettings?.logoUrl} 
-        slug={slug || ''} 
-        cartItemCount={cartItemCount}
-      />
+      <>
+        <ZenithNavbar 
+          storeSettings={storeSettings}
+          storeName={storeSettings?.storeName || 'Store'} 
+          logoUrl={storeSettings?.logoUrl} 
+          slug={slug || ''} 
+          cartItemCount={cartItemCount}
+          onMenuClick={() => setIsMobileMenuOpen(true)}
+        />
+        <MobileMenuDrawer />
+      </>
     );
   }
 
@@ -358,10 +414,15 @@ export default function Navbar({
               <SearchBar />
               <UserMenuDropdown />
               <CartButton />
+              <button className="lg:hidden p-2 hover:bg-slate-100 rounded-full transition-colors" onClick={() => setIsMobileMenuOpen(true)}><Menu className="w-6 h-6" /></button>
             </div>
           </div>
         </div>
       </nav>
+      <MobileMenuDrawer />
+
+      <MobileMenuDrawer />
+
     );
   }
 
@@ -383,10 +444,13 @@ export default function Navbar({
               <SearchBar />
               <UserMenuDropdown />
               <CartButton />
+              <button className="md:hidden p-2 hover:bg-white/10 rounded-full transition-colors" onClick={() => setIsMobileMenuOpen(true)}><Menu className="w-6 h-6" /></button>
             </div>
           </div>
         </div>
       </nav>
+      <MobileMenuDrawer />
+
     );
   }
 
@@ -405,6 +469,7 @@ export default function Navbar({
              <div className="w-32 flex items-center justify-end gap-4">
                <UserMenuDropdown />
                <CartButton />
+               <button className="lg:hidden p-2 hover:bg-slate-100 rounded-full transition-colors" onClick={() => setIsMobileMenuOpen(true)}><Menu className="w-6 h-6" /></button>
              </div>
           </div>
           <div className="hidden lg:flex items-center gap-10 text-[11px] font-bold uppercase tracking-[0.3em] text-slate-500">
@@ -423,7 +488,7 @@ export default function Navbar({
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex h-20 items-center justify-between">
             <div className="flex-1 flex items-center gap-6">
-               <button className="p-2 hover:bg-slate-100 rounded-full transition-colors"><Menu className="w-6 h-6" /></button>
+               <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 hover:bg-slate-100 rounded-full transition-colors"><Menu className="w-6 h-6" /></button>
                <div className="hidden md:block"><LanguageSwitcher /></div>
             </div>
             <Link href={`/store/${slug}`} className="flex-1 flex justify-center text-2xl font-black tracking-widest uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
@@ -433,10 +498,13 @@ export default function Navbar({
               <SearchBar />
               <UserMenuDropdown />
               <CartButton />
-            </div>
+            <button className="lg:hidden p-2 hover:bg-slate-100 rounded-full transition-colors" onClick={() => setIsMobileMenuOpen(true)}><Menu className="w-6 h-6" /></button>
           </div>
         </div>
-      </nav>
+      </div>
+    </nav>
+    <MobileMenuDrawer />
+
     );
   }
 
@@ -476,7 +544,7 @@ export default function Navbar({
   );
 }
 
-function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings }: any) {
+function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, onMenuClick }: any) {
   const [scrolled, setScrolled] = useState(false);
   const headerLinks = storeSettings?.headerSettings?.links || [{ id: 'home', label: 'Home', url: `/store/${slug}` }, { id: 'shop', label: 'Shop', url: `/store/${slug}/categories` }];
 
@@ -509,7 +577,7 @@ function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings }
                 Cart ({cartItemCount})
               </Link>
            </div>
-           <button className="md:hidden p-2">
+           <button className="md:hidden p-2" onClick={onMenuClick}>
              <Menu className="w-6 h-6" />
            </button>
         </div>
@@ -518,7 +586,7 @@ function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings }
   );
 }
 
-function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings }: any) {
+function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, onMenuClick }: any) {
   const headerLinks = storeSettings?.headerSettings?.links || [{ id: 'home', label: 'Home', url: `/store/${slug}` }, { id: 'shop', label: 'Shop', url: `/store/${slug}/categories` }];
   return (
     <nav className="fixed top-0 w-full z-[100] bg-transparent py-8 text-white">
@@ -541,7 +609,7 @@ function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings
            <Link href={`/store/${slug}/cart`} className="text-[10px] font-black uppercase tracking-[0.5em] flex items-center gap-2">
              Cart [{cartItemCount}]
            </Link>
-           <button className="p-2">
+           <button className="p-2" onClick={onMenuClick}>
              <Menu className="w-6 h-6" />
            </button>
         </div>
@@ -550,7 +618,7 @@ function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings
   );
 }
 
-function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSettings }: any) {
+function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSettings, onMenuClick }: any) {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
@@ -644,7 +712,7 @@ function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSe
            <Link href={`/store/${slug}/products`} className="p-5 bg-[#f06292] text-white rounded-full shadow-lg -translate-y-6">
               <ShoppingBag className="w-6 h-6" />
            </Link>
-           <button className="p-3 text-slate-400"><Heart className="w-6 h-6" /></button>
+           <button className="p-3 text-slate-400" onClick={onMenuClick}><Menu className="w-6 h-6" /></button>
            <Link href={`/store/${slug}/account`} className={`p-3 ${pathname.includes('/account') ? 'text-[#f06292]' : 'text-slate-400'}`}><User className="w-6 h-6" /></Link>
         </div>
       </div>
