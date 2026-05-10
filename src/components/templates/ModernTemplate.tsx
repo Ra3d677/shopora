@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import BannerButton from "@/components/ui/BannerButton";
 import { ShoppingBag, ArrowRight, Plus } from "lucide-react";
 import EditableText from "@/components/editor/EditableText";
 import EditableImage from "@/components/editor/EditableImage";
@@ -431,14 +432,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                     <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 md:p-12 text-white">
                       <h2 className="text-4xl md:text-8xl font-black tracking-tighter leading-none mb-6 italic">{banner.title}</h2>
                       <p className="text-xl md:text-2xl font-medium opacity-90 max-w-2xl mb-10">{banner.subtitle}</p>
-                      {banner.buttonText && (
-                        <Link 
-                          href={banner.buttonLink || `/store/${slug}/products`}
-                          className="bg-white text-slate-900 px-12 py-5 rounded-2xl font-black text-xl hover:bg-blue-50 transition-all shadow-2xl"
-                        >
-                          {banner.buttonText}
-                        </Link>
-                      )}
+                      <BannerButton banner={banner} slug={slug} />
                     </div>
                   </div>
                 ))}
@@ -515,14 +509,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 md:p-12 text-white">
                   <h2 className="text-4xl md:text-8xl font-black tracking-tighter leading-none mb-6 italic">{banner.title}</h2>
                   <p className="text-xl md:text-2xl font-medium opacity-90 max-w-2xl mb-10">{banner.subtitle}</p>
-                  {banner.buttonText && (
-                    <Link 
-                      href={banner.buttonLink || `/store/${slug}/products`}
-                      className="bg-white text-slate-900 px-12 py-5 rounded-2xl font-black text-xl hover:bg-blue-50 transition-all shadow-2xl"
-                    >
-                      {banner.buttonText}
-                    </Link>
-                  )}
+                  <BannerButton banner={banner} slug={slug} />
                 </div>
               </div>
             ))}

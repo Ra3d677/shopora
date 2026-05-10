@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import BannerButton from "@/components/ui/BannerButton";
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { 
@@ -462,14 +463,7 @@ export default function SennoTemplate({ store, banners = [], settings, products,
                   >
                     <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 uppercase">{banner.title}</h2>
                     <p className="text-xl md:text-2xl font-medium opacity-90 max-w-2xl mb-10 tracking-tight">{banner.subtitle}</p>
-                    {banner.buttonText && (
-                      <Link 
-                        href={banner.buttonLink || `/store/${slug}/products`}
-                        className="bg-white text-[#f06292] px-12 py-5 rounded-full text-xs font-black uppercase tracking-[0.3em] hover:bg-slate-900 hover:text-white transition-all shadow-xl"
-                      >
-                        {banner.buttonText}
-                      </Link>
-                    )}
+                    <BannerButton banner={banner} slug={slug} />
                   </motion.div>
                 </div>
               </div>

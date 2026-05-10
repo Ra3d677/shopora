@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import BannerButton from "@/components/ui/BannerButton";
 import Image from "next/image";
 import { ChevronRight, Plus } from "lucide-react";
 import StoreMarquee from "@/components/ui/StoreMarquee";
@@ -301,14 +302,7 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
                   <div className="relative z-10 text-white text-center">
                     <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">{banner.title}</h2>
                     <p className="text-xl md:text-2xl font-light mb-8 opacity-90">{banner.subtitle}</p>
-                    {banner.buttonText && (
-                      <Link 
-                        href={banner.buttonLink || `/store/${slug}/products`}
-                        className="bg-white text-black px-8 py-3 rounded-full text-lg font-medium hover:bg-slate-100 transition-all inline-block"
-                      >
-                        {banner.buttonText}
-                      </Link>
-                    )}
+                    <BannerButton banner={banner} slug={slug} />
                   </div>
                 </div>
               ))}
@@ -386,14 +380,7 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
                   >
                     <h2 className="text-4xl md:text-7xl font-semibold tracking-tight mb-6">{banner.title}</h2>
                     <p className="text-xl md:text-2xl font-normal text-[#86868b] max-w-2xl mb-10 tracking-tight">{banner.subtitle}</p>
-                    {banner.buttonText && (
-                      <Link 
-                        href={banner.buttonLink || `/store/${slug}/products`}
-                        className="bg-[#0071e3] hover:bg-[#0077ED] text-white px-10 py-4 rounded-full text-lg font-normal transition-colors"
-                      >
-                        {banner.buttonText}
-                      </Link>
-                    )}
+                    <BannerButton banner={banner} slug={slug} />
                   </motion.div>
                 </div>
               </div>

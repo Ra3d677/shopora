@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import BannerButton from "@/components/ui/BannerButton";
 import Link from 'next/link';
 import { ShoppingBag, ArrowRight, Play, Search, Menu, Plus } from 'lucide-react';
 import SmartImage from '@/components/ui/SmartImage';
@@ -319,14 +320,7 @@ export default function ObsidianTemplate({
                       >
                         <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-4 text-white uppercase italic">{banner.title}</h2>
                         <p className="text-lg text-white/70 max-w-xl mb-8 font-light leading-relaxed">{banner.subtitle}</p>
-                        {banner.buttonText && (
-                          <Link 
-                            href={banner.buttonLink || `/store/${slug}/products`}
-                            className="inline-block px-10 py-5 bg-white text-black text-xs font-black uppercase tracking-widest rounded-full hover:bg-white/90 transition-all"
-                          >
-                            {banner.buttonText}
-                          </Link>
-                        )}
+                        <BannerButton banner={banner} slug={slug} />
                       </motion.div>
                     </div>
                   </div>
@@ -455,14 +449,7 @@ export default function ObsidianTemplate({
                   >
                     <h2 className="text-4xl md:text-8xl font-black italic tracking-tighter leading-none mb-6 uppercase">{banner.title}</h2>
                     <p className="text-lg md:text-xl font-light opacity-60 mb-10 max-w-2xl">{banner.subtitle}</p>
-                    {banner.buttonText && (
-                      <Link 
-                        href={banner.buttonLink || `/store/${slug}/products`}
-                        className="inline-block px-12 py-5 bg-white text-black text-[10px] font-black uppercase tracking-[0.4em] rounded-full hover:bg-zinc-200 transition-all shadow-xl"
-                      >
-                        {banner.buttonText}
-                      </Link>
-                    )}
+                    <BannerButton banner={banner} slug={slug} />
                   </motion.div>
                 </div>
               </div>

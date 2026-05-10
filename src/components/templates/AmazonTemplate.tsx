@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import BannerButton from "@/components/ui/BannerButton";
 import Image from "next/image";
 import { ArrowRight, Star, Plus } from "lucide-react";
 import EditableText from "@/components/editor/EditableText";
@@ -332,14 +333,7 @@ export default function AmazonTemplate({ banners, settings, products, slug, cate
                     <div className="w-full md:w-1/3 p-6 md:p-8 flex flex-col justify-center text-left">
                       <h3 className="text-2xl md:text-3xl font-bold mb-4">{banner.title}</h3>
                       <p className="text-gray-600 mb-8">{banner.subtitle}</p>
-                      {banner.buttonText && (
-                        <Link 
-                          href={banner.buttonLink || `/store/${slug}/products`}
-                          className="w-full md:w-fit bg-[#FFD814] hover:bg-[#F7CA00] text-black px-8 py-3 rounded-md font-medium text-center transition-colors shadow-sm"
-                        >
-                          {banner.buttonText}
-                        </Link>
-                      )}
+                      <BannerButton banner={banner} slug={slug} />
                     </div>
                   </div>
                 ))}
@@ -376,14 +370,7 @@ export default function AmazonTemplate({ banners, settings, products, slug, cate
                 <div className="w-full md:w-1/3 p-6 md:p-8 flex flex-col justify-center text-left">
                   <h3 className="text-2xl md:text-3xl font-bold mb-4">{banner.title}</h3>
                   <p className="text-gray-600 mb-8">{banner.subtitle}</p>
-                  {banner.buttonText && (
-                    <Link 
-                      href={banner.buttonLink || `/store/${slug}/products`}
-                      className="w-full md:w-fit bg-[#FFD814] hover:bg-[#F7CA00] text-black px-8 py-3 rounded-md font-medium text-center transition-colors shadow-sm"
-                    >
-                      {banner.buttonText}
-                    </Link>
-                  )}
+                  <BannerButton banner={banner} slug={slug} />
                 </div>
               </div>
             ))}

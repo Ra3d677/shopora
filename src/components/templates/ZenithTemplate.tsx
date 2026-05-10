@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import BannerButton from "@/components/ui/BannerButton";
 import Link from 'next/link';
 import { ShoppingBag, ArrowRight, Menu, X, ChevronRight, Play } from 'lucide-react';
 import SmartImage from '@/components/ui/SmartImage';
@@ -441,14 +442,7 @@ export default function ZenithTemplate({
                       >
                         <h2 className="text-4xl md:text-7xl font-light italic mb-6 tracking-tight">{banner.title}</h2>
                         <p className="text-lg md:text-xl font-sans font-light tracking-widest opacity-80 mb-10 max-w-2xl">{banner.subtitle}</p>
-                        {banner.buttonText && (
-                          <Link 
-                            href={banner.buttonLink || `/store/${slug}/products`}
-                            className="inline-block px-12 py-5 border border-white text-[10px] uppercase tracking-[0.5em] font-black hover:bg-white hover:text-black transition-all"
-                          >
-                            {banner.buttonText}
-                          </Link>
-                        )}
+                        <BannerButton banner={banner} slug={slug} />
                       </motion.div>
                     </div>
                   </div>
@@ -524,14 +518,7 @@ export default function ZenithTemplate({
                   >
                     <h2 className="text-4xl md:text-7xl font-light italic mb-6 tracking-tight">{banner.title}</h2>
                     <p className="text-lg md:text-xl font-sans font-light tracking-widest opacity-80 mb-10 max-w-2xl">{banner.subtitle}</p>
-                    {banner.buttonText && (
-                      <Link 
-                        href={banner.buttonLink || `/store/${slug}/products`}
-                        className="inline-block px-12 py-5 border border-white text-[10px] uppercase tracking-[0.5em] font-black hover:bg-white hover:text-black transition-all"
-                      >
-                        {banner.buttonText}
-                      </Link>
-                    )}
+                    <BannerButton banner={banner} slug={slug} />
                   </motion.div>
                 </div>
               </div>

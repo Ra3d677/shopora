@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import BannerButton from "@/components/ui/BannerButton";
 import Link from "next/link";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ShoppingBag, ArrowRight, Star, Quote, ChevronRight, Play, Globe, Shield, Plus } from "lucide-react";
@@ -520,14 +521,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                       >
                         <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 uppercase italic">{banner.title}</h2>
                         <p className="text-lg md:text-xl text-white/70 max-w-xl mb-10 font-light leading-relaxed">{banner.subtitle}</p>
-                        {banner.buttonText && (
-                          <Link 
-                            href={banner.buttonLink || `/store/${slug}/products`}
-                            className="inline-block px-10 py-5 md:px-12 md:py-6 bg-white text-black text-xs font-black uppercase tracking-widest rounded-full hover:bg-slate-200 transition-all shadow-xl"
-                          >
-                            {banner.buttonText}
-                          </Link>
-                        )}
+                        <BannerButton banner={banner} slug={slug} />
                       </motion.div>
                     </div>
                   </div>
@@ -680,14 +674,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                   >
                     <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 uppercase italic">{banner.title}</h2>
                     <p className="text-lg md:text-xl text-white/70 max-w-xl mb-10 font-light leading-relaxed">{banner.subtitle}</p>
-                    {banner.buttonText && (
-                      <Link 
-                        href={banner.buttonLink || `/store/${slug}/products`}
-                        className="inline-block px-10 py-5 md:px-12 md:py-6 bg-white text-black text-xs font-black uppercase tracking-widest rounded-full hover:bg-slate-200 transition-all shadow-xl"
-                      >
-                        {banner.buttonText}
-                      </Link>
-                    )}
+                    <BannerButton banner={banner} slug={slug} />
                   </motion.div>
                 </div>
               </div>

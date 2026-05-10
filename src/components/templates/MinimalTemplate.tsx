@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import BannerButton from "@/components/ui/BannerButton";
 import Image from "next/image";
 import { ArrowRight, Plus } from "lucide-react";
 import EditableText from "@/components/editor/EditableText";
@@ -299,14 +300,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
                     <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-6 md:p-12 text-white">
                       <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tighter mb-4">{banner.title}</h2>
                       <p className="text-lg md:text-xl font-light italic opacity-80 mb-8">{banner.subtitle}</p>
-                      {banner.buttonText && (
-                        <Link 
-                          href={banner.buttonLink || `/store/${slug}/products`}
-                          className="px-8 py-3 md:px-10 md:py-4 bg-white text-black text-[10px] font-black uppercase tracking-[0.4em] hover:bg-black hover:text-white transition-all duration-500"
-                        >
-                          {banner.buttonText}
-                        </Link>
-                      )}
+                      <BannerButton banner={banner} slug={slug} />
                     </div>
                   </div>
                 ))}
@@ -412,14 +406,7 @@ export default function MinimalTemplate({ banners, settings, products, slug, cat
                   >
                     <h2 className="text-4xl md:text-7xl font-bold tracking-tighter mb-6 uppercase">{banner.title}</h2>
                     <p className="text-xl md:text-2xl font-light text-zinc-500 max-w-2xl mb-10 tracking-tight italic">{banner.subtitle}</p>
-                    {banner.buttonText && (
-                      <Link 
-                        href={banner.buttonLink || `/store/${slug}/products`}
-                        className="inline-block px-12 py-5 bg-black text-white text-[10px] font-black uppercase tracking-[0.4em] hover:bg-zinc-800 transition-all shadow-xl"
-                      >
-                        {banner.buttonText}
-                      </Link>
-                    )}
+                    <BannerButton banner={banner} slug={slug} />
                   </motion.div>
                 </div>
               </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import BannerButton from "@/components/ui/BannerButton";
 import Link from 'next/link';
 import { ShoppingBag, Search, Menu, X, ArrowRight, Eye, Plus, ShoppingCart, Tag } from 'lucide-react';
 import EditableText from "@/components/editor/EditableText";
@@ -377,14 +378,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
                     <div className="space-y-6 md:space-y-8">
                       <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-none italic">{banner.title}</h2>
                       <p className="text-lg md:text-xl text-white/40 font-medium leading-relaxed">{banner.subtitle}</p>
-                      {banner.buttonText && (
-                        <Link 
-                          href={banner.buttonLink || `/store/${slug}/products`}
-                          className="inline-block px-10 py-4 md:px-12 md:py-5 bg-white text-black font-black uppercase tracking-widest text-xs rounded-full hover:bg-white/80 transition-all"
-                        >
-                          {banner.buttonText}
-                        </Link>
-                      )}
+                      <BannerButton banner={banner} slug={slug} />
                     </div>
                   </div>
                 ))}
@@ -453,14 +447,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
                     <div className="space-y-6 md:space-y-8">
                       <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-none italic">{banner.title}</h2>
                       <p className="text-lg md:text-xl text-white/60 font-light leading-relaxed max-w-xl">{banner.subtitle}</p>
-                      {banner.buttonText && (
-                        <Link 
-                          href={banner.buttonLink || `/store/${slug}/products`}
-                          className="inline-block px-12 py-5 bg-white text-black font-black uppercase tracking-widest text-[10px] hover:bg-zinc-200 transition-all"
-                        >
-                          {banner.buttonText}
-                        </Link>
-                      )}
+                      <BannerButton banner={banner} slug={slug} />
                     </div>
                   </div>
                 ))}
@@ -534,14 +521,7 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
                 <div className="space-y-6 md:space-y-8">
                   <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-none italic">{banner.title}</h2>
                   <p className="text-lg md:text-xl text-white/40 font-medium leading-relaxed">{banner.subtitle}</p>
-                  {banner.buttonText && (
-                    <Link 
-                      href={banner.buttonLink || `/store/${slug}/products`}
-                      className="inline-block px-10 py-4 md:px-12 md:py-5 bg-white text-black font-black uppercase tracking-widest text-xs rounded-full hover:bg-white/80 transition-all"
-                    >
-                      {banner.buttonText}
-                    </Link>
-                  )}
+                  <BannerButton banner={banner} slug={slug} />
                 </div>
               </div>
             ))}
