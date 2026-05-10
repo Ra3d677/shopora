@@ -498,7 +498,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
         }
 
         if (section.type === 'banners') {
-          const bannersToShow = middleBanners.length > 0 ? middleBanners : (heroStyle === 'slider' ? [] : topBanners);
+          const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
             <div key={section.id}>
               <section className="py-1  w-full bg-transparent">

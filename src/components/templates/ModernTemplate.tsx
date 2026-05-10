@@ -327,7 +327,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
           }
 
           if (section.type === 'banners') {
-            const bannersToShow = middleBanners.length > 0 ? middleBanners : (heroStyle === 'slider' ? [] : topBanners);
+          const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
             return (
               <section key={section.id} className="py-1 bg-transparent border-y border-slate-100">
                 <div className="w-full space-y-1">

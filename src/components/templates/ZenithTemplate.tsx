@@ -426,7 +426,7 @@ export default function ZenithTemplate({
         }
 
         if (section.type === 'banners') {
-          const bannersToShow = middleBanners.length > 0 ? middleBanners : (heroStyle === 'slider' ? [] : topBanners);
+          const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
             <section key={section.id} className="py-1  bg-[#f9f9f8]">
               <div className="w-full space-y-1">
