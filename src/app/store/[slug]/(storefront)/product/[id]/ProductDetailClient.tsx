@@ -10,8 +10,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 import { trackViewContent, trackAddToCart } from "@/lib/tracking";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function ProductDetailClient({ product, store }: { product: Product, store: any }) {
+  const router = useRouter();
   const productColors = Array.isArray(product.colors) ? product.colors.map(c => typeof c === 'string' ? { name: c, value: c, imageUrl: null } : c) : [];
 
   const [selectedImage, setSelectedImage] = useState(product.images[0] || "");
@@ -46,6 +48,19 @@ export default function ProductDetailClient({ product, store }: { product: Produ
     trackAddToCart(product, 1, store);
   };
 
+  const handleBuyNow = () => {
+    addItem({
+      id: `${product.id}-${selectedSize}-${selectedColor?.name || selectedColor?.value || 'default'}`,
+      storeId: product.storeId,
+      product,
+      quantity: 1,
+      selectedSize,
+      selectedColor: selectedColor?.name || selectedColor?.value || 'default'
+    });
+    trackAddToCart(product, 1, store);
+    router.push(`/store/${store.slug}/checkout`);
+  };
+
   if (store.template === 'senno') {
     return (
       <SennoProductDetail 
@@ -60,6 +75,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
         productColors={productColors}
         isAdding={isAdding}
         handleAddToCart={handleAddToCart}
+        handleBuyNow={handleBuyNow}
       />
     );
   }
@@ -174,12 +190,20 @@ export default function ProductDetailClient({ product, store }: { product: Produ
               <Check className="h-5 w-5" /> Added! View Cart <ArrowRight className="h-5 w-5" />
             </Link>
           ) : (
-            <button 
-              onClick={handleAddToCart}
-              className="w-full bg-slate-900 hover:bg-black text-white h-16 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-slate-900/20"
-            >
-              <ShoppingBag className="h-5 w-5" /> Add to Cart
-            </button>
+            <div className="flex gap-4">
+              <button 
+                onClick={handleAddToCart}
+                className="flex-1 bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-900 h-16 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <ShoppingBag className="h-5 w-5" /> Add to Cart
+              </button>
+              <button 
+                onClick={handleBuyNow}
+                className="flex-1 bg-slate-900 hover:bg-black text-white h-16 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-slate-900/20"
+              >
+                Buy Now
+              </button>
+            </div>
           )}
         </motion.div>
 
@@ -226,7 +250,8 @@ function SennoProductDetail({
   setSelectedColor,
   productColors,
   isAdding,
-  handleAddToCart
+  handleAddToCart,
+  handleBuyNow
 }: any) {
   const pink = "#f06292";
 
@@ -338,24 +363,34 @@ function SennoProductDetail({
                 </div>
              </motion.div>
 
-             {/* Add to Cart */}
+             {/* Add to Cart and Buy Now */}
              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                <button 
-                  onClick={handleAddToCart}
-                  disabled={isAdding}
-                  className={cn(
-                    "w-full h-20 rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-4 transition-all duration-700",
-                    isAdding 
-                      ? "bg-green-600 text-white" 
-                      : "bg-[#f06292] text-white hover:bg-slate-900 hover:scale-[1.02] shadow-2xl shadow-[#f06292]/20"
-                  )}
-                >
-                   {isAdding ? (
-                     <><Check size={20} /> Success! Added to Bag</>
-                   ) : (
-                     <><ShoppingBag size={20} /> Add to Shopping Bag</>
-                   )}
-                </button>
+                <div className="flex gap-4">
+                   <button 
+                     onClick={handleAddToCart}
+                     disabled={isAdding}
+                     className={cn(
+                       "flex-1 h-20 rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-4 transition-all duration-700",
+                       isAdding 
+                         ? "bg-green-600 text-white" 
+                         : "bg-white text-[#f06292] border-2 border-[#f06292] hover:bg-[#fcf2f4] hover:scale-[1.02]"
+                     )}
+                   >
+                      {isAdding ? (
+                        <><Check size={20} /> Added</>
+                      ) : (
+                        <><ShoppingBag size={20} /> Add to Bag</>
+                      )}
+                   </button>
+                   <button 
+                     onClick={handleBuyNow}
+                     className={cn(
+                       "flex-1 h-20 rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-4 transition-all duration-700 bg-[#f06292] text-white hover:bg-slate-900 hover:scale-[1.02] shadow-2xl shadow-[#f06292]/20"
+                     )}
+                   >
+                     Buy Now
+                   </button>
+                </div>
              </motion.div>
 
              {/* Description */}
