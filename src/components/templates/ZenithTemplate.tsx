@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import BannerButton from "@/components/ui/BannerButton";
+import VideoSection from "@/components/ui/VideoSection";
 import Link from 'next/link';
 import { ShoppingBag, ArrowRight, Menu, X, ChevronRight, Play } from 'lucide-react';
 import SmartImage from '@/components/ui/SmartImage';
