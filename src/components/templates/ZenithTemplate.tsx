@@ -418,10 +418,10 @@ export default function ZenithTemplate({
         if (section.type === 'banners') {
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
-            <section key={section.id} className="py-24 px-8 bg-[#f9f9f8]">
-              <div className="container mx-auto space-y-16">
+            <section key={section.id} className="py-1  bg-[#f9f9f8]">
+              <div className="w-full space-y-1">
                 {bannersToShow.map((banner: any) => (
-                  <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group shadow-2xl rounded-sm">
+                  <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group shadow-2xl ">
                     <SmartImage 
                       src={banner.imageUrl} 
                       alt={banner.title} 
@@ -494,10 +494,10 @@ export default function ZenithTemplate({
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-24 px-8 bg-white border-t border-zinc-100">
-          <div className="container mx-auto space-y-16">
+        <section className="py-1  bg-white border-t border-zinc-100">
+          <div className="w-full space-y-1">
             {bottomBanners.map((banner: any) => (
-              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group shadow-2xl rounded-sm">
+              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group shadow-2xl ">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 

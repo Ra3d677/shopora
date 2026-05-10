@@ -317,7 +317,7 @@ export default function AmazonTemplate({ banners, settings, products, slug, cate
             <div key={section.id} className="container mx-auto px-4 mt-8 relative z-20">
               <div className="space-y-6">
                 {bannersToShow.map((banner: any) => (
-                  <div key={banner.id} className="bg-white shadow-sm overflow-hidden flex flex-col md:flex-row h-auto md:h-[350px] rounded-sm">
+                  <div key={banner.id} className="bg-white shadow-sm overflow-hidden flex flex-col md:flex-row h-auto md:aspect-[21/9] ">
                     <div className="w-full md:w-2/3 relative aspect-[4/5] md:aspect-auto h-auto md:h-full">
                       <SmartImage 
                         src={banner.imageUrl} 
@@ -351,10 +351,10 @@ export default function AmazonTemplate({ banners, settings, products, slug, cate
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <div className="container mx-auto px-4 mt-8 relative z-20">
+        <div className="w-full  mt-8 relative z-20">
           <div className="space-y-6">
             {bottomBanners.map((banner: any) => (
-              <div key={banner.id} className="bg-white shadow-sm overflow-hidden flex flex-col md:flex-row h-auto md:h-[350px] rounded-sm">
+              <div key={banner.id} className="bg-white shadow-sm overflow-hidden flex flex-col md:flex-row h-auto md:aspect-[21/9] ">
                 <div className="w-full md:w-2/3 relative aspect-[4/5] md:aspect-auto h-auto md:h-full">
                   <SmartImage 
                     src={banner.imageUrl} 

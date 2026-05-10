@@ -389,11 +389,11 @@ export default function SennoTemplate({ store, banners = [], settings, products,
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
             <div key={section.id}>
-              <section className="py-6 bg-white">
-                <div className="container mx-auto px-6">
+              <section className="py-1 bg-white">
+                <div className="w-full ">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {bannersToShow.length > 0 ? bannersToShow.slice(0, 2).map((banner: any) => (
-                      <div key={banner.id} className="relative h-[300px] rounded-3xl overflow-hidden group">
+                      <div key={banner.id} className="relative aspect-[4/5]  overflow-hidden group">
                          <SmartImage src={banner.imageUrl} className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110" alt={banner.title} />
                          <div className="absolute inset-0 bg-black/20 flex flex-col justify-end p-8 text-white">
                             <h3 className="text-2xl font-black mb-2">{banner.title}</h3>
@@ -438,10 +438,10 @@ export default function SennoTemplate({ store, banners = [], settings, products,
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-20 px-6 bg-[#fff5f8] border-t border-[#f8e1e7]">
-          <div className="container mx-auto space-y-12">
+        <section className="py-1  bg-[#fff5f8] border-t border-[#f8e1e7]">
+          <div className="w-full space-y-1">
             {bottomBanners.map((banner: any) => (
-              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] rounded-[3rem] overflow-hidden group shadow-lg hover:shadow-2xl transition-all duration-700">
+              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9]  overflow-hidden group shadow-lg hover:shadow-2xl transition-all duration-700">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 

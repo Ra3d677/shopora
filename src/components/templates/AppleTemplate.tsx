@@ -285,9 +285,9 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
         if (section.type === 'banners') {
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
-            <section key={section.id} className="w-full px-3 py-3 grid grid-cols-1 gap-3">
+            <section key={section.id} className="w-full  py-1 flex flex-col space-y-1">
               {bannersToShow.map((banner: any) => (
-                <div key={banner.id} className="relative aspect-[4/5] md:h-[500px] md:aspect-auto bg-[#f5f5f7] rounded-[2rem] overflow-hidden flex flex-col items-center justify-center text-center p-8 group">
+                <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] md:aspect-[21/9] bg-[#f5f5f7]  overflow-hidden flex flex-col items-center justify-center text-center p-8 group">
                   <SmartImage 
                     src={banner.imageUrl} 
                     className="hidden md:block absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
@@ -356,10 +356,10 @@ export default function AppleTemplate({ banners, settings, products, slug, categ
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-20 px-4 bg-white border-t border-zinc-100">
-          <div className="max-w-7xl mx-auto space-y-12">
+        <section className="py-1  bg-white border-t border-zinc-100">
+          <div className="w-full space-y-1">
             {bottomBanners.map((banner: any) => (
-              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] rounded-[2rem] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-700">
+              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9]  overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-700">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 

@@ -500,9 +500,9 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
             <div key={section.id}>
-              <section className="py-20 px-8 max-w-[1800px] mx-auto bg-white">
+              <section className="py-1  w-full bg-white">
                 {bannersToShow.length > 0 ? bannersToShow.map((banner: any) => (
-                  <div key={banner.id} className="relative group overflow-hidden rounded-[2rem] md:rounded-[3rem] aspect-[4/5] md:aspect-[21/9] mb-12 last:mb-0 shadow-2xl">
+                  <div key={banner.id} className="relative group overflow-hidden  md: aspect-[4/5] md:aspect-[21/9] mb-12 last:mb-0 shadow-2xl">
                     <SmartImage 
                       src={banner.imageUrl} 
                       alt={banner.title} 
@@ -652,10 +652,10 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-20 px-8 max-w-[1800px] mx-auto bg-white border-t border-slate-100">
+        <section className="py-1  w-full bg-white border-t border-slate-100">
           <div className="space-y-12">
             {bottomBanners.map((banner: any) => (
-              <div key={banner.id} className="relative group overflow-hidden rounded-[2rem] md:rounded-[3rem] aspect-[4/5] md:aspect-[21/9] shadow-2xl">
+              <div key={banner.id} className="relative group overflow-hidden  md: aspect-[4/5] md:aspect-[21/9] shadow-2xl">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 

@@ -299,10 +299,10 @@ export default function ObsidianTemplate({
         if (section.type === 'banners') {
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
-            <section key={section.id} className="py-20 bg-[#0a0a0a]">
-              <div className="container mx-auto px-8">
+            <section key={section.id} className="py-1 bg-[#0a0a0a]">
+              <div className="w-full ">
                 {bannersToShow.map((banner: any) => (
-                  <div key={banner.id} className="relative group overflow-hidden rounded-3xl aspect-[4/5] md:aspect-[21/9] mb-12 last:mb-0">
+                  <div key={banner.id} className="relative group overflow-hidden  aspect-[4/5] md:aspect-[21/9] mb-12 last:mb-0">
                     <SmartImage 
                       src={banner.imageUrl} 
                       alt={banner.title} 
@@ -425,10 +425,10 @@ export default function ObsidianTemplate({
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-24 px-8 bg-[#0a0a0a] border-t border-white/5">
-          <div className="container mx-auto space-y-16">
+        <section className="py-1  bg-[#0a0a0a] border-t border-white/5">
+          <div className="w-full space-y-1">
             {bottomBanners.map((banner: any) => (
-              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group shadow-2xl rounded-sm border border-white/5">
+              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group shadow-2xl  border border-white/5">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 

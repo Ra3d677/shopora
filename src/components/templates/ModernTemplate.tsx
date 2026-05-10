@@ -414,10 +414,10 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
         if (section.type === 'banners') {
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
-            <section key={section.id} className="py-24 px-8 bg-white border-y border-slate-100">
-              <div className="container mx-auto space-y-24">
+            <section key={section.id} className="py-1  bg-white border-y border-slate-100">
+              <div className="w-full space-y-1">
                 {bannersToShow.map((banner: any) => (
-                  <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl group">
+                  <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9]  md: overflow-hidden shadow-2xl group">
                     <SmartImage 
                       src={banner.imageUrl} 
                       alt={banner.title} 
@@ -491,10 +491,10 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-24 px-8 bg-slate-50 border-t border-slate-100">
-          <div className="container mx-auto space-y-24">
+        <section className="py-1  bg-slate-50 border-t border-slate-100">
+          <div className="w-full space-y-1">
             {bottomBanners.map((banner: any) => (
-              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl group">
+              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9]  md: overflow-hidden shadow-2xl group">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 

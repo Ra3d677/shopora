@@ -359,8 +359,8 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
         if (section.type === 'banners') {
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
-            <section key={section.id} className="py-24 px-6 md:px-12 bg-[#0a0a0a] text-left">
-              <div className="max-w-screen-2xl mx-auto space-y-24">
+            <section key={section.id} className="py-1  md: bg-[#0a0a0a] text-left">
+              <div className="max-w-screen-2xl mx-auto space-y-1">
                 {bannersToShow.map((banner: any) => (
                   <div key={banner.id} className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div className="relative aspect-[4/5] md:aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden group">
@@ -428,8 +428,8 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
         if (section.type === 'banners') {
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
-            <section key={section.id} className="py-24 px-6 md:px-12 bg-black border-y border-white/5">
-              <div className="max-w-screen-2xl mx-auto space-y-24">
+            <section key={section.id} className="py-1  md: bg-black border-y border-white/5">
+              <div className="max-w-screen-2xl mx-auto space-y-1">
                 {bannersToShow.map((banner: any) => (
                   <div key={banner.id} className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div className="relative aspect-[4/5] md:aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden group border border-white/5">
@@ -502,8 +502,8 @@ export default function HybridDarkCommerceTemplate({ store, banners = [], settin
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-24 px-6 md:px-12 bg-[#0a0a0a] border-t border-white/5">
-          <div className="max-w-screen-2xl mx-auto space-y-24">
+        <section className="py-1  md: bg-[#0a0a0a] border-t border-white/5">
+          <div className="max-w-screen-2xl mx-auto space-y-1">
             {bottomBanners.map((banner: any) => (
               <div key={banner.id} className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div className="relative aspect-[4/5] md:aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden group border border-white/5">
