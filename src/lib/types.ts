@@ -28,6 +28,7 @@ export interface StoreSettings {
   };
   headerSettings?: {
     layout?: 'default' | 'standard' | 'centered' | 'minimal' | 'luxury' | 'hamburger';
+    logoHeight?: number;
     links?: {
       id: string;
       label: string;

@@ -90,7 +90,12 @@ export default function SignatureNavbar({ storeName, logoUrl, slug, products, se
          <div className="flex items-center gap-12">
            <Link href={`/store/${slug}`} className={`text-2xl font-black tracking-tighter uppercase ${scrolled ? 'text-slate-900' : 'text-white'}`}>
               {logoUrl ? (
-                <img src={logoUrl} alt={storeName} className={`h-8 w-auto ${scrolled ? '' : 'invert'}`} />
+                <img 
+                  src={logoUrl} 
+                  alt={storeName} 
+                  className={`${scrolled ? '' : 'invert'}`} 
+                  style={{ height: storeSettings?.headerSettings?.logoHeight || 32, width: 'auto', objectFit: 'contain' }}
+                />
               ) : (
                 storeName
               )}

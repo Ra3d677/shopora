@@ -216,6 +216,26 @@ export default function SettingsManager({
                 </div>
 
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                  <h3 className="text-lg font-bold text-slate-800 mb-2">Logo Size</h3>
+                  <p className="text-sm text-slate-500 mb-6">Adjust the height of your store logo to ensure it looks perfect in your header.</p>
+                  
+                  <div className="flex items-center gap-6">
+                    <input 
+                      type="range" 
+                      min="20" 
+                      max="120" 
+                      step="4"
+                      value={settings.headerSettings?.logoHeight || 40} 
+                      onChange={(e) => setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), logoHeight: Number(e.target.value)}})} 
+                      className="flex-1 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                    />
+                    <div className="w-16 h-10 flex items-center justify-center bg-white border border-slate-200 rounded-lg font-bold text-slate-900">
+                      {settings.headerSettings?.logoHeight || 40}px
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
                   <div className="flex justify-between items-center mb-6">
                     <div>
                       <h3 className="text-lg font-bold text-slate-800">Navigation Links</h3>

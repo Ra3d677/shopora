@@ -300,7 +300,12 @@ export default function Navbar({
           <div className="flex h-24 items-center justify-between">
             <Link href={`/store/${slug}`} className="text-3xl font-bold tracking-tighter uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
               {storeSettings?.logoUrl ? (
-                <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="h-12 w-auto object-contain" />
+                <img 
+                  src={storeSettings.logoUrl} 
+                  alt={storeSettings.storeName} 
+                  className="w-auto object-contain" 
+                  style={{ height: storeSettings?.headerSettings?.logoHeight || 48 }}
+                />
               ) : (
                 storeSettings?.storeName || 'Store'
               )}
@@ -340,7 +345,12 @@ export default function Navbar({
           <div className="flex h-[44px] items-center justify-between">
             <Link href={`/store/${slug}`} className="hover:opacity-70 transition-opacity font-semibold tracking-wide text-sm" style={{ color: 'var(--color-primary-accent, inherit)' }}>
               {storeSettings?.logoUrl ? (
-                <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="h-6 w-auto object-contain brightness-0 invert" />
+                <img 
+                  src={storeSettings.logoUrl} 
+                  alt={storeSettings.storeName} 
+                  className="w-auto object-contain brightness-0 invert" 
+                  style={{ height: storeSettings?.headerSettings?.logoHeight || 24 }}
+                />
               ) : (
                 storeSettings?.storeName || 'Store'
               )}
@@ -409,7 +419,14 @@ export default function Navbar({
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex h-20 items-center justify-between">
             <Link href={`/store/${slug}`} className="flex-shrink-0 text-2xl font-black tracking-tighter uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
-              {storeSettings?.logoUrl ? <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="h-10 w-auto object-contain" /> : (storeSettings?.storeName || 'Store')}
+              {storeSettings?.logoUrl ? (
+                <img 
+                  src={storeSettings.logoUrl} 
+                  alt={storeSettings.storeName} 
+                  className="w-auto object-contain" 
+                  style={{ height: storeSettings?.headerSettings?.logoHeight || 40 }}
+                />
+              ) : (storeSettings?.storeName || 'Store')}
             </Link>
             <div className="hidden lg:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-600">
               {headerLinks.map((link: any) => (
@@ -444,7 +461,14 @@ export default function Navbar({
               ))}
             </div>
             <Link href={`/store/${slug}`} className="flex-1 flex justify-center text-3xl font-black tracking-tighter uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
-              {storeSettings?.logoUrl ? <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="h-12 w-auto object-contain" /> : (storeSettings?.storeName || 'Store')}
+              {storeSettings?.logoUrl ? (
+                <img 
+                  src={storeSettings.logoUrl} 
+                  alt={storeSettings.storeName} 
+                  className="w-auto object-contain" 
+                  style={{ height: storeSettings?.headerSettings?.logoHeight || 48 }}
+                />
+              ) : (storeSettings?.storeName || 'Store')}
             </Link>
             <div className="flex-1 flex items-center justify-end gap-6">
               <LanguageSwitcher />
@@ -472,9 +496,16 @@ export default function Navbar({
                <LanguageSwitcher />
                <SearchBar />
              </div>
-             <Link href={`/store/${slug}`} className="text-4xl font-light tracking-[0.2em] uppercase absolute left-1/2 -translate-x-1/2" style={{ color: 'var(--color-primary-accent, inherit)' }}>
-               {storeSettings?.logoUrl ? <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="h-14 w-auto object-contain mx-auto" /> : (storeSettings?.storeName || 'Store')}
-             </Link>
+              <Link href={`/store/${slug}`} className="text-4xl font-light tracking-[0.2em] uppercase absolute left-1/2 -translate-x-1/2" style={{ color: 'var(--color-primary-accent, inherit)' }}>
+                {storeSettings?.logoUrl ? (
+                  <img 
+                    src={storeSettings.logoUrl} 
+                    alt={storeSettings.storeName} 
+                    className="w-auto object-contain mx-auto" 
+                    style={{ height: storeSettings?.headerSettings?.logoHeight || 56 }}
+                  />
+                ) : (storeSettings?.storeName || 'Store')}
+              </Link>
              <div className="w-32 flex items-center justify-end gap-4">
                <UserMenuDropdown />
                <CartButton />
@@ -504,7 +535,14 @@ export default function Navbar({
                <div className="hidden md:block"><LanguageSwitcher /></div>
             </div>
             <Link href={`/store/${slug}`} className="flex-1 flex justify-center text-2xl font-black tracking-widest uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
-              {storeSettings?.logoUrl ? <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="h-10 w-auto object-contain" /> : (storeSettings?.storeName || 'Store')}
+              {storeSettings?.logoUrl ? (
+                <img 
+                  src={storeSettings.logoUrl} 
+                  alt={storeSettings.storeName} 
+                  className="w-auto object-contain" 
+                  style={{ height: storeSettings?.headerSettings?.logoHeight || 40 }}
+                />
+              ) : (storeSettings?.storeName || 'Store')}
             </Link>
             <div className="flex-1 flex items-center justify-end gap-6">
               <SearchBar />
@@ -539,7 +577,12 @@ export default function Navbar({
             
             <Link href={`/store/${slug}`} className="flex-1 text-center text-4xl font-light tracking-[0.2em] uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
               {storeSettings?.logoUrl ? (
-                <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="h-16 mx-auto w-auto object-contain" />
+                <img 
+                  src={storeSettings.logoUrl} 
+                  alt={storeSettings.storeName} 
+                  className="mx-auto w-auto object-contain" 
+                  style={{ height: storeSettings?.headerSettings?.logoHeight || 64 }}
+                />
               ) : (
                 storeSettings?.storeName || 'Store'
               )}
@@ -581,7 +624,12 @@ function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, 
 
         <Link href={`/store/${slug}`} className="flex-1 text-center">
           {logoUrl ? (
-            <img src={logoUrl} alt={storeName} className={`h-10 mx-auto w-auto object-contain ${!scrolled ? 'brightness-0 invert' : ''}`} />
+            <img 
+              src={logoUrl} 
+              alt={storeName} 
+              className={`mx-auto w-auto object-contain ${!scrolled ? 'brightness-0 invert' : ''}`} 
+              style={{ height: storeSettings?.headerSettings?.logoHeight || 40 }}
+            />
           ) : (
             <h1 className="text-3xl font-light tracking-[0.25em] uppercase">{storeName}</h1>
           )}
@@ -615,7 +663,12 @@ function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings
 
         <Link href={`/store/${slug}`} className="flex-1 text-center">
           {logoUrl ? (
-            <img src={logoUrl} alt={storeName} className="h-12 mx-auto w-auto object-contain grayscale brightness-200" />
+            <img 
+              src={logoUrl} 
+              alt={storeName} 
+              className="mx-auto w-auto object-contain grayscale brightness-200" 
+              style={{ height: storeSettings?.headerSettings?.logoHeight || 48 }}
+            />
           ) : (
             <h1 className="text-4xl font-black tracking-tighter uppercase">{storeName}</h1>
           )}
@@ -679,7 +732,12 @@ function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSe
                   <div className="w-4 h-4 bg-white rounded-full" />
                </div>
                {logoUrl ? (
-                 <img src={logoUrl} alt={storeName} className="h-8 w-auto" />
+                 <img 
+                   src={logoUrl} 
+                   alt={storeName} 
+                   className="w-auto" 
+                   style={{ height: storeSettings?.headerSettings?.logoHeight || 32 }}
+                 />
                ) : (
                  <h1 className="text-3xl font-black tracking-tighter uppercase text-slate-900">{storeName}</h1>
                )}
