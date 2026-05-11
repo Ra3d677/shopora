@@ -29,6 +29,7 @@ export interface StoreSettings {
   headerSettings?: {
     layout?: 'default' | 'standard' | 'centered' | 'minimal' | 'luxury' | 'hamburger';
     logoHeight?: number;
+    logoBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay';
     links?: {
       id: string;
       label: string;

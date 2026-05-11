@@ -304,7 +304,10 @@ export default function Navbar({
                   src={storeSettings.logoUrl} 
                   alt={storeSettings.storeName} 
                   className="w-auto object-contain" 
-                  style={{ height: storeSettings?.headerSettings?.logoHeight || 48 }}
+                  style={{ 
+                    height: storeSettings?.headerSettings?.logoHeight || 48,
+                    mixBlendMode: (storeSettings?.headerSettings?.logoBlendMode as any) || 'normal'
+                  }}
                 />
               ) : (
                 storeSettings?.storeName || 'Store'
@@ -349,7 +352,10 @@ export default function Navbar({
                   src={storeSettings.logoUrl} 
                   alt={storeSettings.storeName} 
                   className="w-auto object-contain brightness-0 invert" 
-                  style={{ height: storeSettings?.headerSettings?.logoHeight || 24 }}
+                  style={{ 
+                    height: storeSettings?.headerSettings?.logoHeight || 24,
+                    mixBlendMode: (storeSettings?.headerSettings?.logoBlendMode as any) || 'normal'
+                  }}
                 />
               ) : (
                 storeSettings?.storeName || 'Store'
@@ -424,7 +430,10 @@ export default function Navbar({
                   src={storeSettings.logoUrl} 
                   alt={storeSettings.storeName} 
                   className="w-auto object-contain" 
-                  style={{ height: storeSettings?.headerSettings?.logoHeight || 40 }}
+                  style={{ 
+                    height: storeSettings?.headerSettings?.logoHeight || 40,
+                    mixBlendMode: (storeSettings?.headerSettings?.logoBlendMode as any) || 'normal'
+                  }}
                 />
               ) : (storeSettings?.storeName || 'Store')}
             </Link>
@@ -466,7 +475,10 @@ export default function Navbar({
                   src={storeSettings.logoUrl} 
                   alt={storeSettings.storeName} 
                   className="w-auto object-contain" 
-                  style={{ height: storeSettings?.headerSettings?.logoHeight || 48 }}
+                  style={{ 
+                    height: storeSettings?.headerSettings?.logoHeight || 48,
+                    mixBlendMode: (storeSettings?.headerSettings?.logoBlendMode as any) || 'normal'
+                  }}
                 />
               ) : (storeSettings?.storeName || 'Store')}
             </Link>
@@ -502,7 +514,10 @@ export default function Navbar({
                     src={storeSettings.logoUrl} 
                     alt={storeSettings.storeName} 
                     className="w-auto object-contain mx-auto" 
-                    style={{ height: storeSettings?.headerSettings?.logoHeight || 56 }}
+                    style={{ 
+                      height: storeSettings?.headerSettings?.logoHeight || 56,
+                      mixBlendMode: (storeSettings?.headerSettings?.logoBlendMode as any) || 'normal'
+                    }}
                   />
                 ) : (storeSettings?.storeName || 'Store')}
               </Link>
@@ -581,7 +596,10 @@ export default function Navbar({
                   src={storeSettings.logoUrl} 
                   alt={storeSettings.storeName} 
                   className="mx-auto w-auto object-contain" 
-                  style={{ height: storeSettings?.headerSettings?.logoHeight || 64 }}
+                  style={{ 
+                    height: storeSettings?.headerSettings?.logoHeight || 64,
+                    mixBlendMode: (storeSettings?.headerSettings?.logoBlendMode as any) || 'normal'
+                  }}
                 />
               ) : (
                 storeSettings?.storeName || 'Store'
@@ -628,7 +646,10 @@ function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, 
               src={logoUrl} 
               alt={storeName} 
               className={`mx-auto w-auto object-contain ${!scrolled ? 'brightness-0 invert' : ''}`} 
-              style={{ height: storeSettings?.headerSettings?.logoHeight || 40 }}
+              style={{ 
+                height: storeSettings?.headerSettings?.logoHeight || 40,
+                mixBlendMode: (storeSettings?.headerSettings?.logoBlendMode as any) || 'normal'
+              }}
             />
           ) : (
             <h1 className="text-3xl font-light tracking-[0.25em] uppercase">{storeName}</h1>
@@ -667,7 +688,10 @@ function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings
               src={logoUrl} 
               alt={storeName} 
               className="mx-auto w-auto object-contain grayscale brightness-200" 
-              style={{ height: storeSettings?.headerSettings?.logoHeight || 48 }}
+              style={{ 
+                height: storeSettings?.headerSettings?.logoHeight || 48,
+                mixBlendMode: (storeSettings?.headerSettings?.logoBlendMode as any) || 'normal'
+              }}
             />
           ) : (
             <h1 className="text-4xl font-black tracking-tighter uppercase">{storeName}</h1>
@@ -736,7 +760,10 @@ function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSe
                    src={logoUrl} 
                    alt={storeName} 
                    className="w-auto" 
-                   style={{ height: storeSettings?.headerSettings?.logoHeight || 32 }}
+                   style={{ 
+                     height: storeSettings?.headerSettings?.logoHeight || 32,
+                     mixBlendMode: (storeSettings?.headerSettings?.logoBlendMode as any) || 'normal'
+                   }}
                  />
                ) : (
                  <h1 className="text-3xl font-black tracking-tighter uppercase text-slate-900">{storeName}</h1>

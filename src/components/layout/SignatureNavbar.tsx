@@ -94,7 +94,12 @@ export default function SignatureNavbar({ storeName, logoUrl, slug, products, se
                   src={logoUrl} 
                   alt={storeName} 
                   className={`${scrolled ? '' : 'invert'}`} 
-                  style={{ height: storeSettings?.headerSettings?.logoHeight || 32, width: 'auto', objectFit: 'contain' }}
+                  style={{ 
+                    height: storeSettings?.headerSettings?.logoHeight || 32, 
+                    width: 'auto', 
+                    objectFit: 'contain',
+                    mixBlendMode: (storeSettings?.headerSettings?.logoBlendMode as any) || 'normal'
+                  }}
                 />
               ) : (
                 storeName
