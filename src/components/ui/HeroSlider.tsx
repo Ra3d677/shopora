@@ -45,7 +45,7 @@ export default function HeroSlider({ banners = [], slug, settings }: HeroSliderP
   if (!banners || banners.length === 0) return null;
 
   return (
-    <div className="relative w-full overflow-hidden group aspect-[4/5] md:aspect-[21/9] max-h-[700px] bg-slate-900">
+    <div className="relative w-full overflow-hidden group aspect-[2/3] md:aspect-[21/9] max-h-[800px] bg-slate-900">
       <AnimatePresence initial={false} mode="wait">
         {banners.map((banner, index) => (
           index === currentIndex && (

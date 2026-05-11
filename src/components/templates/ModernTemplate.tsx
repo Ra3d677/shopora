@@ -332,7 +332,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
               <section key={section.id} className="py-1 bg-transparent border-y border-slate-100">
                 <div className="w-full space-y-1">
                   {bannersToShow.map((banner: any) => (
-                    <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden shadow-2xl group">
+                    <div key={banner.id} className="relative aspect-[2/3] md:aspect-[21/9] overflow-hidden shadow-2xl group">
                       <SmartImage 
                         src={banner.imageUrl} 
                         alt={banner.title} 
@@ -421,7 +421,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
         <section className="py-1  bg-slate-50 border-t border-slate-100">
           <div className="w-full space-y-1">
             {bottomBanners.map((banner: any) => (
-              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] md:overflow-hidden shadow-2xl group">
+              <div key={banner.id} className="relative aspect-[2/3] md:aspect-[21/9] md:overflow-hidden shadow-2xl group">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 

@@ -503,7 +503,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
             <div key={section.id}>
               <section className="py-1  w-full bg-transparent">
                 {bannersToShow.length > 0 ? bannersToShow.map((banner: any) => (
-                  <div key={banner.id} className="relative group overflow-hidden aspect-[4/5] md:aspect-[21/9] mb-12 last:mb-0 shadow-2xl">
+                  <div key={banner.id} className="relative group overflow-hidden aspect-[2/3] md:aspect-[21/9] mb-12 last:mb-0 shadow-2xl">
                     <SmartImage 
                       src={banner.imageUrl} 
                       alt={banner.title} 
@@ -661,7 +661,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
         <section className="py-1  w-full bg-transparent border-t border-slate-100">
           <div className="space-y-12">
             {bottomBanners.map((banner: any) => (
-              <div key={banner.id} className="relative group overflow-hidden aspect-[4/5] md:aspect-[21/9] shadow-2xl">
+              <div key={banner.id} className="relative group overflow-hidden aspect-[2/3] md:aspect-[21/9] shadow-2xl">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 

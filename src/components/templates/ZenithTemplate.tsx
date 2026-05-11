@@ -431,7 +431,7 @@ export default function ZenithTemplate({
             <section key={section.id} className="py-1  bg-[#f9f9f8]">
               <div className="w-full space-y-1">
                 {bannersToShow.map((banner: any) => (
-                  <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group shadow-2xl ">
+                  <div key={banner.id} className="relative aspect-[2/3] md:aspect-[21/9] overflow-hidden group shadow-2xl ">
                     <SmartImage 
                       src={banner.imageUrl} 
                       alt={banner.title} 
@@ -515,7 +515,7 @@ export default function ZenithTemplate({
         <section className="py-1  bg-transparent border-t border-zinc-100">
           <div className="w-full space-y-1">
             {bottomBanners.map((banner: any) => (
-              <div key={banner.id} className="relative aspect-[4/5] md:aspect-[21/9] overflow-hidden group shadow-2xl ">
+              <div key={banner.id} className="relative aspect-[2/3] md:aspect-[21/9] overflow-hidden group shadow-2xl ">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 
