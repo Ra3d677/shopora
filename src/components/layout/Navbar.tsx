@@ -427,6 +427,7 @@ export default function Navbar({
   if (effectiveLayout === 'standard') {
     return (
       <>
+        <LogoTransparencyFilter />
         <nav className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex h-20 items-center justify-between">
@@ -461,6 +462,7 @@ export default function Navbar({
   if (effectiveLayout === 'centered') {
     return (
       <>
+        <LogoTransparencyFilter />
         <nav className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex h-24 items-center justify-between">
@@ -509,6 +511,7 @@ export default function Navbar({
   if (effectiveLayout === 'luxury') {
     return (
       <>
+        <LogoTransparencyFilter />
         <nav className="sticky top-0 z-50 w-full backdrop-blur-2xl border-b border-slate-100 bg-white/95 text-slate-900 transition-colors py-4">
         <div className="container mx-auto px-6 lg:px-12 flex flex-col items-center gap-6">
           <div className="w-full flex justify-between items-center relative">
@@ -544,6 +547,7 @@ export default function Navbar({
   if (effectiveLayout === 'hamburger') {
     return (
       <>
+        <LogoTransparencyFilter />
         <nav className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex h-20 items-center justify-between">
@@ -577,6 +581,7 @@ export default function Navbar({
   // DEFAULT (LUXURY)
   return (
     <>
+      <LogoTransparencyFilter />
       <nav 
         className="sticky top-0 z-50 w-full backdrop-blur-2xl border-b border-[#1a1a1a]/5 font-serif transition-colors"
         style={{ backgroundColor: 'var(--color-header-bg, rgba(250,249,246,0.8))', color: 'var(--color-header-text, #1a1a1a)' }}
