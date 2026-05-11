@@ -7,6 +7,20 @@ import { ShoppingBag, Search, X, ArrowRight, Menu } from "lucide-react";
 import SmartSearch from "@/components/ui/premium/SmartSearch";
 import { useCartStore } from "@/store/cart";
 
+const LogoTransparencyFilter = () => (
+  <svg style={{ position: 'absolute', width: 0, height: 0 }} aria-hidden="true">
+    <filter id="remove-white-bg" colorInterpolationFilters="sRGB">
+      <feColorMatrix 
+        type="matrix" 
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                -1 -1 -1 3 0" 
+      />
+    </filter>
+  </svg>
+);
+
 interface SignatureNavbarProps {
   storeName: string;
   logoUrl?: string;
@@ -86,21 +100,23 @@ export default function SignatureNavbar({ storeName, logoUrl, slug, products, se
         )}
       </AnimatePresence>
 
+      <LogoTransparencyFilter />
       <nav className={`fixed top-0 w-full z-[150] px-8 py-8 flex justify-between items-center transition-all duration-500 ${scrolled ? 'bg-white/80 backdrop-blur-xl border-b border-slate-100 py-6' : 'bg-transparent mix-blend-difference text-white'}`}>
          <div className="flex items-center gap-12">
            <Link href={`/store/${slug}`} className={`text-2xl font-black tracking-tighter uppercase ${scrolled ? 'text-slate-900' : 'text-white'}`}>
               {logoUrl ? (
-                <img 
-                  src={logoUrl} 
-                  alt={storeName} 
-                  className={`${scrolled ? '' : 'invert'}`} 
-                  style={{ 
-                    height: storeSettings?.headerSettings?.logoHeight || 32, 
-                    width: 'auto', 
-                    objectFit: 'contain',
-                    mixBlendMode: (storeSettings?.headerSettings?.logoBlendMode as any) || 'normal'
-                  }}
-                />
+                <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
+                  <img 
+                    src={logoUrl} 
+                    alt={storeName} 
+                    className={`${scrolled ? '' : 'invert'}`} 
+                    style={{ 
+                      height: storeSettings?.headerSettings?.logoHeight || 32, 
+                      width: 'auto', 
+                      objectFit: 'contain'
+                    }}
+                  />
+                </div>
               ) : (
                 storeName
               )}
