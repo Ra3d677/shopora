@@ -102,6 +102,47 @@ export default function SettingsManager({
                         onChange={url => setSettings({...settings, logoUrl: url})} 
                       />
                     </div>
+                    <div className="flex-1 space-y-6 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                      <div>
+                        <div className="flex justify-between items-center mb-2">
+                          <h4 className="font-bold text-slate-800">Logo Size</h4>
+                          <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">{settings.headerSettings?.logoHeight || 40}px</span>
+                        </div>
+                        <input 
+                          type="range" 
+                          min="20" 
+                          max="120" 
+                          step="4"
+                          value={settings.headerSettings?.logoHeight || 40} 
+                          onChange={(e) => setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), logoHeight: Number(e.target.value)}})} 
+                          className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                        />
+                      </div>
+
+                      <div className="pt-4 border-t border-slate-200">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="font-bold text-slate-800 text-sm">Remove White Background</h4>
+                            <p className="text-[10px] text-slate-500">Blends logos into the header background.</p>
+                          </div>
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              className="sr-only peer"
+                              checked={settings.headerSettings?.logoBlendMode === 'multiply'}
+                              onChange={(e) => setSettings({
+                                ...settings, 
+                                headerSettings: {
+                                  ...(settings.headerSettings || {}), 
+                                  logoBlendMode: e.target.checked ? 'multiply' : 'normal'
+                                }
+                              })}
+                            />
+                            <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -215,49 +256,7 @@ export default function SettingsManager({
                   </div>
                 </div>
 
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                  <h3 className="text-lg font-bold text-slate-800 mb-2">Logo Size</h3>
-                  <p className="text-sm text-slate-500 mb-6">Adjust the height of your store logo to ensure it looks perfect in your header.</p>
-                  
-                  <div className="flex items-center gap-6">
-                    <input 
-                      type="range" 
-                      min="20" 
-                      max="120" 
-                      step="4"
-                      value={settings.headerSettings?.logoHeight || 40} 
-                      onChange={(e) => setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), logoHeight: Number(e.target.value)}})} 
-                      className="flex-1 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                    />
-                    <div className="w-16 h-10 flex items-center justify-center bg-white border border-slate-200 rounded-lg font-bold text-slate-900">
-                      {settings.headerSettings?.logoHeight || 40}px
-                    </div>
-                  </div>
 
-                  <div className="mt-6 pt-6 border-t border-slate-200">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h4 className="font-bold text-slate-800">Remove White Background</h4>
-                        <p className="text-xs text-slate-500">Automatically blends logos with white backgrounds into the header.</p>
-                      </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input 
-                          type="checkbox" 
-                          className="sr-only peer"
-                          checked={settings.headerSettings?.logoBlendMode === 'multiply'}
-                          onChange={(e) => setSettings({
-                            ...settings, 
-                            headerSettings: {
-                              ...(settings.headerSettings || {}), 
-                              logoBlendMode: e.target.checked ? 'multiply' : 'normal'
-                            }
-                          })}
-                        />
-                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                      </label>
-                    </div>
-                  </div>
-                </div>
 
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
                   <div className="flex justify-between items-center mb-6">
