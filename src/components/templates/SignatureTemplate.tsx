@@ -29,8 +29,6 @@ interface TemplateProps {
 export default function SignatureTemplate({ banners, settings, products, slug, categories }: TemplateProps) {
   const { isEditMode } = useEditorStore();
   const { scrollYProgress } = useScroll();
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.1]);
   
   const topBanners = banners.filter((b: any) => b.position === 'top' || !b.position);
   const middleBanners = banners.filter((b: any) => b.position === 'middle');
@@ -301,11 +299,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           // Default: Luxury (Original Design)
           return (
             <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex items-center justify-center overflow-hidden bg-transparent">
-              <motion.div 
-                initial={{ opacity: 1 }}
-                whileInView={{ opacity: 1 }}
-                className="absolute inset-0"
-              >
+              <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60 z-10 pointer-events-none" />
                 <SmartImage 
                   src={sigSettings.heroImage || (topBanners.length > 0 ? topBanners[0]?.imageUrl : "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1600&q=80")} 
@@ -384,7 +378,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                        )}
                     </div>
                 </div>
-              </motion.div>
+              </div>
             </section>
           );
         }
@@ -404,7 +398,6 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                     content={sigSettings.saleProductsTitle || section.config?.title || "Special Offers"} 
                     slug={slug} 
                     settingsKey="signatureSettings.saleProductsTitle" 
-                    initialStyles={sigSettings.saleProductsTitle_styles}
                     as="h2"
                     className="text-5xl font-black tracking-tighter uppercase" 
                   />
@@ -458,7 +451,6 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                         content={sigSettings.spotlightBadge || "Product Spotlight"} 
                         slug={slug} 
                         settingsKey="signatureSettings.spotlightBadge" 
-                        initialStyles={sigSettings.spotlightBadge_styles}
                         className="text-blue-600 font-bold uppercase tracking-widest text-xs mb-4 block" 
                       />
                       <h2 className="text-6xl font-black tracking-tighter leading-none mb-8">
@@ -503,7 +495,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
             <div key={section.id}>
               <section className="py-1  w-full bg-transparent">
                 {bannersToShow.length > 0 ? bannersToShow.map((banner: any) => (
-                  <div key={banner.id} className="relative group overflow-hidden aspect-[2/3] md:aspect-[21/9] mb-12 last:mb-0 shadow-2xl">
+                  <div key={banner.id} className="relative group overflow-hidden min-h-[400px] md:h-[500px] mb-12 last:mb-0 shadow-2xl">
                     <SmartImage 
                       src={banner.imageUrl} 
                       alt={banner.title} 
@@ -648,7 +640,6 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           );
         }
 
-        
         if (section.type === 'video') {
           return <VideoSection key={section.id} section={section} slug={slug} />;
         }
@@ -661,7 +652,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
         <section className="py-1  w-full bg-transparent border-t border-slate-100">
           <div className="space-y-12">
             {bottomBanners.map((banner: any) => (
-              <div key={banner.id} className="relative group overflow-hidden aspect-[2/3] md:aspect-[21/9] shadow-2xl">
+              <div key={banner.id} className="relative group overflow-hidden min-h-[400px] md:h-[500px] shadow-2xl">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 
