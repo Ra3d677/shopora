@@ -20,7 +20,9 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
     .filter(b => b.isActive && b.targetPage === 'collections')
     .sort((a, b) => a.order - b.order);
 
-  const COLLECTIONS = store.categories.map(cat => {
+  const COLLECTIONS = store.categories
+    .filter(cat => !cat.parentId)
+    .map(cat => {
     // Count products for this category
     const count = cat.id === 'sale' 
       ? store.products.filter(p => p.discount_price !== null).length 
