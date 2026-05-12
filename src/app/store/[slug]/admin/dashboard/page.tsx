@@ -301,6 +301,41 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                </div>
             </div>
 
+            {/* Traffic Sources */}
+            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5">
+               <h3 className="text-xl font-black italic text-white mb-8 tracking-tight flex items-center gap-3">
+                 <Activity className="w-5 h-5 text-cyan-400" /> Traffic <span className="text-cyan-400">Sources</span>
+               </h3>
+               <div className="space-y-6">
+                  {[
+                    { name: 'Direct', value: 62, color: 'bg-cyan-400' },
+                    { name: 'Search', value: 24, color: 'bg-purple-400' },
+                    { name: 'Social', value: 10, color: 'bg-amber-400' },
+                    { name: 'Ads', value: 4, color: 'bg-pink-400' }
+                  ].map((source) => (
+                    <div key={source.name} className="space-y-2">
+                       <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
+                          <span className="text-slate-400">{source.name}</span>
+                          <span className="text-white">{source.value}%</span>
+                       </div>
+                       <div className="w-full bg-[#0f111a] h-1.5 rounded-full overflow-hidden">
+                          <div className={`${source.color} h-full rounded-full shadow-[0_0_10px_rgba(34,211,238,0.2)]`} style={{ width: `${source.value}%` }}></div>
+                       </div>
+                    </div>
+                  ))}
+               </div>
+               <div className="mt-10 pt-8 border-t border-white/5 flex justify-between">
+                  <div>
+                     <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Avg AOV</p>
+                     <h4 className="text-xl font-black text-amber-400 italic">${averageOrderValue.toFixed(0)}</h4>
+                  </div>
+                  <div className="text-right">
+                     <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Unique Customers</p>
+                     <h4 className="text-xl font-black text-cyan-400 italic">{uniqueCustomers}</h4>
+                  </div>
+               </div>
+            </div>
+
             {/* Smart Alerts */}
             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5">
                <h3 className="text-xl font-black italic text-white mb-8 tracking-tight flex items-center gap-3">
@@ -318,15 +353,26 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                         </div>
                      </div>
                   )}
-                  <div className="bg-cyan-500/5 border border-cyan-500/20 p-5 rounded-3xl flex items-start gap-4 opacity-60">
+                  <div className="bg-cyan-500/5 border border-cyan-500/20 p-5 rounded-3xl flex items-start gap-4">
                      <TrendingUp className="w-5 h-5 text-cyan-400 mt-1 shrink-0" />
                      <div>
                         <h5 className="text-[10px] font-black uppercase tracking-widest text-cyan-400 mb-1">Conversion Growth</h5>
                         <p className="text-xs font-bold text-slate-400 leading-relaxed">
-                           Conversion rate improved by 0.5% today. Keep it up!
+                           Conversion rate is {conversionRate}%. Aim for 2% for better ROI.
                         </p>
                      </div>
                   </div>
+                  {leastSeller && (
+                    <div className="bg-purple-500/5 border border-purple-500/20 p-5 rounded-3xl flex items-start gap-4">
+                       <Activity className="w-5 h-5 text-purple-400 mt-1 shrink-0" />
+                       <div>
+                          <h5 className="text-[10px] font-black uppercase tracking-widest text-purple-400 mb-1">Stagnant Product</h5>
+                          <p className="text-xs font-bold text-slate-400 leading-relaxed">
+                             {leastSeller.name} hasn't sold much recently. Consider a discount?
+                          </p>
+                       </div>
+                    </div>
+                  )}
                </div>
             </div>
          </div>
@@ -334,73 +380,55 @@ export default async function AdminDashboard({ params, searchParams }: { params:
          {/* Right Column: Charts and Top Products */}
          <div className="lg:col-span-2 space-y-8">
             {/* Revenue Chart Placeholder / Area */}
-            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 min-h-[400px] flex flex-col">
-               <div className="flex justify-between items-center mb-10">
+            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 min-h-[400px] flex flex-col relative overflow-hidden">
+               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(192,132,252,0.1),transparent)] pointer-events-none"></div>
+               <div className="flex justify-between items-center mb-10 relative z-10">
                   <h3 className="text-2xl font-black italic text-white tracking-tight">Revenue <span className="text-purple-400">Trend</span></h3>
-                  <div className="bg-purple-500/10 text-purple-400 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest">Live</div>
+                  <div className="bg-purple-500/10 text-purple-400 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border border-purple-500/20">Live</div>
                </div>
-               <div className="flex-1 flex items-end gap-2 group cursor-crosshair">
+               <div className="flex-1 flex items-end gap-2 group cursor-crosshair relative z-10">
                   {/* Mock Chart Bars */}
                   {[30, 45, 25, 60, 55, 80, 40, 70, 90, 65, 85, 100].map((h, i) => (
                     <div 
                       key={i} 
-                      className="flex-1 bg-gradient-to-t from-purple-600/20 to-purple-400/80 rounded-t-xl transition-all duration-700 hover:scale-y-110 hover:shadow-[0_0_15px_rgba(192,132,252,0.4)]"
+                      className="flex-1 bg-gradient-to-t from-purple-600/10 to-purple-400/60 rounded-t-lg transition-all duration-700 hover:to-purple-400 hover:shadow-[0_0_15px_rgba(192,132,252,0.4)]"
                       style={{ height: `${h}%` }}
                     />
                   ))}
                </div>
-               <div className="flex justify-between mt-6 text-[10px] font-black text-slate-500 uppercase tracking-widest px-2">
+               <div className="flex justify-between mt-6 text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] px-2 relative z-10">
                   <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
                </div>
             </div>
 
-            {/* Top Products Table */}
+            {/* Best Sellers Ranked List */}
             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5">
                <div className="flex justify-between items-center mb-10">
-                  <h3 className="text-2xl font-black italic text-white tracking-tight">Top <span className="text-cyan-400">Performers</span></h3>
-                  <div className="bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest">Top 5</div>
+                  <h3 className="text-2xl font-black italic text-white tracking-tight">Best <span className="text-cyan-400">Sellers</span></h3>
+                  <div className="w-10 h-10 bg-cyan-500/10 rounded-full flex items-center justify-center text-cyan-400">🏆</div>
                </div>
-               <div className="overflow-x-auto">
-                  <table className="w-full">
-                     <thead>
-                        <tr className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 text-left border-b border-white/5">
-                           <th className="pb-6">Product</th>
-                           <th className="pb-6">Sales</th>
-                           <th className="pb-6">Revenue</th>
-                           <th className="pb-6">Status</th>
-                        </tr>
-                     </thead>
-                     <tbody className="text-sm font-bold">
-                        {topProducts.map((p, idx) => (
-                          <tr key={p.id} className="border-b border-white/5 last:border-0 hover:bg-white/[0.02] transition-colors group">
-                             <td className="py-6 flex items-center gap-4">
-                                <div className="w-12 h-12 bg-[#0f111a] rounded-2xl overflow-hidden border border-white/5 group-hover:border-cyan-500/30 transition-all">
-                                   {p.image && <img src={p.image} className="w-full h-full object-cover" alt={p.name} />}
-                                </div>
-                                <div>
-                                   <p className="text-white group-hover:text-cyan-400 transition-colors">{p.name}</p>
-                                   <p className="text-[10px] text-slate-500 uppercase tracking-widest">{p.category?.name || "Product"}</p>
-                                </div>
-                             </td>
-                             <td className="py-6 text-slate-400">{p.salesCount} Units</td>
-                             <td className="py-6 text-white font-black">${(p.salesCount * p.price).toFixed(0)}</td>
-                             <td className="py-6">
-                                {idx === 0 ? (
-                                   <span className="bg-orange-500/10 text-orange-400 text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-orange-500/20">🔥 Hot</span>
-                                ) : p.stock_quantity < 5 ? (
-                                   <span className="bg-red-500/10 text-red-400 text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-red-500/20">⚠ Low</span>
-                                ) : (
-                                   <span className="bg-green-500/10 text-green-400 text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-green-500/20">✓ Active</span>
-                                )}
-                             </td>
-                          </tr>
-                        ))}
-                     </tbody>
-                  </table>
+               <div className="space-y-8">
+                  {topProducts.map((p, idx) => (
+                    <div key={p.id} className="flex items-center justify-between group">
+                       <div className="flex items-center gap-6">
+                          <span className="text-2xl font-black italic text-slate-800 group-hover:text-cyan-500/50 transition-colors">#{idx + 1}</span>
+                          <div className="w-16 h-16 bg-[#0f111a] rounded-2xl overflow-hidden border border-white/5 group-hover:border-cyan-500/30 transition-all shadow-xl">
+                             {p.image && <img src={p.image} className="w-full h-full object-cover" alt={p.name} />}
+                          </div>
+                          <div>
+                             <h4 className="text-lg font-black text-white group-hover:text-cyan-400 transition-colors line-clamp-1">{p.name}</h4>
+                             <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{p.salesCount} Units Sold</p>
+                          </div>
+                       </div>
+                       <div className="text-right">
+                          <h5 className="text-xl font-black text-white">${(p.salesCount * p.price).toFixed(0)}</h5>
+                       </div>
+                    </div>
+                  ))}
                </div>
             </div>
 
-            {/* Heatmap Section */}
+            {/* Activity Heatmap */}
             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 overflow-x-auto">
                <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">Activity <span className="text-amber-400">Heatmap</span></h3>
                <div className="min-w-[700px]">
