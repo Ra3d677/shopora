@@ -36,6 +36,14 @@ export default function SettingsManager({
     product: { price: '#0f172a', salePrice: '#ef4444' }
   };
 
+  const premiumBackgrounds = [
+    { id: 'default', name: 'Void', desc: 'Pure dark matter.', className: 'bg-[#0a0c14]' },
+    { id: 'abyss', name: 'Abyss', desc: 'Deep radial gradient.', className: 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#0a0c14] to-black' },
+    { id: 'nebula', name: 'Nebula', desc: 'Purple ambient glow.', className: 'bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-purple-900/20 via-[#0a0c14] to-[#0a0c14]' },
+    { id: 'cyber', name: 'Cyber', desc: 'Cyan & Blue intersections.', className: 'bg-[linear-gradient(to_right_bottom,_var(--tw-gradient-stops))] from-cyan-900/20 via-[#0a0c14] to-blue-900/20' },
+    { id: 'luxury', name: 'Luxury', desc: 'Subtle amber central highlight.', className: 'bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/10 via-[#0a0c14] to-black' }
+  ];
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaveMessage("");
@@ -406,6 +414,59 @@ export default function SettingsManager({
                           </div>
                        </div>
                      ))}
+                  </div>
+                </div>
+
+                {/* Premium Page Themes Section */}
+                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative mt-10">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-1.5 h-8 bg-purple-400 rounded-full shadow-[0_0_15px_rgba(192,132,252,0.5)]"></div>
+                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Premium Page Themes</h2>
+                  </div>
+                  
+                  <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] mb-10 font-bold">Assign high-end complex gradients to specific store nodes.</p>
+
+                  <div className="space-y-10">
+                    {['home', 'shop', 'categories'].map((pageNode) => (
+                      <div key={pageNode} className="bg-white/[0.01] p-8 rounded-[2rem] border border-white/[0.03]">
+                        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-8 pb-4 border-b border-white/5 flex items-center gap-3">
+                          <span className="w-2 h-2 rounded-full bg-purple-500"></span> 
+                          {pageNode} Node Background
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                           {premiumBackgrounds.map(bg => (
+                             <label 
+                               key={bg.id}
+                               className={`group relative cursor-pointer rounded-[2rem] border transition-all duration-500 overflow-hidden ${
+                                 (settings.pageBackgrounds?.[pageNode as keyof typeof settings.pageBackgrounds] || 'default') === bg.id 
+                                   ? 'border-purple-500/50 shadow-[0_0_30px_rgba(192,132,252,0.2)]' 
+                                   : 'border-white/5 hover:border-white/20'
+                               }`}
+                             >
+                               <input 
+                                 type="radio" 
+                                 name={`bg_${pageNode}`}
+                                 value={bg.id}
+                                 checked={(settings.pageBackgrounds?.[pageNode as keyof typeof settings.pageBackgrounds] || 'default') === bg.id}
+                                 onChange={(e) => updateSettings({...settings, pageBackgrounds: {...(settings.pageBackgrounds || {}), [pageNode]: e.target.value}})}
+                                 className="sr-only"
+                               />
+                               <div className={`h-24 w-full ${bg.className} flex items-center justify-center transition-all duration-700`}>
+                                 {(settings.pageBackgrounds?.[pageNode as keyof typeof settings.pageBackgrounds] || 'default') === bg.id && (
+                                   <div className="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center shadow-[0_0_15px_rgba(192,132,252,0.5)] animate-in zoom-in duration-300">
+                                     <CheckCircle2 size={16} />
+                                   </div>
+                                 )}
+                               </div>
+                               <div className="p-4 bg-[#0a0c14]/90 backdrop-blur-md border-t border-white/5">
+                                 <p className={`font-black text-[10px] uppercase tracking-widest mb-1 transition-colors ${(settings.pageBackgrounds?.[pageNode as keyof typeof settings.pageBackgrounds] || 'default') === bg.id ? 'text-purple-400' : 'text-white'}`}>{bg.name}</p>
+                                 <p className="text-[8px] text-slate-500 uppercase tracking-widest font-bold line-clamp-2">{bg.desc}</p>
+                               </div>
+                             </label>
+                           ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

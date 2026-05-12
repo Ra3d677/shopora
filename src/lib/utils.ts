@@ -40,3 +40,19 @@ export function getStoreLink(link: string, slug: string) {
   // Default fallback
   return link;
 }
+
+export function getPremiumBackgroundClass(bgId?: string) {
+  switch (bgId) {
+    case 'abyss':
+      return 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#0a0c14] to-black text-white';
+    case 'nebula':
+      return 'bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-purple-900/20 via-[#0a0c14] to-[#0a0c14] text-white';
+    case 'cyber':
+      return 'bg-[linear-gradient(to_right_bottom,_var(--tw-gradient-stops))] from-cyan-900/20 via-[#0a0c14] to-blue-900/20 text-white';
+    case 'luxury':
+      return 'bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/10 via-[#0a0c14] to-black text-white';
+    case 'default':
+    default:
+      return 'bg-white dark:bg-[#0a0c14] text-slate-900 dark:text-white'; // Fallback to store default
+  }
+}

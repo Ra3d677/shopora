@@ -26,6 +26,11 @@ export interface StoreSettings {
       text: string;
     };
   };
+  pageBackgrounds?: {
+    home?: string;
+    shop?: string;
+    categories?: string;
+  };
   headerSettings?: {
     layout?: 'default' | 'standard' | 'centered' | 'minimal' | 'luxury' | 'hamburger';
     logoHeight?: number;

@@ -4,6 +4,7 @@ import { getStoreBySlug } from "@/lib/data";
 import SortDropdown from "./SortDropdown";
 import SmartImage from "@/components/ui/SmartImage";
 import { notFound } from "next/navigation";
+import { getPremiumBackgroundClass } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 
@@ -79,8 +80,11 @@ export default async function ProductsPage({
     );
   }
 
+  const bgClass = getPremiumBackgroundClass(storeSettings.pageBackgrounds?.shop);
+  const isPremiumBg = storeSettings.pageBackgrounds?.shop && storeSettings.pageBackgrounds.shop !== 'default';
+
   return (
-    <div className="min-h-screen pb-16 transition-colors duration-500" style={{ backgroundColor: 'var(--color-bg-shop)', color: 'var(--color-text-primary)' }}>
+    <div className={`min-h-screen pb-16 transition-colors duration-500 ${bgClass}`} style={!isPremiumBg ? { backgroundColor: 'var(--color-bg-shop)', color: 'var(--color-text-primary)' } : {}}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-primary mb-4 capitalize">{pageTitle}</h1>
