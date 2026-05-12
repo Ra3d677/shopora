@@ -177,9 +177,9 @@ export default function EditableText({
           contentEditable={isEditMode}
           suppressContentEditableWarning
           onBlur={(e) => setText(e.currentTarget.innerText)}
-          className={`outline-none ${isEditMode && !text.trim() ? 'min-w-[150px] min-h-[1em] inline-block opacity-50 border border-dashed border-white/50 px-2' : ''}`}
+          className="outline-none"
         >
-          {text || (isEditMode ? 'Empty text (click to edit)' : '')}
+          {text}
         </Component>
       </motion.div>
 

@@ -56,9 +56,10 @@ export default function AddElementMenu({ slug, settings }: AddElementMenuProps) 
     <div className="relative">
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20"
+        className="p-3 rounded-2xl bg-blue-600 text-white hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20"
+        title="Add Element"
       >
-        <Plus size={14} /> Add Element
+        <Plus size={18} />
       </button>
 
       <AnimatePresence>
