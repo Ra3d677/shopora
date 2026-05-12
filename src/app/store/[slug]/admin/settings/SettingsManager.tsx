@@ -8,14 +8,12 @@ import { StoreSettings } from "@/lib/types";
 import MediaPicker from "../media/MediaPicker";
 
 const PRESET_GRADIENTS = [
-  'linear-gradient(135deg, #f6d365 0%, #fda085 100%)',
-  'linear-gradient(to right, #4facfe 0%, #00f2fe 100%)',
-  'linear-gradient(to right, #43e97b 0%, #38f9d7 100%)',
-  'linear-gradient(to right, #fa709a 0%, #fee140 100%)',
-  'linear-gradient(to top, #30cfd0 0%, #330867 100%)',
-  'linear-gradient(to right, #ff0844 0%, #ffb199 100%)',
-  'radial-gradient(circle at center, #0f172a, #0a0c14, #000000)',
-  'linear-gradient(to bottom right, rgba(22, 78, 99, 0.4), #0a0c14, rgba(30, 58, 138, 0.4))'
+  'radial-gradient(ellipse at top, #0f172a, #0a0c14, #000000)', // Abyss
+  'radial-gradient(circle at bottom left, rgba(88, 28, 135, 0.4), #0a0c14, #0a0c14)', // Nebula
+  'linear-gradient(to bottom right, rgba(22, 78, 99, 0.4), #0a0c14, rgba(30, 58, 138, 0.4))', // Cyberpunk
+  'radial-gradient(ellipse at center, rgba(120, 53, 15, 0.2), #0a0c14, #000000)', // Luxury Gold
+  'linear-gradient(to bottom, #111827, #000000)', // Deep Space
+  'linear-gradient(to right, #1e3a8a, #0f172a)' // Royal Blue
 ];
 
 export default function SettingsManager({ 
