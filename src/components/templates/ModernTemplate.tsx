@@ -83,6 +83,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                           <EditableButton key={btn.id || btnIndex} label={btn.label} link={btn.link} slug={slug} settingsKey={`modernSettings.heroButtons.${btnIndex}`} style={btn.style} className="inline-flex items-center gap-4 bg-slate-900 text-white px-12 py-5 rounded-2xl font-black text-sm hover:bg-blue-600 transition-all shadow-xl" />
                         ))}
                       </div>
+                      <BannerButton banner={topBanners[0]} slug={slug} />
                     </motion.div>
                   </div>
                   <div className="w-full md:w-1/2 relative h-full">
@@ -110,6 +111,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                         <EditableButton key={btn.id || btnIndex} label={btn.label} link={btn.link} slug={slug} settingsKey={`modernSettings.heroButtons.${btnIndex}`} style={btn.style} className="inline-block px-16 py-6 bg-blue-600 text-white font-black uppercase tracking-widest text-sm hover:bg-white hover:text-slate-900 transition-all rounded-full shadow-2xl" />
                       ))}
                     </div>
+                    <BannerButton banner={topBanners[0]} slug={slug} />
                   </motion.div>
                 </section>
               );
@@ -134,6 +136,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                       {Array.isArray(modSettings.heroButtons) && modSettings.heroButtons.map((btn: any, btnIndex: number) => (
                         <EditableButton key={btn.id || btnIndex} label={btn.label} link={btn.link} slug={slug} settingsKey={`modernSettings.heroButtons.${btnIndex}`} style={btn.style} className="text-blue-600 font-black uppercase tracking-widest text-sm hover:tracking-[0.2em] transition-all" />
                       ))}
+                      <BannerButton banner={topBanners[0]} slug={slug} />
                     </div>
                   </div>
                 </section>
@@ -163,6 +166,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                           {Array.isArray(modSettings.heroButtons) && modSettings.heroButtons.map((btn: any, btnIndex: number) => (
                             <EditableButton key={btn.id || btnIndex} label={btn.label} link={btn.link} slug={slug} settingsKey={`modernSettings.heroButtons.${btnIndex}`} style={btn.style} className="px-12 py-5 bg-slate-900 text-white font-black uppercase tracking-widest text-xs hover:bg-blue-600 transition-all rounded-2xl shadow-xl" />
                           ))}
+                        <BannerButton banner={topBanners[0]} slug={slug} />
                        </div>
                     </motion.div>
                   </div>
@@ -219,6 +223,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                         />
                       ))}
                     </div>
+                    <BannerButton banner={topBanners[0]} slug={slug} />
                   </div>
                 </div>
               </section>

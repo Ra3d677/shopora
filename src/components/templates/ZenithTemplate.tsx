@@ -73,6 +73,7 @@ export default function ZenithTemplate({
                     <Link href={`/store/${slug}/products`} className="inline-block px-12 py-5 bg-[#c5a368] text-white text-[10px] font-black uppercase tracking-[0.4em] rounded shadow-xl">
                       VIEW SERIES
                     </Link>
+                    <BannerButton banner={topBanners[0]} slug={slug} />
                   </motion.div>
                 </div>
                 <div className="w-full md:w-1/2 relative h-full">
@@ -94,6 +95,7 @@ export default function ZenithTemplate({
                     <EditableText content={topBanners[0]?.title || settings.storeName || "ZENITH"} slug={slug} settingsKey="storeName" />
                   </h1>
                   <EditableButton label="DISCOVER MORE" link={`/store/${slug}/products`} slug={slug} settingsKey="zenithBtn" className="px-16 py-6 border border-[#c5a368] text-[#c5a368] text-[10px] font-black uppercase tracking-[0.6em] hover:bg-[#c5a368] hover:text-white transition-all rounded" />
+                  <BannerButton banner={topBanners[0]} slug={slug} />
                 </motion.div>
               </section>
             );
@@ -109,6 +111,7 @@ export default function ZenithTemplate({
                   <Link href={`/store/${slug}/products`} className="text-[#c5a368] font-black uppercase tracking-[0.4em] text-[10px] border-b-2 border-[#c5a368] pb-1 hover:text-zinc-900 hover:border-zinc-900 transition-all">
                     START DISCOVERY
                   </Link>
+                  <BannerButton banner={topBanners[0]} slug={slug} />
                 </div>
               </section>
             );
@@ -134,6 +137,7 @@ export default function ZenithTemplate({
                       <EditableText content={topBanners[0]?.subtitle || "Redefining the essence of modern luxury through curated pieces."} slug={slug} settingsKey="heroSubtitle" />
                     </p>
                     <EditableButton label="EXPLORE COLLECTION" link={`/store/${slug}/products`} slug={slug} settingsKey="heroBtn" className="px-12 py-5 bg-zinc-900 text-white text-[10px] font-black uppercase tracking-[0.4em] hover:bg-[#c5a368] transition-all rounded" />
+                    <BannerButton banner={topBanners[0]} slug={slug} />
                   </motion.div>
                 </div>
                 <div className="w-full md:w-[55%] h-full relative">
@@ -160,7 +164,7 @@ export default function ZenithTemplate({
                        </h1>
                        <div className="flex gap-12 items-center">
                           <div className="w-24 h-[1px] bg-zinc-900" />
-                          <EditableButton label="DISCOVER" link={`/store/${slug}/products`} slug={slug} settingsKey="heroBtn" className="text-[10px] font-black uppercase tracking-[0.6em] hover:text-[#c5a368] transition-colors" />
+                          <BannerButton banner={topBanners[0]} slug={slug} />
                        </div>
                     </motion.div>
                   </div>
@@ -203,15 +207,16 @@ export default function ZenithTemplate({
                          transition={{ delay: 1, duration: 1.5 }}
                          className="w-full max-w-md h-[1px] bg-white/20" 
                        />
-                       <EditableButton 
-                         label="ENTER EXPERIENCE" 
-                         link={`/store/${slug}/products`} 
-                         slug={slug} 
-                         settingsKey="heroBtn" 
-                         className="px-20 py-8 border border-white/30 text-white text-[10px] font-black uppercase tracking-[1em] hover:bg-white hover:text-black transition-all backdrop-blur-md rounded-full" 
-                       />
-                    </div>
-                  </motion.div>
+                        <EditableButton 
+                          label="ENTER EXPERIENCE" 
+                          link={`/store/${slug}/products`} 
+                          slug={slug} 
+                          settingsKey="heroBtn" 
+                          className="px-20 py-8 border border-white/30 text-white text-[10px] font-black uppercase tracking-[1em] hover:bg-white hover:text-black transition-all backdrop-blur-md rounded-full" 
+                        />
+                        <BannerButton banner={topBanners[0]} slug={slug} />
+                       </div>
+                    </motion.div>
                 </div>
                 <div className="absolute bottom-12 right-12">
                    <div className="flex items-center gap-4">
@@ -289,6 +294,7 @@ export default function ZenithTemplate({
                           slug={slug}
                           className="px-12 py-5 bg-white text-black text-[10px] font-black uppercase tracking-[0.4em] hover:bg-[#c5a368] hover:text-white transition-all rounded shadow-2xl"
                         />
+                        <BannerButton banner={topBanners[0]} slug={slug} />
                       </div>
                     </motion.div>
                   </div>

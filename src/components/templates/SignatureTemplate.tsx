@@ -170,6 +170,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                        </MagneticButton>
                      ))}
                   </div>
+                  <BannerButton banner={topBanners[0]} slug={slug} />
                 </motion.div>
               </section>
             );
@@ -185,6 +186,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                     <Link href={`/store/${slug}/products`} className="text-xs font-black uppercase tracking-[0.4em] border-b-2 border-black pb-2 hover:opacity-50 transition-opacity">
                       VIEW ARCHIVE
                     </Link>
+                    <BannerButton banner={topBanners[0]} slug={slug} />
                   </div>
                 </div>
               </section>
@@ -211,12 +213,10 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                       <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
                     </h1>
                     <div className="flex flex-wrap gap-6">
-                      {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
-                        <MagneticButton key={btn.id || index}>
-                          <EditableButton label={btn.label} link={btn.link} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="block px-12 py-6 bg-white text-black font-black uppercase tracking-widest text-xs" />
                         </MagneticButton>
                       ))}
                     </div>
+                    <BannerButton banner={topBanners[0]} slug={slug} />
                   </motion.div>
                 </div>
                 <div className="absolute top-1/2 right-12 -translate-y-1/2 hidden xl:block">
@@ -241,7 +241,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                              {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
                                <EditableButton key={btn.id || index} label={btn.label} link={btn.link} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="px-10 py-5 border-2 border-slate-900 text-slate-900 font-black uppercase tracking-widest text-xs hover:bg-slate-900 hover:text-white transition-all" />
                              ))}
-                          </div>
+                           </div>
                        </motion.div>
                     </div>
                     <div className="order-1 lg:order-2 flex justify-center">
@@ -280,6 +280,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                            <EditableButton label={btn.label} link={btn.link} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="px-16 py-8 border border-white text-white font-black uppercase tracking-[0.5em] text-[10px] hover:bg-white hover:text-black transition-all" />
                          </MagneticButton>
                        ))}
+                       <BannerButton banner={topBanners[0]} slug={slug} />
                        <div className="flex items-center gap-4 text-white/40">
                           <Play size={24} fill="currentColor" />
                           <span className="text-[10px] font-black uppercase tracking-widest">Cinema View</span>
@@ -352,6 +353,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                             />
                           </MagneticButton>
                          ))}
+                         <BannerButton banner={topBanners[0]} slug={slug} />
                          {isEditMode && (
                            <button 
                              onClick={async () => {

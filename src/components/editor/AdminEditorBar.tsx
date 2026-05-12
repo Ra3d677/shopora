@@ -61,14 +61,6 @@ export default function AdminEditorBar({ slug, isOwner, store }: { slug: string,
             <div className="w-8 h-px bg-white/10 mx-auto my-1" />
 
             {/* Main Actions */}
-            <button 
-              onClick={toggleEditMode}
-              className={`p-3 rounded-2xl transition-all ${isEditMode ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white'}`}
-              title={isEditMode ? "Save Changes" : "Start Editing"}
-            >
-              {isEditMode ? <Save size={18} /> : <Edit3 size={18} />}
-            </button>
-
             {isEditMode && (
               <>
                 <AddElementMenu slug={slug} settings={store.settings || {}} />
