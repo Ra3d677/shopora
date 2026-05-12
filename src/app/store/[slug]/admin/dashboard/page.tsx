@@ -429,5 +429,3 @@ export default async function AdminDashboard({ params, searchParams }: { params:
     </div>
   );
 }
-  );
-}
