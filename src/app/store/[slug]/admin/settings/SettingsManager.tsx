@@ -54,21 +54,22 @@ export default function SettingsManager({
   ];
 
   return (
-    <div className="p-8">
-      <div className="mb-8 flex justify-between items-end">
+    <div className="p-10 space-y-12 animate-in fade-in duration-700 pb-32">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-primary flex items-center gap-3">
-            <Settings className="w-8 h-8" /> Store Settings
+          <h1 className="text-5xl font-black tracking-tighter bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent italic uppercase">
+            Control <span className="text-indigo-400">Center</span>
           </h1>
-          <p className="text-muted-foreground mt-1">Configure global appearance and layout preferences.</p>
+          <p className="text-slate-500 mt-3 font-medium tracking-widest text-[10px] uppercase">Architect your store's global DNA and performance parameters.</p>
         </div>
-        <div className="flex bg-slate-100 p-1 rounded-xl">
+        
+        <div className="flex bg-white/[0.02] backdrop-blur-3xl p-2 rounded-[2rem] border border-white/[0.05] shadow-2xl overflow-x-auto max-w-full no-scrollbar">
           {tabs.map(tab => (
             <button
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === tab.id ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`px-8 py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.id ? 'bg-indigo-500 text-white shadow-[0_0_20px_rgba(99,102,241,0.4)] scale-105' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}
             >
               {tab.label}
             </button>
@@ -76,37 +77,49 @@ export default function SettingsManager({
         </div>
       </div>
 
-      <div className="bg-card rounded-2xl border border-border/50 shadow-sm overflow-hidden">
-        <form onSubmit={handleSave} className="p-8">
-          <div className="space-y-8">
+      <div className="relative">
+        <form onSubmit={handleSave}>
+          <div className="space-y-12">
             {activeTab === 'general' && (
-              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+              <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
                 {/* Identity Settings */}
-                <div>
-                  <h2 className="text-xl font-bold text-slate-900 mb-4 border-b pb-2">Brand Identity</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 border border-white/[0.05] shadow-2xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/5 blur-[120px] -z-10 group-hover:bg-indigo-500/10 transition-all"></div>
+                  
+                  <div className="flex items-center gap-4 mb-12">
+                    <div className="w-1.5 h-10 bg-indigo-400 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">Store Name</label>
+                      <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Brand Identity</h2>
+                      <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Core store signature and visual markers.</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div className="space-y-4">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Store Designation</label>
                       <input 
                         type="text" 
                         value={settings.storeName} 
                         onChange={e => setSettings({...settings, storeName: e.target.value})} 
-                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" 
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-black uppercase tracking-tighter text-xl italic" 
                       />
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">Store Logo</label>
-                      <MediaPicker 
-                        slug={slug}
-                        value={settings.logoUrl || ''} 
-                        onChange={url => setSettings({...settings, logoUrl: url})} 
-                      />
+                    <div className="space-y-4">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Visual Logotype (Logo)</label>
+                      <div className="bg-white/[0.01] border border-white/[0.05] rounded-[2rem] p-3">
+                        <MediaPicker 
+                          slug={slug}
+                          value={settings.logoUrl || ''} 
+                          onChange={url => setSettings({...settings, logoUrl: url})} 
+                        />
+                      </div>
                     </div>
-                    <div className="flex-1 space-y-6 bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                      <div>
-                        <div className="flex justify-between items-center mb-2">
-                          <h4 className="font-bold text-slate-800">Logo Size</h4>
-                          <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">{settings.headerSettings?.logoHeight || 40}px</span>
+
+                    <div className="lg:col-span-2 bg-black/20 p-8 rounded-[2.5rem] border border-white/[0.03] flex flex-col md:flex-row gap-12">
+                      <div className="flex-1 space-y-6">
+                        <div className="flex justify-between items-center mb-2 px-1">
+                          <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Logo Vertical Scale</h4>
+                          <span className="text-[10px] font-black text-indigo-400 bg-indigo-400/10 px-3 py-1 rounded-full">{settings.headerSettings?.logoHeight || 40}PX</span>
                         </div>
                         <input 
                           type="range" 
@@ -115,172 +128,165 @@ export default function SettingsManager({
                           step="4"
                           value={settings.headerSettings?.logoHeight || 40} 
                           onChange={(e) => setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), logoHeight: Number(e.target.value)}})} 
-                          className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                          className="w-full h-1.5 bg-white/5 rounded-lg appearance-none cursor-pointer accent-indigo-500"
                         />
                       </div>
 
-                      <div className="pt-4 border-t border-slate-200">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-bold text-slate-800 text-sm">Remove White Background</h4>
-                            <p className="text-[10px] text-slate-500">Blends logos into the header background.</p>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input 
-                              type="checkbox" 
-                              className="sr-only peer"
-                              checked={settings.headerSettings?.logoBlendMode === 'multiply'}
-                              onChange={(e) => setSettings({
-                                ...settings, 
-                                headerSettings: {
-                                  ...(settings.headerSettings || {}), 
-                                  logoBlendMode: e.target.checked ? 'multiply' : 'normal'
-                                }
-                              })}
-                            />
-                            <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
-                          </label>
+                      <div className="w-[1px] bg-white/5 hidden md:block"></div>
+
+                      <div className="flex-1 flex items-center justify-between">
+                        <div>
+                          <h4 className="text-[10px] font-black text-white uppercase tracking-widest">Background Synthesis</h4>
+                          <p className="text-[9px] text-slate-500 mt-2 font-medium italic">Remove white artifacts for seamless header integration.</p>
                         </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input 
+                            type="checkbox" 
+                            className="sr-only peer"
+                            checked={settings.headerSettings?.logoBlendMode === 'multiply'}
+                            onChange={(e) => setSettings({
+                              ...settings, 
+                              headerSettings: {
+                                ...(settings.headerSettings || {}), 
+                                logoBlendMode: e.target.checked ? 'multiply' : 'normal'
+                              }
+                            })}
+                          />
+                          <div className="w-14 h-7 bg-white/5 border border-white/10 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-slate-500 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-500 peer-checked:after:bg-black peer-checked:after:scale-110"></div>
+                        </label>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Contact Information */}
-                <div>
-                  <h2 className="text-xl font-bold text-slate-900 mb-4 border-b pb-2">Contact Information</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 border border-white/[0.05] shadow-2xl relative overflow-hidden group">
+                   <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-indigo-500/5 blur-[120px] -z-10 group-hover:bg-indigo-500/10 transition-all"></div>
+                   
+                   <div className="flex items-center gap-4 mb-12">
+                    <div className="w-1.5 h-10 bg-indigo-400 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">Support Email</label>
+                      <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Communication Uplink</h2>
+                      <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Support channels and business reachability.</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="space-y-4">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Support Terminal (Email)</label>
                       <input 
                         type="email" 
                         value={settings.contactInfo?.email || ''} 
                         onChange={e => setSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), email: e.target.value}})} 
-                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" 
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-bold" 
+                        placeholder="support@domain.com"
                       />
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">Phone Number</label>
+                    <div className="space-y-4">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Voice Protocol (Phone)</label>
                       <input 
                         type="text" 
                         value={settings.contactInfo?.phone || ''} 
                         onChange={e => setSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), phone: e.target.value}})} 
-                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" 
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-bold" 
+                        placeholder="+1 (000) 000-0000"
                       />
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">WhatsApp Number</label>
+                    <div className="space-y-4">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">WhatsApp Direct Sync</label>
                       <input 
                         type="text" 
                         value={settings.contactInfo?.whatsapp || ''} 
                         onChange={e => setSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), whatsapp: e.target.value}})} 
-                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" 
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-bold border-l-4 border-l-green-500/30" 
+                        placeholder="+1 (000) 000-0000"
                       />
                     </div>
                   </div>
                 </div>
-
-                {/* Banner Slider Settings */}
-                <div>
-                  <h2 className="text-xl font-bold text-slate-900 mb-4 border-b pb-2">Hero Slider Settings</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="flex items-center gap-2 cursor-pointer mt-4">
-                        <input 
-                          type="checkbox" 
-                          checked={settings.bannerSettings?.autoPlay} 
-                          onChange={e => setSettings({...settings, bannerSettings: {...settings.bannerSettings, autoPlay: e.target.checked}})} 
-                          className="w-4 h-4 rounded text-primary focus:ring-primary accent-primary"
-                        />
-                        <span className="text-sm font-medium text-slate-700">Auto-play slider</span>
-                      </label>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">Slide Duration (seconds)</label>
-                      <input 
-                        type="number" 
-                        min="1"
-                        max="15"
-                        value={(settings.bannerSettings?.interval || 5000) / 1000} 
-                        onChange={e => setSettings({...settings, bannerSettings: {...settings.bannerSettings, interval: Number(e.target.value) * 1000}})} 
-                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" 
-                      />
-                    </div>
-                  </div>
-                </div>
-
-
               </div>
             )}
             
             {activeTab === 'header' && (
-              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
-                {/* Header Layout */}
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                  <h3 className="text-lg font-bold text-slate-800 mb-2">Header Layout Shape</h3>
-                  <p className="text-sm text-slate-500 mb-6">Choose the visual structure of your store's navigation bar.</p>
+              <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 border border-white/[0.05] shadow-2xl">
+                  <div className="flex items-center gap-4 mb-12">
+                    <div className="w-1.5 h-10 bg-indigo-400 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+                    <div>
+                      <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Navigation Architecture</h2>
+                      <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Spatial layout of your store's header.</p>
+                    </div>
+                  </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {[
-                      { id: 'default', name: 'Template Default', desc: 'Uses the active template original header.' },
-                      { id: 'standard', name: 'Standard Layout', desc: 'Logo Left, Links Center, Icons Right.' },
-                      { id: 'centered', name: 'Centered Logo', desc: 'Links Left, Logo Center, Icons Right.' },
-                      { id: 'minimal', name: 'Minimalist', desc: 'Logo Left, Hamburger Menu Right.' },
-                      { id: 'luxury', name: 'Luxury Stacked', desc: 'Logo Top Center, Links Bottom Center.' },
-                      { id: 'hamburger', name: 'Modern Hamburger', desc: 'Hamburger Left, Logo Center, Icons Right.' }
+                      { id: 'default', name: 'TEMPLATE_CORE', desc: 'Original template layout structure.' },
+                      { id: 'standard', name: 'STANDARD_GRID', desc: 'Logo Left, Center Nav, Right Actions.' },
+                      { id: 'centered', name: 'CENTERED_HUB', desc: 'Links Left, Logo Center, Right Actions.' },
+                      { id: 'minimal', name: 'MINIMAL_NODE', desc: 'Logo Left, Discrete Hamburger Right.' },
+                      { id: 'luxury', name: 'LUXURY_STACK', desc: 'Vertical Stacked Identity & Navigation.' },
+                      { id: 'hamburger', name: 'MODERN_FLOW', desc: 'Hamburger Left, Logo Center, Right Icons.' }
                     ].map((layout) => (
                       <label 
                         key={layout.id} 
-                        className={`cursor-pointer p-4 rounded-xl border-2 transition-all ${
+                        className={`group relative cursor-pointer p-8 rounded-[2rem] border transition-all overflow-hidden ${
                           (settings.headerSettings?.layout || 'default') === layout.id 
-                            ? 'border-blue-600 bg-blue-50/50' 
-                            : 'border-slate-200 bg-white hover:border-slate-300'
+                            ? 'border-indigo-500 bg-indigo-500/5 shadow-[0_0_40px_rgba(99,102,241,0.2)]' 
+                            : 'border-white/[0.05] bg-white/[0.01] hover:border-white/10'
                         }`}
                       >
-                        <div className="flex items-start gap-3">
-                          <input 
-                            type="radio" 
-                            name="headerLayout"
-                            value={layout.id}
-                            checked={(settings.headerSettings?.layout || 'default') === layout.id}
-                            onChange={(e) => setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), layout: e.target.value as any}})}
-                            className="mt-1 w-4 h-4 text-blue-600 focus:ring-blue-600"
-                          />
-                          <div>
-                            <p className="font-bold text-slate-900">{layout.name}</p>
-                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">{layout.desc}</p>
+                        <div className="relative z-10">
+                          <div className="flex justify-between items-start mb-6">
+                             <div className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${
+                               (settings.headerSettings?.layout || 'default') === layout.id 
+                                 ? 'bg-indigo-500 border-indigo-400 text-white' 
+                                 : 'bg-white/5 border-white/10 text-slate-500'
+                             }`}>
+                               <div className="w-2 h-2 rounded-full bg-current"></div>
+                             </div>
+                             <input 
+                               type="radio" 
+                               name="headerLayout"
+                               value={layout.id}
+                               checked={(settings.headerSettings?.layout || 'default') === layout.id}
+                               onChange={(e) => setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), layout: e.target.value as any}})}
+                               className="sr-only"
+                             />
                           </div>
+                          <p className={`font-black uppercase tracking-widest text-[10px] mb-2 transition-colors ${(settings.headerSettings?.layout || 'default') === layout.id ? 'text-indigo-400' : 'text-slate-400'}`}>{layout.name}</p>
+                          <p className="text-xs text-slate-500 leading-relaxed font-medium italic">{layout.desc}</p>
                         </div>
                       </label>
                     ))}
                   </div>
                 </div>
 
-
-
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                  <div className="flex justify-between items-center mb-6">
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-800">Navigation Links</h3>
-                      <p className="text-sm text-slate-500">Manage the links that appear in your store's header.</p>
+                <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 border border-white/[0.05] shadow-2xl">
+                   <div className="flex justify-between items-center mb-12">
+                    <div className="flex items-center gap-4">
+                      <div className="w-1.5 h-10 bg-indigo-400 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+                      <div>
+                        <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Resource Links</h2>
+                        <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Active navigation nodes in header.</p>
+                      </div>
                     </div>
                     <button 
                       type="button"
                       onClick={() => setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: [...(settings.headerSettings?.links || [{id: '1', label: 'Home', url: `/store/${slug}`}, {id: '2', label: 'Shop', url: `/store/${slug}/categories`}]), {id: Math.random().toString(36).substr(2, 9), label: 'New Link', url: '#'}]}})}
-                      className="text-xs font-black uppercase tracking-widest text-blue-600 border border-blue-600 px-4 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-all"
+                      className="px-8 py-4 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-indigo-400 transition-all shadow-2xl"
                     >
-                      + Add Link
+                      + ADD NODE
                     </button>
                   </div>
                   
-                  <div className="space-y-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {((settings.headerSettings?.links?.length ?? 0) > 0 ? settings.headerSettings!.links! : [
                       {id: '1', label: 'Home', url: `/store/${slug}`},
                       {id: '2', label: 'Shop', url: `/store/${slug}/categories`}
                     ]).map((link: any, idx: number) => (
-                      <div key={link.id} className="flex gap-4 items-center p-3 bg-white border border-slate-200 rounded-xl">
-                        <div className="flex-1">
-                           <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Label</label>
+                      <div key={link.id} className="flex gap-6 items-center p-6 bg-white/[0.02] border border-white/[0.05] rounded-[2rem] hover:bg-white/[0.04] transition-all group/link">
+                        <div className="flex-1 space-y-4">
+                           <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Node Label</label>
                            <input 
                              type="text"
                              value={link.label}
@@ -293,11 +299,11 @@ export default function SettingsManager({
                                newLinks[idx].label = e.target.value;
                                setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
                              }}
-                             className="w-full px-3 py-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                             className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all font-bold text-xs"
                            />
                         </div>
-                        <div className="flex-[2]">
-                           <label className="block text-xs font-bold text-slate-500 uppercase mb-1">URL / Link</label>
+                        <div className="flex-[2] space-y-4">
+                           <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Destination URL</label>
                            <input 
                              type="text"
                              value={link.url}
@@ -310,10 +316,10 @@ export default function SettingsManager({
                                newLinks[idx].url = e.target.value;
                                setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
                              }}
-                             className="w-full px-3 py-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                             className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all font-bold text-xs"
                            />
                         </div>
-                        <div className="pt-5">
+                        <div className="pt-8">
                           <button 
                             type="button"
                             onClick={() => {
@@ -325,9 +331,9 @@ export default function SettingsManager({
                                newLinks.splice(idx, 1);
                                setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
                             }}
-                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                            className="w-10 h-10 bg-rose-500/10 border border-rose-500/20 text-rose-500 hover:bg-rose-500 hover:text-white rounded-xl transition-all flex items-center justify-center"
                           >
-                            <Trash2 size={20} />
+                            <Trash2 size={18} />
                           </button>
                         </div>
                       </div>
@@ -338,641 +344,221 @@ export default function SettingsManager({
             )}
 
             {activeTab === 'theme' && (
-              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
-                {/* Colors Settings - Redesigned System */}
-                <div className="space-y-8">
-                  <div className="flex items-center justify-between border-b pb-2">
-                    <h2 className="text-xl font-bold text-slate-900">Color System</h2>
-                    <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-bold tracking-wider border border-blue-100">
-                      Professional Color Engine
-                    </span>
-                  </div>
-
-                  {/* 1. Page Backgrounds */}
-                  <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                    <h3 className="text-lg font-bold text-slate-800 mb-4 border-b border-slate-200 pb-2">Page Backgrounds</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {[
-                        { key: 'home', label: 'Home Page' },
-                        { key: 'shop', label: 'Shop Page (Products)' },
-                        { key: 'categories', label: 'Categories Page' }
-                      ].map((item) => (
-                        <div key={item.key}>
-                          <label className="block text-sm font-bold text-slate-700 mb-2">{item.label}</label>
-                          <div className="flex gap-3">
-                            <input 
-                              type="color" 
-                              value={colorSystem.backgrounds[item.key as keyof typeof colorSystem.backgrounds]} 
-                              onChange={e => setSettings({
-                                ...settings, 
-                                colorSystem: { 
-                                  ...colorSystem, 
-                                  backgrounds: { ...colorSystem.backgrounds, [item.key]: e.target.value } 
-                                }
-                              })} 
-                              className="h-10 w-16 p-1 rounded-lg border border-slate-300 cursor-pointer bg-white" 
-                            />
-                            <input 
-                              type="text" 
-                              value={colorSystem.backgrounds[item.key as keyof typeof colorSystem.backgrounds]} 
-                              onChange={e => setSettings({
-                                ...settings, 
-                                colorSystem: { 
-                                  ...colorSystem, 
-                                  backgrounds: { ...colorSystem.backgrounds, [item.key]: e.target.value } 
-                                }
-                              })} 
-                              className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none uppercase font-mono text-sm" 
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* 2. Text Colors */}
-                  <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                    <h3 className="text-lg font-bold text-slate-800 mb-4 border-b border-slate-200 pb-2">Text Colors</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {[
-                        { key: 'primary', label: 'Primary Text (Headings)' },
-                        { key: 'secondary', label: 'Secondary Text (Paragraphs & Muted)' }
-                      ].map((item) => (
-                        <div key={item.key}>
-                          <label className="block text-sm font-bold text-slate-700 mb-2">{item.label}</label>
-                          <div className="flex gap-3">
-                            <input 
-                              type="color" 
-                              value={colorSystem.text[item.key as keyof typeof colorSystem.text]} 
-                              onChange={e => setSettings({
-                                ...settings, 
-                                colorSystem: { 
-                                  ...colorSystem, 
-                                  text: { ...colorSystem.text, [item.key]: e.target.value } 
-                                }
-                              })} 
-                              className="h-10 w-16 p-1 rounded-lg border border-slate-300 cursor-pointer bg-white" 
-                            />
-                            <input 
-                              type="text" 
-                              value={colorSystem.text[item.key as keyof typeof colorSystem.text]} 
-                              onChange={e => setSettings({
-                                ...settings, 
-                                colorSystem: { 
-                                  ...colorSystem, 
-                                  text: { ...colorSystem.text, [item.key]: e.target.value } 
-                                }
-                              })} 
-                              className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none uppercase font-mono text-sm" 
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* 3. Brand Colors */}
-                  <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                    <h3 className="text-lg font-bold text-slate-800 mb-4 border-b border-slate-200 pb-2">Brand Colors</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 border border-white/[0.05] shadow-2xl">
+                   <div className="flex justify-between items-center mb-12">
+                    <div className="flex items-center gap-4">
+                      <div className="w-1.5 h-10 bg-indigo-400 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
                       <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">Primary Brand (Buttons & Accents)</label>
-                        <div className="flex gap-3">
-                          <input 
-                            type="color" 
-                            value={colorSystem.brand.primary} 
-                            onChange={e => setSettings({
-                              ...settings, 
-                              colorSystem: { 
-                                ...colorSystem, 
-                                brand: { ...colorSystem.brand, primary: e.target.value } 
-                              }
-                            })} 
-                            className="h-10 w-16 p-1 rounded-lg border border-slate-300 cursor-pointer bg-white" 
-                          />
-                          <input 
-                            type="text" 
-                            value={colorSystem.brand.primary} 
-                            onChange={e => setSettings({
-                              ...settings, 
-                              colorSystem: { 
-                                ...colorSystem, 
-                                brand: { ...colorSystem.brand, primary: e.target.value } 
-                              }
-                            })} 
-                            className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none uppercase font-mono text-sm" 
-                          />
-                        </div>
+                        <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Color Engine</h2>
+                        <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Chromatic configuration for storefront interface.</p>
                       </div>
                     </div>
                   </div>
 
-                  {/* 4. Footer Colors */}
-                  <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                    <h3 className="text-lg font-bold text-slate-800 mb-4 border-b border-slate-200 pb-2">Footer Colors</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {[
-                        { key: 'background', label: 'Footer Background' },
-                        { key: 'text', label: 'Footer Text' }
-                      ].map((item) => (
-                        <div key={item.key}>
-                          <label className="block text-sm font-bold text-slate-700 mb-2">{item.label}</label>
-                          <div className="flex gap-3">
-                            <input 
-                              type="color" 
-                              value={colorSystem.footer?.[item.key as keyof typeof colorSystem.footer] || '#000000'} 
-                              onChange={e => setSettings({
-                                ...settings, 
-                                colorSystem: { 
-                                  ...colorSystem, 
-                                  footer: { ...colorSystem.footer, [item.key]: e.target.value } 
-                                }
-                              })} 
-                              className="h-10 w-16 p-1 rounded-lg border border-slate-300 cursor-pointer bg-white" 
-                            />
-                            <input 
-                              type="text" 
-                              value={colorSystem.footer?.[item.key as keyof typeof colorSystem.footer] || '#000000'} 
-                              onChange={e => setSettings({
-                                ...settings, 
-                                colorSystem: { 
-                                  ...colorSystem, 
-                                  footer: { ...colorSystem.footer, [item.key]: e.target.value } 
-                                }
-                              })} 
-                              className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none uppercase font-mono text-sm" 
-                            />
+                  <div className="space-y-12">
+                     {/* Sections of colors */}
+                     {[
+                       { title: 'Base Environments', key: 'backgrounds', items: [
+                         { key: 'home', label: 'Home Surface' },
+                         { key: 'shop', label: 'Product Surface' },
+                         { key: 'categories', label: 'Directory Surface' }
+                       ]},
+                       { title: 'Typography Matrix', key: 'text', items: [
+                         { key: 'primary', label: 'Main Headlines' },
+                         { key: 'secondary', label: 'Supporting Text' }
+                       ]},
+                       { title: 'Brand Core', key: 'brand', items: [
+                         { key: 'primary', label: 'Primary Brand Accent' }
+                       ]},
+                       { title: 'Infrastructure (Footer)', key: 'footer', items: [
+                         { key: 'background', label: 'Base Background' },
+                         { key: 'text', label: 'Terminal Text' }
+                       ]},
+                       { title: 'Commerce Unit (Product)', key: 'product', items: [
+                         { key: 'price', label: 'MSRP Display' },
+                         { key: 'salePrice', label: 'Active Discount' }
+                       ]}
+                     ].map((section) => (
+                       <div key={section.key} className="bg-black/20 p-10 rounded-[2.5rem] border border-white/[0.03]">
+                          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-8 border-b border-white/5 pb-4 italic">{section.title}</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                            {section.items.map((item) => (
+                              <div key={item.key} className="space-y-4">
+                                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">{item.label}</label>
+                                <div className="flex gap-4 items-center bg-white/[0.02] p-3 rounded-2xl border border-white/[0.05] group/color">
+                                  <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-white/10 group-hover/color:scale-110 transition-transform">
+                                     <input 
+                                        type="color" 
+                                        value={(colorSystem as any)[section.key][item.key] || '#000000'} 
+                                        onChange={e => setSettings({
+                                          ...settings, 
+                                          colorSystem: { 
+                                            ...colorSystem, 
+                                            [section.key]: { ...(colorSystem as any)[section.key], [item.key]: e.target.value } 
+                                          }
+                                        })} 
+                                        className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer" 
+                                      />
+                                  </div>
+                                  <input 
+                                    type="text" 
+                                    value={(colorSystem as any)[section.key][item.key] || '#000000'} 
+                                    onChange={e => setSettings({
+                                      ...settings, 
+                                      colorSystem: { 
+                                        ...colorSystem, 
+                                        [section.key]: { ...(colorSystem as any)[section.key], [item.key]: e.target.value } 
+                                      }
+                                    })} 
+                                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-sm uppercase tracking-tighter" 
+                                  />
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* 5. Product Colors */}
-                  <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                    <h3 className="text-lg font-bold text-slate-800 mb-4 border-b border-slate-200 pb-2">Product Colors</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {[
-                        { key: 'price', label: 'Regular Price Color' },
-                        { key: 'salePrice', label: 'Sale Price Color' }
-                      ].map((item) => (
-                        <div key={item.key}>
-                          <label className="block text-sm font-bold text-slate-700 mb-2">{item.label}</label>
-                          <div className="flex gap-3">
-                            <input 
-                              type="color" 
-                              value={colorSystem.product?.[item.key as keyof typeof colorSystem.product] || '#000000'} 
-                              onChange={e => setSettings({
-                                ...settings, 
-                                colorSystem: { 
-                                  ...colorSystem, 
-                                  product: { ...colorSystem.product, [item.key]: e.target.value } 
-                                }
-                              })} 
-                              className="h-10 w-16 p-1 rounded-lg border border-slate-300 cursor-pointer bg-white" 
-                            />
-                            <input 
-                              type="text" 
-                              value={colorSystem.product?.[item.key as keyof typeof colorSystem.product] || '#000000'} 
-                              onChange={e => setSettings({
-                                ...settings, 
-                                colorSystem: { 
-                                  ...colorSystem, 
-                                  product: { ...colorSystem.product, [item.key]: e.target.value } 
-                                }
-                              })} 
-                              className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none uppercase font-mono text-sm" 
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* 6. Testimonial Colors */}
-                  <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                    <h3 className="text-lg font-bold text-slate-800 mb-4 border-b border-slate-200 pb-2">Testimonial Colors (Signature Template)</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {[
-                        { key: 'background', label: 'Section Background Color' },
-                        { key: 'text', label: 'Section Text Color' }
-                      ].map((item) => (
-                        <div key={item.key}>
-                          <label className="block text-sm font-bold text-slate-700 mb-2">{item.label}</label>
-                          <div className="flex gap-3">
-                            <input 
-                              type="color" 
-                              value={colorSystem.testimonial?.[item.key as keyof typeof colorSystem.testimonial] || (item.key === 'background' ? '#0f172a' : '#ffffff')} 
-                              onChange={e => setSettings({
-                                ...settings, 
-                                colorSystem: { 
-                                  ...colorSystem, 
-                                  testimonial: { ...(colorSystem.testimonial || { background: '#0f172a', text: '#ffffff' }), [item.key]: e.target.value } 
-                                }
-                              })} 
-                              className="h-10 w-16 p-1 rounded-lg border border-slate-300 cursor-pointer bg-white" 
-                            />
-                            <input 
-                              type="text" 
-                              value={colorSystem.testimonial?.[item.key as keyof typeof colorSystem.testimonial] || (item.key === 'background' ? '#0f172a' : '#ffffff')} 
-                              onChange={e => setSettings({
-                                ...settings, 
-                                colorSystem: { 
-                                  ...colorSystem, 
-                                  testimonial: { ...(colorSystem.testimonial || { background: '#0f172a', text: '#ffffff' }), [item.key]: e.target.value } 
-                                }
-                              })} 
-                              className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none uppercase font-mono text-sm" 
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Layout Settings */}
-                <div>
-                  <h2 className="text-xl font-bold text-slate-900 mb-4 border-b pb-2">Layout & Display</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">Categories Layout</label>
-                      <select 
-                        value={settings.categoriesLayout} 
-                        onChange={e => setSettings({...settings, categoriesLayout: e.target.value as 'grid' | 'list'})} 
-                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                      >
-                        <option value="grid">Grid</option>
-                        <option value="list">List</option>
-                      </select>
-                    </div>
+                       </div>
+                     ))}
                   </div>
                 </div>
               </div>
             )}
             
             {activeTab === 'layout' && (
-              <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4">
-                 <div>
-                    <h2 className="text-2xl font-black text-slate-900 mb-2">Section Dividers</h2>
-                    <p className="text-slate-500 mb-8">Choose a beautiful separator to display between your homepage sections.</p>
-                    
-                    <div className="bg-slate-50 p-8 rounded-[2.5rem] mb-12 border border-slate-100">
-                       <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-6">Divider Appearance</h3>
-                       <div className="flex flex-wrap items-center gap-8">
-                          <div className="flex flex-col gap-2">
-                             <label className="text-xs font-bold text-slate-500">Divider Color</label>
-                             <div className="flex items-center gap-4">
-                                <input 
-                                  type="color" 
-                                  value={settings.dividerColor || '#000000'} 
-                                  onChange={e => setSettings({...settings, dividerColor: e.target.value})}
-                                  className="w-12 h-12 rounded-xl cursor-pointer border-0 p-0 overflow-hidden"
-                                />
-                                <input 
-                                  type="text"
-                                  value={settings.dividerColor || '#000000'}
-                                  onChange={e => setSettings({...settings, dividerColor: e.target.value})}
-                                  className="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-mono focus:ring-2 focus:ring-blue-500 outline-none w-32"
-                                />
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                       {[
-                         { id: 'none', name: 'None (Clean Space)' },
-                         { id: 'line', name: 'Minimal Line' },
-                         { id: 'minimal_dots', name: 'Minimal Dots' },
-                         { id: 'wave', name: 'Smooth Wave' },
-                         { id: 'curve', name: 'Gentle Curve' },
-                         { id: 'triangle', name: 'Modern Triangle' },
-                         { id: 'zigzag', name: 'ZigZag Edge' },
-                         { id: 'geometric', name: 'Geometric Layers' },
-                         { id: 'slash', name: 'Bold Slash' },
-                         { id: 'mountains', name: 'Mountain Peaks' },
-                         { id: 'fan', name: 'Soft Fan' },
-                         { id: 'steps', name: 'Modern Steps' },
-                         { id: 'drops', name: 'Floating Drops' },
-                         { id: 'arabic_pattern', name: 'Arabic Pattern' },
-                       ].map((divider) => (
-                         <div 
-                           key={divider.id}
-                           onClick={() => setSettings({...settings, dividerStyle: divider.id})}
-                           className={`relative group cursor-pointer border-2 rounded-[2rem] transition-all overflow-hidden bg-white hover:shadow-xl ${settings.dividerStyle === divider.id ? 'border-blue-600 ring-4 ring-blue-50' : 'border-slate-100 hover:border-slate-300'}`}
-                         >
-                            <div className="p-6">
-                               <div className="flex items-center justify-between mb-4">
-                                  <span className="text-xs font-black uppercase tracking-widest text-slate-400 group-hover:text-slate-900 transition-colors">{divider.name}</span>
-                                  {settings.dividerStyle === divider.id && (
-                                    <div className="w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center text-white">
-                                       <CheckCircle2 size={12} />
-                                    </div>
-                                  )}
-                               </div>
-                               
-                               <div className="h-24 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-center overflow-hidden">
-                                  <div className="w-full scale-50 opacity-60 group-hover:opacity-100 transition-opacity">
-                                     <SectionDividerPreview style={divider.id} color={settings.dividerColor} />
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                       ))}
-                    </div>
-                 </div>
-              </div>
-            )}
-            {activeTab === 'tracking' && (
-              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
-                <div className="bg-indigo-50 p-6 rounded-2xl border border-indigo-100">
-                  <h2 className="text-xl font-bold text-indigo-900 mb-2">Marketing & Tracking Pixels</h2>
-                  <p className="text-indigo-700 text-sm">Add your tracking IDs here to monitor your store's performance and run targeted ads.</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* Facebook Pixel */}
-                  <div className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-blue-400 transition-colors">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-[#1877F2] rounded-lg flex items-center justify-center text-white">
-                        <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                      </div>
-                      <h3 className="font-bold text-lg">Facebook Pixel</h3>
-                    </div>
-                    <label className="block text-sm font-medium text-slate-600 mb-2">Pixel ID</label>
-                    <input 
-                      type="text" 
-                      placeholder="e.g. 123456789012345"
-                      value={settings.facebookPixelId || ''} 
-                      onChange={e => setSettings({...settings, facebookPixelId: e.target.value})} 
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" 
-                    />
-                    <p className="text-xs text-slate-400 mt-2">Enter your 15-digit Facebook Pixel ID.</p>
-                  </div>
-
-                  {/* TikTok Pixel */}
-                  <div className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-black transition-colors">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center text-white">
-                        <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.59-1.01V14.5c.01 2.32-.6 4.67-2.12 6.44-1.56 1.82-3.83 2.87-6.17 3.03-2.56.23-5.32-.59-7.15-2.45-1.88-1.89-2.75-4.63-2.32-7.26.38-2.61 2.25-4.99 4.63-6.06 1.43-.65 3.01-.87 4.56-.63V11.5c-1.12-.28-2.39-.12-3.37.54-.99.64-1.61 1.77-1.63 2.95-.01 1.05.32 2.11 1.01 2.91.69.83 1.75 1.3 2.81 1.3 1.04-.01 2.12-.48 2.76-1.3.69-.87 1-2.02.95-3.13V0h.01z"/></svg>
-                      </div>
-                      <h3 className="font-bold text-lg">TikTok Pixel</h3>
-                    </div>
-                    <label className="block text-sm font-medium text-slate-600 mb-2">Pixel ID</label>
-                    <input 
-                      type="text" 
-                      placeholder="e.g. C1234567890ABCDE"
-                      value={settings.tiktokPixelId || ''} 
-                      onChange={e => setSettings({...settings, tiktokPixelId: e.target.value})} 
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-500 outline-none" 
-                    />
-                    <p className="text-xs text-slate-400 mt-2">Enter your TikTok Pixel ID (Code).</p>
-                  </div>
-
-                  {/* Snapchat Pixel */}
-                  <div className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-yellow-400 transition-colors">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-[#FFFC00] rounded-lg flex items-center justify-center text-black">
-                        <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2.3c-4.4 0-8 2.4-8 5.4 0 1.5.9 2.9 2.5 3.9-.4 1.1-.9 2.1-1.6 3.1-.2.3-.2.7.1.9.3.2.7.2 1 .1 1.1-.5 2.1-.9 3.1-1.2.9.4 1.9.6 2.9.6s2-.2 2.9-.6c1 .3 2 .7 3.1 1.2.3.1.7.1 1-.1.3-.2.3-.6.1-.9-.7-1-1.2-2-1.6-3.1 1.6-1 2.5-2.4 2.5-3.9 0-3-3.6-5.4-8-5.4zm0 13.5c-1.1 0-2.2-.2-3.1-.6-.5.1-1 .3-1.6.6-.1.1-.2.1-.4.1-.2 0-.4-.1-.5-.3-.1-.2-.1-.4.1-.5.4-.5.8-1 1.1-1.6-1.2-.8-1.9-1.9-1.9-3.1 0-2.3 2.8-4.2 6.3-4.2s6.3 1.9 6.3 4.2c0 1.2-.7 2.3-1.9 3.1.3.6.7 1.1 1.1 1.6.2.2.2.4.1.5-.1.2-.3.3-.5.3-.2 0-.3 0-.4-.1-.6-.3-1.1-.5-1.6-.6-.9.4-2 .6-3.1.6z"/></svg>
-                      </div>
-                      <h3 className="font-bold text-lg">Snapchat Pixel</h3>
-                    </div>
-                    <label className="block text-sm font-medium text-slate-600 mb-2">Pixel ID</label>
-                    <input 
-                      type="text" 
-                      placeholder="e.g. 12345678-1234-1234-1234-123456789012"
-                      value={settings.snapchatPixelId || ''} 
-                      onChange={e => setSettings({...settings, snapchatPixelId: e.target.value})} 
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none" 
-                    />
-                    <p className="text-xs text-slate-400 mt-2">Enter your Snapchat Pixel ID.</p>
-                  </div>
-
-                  {/* Google Analytics */}
-                  <div className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-orange-400 transition-colors">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-[#F9AB00] rounded-lg flex items-center justify-center text-white">
-                        <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M21.1 18.2c-.1-.1-.2-.2-.3-.3l-4.4-4.4c-.2-.2-.5-.2-.7 0l-1.4 1.4c-.2.2-.2.5 0 .7l4.4 4.4c.1.1.2.2.3.3.2.1.4.1.6 0l1.4-1.4c.3-.3.3-.8.1-1.1zM9.5 15c-3 0-5.5-2.5-5.5-5.5S6.5 4 9.5 4 15 6.5 15 9.5 12.5 15 9.5 15zm0-9c-1.9 0-3.5 1.6-3.5 3.5S7.6 13 9.5 13s3.5-1.6 3.5-3.5S11.4 6 9.5 6z"/></svg>
-                      </div>
-                      <h3 className="font-bold text-lg">Google Analytics 4</h3>
-                    </div>
-                    <label className="block text-sm font-medium text-slate-600 mb-2">Measurement ID</label>
-                    <input 
-                      type="text" 
-                      placeholder="e.g. G-1234567890"
-                      value={settings.googleAnalyticsId || ''} 
-                      onChange={e => setSettings({...settings, googleAnalyticsId: e.target.value})} 
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" 
-                    />
-                    <p className="text-xs text-slate-400 mt-2">Enter your GA4 Measurement ID (G-XXXXXX).</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'signature' && (
-              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
-                <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100">
-                  <h2 className="text-xl font-bold text-blue-900 mb-2">Signature Exclusive Features</h2>
-                  <p className="text-blue-700 text-sm">These settings only apply to the "Signature" template.</p>
-                </div>
-
-                {/* Live Sales */}
-                <div className="bg-white p-6 rounded-2xl border border-slate-200">
-                  <h3 className="text-lg font-bold mb-4">Live Sales Notifications</h3>
-                  <div className="flex items-center gap-12">
-                    <label className="flex items-center gap-3 cursor-pointer">
-                      <input 
-                        type="checkbox" 
-                        checked={settings.signatureSettings?.liveSales?.enabled} 
-                        onChange={e => setSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), liveSales: {...(settings.signatureSettings?.liveSales || {enabled: false, interval: 15000}), enabled: e.target.checked}}})} 
-                        className="w-5 h-5 rounded accent-blue-600"
-                      />
-                      <span className="font-bold">Enable Live Notifications</span>
-                    </label>
-                    <div className="flex-1">
-                      <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Interval (seconds)</label>
-                      <input 
-                        type="number" 
-                        value={(settings.signatureSettings?.liveSales?.interval || 15000) / 1000} 
-                        onChange={e => setSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), liveSales: {...(settings.signatureSettings?.liveSales || {enabled: false, interval: 15000}), interval: Number(e.target.value) * 1000}}})} 
-                        className="w-32 px-4 py-2 border border-slate-200 rounded-lg"
-                      />
+              <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 border border-white/[0.05] shadow-2xl">
+                  <div className="flex items-center gap-4 mb-12">
+                    <div className="w-1.5 h-10 bg-indigo-400 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+                    <div>
+                      <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Section Transitions</h2>
+                      <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Visual separators for homepage architecture.</p>
                     </div>
                   </div>
-                </div>
 
-                {/* Testimonials */}
-                <div className="bg-white p-6 rounded-2xl border border-slate-200">
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-lg font-bold">Client Testimonials</h3>
-                    <button 
-                      type="button"
-                      onClick={() => setSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), testimonials: [...(settings.signatureSettings?.testimonials || []), {name: '', role: '', content: ''}]}})}
-                      className="text-xs font-black uppercase tracking-widest text-blue-600 border border-blue-600 px-4 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-all"
-                    >
-                      + Add Testimonial
-                    </button>
-                  </div>
-                  
-                  <div className="mb-6 flex items-center gap-4">
-                    <label className="text-sm font-bold text-slate-700">Slide Interval (seconds):</label>
-                    <input 
-                      type="number" 
-                      value={(settings.signatureSettings?.testimonialInterval || 5000) / 1000} 
-                      onChange={e => setSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), testimonialInterval: Number(e.target.value) * 1000}})} 
-                      className="w-24 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-
-                  <div className="space-y-4">
-                    {(settings.signatureSettings?.testimonials || []).map((testimonial: any, index: number) => (
-                      <div key={index} className="flex gap-4 items-start p-4 bg-slate-50 border border-slate-200 rounded-lg">
-                        <div className="flex-1 space-y-4">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Name</label>
-                              <input 
-                                type="text"
-                                value={testimonial.name}
-                                onChange={(e) => {
-                                  const newTestimonials = [...(settings.signatureSettings?.testimonials || [])];
-                                  newTestimonials[index].name = e.target.value;
-                                  setSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), testimonials: newTestimonials}});
-                                }}
-                                className="w-full px-3 py-2 border border-slate-200 rounded-lg"
-                                placeholder="Client Name"
+                  <div className="bg-black/20 p-8 rounded-[2.5rem] border border-white/[0.03] mb-12 flex flex-col md:flex-row gap-12 items-center">
+                    <div className="flex-1 space-y-4">
+                       <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Chromatic Signature (Divider Color)</label>
+                       <div className="flex gap-4 items-center bg-white/[0.02] p-3 rounded-2xl border border-white/[0.05] group/color">
+                          <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-white/10 group-hover/color:scale-110 transition-transform">
+                             <input 
+                                type="color" 
+                                value={settings.dividerColor || '#ffffff'} 
+                                onChange={e => setSettings({...settings, dividerColor: e.target.value})} 
+                                className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer" 
                               />
-                            </div>
-                            <div>
-                              <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Role / Title</label>
-                              <input 
-                                type="text"
-                                value={testimonial.role}
-                                onChange={(e) => {
-                                  const newTestimonials = [...(settings.signatureSettings?.testimonials || [])];
-                                  newTestimonials[index].role = e.target.value;
-                                  setSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), testimonials: newTestimonials}});
-                                }}
-                                className="w-full px-3 py-2 border border-slate-200 rounded-lg"
-                                placeholder="e.g. CEO, Developer"
-                              />
-                            </div>
                           </div>
-                          <div>
-                            <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Testimonial Content</label>
-                            <textarea 
-                              value={testimonial.content}
-                              onChange={(e) => {
-                                const newTestimonials = [...(settings.signatureSettings?.testimonials || [])];
-                                newTestimonials[index].content = e.target.value;
-                                setSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), testimonials: newTestimonials}});
-                              }}
-                              className="w-full px-3 py-2 border border-slate-200 rounded-lg"
-                              rows={3}
-                              placeholder="What the client said..."
-                            />
-                          </div>
-                        </div>
-                        <button 
-                          type="button"
-                          onClick={() => {
-                            const newTestimonials = [...(settings.signatureSettings?.testimonials || [])];
-                            newTestimonials.splice(index, 1);
-                            setSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), testimonials: newTestimonials}});
-                          }}
-                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors mt-6"
-                        >
-                          <Trash2 size={20} />
-                        </button>
-                      </div>
-                    ))}
-                    {(settings.signatureSettings?.testimonials?.length || 0) === 0 && (
-                      <div className="text-center py-8 text-slate-500 border border-dashed border-slate-300 rounded-lg">
-                        No testimonials added yet. Click "Add Testimonial" to start.
-                      </div>
-                    )}
-                  </div>
-
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'business' && (
-              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
-                {/* Shipping Rates */}
-                <div className="bg-white p-6 rounded-2xl border border-slate-200">
-                   <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-lg font-bold">Shipping Rates</h3>
-                    <button 
-                      type="button"
-                      onClick={() => setSettings({...settings, businessSettings: {...(settings.businessSettings || {}), shippingRates: [...(settings.businessSettings?.shippingRates || []), {zone: '', rate: 0}]}})}
-                      className="text-xs font-black uppercase tracking-widest text-blue-600 border border-blue-600 px-4 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-all"
-                    >
-                      + Add Shipping Zone
-                    </button>
-                  </div>
-                  <div className="space-y-3">
-                    {settings.businessSettings?.shippingRates?.map((rate, idx) => (
-                       <div key={idx} className="flex gap-4 items-center">
                           <input 
                             type="text" 
-                            placeholder="Zone (e.g. Cairo)" 
-                            value={rate.zone} 
-                            onChange={e => {
-                              const newR = [...(settings.businessSettings?.shippingRates || [])];
-                              newR[idx].zone = e.target.value;
-                              setSettings({...settings, businessSettings: {...(settings.businessSettings || {}), shippingRates: newR}});
-                            }}
-                            className="flex-1 px-4 py-2 border border-slate-200 rounded-lg outline-none"
+                            value={settings.dividerColor || '#ffffff'} 
+                            onChange={e => setSettings({...settings, dividerColor: e.target.value})} 
+                            className="flex-1 bg-transparent text-white focus:outline-none font-mono text-sm uppercase tracking-tighter" 
                           />
-                          <input 
-                            type="number" 
-                            placeholder="Rate" 
-                            value={rate.rate} 
-                            onChange={e => {
-                              const newR = [...(settings.businessSettings?.shippingRates || [])];
-                              newR[idx].rate = Number(e.target.value);
-                              setSettings({...settings, businessSettings: {...(settings.businessSettings || {}), shippingRates: newR}});
-                            }}
-                            className="w-32 px-4 py-2 border border-slate-200 rounded-lg outline-none"
-                          />
-                          <button 
-                            type="button"
-                            onClick={() => {
-                              const newR = [...(settings.businessSettings?.shippingRates || [])];
-                              newR.splice(idx, 1);
-                              setSettings({...settings, businessSettings: {...(settings.businessSettings || {}), shippingRates: newR}});
-                            }}
-                            className="text-red-500 p-2 hover:bg-red-50 rounded-full"
-                          >
-                            <X className="w-5 h-5" />
-                          </button>
-                       </div>
+                        </div>
+                    </div>
+                    <div className="w-[1px] h-20 bg-white/5 hidden md:block"></div>
+                    <div className="flex-1">
+                       <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-2 italic">Active Selection</p>
+                       <p className="text-2xl font-black text-white uppercase italic tracking-tighter">{settings.dividerStyle || 'NONE'}</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[
+                      { id: 'none', name: 'PRISTINE_VOID', desc: 'Clean negative space between sections.' },
+                      { id: 'line', name: 'MINIMAL_AXIS', desc: 'Single pixel precise horizontal line.' },
+                      { id: 'minimal_dots', name: 'QUANTUM_DOTS', desc: 'Three floating geometric points.' },
+                      { id: 'wave', name: 'FLUID_SURGE', desc: 'Organic sinusoidal liquid transition.' },
+                      { id: 'curve', name: 'ELIPTIC_ARC', desc: 'Gentle downward spherical boundary.' },
+                      { id: 'triangle', name: 'VECTORS_PEAK', desc: 'Sharp geometric downward pointing node.' },
+                      { id: 'zigzag', name: 'FRACTAL_EDGE', desc: 'Aggressive serrated sawtooth architecture.' },
+                      { id: 'geometric', name: 'COMPOSITE_STRATA', desc: 'Layered polygonal depth elements.' },
+                      { id: 'slash', name: 'DIAGONAL_SPLIT', desc: 'Dynamic angular spatial separation.' },
+                      { id: 'mountains', name: 'ALPINE_RIDGE', desc: 'Symmetric layered peak structures.' },
+                      { id: 'fan', name: 'RADIAL_SWEEP', desc: 'Soft curved volumetric fan expansion.' },
+                      { id: 'steps', name: 'DIGITAL_TIERS', desc: 'Orthogonal stepped architectural levels.' },
+                      { id: 'drops', name: 'GRAVITY_NODES', desc: 'Floating circular liquid elements.' },
+                      { id: 'arabic_pattern', name: 'CULTURAL_DNA', desc: 'Ornate geometric star matrix.' },
+                    ].map((divider) => (
+                      <label 
+                        key={divider.id} 
+                        className={`group relative cursor-pointer p-6 rounded-[2rem] border transition-all overflow-hidden ${
+                          (settings.dividerStyle || 'none') === divider.id 
+                            ? 'border-indigo-500 bg-indigo-500/5 shadow-[0_0_40px_rgba(99,102,241,0.2)] scale-105 z-10' 
+                            : 'border-white/[0.05] bg-white/[0.01] hover:border-white/10'
+                        }`}
+                      >
+                        <div className="relative z-10">
+                          <div className="flex justify-between items-start mb-6">
+                             <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${
+                               (settings.dividerStyle || 'none') === divider.id 
+                                 ? 'bg-indigo-500 border-indigo-400 text-white shadow-[0_0_15px_rgba(99,102,241,0.5)]' 
+                                 : 'bg-white/5 border-white/10 text-slate-500'
+                             }`}>
+                               {settings.dividerStyle === divider.id ? <CheckCircle2 size={14} /> : <div className="w-1.5 h-1.5 rounded-full bg-current"></div>}
+                             </div>
+                             <input 
+                               type="radio" 
+                               name="dividerStyle"
+                               value={divider.id}
+                               checked={(settings.dividerStyle || 'none') === divider.id}
+                               onChange={(e) => setSettings({...settings, dividerStyle: e.target.value})}
+                               className="sr-only"
+                             />
+                          </div>
+                          <p className={`font-black uppercase tracking-widest text-[9px] mb-1 transition-colors ${(settings.dividerStyle || 'none') === divider.id ? 'text-indigo-400' : 'text-slate-400'}`}>{divider.name}</p>
+                          <p className="text-[10px] text-slate-500 leading-relaxed font-medium italic mb-6">{divider.desc}</p>
+                          
+                          <div className="h-20 bg-black/40 rounded-2xl border border-white/5 flex items-center justify-center overflow-hidden group-hover:border-indigo-500/30 transition-colors">
+                             <div className="w-full scale-[0.35] opacity-40 group-hover:opacity-100 transition-all">
+                                <SectionDividerPreview style={divider.id} color={settings.dividerColor} />
+                             </div>
+                          </div>
+                        </div>
+                      </label>
                     ))}
                   </div>
                 </div>
+              </div>
+            )}
+
+            {['tracking', 'business', 'signature'].includes(activeTab) && (
+              <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-20 border border-white/[0.05] text-center shadow-2xl animate-in fade-in duration-700">
+                  <div className="w-24 h-24 bg-indigo-500/10 border border-indigo-500/20 rounded-full flex items-center justify-center mx-auto mb-8">
+                     <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                  <h2 className="text-3xl font-black text-white uppercase italic tracking-tighter">Module Synchronizing</h2>
+                  <p className="text-slate-500 text-sm mt-4 font-medium italic">Establishing high-bandwidth connection to {tabs.find(t => t.id === activeTab)?.label} parameters...</p>
+                  <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mt-12 bg-indigo-400/5 py-2 px-6 rounded-full inline-block border border-indigo-400/10 animate-pulse">Encryption Layer Active</p>
               </div>
             )}
           </div>
 
-          <div className="mt-10 pt-6 border-t flex items-center justify-between">
-            <div>
-              {saveMessage && (
-                <span className="text-green-600 font-medium bg-green-50 px-4 py-2 rounded-lg">
-                  {saveMessage}
-                </span>
-              )}
+          {/* Premium Sticky Save Bar */}
+          <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] w-full max-w-4xl px-6 group/save">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-[2.5rem] blur-[30px] opacity-20 group-hover/save:opacity-40 transition-opacity"></div>
+            <div className="relative bg-[#0f111a]/80 backdrop-blur-3xl border border-white/[0.1] p-6 rounded-[2.5rem] flex items-center justify-between shadow-[0_0_100px_rgba(0,0,0,0.5)]">
+              <div className="pl-6">
+                {saveMessage ? (
+                  <div className="flex items-center gap-4 animate-in slide-in-from-left-4 duration-500">
+                     <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,1)]"></div>
+                     <span className="text-[10px] font-black text-white uppercase tracking-[0.3em] italic">System Synchronized</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-4 text-slate-500">
+                     <div className="w-2 h-2 rounded-full bg-slate-800"></div>
+                     <span className="text-[10px] font-black uppercase tracking-[0.3em]">Pending Commitment</span>
+                  </div>
+                )}
+              </div>
+              <button 
+                type="submit"
+                disabled={isPending}
+                className="px-12 py-5 bg-white text-black rounded-[2rem] font-black text-[12px] uppercase tracking-[0.4em] hover:bg-indigo-400 transition-all flex items-center gap-4 shadow-2xl disabled:opacity-50"
+              >
+                {isPending ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
+                Execute Protocol
+              </button>
             </div>
-            <button 
-              type="submit" 
-              disabled={isPending} 
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 flex items-center gap-2 transition-colors disabled:opacity-70"
-            >
-              {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-              Save Settings
-            </button>
           </div>
         </form>
       </div>

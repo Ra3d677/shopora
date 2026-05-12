@@ -110,83 +110,92 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
   };
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-8">
+    <div className="p-10 space-y-12 animate-in fade-in duration-700">
+      <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-slate-900 uppercase italic">Categories</h1>
-          <p className="text-slate-500 text-sm mt-1">Manage your store collections and choose how they look on your storefront.</p>
+          <h1 className="text-5xl font-black tracking-tighter bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent italic uppercase">
+            Collection <span className="text-green-400">Hub</span>
+          </h1>
+          <p className="text-slate-500 mt-3 font-medium tracking-widest text-[10px] uppercase">Architect your store's navigational structure.</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           {showSuccess && (
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-green-500/10 text-green-600 px-4 py-2 rounded-xl text-xs font-bold border border-green-500/20"
+              className="bg-green-500/10 text-green-400 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest border border-green-500/20 backdrop-blur-md"
             >
-              Changes Saved!
+              Sync Successful
             </motion.div>
           )}
           {hasChanges && (
             <button 
               onClick={handleSaveLayout}
               disabled={isUpdatingLayout}
-              className="px-8 py-2.5 bg-blue-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-600/30 flex items-center gap-2"
+              className="px-10 py-4 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_10px_30px_rgba(34,197,94,0.2)] flex items-center gap-3"
             >
-              {isUpdatingLayout ? <Loader2 size={14} className="animate-spin" /> : 'Save All Changes'}
+              {isUpdatingLayout ? <Loader2 size={16} className="animate-spin" /> : <div className="w-2 h-2 rounded-full bg-white animate-pulse" />}
+              Commit Changes
             </button>
           )}
           {!isAdding && !isEditing && (
             <button 
               onClick={startAdd}
-              className="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-bold hover:bg-slate-800 transition-all flex items-center gap-2 shadow-lg"
+              className="px-8 py-4 bg-white text-black rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-green-400 hover:text-black transition-all flex items-center gap-3 shadow-2xl"
             >
-              <Plus className="w-5 h-5" /> Add New Category
+              <Plus className="w-5 h-5" /> New Collection
             </button>
           )}
         </div>
       </div>
 
-      {/* Category Layout Selector */}
-      <div className="mb-12 bg-slate-50 rounded-3xl p-8 border border-slate-100">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tighter italic">Display Settings</h2>
-            <p className="text-slate-500 text-xs mt-1">Configure how your collections appear in different pages.</p>
+      {/* Category Layout Selector - Premium Dark Glassmorphism */}
+      <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/[0.05] shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-green-500/5 blur-[120px] -z-10 group-hover:bg-green-500/10 transition-all"></div>
+        
+        <div className="flex items-center justify-between mb-10">
+          <div className="flex items-center gap-4">
+             <div className="w-1.5 h-10 bg-green-400 rounded-full"></div>
+             <div>
+               <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Visual Matrix</h2>
+               <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Define your storefront aesthetic.</p>
+             </div>
           </div>
-          {isUpdatingLayout && <Loader2 className="w-4 h-4 animate-spin text-blue-600" />}
+          {isUpdatingLayout && <Loader2 className="w-5 h-5 animate-spin text-green-400" />}
         </div>
 
-        {/* Tab Selector */}
-        <div className="flex gap-4 mb-8">
+        {/* Tab Selector - Minimalist & Sleek */}
+        <div className="flex gap-3 mb-10 bg-black/20 p-2 rounded-2xl w-fit border border-white/[0.03]">
            <button 
              onClick={() => setActiveTab('home')}
-             className={`px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'home' ? 'bg-slate-900 text-white' : 'bg-white text-slate-400 hover:bg-slate-100'}`}
+             className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'home' ? 'bg-white text-black shadow-xl' : 'text-slate-500 hover:text-white'}`}
            >
-             Home Page
+             Landing Page
            </button>
            <button 
              onClick={() => setActiveTab('collections')}
-             className={`px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'collections' ? 'bg-slate-900 text-white' : 'bg-white text-slate-400 hover:bg-slate-100'}`}
+             className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'collections' ? 'bg-white text-black shadow-xl' : 'text-slate-500 hover:text-white'}`}
            >
-             Collections Page
+             All Collections
            </button>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
           {layouts.map((l: any) => {
             const isCurrent = activeTab === 'home' ? homeLayout === l.id : collectionsLayout === l.id;
             return (
               <button
                 key={l.id}
                 onClick={() => handleLayoutSelect(l.id)}
-                className={`flex flex-col items-center gap-3 p-4 rounded-2xl border-2 transition-all ${isCurrent ? 'border-blue-600 bg-white ring-8 ring-blue-600/5' : 'border-white bg-white/50 hover:border-slate-200 opacity-60 hover:opacity-100'}`}
+                className={`flex flex-col items-center gap-6 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden group/layout ${isCurrent ? 'border-green-400/50 bg-green-400/5 shadow-[0_0_40px_rgba(74,222,128,0.1)]' : 'border-white/[0.03] bg-white/[0.01] hover:border-white/[0.1] hover:bg-white/[0.02]'}`}
               >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isCurrent ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'bg-slate-200 text-slate-500'}`}>
-                  <l.icon size={24} />
+                {isCurrent && <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-green-400 shadow-[0_0_10px_rgba(74,222,128,1)]"></div>}
+                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 ${isCurrent ? 'bg-green-400 text-black scale-110 rotate-3' : 'bg-white/[0.03] text-slate-500 group-hover/layout:text-white group-hover/layout:scale-110'}`}>
+                  <l.icon size={32} strokeWidth={2.5} />
                 </div>
                 <div className="text-center">
-                  <div className={`text-[10px] font-black uppercase ${isCurrent ? 'text-blue-600' : 'text-slate-900'}`}>{l.name}</div>
-                  <div className="text-[9px] text-slate-400 mt-1">{l.desc}</div>
+                  <div className={`text-[11px] font-black uppercase tracking-widest mb-2 ${isCurrent ? 'text-green-400' : 'text-slate-300'}`}>{l.name}</div>
+                  <div className="text-[9px] font-medium text-slate-600 tracking-wide line-clamp-1">{l.desc}</div>
                 </div>
               </button>
             );
@@ -195,104 +204,152 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
       </div>
 
       {(isAdding || isEditing) && (
-        <div className="bg-white rounded-2xl border border-border shadow-sm p-8 mb-8">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold">{isEditing ? 'Edit Category' : 'Add New Category'}</h2>
-            <button onClick={() => { setIsEditing(null); setIsAdding(false); }} className="text-slate-400 hover:text-slate-600">
+        <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] border border-white/[0.05] shadow-2xl p-10 relative overflow-hidden">
+          <div className="flex justify-between items-center mb-10">
+            <div className="flex items-center gap-4">
+               <div className="w-1.5 h-10 bg-green-400 rounded-full"></div>
+               <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic">
+                 {isEditing ? 'Modify Sector' : 'Register New Sector'}
+               </h2>
+            </div>
+            <button 
+               onClick={() => { setIsEditing(null); setIsAdding(false); }} 
+               className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white transition-all"
+            >
               <X className="w-6 h-6" />
             </button>
           </div>
 
-          <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
+          <form onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <div className="space-y-8">
               <div>
-                <label className="block text-sm font-medium mb-1">Category Name</label>
-                <input required type="text" value={formData.name || ''} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none" />
+                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Sector Designation</label>
+                <input 
+                  required 
+                  type="text" 
+                  value={formData.name || ''} 
+                  onChange={e => setFormData({...formData, name: e.target.value})} 
+                  className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all font-bold" 
+                  placeholder="e.g. Summer Essentials"
+                />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Description</label>
-                <textarea required value={formData.description || ''} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none h-24" />
+                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Narrative Description</label>
+                <textarea 
+                  required 
+                  value={formData.description || ''} 
+                  onChange={e => setFormData({...formData, description: e.target.value})} 
+                  className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all h-32 font-medium" 
+                  placeholder="Elaborate on this collection's theme..."
+                />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Parent Category (Optional)</label>
+                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Structural Hierarchy</label>
                 <select 
                   value={formData.parentId || ''} 
                   onChange={e => setFormData({...formData, parentId: e.target.value})} 
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none bg-white"
+                  className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all font-black uppercase tracking-widest text-xs cursor-pointer"
                 >
-                  <option value="">None (Top Level)</option>
+                  <option value="" className="bg-[#1a1d2d]">ROOT COLLECTION</option>
                   {categories
                     .filter(c => !isEditing || c.id !== isEditing.id)
                     .map(c => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
+                    <option key={c.id} value={c.id} className="bg-[#1a1d2d]">{c.name.toUpperCase()}</option>
                   ))}
                 </select>
               </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-8">
               <div>
-                <label className="block text-sm font-medium mb-1">Category Image</label>
-                <MediaPicker 
-                  slug={slug}
-                  value={formData.image || ''} 
-                  onChange={url => setFormData({...formData, image: url})} 
-                />
+                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Visual Signature</label>
+                <div className="bg-white/[0.03] border border-white/[0.05] rounded-[2rem] p-4">
+                  <MediaPicker 
+                    slug={slug}
+                    value={formData.image || ''} 
+                    onChange={url => setFormData({...formData, image: url})} 
+                    className="w-full aspect-[16/9] rounded-2xl"
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="md:col-span-2 pt-4 border-t flex justify-end gap-3">
-              <button type="button" onClick={() => { setIsEditing(null); setIsAdding(false); }} className="px-5 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
-                Cancel
-              </button>
-              <button type="submit" disabled={isPending} className="px-5 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 flex items-center gap-2 transition-colors">
-                {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                {isEditing ? 'Save Changes' : 'Create Category'}
-              </button>
+              <div className="pt-10 border-t border-white/[0.05] flex gap-4">
+                <button 
+                  type="submit" 
+                  disabled={isPending} 
+                  className="flex-1 py-5 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-black uppercase tracking-[0.3em] text-xs rounded-[2rem] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-2xl disabled:opacity-50"
+                >
+                  {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse" />}
+                  {isEditing ? 'Update Registry' : 'Initialize Sector'}
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => { setIsEditing(null); setIsAdding(false); }} 
+                  className="px-10 py-5 bg-white/[0.02] hover:bg-white/[0.05] text-slate-500 font-black uppercase tracking-[0.3em] text-[10px] rounded-[2rem] transition-all"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </form>
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-border overflow-hidden shadow-sm">
+      {/* Modern High-End Table for Categories */}
+      <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] border border-white/[0.05] shadow-2xl overflow-hidden relative">
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-green-500/50 to-transparent"></div>
+        
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 border-b border-border text-slate-600">
+          <table className="w-full text-left">
+            <thead className="bg-white/[0.01] border-b border-white/[0.05]">
               <tr>
-                <th className="px-6 py-4 font-medium">Category</th>
-                <th className="px-6 py-4 font-medium">Identifier (ID)</th>
-                <th className="px-6 py-4 font-medium text-right">Actions</th>
+                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Collection Identity</th>
+                <th className="px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Registry Code</th>
+                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 text-right">Operations</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-white/[0.03]">
               {categories.map((category: Category) => (
-                <tr key={category.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-12 rounded-lg bg-slate-100 overflow-hidden relative flex-shrink-0">
+                <tr key={category.id} className="group hover:bg-white/[0.02] transition-all duration-500">
+                  <td className="px-10 py-8">
+                    <div className="flex items-center gap-8">
+                      <div className="w-24 h-16 rounded-2xl bg-white/[0.03] border border-white/[0.05] overflow-hidden relative flex-shrink-0 shadow-2xl group-hover:scale-110 transition-transform duration-500">
                         <Image src={category.image} alt={category.name} fill className="object-cover" />
                       </div>
                       <div>
-                        <div className="flex items-center gap-2">
-                          <div className="font-semibold text-slate-900">{category.name}</div>
+                        <div className="flex items-center gap-4 mb-2">
+                          <div className="font-black text-white uppercase tracking-tighter text-xl">{category.name}</div>
                           {category.parentId && (
-                            <span className="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded uppercase tracking-wider">
-                              Sub of {categories.find(c => c.id === category.parentId)?.name || 'Unknown'}
-                            </span>
+                            <div className="flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full">
+                               <div className="w-1 h-1 bg-green-400 rounded-full animate-pulse"></div>
+                               <span className="text-[8px] font-black text-green-400 uppercase tracking-widest">
+                                  Node of {categories.find(c => c.id === category.parentId)?.name.toUpperCase() || 'ROOT'}
+                               </span>
+                            </div>
                           )}
                         </div>
-                        <div className="text-slate-500 text-xs truncate max-w-[250px]">{category.description}</div>
+                        <div className="text-slate-500 text-[10px] font-medium tracking-wide italic max-w-[400px] line-clamp-1 opacity-60 group-hover:opacity-100 transition-opacity">{category.description}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 font-mono text-xs text-slate-500">{category.id}</td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex justify-end gap-2">
-                      <button onClick={() => startEdit(category)} className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                        <Edit className="w-4 h-4" />
+                  <td className="px-8 py-8">
+                    <span className="font-mono text-[9px] font-black text-slate-600 bg-black/20 px-3 py-1.5 rounded-lg border border-white/[0.02]">
+                      {category.id.toUpperCase()}
+                    </span>
+                  </td>
+                  <td className="px-10 py-8 text-right">
+                    <div className="flex justify-end gap-3">
+                      <button 
+                        onClick={() => startEdit(category)} 
+                        className="w-12 h-12 bg-white/[0.03] border border-white/[0.05] rounded-2xl flex items-center justify-center text-slate-500 hover:text-green-400 hover:bg-green-400/10 hover:border-green-400/30 transition-all shadow-xl"
+                      >
+                        <Edit className="w-5 h-5" />
                       </button>
-                      <button onClick={() => handleDelete(category.id)} className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                        <Trash2 className="w-4 h-4" />
+                      <button 
+                        onClick={() => handleDelete(category.id)} 
+                        className="w-12 h-12 bg-white/[0.03] border border-white/[0.05] rounded-2xl flex items-center justify-center text-slate-500 hover:text-rose-500 hover:bg-rose-500/10 hover:border-rose-500/30 transition-all shadow-xl"
+                      >
+                        <Trash2 className="w-5 h-5" />
                       </button>
                     </div>
                   </td>
@@ -301,8 +358,12 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
             </tbody>
           </table>
           {categories.length === 0 && (
-            <div className="p-12 text-center text-slate-500">
-              No categories found. Start by adding one!
+            <div className="p-40 text-center">
+               <div className="w-24 h-24 bg-white/[0.02] border border-white/[0.05] rounded-full flex items-center justify-center mx-auto mb-8 animate-pulse">
+                 <LayoutGrid className="w-12 h-12 text-slate-800" />
+               </div>
+               <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic mb-3">No Matrix Data</h3>
+               <p className="text-slate-600 text-sm font-medium">Initialize your first sector to begin deployment.</p>
             </div>
           )}
         </div>

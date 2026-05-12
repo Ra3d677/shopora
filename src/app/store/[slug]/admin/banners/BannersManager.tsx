@@ -76,32 +76,46 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
   };
 
   return (
-    <div className="p-8">
-      <div className="space-y-6 mb-8 bg-card border border-border/50 rounded-3xl p-8 shadow-sm">
-        <div className="flex items-center gap-3 mb-6">
-          <Settings2 className="w-6 h-6 text-accent" />
-          <h2 className="text-xl font-bold text-primary uppercase tracking-tighter">Hero Slider Configuration</h2>
+    <div className="p-10 space-y-12 animate-in fade-in duration-700">
+      <div className="flex justify-between items-end">
+        <div>
+          <h1 className="text-5xl font-black tracking-tighter bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent italic uppercase">
+            Motion <span className="text-yellow-400">Canvas</span>
+          </h1>
+          <p className="text-slate-500 mt-3 font-medium tracking-widest text-[10px] uppercase">Curate your store's high-impact visual narrative.</p>
+        </div>
+      </div>
+
+      <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/[0.05] shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-yellow-500/5 blur-[120px] -z-10 group-hover:bg-yellow-500/10 transition-all"></div>
+        
+        <div className="flex items-center gap-4 mb-10">
+           <div className="w-1.5 h-10 bg-yellow-400 rounded-full shadow-[0_0_15px_rgba(250,204,21,0.5)]"></div>
+           <div>
+             <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Slider Dynamics</h2>
+             <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Global behavior and transition protocols.</p>
+           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-              <Play className="w-3 h-3" /> Auto Play
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+              <Play className="w-3.5 h-3.5 text-yellow-400" /> Automatic Cycle
             </label>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
                <button 
                 onClick={() => setSliderSettings(prev => ({ ...prev, autoPlay: !prev.autoPlay }))}
-                className={`w-12 h-6 rounded-full transition-all relative ${sliderSettings.autoPlay ? 'bg-green-500' : 'bg-slate-200'}`}
+                className={`w-14 h-7 rounded-full transition-all relative border border-white/10 ${sliderSettings.autoPlay ? 'bg-yellow-400' : 'bg-white/5'}`}
                >
-                 <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${sliderSettings.autoPlay ? 'left-7' : 'left-1'}`} />
+                 <div className={`absolute top-1 w-5 h-5 rounded-full transition-all shadow-xl ${sliderSettings.autoPlay ? 'left-8 bg-black' : 'left-1 bg-slate-500'}`} />
                </button>
-               <span className="text-sm font-medium">{sliderSettings.autoPlay ? 'On' : 'Off'}</span>
+               <span className="text-[10px] font-black text-white uppercase">{sliderSettings.autoPlay ? 'ENABLED' : 'MANUAL'}</span>
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-              <Clock className="w-3 h-3" /> Interval (ms)
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+              <Clock className="w-3.5 h-3.5 text-yellow-400" /> Latency (MS)
             </label>
             <input 
               type="number" 
@@ -109,298 +123,327 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
               onChange={e => setSliderSettings(prev => ({ ...prev, interval: parseInt(e.target.value) || 5000 }))}
               step={500}
               min={1000}
-              className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm font-bold"
+              className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black text-xs"
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-              <Zap className="w-3 h-3" /> Transition
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+              <Zap className="w-3.5 h-3.5 text-yellow-400" /> Morph Effect
             </label>
             <select 
               value={sliderSettings.transition}
               onChange={e => setSliderSettings(prev => ({ ...prev, transition: e.target.value as any }))}
-              className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm bg-white font-medium"
+              className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black text-[10px] uppercase tracking-widest cursor-pointer"
             >
-              <option value="slide">Slide</option>
-              <option value="fade">Fade</option>
+              <option value="slide" className="bg-[#1a1d2d]">TRANSLATION</option>
+              <option value="fade" className="bg-[#1a1d2d]">DISSOLVE</option>
             </select>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Navigation</label>
-            <label className="flex items-center gap-2 cursor-pointer pt-1">
-              <input 
-                type="checkbox" 
-                checked={sliderSettings.showArrows}
-                onChange={e => setSliderSettings(prev => ({ ...prev, showArrows: e.target.checked }))}
-                className="w-4 h-4 rounded text-primary focus:ring-primary accent-primary" 
-              />
-              <span className="text-sm font-medium">Show Arrows</span>
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">UI Controls</label>
+            <label className="flex items-center gap-3 cursor-pointer group/nav">
+              <div className="relative">
+                <input 
+                  type="checkbox" 
+                  checked={sliderSettings.showArrows}
+                  onChange={e => setSliderSettings(prev => ({ ...prev, showArrows: e.target.checked }))}
+                  className="peer sr-only" 
+                />
+                <div className="w-5 h-5 bg-white/[0.03] border border-white/[0.1] rounded-lg peer-checked:bg-yellow-400 transition-all"></div>
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity">
+                   <div className="w-1.5 h-1.5 rounded-full bg-black"></div>
+                </div>
+              </div>
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover/nav:text-white transition-colors">Tactile Arrows</span>
             </label>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Pagination</label>
-            <label className="flex items-center gap-2 cursor-pointer pt-1">
-              <input 
-                type="checkbox" 
-                checked={sliderSettings.showDots}
-                onChange={e => setSliderSettings(prev => ({ ...prev, showDots: e.target.checked }))}
-                className="w-4 h-4 rounded text-primary focus:ring-primary accent-primary" 
-              />
-              <span className="text-sm font-medium">Show Dots</span>
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Progress Map</label>
+            <label className="flex items-center gap-3 cursor-pointer group/nav">
+              <div className="relative">
+                <input 
+                  type="checkbox" 
+                  checked={sliderSettings.showDots}
+                  onChange={e => setSliderSettings(prev => ({ ...prev, showDots: e.target.checked }))}
+                  className="peer sr-only" 
+                />
+                <div className="w-5 h-5 bg-white/[0.03] border border-white/[0.1] rounded-lg peer-checked:bg-yellow-400 transition-all"></div>
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity">
+                   <div className="w-1.5 h-1.5 rounded-full bg-black"></div>
+                </div>
+              </div>
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover/nav:text-white transition-colors">Visual Nodes</span>
             </label>
           </div>
         </div>
       </div>
 
-      <div className="mb-8 flex justify-between items-center">
-        <div>
-          <h2 className="text-xl font-bold text-primary uppercase tracking-tighter flex items-center gap-3">
-             Individual Banners
-          </h2>
-          <p className="text-muted-foreground mt-1">Configure and position your visual content.</p>
+      <div className="flex justify-between items-center px-2">
+        <div className="flex items-center gap-6">
+           <div className="w-1.5 h-10 bg-yellow-400 rounded-full"></div>
+           <h2 className="text-3xl font-black text-white uppercase tracking-tighter italic">Frame Inventory</h2>
         </div>
         <button 
           onClick={handleAddBanner}
-          className="bg-primary text-primary-foreground px-4 py-2 rounded-lg font-medium hover:opacity-90 flex items-center gap-2 transition-opacity"
+          className="px-8 py-4 bg-white text-black rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-yellow-400 hover:text-black transition-all flex items-center gap-3 shadow-2xl"
         >
-          <Plus className="w-4 h-4" /> Add Banner
+          <Plus className="w-5 h-5" /> Append Frame
         </button>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-10">
         {banners.length === 0 ? (
-          <div className="bg-card border border-border/50 rounded-2xl p-12 text-center">
-            <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-            <h3 className="text-lg font-medium text-primary mb-2">No banners yet</h3>
-            <p className="text-muted-foreground mb-4">Add your first banner to display on the homepage.</p>
-            <button onClick={handleAddBanner} className="text-accent font-medium hover:underline">
-              Create Banner
+          <div className="bg-white/[0.01] rounded-[3rem] border-2 border-dashed border-white/5 p-40 text-center relative overflow-hidden group">
+            <div className="absolute inset-0 bg-yellow-500/5 blur-[100px] -z-10 group-hover:bg-yellow-500/10 transition-all duration-700"></div>
+            <ImageIcon className="w-20 h-20 text-slate-800 mx-auto mb-8 animate-pulse" />
+            <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic mb-4">No Media Projected</h3>
+            <p className="text-slate-600 text-sm font-medium mb-10 max-w-sm mx-auto">Initialize your first cinematic frame to establish store presence.</p>
+            <button onClick={handleAddBanner} className="text-yellow-400 font-black uppercase tracking-[0.3em] text-[10px] hover:text-white transition-all">
+              Launch Sequence
             </button>
           </div>
         ) : (
           banners.map((banner, index) => (
-            <div key={banner.id} className="bg-card rounded-2xl border border-border/50 shadow-sm overflow-hidden flex flex-col md:flex-row">
-              {/* Preview Side */}
-              <div className="w-full md:w-1/2 bg-slate-900 relative aspect-[21/9] flex items-center justify-center border-b md:border-b-0 md:border-r border-border/50 overflow-hidden">
+            <div key={banner.id} className="group/banner bg-white/[0.02] backdrop-blur-3xl rounded-[3rem] border border-white/[0.05] shadow-2xl overflow-hidden flex flex-col xl:flex-row transition-all duration-500 hover:border-white/10">
+              {/* Preview Side - Cinematic View */}
+              <div className="w-full xl:w-2/5 bg-black relative aspect-[21/9] xl:aspect-auto min-h-[350px] flex items-center justify-center overflow-hidden border-b xl:border-b-0 xl:border-r border-white/[0.05]">
                 {banner.imageUrl || banner.mobileImageUrl ? (
-                  <div className="relative w-full h-full">
+                  <div className="absolute inset-0 w-full h-full">
                     <SmartImage 
                       src={banner.imageUrl || banner.mobileImageUrl || ""} 
                       alt="Banner preview" 
-                      className="w-full h-full object-cover" 
+                      className="w-full h-full object-cover opacity-50 group-hover/banner:scale-110 transition-transform duration-[2s]" 
                     />
-                    {banner.mobileImageUrl && (
-                      <div className="absolute bottom-2 right-2 bg-purple-600 text-white p-1 rounded-md shadow-lg" title="Mobile Optimized version included">
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                      </div>
-                    )}
+                    <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent"></div>
                   </div>
                 ) : (
-                  <span className="text-muted-foreground text-sm flex items-center gap-2">
-                    <ImageIcon className="w-4 h-4" /> No Image
-                  </span>
+                  <div className="flex flex-col items-center gap-4 text-slate-800">
+                    <ImageIcon className="w-16 h-16" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Null Output</span>
+                  </div>
                 )}
-                {/* Overlay preview text */}
-                <div className="absolute inset-0 bg-black/40 p-6 flex flex-col justify-center text-white">
-                  <h3 className="text-xl font-bold">{banner.title || 'Title'}</h3>
-                  <p className="text-sm opacity-80 mt-1">{banner.subtitle || 'Subtitle'}</p>
+                
+                {/* Content Preview Overlay */}
+                <div className="absolute inset-0 p-12 flex flex-col justify-center max-w-[80%]">
+                  <div className="inline-block px-3 py-1 bg-yellow-400 text-black text-[8px] font-black uppercase tracking-widest mb-6 w-fit rounded shadow-[0_0_20px_rgba(250,204,21,0.5)]">
+                    FRAME {index + 1}
+                  </div>
+                  <h3 className="text-4xl font-black text-white uppercase italic tracking-tighter mb-4 leading-none">
+                    {banner.title || 'FRAME_TITLE'}
+                  </h3>
+                  <p className="text-slate-400 text-xs font-bold uppercase tracking-widest line-clamp-2 max-w-sm">
+                    {banner.subtitle || 'System subtext initialized...'}
+                  </p>
+                  
+                  {banner.showButton !== false && (
+                    <div className="mt-8 px-6 py-3 border border-white/20 text-white text-[10px] font-black uppercase tracking-widest w-fit rounded-xl backdrop-blur-md">
+                      {banner.buttonText || 'ACTION_TRIGGER'}
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Form Side */}
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex items-center gap-2">
-                    <span className="bg-slate-100 text-slate-500 font-bold px-3 py-1 rounded-full text-xs">
-                      #{index + 1}
-                    </span>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input 
-                        type="checkbox" 
-                        checked={banner.isActive} 
-                        onChange={(e) => updateBanner(index, 'isActive', e.target.checked)}
-                        className="w-4 h-4 rounded text-primary focus:ring-primary accent-primary"
-                      />
-                      <span className="text-sm font-medium text-slate-700">Active</span>
+              {/* Form Side - Technical Interface */}
+              <div className="p-10 flex-1 relative">
+                <div className="flex justify-between items-center mb-10">
+                  <div className="flex items-center gap-6">
+                    <label className="flex items-center gap-3 cursor-pointer group/active">
+                      <div className="relative">
+                        <input 
+                          type="checkbox" 
+                          checked={banner.isActive} 
+                          onChange={(e) => updateBanner(index, 'isActive', e.target.checked)}
+                          className="peer sr-only"
+                        />
+                        <div className="w-6 h-6 bg-white/[0.03] border border-white/[0.1] rounded-xl peer-checked:bg-green-500 transition-all"></div>
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity">
+                           <div className="w-2 h-2 rounded-full bg-black"></div>
+                        </div>
+                      </div>
+                      <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest group-hover/active:text-white transition-colors">Production Status</span>
                     </label>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <button 
-                      onClick={() => moveBanner(index, 'up')} 
-                      disabled={index === 0}
-                      className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded disabled:opacity-30 transition-colors"
-                    >
-                      <ArrowUp className="w-4 h-4" />
-                    </button>
-                    <button 
-                      onClick={() => moveBanner(index, 'down')} 
-                      disabled={index === banners.length - 1}
-                      className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded disabled:opacity-30 transition-colors"
-                    >
-                      <ArrowDown className="w-4 h-4" />
-                    </button>
+                  <div className="flex items-center gap-4">
+                    <div className="flex bg-black/40 p-1.5 rounded-2xl border border-white/5">
+                      <button 
+                        onClick={() => moveBanner(index, 'up')} 
+                        disabled={index === 0}
+                        className="w-10 h-10 flex items-center justify-center text-slate-600 hover:text-white disabled:opacity-20 transition-all hover:bg-white/5 rounded-xl"
+                      >
+                        <ArrowUp className="w-5 h-5" />
+                      </button>
+                      <button 
+                        onClick={() => moveBanner(index, 'down')} 
+                        disabled={index === banners.length - 1}
+                        className="w-10 h-10 flex items-center justify-center text-slate-600 hover:text-white disabled:opacity-20 transition-all hover:bg-white/5 rounded-xl"
+                      >
+                        <ArrowDown className="w-5 h-5" />
+                      </button>
+                    </div>
                     <button 
                       onClick={() => handleRemoveBanner(banner.id)} 
-                      className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors ml-2"
+                      className="w-12 h-12 bg-rose-500/10 border border-rose-500/20 text-rose-500 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center rounded-2xl shadow-xl"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-5 h-5" />
                     </button>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 col-span-1 md:col-span-2">
-                    <div>
-                      <div className="flex justify-between items-end mb-1">
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest">Desktop Banner (Web)</label>
-                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Rec: 1920x800px</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <div className="grid grid-cols-1 gap-8 col-span-1 md:col-span-2">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                       <div className="space-y-4">
+                        <div className="flex justify-between items-end mb-2 px-1">
+                          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Main Distribution (16:9)</label>
+                          <span className="text-[8px] font-black text-yellow-400/50 uppercase italic tracking-widest">UHD RECOMMENDED</span>
+                        </div>
+                        <div className="bg-white/[0.03] border border-white/[0.05] rounded-[2rem] p-3">
+                          <MediaPicker 
+                            slug={slug}
+                            value={banner.imageUrl} 
+                            onChange={url => updateBanner(index, 'imageUrl', url)} 
+                          />
+                        </div>
                       </div>
-                      <MediaPicker 
-                        slug={slug}
-                        value={banner.imageUrl} 
-                        onChange={url => updateBanner(index, 'imageUrl', url)} 
-                      />
-                    </div>
-                    <div>
-                      <div className="flex justify-between items-end mb-1">
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest">Mobile Banner (Phone)</label>
-                        <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">Rec: 800x1200px</span>
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-end mb-2 px-1">
+                          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Mobile Node (9:16)</label>
+                          <span className="text-[8px] font-black text-yellow-400/50 uppercase italic tracking-widest">PORTRAIT OPTIMIZED</span>
+                        </div>
+                        <div className="bg-white/[0.03] border border-white/[0.05] rounded-[2rem] p-3">
+                          <MediaPicker 
+                            slug={slug}
+                            value={banner.mobileImageUrl || ""} 
+                            onChange={url => updateBanner(index, 'mobileImageUrl', url)} 
+                          />
+                        </div>
                       </div>
-                      <MediaPicker 
-                        slug={slug}
-                        value={banner.mobileImageUrl || ""} 
-                        onChange={url => updateBanner(index, 'mobileImageUrl', url)} 
-                      />
                     </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-500 mb-1">Title</label>
-                    <input 
-                      type="text" 
-                      value={banner.title || ""} 
-                      onChange={e => updateBanner(index, 'title', e.target.value)} 
-                      className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm font-bold"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-500 mb-1">Subtitle</label>
-                    <input 
-                      type="text" 
-                      value={banner.subtitle || ""} 
-                      onChange={e => updateBanner(index, 'subtitle', e.target.value)} 
-                      className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-500 mb-1">Button Text</label>
-                    <input 
-                      type="text" 
-                      value={banner.buttonText || ""} 
-                      onChange={e => updateBanner(index, 'buttonText', e.target.value)} 
-                      className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-500 mb-1">Button Link</label>
-                    <input 
-                      type="text" 
-                      value={banner.buttonLink || ""} 
-                      onChange={e => updateBanner(index, 'buttonLink', e.target.value)} 
-                      className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm"
-                    />
                   </div>
                   
-                  {/* New Button Styling Controls */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-1 md:col-span-2 mt-2 pt-2 border-t border-slate-100">
-                    <div className="col-span-1 md:col-span-2">
-                       <label className="flex items-center gap-2 cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            checked={banner.showButton !== false} // default to true if undefined
-                            onChange={(e) => updateBanner(index, 'showButton', e.target.checked)}
-                            className="w-4 h-4 rounded text-primary focus:ring-primary accent-primary"
-                          />
-                          <span className="text-sm font-medium text-slate-700">Show Button on Banner</span>
-                       </label>
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Manifest Title</label>
+                      <input 
+                        type="text" 
+                        value={banner.title || ""} 
+                        onChange={e => updateBanner(index, 'title', e.target.value)} 
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black uppercase tracking-tighter text-xl italic"
+                        placeholder="ENTER HEADLINE"
+                      />
                     </div>
-                    
-                    {banner.showButton !== false && (
-                      <>
-                        <div>
-                          <label className="block text-xs font-medium text-slate-500 mb-1">Button Position</label>
-                          <select 
-                            value={banner.buttonPosition || "center"} 
-                            onChange={e => updateBanner(index, 'buttonPosition', e.target.value)} 
-                            className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm bg-white"
-                          >
-                            <option value="top">Top</option>
-                            <option value="center">Center</option>
-                            <option value="bottom">Bottom</option>
-                            <option value="left">Left</option>
-                            <option value="right">Right</option>
-                            <option value="bottom-left">Bottom Left</option>
-                            <option value="bottom-right">Bottom Right</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-xs font-medium text-slate-500 mb-1">Button Shape</label>
-                          <select 
-                            value={banner.buttonShape || "rounded"} 
-                            onChange={e => updateBanner(index, 'buttonShape', e.target.value)} 
-                            className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm bg-white"
-                          >
-                            <option value="rounded">Rounded</option>
-                            <option value="square">Square</option>
-                            <option value="pill">Pill</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-xs font-medium text-slate-500 mb-1">Button Color</label>
-                          <select 
-                            value={banner.buttonColor || "primary"} 
-                            onChange={e => updateBanner(index, 'buttonColor', e.target.value)} 
-                            className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm bg-white"
-                          >
-                            <option value="primary">Primary Brand Color</option>
-                            <option value="secondary">Secondary Color</option>
-                            <option value="white">White</option>
-                            <option value="black">Black</option>
-                            <option value="transparent">Transparent (Outline)</option>
-                          </select>
-                        </div>
-                      </>
-                    )}
+                    <div>
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Supporting Narrative</label>
+                      <textarea 
+                        value={banner.subtitle || ""} 
+                        onChange={e => updateBanner(index, 'subtitle', e.target.value)} 
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-medium text-sm h-28"
+                        placeholder="Define the vision for this frame..."
+                      />
+                    </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-1 md:col-span-2 mt-2 pt-2 border-t border-slate-100">
+
+                  <div className="space-y-8">
+                     <div className="grid grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Trigger Text</label>
+                          <input 
+                            type="text" 
+                            value={banner.buttonText || ""} 
+                            onChange={e => updateBanner(index, 'buttonText', e.target.value)} 
+                            className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-bold text-xs"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Deployment URL</label>
+                          <input 
+                            type="text" 
+                            value={banner.buttonLink || ""} 
+                            onChange={e => updateBanner(index, 'buttonLink', e.target.value)} 
+                            className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-bold text-xs"
+                          />
+                        </div>
+                     </div>
+
+                     <div className="bg-black/20 rounded-[2rem] p-8 border border-white/[0.03] space-y-8">
+                        <label className="flex items-center gap-4 cursor-pointer group/ui">
+                           <div className="relative">
+                              <input 
+                                type="checkbox" 
+                                checked={banner.showButton !== false}
+                                onChange={(e) => updateBanner(index, 'showButton', e.target.checked)}
+                                className="peer sr-only"
+                              />
+                              <div className="w-6 h-6 bg-white/[0.03] border border-white/[0.1] rounded-xl peer-checked:bg-yellow-400 transition-all"></div>
+                              <div className="absolute inset-0 flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity">
+                                 <div className="w-2 h-2 rounded-full bg-black"></div>
+                              </div>
+                           </div>
+                           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover/ui:text-white transition-colors">Render Action UI</span>
+                        </label>
+
+                        {banner.showButton !== false && (
+                          <div className="grid grid-cols-2 gap-6 animate-in slide-in-from-top-4 duration-500">
+                            <div>
+                              <label className="block text-[9px] font-black text-slate-600 uppercase tracking-widest mb-3 ml-1">Spatial Position</label>
+                              <select 
+                                value={banner.buttonPosition || "center"} 
+                                onChange={e => updateBanner(index, 'buttonPosition', e.target.value)} 
+                                className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black uppercase text-[10px] tracking-widest cursor-pointer"
+                              >
+                                {['top', 'center', 'bottom', 'left', 'right', 'bottom-left', 'bottom-right'].map(pos => (
+                                  <option key={pos} value={pos} className="bg-[#1a1d2d]">{pos.toUpperCase()}</option>
+                                ))}
+                              </select>
+                            </div>
+                            <div>
+                              <label className="block text-[9px] font-black text-slate-600 uppercase tracking-widest mb-3 ml-1">Visual Architecture</label>
+                              <select 
+                                value={banner.buttonShape || "rounded"} 
+                                onChange={e => updateBanner(index, 'buttonShape', e.target.value)} 
+                                className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black uppercase text-[10px] tracking-widest cursor-pointer"
+                              >
+                                <option value="rounded" className="bg-[#1a1d2d]">GEOMETRIC</option>
+                                <option value="square" className="bg-[#1a1d2d]">MINIMALIST</option>
+                                <option value="pill" className="bg-[#1a1d2d]">ORGANIC</option>
+                              </select>
+                            </div>
+                          </div>
+                        )}
+                     </div>
+                  </div>
+
+                  <div className="col-span-1 md:col-span-2 pt-10 border-t border-white/[0.05] grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div>
-                      <label className="block text-xs font-medium text-slate-500 mb-1 italic">Target Page (Which page?)</label>
-                      <select 
-                        value={banner.targetPage || "home"} 
-                        onChange={e => updateBanner(index, 'targetPage', e.target.value)} 
-                        className="w-full px-3 py-2 border-slate-200 border-2 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm bg-slate-50 font-black uppercase tracking-tight"
-                      >
-                        <option value="home">🏠 Home Page</option>
-                        <option value="collections">📦 Collections Page</option>
-                      </select>
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1 italic">Spatial Context</label>
+                      <div className="flex gap-4">
+                        <select 
+                          value={banner.targetPage || "home"} 
+                          onChange={e => updateBanner(index, 'targetPage', e.target.value)} 
+                          className="flex-1 bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black uppercase tracking-widest text-[10px] cursor-pointer"
+                        >
+                          <option value="home" className="bg-[#1a1d2d]">LANDING_PAGE</option>
+                          <option value="collections" className="bg-[#1a1d2d]">COLLECTION_NODES</option>
+                        </select>
+                        <select 
+                          value={banner.position || "top"} 
+                          onChange={e => updateBanner(index, 'position', e.target.value)} 
+                          className="flex-1 bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black uppercase tracking-widest text-[10px] cursor-pointer"
+                        >
+                          <option value="top" className="bg-[#1a1d2d]">TOP_SECTOR</option>
+                          <option value="middle" className="bg-[#1a1d2d]">CORE_SECTOR</option>
+                          <option value="bottom" className="bg-[#1a1d2d]">BASE_SECTOR</option>
+                        </select>
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-xs font-medium text-slate-500 mb-1 italic">Banner Position (Where on page?)</label>
-                      <select 
-                        value={banner.position || "top"} 
-                        onChange={e => updateBanner(index, 'position', e.target.value)} 
-                        className="w-full px-3 py-2 border-slate-200 border-2 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm bg-slate-50 font-black uppercase tracking-tight"
-                      >
-                        <option value="top">Top Section</option>
-                        <option value="middle">Middle Section</option>
-                        <option value="bottom">Bottom Section</option>
-                      </select>
+                    <div className="flex items-center">
+                       <p className="text-[9px] font-medium text-slate-600 leading-relaxed italic border-l border-white/5 pl-8">
+                         Define the precise geographical coordinates of this frame within your storefront architecture.
+                       </p>
                     </div>
-                    <p className="col-span-1 md:col-span-2 text-[10px] text-muted-foreground mt-1">
-                      Choose which page and where exactly this banner should appear.
-                    </p>
                   </div>
                 </div>
               </div>
@@ -409,22 +452,32 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
         )}
       </div>
 
-      <div className="mt-8 pt-6 border-t flex items-center justify-between sticky bottom-0 bg-background/80 backdrop-blur-sm p-4 rounded-xl">
-        <div>
-          {saveMessage && (
-            <span className="text-green-600 font-medium bg-green-50 px-4 py-2 rounded-lg text-sm">
-              {saveMessage}
-            </span>
-          )}
+      {/* Premium Sticky Save Bar */}
+      <div className="sticky bottom-10 z-[50] group/save">
+        <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-[2.5rem] blur-[30px] opacity-20 group-hover/save:opacity-40 transition-opacity"></div>
+        <div className="relative bg-[#0f111a]/80 backdrop-blur-2xl border border-white/[0.1] p-6 rounded-[2.5rem] flex items-center justify-between shadow-2xl">
+          <div className="pl-6">
+            {saveMessage ? (
+              <div className="flex items-center gap-4 animate-in slide-in-from-left-4 duration-500">
+                 <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,1)]"></div>
+                 <span className="text-[10px] font-black text-white uppercase tracking-[0.3em] italic">Manifest Synchronized</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4 text-slate-500">
+                 <div className="w-2 h-2 rounded-full bg-slate-800"></div>
+                 <span className="text-[10px] font-black uppercase tracking-[0.3em]">Awaiting Instruction</span>
+              </div>
+            )}
+          </div>
+          <button 
+            onClick={handleSave}
+            disabled={isPending} 
+            className="px-12 py-5 bg-white text-black rounded-[2rem] font-black text-[12px] uppercase tracking-[0.4em] hover:bg-yellow-400 transition-all flex items-center gap-4 shadow-2xl disabled:opacity-50"
+          >
+            {isPending ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
+            Commit to Registry
+          </button>
         </div>
-        <button 
-          onClick={handleSave}
-          disabled={isPending} 
-          className="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-bold hover:opacity-90 flex items-center gap-2 transition-opacity disabled:opacity-70 shadow-lg"
-        >
-          {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-          Save Changes
-        </button>
       </div>
     </div>
   );

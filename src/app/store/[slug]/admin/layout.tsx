@@ -41,122 +41,137 @@ export default async function AdminLayout({
   console.log("Admin Layout Session:", { id: session?.id, email: session?.email, role: session?.role });
 
   return (
-    <div className="flex min-h-screen bg-[#0f111a] font-sans selection:bg-cyan-500/30">
-      {/* Sidebar */}
-      <aside className="w-72 bg-[#0f111a] text-slate-300 flex flex-col fixed inset-y-0 border-r border-white/5 z-40 shadow-2xl">
-        <div className="p-8 border-b border-white/5 flex items-center justify-between bg-[#1a1d2d]/30">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl flex items-center justify-center text-white shadow-[0_0_20px_rgba(34,211,238,0.3)]">
-              <ShoppingBag size={20} className="drop-shadow-lg" />
+    <div className="flex min-h-screen bg-[#0f111a] font-sans selection:bg-cyan-500/30 text-slate-200">
+      {/* Sidebar - Enhanced Premium Glassmorphism */}
+      <aside className="w-72 bg-[#0b0d15]/80 backdrop-blur-3xl text-slate-300 flex flex-col fixed inset-y-0 border-r border-white/[0.03] z-40 shadow-[20px_0_50px_rgba(0,0,0,0.5)]">
+        <div className="p-8 border-b border-white/[0.03] flex items-center justify-between bg-gradient-to-b from-white/[0.02] to-transparent">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 via-blue-600 to-purple-600 rounded-2xl flex items-center justify-center text-white shadow-[0_0_30px_rgba(34,211,238,0.3)] rotate-3 group hover:rotate-0 transition-transform duration-500">
+              <ShoppingBag size={24} className="drop-shadow-[0_2px_10px_rgba(0,0,0,0.3)]" />
             </div>
             <div>
-              <span className="font-black text-white tracking-tighter text-lg italic uppercase block leading-none">Admin</span>
-              <span className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.2em] block mt-1">Console</span>
+              <span className="font-black text-white tracking-tighter text-xl italic uppercase block leading-none">Shopora</span>
+              <span className="text-[9px] font-black text-cyan-400 uppercase tracking-[0.3em] block mt-1.5 opacity-80">Pro Console</span>
             </div>
           </div>
         </div>
 
-        <nav className="flex-1 p-6 space-y-2 overflow-y-auto custom-scrollbar">
+        <nav className="flex-1 p-6 space-y-1.5 overflow-y-auto custom-scrollbar">
+          <div className="mb-4 px-4">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Main Analytics</span>
+          </div>
           {[
-            { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard', color: 'text-cyan-400' },
-            { label: 'Products', icon: ShoppingBag, path: '/products', color: 'text-purple-400' },
-            { label: 'Orders', icon: Package, path: '/orders', color: 'text-pink-400' },
-            { label: 'Media Library', icon: ImageIcon, path: '/media', color: 'text-amber-400' },
-            { label: 'Categories', icon: Tag, path: '/categories', color: 'text-green-400' },
-            { label: 'Banners', icon: ImageIcon, path: '/banners', color: 'text-red-400' },
+            { label: 'Overview', icon: LayoutDashboard, path: '/dashboard', color: 'from-cyan-400 to-blue-500' },
+            { label: 'Products', icon: ShoppingBag, path: '/products', color: 'from-purple-400 to-pink-500' },
+            { label: 'Orders', icon: Package, path: '/orders', color: 'from-pink-400 to-red-500' },
+            { label: 'Media Hub', icon: Library, path: '/media', color: 'from-amber-400 to-orange-500' },
+            { label: 'Categories', icon: Tag, path: '/categories', color: 'from-green-400 to-emerald-500' },
+            { label: 'Banners', icon: ImageIcon, path: '/banners', color: 'from-red-400 to-rose-500' },
           ].map((item) => (
             <Link 
               key={item.label}
               href={`${adminPath}${item.path}`} 
-              className="flex items-center gap-4 px-4 py-3.5 rounded-2xl hover:bg-[#1a1d2d] transition-all group relative overflow-hidden"
+              className="flex items-center gap-4 px-4 py-4 rounded-2xl hover:bg-white/[0.03] transition-all group relative overflow-hidden"
             >
-              <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-400 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity`}></div>
-              <item.icon className={`w-5 h-5 ${item.color} opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all`} />
-              <span className="font-black text-[11px] uppercase tracking-widest text-slate-400 group-hover:text-white transition-colors">{item.label}</span>
+              <div className={`absolute left-0 top-2 bottom-2 w-1 bg-gradient-to-b ${item.color} opacity-0 group-hover:opacity-100 transition-opacity rounded-full shadow-[0_0_10px_rgba(34,211,238,0.5)]`}></div>
+              <item.icon className={`w-5 h-5 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all text-white`} />
+              <span className="font-black text-[11px] uppercase tracking-widest text-slate-500 group-hover:text-white transition-colors">{item.label}</span>
+              <div className={`absolute right-4 w-1.5 h-1.5 rounded-full bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-100 transition-all scale-0 group-hover:scale-100`}></div>
             </Link>
           ))}
 
-          {/* SENSITIVE SECTION: ONLY FOR DJ@GMAIL.COM */}
+          {/* SENSITIVE SECTION: MASTER CONTROL */}
           {session.email === 'ksh128395@gmail.com' && (
             <>
-              <div className="my-6 border-t border-white/5 pt-6 px-4">
-                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-600">Platform Master</span>
+              <div className="my-8 border-t border-white/[0.03] pt-8 px-4">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Master Engine</span>
               </div>
-              <Link href={`${adminPath}/platform-stores`} className="flex items-center gap-4 px-4 py-3.5 rounded-2xl hover:bg-[#1a1d2d] transition-all group border border-dashed border-white/5">
-                <Globe className="w-5 h-5 text-indigo-400 opacity-70 group-hover:opacity-100" />
-                <span className="font-black text-[11px] uppercase tracking-widest text-slate-400 group-hover:text-white">All Stores</span>
+              <Link href={`${adminPath}/platform-stores`} className="flex items-center gap-4 px-4 py-4 rounded-2xl hover:bg-white/[0.03] transition-all group border border-white/[0.02] bg-white/[0.01]">
+                <Globe className="w-5 h-5 text-indigo-400 opacity-50 group-hover:opacity-100" />
+                <span className="font-black text-[11px] uppercase tracking-widest text-slate-500 group-hover:text-white">Global Nodes</span>
               </Link>
-              <Link href={`${adminPath}/templates`} className="flex items-center gap-4 px-4 py-3.5 rounded-2xl hover:bg-[#1a1d2d] transition-all group border border-dashed border-white/5 mt-2">
-                <LayoutTemplate className="w-5 h-5 text-fuchsia-400 opacity-70 group-hover:opacity-100" />
-                <span className="font-black text-[11px] uppercase tracking-widest text-slate-400 group-hover:text-white">Templates</span>
+              <Link href={`${adminPath}/templates`} className="flex items-center gap-4 px-4 py-4 rounded-2xl hover:bg-white/[0.03] transition-all group border border-white/[0.02] bg-white/[0.01] mt-3">
+                <LayoutTemplate className="w-5 h-5 text-fuchsia-400 opacity-50 group-hover:opacity-100" />
+                <span className="font-black text-[11px] uppercase tracking-widest text-slate-500 group-hover:text-white">Design Systems</span>
               </Link>
             </>
           )}
 
-          <div className="my-6 border-t border-white/5 pt-6 px-4">
-             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-600">Management</span>
+          <div className="my-8 border-t border-white/[0.03] pt-8 px-4">
+             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Infrastructure</span>
           </div>
 
-          <Link href={`${adminPath}/settings`} className="flex items-center gap-4 px-4 py-3.5 rounded-2xl hover:bg-[#1a1d2d] transition-all group">
-            <Settings className="w-5 h-5 text-slate-400 opacity-70 group-hover:opacity-100" />
-            <span className="font-black text-[11px] uppercase tracking-widest text-slate-400 group-hover:text-white">Settings</span>
+          <Link href={`${adminPath}/settings`} className="flex items-center gap-4 px-4 py-4 rounded-2xl hover:bg-white/[0.03] transition-all group">
+            <Settings className="w-5 h-5 text-slate-500 opacity-50 group-hover:opacity-100" />
+            <span className="font-black text-[11px] uppercase tracking-widest text-slate-500 group-hover:text-white">Core Settings</span>
           </Link>
           
-          <Link href={`${adminPath}/builder`} className="flex items-center gap-4 px-4 py-4 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border border-cyan-500/20 hover:border-cyan-500/50 transition-all group mt-4 shadow-lg shadow-cyan-500/5">
-            <Blocks className="w-6 h-6 text-cyan-400 animate-pulse" />
-            <span className="font-black text-xs uppercase tracking-tighter text-cyan-400 italic">Open Builder</span>
+          <Link href={`${adminPath}/builder`} className="flex items-center gap-5 px-6 py-5 rounded-[2rem] bg-gradient-to-br from-cyan-500 via-blue-600 to-purple-600 hover:scale-[1.02] active:scale-[0.98] transition-all group mt-8 shadow-[0_10px_30px_rgba(6,182,212,0.2)]">
+            <Blocks className="w-6 h-6 text-white animate-bounce" />
+            <div className="flex flex-col">
+              <span className="font-black text-[10px] uppercase tracking-[0.2em] text-white/70 leading-none mb-1">Visual Editor</span>
+              <span className="font-black text-sm uppercase tracking-tighter text-white italic leading-none">Store Builder</span>
+            </div>
           </Link>
         </nav>
 
-        <div className="p-6 border-t border-white/5 bg-[#1a1d2d]/30 space-y-4">
+        <div className="p-8 border-t border-white/[0.03] bg-gradient-to-t from-white/[0.02] to-transparent space-y-6">
           <div className="flex items-center gap-4 px-2">
-             <div className="w-10 h-10 rounded-2xl bg-[#0f111a] border border-white/10 flex items-center justify-center text-cyan-400 text-sm font-black uppercase shadow-xl">
-               {session.email[0]}
+             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-white/[0.05] to-white/[0.01] border border-white/10 flex items-center justify-center text-cyan-400 text-lg font-black uppercase shadow-2xl relative group overflow-hidden">
+                <div className="absolute inset-0 bg-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                {session.email[0]}
              </div>
              <div className="flex flex-col overflow-hidden">
-               <span className="text-[10px] font-black text-white truncate uppercase tracking-tight">{session.email.split('@')[0]}</span>
-               <span className="text-[8px] text-slate-500 font-black uppercase tracking-widest">Store Owner</span>
+               <span className="text-[11px] font-black text-white truncate uppercase tracking-tight">{session.email.split('@')[0]}</span>
+               <span className="text-[9px] text-cyan-400/60 font-black uppercase tracking-[0.2em]">Store Architect</span>
              </div>
           </div>
           
-          <div className="grid grid-cols-2 gap-2">
-            <Link href={`/store/${slug}`} target="_blank" className="flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/5">
-              <Globe className="w-3.5 h-3.5 text-cyan-400" />
+          <div className="grid grid-cols-2 gap-3">
+            <Link href={`/store/${slug}`} target="_blank" className="flex items-center justify-center gap-2 p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-all border border-white/[0.05] group">
+              <Globe className="w-4 h-4 text-cyan-400 group-hover:scale-125 transition-transform" />
             </Link>
             <form action={logoutUser} className="w-full">
-              <button type="submit" className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-red-500/5 hover:bg-red-500/20 text-red-400 transition-all border border-red-500/10">
-                <LogOut className="w-3.5 h-3.5" />
+              <button type="submit" className="w-full flex items-center justify-center gap-2 p-4 rounded-2xl bg-red-500/5 hover:bg-red-500/20 text-red-400 transition-all border border-red-500/10 group">
+                <LogOut className="w-4 h-4 group-hover:rotate-12 transition-transform" />
               </button>
             </form>
           </div>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 ml-72 p-0 min-h-screen relative">
-        {/* Global Top Bar - Transparent & Integrated */}
-        <header className="sticky top-0 z-30 w-full bg-[#0f111a]/80 backdrop-blur-xl border-b border-white/5 px-10 py-5 flex items-center justify-between">
-           <div className="flex items-center gap-4">
-              <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Active Node:</span>
-              <span className="text-sm font-black text-white italic tracking-widest uppercase">{store.name}</span>
+      {/* Main Content - Improved with dynamic background elements */}
+      <main className="flex-1 ml-72 p-0 min-h-screen relative overflow-x-hidden">
+        {/* Global Top Bar - Premium Minimalist */}
+        <header className="sticky top-0 z-30 w-full bg-[#0f111a]/60 backdrop-blur-2xl border-b border-white/[0.03] px-12 py-6 flex items-center justify-between">
+           <div className="flex items-center gap-6">
+              <div className="flex items-center gap-3">
+                <div className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(34,197,94,0.6)]"></div>
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">System Ready</span>
+              </div>
+              <div className="h-6 w-[1px] bg-white/[0.05]"></div>
+              <span className="text-sm font-black text-white italic tracking-widest uppercase bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">{store.name}</span>
            </div>
            
-           <div className="flex items-center gap-6">
-              {/* Notifications or search could go here */}
-              <div className="flex items-center gap-2 bg-[#1a1d2d] px-4 py-2 rounded-xl border border-white/5">
-                 <span className="text-[10px] font-black text-cyan-400 italic">v2.0.4</span>
+           <div className="flex items-center gap-8">
+              <div className="flex items-center gap-3 bg-white/[0.02] px-5 py-2.5 rounded-full border border-white/[0.05] shadow-inner">
+                 <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.5)]"></div>
+                 <span className="text-[10px] font-black text-cyan-400 italic tracking-widest">PRO EDITION</span>
+              </div>
+              <div className="w-10 h-10 rounded-full border border-white/[0.1] bg-white/[0.05] flex items-center justify-center text-slate-400 hover:text-white transition-colors cursor-pointer">
+                 <Settings size={18} />
               </div>
            </div>
         </header>
 
-        <div className="relative z-10">
+        <div className="relative z-10 min-h-[calc(100vh-80px)]">
           {children}
         </div>
 
-        {/* Global Background Glows */}
-        <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 blur-[150px] -z-10 pointer-events-none"></div>
-        <div className="fixed bottom-0 left-72 w-[400px] h-[400px] bg-purple-500/5 blur-[120px] -z-10 pointer-events-none"></div>
+        {/* Global Background Glows - Adjusted for better depth */}
+        <div className="fixed top-[-10%] right-[-10%] w-[800px] h-[800px] bg-cyan-500/10 blur-[180px] -z-10 animate-pulse pointer-events-none"></div>
+        <div className="fixed bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-purple-600/5 blur-[150px] -z-10 pointer-events-none"></div>
+        <div className="fixed top-[40%] left-[-5%] w-[400px] h-[400px] bg-blue-600/5 blur-[120px] -z-10 pointer-events-none"></div>
       </main>
     </div>
   );

@@ -9,12 +9,14 @@ export default async function MediaPage({ params }: { params: Promise<{ slug: st
   const media = await getStoreMedia(slug);
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight text-primary flex items-center gap-3">
-          <ImageIcon className="w-8 h-8" /> Media Library
-        </h1>
-        <p className="text-muted-foreground mt-1">Manage your store's images and videos. Upload new assets or link external URLs.</p>
+    <div className="p-10 space-y-12 animate-in fade-in duration-700">
+      <div className="flex justify-between items-end">
+        <div>
+          <h1 className="text-5xl font-black tracking-tighter bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent italic uppercase flex items-center gap-6">
+            Asset <span className="text-cyan-400">Vault</span>
+          </h1>
+          <p className="text-slate-500 mt-3 font-medium tracking-widest text-[10px] uppercase">Centralized repository for your store's visual resources.</p>
+        </div>
       </div>
 
       <MediaGrid initialMedia={JSON.parse(JSON.stringify(media))} slug={slug} />
