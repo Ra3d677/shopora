@@ -54,18 +54,18 @@ export function getThemeByPath(pageThemes: any[], pathname: string) {
   return theme?.themeId || 'default';
 }
 
-export function getPremiumBackgroundClass(bgId?: string) {
+export function getPremiumBackgroundStyle(bgId?: string): React.CSSProperties {
   switch (bgId) {
     case 'abyss':
-      return 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#0a0c14] to-black text-white';
+      return { background: 'radial-gradient(ellipse at top, #0f172a, #0a0c14, #000000)', color: 'white' };
     case 'nebula':
-      return 'bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-purple-900/40 via-[#0a0c14] to-[#0a0c14] text-white';
+      return { background: 'radial-gradient(circle at bottom left, rgba(88, 28, 135, 0.4), #0a0c14, #0a0c14)', color: 'white' };
     case 'cyber':
-      return 'bg-[linear-gradient(to_bottom_right,_var(--tw-gradient-stops))] from-cyan-900/40 via-[#0a0c14] to-blue-900/40 text-white';
+      return { background: 'linear-gradient(to bottom right, rgba(22, 78, 99, 0.4), #0a0c14, rgba(30, 58, 138, 0.4))', color: 'white' };
     case 'luxury':
-      return 'bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/20 via-[#0a0c14] to-black text-white';
+      return { background: 'radial-gradient(ellipse at center, rgba(120, 53, 15, 0.2), #0a0c14, #000000)', color: 'white' };
     case 'default':
     default:
-      return 'bg-white dark:bg-[#0a0c14] text-slate-900 dark:text-white';
+      return {}; // Empty object indicates no premium style
   }
 }

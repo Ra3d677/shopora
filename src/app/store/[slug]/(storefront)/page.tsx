@@ -3,7 +3,7 @@ import { ShoppingBag } from "lucide-react";
 import { getStoreBySlug } from "@/lib/data";
 import { getTranslation } from "@/lib/i18n";
 import { notFound } from "next/navigation";
-import { getPremiumBackgroundClass, getThemeByPath } from "@/lib/utils";
+import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
 
 // Import Templates
 import SignatureTemplate from "@/components/templates/SignatureTemplate";
@@ -68,11 +68,11 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
   };
 
   const currentThemeId = getThemeByPath(settings.pageThemes || [], `/store/${slug}`);
-  const bgClass = getPremiumBackgroundClass(currentThemeId);
+  const premiumStyle = getPremiumBackgroundStyle(currentThemeId);
   const isPremiumBg = currentThemeId !== 'default';
 
   return (
-    <div className={`w-full transition-colors duration-500 min-h-screen ${bgClass}`} style={!isPremiumBg ? { backgroundColor: 'var(--color-bg-home)', color: 'var(--color-text-primary)' } : {}}>
+    <div className={`w-full transition-colors duration-500 min-h-screen`} style={isPremiumBg ? premiumStyle : { backgroundColor: 'var(--color-bg-home)', color: 'var(--color-text-primary)' }}>
       {renderTemplate()}
     </div>
   );

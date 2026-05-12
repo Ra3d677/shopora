@@ -5,7 +5,7 @@ import Image from "next/image";
 import SmartImage from "@/components/ui/SmartImage";
 import { ArrowRight } from "lucide-react";
 import HeroSlider from "@/components/ui/HeroSlider";
-import { getPremiumBackgroundClass, getThemeByPath } from "@/lib/utils";
+import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 
@@ -42,11 +42,11 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
   }
 
   const currentThemeId = getThemeByPath(store.settings?.pageThemes || [], `/store/${slug}/categories`);
-  const bgClass = getPremiumBackgroundClass(currentThemeId);
+  const premiumStyle = getPremiumBackgroundStyle(currentThemeId);
   const isPremiumBg = currentThemeId !== 'default';
 
   return (
-    <div className={`min-h-screen pb-24 transition-colors duration-500 ${bgClass}`} style={!isPremiumBg ? { backgroundColor: 'var(--color-bg-categories)', color: 'var(--color-text-primary)' } : {}}>
+    <div className={`min-h-screen pb-24 transition-colors duration-500`} style={isPremiumBg ? premiumStyle : { backgroundColor: 'var(--color-bg-categories)', color: 'var(--color-text-primary)' }}>
       {/* Header / Banner */}
       {collectionsBanners.length > 0 ? (
         <HeroSlider 
