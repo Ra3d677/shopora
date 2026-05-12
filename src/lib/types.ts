@@ -139,6 +139,8 @@ export interface Category {
   name: string;
   description: string | null;
   image: string;
+  parentId?: string | null;
+  children?: Category[];
   created_at?: string;
 }
 

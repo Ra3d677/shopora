@@ -87,6 +87,9 @@ model Category {
   storeId     String
   store       Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
   products    Product[]
+  parentId    String?
+  parent      Category? @relation("Subcategories", fields: [parentId], references: [id])
+  children    Category[] @relation("Subcategories")
 }
 
 model Banner {

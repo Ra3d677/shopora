@@ -305,10 +305,18 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Category</label>
-                <select value={formData.category_id || defaultCategoryId} onChange={e => setFormData({...formData, category_id: e.target.value})} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none">
-                  {categories.map(cat => (
-                    <option key={cat.id} value={cat.id}>{cat.name}</option>
-                  ))}
+                <select value={formData.category_id || defaultCategoryId} onChange={e => setFormData({...formData, category_id: e.target.value})} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none bg-white">
+                  {categories.map(cat => {
+                    const getCategoryLabel = (c: Category, all: Category[]): string => {
+                      if (!c.parentId) return c.name;
+                      const parent = all.find(p => p.id === c.parentId);
+                      if (!parent) return c.name;
+                      return `${getCategoryLabel(parent, all)} > ${c.name}`;
+                    };
+                    return (
+                      <option key={cat.id} value={cat.id}>{getCategoryLabel(cat, categories)}</option>
+                    );
+                  })}
                   {categories.length === 0 && <option value="" disabled>No categories available</option>}
                 </select>
               </div>

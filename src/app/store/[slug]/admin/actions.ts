@@ -64,6 +64,7 @@ export async function addCategory(slug: string, categoryData: any) {
       name: categoryData.name,
       description: categoryData.description,
       image: categoryData.image,
+      parentId: categoryData.parentId || null,
       storeId: store.id
     }
   });
@@ -72,9 +73,13 @@ export async function addCategory(slug: string, categoryData: any) {
 }
 
 export async function updateCategory(slug: string, categoryId: string, updates: any) {
+  const { parentId, ...rest } = updates;
   await prisma.category.update({
     where: { id: categoryId },
-    data: updates
+    data: {
+      ...rest,
+      parentId: parentId === "" ? null : parentId
+    }
   });
   revalidatePath("/", "layout");
 }

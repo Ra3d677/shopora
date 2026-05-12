@@ -56,10 +56,10 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
     }
   };
 
-  const [formData, setFormData] = useState<Partial<Category>>({
     name: "",
     description: "",
-    image: ""
+    image: "",
+    parentId: ""
   });
 
   const handleDelete = async (id: string) => {
@@ -101,7 +101,8 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
     setFormData({
       name: "",
       description: "",
-      image: ""
+      image: "",
+      parentId: ""
     });
     setIsAdding(true);
     setIsEditing(null);
@@ -211,6 +212,21 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
                 <label className="block text-sm font-medium mb-1">Description</label>
                 <textarea required value={formData.description || ''} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none h-24" />
               </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Parent Category (Optional)</label>
+                <select 
+                  value={formData.parentId || ''} 
+                  onChange={e => setFormData({...formData, parentId: e.target.value})} 
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none bg-white"
+                >
+                  <option value="">None (Top Level)</option>
+                  {categories
+                    .filter(c => !isEditing || c.id !== isEditing.id)
+                    .map(c => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -256,7 +272,14 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
                         <Image src={category.image} alt={category.name} fill className="object-cover" />
                       </div>
                       <div>
-                        <div className="font-semibold text-slate-900">{category.name}</div>
+                        <div className="flex items-center gap-2">
+                          <div className="font-semibold text-slate-900">{category.name}</div>
+                          {category.parentId && (
+                            <span className="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded uppercase tracking-wider">
+                              Sub of {categories.find(c => c.id === category.parentId)?.name || 'Unknown'}
+                            </span>
+                          )}
+                        </div>
                         <div className="text-slate-500 text-xs truncate max-w-[250px]">{category.description}</div>
                       </div>
                     </div>

@@ -12,6 +12,7 @@ import { setLanguageCookie } from "@/app/actions";
 import { translations, TranslationKey } from "@/lib/translations";
 import SignatureNavbar from "./SignatureNavbar";
 import { logoutCustomer } from "@/app/store/actions";
+import { buildCategoryTree } from "@/lib/utils";
 
 const LogoTransparencyFilter = () => (
   <svg style={{ position: 'absolute', width: 0, height: 0 }} aria-hidden="true">
@@ -64,6 +65,10 @@ export default function Navbar({
   const effectiveLayout = (rawLayout && rawLayout !== 'default') ? rawLayout : activeTemplate;
   const originalTemplate = activeTemplate;
 
+  const categoryTree = buildCategoryTree(categories);
+
+  const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
+
   
   const MobileMenuDrawer = () => (
     <AnimatePresence>
@@ -90,6 +95,47 @@ export default function Navbar({
                 {link.label}
               </Link>
             ))}
+            
+            {categoryTree.length > 0 && (
+              <div className="flex flex-col gap-4 mt-4">
+                <p className="text-[10px] text-slate-400 font-black tracking-[0.2em] uppercase">Collections</p>
+                {categoryTree.map((cat: any) => (
+                  <div key={cat.id} className="flex flex-col gap-2">
+                    <div className="flex justify-between items-center border-b border-slate-50 pb-2">
+                      <Link 
+                        href={`/store/${slug}/products?category=${cat.id}`} 
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="text-sm font-black hover:text-blue-600 transition-colors"
+                      >
+                        {cat.name}
+                      </Link>
+                      {cat.children.length > 0 && (
+                        <button 
+                          onClick={() => setOpenSubMenu(openSubMenu === cat.id ? null : cat.id)}
+                          className="p-1"
+                        >
+                          <ChevronDown size={16} className={`transition-transform ${openSubMenu === cat.id ? 'rotate-180' : ''}`} />
+                        </button>
+                      )}
+                    </div>
+                    {cat.children.length > 0 && openSubMenu === cat.id && (
+                      <div className="flex flex-col gap-3 pl-4 pt-2 border-l border-slate-100">
+                        {cat.children.map((child: any) => (
+                          <Link 
+                            key={child.id} 
+                            href={`/store/${slug}/products?category=${child.id}`} 
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-xs font-bold text-slate-500 hover:text-blue-600"
+                          >
+                            {child.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           
           <div className="mt-auto pt-8 border-t border-slate-100">
@@ -105,13 +151,14 @@ export default function Navbar({
       <>
         <LogoTransparencyFilter />
         <SignatureNavbar 
-        storeName={storeSettings?.storeName || 'Store'} 
-        logoUrl={storeSettings?.logoUrl} 
-        slug={slug || ''} 
-        products={products}
-        session={session}
-        storeSettings={storeSettings}
-      />
+          storeName={storeSettings?.storeName || 'Store'} 
+          logoUrl={storeSettings?.logoUrl} 
+          slug={slug || ''} 
+          products={products}
+          categories={categories}
+          session={session}
+          storeSettings={storeSettings}
+        />
       </>
     );
   }

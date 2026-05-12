@@ -5,6 +5,25 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function buildCategoryTree(categories: any[]) {
+  const map: Record<string, any> = {};
+  const tree: any[] = [];
+
+  categories.forEach(cat => {
+    map[cat.id] = { ...cat, children: [] };
+  });
+
+  categories.forEach(cat => {
+    if (cat.parentId && map[cat.parentId]) {
+      map[cat.parentId].children.push(map[cat.id]);
+    } else {
+      tree.push(map[cat.id]);
+    }
+  });
+
+  return tree;
+}
+
 export function getStoreLink(link: string, slug: string) {
   if (!link) return `/store/${slug}`;
   if (link.startsWith('http') || link.startsWith('mailto:') || link.startsWith('tel:')) return link;

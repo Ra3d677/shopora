@@ -35,7 +35,19 @@ export default async function ProductsPage({
       pageTitle = "Sale";
       pageDescription = "Premium items at exceptional value.";
     } else {
-      displayedProducts = displayedProducts.filter(p => p.category_id === category);
+      // Recursive function to get all subcategory IDs
+      const getAllSubCategoryIds = (cats: any[], pId: string): string[] => {
+        const children = cats.filter(c => c.parentId === pId);
+        let ids = children.map(c => c.id);
+        for (const child of children) {
+          ids = [...ids, ...getAllSubCategoryIds(cats, child.id)];
+        }
+        return ids;
+      };
+
+      const allCategoryIds = [category, ...getAllSubCategoryIds(store.categories, category)];
+      displayedProducts = displayedProducts.filter(p => allCategoryIds.includes(p.category_id));
+      
       const foundCategory = store.categories.find(c => c.id === category);
       pageTitle = foundCategory?.name || "Collection";
       pageDescription = foundCategory?.description || `Discover the latest in our ${pageTitle.toLowerCase()}.`;
@@ -77,18 +89,37 @@ export default async function ProductsPage({
 
       {/* Filters bar */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 pb-6 border-b border-border gap-4">
-        <div className="flex gap-2 overflow-x-auto pb-2 w-full sm:w-auto sm:pb-0 hide-scrollbar">
-          <Link href={`/store/${slug}/products`} className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${!category ? 'bg-slate-950 text-white shadow-md' : 'border border-border text-foreground hover:border-slate-400'}`}>All</Link>
-          {store.categories.map((cat: any) => (
-            <Link 
-              key={cat.id}
-              href={`/store/${slug}/products?category=${cat.id}`} 
-              className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${category === cat.id ? 'bg-slate-950 text-white shadow-md' : 'border border-border text-foreground hover:border-slate-400'}`}
-            >
-              {cat.name}
-            </Link>
-          ))}
-          <Link href={`/store/${slug}/products?category=sale`} className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${category === 'sale' ? 'bg-red-500 text-white shadow-md' : 'border border-border text-red-500 hover:border-red-500'}`}>Sale</Link>
+        <div className="flex flex-col gap-4 w-full">
+          <div className="flex gap-2 overflow-x-auto pb-2 w-full hide-scrollbar">
+            <Link href={`/store/${slug}/products`} className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${!category ? 'bg-slate-950 text-white shadow-md' : 'border border-border text-foreground hover:border-slate-400'}`}>All</Link>
+            {store.categories.filter(c => !c.parentId).map((cat: any) => (
+              <Link 
+                key={cat.id}
+                href={`/store/${slug}/products?category=${cat.id}`} 
+                className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${category === cat.id || store.categories.find(c => c.id === category)?.parentId === cat.id ? 'bg-slate-950 text-white shadow-md' : 'border border-border text-foreground hover:border-slate-400'}`}
+              >
+                {cat.name}
+              </Link>
+            ))}
+            <Link href={`/store/${slug}/products?category=sale`} className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${category === 'sale' ? 'bg-red-500 text-white shadow-md' : 'border border-border text-red-500 hover:border-red-500'}`}>Sale</Link>
+          </div>
+
+          {category && store.categories.some(c => c.parentId === category || (store.categories.find(curr => curr.id === category)?.parentId === c.parentId && c.parentId)) && (
+            <div className="flex gap-2 overflow-x-auto pb-2 w-full hide-scrollbar border-t border-slate-100 pt-4">
+              {(store.categories.find(c => c.id === category)?.parentId 
+                ? store.categories.filter(c => c.parentId === store.categories.find(curr => curr.id === category)?.parentId)
+                : store.categories.filter(c => c.parentId === category)
+              ).map((sub: any) => (
+                <Link 
+                  key={sub.id}
+                  href={`/store/${slug}/products?category=${sub.id}`} 
+                  className={`px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-full whitespace-nowrap transition-all ${category === sub.id ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
+                >
+                  {sub.name}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
           <span className="text-sm text-muted-foreground font-medium">Sort by:</span>

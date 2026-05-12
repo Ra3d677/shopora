@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Search, X, ArrowRight, Menu } from "lucide-react";
 import SmartSearch from "@/components/ui/premium/SmartSearch";
 import { useCartStore } from "@/store/cart";
+import { buildCategoryTree } from "@/lib/utils";
+import { ChevronDown } from "lucide-react";
 
 const LogoTransparencyFilter = () => (
   <svg style={{ position: 'absolute', width: 0, height: 0 }} aria-hidden="true">
@@ -26,16 +28,20 @@ interface SignatureNavbarProps {
   logoUrl?: string;
   slug: string;
   products: any[];
+  categories?: any[];
   session?: any;
   storeSettings?: any;
 }
 
-export default function SignatureNavbar({ storeName, logoUrl, slug, products, session, storeSettings }: SignatureNavbarProps) {
+export default function SignatureNavbar({ storeName, logoUrl, slug, products, categories = [], session, storeSettings }: SignatureNavbarProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
   const items = useCartStore((state) => state.items);
+
+  const categoryTree = buildCategoryTree(categories);
 
   const cartItemCount = items.filter(i => products.some(p => p.id === i.product?.id)).reduce((acc, item) => acc + item.quantity, 0);
 
@@ -78,6 +84,59 @@ export default function SignatureNavbar({ storeName, logoUrl, slug, products, se
                   {link.label} <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 transition-all" />
                 </Link>
               ))}
+            </div>
+
+            {categoryTree.length > 0 && (
+              <div className="mt-12 flex flex-col gap-6">
+                <p className="text-xs font-black tracking-[0.3em] uppercase text-slate-400">Collections</p>
+                <div className="flex flex-col gap-4">
+                  {categoryTree.map((cat: any) => (
+                    <div key={cat.id} className="flex flex-col gap-2">
+                      <div className="flex justify-between items-center group">
+                        <Link 
+                          href={`/store/${slug}/products?category=${cat.id}`} 
+                          onClick={() => setIsMenuOpen(false)}
+                          className="text-2xl font-black uppercase tracking-tighter hover:text-blue-600 transition-colors"
+                        >
+                          {cat.name}
+                        </Link>
+                        {cat.children.length > 0 && (
+                          <button 
+                            onClick={() => setOpenSubMenu(openSubMenu === cat.id ? null : cat.id)}
+                            className="p-2 bg-slate-50 rounded-full"
+                          >
+                            <ChevronDown size={20} className={`transition-transform duration-500 ${openSubMenu === cat.id ? 'rotate-180' : ''}`} />
+                          </button>
+                        )}
+                      </div>
+                      <AnimatePresence>
+                        {cat.children.length > 0 && openSubMenu === cat.id && (
+                          <motion.div 
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="flex flex-col gap-3 pl-4 border-l-2 border-slate-100 overflow-hidden"
+                          >
+                            {cat.children.map((child: any) => (
+                              <Link 
+                                key={child.id} 
+                                href={`/store/${slug}/products?category=${child.id}`} 
+                                onClick={() => setIsMenuOpen(false)}
+                                className="text-sm font-bold text-slate-500 hover:text-blue-600 uppercase tracking-widest"
+                              >
+                                {child.name}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="mt-12 flex flex-col gap-8 text-5xl font-black tracking-tighter uppercase">
               {session ? (
                 <Link href={`/store/${slug}/account`} onClick={() => setIsMenuOpen(false)} className="hover:text-blue-600 transition-colors flex items-center group">
                   Account <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 transition-all" />
