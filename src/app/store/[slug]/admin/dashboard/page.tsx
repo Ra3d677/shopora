@@ -415,14 +415,16 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                   <h3 className="text-2xl font-black italic text-white tracking-tight">Revenue <span className="text-purple-400">Trend</span></h3>
                   <div className="bg-purple-500/10 text-purple-400 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border border-purple-500/20">Live</div>
                </div>
-               <div className="flex-1 flex items-end justify-between gap-2 relative z-10 min-h-[250px] mb-4">
+               <div className="flex items-end justify-between gap-2 h-[300px] mb-4 relative z-10 px-2">
                   {trendData.map((h, i) => (
                     <div key={i} className="flex-1 h-full flex flex-col justify-end group/bar relative">
+                       {/* The Actual Bar */}
                        <div 
-                         className="w-full bg-gradient-to-t from-purple-600/50 to-purple-400 rounded-t-lg transition-all duration-1000" 
+                         className="w-full bg-cyan-400 rounded-t-md shadow-[0_0_15px_rgba(34,211,238,0.4)] border border-cyan-300/50 transition-all duration-700" 
                          style={{ height: `${Math.max(h, 4)}%` }}
                        />
-                       <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] p-2 rounded opacity-0 group-hover/bar:opacity-100 transition-opacity z-50 whitespace-nowrap">
+                       {/* Tooltip on hover */}
+                       <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] font-bold py-1 px-2 rounded opacity-0 group-hover/bar:opacity-100 transition-opacity z-50 whitespace-nowrap pointer-events-none">
                           ${monthlyRevenue[i].toLocaleString()}
                        </div>
                     </div>
