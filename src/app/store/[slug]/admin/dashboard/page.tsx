@@ -69,7 +69,10 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   }
 
   const totalOrders = store.orders.length;
-  const totalRevenue = store.orders.reduce((sum, order) => sum + order.totalAmount, 0);
+  // Only include shipped or delivered orders in total revenue
+  const totalRevenue = store.orders
+    .filter(order => ['shipped', 'delivered'].includes(order.status))
+    .reduce((sum, order) => sum + order.totalAmount, 0);
 
   // Previous period data for growth calculation
   let prevStartDate: Date | null = null;
@@ -87,7 +90,9 @@ export default async function AdminDashboard({ params, searchParams }: { params:
     }
   }) : [];
 
-  const prevRevenue = prevOrders.reduce((sum, order) => sum + order.totalAmount, 0);
+  const prevRevenue = prevOrders
+    .filter(order => ['shipped', 'delivered'].includes(order.status))
+    .reduce((sum, order) => sum + order.totalAmount, 0);
   const revenueGrowth = prevRevenue > 0 ? ((totalRevenue - prevRevenue) / prevRevenue) * 100 : 100;
 
   const totalVisits = store.visits.length;
@@ -106,10 +111,10 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const totalCartAdds = store.cartAdds.length;
   const abandonmentRate = totalCartAdds > 0 ? (((totalCartAdds - totalOrders) / totalCartAdds) * 100).toFixed(1) : "0.0";
 
-  // Heatmap Data (Orders by Hour and Day)
+  // Heatmap Data (Visits by Hour and Day)
   const heatmap = Array(7).fill(0).map(() => Array(24).fill(0));
-  store.orders.forEach(order => {
-    const d = new Date(order.createdAt);
+  store.visits.forEach(visit => {
+    const d = new Date(visit.createdAt);
     heatmap[d.getDay()][d.getHours()]++;
   });
 
@@ -158,6 +163,30 @@ export default async function AdminDashboard({ params, searchParams }: { params:
 
   const bestSeller = topProducts[0]?.salesCount > 0 ? topProducts[0] : null;
   const leastSeller = allProductsWithSales.length > 0 ? bottomProducts[0] : null;
+
+  // Real Revenue Trend Data (Monthly for the current year)
+  const currentYear = now.getFullYear();
+  const monthlyRevenue = Array(12).fill(0);
+  
+  // Get all shipped/delivered orders for the current year
+  const yearOrders = await prisma.order.findMany({
+    where: {
+      storeId: store.id,
+      status: { in: ['shipped', 'delivered'] },
+      createdAt: {
+        gte: new Date(currentYear, 0, 1),
+        lte: new Date(currentYear, 11, 31, 23, 59, 59)
+      }
+    }
+  });
+
+  yearOrders.forEach(order => {
+    const month = new Date(order.createdAt).getMonth();
+    monthlyRevenue[month] += order.totalAmount;
+  });
+
+  const maxMonthRevenue = Math.max(...monthlyRevenue, 1);
+  const trendData = monthlyRevenue.map(rev => (rev / maxMonthRevenue) * 100);
 
   return (
     <div className="min-h-screen bg-[#0f111a] text-slate-100 p-8 pb-24 font-sans selection:bg-cyan-500/30">
@@ -308,10 +337,10 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                </h3>
                <div className="space-y-6">
                   {[
-                    { name: 'Direct', value: 62, color: 'bg-cyan-400' },
-                    { name: 'Search', value: 24, color: 'bg-purple-400' },
-                    { name: 'Social', value: 10, color: 'bg-amber-400' },
-                    { name: 'Ads', value: 4, color: 'bg-pink-400' }
+                    { name: 'Direct / Organic', value: totalVisits > 0 ? 100 : 0, color: 'bg-cyan-400' },
+                    { name: 'Search', value: 0, color: 'bg-purple-400' },
+                    { name: 'Social', value: 0, color: 'bg-amber-400' },
+                    { name: 'Ads', value: 0, color: 'bg-pink-400' }
                   ].map((source) => (
                     <div key={source.name} className="space-y-2">
                        <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
@@ -387,12 +416,13 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                   <div className="bg-purple-500/10 text-purple-400 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border border-purple-500/20">Live</div>
                </div>
                <div className="flex-1 flex items-end gap-2 group cursor-crosshair relative z-10">
-                  {/* Mock Chart Bars */}
-                  {[30, 45, 25, 60, 55, 80, 40, 70, 90, 65, 85, 100].map((h, i) => (
+                  {/* Real Chart Bars */}
+                  {trendData.map((h, i) => (
                     <div 
                       key={i} 
                       className="flex-1 bg-gradient-to-t from-purple-600/10 to-purple-400/60 rounded-t-lg transition-all duration-700 hover:to-purple-400 hover:shadow-[0_0_15px_rgba(192,132,252,0.4)]"
-                      style={{ height: `${h}%` }}
+                      style={{ height: `${Math.max(h, 2)}%` }}
+                      title={`$${monthlyRevenue[i].toFixed(0)}`}
                     />
                   ))}
                </div>
