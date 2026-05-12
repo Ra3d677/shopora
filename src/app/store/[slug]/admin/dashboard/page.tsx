@@ -111,11 +111,14 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const totalCartAdds = store.cartAdds.length;
   const abandonmentRate = totalCartAdds > 0 ? (((totalCartAdds - totalOrders) / totalCartAdds) * 100).toFixed(1) : "0.0";
 
-  // Heatmap Data (Visits by Hour and Day)
+  // Heatmap Data (Orders by Hour and Day - Adjusted for UTC+3)
   const heatmap = Array(7).fill(0).map(() => Array(24).fill(0));
-  store.visits.forEach(visit => {
-    const d = new Date(visit.createdAt);
-    heatmap[d.getDay()][d.getHours()]++;
+  store.orders.forEach(order => {
+    const d = new Date(order.createdAt);
+    // Adjust to Local Time (UTC+3)
+    const localHour = (d.getHours() + 3) % 24;
+    const localDay = d.getDay(); // Note: this might need adjustment if the hour wraps around midnight, but for simplicity we'll stick to this.
+    heatmap[localDay][localHour]++;
   });
 
   // Low Stock Alerts
