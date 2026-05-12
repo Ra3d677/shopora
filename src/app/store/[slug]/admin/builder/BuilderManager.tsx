@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import { saveStoreSettings } from "../actions";
 import { StoreSettings } from "@/lib/types";
 import { useRouter } from "next/navigation";
