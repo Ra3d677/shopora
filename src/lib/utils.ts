@@ -45,7 +45,12 @@ export function getThemeByPath(pageThemes: any[], pathname: string) {
   if (!pageThemes || !Array.isArray(pageThemes)) return 'default';
   
   // Find a theme that contains the current link
-  const theme = pageThemes.find(t => t.links.some((link: string) => pathname.endsWith(link) || pathname === link));
+  const theme = pageThemes.find(t => t.links.some((link: string) => {
+    // Normalize both for comparison
+    const cleanLink = link.split('?')[0].split('#')[0].replace(/\/$/, "");
+    const cleanPath = pathname.split('?')[0].split('#')[0].replace(/\/$/, "");
+    return cleanPath === cleanLink || cleanPath.endsWith(cleanLink);
+  }));
   return theme?.themeId || 'default';
 }
 
@@ -54,13 +59,13 @@ export function getPremiumBackgroundClass(bgId?: string) {
     case 'abyss':
       return 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#0a0c14] to-black text-white';
     case 'nebula':
-      return 'bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-purple-900/20 via-[#0a0c14] to-[#0a0c14] text-white';
+      return 'bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-purple-900/40 via-[#0a0c14] to-[#0a0c14] text-white';
     case 'cyber':
-      return 'bg-[linear-gradient(to_right_bottom,_var(--tw-gradient-stops))] from-cyan-900/20 via-[#0a0c14] to-blue-900/20 text-white';
+      return 'bg-[linear-gradient(to_bottom_right,_var(--tw-gradient-stops))] from-cyan-900/40 via-[#0a0c14] to-blue-900/40 text-white';
     case 'luxury':
-      return 'bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/10 via-[#0a0c14] to-black text-white';
+      return 'bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/20 via-[#0a0c14] to-black text-white';
     case 'default':
     default:
-      return 'bg-white dark:bg-[#0a0c14] text-slate-900 dark:text-white'; // Fallback to store default
+      return 'bg-white dark:bg-[#0a0c14] text-slate-900 dark:text-white';
   }
 }

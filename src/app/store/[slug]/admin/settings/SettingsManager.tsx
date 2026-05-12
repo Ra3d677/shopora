@@ -38,11 +38,11 @@ export default function SettingsManager({
   };
 
   const premiumBackgrounds = [
-    { id: 'default', name: 'Void', desc: 'Pure dark matter.', className: 'bg-[#0a0c14]' },
-    { id: 'abyss', name: 'Abyss', desc: 'Deep radial gradient.', className: 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#0a0c14] to-black' },
-    { id: 'nebula', name: 'Nebula', desc: 'Purple ambient glow.', className: 'bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-purple-900/20 via-[#0a0c14] to-[#0a0c14]' },
-    { id: 'cyber', name: 'Cyber', desc: 'Cyan & Blue intersections.', className: 'bg-[linear-gradient(to_right_bottom,_var(--tw-gradient-stops))] from-cyan-900/20 via-[#0a0c14] to-blue-900/20' },
-    { id: 'luxury', name: 'Luxury', desc: 'Subtle amber central highlight.', className: 'bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/10 via-[#0a0c14] to-black' }
+    { id: 'default', name: 'Void', desc: 'Pure dark matter.', style: { backgroundColor: '#0a0c14' } },
+    { id: 'abyss', name: 'Abyss', desc: 'Deep radial gradient.', style: { background: 'radial-gradient(ellipse at top, #0f172a, #0a0c14, #000000)' } },
+    { id: 'nebula', name: 'Nebula', desc: 'Purple ambient glow.', style: { background: 'radial-gradient(circle at bottom left, rgba(88, 28, 135, 0.4), #0a0c14, #0a0c14)' } },
+    { id: 'cyber', name: 'Cyber', desc: 'Cyan & Blue intersections.', style: { background: 'linear-gradient(to bottom right, rgba(22, 78, 99, 0.4), #0a0c14, rgba(30, 58, 138, 0.4))' } },
+    { id: 'luxury', name: 'Luxury', desc: 'Subtle amber central highlight.', style: { background: 'radial-gradient(ellipse at center, rgba(120, 53, 15, 0.2), #0a0c14, #000000)' } }
   ];
 
   const handleSave = async (e: React.FormEvent) => {
@@ -438,7 +438,7 @@ export default function SettingsManager({
                                  <h3 className="text-xl font-black text-white uppercase italic tracking-tighter mb-2">{bg.name}</h3>
                                  <p className="text-[9px] text-slate-500 uppercase tracking-[0.2em] font-bold">{bg.desc}</p>
                               </div>
-                              <div className={`w-32 h-20 rounded-2xl ${bg.className} border border-white/10 shadow-2xl`}></div>
+                              <div className={`w-32 h-20 rounded-2xl border border-white/10 shadow-2xl overflow-hidden`} style={bg.style}></div>
                            </div>
 
                            <div className="space-y-4">
@@ -485,7 +485,17 @@ export default function SettingsManager({
                               <button 
                                 type="button"
                                 onClick={() => {
-                                   if (!linkInput[bg.id]) return;
+                                   let rawPath = linkInput[bg.id];
+                                   if (!rawPath) return;
+
+                                   // Normalize link: if full URL, extract pathname
+                                   let normalizedPath = rawPath;
+                                   try {
+                                      if (rawPath.includes('://')) {
+                                         normalizedPath = new URL(rawPath).pathname;
+                                      }
+                                   } catch(e) {}
+
                                    const currentThemes = settings.pageThemes || [];
                                    const themeExists = currentThemes.some(t => t.themeId === bg.id);
                                    
@@ -493,11 +503,11 @@ export default function SettingsManager({
                                    if (themeExists) {
                                       newThemes = currentThemes.map(t => 
                                         t.themeId === bg.id 
-                                          ? { ...t, links: [...new Set([...t.links, linkInput[bg.id]])] }
+                                          ? { ...t, links: [...new Set([...t.links, normalizedPath])] }
                                           : t
                                       );
                                    } else {
-                                      newThemes = [...currentThemes, { themeId: bg.id, links: [linkInput[bg.id]] }];
+                                      newThemes = [...currentThemes, { themeId: bg.id, links: [normalizedPath] }];
                                    }
                                    
                                    updateSettings({ ...settings, pageThemes: newThemes });
