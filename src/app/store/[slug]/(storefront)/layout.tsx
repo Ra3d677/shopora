@@ -13,6 +13,7 @@ import { getSession } from "@/lib/auth";
 import VisitorTracker from "@/components/layout/VisitorTracker";
 import PixelTracker from "@/components/layout/PixelTracker";
 import { Suspense } from "react";
+import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -59,6 +60,10 @@ export default async function StorefrontLayout({
   const tpl = store.template;
   const defaultHomeBg = (tpl === 'obsidian' || tpl === 'hybrid' || tpl === 'zenith') ? '#0a0a0a' : (tpl === 'apple' ? '#f5f5f7' : '#ffffff');
 
+  const currentThemeId = getThemeByPath(storeSettings.pageThemes || [], `/store/${slug}`);
+  const premiumStyle = getPremiumBackgroundStyle(currentThemeId);
+  const isPremiumBg = currentThemeId !== 'default';
+
   const colorSystem = storeSettings.colorSystem || {
     backgrounds: { home: defaultHomeBg, shop: '#f8fafc', categories: '#ffffff' },
     text: { primary: '#0f172a', secondary: '#64748b' },
@@ -80,11 +85,12 @@ export default async function StorefrontLayout({
     '--color-sale-price': colorSystem.product?.salePrice || '#ef4444',
     '--color-testimonial-bg': colorSystem.testimonial?.background || '#0f172a',
     '--color-testimonial-text': colorSystem.testimonial?.text || '#ffffff',
+    ...(isPremiumBg ? premiumStyle : {})
   } as React.CSSProperties;
 
   return (
     <div 
-      className={`theme-${store.template} flex flex-col min-h-screen transition-colors duration-500 ${isOwner ? 'pt-10' : ''}`} 
+      className={`theme-${store.template} flex flex-col min-h-screen transition-all duration-1000 ${isOwner ? 'pt-10' : ''}`} 
       style={customStyles}
     >
       {isSignature && <CustomCursor />}
