@@ -52,3 +52,19 @@ export async function recordVisit(slug: string) {
     console.error("Failed to record visit:", error);
   }
 }
+
+export async function recordCartAdd(slug: string, productId: string) {
+  try {
+    const store = await prisma.store.findUnique({ where: { slug } });
+    if (!store) return;
+
+    await prisma.cartAdd.create({
+      data: {
+        storeId: store.id,
+        productId
+      }
+    });
+  } catch (error) {
+    console.error("Failed to record cart add:", error);
+  }
+}

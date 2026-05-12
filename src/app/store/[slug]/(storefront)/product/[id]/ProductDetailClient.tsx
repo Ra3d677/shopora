@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { trackViewContent, trackAddToCart } from "@/lib/tracking";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { recordCartAdd } from "@/app/actions";
 
 export default function ProductDetailClient({ product, store }: { product: Product, store: any }) {
   const router = useRouter();
@@ -46,6 +47,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
       selectedColor: selectedColor?.name || selectedColor?.value || 'default'
     });
     trackAddToCart(product, 1, store);
+    recordCartAdd(store.slug, product.id);
   };
 
   const handleBuyNow = () => {
@@ -58,6 +60,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
       selectedColor: selectedColor?.name || selectedColor?.value || 'default'
     });
     trackAddToCart(product, 1, store);
+    recordCartAdd(store.slug, product.id);
     router.push(`/store/${store.slug}/checkout`);
   };
 
