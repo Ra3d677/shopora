@@ -284,16 +284,27 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                         {style}
                       </button>
                     ))}
-                    {activeSection.type === 'sale' && ['grid', 'bento', 'horizontal', 'scroll', 'list', 'bubbles'].map(style => (
-                      <button 
-                        key={style}
-                        onClick={() => updateSection(activeSection.id, { style })}
-                        className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}
-                      >
-                        {style}
-                      </button>
-                    ))}
                   </div>
+                </div>
+
+                {activeSection.type === 'sale' && (
+                  <div className="space-y-4 p-5 bg-blue-50/50 rounded-2xl border border-blue-100">
+                    <label className="text-sm font-bold text-blue-800 flex items-center gap-2">
+                      <Palette className="w-4 h-4 text-blue-600" /> Sale Section Style
+                    </label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {['grid', 'bento', 'horizontal', 'scroll', 'list', 'bubbles'].map(style => (
+                        <button 
+                          key={style}
+                          onClick={() => updateSection(activeSection.id, { style })}
+                          className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-600 text-white shadow-md shadow-blue-500/20' : 'border-blue-200 bg-white text-blue-600 hover:border-blue-400'}`}
+                        >
+                          {style}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 </div>
 
                 {/* Content Settings */}
