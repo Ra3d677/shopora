@@ -18,19 +18,19 @@ export default function DateFilter() {
   };
 
   return (
-    <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-3 py-2 shadow-sm print:hidden">
-      <Calendar className="w-4 h-4 text-slate-500" />
+    <div className="flex items-center gap-3 bg-[#1a1d2d] border border-white/5 rounded-2xl px-5 py-3 shadow-2xl group hover:border-cyan-500/30 transition-all print:hidden">
+      <Calendar className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
       <select 
         value={currentRange}
         onChange={handleChange}
-        className="bg-transparent text-sm font-bold text-slate-700 outline-none cursor-pointer"
+        className="bg-transparent text-[11px] font-black text-slate-400 uppercase tracking-widest outline-none cursor-pointer focus:text-white transition-colors"
       >
-        <option value="all_time">All Time</option>
-        <option value="today">Today</option>
-        <option value="last_7_days">Last 7 Days</option>
-        <option value="this_month">This Month</option>
-        <option value="last_month">Last Month</option>
-        <option value="this_year">This Year</option>
+        <option value="all_time" className="bg-[#0f111a]">All Time</option>
+        <option value="today" className="bg-[#0f111a]">Today</option>
+        <option value="last_7_days" className="bg-[#0f111a]">Last 7 Days</option>
+        <option value="this_month" className="bg-[#0f111a]">This Month</option>
+        <option value="last_month" className="bg-[#0f111a]">Last Month</option>
+        <option value="this_year" className="bg-[#0f111a]">This Year</option>
       </select>
     </div>
   );

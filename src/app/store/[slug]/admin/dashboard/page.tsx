@@ -73,7 +73,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   // Only include shipped or delivered orders in total revenue
   const totalRevenue = store.orders
     .filter(order => ['shipped', 'delivered'].includes(order.status))
-    .reduce((sum, order) => sum + order.totalAmount, 0);
+    .reduce((sum, order) => sum + Number(order.totalAmount || 0), 0);
 
   // Previous period data for growth calculation
   let prevStartDate: Date | null = null;
@@ -182,7 +182,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
     const d = new Date(order.createdAt);
     // Include all years for now just to see if the chart moves
     const month = d.getMonth();
-    monthlyRevenue[month] += order.totalAmount;
+    monthlyRevenue[month] += Number(order.totalAmount || 0);
   });
 
   const maxMonthRevenue = Math.max(...monthlyRevenue, 1);
