@@ -64,6 +64,9 @@ export default async function AdminDashboard({ params, searchParams }: { params:
     return <div className="p-8">Store not found</div>;
   }
 
+  const totalOrders = store.orders.length;
+  const totalRevenue = store.orders.reduce((sum, order) => sum + order.totalAmount, 0);
+
   // Previous period data for growth calculation
   let prevStartDate: Date | null = null;
   let prevEndDate: Date | null = startDate;
@@ -73,18 +76,16 @@ export default async function AdminDashboard({ params, searchParams }: { params:
     prevStartDate = new Date(startDate.getTime() - duration);
   }
 
-  const prevOrders = await prisma.order.findMany({
+  const prevOrders = (prevStartDate && prevEndDate) ? await prisma.order.findMany({
     where: {
       storeId: store.id,
-      createdAt: prevStartDate ? { gte: prevStartDate, lt: prevEndDate } : { lt: new Date(0) }
+      createdAt: { gte: prevStartDate, lt: prevEndDate }
     }
-  });
+  }) : [];
 
   const prevRevenue = prevOrders.reduce((sum, order) => sum + order.totalAmount, 0);
   const revenueGrowth = prevRevenue > 0 ? ((totalRevenue - prevRevenue) / prevRevenue) * 100 : 100;
 
-  const totalOrders = store.orders.length;
-  const totalRevenue = store.orders.reduce((sum, order) => sum + order.totalAmount, 0);
   const totalVisits = store.visits.length;
   const uniqueCustomers = new Set(store.orders.map(o => o.customerEmail)).size;
   const inStockProducts = store.products.filter(p => p.stock_quantity > 0).length;
