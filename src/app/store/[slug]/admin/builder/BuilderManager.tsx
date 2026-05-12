@@ -305,7 +305,6 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                     </div>
                   </div>
                 )}
-                </div>
 
                 {/* Content Settings */}
                 <div className="space-y-6">
