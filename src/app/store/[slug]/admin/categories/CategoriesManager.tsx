@@ -56,6 +56,7 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
     }
   };
 
+  const [formData, setFormData] = useState<Partial<Category>>({
     name: "",
     description: "",
     image: "",
