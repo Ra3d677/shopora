@@ -41,6 +41,14 @@ export function getStoreLink(link: string, slug: string) {
   return link;
 }
 
+export function getThemeByPath(pageThemes: any[], pathname: string) {
+  if (!pageThemes || !Array.isArray(pageThemes)) return 'default';
+  
+  // Find a theme that contains the current link
+  const theme = pageThemes.find(t => t.links.some((link: string) => pathname.endsWith(link) || pathname === link));
+  return theme?.themeId || 'default';
+}
+
 export function getPremiumBackgroundClass(bgId?: string) {
   switch (bgId) {
     case 'abyss':

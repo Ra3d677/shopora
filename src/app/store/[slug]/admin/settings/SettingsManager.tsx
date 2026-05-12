@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { saveStoreSettings } from "../actions";
-import { Settings, Loader2, Save, X, Trash2, CheckCircle2 } from "lucide-react";
+import { Settings, Loader2, Save, X, Trash2, CheckCircle2, Globe } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { StoreSettings } from "@/lib/types";
 import MediaPicker from "../media/MediaPicker";
@@ -26,6 +26,7 @@ export default function SettingsManager({
     setIsDirty(true);
   };
   const [activeTab, setActiveTab] = useState("general");
+  const [linkInput, setLinkInput] = useState<{ [key: string]: string }>({});
   const router = useRouter();
 
   const colorSystem = settings.colorSystem || {
@@ -424,49 +425,92 @@ export default function SettingsManager({
                     <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Premium Page Themes</h2>
                   </div>
                   
-                  <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] mb-10 font-bold">Assign high-end complex gradients to specific store nodes.</p>
+                  <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] mb-10 font-bold italic">Link complex gradients to specific URL paths (e.g. /products, /categories).</p>
 
-                  <div className="space-y-10">
-                    {['home', 'shop', 'categories'].map((pageNode) => (
-                      <div key={pageNode} className="bg-white/[0.01] p-8 rounded-[2rem] border border-white/[0.03]">
-                        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-8 pb-4 border-b border-white/5 flex items-center gap-3">
-                          <span className="w-2 h-2 rounded-full bg-purple-500"></span> 
-                          {pageNode} Node Background
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-                           {premiumBackgrounds.map(bg => (
-                             <label 
-                               key={bg.id}
-                               className={`group relative cursor-pointer rounded-[2rem] border transition-all duration-500 overflow-hidden ${
-                                 (settings.pageBackgrounds?.[pageNode as keyof typeof settings.pageBackgrounds] || 'default') === bg.id 
-                                   ? 'border-purple-500/50 shadow-[0_0_30px_rgba(192,132,252,0.2)]' 
-                                   : 'border-white/5 hover:border-white/20'
-                               }`}
-                             >
-                               <input 
-                                 type="radio" 
-                                 name={`bg_${pageNode}`}
-                                 value={bg.id}
-                                 checked={(settings.pageBackgrounds?.[pageNode as keyof typeof settings.pageBackgrounds] || 'default') === bg.id}
-                                 onChange={(e) => updateSettings({...settings, pageBackgrounds: {...(settings.pageBackgrounds || {}), [pageNode]: e.target.value}})}
-                                 className="sr-only"
-                               />
-                               <div className={`h-24 w-full ${bg.className} flex items-center justify-center transition-all duration-700`}>
-                                 {(settings.pageBackgrounds?.[pageNode as keyof typeof settings.pageBackgrounds] || 'default') === bg.id && (
-                                   <div className="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center shadow-[0_0_15px_rgba(192,132,252,0.5)] animate-in zoom-in duration-300">
-                                     <CheckCircle2 size={16} />
-                                   </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                    {premiumBackgrounds.filter(bg => bg.id !== 'default').map(bg => {
+                      const themeConfig = settings.pageThemes?.find(t => t.themeId === bg.id) || { themeId: bg.id, links: [] };
+                      
+                      return (
+                        <div key={bg.id} className="bg-white/[0.01] p-8 rounded-[2.5rem] border border-white/[0.03] space-y-8 group/card transition-all hover:bg-white/[0.03]">
+                           <div className="flex items-start justify-between gap-6">
+                              <div className="flex-1">
+                                 <h3 className="text-xl font-black text-white uppercase italic tracking-tighter mb-2">{bg.name}</h3>
+                                 <p className="text-[9px] text-slate-500 uppercase tracking-[0.2em] font-bold">{bg.desc}</p>
+                              </div>
+                              <div className={`w-32 h-20 rounded-2xl ${bg.className} border border-white/10 shadow-2xl`}></div>
+                           </div>
+
+                           <div className="space-y-4">
+                              <h4 className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] flex items-center gap-2">
+                                 <Globe size={10} className="text-purple-400" /> Linked Protocols
+                              </h4>
+                              
+                              <div className="flex flex-wrap gap-2 min-h-[40px]">
+                                 {themeConfig.links.length === 0 ? (
+                                   <span className="text-[9px] text-slate-700 italic uppercase font-bold py-2">No links established.</span>
+                                 ) : (
+                                   themeConfig.links.map(link => (
+                                     <div key={link} className="bg-purple-500/10 text-purple-400 border border-purple-500/20 px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-2 animate-in zoom-in duration-300">
+                                       {link}
+                                       <button 
+                                         type="button"
+                                         onClick={() => {
+                                            const currentThemes = settings.pageThemes || [];
+                                            const newThemes = currentThemes.map(t => 
+                                              t.themeId === bg.id 
+                                                ? { ...t, links: t.links.filter(l => l !== link) }
+                                                : t
+                                            );
+                                            updateSettings({ ...settings, pageThemes: newThemes });
+                                         }}
+                                         className="hover:text-white transition-colors"
+                                       >
+                                         <X size={10} />
+                                       </button>
+                                     </div>
+                                   ))
                                  )}
-                               </div>
-                               <div className="p-4 bg-[#0a0c14]/90 backdrop-blur-md border-t border-white/5">
-                                 <p className={`font-black text-[10px] uppercase tracking-widest mb-1 transition-colors ${(settings.pageBackgrounds?.[pageNode as keyof typeof settings.pageBackgrounds] || 'default') === bg.id ? 'text-purple-400' : 'text-white'}`}>{bg.name}</p>
-                                 <p className="text-[8px] text-slate-500 uppercase tracking-widest font-bold line-clamp-2">{bg.desc}</p>
-                               </div>
-                             </label>
-                           ))}
+                              </div>
+                           </div>
+
+                           <div className="flex gap-4">
+                              <input 
+                                type="text"
+                                value={linkInput[bg.id] || ''}
+                                onChange={(e) => setLinkInput({ ...linkInput, [bg.id]: e.target.value })}
+                                placeholder="/path/to/page"
+                                className="flex-1 bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-purple-500/50 transition-all font-mono text-xs"
+                              />
+                              <button 
+                                type="button"
+                                onClick={() => {
+                                   if (!linkInput[bg.id]) return;
+                                   const currentThemes = settings.pageThemes || [];
+                                   const themeExists = currentThemes.some(t => t.themeId === bg.id);
+                                   
+                                   let newThemes;
+                                   if (themeExists) {
+                                      newThemes = currentThemes.map(t => 
+                                        t.themeId === bg.id 
+                                          ? { ...t, links: [...new Set([...t.links, linkInput[bg.id]])] }
+                                          : t
+                                      );
+                                   } else {
+                                      newThemes = [...currentThemes, { themeId: bg.id, links: [linkInput[bg.id]] }];
+                                   }
+                                   
+                                   updateSettings({ ...settings, pageThemes: newThemes });
+                                   setLinkInput({ ...linkInput, [bg.id]: '' });
+                                }}
+                                className="px-6 py-4 bg-purple-500 text-white rounded-2xl font-black text-[9px] uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_10px_20px_rgba(192,132,252,0.2)]"
+                              >
+                                Link Node
+                              </button>
+                           </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               </div>

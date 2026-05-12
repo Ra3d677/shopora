@@ -4,7 +4,7 @@ import { getStoreBySlug } from "@/lib/data";
 import SortDropdown from "./SortDropdown";
 import SmartImage from "@/components/ui/SmartImage";
 import { notFound } from "next/navigation";
-import { getPremiumBackgroundClass } from "@/lib/utils";
+import { getPremiumBackgroundClass, getThemeByPath } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 
@@ -80,8 +80,9 @@ export default async function ProductsPage({
     );
   }
 
-  const bgClass = getPremiumBackgroundClass(storeSettings.pageBackgrounds?.shop);
-  const isPremiumBg = storeSettings.pageBackgrounds?.shop && storeSettings.pageBackgrounds.shop !== 'default';
+  const currentThemeId = getThemeByPath(storeSettings.pageThemes, `/store/${slug}/products`);
+  const bgClass = getPremiumBackgroundClass(currentThemeId);
+  const isPremiumBg = currentThemeId !== 'default';
 
   return (
     <div className={`min-h-screen pb-16 transition-colors duration-500 ${bgClass}`} style={!isPremiumBg ? { backgroundColor: 'var(--color-bg-shop)', color: 'var(--color-text-primary)' } : {}}>

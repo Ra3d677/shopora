@@ -3,7 +3,7 @@ import { ShoppingBag } from "lucide-react";
 import { getStoreBySlug } from "@/lib/data";
 import { getTranslation } from "@/lib/i18n";
 import { notFound } from "next/navigation";
-import { getPremiumBackgroundClass } from "@/lib/utils";
+import { getPremiumBackgroundClass, getThemeByPath } from "@/lib/utils";
 
 // Import Templates
 import SignatureTemplate from "@/components/templates/SignatureTemplate";
@@ -67,9 +67,9 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
     );
   };
 
-  const bgClass = getPremiumBackgroundClass(settings.pageBackgrounds?.home);
-  // If a premium background is selected (not 'default'), we don't apply the inline background color so the tailwind gradient works.
-  const isPremiumBg = settings.pageBackgrounds?.home && settings.pageBackgrounds.home !== 'default';
+  const currentThemeId = getThemeByPath(settings.pageThemes, `/store/${slug}`);
+  const bgClass = getPremiumBackgroundClass(currentThemeId);
+  const isPremiumBg = currentThemeId !== 'default';
 
   return (
     <div className={`w-full transition-colors duration-500 min-h-screen ${bgClass}`} style={!isPremiumBg ? { backgroundColor: 'var(--color-bg-home)', color: 'var(--color-text-primary)' } : {}}>
