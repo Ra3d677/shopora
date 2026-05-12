@@ -111,7 +111,8 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           </motion.div>
         )}
       </AnimatePresence>
-
+      
+      {homepageLayout.map((section: any, index: number) => {
         const divider = section.showDivider !== false && (
           <div className="max-w-7xl mx-auto px-8">
             <div className="h-[1px] w-full bg-slate-100" />
