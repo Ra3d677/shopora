@@ -46,12 +46,12 @@ export default function ZenithTemplate({
   return (
     <div className="min-h-screen font-serif selection:bg-[#c5a368] selection:text-white bg-transparent text-[#1a1a1a]">
       {homepageLayout.map((section: any, index: number) => {
-        const divider = index > 0 && settings.dividerStyle && settings.dividerStyle !== 'none' ? (
+        const divider = section.showDivider !== false && (
           <SectionDivider 
-            style={settings.dividerStyle} 
+            style={settings.dividerStyle || 'line'} 
             color={settings.dividerColor || settings.colorSystem?.brand?.primary || '#c5a368'} 
           />
-        ) : null;
+        );
 
         const renderSection = () => {
           if (section.type === 'hero') {

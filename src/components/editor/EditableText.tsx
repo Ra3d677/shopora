@@ -170,7 +170,7 @@ export default function EditableText({
              setIsEditing(true);
           }
         }}
-        className={`relative group inline-block ${isEditMode ? 'hover:outline-dashed hover:outline-2 hover:outline-blue-500/50 hover:outline-offset-4' : ''} ${className}`}
+        className={`relative group inline-block ${className}`}
         style={textStyles}
       >
         <Component 
@@ -181,20 +181,6 @@ export default function EditableText({
         >
           {text || (isEditMode ? 'Empty text (click to edit)' : '')}
         </Component>
-        
-        {isEditMode && (
-          <div 
-            onClick={(e) => {
-              e.stopPropagation();
-              console.log("Opening Text Inspector...");
-              setIsEditing(true);
-            }}
-            className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all z-[9999] flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.3)] cursor-pointer hover:bg-blue-600 active:scale-90 pointer-events-auto"
-          >
-            <Settings2 size={14} className="animate-pulse" />
-            <span className="text-xs font-black uppercase tracking-widest">Edit Design</span>
-          </div>
-        )}
       </motion.div>
 
       {mounted && isEditing && createPortal(

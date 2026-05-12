@@ -44,12 +44,12 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
   return (
     <div className="flex flex-col w-full font-sans bg-transparent">
       {homepageLayout.map((section: any, index: number) => {
-        const divider = index > 0 && settings.dividerStyle && settings.dividerStyle !== 'none' ? (
+        const divider = section.showDivider !== false && (
           <SectionDivider 
-            style={settings.dividerStyle} 
+            style={settings.dividerStyle || 'line'} 
             color={settings.dividerColor || settings.colorSystem?.brand?.primary || '#3b82f6'} 
           />
-        ) : null;
+        );
 
         const renderSection = () => {
           if (section.type === 'hero') {

@@ -125,13 +125,9 @@ export default function EditableButton({ label, link, slug, settingsKey, classNa
         }}
         onClick={() => setIsEditing(true)}
         style={buttonStyle}
-        className={`${className} cursor-move border-2 border-dashed border-blue-400/50 hover:border-blue-500 transition-none relative z-10 flex items-center justify-center`}
+        className={`${className} cursor-move transition-none relative z-10 flex items-center justify-center`}
       >
         {currentLabel}
-        {/* Floating "Drag" indicator */}
-        <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded flex items-center gap-1 opacity-0 group-hover:opacity-100 pointer-events-none">
-          <Move size={8} /> Drag to position
-        </div>
       </motion.div>
 
       {/* PORTALED DRAGGABLE SETTINGS PANEL */}

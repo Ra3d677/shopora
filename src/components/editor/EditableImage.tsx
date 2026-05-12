@@ -32,10 +32,7 @@ export default function EditableImage({ src, alt, slug, settingsKey, className =
   }
 
   return (
-    <div className={`relative group/edit-image w-full h-full ${isEditMode ? 'ring-2 ring-dashed ring-offset-2 ' + (isSelected ? 'ring-blue-600' : 'ring-slate-400/50 hover:ring-blue-400') : ''} transition-all`}>
-      {isEditMode && !isSelected && (
-        <div className="absolute inset-0 border-2 border-dashed border-slate-400/30 pointer-events-none z-[55] animate-pulse" />
-      )}
+    <div className={`relative group/edit-image w-full h-full transition-all`}>
       <img src={currentSrc} alt={alt} className={`${className} transition-all duration-500`} />
       
       <div className={`absolute inset-0 bg-blue-600/0 ${isSelected ? 'bg-blue-600/10' : 'group-hover/edit-image:bg-blue-600/10'} transition-all flex items-center justify-center pointer-events-none z-[60]`}>
