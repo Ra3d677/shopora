@@ -128,7 +128,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           } else if (heroStyle === 'split') {
             content = (
               <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex flex-col md:flex-row bg-transparent overflow-hidden">
-                <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-12 md:p-24 text-center md:text-left bg-zinc-900">
+                <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-12 md:p-24 text-center md:text-left bg-transparent/10 backdrop-blur-sm">
                   <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} className="max-w-xl">
                     <span className="text-[10px] uppercase font-black tracking-[0.5em] text-white/40 mb-8 block">
                       <EditableText content={sigSettings.establishedText || "ESTABLISHED 2026"} slug={slug} settingsKey="signatureSettings.establishedText" />
@@ -206,7 +206,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                   </motion.div>
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-slate-950/50" />
                 </div>
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-12 md:p-24 bg-slate-950 text-white">
+                <div className="w-full md:w-1/2 flex flex-col justify-center p-12 md:p-24 bg-transparent/20 backdrop-blur-md text-white">
                   <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
                     <div className="w-20 h-1 bg-blue-600 mb-12" />
                     <span className="text-[10px] uppercase font-black tracking-[0.5em] text-blue-500 mb-6 block">SEASONAL CAMPAIGN</span>
@@ -487,7 +487,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                       </Reveal>
                    </div>
                    <div className="relative group">
-                      <div className="aspect-square bg-slate-50 rounded-[4rem] overflow-hidden shadow-2xl relative">
+                      <div className="aspect-square bg-transparent/10 backdrop-blur-md border border-white/10 rounded-[4rem] overflow-hidden shadow-2xl relative">
                          <SmartImage 
                            src={products[0]?.images[0] || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1000&q=80"}
                            className="w-full h-full object-cover"
@@ -560,7 +560,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
                   {products.slice(0, 8).map((product) => (
                     <Link href={`/store/${slug}/product/${product.id}`} key={product.id} className="group flex flex-col">
-                      <div className="aspect-[4/5] bg-slate-50 overflow-hidden rounded-3xl mb-6 relative">
+                      <div className="aspect-[4/5] bg-transparent/10 backdrop-blur-md border border-white/10 overflow-hidden rounded-3xl mb-6 relative">
                          <SmartImage 
                            src={product.images[0]}
                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
@@ -659,7 +659,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
                        {categories.map((cat: any) => (
                          <Link key={cat.id} href={`/store/${slug}/products?category=${cat.id}`} className="flex flex-col items-center group">
-                            <div className="w-full aspect-square rounded-full overflow-hidden border-2 border-slate-50 group-hover:border-slate-900 transition-all duration-500 mb-4">
+                            <div className="w-full aspect-square rounded-full overflow-hidden border-2 border-white/20 group-hover:border-white/60 transition-all duration-500 mb-4 bg-transparent/10 backdrop-blur-sm">
                                <SmartImage src={cat.image || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=400&q=80"} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={cat.name} />
                             </div>
                             <span className="text-xs font-black uppercase tracking-widest text-slate-500 group-hover:text-black transition-colors">{cat.name}</span>

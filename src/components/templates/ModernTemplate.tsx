@@ -62,7 +62,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
             if (heroStyle === 'split') {
               return (
                 <section key={section.id} className="relative h-[80vh] w-full flex flex-col md:flex-row bg-transparent overflow-hidden">
-                  <div className="w-full md:w-1/2 flex flex-col items-start justify-center p-12 md:p-24 text-left bg-slate-50">
+                  <div className="w-full md:w-1/2 flex flex-col items-start justify-center p-12 md:p-24 text-left bg-transparent/10 backdrop-blur-sm">
                     <motion.div 
                       initial={{ opacity: 0, x: -30 }}
                       whileInView={{ opacity: 1, x: 0 }}
@@ -149,7 +149,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                   <div className="w-full md:w-1/2 relative h-full">
                     <SmartImage src={topBanners[0]?.imageUrl || modSettings.heroImage || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80"} className="absolute inset-0 w-full h-full object-cover" alt="Campaign" />
                   </div>
-                  <div className="w-full md:w-1/2 flex flex-col justify-center p-12 md:p-24 bg-white">
+                  <div className="w-full md:w-1/2 flex flex-col justify-center p-12 md:p-24 bg-transparent/5 backdrop-blur-sm">
                     <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}>
                        {(modSettings.heroBadge || isEditMode) && (
                          <div className="flex items-center gap-4 mb-8">
@@ -239,7 +239,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
               <section key={section.id} className="py-24 bg-transparent px-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                    {categories.map((cat, i) => (
-                      <Link key={cat.id} href={`/store/${slug}/category/${cat.id}`} className="group relative aspect-square overflow-hidden rounded-[2.5rem] bg-slate-100">
+                      <Link key={cat.id} href={`/store/${slug}/category/${cat.id}`} className="group relative aspect-square overflow-hidden rounded-[2.5rem] bg-transparent/10 border border-white/10 backdrop-blur-md">
                          <SmartImage src={cat.imageUrl || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80"} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={cat.name} />
                          <div className="absolute inset-0 bg-slate-900/20 group-hover:bg-slate-900/40 transition-colors" />
                          <div className="absolute inset-0 flex items-center justify-center">
@@ -280,7 +280,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                         className="group"
                       >
                         <Link href={`/store/${slug}/product/${product.id}`}>
-                          <div className="relative aspect-[3/4] overflow-hidden rounded-[3rem] bg-slate-50 mb-8">
+                          <div className="relative aspect-[3/4] overflow-hidden rounded-[3rem] bg-transparent/10 backdrop-blur-md border border-white/10 mb-8">
                              <SmartImage 
                                src={product.images?.[0] || product.image || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"} 
                                alt={product.name} 
@@ -388,7 +388,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                        {sectionTestimonials.map((t: any, idx: number) => (
-                          <div key={t.id || idx} className="p-10 rounded-[3rem] bg-slate-50 border border-slate-100 shadow-sm hover:shadow-xl transition-all group">
+                          <div key={t.id || idx} className="p-10 rounded-[3rem] bg-transparent/10 backdrop-blur-md border border-white/10 shadow-sm hover:shadow-xl transition-all group">
                              <div className="flex gap-1 mb-6 text-blue-600">
                                 {[1, 2, 3, 4, 5].map(s => <span key={s}>★</span>)}
                              </div>
