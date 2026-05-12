@@ -42,22 +42,22 @@ export default async function AdminLayout({
   const adminPath = `/store/${slug}/admin`;
 
   const mainItems = [
-    { label: 'Overview', icon: LayoutDashboard, path: '/dashboard', color: 'text-cyan-500' },
-    { label: 'Products', icon: ShoppingBag, path: '/products', color: 'text-purple-500' },
-    { label: 'Orders', icon: Package, path: '/orders', color: 'text-pink-500' },
-    { label: 'Media Hub', icon: Library, path: '/media', color: 'text-amber-500' },
-    { label: 'Categories', icon: Tag, path: '/categories', color: 'text-green-500' },
-    { label: 'Banners', icon: ImageIcon, path: '/banners', color: 'text-red-500' },
+    { label: 'Overview', iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
+    { label: 'Products', iconName: 'ShoppingBag', path: '/products', color: 'text-purple-500' },
+    { label: 'Orders', iconName: 'Package', path: '/orders', color: 'text-pink-500' },
+    { label: 'Media Hub', iconName: 'Library', path: '/media', color: 'text-amber-500' },
+    { label: 'Categories', iconName: 'Tag', path: '/categories', color: 'text-green-500' },
+    { label: 'Banners', iconName: 'ImageIcon', path: '/banners', color: 'text-red-500' },
   ];
 
   const systemItems = isSuperAdmin ? [
-    { label: 'Platform Stores', icon: Globe, path: '/platform-stores', color: 'text-indigo-500' },
-    { label: 'Templates', icon: LayoutTemplate, path: '/templates', color: 'text-fuchsia-500' },
+    { label: 'Platform Stores', iconName: 'Globe', path: '/platform-stores', color: 'text-indigo-500' },
+    { label: 'Templates', iconName: 'LayoutTemplate', path: '/templates', color: 'text-fuchsia-500' },
   ] : [];
 
   const customItems = [
-    { label: 'Store Builder', icon: Blocks, path: '/builder', color: 'text-blue-500' },
-    { label: 'General Settings', icon: Settings, path: '/settings', color: 'text-slate-500' },
+    { label: 'Store Builder', iconName: 'Blocks', path: '/builder', color: 'text-blue-500' },
+    { label: 'General Settings', iconName: 'Settings', path: '/settings', color: 'text-slate-500' },
   ];
 
   console.log("Admin Layout Session:", { id: session?.id, email: session?.email, role: session?.role });

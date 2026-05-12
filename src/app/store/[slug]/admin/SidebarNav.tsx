@@ -6,10 +6,36 @@ import { LucideIcon } from "lucide-react";
 
 interface NavItem {
   label: string;
-  icon: LucideIcon;
+  iconName: string;
   path: string;
   color: string;
 }
+
+import { 
+  LayoutDashboard, 
+  ShoppingBag, 
+  Package, 
+  Library, 
+  Tag, 
+  Image as ImageIcon,
+  Globe,
+  LayoutTemplate,
+  Blocks,
+  Settings
+} from "lucide-react";
+
+const iconMap: Record<string, LucideIcon> = {
+  LayoutDashboard,
+  ShoppingBag,
+  Package,
+  Library,
+  Tag,
+  ImageIcon,
+  Globe,
+  LayoutTemplate,
+  Blocks,
+  Settings
+};
 
 export default function SidebarNav({ 
   items, 
@@ -33,6 +59,7 @@ export default function SidebarNav({
       {items.map((item) => {
         const fullPath = `${adminPath}${item.path}`;
         const isActive = pathname === fullPath;
+        const Icon = iconMap[item.iconName] || ShoppingBag;
         return (
           <Link
             key={item.label}
@@ -43,7 +70,7 @@ export default function SidebarNav({
                 : 'hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent'
             }`}
           >
-            <item.icon className={`w-5 h-5 transition-transform duration-500 group/nav:scale-110 ${isActive ? item.color : 'text-slate-500 group-hover:text-cyan-400'}`} />
+            <Icon className={`w-5 h-5 transition-transform duration-500 group/nav:scale-110 ${isActive ? item.color : 'text-slate-500 group-hover:text-cyan-400'}`} />
             <span className="text-[11px] font-black uppercase tracking-widest">{item.label}</span>
             {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>}
           </Link>
@@ -58,6 +85,7 @@ export default function SidebarNav({
           {systemItems.map((item) => {
             const fullPath = `${adminPath}${item.path}`;
             const isActive = pathname === fullPath;
+            const Icon = iconMap[item.iconName] || Globe;
             return (
               <Link
                 key={item.label}
@@ -68,7 +96,7 @@ export default function SidebarNav({
                     : 'hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent'
                 }`}
               >
-                <item.icon className={`w-5 h-5 transition-transform duration-500 group/nav:scale-110 ${isActive ? item.color : 'text-slate-500 group-hover:text-cyan-400'}`} />
+                <Icon className={`w-5 h-5 transition-transform duration-500 group/nav:scale-110 ${isActive ? item.color : 'text-slate-500 group-hover:text-cyan-400'}`} />
                 <span className="text-[11px] font-black uppercase tracking-widest">{item.label}</span>
                 {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>}
               </Link>
@@ -85,6 +113,7 @@ export default function SidebarNav({
           {customItems.map((item) => {
             const fullPath = `${adminPath}${item.path}`;
             const isActive = pathname === fullPath;
+            const Icon = iconMap[item.iconName] || Settings;
             return (
               <Link
                 key={item.label}
@@ -95,7 +124,7 @@ export default function SidebarNav({
                     : 'hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent'
                 }`}
               >
-                <item.icon className={`w-5 h-5 transition-transform duration-500 group/nav:scale-110 ${isActive ? item.color : 'text-slate-500 group-hover:text-cyan-400'}`} />
+                <Icon className={`w-5 h-5 transition-transform duration-500 group/nav:scale-110 ${isActive ? item.color : 'text-slate-500 group-hover:text-cyan-400'}`} />
                 <span className="text-[11px] font-black uppercase tracking-widest">{item.label}</span>
                 {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>}
               </Link>
