@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { Product, Category } from "@/lib/types";
 import { deleteProduct, addProduct, updateProduct } from "../actions";
-import { Edit, Trash2, Plus, X, Loader2 } from "lucide-react";
+import { Edit, Trash2, Plus, X, Loader2, Package } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import MediaPicker from "../media/MediaPicker";
