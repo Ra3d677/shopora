@@ -156,305 +156,278 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const leastSeller = allProductsWithSales.length > 0 ? bottomProducts[0] : null;
 
   return (
-    <div className="p-8 pb-20">
-      <div className="flex justify-between items-center mb-10 print:mb-4">
+    <div className="min-h-screen bg-[#0f111a] text-slate-100 p-8 pb-24 font-sans selection:bg-cyan-500/30">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-slate-900">Analytics Dashboard</h1>
-          <p className="text-slate-500 mt-1 font-medium print:hidden">Comprehensive overview of your store's performance and order statistics.</p>
+           <h1 className="text-5xl font-black italic tracking-tighter text-white mb-2 drop-shadow-[0_0_15px_rgba(34,211,238,0.3)] uppercase">
+             Analytics <span className="text-cyan-400">Dashboard</span>
+           </h1>
+           <p className="text-slate-500 font-medium tracking-wide">Comprehensive overview of your store's digital performance.</p>
         </div>
-        <div className="flex items-center gap-4">
-          <CustomerPreviewButton slug={slug} />
-          <DateFilter />
-          <ExportButton />
+        <div className="flex items-center gap-4 bg-[#1a1d2d] p-2 rounded-2xl border border-white/5 shadow-2xl">
+           <DateFilter />
+           <ExportButton />
         </div>
       </div>
 
-      {/* Main KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {/* Revenue */}
-        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xl shadow-slate-100/50 flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-green-50 rounded-bl-full -z-10 group-hover:scale-110 transition-transform"></div>
-          <div>
-            <h4 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-2">Total Revenue</h4>
-            <div className="flex items-baseline gap-2">
-              <h3 className="text-4xl font-black text-slate-900 mb-1">${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
-              <span className={`text-xs font-bold ${revenueGrowth >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                {revenueGrowth >= 0 ? '+' : ''}{revenueGrowth.toFixed(1)}%
-              </span>
+      {/* KPI Blocks - Row 1 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+         {/* Revenue Card */}
+         <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-cyan-500/50 transition-all duration-500">
+            <div className="absolute -right-8 -top-8 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all"></div>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2">
+               <DollarSign className="w-3 h-3 text-cyan-400" /> Total Revenue
+            </h4>
+            <div className="flex items-end gap-3 mb-4">
+               <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
+                 ${totalRevenue > 1000 ? (totalRevenue/1000).toFixed(1) + 'k' : totalRevenue.toFixed(0)}
+               </h3>
+               <div className={`flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 ${revenueGrowth >= 0 ? 'bg-cyan-500/10 text-cyan-400' : 'bg-red-500/10 text-red-400'}`}>
+                  {revenueGrowth >= 0 ? '▲' : '▼'} {Math.abs(revenueGrowth).toFixed(1)}%
+               </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2 mt-4 text-sm font-bold text-green-600 bg-green-50 w-fit px-3 py-1 rounded-lg">
-            <TrendingUp className="w-4 h-4" /> Average ${averageOrderValue.toFixed(2)}/order
-          </div>
-        </div>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Vs Last Month: <span className="text-white">${prevRevenue.toFixed(0)}</span></p>
+         </div>
 
-        {/* Visitors */}
-        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xl shadow-slate-100/50 flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -z-10 group-hover:scale-110 transition-transform"></div>
-          <div>
-            <h4 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-2">Total Visitors</h4>
-            <h3 className="text-4xl font-black text-slate-900 mb-1">{totalVisits}</h3>
-          </div>
-          <div className="flex items-center gap-2 mt-4 text-sm font-bold text-blue-600 bg-blue-50 w-fit px-3 py-1 rounded-lg">
-            <Eye className="w-4 h-4" /> {conversionRate}% Conversion
-          </div>
-        </div>
-
-        {/* Retention */}
-        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xl shadow-slate-100/50 flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-bl-full -z-10 group-hover:scale-110 transition-transform"></div>
-          <div>
-            <h4 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-2">Customer Retention</h4>
-            <h3 className="text-4xl font-black text-slate-900 mb-1">{retentionRate}%</h3>
-          </div>
-          <div className="flex items-center gap-2 mt-4 text-sm font-bold text-indigo-600 bg-indigo-50 w-fit px-3 py-1 rounded-lg">
-            <Users className="w-4 h-4" /> {returningCustomers} Returning
-          </div>
-        </div>
-
-        {/* Abandonment */}
-        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xl shadow-slate-100/50 flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-red-50 rounded-bl-full -z-10 group-hover:scale-110 transition-transform"></div>
-          <div>
-            <h4 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-2">Cart Abandonment</h4>
-            <h3 className="text-4xl font-black text-slate-900 mb-1">{abandonmentRate}%</h3>
-          </div>
-          <div className="flex items-center gap-2 mt-4 text-sm font-bold text-red-600 bg-red-50 w-fit px-3 py-1 rounded-lg">
-            <ShoppingBag className="w-4 h-4" /> Lost opportunities
-          </div>
-        </div>
-      </div>
-
-      {/* Low Stock Alerts */}
-      {lowStockProducts.length > 0 && (
-        <div className="mb-8 bg-amber-50 border border-amber-100 p-6 rounded-3xl flex items-center justify-between">
-           <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-600">
-                 <Package className="w-6 h-6" />
-              </div>
-              <div>
-                 <h4 className="font-black text-amber-900">Low Stock Alert</h4>
-                 <p className="text-sm text-amber-700 font-medium">{lowStockProducts.length} products are running low on stock.</p>
-              </div>
-           </div>
-           <div className="flex gap-2">
-              {lowStockProducts.slice(0, 3).map(p => (
-                <div key={p.id} className="bg-white px-3 py-1.5 rounded-xl border border-amber-200 text-xs font-bold text-amber-800">
-                  {p.name} ({p.stock_quantity})
-                </div>
-              ))}
-           </div>
-        </div>
-      )}
-
-      {/* Best & Least Sellers */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-        {/* Best Seller Card */}
-        <div className="bg-slate-900 p-8 rounded-[2rem] shadow-2xl relative overflow-hidden group">
-           <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-500">
-              <ArrowUpCircle className="w-32 h-32 text-white" />
-           </div>
-           <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-green-500/20">
-                   <TrendingUp className="w-6 h-6" />
-                </div>
-                <h3 className="text-white font-black uppercase tracking-widest text-sm">Best Seller</h3>
-              </div>
-              {bestSeller ? (
-                <div className="flex items-center gap-6">
-                   <div className="w-24 h-24 bg-white/10 rounded-2xl overflow-hidden border border-white/20 shadow-xl">
-                      {bestSeller.image && <img src={bestSeller.image} className="w-full h-full object-cover" alt={bestSeller.name} />}
-                   </div>
-                   <div>
-                      <h4 className="text-2xl font-black text-white mb-1 line-clamp-1">{bestSeller.name}</h4>
-                      <p className="text-green-400 font-black text-3xl">{bestSeller.salesCount} <span className="text-sm uppercase tracking-widest text-white/40 ml-1">Units Sold</span></p>
-                   </div>
-                </div>
-              ) : (
-                <p className="text-slate-400 font-bold">No sales data for this period.</p>
-              )}
-           </div>
-        </div>
-
-        {/* Least Seller Card */}
-        <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-xl relative overflow-hidden group">
-           <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-500">
-              <ArrowDownCircle className="w-32 h-32 text-slate-900" />
-           </div>
-           <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-amber-500/20">
-                   <Package className="w-6 h-6" />
-                </div>
-                <h3 className="text-slate-500 font-black uppercase tracking-widest text-sm">Least Seller</h3>
-              </div>
-              {leastSeller ? (
-                <div className="flex items-center gap-6">
-                   <div className="w-24 h-24 bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 shadow-md">
-                      {leastSeller.image && <img src={leastSeller.image} className="w-full h-full object-cover" alt={leastSeller.name} />}
-                   </div>
-                   <div>
-                      <h4 className="text-2xl font-black text-slate-900 mb-1 line-clamp-1">{leastSeller.name}</h4>
-                      <p className="text-amber-600 font-black text-3xl">{leastSeller.salesCount} <span className="text-sm uppercase tracking-widest text-slate-400 ml-1">Units Sold</span></p>
-                   </div>
-                </div>
-              ) : (
-                <p className="text-slate-400 font-bold">No product data available.</p>
-              )}
-           </div>
-        </div>
-      </div>
-
-      {/* Sales Heatmap */}
-      <div className="mb-12 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm overflow-x-auto">
-        <h2 className="text-xl font-black mb-8 text-slate-900 flex items-center gap-3">
-          <Activity className="w-6 h-6 text-blue-600" /> Sales Peak Times
-        </h2>
-        <div className="min-w-[800px]">
-          <div className="flex mb-4">
-             <div className="w-20 shrink-0" />
-             {Array(24).fill(0).map((_, i) => (
-               <div key={i} className="flex-1 text-center text-[10px] font-black text-slate-400 uppercase">{i}h</div>
-             ))}
-          </div>
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, dIdx) => (
-            <div key={day} className="flex items-center mb-1">
-               <div className="w-20 shrink-0 text-xs font-black text-slate-500 uppercase tracking-widest">{day}</div>
-               {heatmap[dIdx].map((val, hIdx) => {
-                 const opacity = Math.min(val * 0.2 + 0.05, 1);
-                 return (
-                   <div 
-                     key={hIdx} 
-                     className="flex-1 aspect-square rounded-sm transition-all hover:ring-2 ring-blue-400 cursor-help"
-                     style={{ backgroundColor: `rgba(37, 99, 235, ${opacity})` }}
-                     title={`${val} orders at ${hIdx}:00 on ${day}`}
-                   />
-                 );
-               })}
+         {/* Visitors Card */}
+         <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-purple-500/50 transition-all duration-500">
+            <div className="absolute -right-8 -top-8 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-all"></div>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2">
+               <Users className="w-3 h-3 text-purple-400" /> Total Visitors
+            </h4>
+            <div className="flex items-end gap-3 mb-4">
+               <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">{totalVisits}</h3>
+               <div className="flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 bg-purple-500/10 text-purple-400">
+                  {conversionRate}% Rate
+               </div>
             </div>
-          ))}
-        </div>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Daily Average: <span className="text-white">{(totalVisits/30).toFixed(0)}</span></p>
+         </div>
+
+         {/* Orders Card */}
+         <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-pink-500/50 transition-all duration-500">
+            <div className="absolute -right-8 -top-8 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl group-hover:bg-pink-500/20 transition-all"></div>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2">
+               <ShoppingBag className="w-3 h-3 text-pink-400" /> Total Orders
+            </h4>
+            <div className="flex items-end gap-3 mb-4">
+               <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">{totalOrders}</h3>
+               <div className="flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 bg-pink-500/10 text-pink-400">
+                  {uniqueCustomers} Customers
+               </div>
+            </div>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Avg Value: <span className="text-white">${averageOrderValue.toFixed(0)}</span></p>
+         </div>
+
+         {/* Inventory Card */}
+         <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-amber-500/50 transition-all duration-500">
+            <div className="absolute -right-8 -top-8 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl group-hover:bg-amber-500/20 transition-all"></div>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2">
+               <Package className="w-3 h-3 text-amber-400" /> In Stock
+            </h4>
+            <div className="flex items-end gap-3 mb-4">
+               <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">{inStockProducts}</h3>
+               <div className="flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 bg-amber-500/10 text-amber-400">
+                  {lowStockProducts.length} Needs Attention
+               </div>
+            </div>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Active Products: <span className="text-white">{store.products.length}</span></p>
+         </div>
       </div>
 
-      <h2 className="text-xl font-black text-slate-900 mb-4 mt-12">Order Status Distribution</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        {/* Confirmed */}
-        <div className="bg-slate-900 text-white p-6 rounded-3xl shadow-xl shadow-slate-900/20 relative overflow-hidden">
-          <div className="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-          <div className="flex items-center justify-between mb-4">
-             <h4 className="text-sm font-black uppercase tracking-widest text-slate-400">Confirmed</h4>
-             <CheckCircle2 className="w-6 h-6 text-green-400" />
-          </div>
-          <div className="flex items-end gap-4">
-            <h3 className="text-5xl font-black">{confirmedPercentage}%</h3>
-            <span className="text-slate-400 font-bold mb-1">{confirmedOrdersCount} orders</span>
-          </div>
-          <div className="w-full bg-white/10 h-2 rounded-full mt-6 overflow-hidden">
-             <div className="bg-green-400 h-full rounded-full" style={{ width: `${confirmedPercentage}%` }}></div>
-          </div>
-        </div>
+      {/* Main Grid Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+         {/* Left Column: Funnel and Traffic */}
+         <div className="lg:col-span-1 space-y-8">
+            {/* Sales Funnel */}
+            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 shadow-2xl">
+               <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">Sales <span className="text-cyan-400">Funnel</span></h3>
+               <div className="space-y-6">
+                  {/* Step 1 */}
+                  <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-cyan-500/30 transition-all">
+                     <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-cyan-500/10 rounded-2xl flex items-center justify-center text-cyan-400 shadow-lg shadow-cyan-500/5">
+                           <Eye className="w-5 h-5" />
+                        </div>
+                        <div>
+                           <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Visits</p>
+                           <h4 className="text-2xl font-black text-white">{totalVisits}</h4>
+                        </div>
+                     </div>
+                  </div>
+                  {/* Step 2 */}
+                  <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-purple-500/30 transition-all">
+                     <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400 shadow-lg shadow-purple-500/5">
+                           <ShoppingBag className="w-5 h-5" />
+                        </div>
+                        <div>
+                           <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Add to Cart</p>
+                           <h4 className="text-2xl font-black text-white">{totalCartAdds}</h4>
+                        </div>
+                     </div>
+                     <span className="text-[10px] font-black text-slate-500">{totalVisits > 0 ? ((totalCartAdds/totalVisits)*100).toFixed(1) : 0}%</span>
+                  </div>
+                  {/* Step 3 */}
+                  <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-amber-500/30 transition-all">
+                     <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-400 shadow-lg shadow-amber-500/5">
+                           <DollarSign className="w-5 h-5" />
+                        </div>
+                        <div>
+                           <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Checkout</p>
+                           <h4 className="text-2xl font-black text-white">---</h4>
+                        </div>
+                     </div>
+                  </div>
+                  {/* Step 4 */}
+                  <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-green-500/30 transition-all">
+                     <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-green-500/10 rounded-2xl flex items-center justify-center text-green-400 shadow-lg shadow-green-500/5">
+                           <CheckCircle2 className="w-5 h-5" />
+                        </div>
+                        <div>
+                           <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Purchased</p>
+                           <h4 className="text-2xl font-black text-white">{totalOrders}</h4>
+                        </div>
+                     </div>
+                     <span className="text-[10px] font-black text-green-400 shadow-green-400/50 drop-shadow-md">Goal</span>
+                  </div>
+               </div>
+            </div>
 
-        {/* Pending */}
-        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden">
-          <div className="flex items-center justify-between mb-4">
-             <h4 className="text-sm font-black uppercase tracking-widest text-slate-400">Pending</h4>
-             <Clock className="w-6 h-6 text-amber-500" />
-          </div>
-          <div className="flex items-end gap-4">
-            <h3 className="text-5xl font-black text-slate-900">{pendingPercentage}%</h3>
-            <span className="text-slate-500 font-bold mb-1">{pendingOrdersCount} orders</span>
-          </div>
-          <div className="w-full bg-slate-100 h-2 rounded-full mt-6 overflow-hidden">
-             <div className="bg-amber-500 h-full rounded-full" style={{ width: `${pendingPercentage}%` }}></div>
-          </div>
-        </div>
+            {/* Smart Alerts */}
+            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5">
+               <h3 className="text-xl font-black italic text-white mb-8 tracking-tight flex items-center gap-3">
+                 <Activity className="w-5 h-5 text-amber-400" /> Smart <span className="text-amber-400">Alerts</span>
+               </h3>
+               <div className="space-y-4">
+                  {lowStockProducts.length > 0 && (
+                     <div className="bg-amber-500/5 border border-amber-500/20 p-5 rounded-3xl flex items-start gap-4">
+                        <Package className="w-5 h-5 text-amber-400 mt-1 shrink-0" />
+                        <div>
+                           <h5 className="text-[10px] font-black uppercase tracking-widest text-amber-400 mb-1">Low Inventory</h5>
+                           <p className="text-xs font-bold text-slate-400 leading-relaxed">
+                              {lowStockProducts[0].name} is critically low. Less than 5 units left.
+                           </p>
+                        </div>
+                     </div>
+                  )}
+                  <div className="bg-cyan-500/5 border border-cyan-500/20 p-5 rounded-3xl flex items-start gap-4 opacity-60">
+                     <TrendingUp className="w-5 h-5 text-cyan-400 mt-1 shrink-0" />
+                     <div>
+                        <h5 className="text-[10px] font-black uppercase tracking-widest text-cyan-400 mb-1">Conversion Growth</h5>
+                        <p className="text-xs font-bold text-slate-400 leading-relaxed">
+                           Conversion rate improved by 0.5% today. Keep it up!
+                        </p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
 
-        {/* Cancelled */}
-        <div className="bg-red-50 p-6 rounded-3xl border border-red-100 shadow-sm relative overflow-hidden">
-          <div className="flex items-center justify-between mb-4">
-             <h4 className="text-sm font-black uppercase tracking-widest text-red-400">Cancelled</h4>
-             <XCircle className="w-6 h-6 text-red-500" />
-          </div>
-          <div className="flex items-end gap-4">
-            <h3 className="text-5xl font-black text-red-600">{cancelledPercentage}%</h3>
-            <span className="text-red-400 font-bold mb-1">{cancelledOrdersCount} orders</span>
-          </div>
-          <div className="w-full bg-white h-2 rounded-full mt-6 overflow-hidden">
-             <div className="bg-red-500 h-full rounded-full" style={{ width: `${cancelledPercentage}%` }}></div>
-          </div>
-        </div>
-      </div>
+         {/* Right Column: Charts and Top Products */}
+         <div className="lg:col-span-2 space-y-8">
+            {/* Revenue Chart Placeholder / Area */}
+            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 min-h-[400px] flex flex-col">
+               <div className="flex justify-between items-center mb-10">
+                  <h3 className="text-2xl font-black italic text-white tracking-tight">Revenue <span className="text-purple-400">Trend</span></h3>
+                  <div className="bg-purple-500/10 text-purple-400 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest">Live</div>
+               </div>
+               <div className="flex-1 flex items-end gap-2 group cursor-crosshair">
+                  {/* Mock Chart Bars */}
+                  {[30, 45, 25, 60, 55, 80, 40, 70, 90, 65, 85, 100].map((h, i) => (
+                    <div 
+                      key={i} 
+                      className="flex-1 bg-gradient-to-t from-purple-600/20 to-purple-400/80 rounded-t-xl transition-all duration-700 hover:scale-y-110 hover:shadow-[0_0_15px_rgba(192,132,252,0.4)]"
+                      style={{ height: `${h}%` }}
+                    />
+                  ))}
+               </div>
+               <div className="flex justify-between mt-6 text-[10px] font-black text-slate-500 uppercase tracking-widest px-2">
+                  <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+               </div>
+            </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-          <h2 className="text-xl font-black mb-6 text-slate-900">Recent Activity</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b-2 border-slate-100 text-xs uppercase tracking-widest text-slate-400 font-black">
-                  <th className="pb-4">Order ID</th>
-                  <th className="pb-4">Customer</th>
-                  <th className="pb-4">Date</th>
-                  <th className="pb-4">Amount</th>
-                  <th className="pb-4">Status</th>
-                </tr>
-              </thead>
-              <tbody className="text-sm">
-                {recentOrders.length > 0 ? recentOrders.map((order) => (
-                  <tr key={order.id} className="border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-colors">
-                    <td className="py-5 font-bold text-slate-900">#{order.id.slice(-6).toUpperCase()}</td>
-                    <td className="py-5 font-medium">{order.customerName}</td>
-                    <td className="py-5 text-slate-500 font-medium">{new Date(order.createdAt).toLocaleDateString()}</td>
-                    <td className="py-5 font-black text-slate-900">${order.totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td className="py-5">
-                      <span className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider ${
-                        order.status === 'delivered' ? 'bg-green-100 text-green-700' :
-                        order.status === 'pending' ? 'bg-amber-100 text-amber-700' :
-                        order.status === 'cancelled' ? 'bg-red-100 text-red-700' :
-                        'bg-blue-100 text-blue-700'
-                      }`}>
-                        {order.status}
-                      </span>
-                    </td>
-                  </tr>
-                )) : (
-                  <tr>
-                    <td colSpan={5} className="py-12 text-center text-slate-400 font-bold bg-slate-50 rounded-xl mt-4 block w-full">No recent orders found.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        
-        <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-          <h2 className="text-xl font-black mb-6 text-slate-900 flex items-center justify-between">
-            Top Performers
-            <TrendingUp className="w-5 h-5 text-blue-600" />
-          </h2>
-          <div className="space-y-6">
-            {topProducts.length > 0 ? topProducts.map((product) => (
-              <div key={product.id} className="flex items-center gap-4 group">
-                <div className="h-16 w-16 bg-slate-100 rounded-2xl flex-shrink-0 overflow-hidden shadow-sm group-hover:shadow-md transition-all relative">
-                  {product.image && <img src={product.image} alt={product.name} className="w-full h-full object-cover" />}
-                </div>
-                <div className="flex-grow">
-                  <p className="font-bold text-sm text-slate-900 line-clamp-1">{product.name}</p>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">{product.salesCount} sold</p>
-                </div>
-                <div className="font-black text-lg text-slate-900 bg-slate-50 px-3 py-1 rounded-xl group-hover:bg-blue-50 transition-colors">
-                  ${product.price}
-                </div>
-              </div>
-            )) : (
-              <div className="py-12 text-center text-slate-400 font-bold bg-slate-50 rounded-2xl">
-                No sales data yet.
-              </div>
-            )}
-          </div>
-        </div>
+            {/* Top Products Table */}
+            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5">
+               <div className="flex justify-between items-center mb-10">
+                  <h3 className="text-2xl font-black italic text-white tracking-tight">Top <span className="text-cyan-400">Performers</span></h3>
+                  <div className="bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest">Top 5</div>
+               </div>
+               <div className="overflow-x-auto">
+                  <table className="w-full">
+                     <thead>
+                        <tr className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 text-left border-b border-white/5">
+                           <th className="pb-6">Product</th>
+                           <th className="pb-6">Sales</th>
+                           <th className="pb-6">Revenue</th>
+                           <th className="pb-6">Status</th>
+                        </tr>
+                     </thead>
+                     <tbody className="text-sm font-bold">
+                        {topProducts.map((p, idx) => (
+                          <tr key={p.id} className="border-b border-white/5 last:border-0 hover:bg-white/[0.02] transition-colors group">
+                             <td className="py-6 flex items-center gap-4">
+                                <div className="w-12 h-12 bg-[#0f111a] rounded-2xl overflow-hidden border border-white/5 group-hover:border-cyan-500/30 transition-all">
+                                   {p.image && <img src={p.image} className="w-full h-full object-cover" alt={p.name} />}
+                                </div>
+                                <div>
+                                   <p className="text-white group-hover:text-cyan-400 transition-colors">{p.name}</p>
+                                   <p className="text-[10px] text-slate-500 uppercase tracking-widest">{p.category?.name || "Product"}</p>
+                                </div>
+                             </td>
+                             <td className="py-6 text-slate-400">{p.salesCount} Units</td>
+                             <td className="py-6 text-white font-black">${(p.salesCount * p.price).toFixed(0)}</td>
+                             <td className="py-6">
+                                {idx === 0 ? (
+                                   <span className="bg-orange-500/10 text-orange-400 text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-orange-500/20">🔥 Hot</span>
+                                ) : p.stock_quantity < 5 ? (
+                                   <span className="bg-red-500/10 text-red-400 text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-red-500/20">⚠ Low</span>
+                                ) : (
+                                   <span className="bg-green-500/10 text-green-400 text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-green-500/20">✓ Active</span>
+                                )}
+                             </td>
+                          </tr>
+                        ))}
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+
+            {/* Heatmap Section */}
+            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 overflow-x-auto">
+               <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">Activity <span className="text-amber-400">Heatmap</span></h3>
+               <div className="min-w-[700px]">
+                  <div className="flex mb-4">
+                     <div className="w-16 shrink-0" />
+                     {Array(24).fill(0).map((_, i) => (
+                        <div key={i} className="flex-1 text-center text-[9px] font-black text-slate-500">{i}h</div>
+                     ))}
+                  </div>
+                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, dIdx) => (
+                    <div key={day} className="flex items-center mb-1.5">
+                       <div className="w-16 shrink-0 text-[10px] font-black text-slate-400 uppercase tracking-widest">{day}</div>
+                       {heatmap[dIdx].map((val, hIdx) => {
+                         const opacity = Math.min(val * 0.3 + 0.05, 1);
+                         return (
+                           <div 
+                             key={hIdx} 
+                             className="flex-1 aspect-square rounded-lg transition-all hover:scale-125 cursor-help m-[2px] shadow-sm"
+                             style={{ backgroundColor: `rgba(34, 211, 238, ${opacity})`, boxShadow: val > 0 ? '0 0 10px rgba(34, 211, 238, 0.2)' : 'none' }}
+                             title={`${val} orders at ${hIdx}:00 on ${day}`}
+                           />
+                         );
+                       })}
+                    </div>
+                  ))}
+               </div>
+            </div>
+         </div>
       </div>
     </div>
+  );
+}
   );
 }
