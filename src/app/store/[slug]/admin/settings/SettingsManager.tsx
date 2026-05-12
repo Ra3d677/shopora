@@ -1,11 +1,22 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import React, { useState, useEffect, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { saveStoreSettings } from "../actions";
 import { Settings, Loader2, Save, X, Trash2, CheckCircle2, Globe } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { StoreSettings } from "@/lib/types";
 import MediaPicker from "../media/MediaPicker";
+
+const PRESET_GRADIENTS = [
+  'linear-gradient(135deg, #f6d365 0%, #fda085 100%)',
+  'linear-gradient(to right, #4facfe 0%, #00f2fe 100%)',
+  'linear-gradient(to right, #43e97b 0%, #38f9d7 100%)',
+  'linear-gradient(to right, #fa709a 0%, #fee140 100%)',
+  'linear-gradient(to top, #30cfd0 0%, #330867 100%)',
+  'linear-gradient(to right, #ff0844 0%, #ffb199 100%)',
+  'radial-gradient(circle at center, #0f172a, #0a0c14, #000000)',
+  'linear-gradient(to bottom right, rgba(22, 78, 99, 0.4), #0a0c14, rgba(30, 58, 138, 0.4))'
+];
 
 export default function SettingsManager({ 
   initialSettings, 
@@ -383,10 +394,13 @@ export default function SettingsManager({
                               <div key={item.key} className="space-y-4">
                                 <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">{item.label}</label>
                                 <div className="flex gap-4 items-center bg-white/[0.03] p-3 rounded-[1.25rem] border border-white/[0.05] group transition-all hover:bg-white/[0.05]">
-                                  <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                                  <div 
+                                    className="relative w-12 h-12 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0"
+                                    style={{ background: (colorSystem as any)[section.key][item.key] || '#000000' }}
+                                  >
                                      <input 
                                         type="color" 
-                                        value={(colorSystem as any)[section.key][item.key] || '#000000'} 
+                                        value={((colorSystem as any)[section.key][item.key] || '').includes('gradient') ? '#000000' : ((colorSystem as any)[section.key][item.key] || '#000000')} 
                                         onChange={e => updateSettings({
                                           ...settings, 
                                           colorSystem: { 
@@ -394,21 +408,41 @@ export default function SettingsManager({
                                             [section.key]: { ...(colorSystem as any)[section.key], [item.key]: e.target.value } 
                                           }
                                         })} 
-                                        className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer" 
+                                        className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" 
+                                        title="Pick Solid Color"
                                       />
                                   </div>
-                                  <input 
-                                    type="text" 
-                                    value={(colorSystem as any)[section.key][item.key] || '#000000'} 
-                                    onChange={e => setSettings({
-                                      ...settings, 
-                                      colorSystem: { 
-                                        ...colorSystem, 
-                                        [section.key]: { ...(colorSystem as any)[section.key], [item.key]: e.target.value } 
-                                      }
-                                    })} 
-                                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-sm uppercase font-black" 
-                                  />
+                                  <div className="flex-1 flex flex-col gap-2 overflow-hidden">
+                                    <input 
+                                      type="text" 
+                                      value={(colorSystem as any)[section.key][item.key] || '#000000'} 
+                                      onChange={e => updateSettings({
+                                        ...settings, 
+                                        colorSystem: { 
+                                          ...colorSystem, 
+                                          [section.key]: { ...(colorSystem as any)[section.key], [item.key]: e.target.value } 
+                                        }
+                                      })} 
+                                      className="w-full bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
+                                    />
+                                    <div className="flex flex-wrap gap-1.5 mt-1">
+                                      {PRESET_GRADIENTS.map((grad, i) => (
+                                        <button
+                                          key={i}
+                                          onClick={() => updateSettings({
+                                            ...settings, 
+                                            colorSystem: { 
+                                              ...colorSystem, 
+                                              [section.key]: { ...(colorSystem as any)[section.key], [item.key]: grad } 
+                                            }
+                                          })}
+                                          className="w-4 h-4 rounded-full border border-white/20 hover:scale-125 transition-transform cursor-pointer shadow-lg"
+                                          style={{ background: grad }}
+                                          title="Apply Gradient"
+                                        />
+                                      ))}
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             ))}
