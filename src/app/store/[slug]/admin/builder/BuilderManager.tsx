@@ -322,27 +322,6 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                     </div>
                   )}
 
-                  {activeSection.type === 'sale' && (
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold text-slate-500 uppercase">Section Background Color</label>
-                      <div className="flex gap-4">
-                         <input 
-                           type="color" 
-                           value={activeSection.config.backgroundColor && activeSection.config.backgroundColor !== 'transparent' ? activeSection.config.backgroundColor : '#ffffff'} 
-                           onChange={(e) => updateSectionConfig(activeSection.id, 'backgroundColor', e.target.value)}
-                           className="w-12 h-12 rounded-xl cursor-pointer"
-                         />
-                         <input 
-                           type="text" 
-                           value={activeSection.config.backgroundColor || 'transparent'} 
-                           onChange={(e) => updateSectionConfig(activeSection.id, 'backgroundColor', e.target.value)}
-                           className="flex-1 px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm uppercase"
-                           placeholder="#FFFFFF or transparent"
-                         />
-                      </div>
-                    </div>
-                  )}
-
                   {activeSection.type === 'hero' && (
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-500 uppercase">Subtitle</label>
