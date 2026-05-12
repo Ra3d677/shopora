@@ -1,0 +1,108 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { LucideIcon } from "lucide-react";
+
+interface NavItem {
+  label: string;
+  icon: LucideIcon;
+  path: string;
+  color: string;
+}
+
+export default function SidebarNav({ 
+  items, 
+  adminPath,
+  systemItems,
+  customItems
+}: { 
+  items: NavItem[], 
+  adminPath: string,
+  systemItems?: NavItem[],
+  customItems?: NavItem[]
+}) {
+  const pathname = usePathname();
+
+  return (
+    <>
+      <div className="mb-4 px-4">
+        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Main Control</span>
+      </div>
+
+      {items.map((item) => {
+        const fullPath = `${adminPath}${item.path}`;
+        const isActive = pathname === fullPath;
+        return (
+          <Link
+            key={item.label}
+            href={fullPath}
+            className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group/nav ${
+              isActive 
+                ? 'bg-gradient-to-r from-cyan-500/10 to-transparent text-white border-l-2 border-cyan-500' 
+                : 'hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent'
+            }`}
+          >
+            <item.icon className={`w-5 h-5 transition-transform duration-500 group/nav:scale-110 ${isActive ? item.color : 'text-slate-500 group-hover:text-cyan-400'}`} />
+            <span className="text-[11px] font-black uppercase tracking-widest">{item.label}</span>
+            {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>}
+          </Link>
+        );
+      })}
+
+      {systemItems && systemItems.length > 0 && (
+        <div className="space-y-2 pt-6">
+          <div className="mb-4 px-4">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">System Admin</span>
+          </div>
+          {systemItems.map((item) => {
+            const fullPath = `${adminPath}${item.path}`;
+            const isActive = pathname === fullPath;
+            return (
+              <Link
+                key={item.label}
+                href={fullPath}
+                className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group/nav ${
+                  isActive 
+                    ? 'bg-gradient-to-r from-cyan-500/10 to-transparent text-white border-l-2 border-cyan-500' 
+                    : 'hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent'
+                }`}
+              >
+                <item.icon className={`w-5 h-5 transition-transform duration-500 group/nav:scale-110 ${isActive ? item.color : 'text-slate-500 group-hover:text-cyan-400'}`} />
+                <span className="text-[11px] font-black uppercase tracking-widest">{item.label}</span>
+                {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+
+      {customItems && customItems.length > 0 && (
+        <div className="space-y-2 pt-6">
+          <div className="mb-4 px-4">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Customization</span>
+          </div>
+          {customItems.map((item) => {
+            const fullPath = `${adminPath}${item.path}`;
+            const isActive = pathname === fullPath;
+            return (
+              <Link
+                key={item.label}
+                href={fullPath}
+                className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group/nav ${
+                  isActive 
+                    ? 'bg-gradient-to-r from-cyan-500/10 to-transparent text-white border-l-2 border-cyan-500' 
+                    : 'hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent'
+                }`}
+              >
+                <item.icon className={`w-5 h-5 transition-transform duration-500 group/nav:scale-110 ${isActive ? item.color : 'text-slate-500 group-hover:text-cyan-400'}`} />
+                <span className="text-[11px] font-black uppercase tracking-widest">{item.label}</span>
+                {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </>
+  );
+}

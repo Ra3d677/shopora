@@ -6,18 +6,21 @@ import {
   Settings, 
   LayoutTemplate, 
   LogOut, 
-  Image as ImageIcon,
+  Image as  ImageIcon,
   ChevronLeft,
   Palette,
   Globe,
   Package,
   Library,
-  Blocks
+  Blocks,
+  ExternalLink,
+  ChevronDown
 } from "lucide-react";
 import { getSession } from "@/lib/auth";
 import { getStoreBySlug } from "@/lib/data";
 import { redirect } from "next/navigation";
 import { logoutUser } from "@/app/auth/actions";
+import SidebarNav from "./SidebarNav";
 
 export default async function AdminLayout({
   children,
@@ -37,6 +40,25 @@ export default async function AdminLayout({
   }
 
   const adminPath = `/store/${slug}/admin`;
+
+  const mainItems = [
+    { label: 'Overview', icon: LayoutDashboard, path: '/dashboard', color: 'text-cyan-500' },
+    { label: 'Products', icon: ShoppingBag, path: '/products', color: 'text-purple-500' },
+    { label: 'Orders', icon: Package, path: '/orders', color: 'text-pink-500' },
+    { label: 'Media Hub', icon: Library, path: '/media', color: 'text-amber-500' },
+    { label: 'Categories', icon: Tag, path: '/categories', color: 'text-green-500' },
+    { label: 'Banners', icon: ImageIcon, path: '/banners', color: 'text-red-500' },
+  ];
+
+  const systemItems = isSuperAdmin ? [
+    { label: 'Platform Stores', icon: Globe, path: '/platform-stores', color: 'text-indigo-500' },
+    { label: 'Templates', icon: LayoutTemplate, path: '/templates', color: 'text-fuchsia-500' },
+  ] : [];
+
+  const customItems = [
+    { label: 'Store Builder', icon: Blocks, path: '/builder', color: 'text-blue-500' },
+    { label: 'General Settings', icon: Settings, path: '/settings', color: 'text-slate-500' },
+  ];
 
   console.log("Admin Layout Session:", { id: session?.id, email: session?.email, role: session?.role });
 
@@ -59,66 +81,12 @@ export default async function AdminLayout({
         </div>
 
         <nav className="flex-1 px-6 py-8 space-y-2 overflow-y-auto custom-scrollbar">
-          <div className="mb-4 px-4">
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Main Control</span>
-          </div>
-
-          {[
-            { label: 'Overview', icon: LayoutDashboard, path: '/dashboard', color: 'text-cyan-500' },
-            { label: 'Products', icon: ShoppingBag, path: '/products', color: 'text-purple-500' },
-            { label: 'Orders', icon: Package, path: '/orders', color: 'text-pink-500' },
-            { label: 'Media Hub', icon: Library, path: '/media', color: 'text-amber-500' },
-            { label: 'Categories', icon: Tag, path: '/categories', color: 'text-green-500' },
-            { label: 'Banners', icon: ImageIcon, path: '/banners', color: 'text-red-500' },
-          ].map((item) => {
-            const fullPath = `${adminPath}${item.path}`;
-            const isActive = pathname === fullPath;
-            return (
-              <Link
-                key={item.label}
-                href={fullPath}
-                className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group/nav ${
-                  isActive 
-                    ? 'bg-gradient-to-r from-cyan-500/10 to-transparent text-white border-l-2 border-cyan-500' 
-                    : 'hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent'
-                }`}
-              >
-                <item.icon className={`w-5 h-5 transition-transform duration-500 group-hover/nav:scale-110 ${isActive ? item.color : 'text-slate-500 group-hover:text-cyan-400'}`} />
-                <span className="text-[11px] font-black uppercase tracking-widest">{item.label}</span>
-                {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>}
-              </Link>
-            );
-          })}
-
-          {session.email === 'ksh128395@gmail.com' && (
-            <div className="space-y-2 pt-6">
-              <div className="mb-4 px-4">
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">System Admin</span>
-              </div>
-              <Link href={`${adminPath}/platform-stores`} className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent ${pathname === `${adminPath}/platform-stores` ? 'text-white' : ''}`}>
-                <Globe className="w-5 h-5 text-indigo-500" />
-                <span className="text-[11px] font-black uppercase tracking-widest">Platform Stores</span>
-              </Link>
-              <Link href={`${adminPath}/templates`} className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent ${pathname === `${adminPath}/templates` ? 'text-white' : ''}`}>
-                <LayoutTemplate className="w-5 h-5 text-fuchsia-500" />
-                <span className="text-[11px] font-black uppercase tracking-widest">Templates</span>
-              </Link>
-            </div>
-          )}
-
-          <div className="space-y-2 pt-6">
-            <div className="mb-4 px-4">
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Customization</span>
-            </div>
-            <Link href={`${adminPath}/builder`} className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent ${pathname === `${adminPath}/builder` ? 'text-white' : ''}`}>
-              <Blocks className="w-5 h-5 text-blue-500" />
-              <span className="text-[11px] font-black uppercase tracking-widest">Store Builder</span>
-            </Link>
-            <Link href={`${adminPath}/settings`} className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent ${pathname === `${adminPath}/settings` ? 'text-white' : ''}`}>
-              <Settings className="w-5 h-5 text-slate-500" />
-              <span className="text-[11px] font-black uppercase tracking-widest">General Settings</span>
-            </Link>
-          </div>
+          <SidebarNav 
+            items={mainItems} 
+            adminPath={adminPath} 
+            systemItems={systemItems}
+            customItems={customItems}
+          />
         </nav>
 
         <div className="p-8 border-t border-white/[0.05] bg-black/20">
