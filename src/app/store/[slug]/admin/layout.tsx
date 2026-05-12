@@ -91,9 +91,9 @@ export default async function AdminLayout({
 
         <div className="p-8 border-t border-white/[0.05] bg-black/20">
            <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-600 flex items-center justify-center text-white font-black italic shadow-lg shadow-pink-500/10">{session.email[0].toUpperCase()}</div>
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-600 flex items-center justify-center text-white font-black italic shadow-lg shadow-pink-500/10">{(session.email?.[0] || 'A').toUpperCase()}</div>
               <div className="overflow-hidden">
-                 <p className="text-[10px] font-black text-white uppercase tracking-tighter truncate">{session.email.split('@')[0]}</p>
+                 <p className="text-[10px] font-black text-white uppercase tracking-tighter truncate">{session.email?.split('@')[0] || 'Admin'}</p>
                  <div className="flex items-center gap-1.5">
                     <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse"></div>
                     <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Uplink Active</p>
@@ -124,7 +124,7 @@ export default async function AdminLayout({
               <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">
                  <span>Terminal</span>
                  <ChevronDown className="w-3 h-3 rotate-[-90deg]" />
-                 <span className="text-cyan-400 italic">{store.name.toUpperCase()}</span>
+                 <span className="text-cyan-400 italic">{(store.name || 'Store').toUpperCase()}</span>
               </div>
            </div>
            
