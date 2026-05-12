@@ -41,109 +41,141 @@ export default async function AdminLayout({
   console.log("Admin Layout Session:", { id: session?.id, email: session?.email, role: session?.role });
 
   return (
-    <div className="flex min-h-screen bg-slate-50 font-sans text-slate-900">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white text-slate-600 flex flex-col fixed inset-y-0 border-r border-slate-200 z-40 shadow-sm">
-        <div className="p-6 border-b border-slate-100 flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-600/20">
-            <ShoppingBag size={20} />
-          </div>
-          <div>
-            <span className="font-black text-slate-900 tracking-tight text-lg block leading-none">Shopora</span>
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mt-1">Control Center</span>
+    <div className="flex min-h-screen bg-[#0a0c14] text-slate-300 font-sans selection:bg-cyan-500/30 overflow-hidden">
+      {/* Sidebar - Premium Glassmorphic */}
+      <aside className="w-80 bg-[#0f111a]/80 backdrop-blur-3xl border-r border-white/5 flex flex-col fixed inset-y-0 z-40 group overflow-hidden">
+        <div className="absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent"></div>
+        
+        <div className="p-10 border-b border-white/[0.03]">
+          <div className="flex items-center gap-4 group/logo">
+            <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.3)] group-hover/logo:rotate-12 transition-transform duration-500">
+              <ShoppingBag className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-black italic tracking-tighter text-white uppercase leading-none">Shopora</h1>
+              <p className="text-[8px] font-black tracking-[0.4em] text-cyan-400 uppercase mt-1">Admin OS</p>
+            </div>
           </div>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto custom-scrollbar">
-          <div className="mb-2 px-3">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Main Menu</span>
+        <nav className="flex-1 px-6 py-8 space-y-2 overflow-y-auto custom-scrollbar">
+          <div className="mb-4 px-4">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Main Control</span>
           </div>
+
           {[
-            { label: 'Overview', icon: LayoutDashboard, path: '/dashboard', color: 'text-blue-600' },
-            { label: 'Products', icon: ShoppingBag, path: '/products', color: 'text-purple-600' },
-            { label: 'Orders', icon: Package, path: '/orders', color: 'text-pink-600' },
-            { label: 'Media Hub', icon: Library, path: '/media', color: 'text-amber-600' },
-            { label: 'Categories', icon: Tag, path: '/categories', color: 'text-green-600' },
-            { label: 'Banners', icon: ImageIcon, path: '/banners', color: 'text-red-600' },
-          ].map((item) => (
-            <Link 
-              key={item.label}
-              href={`${adminPath}${item.path}`} 
-              className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-all group"
-            >
-              <item.icon className={`w-5 h-5 ${item.color} opacity-70 group-hover:opacity-100 transition-all`} />
-              <span className="font-bold text-sm text-slate-600 group-hover:text-slate-900 transition-colors">{item.label}</span>
-            </Link>
-          ))}
+            { label: 'Overview', icon: LayoutDashboard, path: '/dashboard', color: 'text-cyan-500' },
+            { label: 'Products', icon: ShoppingBag, path: '/products', color: 'text-purple-500' },
+            { label: 'Orders', icon: Package, path: '/orders', color: 'text-pink-500' },
+            { label: 'Media Hub', icon: Library, path: '/media', color: 'text-amber-500' },
+            { label: 'Categories', icon: Tag, path: '/categories', color: 'text-green-500' },
+            { label: 'Banners', icon: ImageIcon, path: '/banners', color: 'text-red-500' },
+          ].map((item) => {
+            const fullPath = `${adminPath}${item.path}`;
+            const isActive = pathname === fullPath;
+            return (
+              <Link
+                key={item.label}
+                href={fullPath}
+                className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group/nav ${
+                  isActive 
+                    ? 'bg-gradient-to-r from-cyan-500/10 to-transparent text-white border-l-2 border-cyan-500' 
+                    : 'hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent'
+                }`}
+              >
+                <item.icon className={`w-5 h-5 transition-transform duration-500 group-hover/nav:scale-110 ${isActive ? item.color : 'text-slate-500 group-hover:text-cyan-400'}`} />
+                <span className="text-[11px] font-black uppercase tracking-widest">{item.label}</span>
+                {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>}
+              </Link>
+            );
+          })}
 
           {session.email === 'ksh128395@gmail.com' && (
-            <>
-              <div className="my-6 border-t border-slate-100 pt-6 px-3">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">System Admin</span>
+            <div className="space-y-2 pt-6">
+              <div className="mb-4 px-4">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">System Admin</span>
               </div>
-              <Link href={`${adminPath}/platform-stores`} className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-all group">
-                <Globe className="w-5 h-5 text-indigo-500 opacity-70 group-hover:opacity-100" />
-                <span className="font-bold text-sm text-slate-600 group-hover:text-slate-900">Platform Stores</span>
+              <Link href={`${adminPath}/platform-stores`} className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent ${pathname === `${adminPath}/platform-stores` ? 'text-white' : ''}`}>
+                <Globe className="w-5 h-5 text-indigo-500" />
+                <span className="text-[11px] font-black uppercase tracking-widest">Platform Stores</span>
               </Link>
-              <Link href={`${adminPath}/templates`} className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-all group">
-                <LayoutTemplate className="w-5 h-5 text-fuchsia-500 opacity-70 group-hover:opacity-100" />
-                <span className="font-bold text-sm text-slate-600 group-hover:text-slate-900">Templates</span>
+              <Link href={`${adminPath}/templates`} className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent ${pathname === `${adminPath}/templates` ? 'text-white' : ''}`}>
+                <LayoutTemplate className="w-5 h-5 text-fuchsia-500" />
+                <span className="text-[11px] font-black uppercase tracking-widest">Templates</span>
               </Link>
-            </>
+            </div>
           )}
 
-          <div className="my-6 border-t border-slate-100 pt-6 px-3">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Settings</span>
+          <div className="space-y-2 pt-6">
+            <div className="mb-4 px-4">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Customization</span>
+            </div>
+            <Link href={`${adminPath}/builder`} className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent ${pathname === `${adminPath}/builder` ? 'text-white' : ''}`}>
+              <Blocks className="w-5 h-5 text-blue-500" />
+              <span className="text-[11px] font-black uppercase tracking-widest">Store Builder</span>
+            </Link>
+            <Link href={`${adminPath}/settings`} className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent ${pathname === `${adminPath}/settings` ? 'text-white' : ''}`}>
+              <Settings className="w-5 h-5 text-slate-500" />
+              <span className="text-[11px] font-black uppercase tracking-widest">General Settings</span>
+            </Link>
           </div>
-          <Link href={`${adminPath}/builder`} className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-all group">
-            <Blocks className="w-5 h-5 text-blue-600 opacity-70 group-hover:opacity-100" />
-            <span className="font-bold text-sm text-slate-600 group-hover:text-slate-900">Store Builder</span>
-          </Link>
-          <Link href={`${adminPath}/settings`} className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-all group">
-            <Settings className="w-5 h-5 text-slate-500 opacity-70 group-hover:opacity-100" />
-            <span className="font-bold text-sm text-slate-600 group-hover:text-slate-900">General Settings</span>
-          </Link>
         </nav>
 
-        <div className="p-4 border-t border-slate-100 bg-slate-50/50">
-          <div className="flex items-center gap-3 mb-4 px-2">
-            <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-600 uppercase">
-              {session.email[0]}
-            </div>
-            <div className="flex flex-col overflow-hidden">
-              <span className="text-xs font-bold text-slate-900 truncate">{session.email.split('@')[0]}</span>
-              <span className="text-[10px] text-slate-500 font-bold uppercase">Administrator</span>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <Link href={`/store/${slug}`} target="_blank" className="flex-1 flex items-center justify-center p-2 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-blue-600 transition-all">
-              <Globe size={16} />
-            </Link>
-            <form action={logoutUser} className="flex-1">
-              <button type="submit" className="w-full flex items-center justify-center p-2 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-red-600 transition-all">
-                <LogOut size={16} />
-              </button>
-            </form>
-          </div>
+        <div className="p-8 border-t border-white/[0.05] bg-black/20">
+           <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] mb-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-600 flex items-center justify-center text-white font-black italic shadow-lg shadow-pink-500/10">{session.email[0].toUpperCase()}</div>
+              <div className="overflow-hidden">
+                 <p className="text-[10px] font-black text-white uppercase tracking-tighter truncate">{session.email.split('@')[0]}</p>
+                 <div className="flex items-center gap-1.5">
+                    <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse"></div>
+                    <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Uplink Active</p>
+                 </div>
+              </div>
+           </div>
+           <div className="flex gap-2">
+              <Link href={`/store/${slug}`} target="_blank" className="flex-1 flex items-center justify-center py-3 rounded-xl bg-white/[0.03] border border-white/5 text-slate-500 hover:text-cyan-400 hover:border-cyan-500/30 transition-all">
+                <ExternalLink size={14} />
+              </Link>
+              <form action={logoutUser} className="flex-1">
+                <button type="submit" className="w-full flex items-center justify-center py-3 rounded-xl bg-white/[0.03] border border-white/5 text-slate-500 hover:text-red-500 hover:border-red-500/30 transition-all">
+                  <LogOut size={14} />
+                </button>
+              </form>
+           </div>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 ml-64 min-h-screen flex flex-col">
-        {/* Header */}
-        <header className="h-20 bg-white border-b border-slate-200 px-10 flex items-center justify-between sticky top-0 z-30">
-          <div className="flex items-center gap-4">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <h2 className="text-xl font-black text-slate-800 tracking-tight">{store.name}</h2>
-          </div>
-          <div className="flex items-center gap-4">
-             <Link href={`${adminPath}/settings`} className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-all border border-slate-100">
-                <Settings size={18} />
-             </Link>
-          </div>
+      <main className="flex-1 ml-80 flex flex-col relative overflow-hidden bg-[#0a0c14]">
+        {/* Background Decorations */}
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-cyan-500/5 blur-[150px] -z-10 rounded-full"></div>
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-pink-500/5 blur-[150px] -z-10 rounded-full"></div>
+        
+        {/* Header - Transparent High End */}
+        <header className="h-24 border-b border-white/[0.05] flex items-center justify-between px-12 backdrop-blur-md bg-[#0a0c14]/50 z-30 sticky top-0">
+           <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">
+                 <span>Terminal</span>
+                 <ChevronDown className="w-3 h-3 rotate-[-90deg]" />
+                 <span className="text-cyan-400 italic">{store.name.toUpperCase()}</span>
+              </div>
+           </div>
+           
+           <div className="flex items-center gap-8">
+              <div className="flex flex-col items-end">
+                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Live Endpoint</p>
+                 <Link href={`/store/${slug}`} target="_blank" className="text-xs font-black text-white hover:text-cyan-400 transition-colors uppercase italic flex items-center gap-2">
+                    {slug}.shopora.app <ExternalLink className="w-3 h-3" />
+                 </Link>
+              </div>
+              <div className="w-[1px] h-10 bg-white/5"></div>
+              <button className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/20 transition-all group">
+                 <Settings className="w-5 h-5 group-hover:rotate-90 transition-transform duration-700" />
+              </button>
+           </div>
         </header>
 
-        <div className="p-10 flex-1">
+        {/* Content Area */}
+        <div className="flex-1 p-12 relative">
           {children}
         </div>
       </main>

@@ -61,22 +61,22 @@ export default function SettingsManager({
   ];
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 pb-32">
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+    <div className="space-y-10 animate-in fade-in duration-700 pb-32">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
         <div>
-          <h1 className="text-4xl font-black tracking-tight text-slate-900">
-            Store Settings
+          <h1 className="text-5xl font-black italic tracking-tighter text-white uppercase">
+            Store <span className="text-cyan-400">Core</span>
           </h1>
-          <p className="text-slate-500 mt-1 font-medium">Configure your store's general information and visual identity.</p>
+          <p className="text-slate-500 mt-2 font-medium tracking-widest text-[10px] uppercase">Master control for your brand identity and ecosystem.</p>
         </div>
         
-        <div className="flex bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto max-w-full no-scrollbar">
+        <div className="flex bg-white/5 backdrop-blur-3xl p-2 rounded-[2rem] border border-white/5 shadow-2xl overflow-x-auto max-w-full no-scrollbar">
           {tabs.map(tab => (
             <button
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-3 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${activeTab === tab.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'}`}
+              className={`px-8 py-4 rounded-3xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 whitespace-nowrap ${activeTab === tab.id ? 'bg-cyan-500 text-white shadow-[0_10px_20px_rgba(6,182,212,0.3)] scale-105' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}
             >
               {tab.label}
             </button>
@@ -86,43 +86,46 @@ export default function SettingsManager({
 
       <div className="relative">
         <form onSubmit={handleSave}>
-          <div className="space-y-8">
+          <div className="space-y-10">
             {activeTab === 'general' && (
-              <div className="space-y-8 animate-in fade-in duration-500">
+              <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">
                 {/* Identity Settings */}
-                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
-                    <h2 className="text-xl font-black text-slate-900">Brand Identity</h2>
+                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 blur-[100px] -z-10 group-hover:bg-cyan-500/10 transition-all"></div>
+                  
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Brand Matrix</h2>
                   </div>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Store Name</label>
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Market Name</label>
                       <input 
                         type="text" 
                         value={settings.storeName} 
                         onChange={e => updateSettings({...settings, storeName: e.target.value})} 
-                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-bold" 
-                        placeholder="Enter Store Name"
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black uppercase tracking-tight italic" 
+                        placeholder="Enter Identifier"
                       />
                     </div>
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Store Logo</label>
-                      <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Signature Logo</label>
+                      <div className="bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] p-4">
                         <MediaPicker 
                           slug={slug}
                           value={settings.logoUrl || ''} 
                           onChange={url => updateSettings({...settings, logoUrl: url})} 
+                          className="bg-transparent"
                         />
                       </div>
                     </div>
 
-                    <div className="lg:col-span-2 bg-slate-50 p-6 rounded-3xl border border-slate-100 flex flex-col md:flex-row gap-8">
-                      <div className="flex-1 space-y-4">
-                        <div className="flex justify-between items-center px-1">
-                          <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Logo Height</h4>
-                          <span className="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full">{settings.headerSettings?.logoHeight || 40}PX</span>
+                    <div className="lg:col-span-2 bg-white/[0.02] p-8 rounded-[2rem] border border-white/[0.03] flex flex-col md:flex-row gap-10">
+                      <div className="flex-1 space-y-6">
+                        <div className="flex justify-between items-center px-2">
+                          <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Vertical Scale</h4>
+                          <span className="text-[10px] font-black text-cyan-400 bg-cyan-500/10 px-4 py-1.5 rounded-full border border-cyan-500/20">{settings.headerSettings?.logoHeight || 40}PX</span>
                         </div>
                         <input 
                           type="range" 
@@ -131,16 +134,16 @@ export default function SettingsManager({
                           step="4"
                           value={settings.headerSettings?.logoHeight || 40} 
                           onChange={(e) => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), logoHeight: Number(e.target.value)}})} 
-                          className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                          className="w-full h-1.5 bg-white/5 rounded-lg appearance-none cursor-pointer accent-cyan-500"
                         />
                       </div>
 
-                      <div className="w-[1px] bg-slate-200 hidden md:block"></div>
+                      <div className="w-[1px] bg-white/5 hidden md:block"></div>
 
                       <div className="flex-1 flex items-center justify-between">
                         <div>
-                          <h4 className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Transparent Logo Mode</h4>
-                          <p className="text-[9px] text-slate-500 mt-1 font-medium">Blends logo background with the header.</p>
+                          <h4 className="text-[10px] font-black text-white uppercase tracking-[0.2em]">Alpha Blend Mode</h4>
+                          <p className="text-[9px] text-slate-500 mt-2 font-medium tracking-wide">Sync logo transparency with header matrix.</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input 
@@ -155,47 +158,47 @@ export default function SettingsManager({
                               }
                             })}
                           />
-                          <div className="w-12 h-6 bg-slate-200 rounded-full peer peer-checked:bg-blue-600 transition-all after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-6"></div>
+                          <div className="w-14 h-7 bg-white/5 rounded-full peer peer-checked:bg-cyan-500 transition-all after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:after:translate-x-7"></div>
                         </label>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
-                    <h2 className="text-xl font-black text-slate-900">Contact Information</h2>
+                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Comm Channels</h2>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Support Email</label>
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Uplink Email</label>
                       <input 
                         type="email" 
                         value={settings.contactInfo?.email || ''} 
                         onChange={e => updateSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), email: e.target.value}})} 
-                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-bold" 
-                        placeholder="support@domain.com"
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black italic" 
+                        placeholder="support@hq.com"
                       />
                     </div>
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Phone Number</label>
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Voice Direct</label>
                       <input 
                         type="text" 
                         value={settings.contactInfo?.phone || ''} 
                         onChange={e => updateSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), phone: e.target.value}})} 
-                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-bold" 
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black tracking-widest" 
                         placeholder="+1 (000) 000-0000"
                       />
                     </div>
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">WhatsApp Number</label>
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Secure WhatsApp</label>
                       <input 
                         type="text" 
                         value={settings.contactInfo?.whatsapp || ''} 
                         onChange={e => updateSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), whatsapp: e.target.value}})} 
-                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-bold border-l-4 border-l-green-500" 
+                        className="w-full bg-white/[0.03] border border-green-500/20 rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all font-black tracking-widest border-l-4 border-l-green-500" 
                         placeholder="+1 (000) 000-0000"
                       />
                     </div>
@@ -205,37 +208,37 @@ export default function SettingsManager({
             )}
             
             {activeTab === 'header' && (
-              <div className="space-y-8 animate-in fade-in duration-500">
-                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
-                    <h2 className="text-xl font-black text-slate-900">Header Layout</h2>
+              <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">
+                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Header Topology</h2>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {[
-                      { id: 'default', name: 'Default', desc: 'Original template layout structure.' },
-                      { id: 'standard', name: 'Standard', desc: 'Logo Left, Center Nav, Right Actions.' },
-                      { id: 'centered', name: 'Centered', desc: 'Links Left, Logo Center, Right Actions.' },
-                      { id: 'minimal', name: 'Minimal', desc: 'Logo Left, Discrete Hamburger Right.' },
-                      { id: 'luxury', name: 'Luxury', desc: 'Vertical Stacked Identity & Navigation.' },
-                      { id: 'hamburger', name: 'Mobile First', desc: 'Hamburger Left, Logo Center, Right Icons.' }
+                      { id: 'default', name: 'Legacy', desc: 'Original structure parameters.' },
+                      { id: 'standard', name: 'Symmetric', desc: 'Logo Left, Balanced Central Matrix.' },
+                      { id: 'centered', name: 'Focus', desc: 'Links Left, Identity Center Node.' },
+                      { id: 'minimal', name: 'Discrete', desc: 'Stealth Identity, Action Focused.' },
+                      { id: 'luxury', name: 'High-End', desc: 'Vertical Stacked Premium Identity.' },
+                      { id: 'hamburger', name: 'Fluid', desc: 'Mobile-First Dynamic Interface.' }
                     ].map((layout) => (
                       <label 
                         key={layout.id} 
-                        className={`group relative cursor-pointer p-6 rounded-2xl border transition-all ${
+                        className={`group relative cursor-pointer p-8 rounded-3xl border transition-all duration-500 ${
                           (settings.headerSettings?.layout || 'default') === layout.id 
-                            ? 'border-blue-600 bg-blue-50 shadow-sm' 
-                            : 'border-slate-200 bg-white hover:border-slate-300'
+                            ? 'border-cyan-500/50 bg-cyan-500/5 shadow-[0_0_30px_rgba(6,182,212,0.1)]' 
+                            : 'border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/[0.04]'
                         }`}
                       >
-                        <div className="flex justify-between items-start mb-4">
-                           <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${
+                        <div className="flex justify-between items-start mb-6">
+                           <div className={`w-10 h-10 rounded-2xl border flex items-center justify-center transition-all duration-500 ${
                              (settings.headerSettings?.layout || 'default') === layout.id 
-                               ? 'bg-blue-600 border-blue-500 text-white' 
-                               : 'bg-slate-50 border-slate-200 text-slate-300'
+                               ? 'bg-cyan-500 border-cyan-400 text-white shadow-lg shadow-cyan-500/30' 
+                               : 'bg-white/5 border-white/5 text-slate-700 group-hover:text-cyan-400'
                            }`}>
-                             <div className="w-1.5 h-1.5 rounded-full bg-current"></div>
+                             <div className="w-2 h-2 rounded-full bg-current"></div>
                            </div>
                            <input 
                              type="radio" 
@@ -246,36 +249,37 @@ export default function SettingsManager({
                              className="sr-only"
                            />
                         </div>
-                        <p className={`font-bold text-sm mb-1 transition-colors ${(settings.headerSettings?.layout || 'default') === layout.id ? 'text-blue-600' : 'text-slate-900'}`}>{layout.name}</p>
-                        <p className="text-xs text-slate-500 leading-relaxed">{layout.desc}</p>
+                        <p className={`font-black text-base mb-2 transition-colors uppercase italic ${(settings.headerSettings?.layout || 'default') === layout.id ? 'text-cyan-400' : 'text-white'}`}>{layout.name}</p>
+                        <p className="text-[10px] text-slate-500 leading-relaxed font-medium uppercase tracking-widest">{layout.desc}</p>
                       </label>
                     ))}
                   </div>
                 </div>
 
-                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-                   <div className="flex justify-between items-center mb-8">
-                    <div className="flex items-center gap-3">
-                      <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
-                      <h2 className="text-xl font-black text-slate-900">Navigation Links</h2>
+                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
+                   <div className="flex justify-between items-center mb-10">
+                    <div className="flex items-center gap-4">
+                      <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                      <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Navigation Nodes</h2>
                     </div>
                     <button 
                       type="button"
                       onClick={() => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: [...(settings.headerSettings?.links || [{id: '1', label: 'Home', url: `/store/${slug}`}, {id: '2', label: 'Shop', url: `/store/${slug}/categories`}]), {id: Math.random().toString(36).substr(2, 9), label: 'New Link', url: '#'}]}})}
-                      className="px-6 py-3 bg-blue-600 text-white rounded-xl font-bold text-xs hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20"
+                      className="px-8 py-4 bg-cyan-500 text-white rounded-[1.5rem] font-black text-[10px] uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_10px_25px_rgba(6,182,212,0.3)]"
                     >
-                      + Add Link
+                      + Inject Link
                     </button>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {((settings.headerSettings?.links?.length ?? 0) > 0 ? settings.headerSettings!.links! : [
                       {id: '1', label: 'Home', url: `/store/${slug}`},
                       {id: '2', label: 'Shop', url: `/store/${slug}/categories`}
                     ]).map((link: any, idx: number) => (
-                      <div key={link.id} className="flex gap-4 items-center p-6 bg-slate-50 border border-slate-200 rounded-2xl hover:border-slate-300 transition-all">
-                        <div className="flex-1 space-y-3">
-                           <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Label</label>
+                      <div key={link.id} className="flex gap-6 items-center p-8 bg-white/[0.02] border border-white/[0.05] rounded-[2rem] hover:border-white/10 transition-all group/node relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl -z-10 group-hover/node:bg-cyan-500/5 transition-all"></div>
+                        <div className="flex-1 space-y-4">
+                           <label className="block text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Label</label>
                            <input 
                              type="text"
                              value={link.label}
@@ -288,11 +292,11 @@ export default function SettingsManager({
                                newLinks[idx].label = e.target.value;
                                updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
                              }}
-                             className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all font-bold text-sm"
+                             className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-5 py-3 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-black text-xs uppercase italic"
                            />
                         </div>
-                        <div className="flex-[2] space-y-3">
-                           <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">URL / Path</label>
+                        <div className="flex-[2] space-y-4">
+                           <label className="block text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Uplink Path</label>
                            <input 
                              type="text"
                              value={link.url}
@@ -305,10 +309,10 @@ export default function SettingsManager({
                                newLinks[idx].url = e.target.value;
                                updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
                              }}
-                             className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all font-bold text-sm"
+                             className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-5 py-3 text-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-bold text-xs"
                            />
                         </div>
-                        <div className="pt-7">
+                        <div className="pt-8">
                           <button 
                             type="button"
                             onClick={() => {
@@ -320,9 +324,9 @@ export default function SettingsManager({
                                newLinks.splice(idx, 1);
                                updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
                             }}
-                            className="w-10 h-10 bg-red-50 text-red-500 border border-red-100 rounded-xl flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
+                            className="w-12 h-12 bg-rose-500/5 text-rose-500 border border-rose-500/10 rounded-2xl flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all shadow-xl"
                           >
-                            <Trash2 size={18} />
+                            <Trash2 size={20} />
                           </button>
                         </div>
                       </div>
@@ -331,46 +335,46 @@ export default function SettingsManager({
                 </div>
               </div>
             )}
-
+            
             {activeTab === 'theme' && (
-              <div className="space-y-8 animate-in fade-in duration-500">
-                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
-                    <h2 className="text-xl font-black text-slate-900">Color System</h2>
+              <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">
+                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Color Algorithm</h2>
                   </div>
 
-                  <div className="space-y-8">
+                  <div className="space-y-10">
                      {[
-                       { title: 'Backgrounds', key: 'backgrounds', items: [
-                         { key: 'home', label: 'Home Page' },
-                         { key: 'shop', label: 'Shop Page' },
-                         { key: 'categories', label: 'Categories Page' }
+                       { title: 'Base Matrix', key: 'backgrounds', items: [
+                         { key: 'home', label: 'Home Node' },
+                         { key: 'shop', label: 'Shop Node' },
+                         { key: 'categories', label: 'Category Node' }
                        ]},
-                       { title: 'Text Colors', key: 'text', items: [
-                         { key: 'primary', label: 'Primary Text' },
-                         { key: 'secondary', label: 'Secondary Text' }
+                       { title: 'Text Spectrum', key: 'text', items: [
+                         { key: 'primary', label: 'Primary' },
+                         { key: 'secondary', label: 'Dimmed' }
                        ]},
-                       { title: 'Brand Colors', key: 'brand', items: [
-                         { key: 'primary', label: 'Main Brand Color' }
+                       { title: 'Signal Colors', key: 'brand', items: [
+                         { key: 'primary', label: 'Primary Signal' }
                        ]},
-                       { title: 'Footer Colors', key: 'footer', items: [
-                         { key: 'background', label: 'Background' },
-                         { key: 'text', label: 'Text Color' }
+                       { title: 'Footer Layer', key: 'footer', items: [
+                         { key: 'background', label: 'Matrix' },
+                         { key: 'text', label: 'Symbol' }
                        ]},
-                       { title: 'Product UI', key: 'product', items: [
-                         { key: 'price', label: 'Price Tag' },
-                         { key: 'salePrice', label: 'Sale Price' }
+                       { title: 'Economic UI', key: 'product', items: [
+                         { key: 'price', label: 'Base Rate' },
+                         { key: 'salePrice', label: 'Impact Rate' }
                        ]}
                      ].map((section) => (
-                       <div key={section.key} className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                          <h3 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-6 pb-2 border-b border-slate-200">{section.title}</h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                       <div key={section.key} className="bg-white/[0.01] p-8 rounded-[2rem] border border-white/[0.03]">
+                          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600 mb-8 pb-4 border-b border-white/5">{section.title}</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {section.items.map((item) => (
-                              <div key={item.key} className="space-y-3">
-                                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">{item.label}</label>
-                                <div className="flex gap-3 items-center bg-white p-2 rounded-xl border border-slate-200 shadow-sm group">
-                                  <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-slate-100 shadow-inner">
+                              <div key={item.key} className="space-y-4">
+                                <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">{item.label}</label>
+                                <div className="flex gap-4 items-center bg-white/[0.03] p-3 rounded-[1.25rem] border border-white/[0.05] group transition-all hover:bg-white/[0.05]">
+                                  <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-white/10 shadow-2xl">
                                      <input 
                                         type="color" 
                                         value={(colorSystem as any)[section.key][item.key] || '#000000'} 
@@ -394,7 +398,7 @@ export default function SettingsManager({
                                         [section.key]: { ...(colorSystem as any)[section.key], [item.key]: e.target.value } 
                                       }
                                     })} 
-                                    className="flex-1 bg-transparent text-slate-900 focus:outline-none font-mono text-sm uppercase" 
+                                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-sm uppercase font-black" 
                                   />
                                 </div>
                               </div>
@@ -408,18 +412,18 @@ export default function SettingsManager({
             )}
             
             {activeTab === 'layout' && (
-              <div className="space-y-8 animate-in fade-in duration-500">
-                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
-                    <h2 className="text-xl font-black text-slate-900">Page Dividers</h2>
+              <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">
+                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Spatial Dividers</h2>
                   </div>
 
-                  <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 mb-8 flex flex-col md:flex-row gap-8 items-center">
-                    <div className="flex-1 space-y-3">
-                       <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Divider Color</label>
-                       <div className="flex gap-3 items-center bg-white p-2 rounded-xl border border-slate-200 shadow-sm max-w-xs">
-                          <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-slate-100 shadow-inner">
+                  <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05] mb-10 flex flex-col md:flex-row gap-10 items-center">
+                    <div className="flex-1 space-y-4">
+                       <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Spectral Hue</label>
+                       <div className="flex gap-4 items-center bg-white/[0.03] p-3 rounded-[1.25rem] border border-white/[0.05] max-w-xs">
+                          <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-white/10">
                              <input 
                                 type="color" 
                                 value={settings.dividerColor || '#ffffff'} 
@@ -431,49 +435,49 @@ export default function SettingsManager({
                             type="text" 
                             value={settings.dividerColor || '#ffffff'} 
                             onChange={e => setSettings({...settings, dividerColor: e.target.value})} 
-                            className="flex-1 bg-transparent text-slate-900 focus:outline-none font-mono text-sm uppercase" 
+                            className="flex-1 bg-transparent text-white focus:outline-none font-mono text-sm uppercase font-black" 
                           />
                         </div>
                     </div>
-                    <div className="w-[1px] h-12 bg-slate-200 hidden md:block"></div>
+                    <div className="w-[1px] h-16 bg-white/5 hidden md:block"></div>
                     <div className="flex-1">
-                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Active Style</p>
-                       <p className="text-xl font-black text-blue-600 uppercase">{settings.dividerStyle || 'None'}</p>
+                       <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.3em] mb-2">Active Protocol</p>
+                       <p className="text-3xl font-black text-cyan-400 uppercase italic tracking-tighter">{settings.dividerStyle || 'NULL'}</p>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {[
-                      { id: 'none', name: 'None', desc: 'Clean space between sections.' },
-                      { id: 'line', name: 'Line', desc: 'Single pixel horizontal line.' },
-                      { id: 'minimal_dots', name: 'Dots', desc: 'Three floating geometric points.' },
-                      { id: 'wave', name: 'Wave', desc: 'Organic sinusoidal liquid transition.' },
-                      { id: 'curve', name: 'Curve', desc: 'Gentle downward spherical boundary.' },
-                      { id: 'triangle', name: 'Triangle', desc: 'Sharp geometric pointing node.' },
-                      { id: 'zigzag', name: 'Zigzag', desc: 'Aggressive serrated sawtooth edge.' },
-                      { id: 'geometric', name: 'Geometric', desc: 'Layered polygonal depth elements.' },
-                      { id: 'slash', name: 'Slash', desc: 'Dynamic angular spatial separation.' },
-                      { id: 'mountains', name: 'Mountains', desc: 'Symmetric layered peak structures.' },
-                      { id: 'fan', name: 'Fan', desc: 'Soft curved volumetric fan expansion.' },
-                      { id: 'steps', name: 'Steps', desc: 'Orthogonal stepped levels.' },
-                      { id: 'drops', name: 'Drops', desc: 'Floating circular liquid elements.' },
-                      { id: 'arabic_pattern', name: 'Pattern', desc: 'Ornate geometric star matrix.' },
+                      { id: 'none', name: 'Void', desc: 'Zero-point spatial clearance.' },
+                      { id: 'line', name: 'Vector', desc: 'Precise 1px horizontal nexus.' },
+                      { id: 'minimal_dots', name: 'Cluster', desc: 'Floating geometric coordinates.' },
+                      { id: 'wave', name: 'Fluid', desc: 'Sinusoidal liquid transition.' },
+                      { id: 'curve', name: 'Spherical', desc: 'Organic boundary curvature.' },
+                      { id: 'triangle', name: 'Prism', desc: 'Sharp geometric convergence.' },
+                      { id: 'zigzag', name: 'Pulse', desc: 'High-frequency serrated edge.' },
+                      { id: 'geometric', name: 'Array', desc: 'Polygonal depth structures.' },
+                      { id: 'slash', name: 'Angular', desc: 'Dynamic spatial intersection.' },
+                      { id: 'mountains', name: 'Summit', desc: 'Symmetric layered peak matrix.' },
+                      { id: 'fan', name: 'Radial', desc: 'Curved volumetric expansion.' },
+                      { id: 'steps', name: 'Ladder', desc: 'Orthogonal hierarchical levels.' },
+                      { id: 'drops', name: 'Liquid', desc: 'Floating circular elements.' },
+                      { id: 'arabic_pattern', name: 'Pattern', desc: 'Star-matrix geometric weave.' },
                     ].map((divider) => (
                       <label 
                         key={divider.id} 
-                        className={`group relative cursor-pointer p-6 rounded-2xl border transition-all ${
+                        className={`group relative cursor-pointer p-8 rounded-3xl border transition-all duration-500 ${
                           (settings.dividerStyle || 'none') === divider.id 
-                            ? 'border-blue-600 bg-blue-50 shadow-sm' 
-                            : 'border-slate-200 bg-white hover:border-slate-300'
+                            ? 'border-cyan-500/50 bg-cyan-500/5 shadow-[0_0_30px_rgba(6,182,212,0.1)]' 
+                            : 'border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/[0.04]'
                         }`}
                       >
-                        <div className="flex justify-between items-start mb-4">
-                           <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${
+                        <div className="flex justify-between items-start mb-6">
+                           <div className={`w-10 h-10 rounded-2xl border flex items-center justify-center transition-all duration-500 ${
                              (settings.dividerStyle || 'none') === divider.id 
-                               ? 'bg-blue-600 border-blue-500 text-white' 
-                               : 'bg-slate-50 border-slate-200 text-slate-300'
+                               ? 'bg-cyan-500 border-cyan-400 text-white shadow-lg shadow-cyan-500/30' 
+                               : 'bg-white/5 border-white/5 text-slate-700'
                            }`}>
-                             {settings.dividerStyle === divider.id ? <CheckCircle2 size={14} /> : <div className="w-1.5 h-1.5 rounded-full bg-current"></div>}
+                             {settings.dividerStyle === divider.id ? <CheckCircle2 size={16} /> : <div className="w-2 h-2 rounded-full bg-current"></div>}
                            </div>
                            <input 
                              type="radio" 
@@ -484,11 +488,11 @@ export default function SettingsManager({
                              className="sr-only"
                            />
                         </div>
-                        <p className={`font-bold text-sm mb-1 transition-colors ${(settings.dividerStyle || 'none') === divider.id ? 'text-blue-600' : 'text-slate-900'}`}>{divider.name}</p>
-                        <p className="text-xs text-slate-500 leading-relaxed mb-4">{divider.desc}</p>
+                        <p className={`font-black text-lg mb-2 transition-colors uppercase italic ${(settings.dividerStyle || 'none') === divider.id ? 'text-cyan-400' : 'text-white'}`}>{divider.name}</p>
+                        <p className="text-[10px] text-slate-500 leading-relaxed font-medium uppercase tracking-widest mb-6">{divider.desc}</p>
                         
-                        <div className="h-16 bg-slate-100 rounded-xl border border-slate-200 flex items-center justify-center overflow-hidden">
-                           <div className="w-full scale-[0.35] opacity-60">
+                        <div className="h-20 bg-black/40 rounded-2xl border border-white/5 flex items-center justify-center overflow-hidden">
+                           <div className="w-full scale-[0.4] opacity-50">
                               <SectionDividerPreview style={divider.id} color={settings.dividerColor} />
                            </div>
                         </div>
@@ -500,35 +504,36 @@ export default function SettingsManager({
             )}
 
             {activeTab === 'tracking' && (
-              <div className="space-y-8 animate-in fade-in duration-500">
-                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
-                    <h2 className="text-xl font-black text-slate-900">Tracking Pixels</h2>
+              <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">
+                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Observatory Pixels</h2>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {[
-                      { id: 'facebookPixelId', name: 'Facebook Pixel', color: 'bg-blue-600', placeholder: '1234567890' },
-                      { id: 'tiktokPixelId', name: 'TikTok Pixel', color: 'bg-slate-900', placeholder: 'C1234567890' },
-                      { id: 'snapchatPixelId', name: 'Snapchat Pixel', color: 'bg-yellow-400', placeholder: '123456-7890' },
-                      { id: 'googleAnalyticsId', name: 'Google Analytics 4', color: 'bg-orange-500', placeholder: 'G-XXXXXXXX' }
+                      { id: 'facebookPixelId', name: 'Meta Pixel', color: 'bg-blue-600', placeholder: '1234567890' },
+                      { id: 'tiktokPixelId', name: 'TikTok Signal', color: 'bg-slate-900', placeholder: 'C1234567890' },
+                      { id: 'snapchatPixelId', name: 'Snap Protocol', color: 'bg-yellow-400', placeholder: '123456-7890' },
+                      { id: 'googleAnalyticsId', name: 'Analytics G4', color: 'bg-orange-500', placeholder: 'G-XXXXXXXX' }
                     ].map((pixel) => (
-                      <div key={pixel.id} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
-                         <div className="flex items-center gap-3">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white ${pixel.color}`}>
-                               <Settings size={18} />
+                      <div key={pixel.id} className="bg-white/[0.02] p-8 rounded-[2rem] border border-white/[0.05] space-y-6 relative overflow-hidden group">
+                         <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl -z-10 group-hover:bg-cyan-500/5 transition-all"></div>
+                         <div className="flex items-center gap-4">
+                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-2xl ${pixel.color}`}>
+                               <Settings size={20} />
                             </div>
-                            <h3 className="text-sm font-bold text-slate-900">{pixel.name}</h3>
+                            <h3 className="text-base font-black text-white uppercase italic tracking-tight">{pixel.name}</h3>
                          </div>
-                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">ID / Key</label>
+                         <div className="space-y-3">
+                            <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Secret ID</label>
                             <input 
                               type="text"
                               value={(settings as any)[pixel.id] || ''}
                               onChange={e => updateSettings({...settings, [pixel.id]: e.target.value})}
                               placeholder={pixel.placeholder}
-                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all font-mono text-sm"
+                              className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono text-sm"
                             />
                          </div>
                       </div>
@@ -539,18 +544,18 @@ export default function SettingsManager({
             )}
 
             {activeTab === 'signature' && (
-              <div className="space-y-8 animate-in fade-in duration-500">
-                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-                   <div className="flex items-center gap-3 mb-8">
-                    <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
-                    <h2 className="text-xl font-black text-slate-900">Template Features</h2>
+              <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">
+                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
+                   <div className="flex items-center gap-4 mb-10">
+                    <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Elite Features</h2>
                   </div>
 
-                  <div className="bg-slate-50 p-8 rounded-2xl border border-slate-200 mb-8">
-                     <div className="flex items-center justify-between mb-6">
+                  <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05] mb-10 group">
+                     <div className="flex items-center justify-between mb-8">
                         <div>
-                           <h3 className="text-sm font-bold text-slate-900">Live Sales Notifications</h3>
-                           <p className="text-xs text-slate-500 mt-1">Show real-time purchase popups to visitors.</p>
+                           <h3 className="text-lg font-black text-white uppercase italic tracking-tight">Live Pulse Notifications</h3>
+                           <p className="text-[10px] text-slate-500 mt-2 font-medium uppercase tracking-widest">Real-time social proof stream for visitors.</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                            <input 
@@ -568,13 +573,13 @@ export default function SettingsManager({
                                 }
                               })}
                            />
-                           <div className="w-12 h-6 bg-slate-200 rounded-full peer peer-checked:bg-green-500 transition-all after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-6"></div>
+                           <div className="w-14 h-7 bg-white/5 rounded-full peer peer-checked:bg-green-500 transition-all after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:after:translate-x-7"></div>
                         </label>
                      </div>
                      {settings.signatureSettings?.liveSales?.enabled && (
-                       <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-6">
-                          <div className="flex-1 space-y-2">
-                             <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Interval (Seconds)</label>
+                       <div className="bg-white/[0.03] p-6 rounded-2xl border border-white/[0.05] flex items-center gap-8 animate-in slide-in-from-top-4 duration-500">
+                          <div className="flex-1 space-y-3">
+                             <label className="block text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Pulse Interval (Seconds)</label>
                              <input 
                                 type="number"
                                 value={(settings.signatureSettings?.liveSales?.interval || 15000) / 1000}
@@ -588,70 +593,70 @@ export default function SettingsManager({
                                     }
                                   }
                                 })}
-                                className="w-24 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all font-bold text-sm"
+                                className="w-32 bg-black/40 border border-white/5 rounded-xl px-6 py-3 text-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-black text-sm"
                              />
                           </div>
                        </div>
                      )}
                   </div>
 
-                  <div className="bg-slate-50 p-8 rounded-2xl border border-slate-200">
-                     <div className="flex justify-between items-center mb-8">
-                        <h3 className="text-sm font-bold text-slate-900">Customer Reviews</h3>
+                  <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05]">
+                     <div className="flex justify-between items-center mb-10">
+                        <h3 className="text-lg font-black text-white uppercase italic tracking-tight">Social Proof Matrix</h3>
                         <button 
                           type="button"
                           onClick={() => updateSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), testimonials: [...(settings.signatureSettings?.testimonials || []), {name: '', role: '', content: ''}]}})}
-                          className="px-4 py-2 bg-white border border-slate-200 text-slate-900 rounded-xl font-bold text-xs hover:bg-slate-50 transition-all"
+                          className="px-6 py-3 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-cyan-400 hover:text-white transition-all shadow-2xl"
                         >
-                          + Add Review
+                          + Inject Review
                         </button>
                      </div>
 
-                     <div className="space-y-4">
+                     <div className="space-y-6">
                         {(settings.signatureSettings?.testimonials || []).map((t: any, idx: number) => (
-                           <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative group">
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Name</label>
+                           <div key={idx} className="bg-white/[0.03] p-10 rounded-[2.5rem] border border-white/[0.05] shadow-2xl relative group/card transition-all hover:bg-white/[0.05]">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                                 <div className="space-y-3">
+                                    <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Identity</label>
                                     <input 
                                        type="text" 
                                        value={t.name}
-                                       placeholder="Customer Name"
+                                       placeholder="Subject Name"
                                        onChange={e => {
                                           const newList = [...(settings.signatureSettings?.testimonials || [])];
                                           newList[idx].name = e.target.value;
                                           updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
                                        }}
-                                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all font-bold text-sm"
+                                       className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-black text-xs uppercase"
                                     />
                                  </div>
-                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Role / Location</label>
+                                 <div className="space-y-3">
+                                    <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Coordinates</label>
                                     <input 
                                        type="text" 
                                        value={t.role}
-                                       placeholder="Verified Buyer, New York, etc."
+                                       placeholder="Sector / Location"
                                        onChange={e => {
                                           const newList = [...(settings.signatureSettings?.testimonials || [])];
                                           newList[idx].role = e.target.value;
                                           updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
                                        }}
-                                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all font-bold text-sm"
+                                       className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-slate-400 focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-bold text-xs uppercase"
                                     />
                                  </div>
                               </div>
-                              <div className="space-y-2">
-                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Review Content</label>
+                              <div className="space-y-3">
+                                 <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Manifesto</label>
                                  <textarea 
                                     value={t.content}
-                                    placeholder="Write the review here..."
-                                    rows={2}
+                                    placeholder="Input signal content..."
+                                    rows={3}
                                     onChange={e => {
                                        const newList = [...(settings.signatureSettings?.testimonials || [])];
                                        newList[idx].content = e.target.value;
                                        updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
                                     }}
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all font-medium text-sm"
+                                    className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-medium text-xs leading-relaxed italic"
                                  />
                               </div>
                               <button 
@@ -661,9 +666,9 @@ export default function SettingsManager({
                                     newList.splice(idx, 1);
                                     updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
                                  }}
-                                 className="mt-4 text-[10px] font-bold text-red-500 uppercase tracking-widest hover:text-red-600 transition-colors"
+                                 className="mt-8 text-[9px] font-black text-rose-500 uppercase tracking-[0.4em] hover:text-rose-400 transition-colors"
                               >
-                                 Delete Review
+                                 Terminated Review
                               </button>
                            </div>
                         ))}
@@ -673,45 +678,45 @@ export default function SettingsManager({
               </div>
             )}
 
-            {activeTab === 'business' && (
-              <div className="space-y-8 animate-in fade-in duration-500">
-                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-                   <div className="flex items-center gap-3 mb-8">
-                    <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
-                    <h2 className="text-xl font-black text-slate-900">Business Settings</h2>
+            {activeTab === 'business' && (activeTab === 'business' && (
+              <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">
+                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
+                   <div className="flex items-center gap-4 mb-10">
+                    <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Economic Parameters</h2>
                   </div>
 
-                  <div className="bg-slate-50 p-8 rounded-2xl border border-slate-200">
-                     <div className="flex justify-between items-center mb-8">
-                        <h3 className="text-sm font-bold text-slate-900">Shipping Rates</h3>
+                  <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05]">
+                     <div className="flex justify-between items-center mb-10">
+                        <h3 className="text-lg font-black text-white uppercase italic tracking-tight">Logistics Grids</h3>
                         <button 
                           type="button"
                           onClick={() => updateSettings({...settings, businessSettings: {...(settings.businessSettings || {}), shippingRates: [...(settings.businessSettings?.shippingRates || []), {zone: '', rate: 0}]}})}
-                          className="px-4 py-2 bg-blue-600 text-white rounded-xl font-bold text-xs hover:bg-blue-700 transition-all"
+                          className="px-6 py-3 bg-cyan-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-2xl"
                         >
-                          + Add Zone
+                          + Define Grid
                         </button>
                      </div>
 
-                     <div className="space-y-3">
+                     <div className="space-y-4">
                         {(settings.businessSettings?.shippingRates || []).map((r: any, idx: number) => (
-                           <div key={idx} className="flex gap-4 items-center bg-white p-4 rounded-xl border border-slate-200 group">
-                              <div className="flex-1 space-y-2">
-                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Zone Name</label>
+                           <div key={idx} className="flex gap-6 items-center bg-white/[0.03] p-6 rounded-[1.5rem] border border-white/[0.05] group transition-all hover:bg-white/[0.05]">
+                              <div className="flex-1 space-y-3">
+                                 <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Zone Identifier</label>
                                  <input 
                                     type="text" 
                                     value={r.zone}
-                                    placeholder="e.g. Worldwide"
+                                    placeholder="e.g. Global"
                                     onChange={e => {
                                        const newList = [...(settings.businessSettings?.shippingRates || [])];
                                        newList[idx].zone = e.target.value;
                                        updateSettings({...settings, businessSettings: {...settings.businessSettings, shippingRates: newList}});
                                     }}
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all font-bold text-sm"
+                                    className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-5 py-3 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-black text-xs uppercase"
                                  />
                               </div>
-                              <div className="w-28 space-y-2">
-                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Rate ($)</label>
+                              <div className="w-40 space-y-3">
+                                 <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Rate Value ($)</label>
                                  <input 
                                     type="number" 
                                     value={r.rate}
@@ -720,10 +725,10 @@ export default function SettingsManager({
                                        newList[idx].rate = Number(e.target.value);
                                        updateSettings({...settings, businessSettings: {...settings.businessSettings, shippingRates: newList}});
                                     }}
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all font-bold text-sm"
+                                    className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-5 py-3 text-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-black text-xs"
                                  />
                               </div>
-                              <div className="pt-6">
+                              <div className="pt-8">
                                  <button 
                                     type="button"
                                     onClick={() => {
@@ -731,9 +736,9 @@ export default function SettingsManager({
                                        newList.splice(idx, 1);
                                        updateSettings({...settings, businessSettings: {...settings.businessSettings, shippingRates: newList}});
                                     }}
-                                    className="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-red-100"
+                                    className="w-12 h-12 rounded-xl bg-rose-500/5 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all border border-rose-500/10 shadow-2xl"
                                  >
-                                    <X size={18} />
+                                    <X size={20} />
                                  </button>
                               </div>
                            </div>
@@ -742,31 +747,31 @@ export default function SettingsManager({
                   </div>
                 </div>
               </div>
-            )}
+            ))}
           </div>
 
-          <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] w-full max-w-2xl px-6 transition-all duration-500 ${isDirty ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0'}`}>
-            <div className="bg-white border border-slate-200 p-4 rounded-2xl flex items-center justify-between shadow-2xl">
-              <div className="pl-4">
+          <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] w-full max-w-2xl px-10 transition-all duration-700 ${isDirty ? 'translate-y-0 opacity-100' : 'translate-y-32 opacity-0'}`}>
+            <div className="bg-[#0f111a]/90 backdrop-blur-3xl border border-cyan-500/30 p-5 rounded-[2.5rem] flex items-center justify-between shadow-[0_20px_50px_rgba(6,182,212,0.2)]">
+              <div className="pl-6">
                 {saveMessage ? (
-                  <div className="flex items-center gap-3 animate-in slide-in-from-left-4 duration-500">
-                     <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                     <span className="text-xs font-bold text-slate-900">Settings Saved</span>
+                  <div className="flex items-center gap-4 animate-in slide-in-from-left-6 duration-700">
+                     <div className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.5)]"></div>
+                     <span className="text-[10px] font-black text-white uppercase tracking-[0.2em]">Protocol Secured</span>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-3 text-slate-500">
-                     <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></div>
-                     <span className="text-xs font-bold">Unsaved changes</span>
+                  <div className="flex items-center gap-4 text-slate-500">
+                     <div className="w-2.5 h-2.5 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_15px_rgba(6,182,212,0.5)]"></div>
+                     <span className="text-[10px] font-black uppercase tracking-[0.2em]">Uplink Pending</span>
                   </div>
                 )}
               </div>
               <button 
                 type="submit"
                 disabled={isPending}
-                className="px-8 py-3 bg-blue-600 text-white rounded-xl font-bold text-sm hover:bg-blue-700 transition-all flex items-center gap-3 shadow-lg shadow-blue-600/20 disabled:opacity-50"
+                className="px-10 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-[1.75rem] font-black text-xs uppercase tracking-[0.3em] hover:scale-105 active:scale-95 transition-all flex items-center gap-4 shadow-2xl shadow-cyan-500/20 disabled:opacity-50"
               >
-                {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-                Save Changes
+                {isPending ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
+                Sync Protocol
               </button>
             </div>
           </div>
