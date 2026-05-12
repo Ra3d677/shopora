@@ -80,7 +80,7 @@ export default async function ProductsPage({
     );
   }
 
-  const currentThemeId = getThemeByPath(storeSettings.pageThemes, `/store/${slug}/products`);
+  const currentThemeId = getThemeByPath(storeSettings.pageThemes || [], `/store/${slug}/products`);
   const bgClass = getPremiumBackgroundClass(currentThemeId);
   const isPremiumBg = currentThemeId !== 'default';
 

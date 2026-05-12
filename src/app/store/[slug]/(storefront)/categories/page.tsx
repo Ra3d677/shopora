@@ -41,7 +41,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
     );
   }
 
-  const currentThemeId = getThemeByPath(store.settings?.pageThemes, `/store/${slug}/categories`);
+  const currentThemeId = getThemeByPath(store.settings?.pageThemes || [], `/store/${slug}/categories`);
   const bgClass = getPremiumBackgroundClass(currentThemeId);
   const isPremiumBg = currentThemeId !== 'default';
 

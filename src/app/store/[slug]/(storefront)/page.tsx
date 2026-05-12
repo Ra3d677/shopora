@@ -67,7 +67,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
     );
   };
 
-  const currentThemeId = getThemeByPath(settings.pageThemes, `/store/${slug}`);
+  const currentThemeId = getThemeByPath(settings.pageThemes || [], `/store/${slug}`);
   const bgClass = getPremiumBackgroundClass(currentThemeId);
   const isPremiumBg = currentThemeId !== 'default';
 
