@@ -53,16 +53,29 @@ export const getStoreBySlug = async (slug: string) => {
   });
   
   if (store) {
-    // Parse JSON strings back to objects
+    let settings = {};
+    try {
+      settings = typeof store.settings === 'string' ? JSON.parse(store.settings) : (store.settings || {});
+    } catch (e) {
+      console.error("Settings Parse Error:", e);
+    }
+
+    const products = store.products.map(p => {
+      let images = [], colors = [], sizes = [];
+      try {
+        images = typeof p.images === 'string' ? JSON.parse(p.images || '[]') : p.images || [];
+        colors = typeof p.colors === 'string' ? JSON.parse(p.colors || '[]') : p.colors || [];
+        sizes = typeof p.sizes === 'string' ? JSON.parse(p.sizes || '[]') : p.sizes || [];
+      } catch (e) {
+        console.error("Product Data Parse Error:", e);
+      }
+      return { ...p, images, colors, sizes };
+    });
+
     return {
       ...store,
-      settings: typeof store.settings === 'string' ? JSON.parse(store.settings) : store.settings,
-      products: store.products.map(p => ({
-        ...p,
-        images: typeof p.images === 'string' ? JSON.parse(p.images || '[]') : p.images || [],
-        colors: typeof p.colors === 'string' ? JSON.parse(p.colors || '[]') : p.colors || [],
-        sizes: typeof p.sizes === 'string' ? JSON.parse(p.sizes || '[]') : p.sizes || []
-      }))
+      settings,
+      products
     } as unknown as Store;
   }
   return null;
