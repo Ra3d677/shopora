@@ -123,108 +123,94 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
   const activeSection = layout.find(s => s.id === activeEditor);
 
   return (
-    <div className="p-8 h-[calc(100vh-80px)] flex flex-col gap-6 animate-in fade-in duration-700 bg-[#f8fafc]">
-      {/* Header Section - Modern & Clear */}
-      <div className="flex justify-between items-center shrink-0 bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200">
-        <div className="flex items-center gap-5">
-          <div className="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-600/20">
-            <Blocks className="w-7 h-7" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight leading-none">Architect Engine</h1>
-            <p className="text-indigo-600 text-[10px] font-black uppercase tracking-[0.2em] mt-2 italic">Visual Interface Synthesis</p>
-          </div>
+    <div className="p-8 h-[calc(100vh-80px)] flex flex-col bg-slate-50">
+      <div className="mb-6 flex justify-between items-center shrink-0">
+        <div>
+          <h1 className="text-3xl font-black tracking-tight text-slate-900 flex items-center gap-3">
+            <Blocks className="w-8 h-8 text-blue-600" /> Store Builder
+          </h1>
+          <p className="text-slate-500 mt-1 text-sm">Design your homepage by adding, reordering, and customizing sections.</p>
         </div>
-        
         <div className="flex items-center gap-4">
-           {saveMessage && (
-            <div className="flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-full">
-               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-               <span className="text-[10px] font-black text-green-700 uppercase tracking-widest">{saveMessage}</span>
-            </div>
+          {saveMessage && (
+            <span className="text-green-600 font-bold bg-green-50 px-4 py-2 rounded-xl text-xs animate-in fade-in">
+              {saveMessage}
+            </span>
           )}
           <button 
             onClick={handleSave}
             disabled={isPending} 
-            className="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.3em] hover:bg-indigo-700 transition-all flex items-center gap-3 shadow-xl shadow-indigo-600/20 disabled:opacity-50 active:scale-95"
+            className="bg-blue-600 text-white px-8 py-3 rounded-2xl font-black text-sm hover:bg-blue-700 flex items-center gap-2 transition-all disabled:opacity-70 shadow-lg shadow-blue-600/20 active:scale-95"
           >
             {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-            Save Architecture
+            Save Changes
           </button>
         </div>
       </div>
 
       <div className="flex gap-8 flex-1 overflow-hidden">
-        {/* Left Sidebar - High Clarity */}
-        <div className="w-[350px] bg-white rounded-[2.5rem] border border-slate-200 flex flex-col overflow-hidden shadow-sm">
-          <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-             <h3 className="font-black text-slate-800 text-[10px] uppercase tracking-[0.3em]">Temporal Sequence</h3>
-             <span className="bg-indigo-100 text-indigo-600 text-[9px] font-black px-3 py-1 rounded-full">{layout.length} NODES</span>
+        {/* Left Sidebar: Outline & Reorder */}
+        <div className="w-[350px] bg-white rounded-3xl shadow-sm border border-slate-200 flex flex-col overflow-hidden">
+          <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+            <h3 className="font-bold text-slate-800 text-sm">Page Sections</h3>
+            <span className="bg-blue-100 text-blue-600 text-[10px] font-black px-2.5 py-1 rounded-full">{layout.length}</span>
           </div>
           
           <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
             {layout.map((section, index) => (
               <div 
                 key={section.id} 
-                className={`flex items-center gap-4 p-4 rounded-2xl border transition-all cursor-pointer group ${
-                  activeEditor === section.id 
-                    ? 'border-indigo-600 bg-indigo-50 shadow-sm' 
-                    : 'border-slate-100 hover:border-slate-300 bg-white'
-                }`}
+                className={`flex items-center gap-3 p-4 rounded-2xl border transition-all cursor-pointer ${activeEditor === section.id ? 'border-blue-500 bg-blue-50/50 shadow-sm' : 'border-slate-100 hover:border-slate-200 bg-white'}`}
                 onClick={() => setActiveEditor(section.id)}
               >
-                <div className="flex flex-col gap-1 shrink-0">
+                <div className="flex flex-col gap-1">
                   <button 
                     onClick={(e) => { e.stopPropagation(); moveSection(index, 'up'); }}
                     disabled={index === 0}
-                    className="text-slate-300 hover:text-indigo-600 disabled:opacity-10"
+                    className="text-slate-300 hover:text-blue-600 disabled:opacity-20"
                   >
                     <ChevronUp className="w-4 h-4" />
                   </button>
                   <button 
                     onClick={(e) => { e.stopPropagation(); moveSection(index, 'down'); }}
                     disabled={index === layout.length - 1}
-                    className="text-slate-300 hover:text-indigo-600 disabled:opacity-10"
+                    className="text-slate-300 hover:text-blue-600 disabled:opacity-20"
                   >
                     <ChevronDown className="w-4 h-4" />
                   </button>
                 </div>
                 
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all ${
-                   activeEditor === section.id ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 text-slate-400'
-                }`}>
-                  {SECTION_DEFINITIONS.find(d => d.id === section.type)?.icon && (
-                    React.createElement(SECTION_DEFINITIONS.find(d => d.id === section.type)!.icon, { className: "w-5 h-5" })
-                  )}
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${activeEditor === section.id ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-400'}`}>
+                  {getSectionIcon(section.type)}
                 </div>
                 
                 <div className="flex-1 overflow-hidden">
-                  <p className={`font-black uppercase tracking-tight text-[11px] italic truncate ${activeEditor === section.id ? 'text-indigo-900' : 'text-slate-700'}`}>{getSectionName(section.type)}</p>
-                  <p className="text-[8px] text-slate-400 font-bold uppercase tracking-widest mt-1 truncate">{section.style} ACTIVE</p>
+                  <p className="font-bold text-slate-800 text-sm truncate">{getSectionName(section.type)}</p>
+                  <p className="text-[10px] text-slate-400 capitalize truncate">{section.style} Style</p>
                 </div>
 
                 <button 
                   onClick={(e) => { e.stopPropagation(); removeSection(section.id); }}
-                  className="p-2 text-rose-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"
+                  className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
             ))}
 
-            <div className="mt-8 pt-6 border-t border-slate-100">
-              <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4 ml-2">Inject Module</h4>
+            <div className="mt-6 pt-4 border-t border-slate-100">
+              <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-4 ml-2">Add New Section</h4>
               <div className="grid grid-cols-2 gap-2 pb-6">
                 {SECTION_DEFINITIONS.map(def => (
                   <button
                     key={def.id}
                     onClick={() => addSection(def.id)}
-                    className="flex flex-col items-center justify-center gap-2 p-4 bg-slate-50 border border-slate-100 border-dashed rounded-2xl hover:border-indigo-600 hover:bg-indigo-50 transition-all group"
+                    className="flex flex-col items-center justify-center gap-2 p-4 border border-slate-200 border-dashed rounded-2xl hover:border-blue-600 hover:bg-blue-50 transition-all text-slate-500 hover:text-blue-600 group"
                   >
-                    <div className="bg-white p-2 rounded-xl text-slate-400 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-sm">
-                       <def.icon className="w-4 h-4" />
+                    <div className="bg-slate-100 p-2 rounded-xl group-hover:bg-blue-100 transition-colors">
+                       <def.icon className="w-5 h-5" />
                     </div>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-slate-500 group-hover:text-indigo-600 transition-colors">{def.name}</span>
+                    <span className="text-[11px] font-bold text-center">{def.name}</span>
                   </button>
                 ))}
               </div>
@@ -232,48 +218,41 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
           </div>
         </div>
 
-        {/* Right Workspace - Ultra Bright & High Contrast */}
-        <div className="flex-1 bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden flex flex-col shadow-sm relative">
+        {/* Right Editor Panel */}
+        <div className="flex-1 bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden flex flex-col relative">
           {!activeEditor || !activeSection ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-center p-20">
-               <div className="w-24 h-24 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center mb-8">
-                  <div className="w-12 h-12 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"></div>
+            <div className="flex-1 flex flex-col items-center justify-center text-slate-400 p-12 text-center">
+               <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-6">
+                  <Settings className="w-10 h-10 text-slate-200" />
                </div>
-               <h3 className="text-xl font-black text-slate-900 uppercase italic tracking-tighter mb-2">Awaiting Signal</h3>
-               <p className="text-slate-400 text-xs font-medium max-w-xs">Select a structural node from the left sidebar to begin configuration.</p>
+               <h3 className="text-xl font-bold text-slate-600 mb-2">No Section Selected</h3>
+               <p className="text-sm max-w-xs">Click on a section from the left sidebar to edit its content and style.</p>
             </div>
           ) : (
-            <div className="flex flex-col h-full animate-in fade-in duration-500">
-              <div className="p-8 border-b border-slate-100 bg-slate-50/50 flex items-center gap-6">
-                <div className="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-600/20">
-                  {SECTION_DEFINITIONS.find(d => d.id === activeSection.type)?.icon && (
-                    React.createElement(SECTION_DEFINITIONS.find(d => d.id === activeSection.type)!.icon, { className: "w-7 h-7" })
-                  )}
+            <div className="flex flex-col h-full animate-in fade-in duration-300">
+              <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex items-center gap-4">
+                <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center">
+                  {getSectionIcon(activeSection.type)}
                 </div>
                 <div>
-                  <h2 className="text-2xl font-black text-slate-900 uppercase italic tracking-tight">{getSectionName(activeSection.type)}</h2>
-                  <p className="text-indigo-600 text-[10px] font-black uppercase tracking-[0.2em] mt-1 italic underline decoration-indigo-200 underline-offset-4">Configuring Module Parameters</p>
+                  <h2 className="text-xl font-black text-slate-900">{getSectionName(activeSection.type)}</h2>
+                  <p className="text-sm text-slate-500">Edit content and visual style</p>
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-10 space-y-12 custom-scrollbar bg-white">
+              <div className="flex-1 overflow-y-auto p-8 space-y-10 custom-scrollbar">
                 
-                {/* Style Matrix */}
-                <div className="space-y-6">
-                  <div className="flex items-center gap-3">
-                     <div className="w-1.5 h-6 bg-indigo-600 rounded-full"></div>
-                     <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.3em] italic">Visual Aesthetic Protocol</label>
-                  </div>
+                {/* Style Selector */}
+                <div className="space-y-4">
+                  <label className="text-sm font-bold text-slate-700 flex items-center gap-2">
+                    <Palette className="w-4 h-4 text-blue-500" /> Section Style
+                  </label>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {activeSection.type === 'hero' && ['slider', 'luxury', 'split', 'centered', 'minimal', 'campaign', 'abstract', 'immersive'].map(style => (
                       <button 
                         key={style}
                         onClick={() => updateSection(activeSection.id, { style })}
-                        className={`px-4 py-3 rounded-xl border text-[9px] font-black uppercase tracking-widest transition-all ${
-                          activeSection.style === style 
-                            ? 'border-indigo-600 bg-indigo-600 text-white shadow-md' 
-                            : 'border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-300 hover:text-slate-800'
-                        }`}
+                        className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}
                       >
                         {style}
                       </button>
@@ -282,11 +261,7 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                       <button 
                         key={style}
                         onClick={() => updateSection(activeSection.id, { style })}
-                        className={`px-4 py-3 rounded-xl border text-[9px] font-black uppercase tracking-widest transition-all ${
-                          activeSection.style === style 
-                            ? 'border-indigo-600 bg-indigo-600 text-white shadow-md' 
-                            : 'border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-300 hover:text-slate-800'
-                        }`}
+                        className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}
                       >
                         {style}
                       </button>
@@ -295,11 +270,7 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                       <button 
                         key={style}
                         onClick={() => updateSection(activeSection.id, { style })}
-                        className={`px-4 py-3 rounded-xl border text-[9px] font-black uppercase tracking-widest transition-all ${
-                          activeSection.style === style 
-                            ? 'border-indigo-600 bg-indigo-600 text-white shadow-md' 
-                            : 'border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-300 hover:text-slate-800'
-                        }`}
+                        className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}
                       >
                         {style}
                       </button>
@@ -308,11 +279,7 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                       <button 
                         key={style}
                         onClick={() => updateSection(activeSection.id, { style })}
-                        className={`px-4 py-3 rounded-xl border text-[9px] font-black uppercase tracking-widest transition-all ${
-                          activeSection.style === style 
-                            ? 'border-indigo-600 bg-indigo-600 text-white shadow-md' 
-                            : 'border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-300 hover:text-slate-800'
-                        }`}
+                        className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}
                       >
                         {style}
                       </button>
@@ -320,149 +287,166 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                   </div>
                 </div>
 
-                {/* Content Payload */}
-                <div className="space-y-10">
-                  <div className="flex items-center gap-3">
-                     <div className="w-1.5 h-6 bg-pink-500 rounded-full"></div>
-                     <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-[0.3em] italic">Data Payload Configuration</h3>
-                  </div>
+                {/* Content Settings */}
+                <div className="space-y-6">
+                  <h3 className="text-sm font-bold text-slate-800 border-b pb-2">Content Settings</h3>
                   
-                  <div className="grid grid-cols-1 gap-10 bg-slate-50 p-10 rounded-[3rem] border border-slate-100">
-                    {activeSection.config?.title !== undefined && (
-                      <div className="space-y-4">
-                        <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Primary Designation (Title)</label>
-                        <input 
-                          type="text" 
-                          value={activeSection.config.title} 
-                          onChange={(e) => updateSectionConfig(activeSection.id, 'title', e.target.value)}
-                          className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-600/20 transition-all font-black uppercase tracking-tighter text-xl italic" 
-                          placeholder="Enter Title..."
-                        />
-                      </div>
-                    )}
+                  {activeSection.config?.title !== undefined && (
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-slate-500 uppercase">Title</label>
+                      <input 
+                        type="text" 
+                        value={activeSection.config.title} 
+                        onChange={(e) => updateSectionConfig(activeSection.id, 'title', e.target.value)}
+                        className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-bold"
+                      />
+                    </div>
+                  )}
 
-                    {activeSection.type === 'hero' && (
-                      <div className="space-y-4">
-                        <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Contextual Subtext (Subtitle)</label>
-                        <input 
-                          type="text" 
-                          value={activeSection.config.subtitle || ''} 
-                          onChange={(e) => updateSectionConfig(activeSection.id, 'subtitle', e.target.value)}
-                          className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-4 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-600/20 transition-all font-bold text-sm" 
-                          placeholder="Enter Subtitle..."
-                        />
-                      </div>
-                    )}
+                  {activeSection.type === 'hero' && (
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-slate-500 uppercase">Subtitle</label>
+                      <input 
+                        type="text" 
+                        value={activeSection.config.subtitle || ''} 
+                        onChange={(e) => updateSectionConfig(activeSection.id, 'subtitle', e.target.value)}
+                        className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+                      />
+                    </div>
+                  )}
 
-                    {activeSection.type === 'testimonials' && (
-                      <div className="space-y-8">
-                        <div className="flex justify-between items-center bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                           <div>
-                              <h4 className="text-[11px] font-black text-slate-900 uppercase tracking-tight italic leading-none">Social Proof Records</h4>
-                              <p className="text-[8px] text-slate-400 font-bold uppercase tracking-widest mt-2">Manage customer reviews for this section</p>
-                           </div>
-                           <button 
-                            type="button"
-                            onClick={() => {
-                              const newItems = [...(activeSection.config.items || [])];
-                              newItems.push({ id: Math.random().toString(36).substr(2, 9), name: 'New Customer', role: 'Verified Buyer', content: 'Describe their experience...' });
-                              updateSectionConfig(activeSection.id, 'items', newItems);
-                            }}
-                            className="px-6 py-3 bg-indigo-600 text-white rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/20"
-                          >
-                            + New Record
-                          </button>
-                        </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                           {(activeSection.config.items || []).map((item: any, idx: number) => (
-                             <div key={item.id} className="p-8 bg-white rounded-3xl border border-slate-200 space-y-6 relative group shadow-sm hover:shadow-md transition-all">
-                               <button 
-                                 onClick={() => {
+                  {activeSection.type === 'testimonials' && (
+                    <div className="space-y-6">
+                      <div className="flex justify-between items-center">
+                        <label className="text-xs font-bold text-slate-500 uppercase">Testimonials</label>
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            const newItems = [...(activeSection.config.items || [])];
+                            newItems.push({ id: Math.random().toString(36).substr(2, 9), name: 'Customer Name', role: 'Verified Buyer', content: 'Excellent service!' });
+                            updateSectionConfig(activeSection.id, 'items', newItems);
+                          }}
+                          className="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-all"
+                        >
+                          + Add New
+                        </button>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {(activeSection.config.items || []).map((item: any, idx: number) => (
+                          <div key={item.id} className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-4 relative group">
+                            <button 
+                              onClick={() => {
+                                const newItems = [...(activeSection.config.items || [])];
+                                newItems.splice(idx, 1);
+                                updateSectionConfig(activeSection.id, 'items', newItems);
+                              }}
+                              className="absolute top-4 right-4 text-slate-300 hover:text-red-500 transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                            <div className="space-y-3">
+                               <input 
+                                 type="text" 
+                                 value={item.name} 
+                                 placeholder="Name"
+                                 onChange={e => {
                                    const newItems = [...(activeSection.config.items || [])];
-                                   newItems.splice(idx, 1);
+                                   newItems[idx].name = e.target.value;
                                    updateSectionConfig(activeSection.id, 'items', newItems);
                                  }}
-                                 className="absolute top-6 right-6 text-rose-300 hover:text-rose-600 transition-colors p-2 hover:bg-rose-50 rounded-lg"
-                               >
-                                 <Trash2 className="w-5 h-5" />
-                               </button>
-                               
-                               <div className="space-y-4">
-                                  <div className="grid grid-cols-1 gap-4">
-                                     <div className="space-y-2">
-                                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Identity</label>
-                                        <input 
-                                          type="text" 
-                                          value={item.name} 
-                                          onChange={e => {
-                                            const newItems = [...(activeSection.config.items || [])];
-                                            newItems[idx].name = e.target.value;
-                                            updateSectionConfig(activeSection.id, 'items', newItems);
-                                          }}
-                                          className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-black text-slate-800 outline-none focus:ring-2 focus:ring-indigo-600/10"
-                                        />
-                                     </div>
-                                     <div className="space-y-2">
-                                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Rank / Designation</label>
-                                        <input 
-                                          type="text" 
-                                          value={item.role} 
-                                          onChange={e => {
-                                            const newItems = [...(activeSection.config.items || [])];
-                                            newItems[idx].role = e.target.value;
-                                            updateSectionConfig(activeSection.id, 'items', newItems);
-                                          }}
-                                          className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold text-slate-500 outline-none focus:ring-2 focus:ring-indigo-600/10"
-                                        />
-                                     </div>
-                                  </div>
-                                  <div className="space-y-2">
-                                     <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Transcript (Review Content)</label>
-                                     <textarea 
-                                       value={item.content} 
-                                       onChange={e => {
-                                         const newItems = [...(activeSection.config.items || [])];
-                                         newItems[idx].content = e.target.value;
-                                         updateSectionConfig(activeSection.id, 'items', newItems);
-                                       }}
-                                       rows={3}
-                                       className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-medium text-slate-600 outline-none focus:ring-2 focus:ring-indigo-600/10 italic"
-                                     />
-                                  </div>
-                               </div>
-                             </div>
-                           ))}
-                           {(activeSection.config.items || []).length === 0 && (
-                             <div className="col-span-2 py-12 bg-white border-2 border-dashed border-slate-100 rounded-3xl flex flex-col items-center justify-center text-slate-400 opacity-60">
-                                <p className="text-xs font-black uppercase tracking-[0.2em] italic">No Social Proof Records Detected</p>
-                             </div>
-                           )}
-                        </div>
+                                 className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold outline-none"
+                               />
+                               <input 
+                                 type="text" 
+                                 value={item.role} 
+                                 placeholder="Role"
+                                 onChange={e => {
+                                   const newItems = [...(activeSection.config.items || [])];
+                                   newItems[idx].role = e.target.value;
+                                   updateSectionConfig(activeSection.id, 'items', newItems);
+                                 }}
+                                 className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs outline-none text-slate-500"
+                               />
+                               <textarea 
+                                 value={item.content} 
+                                 placeholder="Testimonial content..."
+                                 onChange={e => {
+                                   const newItems = [...(activeSection.config.items || [])];
+                                   newItems[idx].content = e.target.value;
+                                   updateSectionConfig(activeSection.id, 'items', newItems);
+                                 }}
+                                 rows={3}
+                                 className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs outline-none text-slate-600 italic"
+                               />
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    )}
-                  </div>
-                </div>
+                    </div>
+                  )}
 
-                {/* Infrastructure Protocols */}
-                <div className="pt-12 border-t border-slate-100">
-                   <div 
-                    className="flex items-center justify-between p-8 rounded-[2.5rem] bg-indigo-50 border border-indigo-100 cursor-pointer hover:bg-indigo-100/50 transition-all group"
-                    onClick={() => toggleDivider(activeSection.id)}
-                   >
-                     <div className="flex items-center gap-6">
-                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all ${activeSection.showDivider !== false ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'bg-white text-slate-300'}`}>
-                           <div className="w-8 h-1 bg-current rounded-full"></div>
-                        </div>
-                        <div>
-                           <h4 className="text-lg font-black text-slate-900 uppercase italic tracking-tighter leading-none">Architectural Separator</h4>
-                           <p className="text-[9px] text-slate-400 font-bold uppercase tracking-[0.3em] mt-2">Deploy visual boundary after this module</p>
-                        </div>
-                     </div>
-                     <div className={`w-16 h-8 rounded-full transition-all relative p-1 ${activeSection.showDivider !== false ? 'bg-indigo-600' : 'bg-slate-200'}`}>
-                        <div className={`w-6 h-6 bg-white rounded-full transition-all shadow-md ${activeSection.showDivider !== false ? 'translate-x-8' : 'translate-x-0'}`}></div>
-                     </div>
-                   </div>
+                  {activeSection.type === 'marquee' && (
+                    <div className="space-y-6">
+                      <div className="flex justify-between items-center mb-4">
+                        <label className="text-xs font-bold text-slate-500 uppercase">Scrolling Texts</label>
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            const newItems = [...(activeSection.config.items || [])];
+                            newItems.push({ id: Math.random().toString(36).substr(2, 9), text: 'New Announcement' });
+                            updateSectionConfig(activeSection.id, 'items', newItems);
+                          }}
+                          className="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full hover:bg-blue-100"
+                        >
+                          + Add Text
+                        </button>
+                      </div>
+                      <div className="space-y-3">
+                        {(activeSection.config.items || []).map((item: any, idx: number) => (
+                          <div key={item.id} className="flex gap-2">
+                            <input 
+                              type="text" 
+                              value={item.text} 
+                              onChange={e => {
+                                const newItems = [...(activeSection.config.items || [])];
+                                newItems[idx].text = e.target.value;
+                                updateSectionConfig(activeSection.id, 'items', newItems);
+                              }}
+                              className="flex-1 px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                            />
+                            <button 
+                              type="button"
+                              onClick={() => {
+                                const newItems = [...(activeSection.config.items || [])];
+                                newItems.splice(idx, 1);
+                                updateSectionConfig(activeSection.id, 'items', newItems);
+                              }}
+                              className="text-red-400 hover:bg-red-50 p-2 rounded-xl transition-colors"
+                            >
+                              <Trash2 className="w-5 h-5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Divider Toggle */}
+                  <div className="pt-6 border-t border-slate-100 flex items-center justify-between group cursor-pointer" onClick={() => toggleDivider(activeSection.id)}>
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${activeSection.showDivider !== false ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' : 'bg-slate-100 text-slate-400'}`}>
+                        <GripVertical className="w-5 h-5 rotate-90" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-slate-800">Section Divider</h4>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Show separator below this block</p>
+                      </div>
+                    </div>
+                    <div className={`w-12 h-6 rounded-full transition-all relative ${activeSection.showDivider !== false ? 'bg-blue-600' : 'bg-slate-200'}`}>
+                      <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all shadow-sm ${activeSection.showDivider !== false ? 'left-7' : 'left-1'}`} />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

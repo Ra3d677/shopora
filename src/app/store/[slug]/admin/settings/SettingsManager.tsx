@@ -61,22 +61,22 @@ export default function SettingsManager({
   ];
 
   return (
-    <div className="p-10 space-y-12 animate-in fade-in duration-700 pb-32">
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8">
+    <div className="space-y-8 animate-in fade-in duration-500 pb-32">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
         <div>
-          <h1 className="text-5xl font-black tracking-tighter bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent italic uppercase">
-            Control <span className="text-indigo-400">Center</span>
+          <h1 className="text-4xl font-black tracking-tight text-slate-900">
+            Store Settings
           </h1>
-          <p className="text-slate-500 mt-3 font-medium tracking-widest text-[10px] uppercase">Architect your store's global DNA and performance parameters.</p>
+          <p className="text-slate-500 mt-1 font-medium">Configure your store's general information and visual identity.</p>
         </div>
         
-        <div className="flex bg-white/[0.02] backdrop-blur-3xl p-2 rounded-[2rem] border border-white/[0.05] shadow-2xl overflow-x-auto max-w-full no-scrollbar">
+        <div className="flex bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto max-w-full no-scrollbar">
           {tabs.map(tab => (
             <button
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`px-8 py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.id ? 'bg-indigo-500 text-white shadow-[0_0_20px_rgba(99,102,241,0.4)] scale-105' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}
+              className={`px-6 py-3 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${activeTab === tab.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'}`}
             >
               {tab.label}
             </button>
@@ -86,18 +86,15 @@ export default function SettingsManager({
 
       <div className="relative">
         <form onSubmit={handleSave}>
-          <div className="space-y-12">
+          <div className="space-y-8">
             {activeTab === 'general' && (
-              <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+              <div className="space-y-8 animate-in fade-in duration-500">
                 {/* Identity Settings */}
-                <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 border border-white/[0.05] shadow-2xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/5 blur-[120px] -z-10 group-hover:bg-indigo-500/10 transition-all"></div>
-                  
-                  <div className="flex items-center gap-4 mb-12">
-                    <div className="w-1.5 h-10 bg-indigo-400 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
-                    <div>
-                      <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Brand Identity</h2>
-                      <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Core store signature and visual markers.</p>
+                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
+                    <h2 className="text-xl font-black text-slate-900">Brand Identity</h2>
+                  </div>
                     </div>
                   </div>
 
