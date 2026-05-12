@@ -46,7 +46,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
   const isPremiumBg = currentThemeId !== 'default';
 
   return (
-    <div className={`min-h-screen pb-24 transition-colors duration-500`} style={isPremiumBg ? premiumStyle : { backgroundColor: 'var(--color-bg-categories)', color: 'var(--color-text-primary)' }}>
+    <div className={`min-h-screen pb-24 transition-colors duration-500`} style={isPremiumBg ? premiumStyle : { background: 'var(--color-bg-categories)', color: 'var(--color-text-primary)' }}>
       {/* Header / Banner */}
       {collectionsBanners.length > 0 ? (
         <HeroSlider 

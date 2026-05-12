@@ -72,7 +72,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
   const isPremiumBg = currentThemeId !== 'default';
 
   return (
-    <div className={`w-full transition-colors duration-500 min-h-screen`} style={isPremiumBg ? premiumStyle : { backgroundColor: 'var(--color-bg-home)', color: 'var(--color-text-primary)' }}>
+    <div className={`w-full transition-colors duration-500 min-h-screen`} style={isPremiumBg ? premiumStyle : { background: 'var(--color-bg-home)', color: 'var(--color-text-primary)' }}>
       {renderTemplate()}
     </div>
   );

@@ -85,7 +85,7 @@ export default async function ProductsPage({
   const isPremiumBg = currentThemeId !== 'default';
 
   return (
-    <div className={`min-h-screen pb-16 transition-colors duration-500`} style={isPremiumBg ? premiumStyle : { backgroundColor: 'var(--color-bg-shop)', color: 'var(--color-text-primary)' }}>
+    <div className={`min-h-screen pb-16 transition-colors duration-500`} style={isPremiumBg ? premiumStyle : { background: 'var(--color-bg-shop)', color: 'var(--color-text-primary)' }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-primary mb-4 capitalize">{pageTitle}</h1>
