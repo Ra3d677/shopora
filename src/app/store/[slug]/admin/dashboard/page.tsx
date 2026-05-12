@@ -171,11 +171,11 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const currentYear = now.getFullYear();
   const monthlyRevenue = Array(12).fill(0);
   
-  // Get all shipped/delivered orders for the current year
+  // Get all orders for the current year (Except cancelled) to show trend
   const yearOrders = await prisma.order.findMany({
     where: {
       storeId: store.id,
-      status: { in: ['shipped', 'delivered'] },
+      status: { not: 'cancelled' },
       createdAt: {
         gte: new Date(currentYear, 0, 1),
         lte: new Date(currentYear, 11, 31, 23, 59, 59)
@@ -418,15 +418,17 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                   <h3 className="text-2xl font-black italic text-white tracking-tight">Revenue <span className="text-purple-400">Trend</span></h3>
                   <div className="bg-purple-500/10 text-purple-400 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border border-purple-500/20">Live</div>
                </div>
-               <div className="flex-1 flex items-end gap-2 group cursor-crosshair relative z-10">
-                  {/* Real Chart Bars */}
+               <div className="flex-1 flex items-end gap-3 group cursor-crosshair relative z-10 h-64">
                   {trendData.map((h, i) => (
                     <div 
                       key={i} 
-                      className="flex-1 bg-gradient-to-t from-purple-600/10 to-purple-400/60 rounded-t-lg transition-all duration-700 hover:to-purple-400 hover:shadow-[0_0_15px_rgba(192,132,252,0.4)]"
-                      style={{ height: `${Math.max(h, 2)}%` }}
-                      title={`$${monthlyRevenue[i].toFixed(0)}`}
-                    />
+                      className="flex-1 bg-gradient-to-t from-purple-500/20 to-purple-400 rounded-t-lg transition-all duration-700 hover:to-cyan-400 hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] relative group/bar"
+                      style={{ height: `${Math.max(h, 4)}%` }}
+                    >
+                       <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-bold py-1.5 px-2.5 rounded-lg opacity-0 group-hover/bar:opacity-100 transition-all scale-75 group-hover/bar:scale-100 whitespace-nowrap z-30 border border-white/10 pointer-events-none shadow-2xl">
+                          ${monthlyRevenue[i].toLocaleString()}
+                       </div>
+                    </div>
                   ))}
                </div>
                <div className="flex justify-between mt-6 text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] px-2 relative z-10">
