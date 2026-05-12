@@ -40,6 +40,7 @@ model Store {
   media        Media[]
   orders       Order[]
   visits       Visit[]
+  cartAdds     CartAdd[]
 }
 
 model Template {
