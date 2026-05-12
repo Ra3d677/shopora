@@ -143,6 +143,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                          </MagneticButton>
                        ))}
                     </div>
+                    <BannerButton banner={topBanners[0]} slug={slug} />
                   </motion.div>
                 </div>
                 <div className="w-full md:w-1/2 relative h-full">
@@ -213,6 +214,9 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                       <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
                     </h1>
                     <div className="flex flex-wrap gap-6">
+                      {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
+                        <MagneticButton key={btn.id || index}>
+                          <EditableButton label={btn.label} link={btn.link} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="block px-12 py-6 bg-white text-black font-black uppercase tracking-widest text-xs" />
                         </MagneticButton>
                       ))}
                     </div>
@@ -242,6 +246,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                                <EditableButton key={btn.id || index} label={btn.label} link={btn.link} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="px-10 py-5 border-2 border-slate-900 text-slate-900 font-black uppercase tracking-widest text-xs hover:bg-slate-900 hover:text-white transition-all" />
                              ))}
                            </div>
+                           <BannerButton banner={topBanners[0]} slug={slug} />
                        </motion.div>
                     </div>
                     <div className="order-1 lg:order-2 flex justify-center">
