@@ -61,22 +61,22 @@ export default async function AdminLayout({
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Main Analytics</span>
           </div>
           {[
-            { label: 'Overview', icon: LayoutDashboard, path: '/dashboard', color: 'from-cyan-400 to-blue-500' },
-            { label: 'Products', icon: ShoppingBag, path: '/products', color: 'from-purple-400 to-pink-500' },
-            { label: 'Orders', icon: Package, path: '/orders', color: 'from-pink-400 to-red-500' },
-            { label: 'Media Hub', icon: Library, path: '/media', color: 'from-amber-400 to-orange-500' },
-            { label: 'Categories', icon: Tag, path: '/categories', color: 'from-green-400 to-emerald-500' },
-            { label: 'Banners', icon: ImageIcon, path: '/banners', color: 'from-red-400 to-rose-500' },
+            { label: 'Overview', icon: LayoutDashboard, path: '/dashboard', color: 'from-cyan-400 to-blue-500', textColor: 'text-cyan-400' },
+            { label: 'Products', icon: ShoppingBag, path: '/products', color: 'from-purple-400 to-pink-500', textColor: 'text-purple-400' },
+            { label: 'Orders', icon: Package, path: '/orders', color: 'from-pink-400 to-red-500', textColor: 'text-pink-400' },
+            { label: 'Media Hub', icon: Library, path: '/media', color: 'from-amber-400 to-orange-500', textColor: 'text-amber-400' },
+            { label: 'Categories', icon: Tag, path: '/categories', color: 'from-green-400 to-emerald-500', textColor: 'text-green-400' },
+            { label: 'Banners', icon: ImageIcon, path: '/banners', color: 'from-red-400 to-rose-500', textColor: 'text-red-400' },
           ].map((item) => (
             <Link 
               key={item.label}
               href={`${adminPath}${item.path}`} 
-              className="flex items-center gap-4 px-4 py-4 rounded-2xl hover:bg-white/[0.03] transition-all group relative overflow-hidden"
+              className="flex items-center gap-4 px-4 py-4 rounded-2xl hover:bg-white/[0.05] transition-all group relative overflow-hidden"
             >
-              <div className={`absolute left-0 top-2 bottom-2 w-1 bg-gradient-to-b ${item.color} opacity-0 group-hover:opacity-100 transition-opacity rounded-full shadow-[0_0_10px_rgba(34,211,238,0.5)]`}></div>
-              <item.icon className={`w-5 h-5 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all text-white`} />
-              <span className="font-black text-[11px] uppercase tracking-widest text-slate-500 group-hover:text-white transition-colors">{item.label}</span>
-              <div className={`absolute right-4 w-1.5 h-1.5 rounded-full bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-100 transition-all scale-0 group-hover:scale-100`}></div>
+              <div className={`absolute left-0 top-2 bottom-2 w-1 bg-gradient-to-b ${item.color} opacity-0 group-hover:opacity-100 transition-opacity rounded-full`}></div>
+              <item.icon className={`w-5 h-5 opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all text-white`} />
+              <span className={`font-black text-[11px] uppercase tracking-widest text-slate-300 group-hover:${item.textColor} transition-colors`}>{item.label}</span>
+              <div className={`absolute right-4 w-1.5 h-1.5 rounded-full bg-gradient-to-br ${item.color} opacity-20 group-hover:opacity-100 transition-all scale-100`}></div>
             </Link>
           ))}
 

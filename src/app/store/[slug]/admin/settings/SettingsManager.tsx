@@ -19,6 +19,12 @@ export default function SettingsManager({
   const [settings, setSettings] = useState<StoreSettings>(initialSettings);
   const [isPending, startTransition] = useTransition();
   const [saveMessage, setSaveMessage] = useState("");
+  const [isDirty, setIsDirty] = useState(false);
+
+  const updateSettings = (newSettings: any) => {
+    setSettings(newSettings);
+    setIsDirty(true);
+  };
   const [activeTab, setActiveTab] = useState("general");
   const router = useRouter();
 
@@ -36,7 +42,8 @@ export default function SettingsManager({
     
     startTransition(async () => {
       await saveStoreSettings(slug, settings);
-      setSaveMessage("Settings saved successfully!");
+      setSaveMessage("Protocol Execution Successful");
+      setIsDirty(false);
       router.refresh();
       
       setTimeout(() => setSaveMessage(""), 3000);
@@ -100,7 +107,7 @@ export default function SettingsManager({
                       <input 
                         type="text" 
                         value={settings.storeName} 
-                        onChange={e => setSettings({...settings, storeName: e.target.value})} 
+                        onChange={e => updateSettings({...settings, storeName: e.target.value})} 
                         className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-black uppercase tracking-tighter text-xl italic" 
                       />
                     </div>
@@ -110,7 +117,7 @@ export default function SettingsManager({
                         <MediaPicker 
                           slug={slug}
                           value={settings.logoUrl || ''} 
-                          onChange={url => setSettings({...settings, logoUrl: url})} 
+                          onChange={url => updateSettings({...settings, logoUrl: url})} 
                         />
                       </div>
                     </div>
@@ -127,7 +134,7 @@ export default function SettingsManager({
                           max="120" 
                           step="4"
                           value={settings.headerSettings?.logoHeight || 40} 
-                          onChange={(e) => setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), logoHeight: Number(e.target.value)}})} 
+                          onChange={(e) => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), logoHeight: Number(e.target.value)}})} 
                           className="w-full h-1.5 bg-white/5 rounded-lg appearance-none cursor-pointer accent-indigo-500"
                         />
                       </div>
@@ -144,7 +151,7 @@ export default function SettingsManager({
                             type="checkbox" 
                             className="sr-only peer"
                             checked={settings.headerSettings?.logoBlendMode === 'multiply'}
-                            onChange={(e) => setSettings({
+                            onChange={(e) => updateSettings({
                               ...settings, 
                               headerSettings: {
                                 ...(settings.headerSettings || {}), 
@@ -177,7 +184,7 @@ export default function SettingsManager({
                       <input 
                         type="email" 
                         value={settings.contactInfo?.email || ''} 
-                        onChange={e => setSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), email: e.target.value}})} 
+                        onChange={e => updateSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), email: e.target.value}})} 
                         className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-bold" 
                         placeholder="support@domain.com"
                       />
@@ -187,7 +194,7 @@ export default function SettingsManager({
                       <input 
                         type="text" 
                         value={settings.contactInfo?.phone || ''} 
-                        onChange={e => setSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), phone: e.target.value}})} 
+                        onChange={e => updateSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), phone: e.target.value}})} 
                         className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-bold" 
                         placeholder="+1 (000) 000-0000"
                       />
@@ -197,7 +204,7 @@ export default function SettingsManager({
                       <input 
                         type="text" 
                         value={settings.contactInfo?.whatsapp || ''} 
-                        onChange={e => setSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), whatsapp: e.target.value}})} 
+                        onChange={e => updateSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), whatsapp: e.target.value}})} 
                         className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-bold border-l-4 border-l-green-500/30" 
                         placeholder="+1 (000) 000-0000"
                       />
@@ -249,7 +256,7 @@ export default function SettingsManager({
                                name="headerLayout"
                                value={layout.id}
                                checked={(settings.headerSettings?.layout || 'default') === layout.id}
-                               onChange={(e) => setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), layout: e.target.value as any}})}
+                               onChange={(e) => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), layout: e.target.value as any}})}
                                className="sr-only"
                              />
                           </div>
@@ -272,7 +279,7 @@ export default function SettingsManager({
                     </div>
                     <button 
                       type="button"
-                      onClick={() => setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: [...(settings.headerSettings?.links || [{id: '1', label: 'Home', url: `/store/${slug}`}, {id: '2', label: 'Shop', url: `/store/${slug}/categories`}]), {id: Math.random().toString(36).substr(2, 9), label: 'New Link', url: '#'}]}})}
+                      onClick={() => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: [...(settings.headerSettings?.links || [{id: '1', label: 'Home', url: `/store/${slug}`}, {id: '2', label: 'Shop', url: `/store/${slug}/categories`}]), {id: Math.random().toString(36).substr(2, 9), label: 'New Link', url: '#'}]}})}
                       className="px-8 py-4 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-indigo-400 transition-all shadow-2xl"
                     >
                       + ADD NODE
@@ -297,7 +304,7 @@ export default function SettingsManager({
                                ];
                                const newLinks = [...currentLinks];
                                newLinks[idx].label = e.target.value;
-                               setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
+                               updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
                              }}
                              className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all font-bold text-xs"
                            />
@@ -314,7 +321,7 @@ export default function SettingsManager({
                                ];
                                const newLinks = [...currentLinks];
                                newLinks[idx].url = e.target.value;
-                               setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
+                               updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
                              }}
                              className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all font-bold text-xs"
                            />
@@ -329,7 +336,7 @@ export default function SettingsManager({
                                ];
                                const newLinks = [...currentLinks];
                                newLinks.splice(idx, 1);
-                               setSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
+                               updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
                             }}
                             className="w-10 h-10 bg-rose-500/10 border border-rose-500/20 text-rose-500 hover:bg-rose-500 hover:text-white rounded-xl transition-all flex items-center justify-center"
                           >
@@ -391,7 +398,7 @@ export default function SettingsManager({
                                      <input 
                                         type="color" 
                                         value={(colorSystem as any)[section.key][item.key] || '#000000'} 
-                                        onChange={e => setSettings({
+                                        onChange={e => updateSettings({
                                           ...settings, 
                                           colorSystem: { 
                                             ...colorSystem, 
@@ -521,22 +528,267 @@ export default function SettingsManager({
               </div>
             )}
 
-            {['tracking', 'business', 'signature'].includes(activeTab) && (
-              <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-20 border border-white/[0.05] text-center shadow-2xl animate-in fade-in duration-700">
-                  <div className="w-24 h-24 bg-indigo-500/10 border border-indigo-500/20 rounded-full flex items-center justify-center mx-auto mb-8">
-                     <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+            {activeTab === 'tracking' && (
+              <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 border border-white/[0.05] shadow-2xl">
+                  <div className="flex items-center gap-4 mb-12">
+                    <div className="w-1.5 h-10 bg-indigo-400 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+                    <div>
+                      <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Marketing Intelligence</h2>
+                      <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Conversion tracking & analytics pixels.</p>
+                    </div>
                   </div>
-                  <h2 className="text-3xl font-black text-white uppercase italic tracking-tighter">Module Synchronizing</h2>
-                  <p className="text-slate-500 text-sm mt-4 font-medium italic">Establishing high-bandwidth connection to {tabs.find(t => t.id === activeTab)?.label} parameters...</p>
-                  <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mt-12 bg-indigo-400/5 py-2 px-6 rounded-full inline-block border border-indigo-400/10 animate-pulse">Encryption Layer Active</p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {[
+                      { id: 'facebookPixelId', name: 'Facebook Pixel', color: '#1877F2', placeholder: '1234567890' },
+                      { id: 'tiktokPixelId', name: 'TikTok Pixel', color: '#000000', placeholder: 'C1234567890' },
+                      { id: 'snapchatPixelId', name: 'Snapchat Pixel', color: '#FFFC00', placeholder: '123456-7890' },
+                      { id: 'googleAnalyticsId', name: 'Google Analytics 4', color: '#F9AB00', placeholder: 'G-XXXXXXXX' }
+                    ].map((pixel) => (
+                      <div key={pixel.id} className="bg-black/20 p-8 rounded-[2.5rem] border border-white/[0.03] space-y-6">
+                         <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white" style={{ backgroundColor: pixel.color }}>
+                               <div className="w-4 h-4 bg-white/20 rounded-full animate-pulse"></div>
+                            </div>
+                            <h3 className="text-sm font-black text-white uppercase tracking-widest">{pixel.name}</h3>
+                         </div>
+                         <div className="space-y-2">
+                            <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Terminal ID</label>
+                            <input 
+                              type="text"
+                              value={(settings as any)[pixel.id] || ''}
+                              onChange={e => updateSettings({...settings, [pixel.id]: e.target.value})}
+                              placeholder={pixel.placeholder}
+                              className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all font-mono text-xs"
+                            />
+                         </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'signature' && (
+              <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 border border-white/[0.05] shadow-2xl">
+                   <div className="flex items-center gap-4 mb-12">
+                    <div className="w-1.5 h-10 bg-indigo-400 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+                    <div>
+                      <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Template Specialization</h2>
+                      <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Exclusive logic for the Signature architecture.</p>
+                    </div>
+                  </div>
+
+                  {/* Live Sales */}
+                  <div className="bg-black/20 p-10 rounded-[2.5rem] border border-white/[0.03] mb-12">
+                     <div className="flex items-center justify-between mb-8">
+                        <div>
+                           <h3 className="text-sm font-black text-white uppercase tracking-widest italic">Live Conversion Stream</h3>
+                           <p className="text-[10px] text-slate-500 font-medium uppercase tracking-widest mt-1">Real-time purchase notifications.</p>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                           <input 
+                              type="checkbox" 
+                              className="sr-only peer"
+                              checked={settings.signatureSettings?.liveSales?.enabled}
+                              onChange={e => updateSettings({
+                                ...settings, 
+                                signatureSettings: {
+                                  ...(settings.signatureSettings || {}), 
+                                  liveSales: {
+                                    ...(settings.signatureSettings?.liveSales || {enabled: false, interval: 15000}), 
+                                    enabled: e.target.checked
+                                  }
+                                }
+                              })}
+                           />
+                           <div className="w-14 h-7 bg-white/5 border border-white/10 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-slate-500 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500 peer-checked:after:bg-black peer-checked:after:scale-110"></div>
+                        </label>
+                     </div>
+                     {settings.signatureSettings?.liveSales?.enabled && (
+                       <div className="bg-white/[0.02] p-6 rounded-2xl border border-white/[0.05] flex items-center gap-8">
+                          <div className="flex-1 space-y-4">
+                             <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Stream Interval (Seconds)</label>
+                             <input 
+                                type="number"
+                                value={(settings.signatureSettings?.liveSales?.interval || 15000) / 1000}
+                                onChange={e => updateSettings({
+                                  ...settings, 
+                                  signatureSettings: {
+                                    ...(settings.signatureSettings || {}), 
+                                    liveSales: {
+                                      ...(settings.signatureSettings?.liveSales || {enabled: false, interval: 15000}), 
+                                      interval: Number(e.target.value) * 1000
+                                    }
+                                  }
+                                })}
+                                className="w-32 bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all font-bold text-xs"
+                             />
+                          </div>
+                       </div>
+                     )}
+                  </div>
+
+                  {/* Testimonials */}
+                  <div className="bg-black/20 p-10 rounded-[2.5rem] border border-white/[0.03]">
+                     <div className="flex justify-between items-center mb-12">
+                        <h3 className="text-sm font-black text-white uppercase tracking-widest italic">Social Proof Matrix</h3>
+                        <button 
+                          type="button"
+                          onClick={() => updateSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), testimonials: [...(settings.signatureSettings?.testimonials || []), {name: '', role: '', content: ''}]}})}
+                          className="px-6 py-3 bg-white/[0.05] border border-white/10 text-white rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-white hover:text-black transition-all"
+                        >
+                          + ADD TESTIMONIAL
+                        </button>
+                     </div>
+
+                     <div className="space-y-6">
+                        {(settings.signatureSettings?.testimonials || []).map((t: any, idx: number) => (
+                           <div key={idx} className="bg-white/[0.02] p-8 rounded-[2rem] border border-white/[0.05] group/t">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                 <div className="space-y-3">
+                                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Identity</label>
+                                    <input 
+                                       type="text" 
+                                       value={t.name}
+                                       placeholder="Client Name"
+                                       onChange={e => {
+                                          const newList = [...(settings.signatureSettings?.testimonials || [])];
+                                          newList[idx].name = e.target.value;
+                                          updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
+                                       }}
+                                       className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all font-bold text-xs"
+                                    />
+                                 </div>
+                                 <div className="space-y-3">
+                                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Professional Rank</label>
+                                    <input 
+                                       type="text" 
+                                       value={t.role}
+                                       placeholder="CEO, Founder, etc."
+                                       onChange={e => {
+                                          const newList = [...(settings.signatureSettings?.testimonials || [])];
+                                          newList[idx].role = e.target.value;
+                                          updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
+                                       }}
+                                       className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all font-bold text-xs"
+                                    />
+                                 </div>
+                              </div>
+                              <div className="space-y-3">
+                                 <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Testimonial Payload</label>
+                                 <textarea 
+                                    value={t.content}
+                                    placeholder="Transcript..."
+                                    rows={3}
+                                    onChange={e => {
+                                       const newList = [...(settings.signatureSettings?.testimonials || [])];
+                                       newList[idx].content = e.target.value;
+                                       updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
+                                    }}
+                                    className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all font-medium text-xs italic"
+                                 />
+                              </div>
+                              <button 
+                                 type="button"
+                                 onClick={() => {
+                                    const newList = [...(settings.signatureSettings?.testimonials || [])];
+                                    newList.splice(idx, 1);
+                                    updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
+                                 }}
+                                 className="mt-6 text-[9px] font-black text-rose-500 uppercase tracking-widest hover:text-rose-400 transition-colors"
+                              >
+                                 [ TERMINATE RECORD ]
+                              </button>
+                           </div>
+                        ))}
+                     </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'business' && (
+              <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 border border-white/[0.05] shadow-2xl">
+                   <div className="flex items-center gap-4 mb-12">
+                    <div className="w-1.5 h-10 bg-indigo-400 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+                    <div>
+                      <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Fiscal Logistics</h2>
+                      <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Shipping infrastructure and business parameters.</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-black/20 p-10 rounded-[2.5rem] border border-white/[0.03]">
+                     <div className="flex justify-between items-center mb-12">
+                        <h3 className="text-sm font-black text-white uppercase tracking-widest italic">Shipping Zone Matrix</h3>
+                        <button 
+                          type="button"
+                          onClick={() => updateSettings({...settings, businessSettings: {...(settings.businessSettings || {}), shippingRates: [...(settings.businessSettings?.shippingRates || []), {zone: '', rate: 0}]}})}
+                          className="px-6 py-3 bg-white text-black rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-indigo-400 transition-all"
+                        >
+                          + ADD ZONE
+                        </button>
+                     </div>
+
+                     <div className="space-y-4">
+                        {(settings.businessSettings?.shippingRates || []).map((r: any, idx: number) => (
+                           <div key={idx} className="flex gap-6 items-center bg-white/[0.02] p-6 rounded-2xl border border-white/[0.05] group">
+                              <div className="flex-1 space-y-2">
+                                 <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Geographic Zone</label>
+                                 <input 
+                                    type="text" 
+                                    value={r.zone}
+                                    placeholder="e.g. Europe"
+                                    onChange={e => {
+                                       const newList = [...(settings.businessSettings?.shippingRates || [])];
+                                       newList[idx].zone = e.target.value;
+                                       updateSettings({...settings, businessSettings: {...settings.businessSettings, shippingRates: newList}});
+                                    }}
+                                    className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all font-bold text-xs"
+                                 />
+                              </div>
+                              <div className="w-32 space-y-2">
+                                 <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Rate ($)</label>
+                                 <input 
+                                    type="number" 
+                                    value={r.rate}
+                                    onChange={e => {
+                                       const newList = [...(settings.businessSettings?.shippingRates || [])];
+                                       newList[idx].rate = Number(e.target.value);
+                                       updateSettings({...settings, businessSettings: {...settings.businessSettings, shippingRates: newList}});
+                                    }}
+                                    className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all font-bold text-xs"
+                                 />
+                              </div>
+                              <div className="pt-6">
+                                 <button 
+                                    type="button"
+                                    onClick={() => {
+                                       const newList = [...(settings.businessSettings?.shippingRates || [])];
+                                       newList.splice(idx, 1);
+                                       updateSettings({...settings, businessSettings: {...settings.businessSettings, shippingRates: newList}});
+                                    }}
+                                    className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all"
+                                 >
+                                    <X size={18} />
+                                 </button>
+                              </div>
+                           </div>
+                        ))}
+                     </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
 
-          {/* Premium Sticky Save Bar */}
-          <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] w-full max-w-4xl px-6 group/save">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-[2.5rem] blur-[30px] opacity-20 group-hover/save:opacity-40 transition-opacity"></div>
-            <div className="relative bg-[#0f111a]/80 backdrop-blur-3xl border border-white/[0.1] p-6 rounded-[2.5rem] flex items-center justify-between shadow-[0_0_100px_rgba(0,0,0,0.5)]">
+          {/* Premium Sticky Save Bar - Enhanced visibility logic */}
+          <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] w-full max-w-4xl px-6 transition-all duration-700 ${isDirty ? 'translate-y-0 opacity-100' : 'translate-y-32 opacity-0'}`}>
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-[2.5rem] blur-[30px] opacity-20"></div>
+            <div className="relative bg-[#0f111a]/90 backdrop-blur-3xl border border-white/[0.1] p-6 rounded-[2.5rem] flex items-center justify-between shadow-[0_0_100px_rgba(0,0,0,0.5)]">
               <div className="pl-6">
                 {saveMessage ? (
                   <div className="flex items-center gap-4 animate-in slide-in-from-left-4 duration-500">
@@ -544,8 +796,8 @@ export default function SettingsManager({
                      <span className="text-[10px] font-black text-white uppercase tracking-[0.3em] italic">System Synchronized</span>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-4 text-slate-500">
-                     <div className="w-2 h-2 rounded-full bg-slate-800"></div>
+                  <div className="flex items-center gap-4 text-slate-400">
+                     <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></div>
                      <span className="text-[10px] font-black uppercase tracking-[0.3em]">Pending Commitment</span>
                   </div>
                 )}
@@ -553,7 +805,7 @@ export default function SettingsManager({
               <button 
                 type="submit"
                 disabled={isPending}
-                className="px-12 py-5 bg-white text-black rounded-[2rem] font-black text-[12px] uppercase tracking-[0.4em] hover:bg-indigo-400 transition-all flex items-center gap-4 shadow-2xl disabled:opacity-50"
+                className="px-12 py-5 bg-white text-black rounded-[2rem] font-black text-[12px] uppercase tracking-[0.4em] hover:bg-indigo-400 hover:text-white transition-all flex items-center gap-4 shadow-2xl disabled:opacity-50"
               >
                 {isPending ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
                 Execute Protocol
