@@ -52,7 +52,7 @@ export default function SidebarNav({
 
   return (
     <>
-      <div className="mb-4 px-4">
+      <div className="mb-2 px-4">
         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Main Control</span>
       </div>
 
@@ -64,7 +64,7 @@ export default function SidebarNav({
           <Link
             key={item.label}
             href={fullPath}
-            className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group/nav ${
+            className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-500 group/nav ${
               isActive 
                 ? 'bg-gradient-to-r from-cyan-500/10 to-transparent text-white border-l-2 border-cyan-500' 
                 : 'hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent'
@@ -78,8 +78,8 @@ export default function SidebarNav({
       })}
 
       {systemItems && systemItems.length > 0 && (
-        <div className="space-y-2 pt-6">
-          <div className="mb-4 px-4">
+        <div className="space-y-1 pt-4">
+          <div className="mb-2 px-4">
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">System Admin</span>
           </div>
           {systemItems.map((item) => {
@@ -90,7 +90,7 @@ export default function SidebarNav({
               <Link
                 key={item.label}
                 href={fullPath}
-                className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group/nav ${
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-500 group/nav ${
                   isActive 
                     ? 'bg-gradient-to-r from-cyan-500/10 to-transparent text-white border-l-2 border-cyan-500' 
                     : 'hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent'
@@ -106,8 +106,8 @@ export default function SidebarNav({
       )}
 
       {customItems && customItems.length > 0 && (
-        <div className="space-y-2 pt-6">
-          <div className="mb-4 px-4">
+        <div className="space-y-1 pt-4">
+          <div className="mb-2 px-4">
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Customization</span>
           </div>
           {customItems.map((item) => {
@@ -118,7 +118,7 @@ export default function SidebarNav({
               <Link
                 key={item.label}
                 href={fullPath}
-                className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group/nav ${
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-500 group/nav ${
                   isActive 
                     ? 'bg-gradient-to-r from-cyan-500/10 to-transparent text-white border-l-2 border-cyan-500' 
                     : 'hover:bg-white/[0.03] hover:text-white border-l-2 border-transparent'

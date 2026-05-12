@@ -284,6 +284,15 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                         {style}
                       </button>
                     ))}
+                    {activeSection.type === 'sale' && ['grid', 'bento', 'horizontal', 'scroll', 'list', 'bubbles'].map(style => (
+                      <button 
+                        key={style}
+                        onClick={() => updateSection(activeSection.id, { style })}
+                        className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}
+                      >
+                        {style}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
@@ -300,6 +309,27 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                         onChange={(e) => updateSectionConfig(activeSection.id, 'title', e.target.value)}
                         className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-bold"
                       />
+                    </div>
+                  )}
+
+                  {activeSection.type === 'sale' && (
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-slate-500 uppercase">Section Background Color</label>
+                      <div className="flex gap-4">
+                         <input 
+                           type="color" 
+                           value={activeSection.config.backgroundColor && activeSection.config.backgroundColor !== 'transparent' ? activeSection.config.backgroundColor : '#ffffff'} 
+                           onChange={(e) => updateSectionConfig(activeSection.id, 'backgroundColor', e.target.value)}
+                           className="w-12 h-12 rounded-xl cursor-pointer"
+                         />
+                         <input 
+                           type="text" 
+                           value={activeSection.config.backgroundColor || 'transparent'} 
+                           onChange={(e) => updateSectionConfig(activeSection.id, 'backgroundColor', e.target.value)}
+                           className="flex-1 px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm uppercase"
+                           placeholder="#FFFFFF or transparent"
+                         />
+                      </div>
                     </div>
                   )}
 
