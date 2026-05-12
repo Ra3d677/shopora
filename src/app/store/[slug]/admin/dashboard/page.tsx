@@ -7,9 +7,8 @@ import CustomerPreviewButton from "./CustomerPreviewButton";
 
 export default async function AdminDashboard({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ range?: string }> }) {
   const { slug } = await params;
-  const { range } = await searchParams;
-
-  const currentRange = range || 'all_time';
+  const sp = (await searchParams) || {};
+  const currentRange = sp.range || 'all_time';
 
   const now = new Date();
   let startDate: Date | null = null;
@@ -66,7 +65,12 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   });
 
   if (!store) {
-    return <div className="p-8">Store not found</div>;
+    return (
+      <div className="p-20 text-center bg-[#0a0c14] min-h-screen">
+         <h1 className="text-2xl font-black text-white uppercase italic">Sector Not Found</h1>
+         <p className="text-slate-500 mt-4 font-bold uppercase tracking-widest text-xs">The requested store instance does not exist in the matrix.</p>
+      </div>
+    );
   }
 
   const totalOrders = store.orders.length;
@@ -93,7 +97,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
 
   const prevRevenue = prevOrders
     .filter(order => ['shipped', 'delivered'].includes(order.status))
-    .reduce((sum, order) => sum + order.totalAmount, 0);
+    .reduce((sum, order) => sum + Number(order.totalAmount || 0), 0);
   const revenueGrowth = prevRevenue > 0 ? ((totalRevenue - prevRevenue) / prevRevenue) * 100 : 100;
 
   const totalVisits = store.visits.length;
@@ -115,11 +119,15 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   // Heatmap Data (Orders by Hour and Day - Adjusted for UTC+3)
   const heatmap = Array(7).fill(0).map(() => Array(24).fill(0));
   store.orders.forEach(order => {
-    const d = new Date(order.createdAt);
-    // Adjust to Local Time (UTC+3)
-    const localHour = (d.getHours() + 3) % 24;
-    const localDay = d.getDay(); // Note: this might need adjustment if the hour wraps around midnight, but for simplicity we'll stick to this.
-    heatmap[localDay][localHour]++;
+    try {
+      const d = new Date(order.createdAt);
+      if (!isNaN(d.getTime())) {
+        // Adjust to Local Time (UTC+3)
+        const localHour = (d.getHours() + 3) % 24;
+        const localDay = d.getDay(); 
+        heatmap[localDay][localHour]++;
+      }
+    } catch(e) {}
   });
 
   // Low Stock Alerts
@@ -151,8 +159,10 @@ export default async function AdminDashboard({ params, searchParams }: { params:
     const salesCount = productSalesMap.get(p.id) || 0;
     let image = "";
     try {
-      const parsed = JSON.parse(p.images);
-      if (Array.isArray(parsed) && parsed.length > 0) image = parsed[0];
+      if (p.images) {
+        const parsed = JSON.parse(p.images);
+        if (Array.isArray(parsed) && parsed.length > 0) image = parsed[0];
+      }
     } catch (e) {}
     return { ...p, salesCount, image };
   });
