@@ -50,7 +50,11 @@ export default async function AdminDashboard({ params, searchParams }: { params:
           }
         }
       },
-      products: true,
+      products: {
+        include: {
+          category: true
+        }
+      },
       visits: {
         where: baseWhereCondition
       },
