@@ -369,6 +369,14 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
           }
 
           if (section.type === 'testimonials') {
+            const sectionTestimonials = (section.config?.items && section.config.items.length > 0) 
+              ? section.config.items 
+              : (settings.signatureSettings?.testimonials && settings.signatureSettings.testimonials.length > 0 
+                  ? settings.signatureSettings.testimonials 
+                  : [
+                      { id: '1', name: 'Alexander Knight', role: 'Premium Collector', content: 'The quality of the products exceeded my expectations. Truly a premium experience.' }
+                    ]);
+
             return (
               <section key={section.id} className="py-24 bg-transparent px-6 border-t border-slate-100">
                  <div className="container mx-auto">
@@ -379,19 +387,21 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                        <div className="w-24 h-1 bg-blue-600 mx-auto" />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                       {[1, 2, 3].map((i) => (
-                          <div key={i} className="p-10 rounded-[3rem] bg-slate-50 border border-slate-100 shadow-sm hover:shadow-xl transition-all group">
+                       {sectionTestimonials.map((t: any, idx: number) => (
+                          <div key={t.id || idx} className="p-10 rounded-[3rem] bg-slate-50 border border-slate-100 shadow-sm hover:shadow-xl transition-all group">
                              <div className="flex gap-1 mb-6 text-blue-600">
                                 {[1, 2, 3, 4, 5].map(s => <span key={s}>★</span>)}
                              </div>
                              <p className="text-xl text-slate-600 italic leading-relaxed mb-8">
-                                "The quality of the products exceeded my expectations. The attention to detail in the packaging and the speed of delivery made for a truly premium experience."
+                                "{t.content}"
                              </p>
                              <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-slate-200" />
+                                <div className="w-12 h-12 rounded-full bg-slate-200 overflow-hidden">
+                                   <img src={t.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${t.name}`} alt={t.name} className="w-full h-full object-cover" />
+                                </div>
                                 <div>
-                                   <h4 className="font-black text-slate-900 uppercase tracking-tighter">Customer {i}</h4>
-                                   <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Verified Collector</p>
+                                   <h4 className="font-black text-slate-900 uppercase tracking-tighter">{t.name}</h4>
+                                   <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">{t.role}</p>
                                 </div>
                              </div>
                           </div>

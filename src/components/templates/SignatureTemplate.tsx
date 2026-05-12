@@ -593,6 +593,12 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
         }
 
         if (section.type === 'testimonials') {
+          const sectionTestimonials = (section.config?.items && section.config.items.length > 0) 
+            ? section.config.items 
+            : (settings.signatureSettings?.testimonials && settings.signatureSettings.testimonials.length > 0 
+                ? settings.signatureSettings.testimonials 
+                : testimonials);
+
           return (
             <React.Fragment key={section.id}>
               <section 
@@ -615,19 +621,19 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                        transition={{ duration: 0.5 }}
                      >
                        <h3 className="text-3xl md:text-5xl font-light italic leading-tight mb-12 min-h-[150px] flex items-center justify-center">
-                         "{testimonials[activeTestimonial]?.content}"
+                         "{sectionTestimonials[activeTestimonial]?.content}"
                        </h3>
                        <div className="flex flex-col items-center">
                           <div className="w-16 h-16 rounded-full bg-slate-800 mb-4 overflow-hidden shadow-2xl border-2 border-white/10">
-                             <img src={testimonials[activeTestimonial]?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${testimonials[activeTestimonial]?.name}`} alt="User" className="w-full h-full object-cover" />
+                             <img src={sectionTestimonials[activeTestimonial]?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${sectionTestimonials[activeTestimonial]?.name}`} alt="User" className="w-full h-full object-cover" />
                           </div>
-                          <p className="font-black uppercase tracking-widest text-xs">{testimonials[activeTestimonial]?.name}</p>
-                          <p className="text-white/40 text-[10px] uppercase tracking-widest mt-1">{testimonials[activeTestimonial]?.role}</p>
+                          <p className="font-black uppercase tracking-widest text-xs">{sectionTestimonials[activeTestimonial]?.name}</p>
+                          <p className="text-white/40 text-[10px] uppercase tracking-widest mt-1">{sectionTestimonials[activeTestimonial]?.role}</p>
                        </div>
                      </motion.div>
                    </AnimatePresence>
                    <div className="flex justify-center gap-2 mt-12">
-                     {testimonials.map((_: any, idx: number) => (
+                     {sectionTestimonials.map((_: any, idx: number) => (
                        <button
                          key={idx}
                          onClick={() => setActiveTestimonial(idx)}

@@ -386,6 +386,89 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                     </div>
                   )}
 
+                  {activeSection.type === 'testimonials' && (
+                    <div className="space-y-6">
+                      <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-sm font-bold text-slate-800">Customer Testimonials</h3>
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            const newItems = [...(activeSection.config.items || [])];
+                            newItems.push({ id: Math.random().toString(36).substr(2, 9), name: 'Customer Name', role: 'Verified Buyer', content: 'Excellent service!' });
+                            updateSectionConfig(activeSection.id, 'items', newItems);
+                          }}
+                          className="text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full hover:bg-blue-100"
+                        >
+                          + Add Testimonial
+                        </button>
+                      </div>
+                      <div className="space-y-4">
+                        {(activeSection.config.items || []).map((item: any, idx: number) => (
+                          <div key={item.id} className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                            <div className="flex justify-between items-center">
+                               <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Testimonial #{idx + 1}</span>
+                               <button 
+                                 onClick={() => {
+                                   const newItems = [...(activeSection.config.items || [])];
+                                   newItems.splice(idx, 1);
+                                   updateSectionConfig(activeSection.id, 'items', newItems);
+                                 }}
+                                 className="text-red-400 hover:text-red-600 p-1"
+                               >
+                                 <Trash2 className="w-4 h-4" />
+                               </button>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                               <div>
+                                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Name</label>
+                                  <input 
+                                    type="text" 
+                                    value={item.name} 
+                                    onChange={e => {
+                                      const newItems = [...(activeSection.config.items || [])];
+                                      newItems[idx].name = e.target.value;
+                                      updateSectionConfig(activeSection.id, 'items', newItems);
+                                    }}
+                                    className="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-1 focus:ring-blue-500"
+                                  />
+                               </div>
+                               <div>
+                                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Title / Role</label>
+                                  <input 
+                                    type="text" 
+                                    value={item.role} 
+                                    onChange={e => {
+                                      const newItems = [...(activeSection.config.items || [])];
+                                      newItems[idx].role = e.target.value;
+                                      updateSectionConfig(activeSection.id, 'items', newItems);
+                                    }}
+                                    className="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-1 focus:ring-blue-500"
+                                  />
+                               </div>
+                            </div>
+                            <div>
+                               <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Content</label>
+                               <textarea 
+                                 value={item.content} 
+                                 onChange={e => {
+                                   const newItems = [...(activeSection.config.items || [])];
+                                   newItems[idx].content = e.target.value;
+                                   updateSectionConfig(activeSection.id, 'items', newItems);
+                                 }}
+                                 className="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-1 focus:ring-blue-500 min-h-[80px]"
+                               />
+                            </div>
+                          </div>
+                        ))}
+                        {(!activeSection.config.items || activeSection.config.items.length === 0) && (
+                          <p className="text-sm text-slate-500 text-center py-4 border-2 border-dashed rounded-xl italic">
+                            No custom testimonials added for this section. It will fall back to global settings.
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   {activeSection.type === 'video' && (
                     <div className="space-y-6">
                       <div className="flex items-center justify-between">

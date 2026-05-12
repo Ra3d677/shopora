@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import BannerButton from "@/components/ui/BannerButton";
 import VideoSection from "@/components/ui/VideoSection";
 import Link from 'next/link';
-import { ShoppingBag, ArrowRight, Menu, X, ChevronRight, Play } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Menu, X, ChevronRight, Play, Quote } from 'lucide-react';
 import SmartImage from '@/components/ui/SmartImage';
 import { motion, AnimatePresence } from 'framer-motion';
 import EditableText from '@/components/editor/EditableText';
@@ -479,6 +479,45 @@ export default function ZenithTemplate({
           return <SaleSection key={section.id} section={section} products={products} slug={slug} template="zenith" />;
         }
 
+        if (section.type === 'testimonials') {
+          const sectionTestimonials = section.config?.items || settings.signatureSettings?.testimonials || [
+            { id: '1', name: 'Alexander Knight', role: 'Creative Director', content: 'The attention to detail and quality exceeded all expectations.' }
+          ];
+
+          return (
+            <section key={section.id} className="py-32 bg-zinc-50/50">
+              <div className="container mx-auto px-8 md:px-16 text-center">
+                <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="max-w-4xl mx-auto">
+                  <span className="text-[#c5a368] text-[10px] uppercase tracking-[0.6em] font-black mb-12 block">Voices of Zenith</span>
+                  <div className="relative">
+                    <Quote className="absolute -top-12 -left-8 text-[#c5a368]/10 w-24 h-24" />
+                    <div className="space-y-12">
+                      {sectionTestimonials.map((t: any, idx: number) => (
+                        <div key={t.id || idx} className={idx === 0 ? "block" : "hidden"}>
+                          <h3 className="text-3xl md:text-5xl font-light italic leading-tight mb-12 text-zinc-900">
+                            "{t.content}"
+                          </h3>
+                          <div className="flex flex-col items-center">
+                            <div className="w-16 h-16 rounded-full bg-zinc-200 mb-4 overflow-hidden border border-[#c5a368]/20">
+                              <img 
+                                src={t.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${t.name}`} 
+                                alt={t.name} 
+                                className="w-full h-full object-cover" 
+                              />
+                            </div>
+                            <p className="font-black uppercase tracking-[0.4em] text-[10px] text-zinc-900">{t.name}</p>
+                            <p className="text-[#c5a368] text-[9px] uppercase tracking-[0.2em] mt-2 font-bold">{t.role}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </section>
+          );
+        }
+
         if (section.type === 'callout') {
           return (
             <section key={section.id} className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-transparent text-white">
@@ -505,7 +544,8 @@ export default function ZenithTemplate({
             </section>
           );
         }
-          return null;
+
+        return null;
         };
 
         return (
