@@ -1,5 +1,6 @@
 import { DollarSign, ShoppingBag, Users, TrendingUp, Package, Activity, CheckCircle2, XCircle, Clock, Eye, ArrowUpCircle, ArrowDownCircle } from "lucide-react";
 import prisma from "@/lib/prisma";
+export const dynamic = 'force-dynamic';
 import ExportButton from "./ExportButton";
 import DateFilter from "./DateFilter";
 import CustomerPreviewButton from "./CustomerPreviewButton";
@@ -167,11 +168,10 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const bestSeller = topProducts[0]?.salesCount > 0 ? topProducts[0] : null;
   const leastSeller = allProductsWithSales.length > 0 ? bottomProducts[0] : null;
 
-  // Get all orders for this store to compute trend (more robust than filtering in DB)
+  // Get all orders for this store (Broadest possible search for debugging)
   const allStoreOrders = await prisma.order.findMany({
     where: {
-      storeId: store.id,
-      status: { not: 'cancelled' }
+      storeId: store.id
     }
   });
 
@@ -180,10 +180,9 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   
   allStoreOrders.forEach(order => {
     const d = new Date(order.createdAt);
-    if (d.getFullYear() === currentYear) {
-      const month = d.getMonth();
-      monthlyRevenue[month] += order.totalAmount;
-    }
+    // Include all years for now just to see if the chart moves
+    const month = d.getMonth();
+    monthlyRevenue[month] += order.totalAmount;
   });
 
   const maxMonthRevenue = Math.max(...monthlyRevenue, 1);
@@ -431,6 +430,10 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                </div>
                <div className="flex justify-between mt-6 text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] px-2 relative z-10">
                   <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+               </div>
+               {/* Debug Info */}
+               <div className="mt-4 p-2 bg-black/20 rounded text-[10px] font-mono text-slate-500 break-all">
+                 Debug: {JSON.stringify(monthlyRevenue)} | Orders: {allStoreOrders.length}
                </div>
             </div>
 
