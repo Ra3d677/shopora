@@ -39,9 +39,25 @@ export default function SettingsManager({
   const router = useRouter();
 
   const colorSystem = settings.colorSystem || {
-    backgrounds: { home: '#ffffff', shop: '#f8fafc', categories: '#ffffff' },
-    text: { primary: '#0f172a', secondary: '#64748b' },
-    brand: { primary: '#3b82f6' },
+    backgrounds: { 
+      home: '#ffffff', 
+      shop: '#f8fafc', 
+      categories: '#ffffff',
+      product: '#ffffff',
+      cart: '#ffffff',
+      checkout: '#ffffff'
+    },
+    text: { 
+      home: '#0f172a', 
+      shop: '#0f172a', 
+      categories: '#0f172a',
+      product: '#0f172a',
+      cart: '#0f172a',
+      checkout: '#0f172a',
+      primary: '#0f172a', 
+      secondary: '#64748b' 
+    },
+    brand: { primary: '#3b82f6', secondary: '#1e40af', accent: '#06b6d4' },
     footer: { background: '#0f172a', text: '#f8fafc' },
     product: { price: '#0f172a', salePrice: '#ef4444' }
   };
@@ -70,12 +86,12 @@ export default function SettingsManager({
 
   const tabs = [
     { id: "general", label: "General" },
+    { id: "theme", label: "Colors & Style" },
     { id: "header", label: "Header & Navigation" },
-    { id: "theme", label: "Theme & Colors" },
-    { id: "signature", label: "Signature Template" },
-    { id: "layout", label: "Layout & Dividers" },
-    { id: "tracking", label: "Tracking & Pixels" },
-    { id: "business", label: "Business & Payments" },
+    { id: "signature", label: "Elite Features" },
+    { id: "layout", label: "Spatial Dividers" },
+    { id: "tracking", label: "Pixels & Tracking" },
+    { id: "business", label: "Economics" },
   ];
 
   return (
@@ -356,100 +372,219 @@ export default function SettingsManager({
             
             {activeTab === 'theme' && (
               <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">
-                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
-                  <div className="flex items-center gap-4 mb-10">
-                    <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Color Algorithm</h2>
+                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/5 blur-[120px] -z-10"></div>
+                  
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+                    <div className="flex items-center gap-4">
+                      <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                      <div>
+                        <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter">Color Architecture</h2>
+                        <p className="text-slate-500 text-[10px] font-medium tracking-[0.2em] uppercase mt-1">Define the visual DNA of your storefront across all modules.</p>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="space-y-10">
-                     {[
-                       { title: 'Base Matrix', key: 'backgrounds', items: [
-                         { key: 'home', label: 'Home Node' },
-                         { key: 'shop', label: 'Shop Node' },
-                         { key: 'categories', label: 'Category Node' }
-                       ]},
-                       { title: 'Text Spectrum', key: 'text', items: [
-                         { key: 'primary', label: 'Primary' },
-                         { key: 'secondary', label: 'Dimmed' }
-                       ]},
-                       { title: 'Signal Colors', key: 'brand', items: [
-                         { key: 'primary', label: 'Primary Signal' }
-                       ]},
-                       { title: 'Footer Layer', key: 'footer', items: [
-                         { key: 'background', label: 'Matrix' },
-                         { key: 'text', label: 'Symbol' }
-                       ]},
-                       { title: 'Economic UI', key: 'product', items: [
-                         { key: 'price', label: 'Base Rate' },
-                         { key: 'salePrice', label: 'Impact Rate' }
-                       ]}
-                     ].map((section) => (
-                       <div key={section.key} className="bg-white/[0.01] p-8 rounded-[2rem] border border-white/[0.03]">
-                          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600 mb-8 pb-4 border-b border-white/5">{section.title}</h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {section.items.map((item) => (
-                              <div key={item.key} className="space-y-4">
-                                <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">{item.label}</label>
-                                <div className="flex gap-4 items-center bg-white/[0.03] p-3 rounded-[1.25rem] border border-white/[0.05] group transition-all hover:bg-white/[0.05]">
-                                  <div 
-                                    className="relative w-12 h-12 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0"
-                                    style={{ background: (colorSystem as any)[section.key][item.key] || '#000000' }}
-                                  >
-                                     <input 
-                                        type="color" 
-                                        value={((colorSystem as any)[section.key][item.key] || '').includes('gradient') ? '#000000' : ((colorSystem as any)[section.key][item.key] || '#000000')} 
-                                        onChange={e => updateSettings({
-                                          ...settings, 
-                                          colorSystem: { 
-                                            ...colorSystem, 
-                                            [section.key]: { ...(colorSystem as any)[section.key], [item.key]: e.target.value } 
-                                          }
-                                        })} 
-                                        className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" 
-                                        title="Pick Solid Color"
-                                      />
-                                  </div>
-                                  <div className="flex-1 flex flex-col gap-2 overflow-hidden">
-                                    <input 
-                                      type="text" 
-                                      value={(colorSystem as any)[section.key][item.key] || '#000000'} 
-                                      onChange={e => updateSettings({
-                                        ...settings, 
-                                        colorSystem: { 
-                                          ...colorSystem, 
-                                          [section.key]: { ...(colorSystem as any)[section.key], [item.key]: e.target.value } 
-                                        }
-                                      })} 
-                                      className="w-full bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
-                                    />
-                                    <div className="flex flex-wrap gap-1.5 mt-1">
-                                      {PRESET_GRADIENTS.map((grad, i) => (
-                                        <button
-                                          key={i}
-                                          onClick={() => updateSettings({
-                                            ...settings, 
-                                            colorSystem: { 
-                                              ...colorSystem, 
-                                              [section.key]: { ...(colorSystem as any)[section.key], [item.key]: grad } 
-                                            }
-                                          })}
-                                          className="w-4 h-4 rounded-full border border-white/20 hover:scale-125 transition-transform cursor-pointer shadow-lg"
-                                          style={{ background: grad }}
-                                          title="Apply Gradient"
-                                        />
-                                      ))}
-                                    </div>
-                                  </div>
-                                </div>
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
+                    {/* Page Specific Settings */}
+                    {[
+                      { id: 'home', label: 'Home Page', desc: 'Main entry point and landing experience.' },
+                      { id: 'shop', label: 'Product Gallery', desc: 'Main shop and product listing grid.' },
+                      { id: 'categories', label: 'Collections', desc: 'Category browsing and discovery.' },
+                      { id: 'product', label: 'Product Details', desc: 'Individual product showcase page.' },
+                      { id: 'cart', label: 'Shopping Cart', desc: 'Review and cart management layer.' },
+                      { id: 'checkout', label: 'Checkout Phase', desc: 'Transaction and secure payment node.' }
+                    ].map((page) => (
+                      <div key={page.id} className="bg-white/[0.02] p-8 rounded-[2rem] border border-white/[0.05] hover:border-white/10 transition-all group/page">
+                        <div className="flex items-center gap-3 mb-8">
+                          <div className="w-2 h-2 rounded-full bg-cyan-500 group-hover/page:scale-150 transition-transform"></div>
+                          <h3 className="text-sm font-black text-white uppercase italic tracking-wider">{page.label}</h3>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                          {/* Background Color */}
+                          <div className="space-y-4">
+                            <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Atmosphere (BG)</label>
+                            <div className="flex gap-3 items-center bg-black/40 p-2.5 rounded-2xl border border-white/[0.05]">
+                              <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0" style={{ background: (colorSystem.backgrounds as any)[page.id] || '#ffffff' }}>
+                                <input 
+                                  type="color" 
+                                  value={((colorSystem.backgrounds as any)[page.id] || '').includes('gradient') ? '#000000' : ((colorSystem.backgrounds as any)[page.id] || '#ffffff')} 
+                                  onChange={e => updateSettings({
+                                    ...settings, 
+                                    colorSystem: { 
+                                      ...colorSystem, 
+                                      backgrounds: { ...colorSystem.backgrounds, [page.id]: e.target.value } 
+                                    }
+                                  })} 
+                                  className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
+                                />
                               </div>
-                            ))}
+                              <input 
+                                type="text" 
+                                value={(colorSystem.backgrounds as any)[page.id] || '#ffffff'} 
+                                onChange={e => updateSettings({
+                                  ...settings, 
+                                  colorSystem: { 
+                                    ...colorSystem, 
+                                    backgrounds: { ...colorSystem.backgrounds, [page.id]: e.target.value } 
+                                  }
+                                })} 
+                                className="flex-1 bg-transparent text-white focus:outline-none font-mono text-[10px] uppercase font-black" 
+                              />
+                            </div>
+                          </div>
+
+                          {/* Text Color */}
+                          <div className="space-y-4">
+                            <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Signal (Text)</label>
+                            <div className="flex gap-3 items-center bg-black/40 p-2.5 rounded-2xl border border-white/[0.05]">
+                              <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0" style={{ backgroundColor: (colorSystem.text as any)[page.id] || '#000000' }}>
+                                <input 
+                                  type="color" 
+                                  value={(colorSystem.text as any)[page.id] || '#000000'} 
+                                  onChange={e => updateSettings({
+                                    ...settings, 
+                                    colorSystem: { 
+                                      ...colorSystem, 
+                                      text: { ...colorSystem.text, [page.id]: e.target.value } 
+                                    }
+                                  })} 
+                                  className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
+                                />
+                              </div>
+                              <input 
+                                type="text" 
+                                value={(colorSystem.text as any)[page.id] || '#000000'} 
+                                onChange={e => updateSettings({
+                                  ...settings, 
+                                  colorSystem: { 
+                                    ...colorSystem, 
+                                    text: { ...colorSystem.text, [page.id]: e.target.value } 
+                                  }
+                                })} 
+                                className="flex-1 bg-transparent text-white focus:outline-none font-mono text-[10px] uppercase font-black" 
+                              />
+                            </div>
+                          </div>
+
+                          {/* Gradient Presets for Background */}
+                          <div className="col-span-full pt-2">
+                             <div className="flex flex-wrap gap-2">
+                                {PRESET_GRADIENTS.map((grad, i) => (
+                                  <button
+                                    key={i}
+                                    type="button"
+                                    onClick={() => updateSettings({
+                                      ...settings, 
+                                      colorSystem: { 
+                                        ...colorSystem, 
+                                        backgrounds: { ...colorSystem.backgrounds, [page.id]: grad } 
+                                      }
+                                    })}
+                                    className="w-5 h-5 rounded-lg border border-white/10 hover:scale-125 hover:rotate-6 transition-all cursor-pointer shadow-xl active:scale-95"
+                                    style={{ background: grad }}
+                                    title="Inject Gradient Matrix"
+                                  />
+                                ))}
+                             </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Global Overrides */}
+                  <div className="mt-12 space-y-10">
+                    <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05] relative overflow-hidden">
+                       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-500/[0.02] to-transparent pointer-events-none"></div>
+                       <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-8 border-b border-white/5 pb-4">Global Signal Nodes</h3>
+                       
+                       <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                          {/* Brand Color */}
+                          <div className="space-y-4">
+                            <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Primary Brand Identity</label>
+                            <div className="flex gap-4 items-center bg-black/40 p-4 rounded-3xl border border-white/[0.05]">
+                              <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: colorSystem.brand.primary }}>
+                                <input 
+                                  type="color" 
+                                  value={colorSystem.brand.primary} 
+                                  onChange={e => updateSettings({
+                                    ...settings, 
+                                    colorSystem: { ...colorSystem, brand: { ...colorSystem.brand, primary: e.target.value } }
+                                  })} 
+                                  className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
+                                />
+                              </div>
+                              <input 
+                                type="text" 
+                                value={colorSystem.brand.primary} 
+                                onChange={e => updateSettings({
+                                  ...settings, 
+                                  colorSystem: { ...colorSystem, brand: { ...colorSystem.brand, primary: e.target.value } }
+                                })} 
+                                className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
+                              />
+                            </div>
+                          </div>
+
+                          {/* Footer Background */}
+                          <div className="space-y-4">
+                            <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Footer Matrix</label>
+                            <div className="flex gap-4 items-center bg-black/40 p-4 rounded-3xl border border-white/[0.05]">
+                              <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ background: colorSystem.footer.background }}>
+                                <input 
+                                  type="color" 
+                                  value={colorSystem.footer.background.includes('gradient') ? '#000000' : colorSystem.footer.background} 
+                                  onChange={e => updateSettings({
+                                    ...settings, 
+                                    colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, background: e.target.value } }
+                                  })} 
+                                  className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
+                                />
+                              </div>
+                              <input 
+                                type="text" 
+                                value={colorSystem.footer.background} 
+                                onChange={e => updateSettings({
+                                  ...settings, 
+                                  colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, background: e.target.value } }
+                                })} 
+                                className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
+                              />
+                            </div>
+                          </div>
+
+                          {/* Price Color */}
+                          <div className="space-y-4">
+                            <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Price Signal</label>
+                            <div className="flex gap-4 items-center bg-black/40 p-4 rounded-3xl border border-white/[0.05]">
+                              <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: colorSystem.product.price }}>
+                                <input 
+                                  type="color" 
+                                  value={colorSystem.product.price} 
+                                  onChange={e => updateSettings({
+                                    ...settings, 
+                                    colorSystem: { ...colorSystem, product: { ...colorSystem.product, price: e.target.value } }
+                                  })} 
+                                  className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
+                                />
+                              </div>
+                              <input 
+                                type="text" 
+                                value={colorSystem.product.price} 
+                                onChange={e => updateSettings({
+                                  ...settings, 
+                                  colorSystem: { ...colorSystem, product: { ...colorSystem.product, price: e.target.value } }
+                                })} 
+                                className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
+                              />
+                            </div>
                           </div>
                        </div>
-                     ))}
+                    </div>
                   </div>
                 </div>
-
               </div>
             )}
             
