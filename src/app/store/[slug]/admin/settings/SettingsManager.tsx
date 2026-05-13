@@ -483,7 +483,7 @@ export default function SettingsManager({
                            </div>
                         </div>
 
-                                                <div className="space-y-4">
+                                                                        <div className="space-y-4">
                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Target Stream</label>
                            <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center px-2">
                               <select 
@@ -493,8 +493,6 @@ export default function SettingsManager({
                               >
                                  <option value="backgrounds" className="bg-slate-900">Atmosphere (BG)</option>
                                  <option value="text" className="bg-slate-900">Frequency (Text)</option>
-                                 <option value="salePrice" className="bg-slate-900">Pulse (Sale Price)</option>
-                                 <option value="price" className="bg-slate-900">Core (Regular Price)</option>
                               </select>
                            </div>
                         </div>
@@ -556,7 +554,74 @@ export default function SettingsManager({
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
+                                      <div className="mb-12 bg-white/[0.02] p-8 rounded-[3rem] border border-white/[0.08] shadow-2xl relative overflow-hidden group">
+                     <div className="absolute top-0 right-0 w-96 h-96 bg-red-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
+                     
+                     <div className="flex items-center justify-between mb-10 relative z-10">
+                        <div className="flex items-center gap-4">
+                           <div className="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.8)]"></div>
+                           <div>
+                              <h3 className="text-lg font-black text-white uppercase italic tracking-tighter">Financial Signal Matrix</h3>
+                              <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-1">Price Dynamics & Sale Pulse Control</p>
+                           </div>
+                        </div>
+                        <div className="px-6 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-[10px] font-black text-red-400 uppercase tracking-[0.2em] shadow-xl">Economy Module</div>
+                     </div>
+
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
+                        <div className="space-y-4">
+                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Core Price Signal (Regular)</label>
+                           <div className="relative group/price h-24 bg-black/60 rounded-[2rem] border border-white/[0.1] hover:border-slate-400 transition-all overflow-hidden flex items-center justify-center">
+                              <input 
+                                type="color" 
+                                value={colorSystem.product?.price || '#0f172a'} 
+                                onChange={(e) => {
+                                   updateSettings({
+                                      ...settings,
+                                      colorSystem: {
+                                         ...colorSystem,
+                                         product: { ...colorSystem.product, price: e.target.value }
+                                      }
+                                   });
+                                }}
+                                className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" 
+                              />
+                              <div className="absolute inset-0 z-10 opacity-20 group-hover/price:opacity-40 transition-opacity" style={{backgroundColor: colorSystem.product?.price || '#0f172a'}}></div>
+                              <div className="relative z-20 flex flex-col items-center">
+                                 <span className="text-white font-mono text-lg uppercase font-black tracking-widest">{colorSystem.product?.price || '#0F172A'}</span>
+                                 <span className="text-[8px] text-slate-500 uppercase font-black mt-2">Standard Rate Color</span>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div className="space-y-4">
+                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Pulse Signal (Sale Price)</label>
+                           <div className="relative group/price h-24 bg-black/60 rounded-[2rem] border border-white/[0.1] hover:border-red-500/50 transition-all overflow-hidden flex items-center justify-center">
+                              <input 
+                                type="color" 
+                                value={colorSystem.product?.salePrice || '#ef4444'} 
+                                onChange={(e) => {
+                                   updateSettings({
+                                      ...settings,
+                                      colorSystem: {
+                                         ...colorSystem,
+                                         product: { ...colorSystem.product, salePrice: e.target.value }
+                                      }
+                                   });
+                                }}
+                                className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" 
+                              />
+                              <div className="absolute inset-0 z-10 opacity-20 group-hover/price:opacity-40 transition-opacity" style={{backgroundColor: colorSystem.product?.salePrice || '#ef4444'}}></div>
+                              <div className="relative z-20 flex flex-col items-center">
+                                 <span className="text-red-500 font-mono text-lg uppercase font-black tracking-widest">{colorSystem.product?.salePrice || '#EF4444'}</span>
+                                 <span className="text-[8px] text-slate-500 uppercase font-black mt-2">Discount Pulse Color</span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                     {/* Page Specific Settings */}
                     {[
                       { id: 'home', label: 'Home Page', desc: 'Main entry point and landing experience.' },
