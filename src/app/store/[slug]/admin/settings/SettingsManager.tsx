@@ -753,6 +753,7 @@ export default function SettingsManager({
 
                     </div>
                   </div>
+                  </div>
 
                   {/* Financial Signal Matrix */}
                   <div className="mb-12 bg-white/[0.02] p-8 rounded-[3rem] border border-white/[0.08] shadow-2xl relative overflow-hidden group">
