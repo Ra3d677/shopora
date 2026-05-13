@@ -483,7 +483,7 @@ export default function SettingsManager({
                            </div>
                         </div>
 
-                        <div className="space-y-4">
+                                                <div className="space-y-4">
                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Target Stream</label>
                            <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center px-2">
                               <select 
@@ -493,6 +493,8 @@ export default function SettingsManager({
                               >
                                  <option value="backgrounds" className="bg-slate-900">Atmosphere (BG)</option>
                                  <option value="text" className="bg-slate-900">Frequency (Text)</option>
+                                 <option value="salePrice" className="bg-slate-900">Pulse (Sale Price)</option>
+                                 <option value="price" className="bg-slate-900">Core (Regular Price)</option>
                               </select>
                            </div>
                         </div>
@@ -506,9 +508,14 @@ export default function SettingsManager({
                                const dir = (document.getElementById('gradDir') as HTMLSelectElement).value;
                                const grad = dir.includes('radial') ? `${dir}, ${a}, ${b})` : `linear-gradient(${dir}, ${a}, ${b})`;
                                
-                               let newColorSystem = { ...colorSystem };
+                                                               let newColorSystem = { ...colorSystem };
 
-                               if (synthTarget.page === 'all') {
+                                if (synthTarget.type === 'salePrice' || synthTarget.type === 'price') {
+                                   newColorSystem.product = {
+                                      ...newColorSystem.product,
+                                      [synthTarget.type]: grad
+                                   };
+                                } else if (synthTarget.page === 'all') {
                                   // Apply to everything
                                   if (synthTarget.type === 'backgrounds') {
                                      newColorSystem.backgrounds = {
