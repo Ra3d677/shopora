@@ -253,7 +253,7 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
                {displayProducts.map((product: any) => (
-                  <ProductCard key={product.id} product={product} slug={slug} template="zenith" />
+                  <ProductCard key={product.id} product={product} slug={slug} />
                ))}
             </div>
           </section>
