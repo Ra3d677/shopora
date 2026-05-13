@@ -17,8 +17,13 @@ export default async function ProductPage({ params }: { params: { slug: string, 
   }
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <ProductDetailClient product={product} store={store} />
+    <div 
+      className="min-h-screen py-12 transition-colors duration-500"
+      style={{ background: 'var(--color-bg-product)', color: 'var(--color-text-product)' }}
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <ProductDetailClient product={product} store={store} />
+      </div>
     </div>
   );
 }

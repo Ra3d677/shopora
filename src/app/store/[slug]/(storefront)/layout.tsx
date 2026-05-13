@@ -77,6 +77,15 @@ export default async function StorefrontLayout({
     '--color-bg-home': colorSystem.backgrounds?.home || defaultHomeBg,
     '--color-bg-shop': colorSystem.backgrounds?.shop || '#ffffff',
     '--color-bg-categories': colorSystem.backgrounds?.categories || '#ffffff',
+    '--color-bg-product': colorSystem.backgrounds?.product || '#ffffff',
+    '--color-bg-cart': colorSystem.backgrounds?.cart || '#ffffff',
+    '--color-bg-checkout': colorSystem.backgrounds?.checkout || '#ffffff',
+    '--color-text-home': colorSystem.text?.home || colorSystem.text?.primary || '#000000',
+    '--color-text-shop': colorSystem.text?.shop || colorSystem.text?.primary || '#000000',
+    '--color-text-categories': colorSystem.text?.categories || colorSystem.text?.primary || '#000000',
+    '--color-text-product': colorSystem.text?.product || colorSystem.text?.primary || '#000000',
+    '--color-text-cart': colorSystem.text?.cart || colorSystem.text?.primary || '#000000',
+    '--color-text-checkout': colorSystem.text?.checkout || colorSystem.text?.primary || '#000000',
     '--color-text-primary': colorSystem.text?.primary || '#000000',
     '--color-text-secondary': colorSystem.text?.secondary || '#666666',
     '--color-footer-bg': colorSystem.footer?.background || '#000000',
@@ -90,8 +99,12 @@ export default async function StorefrontLayout({
 
   return (
     <div 
-      className={`theme-${store.template} flex flex-col min-h-screen transition-all duration-1000 ${isOwner ? 'pt-10' : ''}`} 
-      style={customStyles}
+      className={`theme-${store.template} flex flex-col min-h-screen transition-all duration-700 ${isOwner ? 'pt-10' : ''}`} 
+      style={{
+        ...customStyles,
+        background: 'var(--color-bg-home)',
+        color: 'var(--color-text-home)'
+      }}
     >
       {isSignature && <CustomCursor />}
       <VisitorTracker slug={slug} />

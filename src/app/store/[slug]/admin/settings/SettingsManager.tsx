@@ -385,6 +385,60 @@ export default function SettingsManager({
                     </div>
                   </div>
 
+                  {/* Gradient Matrix (Mixed Colors) */}
+                  <div className="mb-12 bg-white/[0.02] p-8 rounded-[2rem] border border-white/[0.05]">
+                    <div className="flex items-center gap-3 mb-6">
+                       <div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></div>
+                       <h3 className="text-sm font-black text-white uppercase italic tracking-wider">Dynamic Gradient Synthesis (Mixed Colors)</h3>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                       <div className="space-y-4">
+                          <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase A</label>
+                          <div className="flex gap-2 items-center bg-black/40 p-2 rounded-xl border border-white/[0.05]">
+                             <input type="color" defaultValue="#0f172a" id="gradA" className="w-8 h-8 rounded-lg bg-transparent cursor-pointer" />
+                             <input type="text" defaultValue="#0f172a" id="gradTextA" className="flex-1 bg-transparent text-white font-mono text-[10px] uppercase" />
+                          </div>
+                       </div>
+                       <div className="space-y-4">
+                          <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase B</label>
+                          <div className="flex gap-2 items-center bg-black/40 p-2 rounded-xl border border-white/[0.05]">
+                             <input type="color" defaultValue="#0a0c14" id="gradB" className="w-8 h-8 rounded-lg bg-transparent cursor-pointer" />
+                             <input type="text" defaultValue="#0a0c14" id="gradTextB" className="flex-1 bg-transparent text-white font-mono text-[10px] uppercase" />
+                          </div>
+                       </div>
+                       <div className="space-y-4">
+                          <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Direction</label>
+                          <select id="gradDir" className="w-full bg-black/40 p-3 rounded-xl border border-white/[0.05] text-white text-[10px] uppercase font-black">
+                             <option value="to bottom">To Bottom</option>
+                             <option value="to right">To Right</option>
+                             <option value="to bottom right">Diagonal</option>
+                             <option value="radial-gradient(circle at center">Radial</option>
+                          </select>
+                       </div>
+                       <div className="flex items-end">
+                          <button 
+                            type="button"
+                            onClick={() => {
+                               const a = (document.getElementById('gradA') as HTMLInputElement).value;
+                               const b = (document.getElementById('gradB') as HTMLInputElement).value;
+                               const dir = (document.getElementById('gradDir') as HTMLSelectElement).value;
+                               const grad = dir.includes('radial') ? `${dir}, ${a}, ${b})` : `linear-gradient(${dir}, ${a}, ${b})`;
+                               updateSettings({
+                                 ...settings, 
+                                 colorSystem: { 
+                                   ...colorSystem, 
+                                   backgrounds: { ...colorSystem.backgrounds, home: grad } 
+                                 }
+                               });
+                            }}
+                            className="w-full h-11 bg-white text-black rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-cyan-400 hover:text-white transition-all shadow-xl"
+                          >
+                             Apply to Home
+                          </button>
+                       </div>
+                    </div>
+                  </div>
+
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                     {/* Page Specific Settings */}
                     {[
@@ -494,13 +548,13 @@ export default function SettingsManager({
                     ))}
                   </div>
 
-                  {/* Global Overrides */}
+                  {/* Footer & Global Overrides */}
                   <div className="mt-12 space-y-10">
                     <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05] relative overflow-hidden">
                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-500/[0.02] to-transparent pointer-events-none"></div>
-                       <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-8 border-b border-white/5 pb-4">Global Signal Nodes</h3>
+                       <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-8 border-b border-white/5 pb-4">Global Signal & Footer Matrix</h3>
                        
-                       <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                           {/* Brand Color */}
                           <div className="space-y-4">
                             <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Primary Brand Identity</label>
@@ -530,7 +584,7 @@ export default function SettingsManager({
 
                           {/* Footer Background */}
                           <div className="space-y-4">
-                            <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Footer Matrix</label>
+                            <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Footer Atmosphere (BG)</label>
                             <div className="flex gap-4 items-center bg-black/40 p-4 rounded-3xl border border-white/[0.05]">
                               <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ background: colorSystem.footer.background }}>
                                 <input 
@@ -549,6 +603,33 @@ export default function SettingsManager({
                                 onChange={e => updateSettings({
                                   ...settings, 
                                   colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, background: e.target.value } }
+                                })} 
+                                className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
+                              />
+                            </div>
+                          </div>
+
+                          {/* Footer Text */}
+                          <div className="space-y-4">
+                            <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Footer Signal (Text)</label>
+                            <div className="flex gap-4 items-center bg-black/40 p-4 rounded-3xl border border-white/[0.05]">
+                              <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: colorSystem.footer.text }}>
+                                <input 
+                                  type="color" 
+                                  value={colorSystem.footer.text} 
+                                  onChange={e => updateSettings({
+                                    ...settings, 
+                                    colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, text: e.target.value } }
+                                  })} 
+                                  className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
+                                />
+                              </div>
+                              <input 
+                                type="text" 
+                                value={colorSystem.footer.text} 
+                                onChange={e => updateSettings({
+                                  ...settings, 
+                                  colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, text: e.target.value } }
                                 })} 
                                 className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
                               />
