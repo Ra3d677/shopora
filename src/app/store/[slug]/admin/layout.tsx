@@ -68,19 +68,19 @@ export default async function AdminLayout({
       <aside className="w-80 bg-[#0f111a]/80 backdrop-blur-3xl border-r border-white/5 flex flex-col fixed inset-y-0 z-40 group overflow-hidden">
         <div className="absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent"></div>
         
-        <div className="p-10 border-b border-white/[0.03]">
-          <div className="flex items-center gap-4 group/logo">
-            <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.3)] group-hover/logo:rotate-12 transition-transform duration-500">
-              <ShoppingBag className="w-6 h-6 text-white" />
+        <div className="p-6 border-b border-white/[0.03]">
+          <div className="flex items-center gap-3 group/logo">
+            <div className="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.3)] group-hover/logo:rotate-12 transition-transform duration-500">
+              <ShoppingBag className="w-4.5 h-4.5 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-black italic tracking-tighter text-white uppercase leading-none">Shopora</h1>
-              <p className="text-[8px] font-black tracking-[0.4em] text-cyan-400 uppercase mt-1">Admin OS</p>
+              <h1 className="text-lg font-black italic tracking-tighter text-white uppercase leading-none">Shopora</h1>
+              <p className="text-[6px] font-black tracking-[0.4em] text-cyan-400 uppercase mt-1">Admin OS</p>
             </div>
           </div>
         </div>
 
-        <nav className="flex-1 px-6 py-8 space-y-2 overflow-y-auto custom-scrollbar">
+        <nav className="flex-1 px-5 py-4 space-y-1 overflow-y-auto custom-scrollbar">
           <SidebarNav 
             items={mainItems} 
             adminPath={adminPath} 
@@ -89,24 +89,24 @@ export default async function AdminLayout({
           />
         </nav>
 
-        <div className="p-8 border-t border-white/[0.05] bg-black/20">
-           <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-600 flex items-center justify-center text-white font-black italic shadow-lg shadow-pink-500/10">{(session.email?.[0] || 'A').toUpperCase()}</div>
+        <div className="p-5 border-t border-white/[0.05] bg-black/20">
+           <div className="flex items-center gap-3 p-2 rounded-xl bg-white/[0.02] border border-white/[0.05] mb-2.5">
+              <div className="w-6 h-6 rounded-lg bg-gradient-to-tr from-pink-500 to-rose-600 flex items-center justify-center text-white text-[9px] font-black italic shadow-lg shadow-pink-500/10">{(session.email?.[0] || 'A').toUpperCase()}</div>
               <div className="overflow-hidden">
-                 <p className="text-[10px] font-black text-white uppercase tracking-tighter truncate">{session.email?.split('@')[0] || 'Admin'}</p>
-                 <div className="flex items-center gap-1.5">
-                    <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse"></div>
-                    <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Uplink Active</p>
+                 <p className="text-[7px] font-black text-white uppercase tracking-tighter truncate leading-none">{session.email?.split('@')[0] || 'Admin'}</p>
+                 <div className="flex items-center gap-1.5 mt-0.5">
+                    <div className="w-0.5 h-0.5 rounded-full bg-green-500 animate-pulse"></div>
+                    <p className="text-[5px] font-black text-slate-500 uppercase tracking-widest leading-none">Uplink Active</p>
                  </div>
               </div>
            </div>
-           <div className="flex gap-2">
-              <Link href={`/store/${slug}`} target="_blank" className="flex-1 flex items-center justify-center py-3 rounded-xl bg-white/[0.03] border border-white/5 text-slate-500 hover:text-cyan-400 hover:border-cyan-500/30 transition-all">
-                <ExternalLink size={14} />
+           <div className="flex gap-1.5">
+              <Link href={`/store/${slug}`} target="_blank" title="View Store" className="flex-1 flex items-center justify-center py-1.5 rounded-lg bg-white/[0.03] border border-white/5 text-slate-500 hover:text-cyan-400 hover:bg-cyan-500/5 hover:border-cyan-500/20 hover:shadow-[0_0_15px_rgba(34,211,238,0.1)] transition-all group/btn">
+                <ExternalLink size={10} className="group-hover/btn:scale-110 transition-transform" />
               </Link>
               <form action={logoutUser} className="flex-1">
-                <button type="submit" className="w-full flex items-center justify-center py-3 rounded-xl bg-white/[0.03] border border-white/5 text-slate-500 hover:text-red-500 hover:border-red-500/30 transition-all">
-                  <LogOut size={14} />
+                <button type="submit" title="Logout" className="w-full flex items-center justify-center py-1.5 rounded-lg bg-white/[0.03] border border-white/5 text-slate-500 hover:text-red-400 hover:bg-red-500/5 hover:border-red-500/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.1)] transition-all group/btn">
+                  <LogOut size={10} className="group-hover/btn:scale-110 transition-transform" />
                 </button>
               </form>
            </div>
