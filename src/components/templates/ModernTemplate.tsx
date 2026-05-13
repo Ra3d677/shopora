@@ -73,7 +73,9 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                         </span>
                       )}
                       <h1 className="text-6xl md:text-8xl font-black text-slate-900 leading-[0.9] tracking-tighter mb-8 italic">
-                        <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
+                        <span className="gradient-text-support">
+                          <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
+                        </span>
                       </h1>
                       <p className="text-xl text-slate-500 max-w-md mb-12">
                         <EditableText content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? ""} slug={slug} settingsKey="modernSettings.heroSubtitle" />
@@ -101,7 +103,9 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                   </div>
                   <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} className="max-w-5xl z-10">
                     <h1 className="text-7xl md:text-[10rem] font-black text-white leading-none tracking-tighter mb-10 uppercase">
-                      <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
+                      <span className="gradient-text-support">
+                        <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
+                      </span>
                     </h1>
                     <p className="text-2xl md:text-3xl text-white font-medium max-w-3xl mx-auto mb-12 italic">
                       <EditableText content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? ""} slug={slug} settingsKey="modernSettings.heroSubtitle" />
@@ -127,7 +131,9 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                       </div>
                     )}
                     <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter mb-8 uppercase leading-none">
-                      <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
+                      <span className="gradient-text-support">
+                        <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
+                      </span>
                     </h1>
                     <p className="text-xl text-slate-500 font-medium mb-12 leading-relaxed">
                       <EditableText content={topBanners[0]?.subtitle ?? modSettings.heroSubtitle ?? ""} slug={slug} settingsKey="modernSettings.heroSubtitle" />
@@ -160,7 +166,9 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                          </div>
                        )}
                        <h1 className="text-7xl md:text-[10rem] font-black text-slate-900 leading-[0.8] tracking-tighter mb-12 uppercase italic">
-                          <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
+                          <span className="gradient-text-support">
+                            <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
+                          </span>
                        </h1>
                        <div className="flex gap-4">
                           {Array.isArray(modSettings.heroButtons) && modSettings.heroButtons.map((btn: any, btnIndex: number) => (
@@ -196,11 +204,13 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                       </span>
                     )}
                     <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter mb-8 italic">
-                      <EditableText 
-                        content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} 
-                        slug={slug} 
-                        settingsKey="modernSettings.heroTitle" 
-                      />
+                      <span className="gradient-text-support">
+                        <EditableText 
+                          content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} 
+                          slug={slug} 
+                          settingsKey="modernSettings.heroTitle" 
+                        />
+                      </span>
                     </h1>
                     <p className="text-xl text-white max-w-xl mb-10 leading-relaxed">
                       <EditableText 
@@ -259,7 +269,9 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                   <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
                      <div>
                         <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-none mb-6 uppercase italic">
-                           <EditableText content={modSettings.productsTitle ?? "THE DROP"} slug={slug} settingsKey="modernSettings.productsTitle" />
+                           <span className="gradient-text-support">
+                             <EditableText content={modSettings.productsTitle ?? "THE DROP"} slug={slug} settingsKey="modernSettings.productsTitle" />
+                           </span>
                         </h2>
                         <div className="flex items-center gap-4">
                            <span className="w-12 h-1 bg-blue-600 rounded-full" />

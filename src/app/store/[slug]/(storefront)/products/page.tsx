@@ -87,6 +87,7 @@ export default async function ProductsPage({
   return (
     <div 
       className={`min-h-screen pb-16 transition-colors duration-500`} 
+      data-page={category ? "categories" : "shop"}
       style={isPremiumBg ? premiumStyle : { 
         background: category ? 'var(--color-bg-categories)' : 'var(--color-bg-shop)', 
         color: category ? 'var(--color-text-categories)' : 'var(--color-text-shop)' 
@@ -94,7 +95,9 @@ export default async function ProductsPage({
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="mb-12">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-primary mb-4 capitalize">{pageTitle}</h1>
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 capitalize">
+           <span className="gradient-text-support">{pageTitle}</span>
+        </h1>
         <p className="text-muted-foreground text-lg max-w-2xl">{pageDescription}</p>
       </div>
 

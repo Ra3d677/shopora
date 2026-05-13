@@ -134,7 +134,9 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                       <EditableText content={sigSettings.establishedText || "ESTABLISHED 2026"} slug={slug} settingsKey="signatureSettings.establishedText" />
                     </span>
                     <h1 className="text-6xl md:text-8xl font-black text-white leading-none tracking-tighter mb-10 uppercase italic">
-                      <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                      <span className="gradient-text-support">
+                        <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                      </span>
                     </h1>
                     <div className="flex flex-wrap items-center justify-center md:justify-start gap-6">
                        {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
@@ -162,7 +164,9 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                     <EditableText content={sigSettings.establishedText || "ESTABLISHED 2026"} slug={slug} settingsKey="signatureSettings.establishedText" />
                   </span>
                   <h1 className="text-7xl md:text-[12rem] font-black text-white leading-none tracking-tighter mb-16 uppercase italic mix-blend-difference">
-                    <EditableText content={settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                    <span className="gradient-text-support">
+                      <EditableText content={settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                    </span>
                   </h1>
                   <div className="flex flex-wrap items-center justify-center gap-10">
                      {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
@@ -181,7 +185,9 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                 <div className="text-center max-w-4xl">
                   <span className="text-[10px] uppercase font-black tracking-[0.3em] text-slate-300 mb-8 block">THE SIGNATURE COLLECTION</span>
                   <h1 className="text-6xl md:text-[8rem] font-black text-black leading-none tracking-tighter mb-12 uppercase italic">
-                    <EditableText content={settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                    <span className="gradient-text-support">
+                      <EditableText content={settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                    </span>
                   </h1>
                   <div className="flex justify-center gap-8">
                     <Link href={`/store/${slug}/products`} className="text-xs font-black uppercase tracking-[0.4em] border-b-2 border-black pb-2 hover:opacity-50 transition-opacity">
@@ -211,7 +217,9 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                     <div className="w-20 h-1 bg-blue-600 mb-12" />
                     <span className="text-[10px] uppercase font-black tracking-[0.5em] text-blue-500 mb-6 block">SEASONAL CAMPAIGN</span>
                     <h1 className="text-6xl md:text-9xl font-black leading-none tracking-tighter mb-12 uppercase">
-                      <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                      <span className="gradient-text-support">
+                        <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                      </span>
                     </h1>
                     <div className="flex flex-wrap gap-6">
                       {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
@@ -238,7 +246,9 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                     <div className="order-2 lg:order-1">
                        <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} className="max-w-6xl z-10">
                           <h1 className="text-7xl md:text-[10rem] font-black text-slate-900 leading-[0.8] tracking-tighter mb-12 uppercase italic">
-                            <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "SIGNATURE"} slug={slug} settingsKey="storeName" />
+                            <span className="gradient-text-support">
+                              <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "SIGNATURE"} slug={slug} settingsKey="storeName" />
+                            </span>
                           </h1>
                           <p className="text-slate-400 text-xl max-w-md mb-12 font-medium">Elevating your lifestyle through exceptional design and unparalleled quality.</p>
                           <div className="flex gap-4">
@@ -277,7 +287,9 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                        <span className="text-[10px] uppercase font-black tracking-[0.8em] text-white/60">IMMERSIVE EXPERIENCE</span>
                     </div>
                     <h1 className="text-7xl md:text-[15rem] font-black text-white leading-none tracking-tighter mb-16 uppercase italic">
-                      <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                      <span className="gradient-text-support">
+                        <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                      </span>
                     </h1>
                     <div className="flex flex-wrap gap-12 items-center">
                        {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
@@ -333,12 +345,14 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                        transition={{ duration: 1, delay: 0.5 }}
                        className="text-6xl md:text-[10rem] font-black tracking-tighter leading-none text-center mb-12 mix-blend-difference pointer-events-auto"
                      >
-                       <EditableText 
-                         content={settings.storeName?.toUpperCase() || "STORE"} 
-                         slug={slug} 
-                         settingsKey="storeName" 
-                         className="text-6xl md:text-[10rem] font-black tracking-tighter leading-none text-center" 
-                       />
+                        <span className="gradient-text-support">
+                          <EditableText 
+                            content={settings.storeName?.toUpperCase() || "STORE"} 
+                            slug={slug} 
+                            settingsKey="storeName" 
+                            className="text-6xl md:text-[10rem] font-black tracking-tighter leading-none text-center" 
+                          />
+                        </span>
                      </motion.div>
                      <div className="flex flex-wrap items-center justify-center gap-6 z-50 pointer-events-auto">
                         {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (

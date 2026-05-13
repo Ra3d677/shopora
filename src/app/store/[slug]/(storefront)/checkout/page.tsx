@@ -114,6 +114,7 @@ export default function CheckoutPage() {
   return (
     <div 
       className="min-h-screen pt-12 pb-24 font-sans transition-colors duration-500"
+      data-page="checkout"
       style={{ background: 'var(--color-bg-checkout)', color: 'var(--color-text-checkout)' }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
@@ -134,7 +135,7 @@ export default function CheckoutPage() {
               <div>
                 <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 flex items-center gap-4">
                   <span className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center text-sm">1</span>
-                  Delivery Details
+                  <span className="gradient-text-support">Delivery Details</span>
                 </h2>
             
               <div className="space-y-8">

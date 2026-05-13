@@ -297,7 +297,7 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                         <button 
                           key={style}
                           onClick={() => updateSection(activeSection.id, { style })}
-                          className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-600 text-white shadow-md shadow-blue-500/20' : 'border-blue-200 bg-white text-blue-600 hover:border-blue-400'}`}
+                          className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}
                         >
                           {style}
                         </button>

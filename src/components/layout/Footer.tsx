@@ -13,14 +13,16 @@ export default function Footer() {
     return (
       <footer 
         className="py-32 px-12 transition-all duration-500"
-        style={{ backgroundColor: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
+        style={{ background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
       >
         <div className="max-w-screen-2xl mx-auto flex flex-col lg:flex-row justify-between gap-20">
           <div className="max-w-sm">
             {store.settings?.logoUrl ? (
               <img src={store.settings.logoUrl} alt={store.name} className="h-10 w-auto object-contain mb-8 brightness-0 invert" />
             ) : (
-              <h2 className="text-white text-2xl font-bold uppercase tracking-tighter mb-8">{store.name}</h2>
+              <h2 className="text-white text-2xl font-bold uppercase tracking-tighter mb-8">
+                <span className="gradient-text-support">{store.name}</span>
+              </h2>
             )}
             <div className="text-sm leading-relaxed mb-8">
               <EditableText 
@@ -73,7 +75,7 @@ export default function Footer() {
     return (
       <footer 
         className="font-sans text-xs pt-12 pb-8 border-t border-white/10 transition-all duration-500"
-        style={{ backgroundColor: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
+        style={{ background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
       >
         <div className="max-w-[1000px] mx-auto px-4">
           <div className="border-b border-[#d2d2d7] pb-8 mb-6 text-[#86868b]">
@@ -144,7 +146,7 @@ export default function Footer() {
     return (
       <footer 
         className="py-40 font-sans border-t border-white/5 transition-all duration-500"
-        style={{ backgroundColor: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
+        style={{ background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
       >
         <div className="container mx-auto px-8 md:px-16">
           <div className="flex flex-col lg:flex-row justify-between gap-32 mb-40">
@@ -193,13 +195,15 @@ export default function Footer() {
   return (
     <footer 
       className="py-40 font-sans transition-all duration-500"
-      style={{ backgroundColor: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
+      style={{ background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
     >
       <div className="max-w-screen-2xl mx-auto px-12 text-center">
         {store.settings?.logoUrl ? (
           <img src={store.settings.logoUrl} alt={store.name} className="h-20 mx-auto w-auto object-contain mb-16 brightness-0 invert opacity-80" />
         ) : (
-          <h2 className="text-white text-5xl font-serif font-light tracking-[0.2em] uppercase mb-16">{store.name}</h2>
+          <h2 className="text-white text-5xl font-serif font-light tracking-[0.2em] uppercase mb-16">
+            <span className="gradient-text-support">{store.name}</span>
+          </h2>
         )}
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-20 text-[10px] font-black uppercase tracking-[0.4em] mb-32 border-y border-white/5 py-20">

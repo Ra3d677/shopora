@@ -22,10 +22,13 @@ export default function CartPage() {
   return (
     <div 
       className="min-h-screen py-16 transition-colors duration-500"
+      data-page="cart"
       style={{ background: 'var(--color-bg-cart)', color: 'var(--color-text-cart)' }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-        <h1 className="text-4xl font-bold tracking-tight mb-12">Shopping Cart</h1>
+        <h1 className="text-4xl font-bold tracking-tight mb-12">
+          <span className="gradient-text-support">Shopping Cart</span>
+        </h1>
         {/* ... existing content ... */}
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">

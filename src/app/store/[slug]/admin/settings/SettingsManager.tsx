@@ -36,6 +36,7 @@ export default function SettingsManager({
   };
   const [activeTab, setActiveTab] = useState("general");
   const [linkInput, setLinkInput] = useState<{ [key: string]: string }>({});
+  const [synthTarget, setSynthTarget] = useState<{page: string, type: 'backgrounds' | 'text'}>({ page: 'home', type: 'backgrounds' });
   const router = useRouter();
 
   const colorSystem = settings.colorSystem || {
@@ -391,7 +392,7 @@ export default function SettingsManager({
                        <div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></div>
                        <h3 className="text-sm font-black text-white uppercase italic tracking-wider">Dynamic Gradient Synthesis (Mixed Colors)</h3>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
                        <div className="space-y-4">
                           <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase A</label>
                           <div className="flex gap-2 items-center bg-black/40 p-2 rounded-xl border border-white/[0.05]">
@@ -415,6 +416,34 @@ export default function SettingsManager({
                              <option value="radial-gradient(circle at center">Radial</option>
                           </select>
                        </div>
+                       <div className="space-y-4">
+                          <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Target Node</label>
+                          <select 
+                            value={synthTarget.page}
+                            onChange={(e) => setSynthTarget({...synthTarget, page: e.target.value})}
+                            className="w-full bg-black/40 p-3 rounded-xl border border-white/[0.05] text-white text-[10px] uppercase font-black focus:border-cyan-400 outline-none"
+                          >
+                             <option value="all">All Modules (Global)</option>
+                             <option value="home">Home Page</option>
+                             <option value="shop">Shop Page</option>
+                             <option value="categories">Categories</option>
+                             <option value="product">Product Details</option>
+                             <option value="cart">Cart</option>
+                             <option value="checkout">Checkout</option>
+                             <option value="footer">Global Footer</option>
+                          </select>
+                       </div>
+                       <div className="space-y-4">
+                          <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Target Property</label>
+                          <select 
+                            value={synthTarget.type}
+                            onChange={(e) => setSynthTarget({...synthTarget, type: e.target.value as any})}
+                            className="w-full bg-black/40 p-3 rounded-xl border border-white/[0.05] text-white text-[10px] uppercase font-black focus:border-cyan-400 outline-none"
+                          >
+                             <option value="backgrounds">Atmosphere (BG)</option>
+                             <option value="text">Signal (Text)</option>
+                          </select>
+                       </div>
                        <div className="flex items-end">
                           <button 
                             type="button"
@@ -423,17 +452,44 @@ export default function SettingsManager({
                                const b = (document.getElementById('gradB') as HTMLInputElement).value;
                                const dir = (document.getElementById('gradDir') as HTMLSelectElement).value;
                                const grad = dir.includes('radial') ? `${dir}, ${a}, ${b})` : `linear-gradient(${dir}, ${a}, ${b})`;
+                               
+                               let newColorSystem = { ...colorSystem };
+
+                               if (synthTarget.page === 'all') {
+                                  // Apply to everything
+                                  if (synthTarget.type === 'backgrounds') {
+                                     newColorSystem.backgrounds = {
+                                        home: grad, shop: grad, categories: grad, product: grad, cart: grad, checkout: grad
+                                     };
+                                     newColorSystem.footer = { ...newColorSystem.footer, background: grad };
+                                  } else {
+                                     newColorSystem.text = {
+                                        ...newColorSystem.text,
+                                        home: grad, shop: grad, categories: grad, product: grad, cart: grad, checkout: grad
+                                     };
+                                     newColorSystem.footer = { ...newColorSystem.footer, text: grad };
+                                  }
+                               } else if (synthTarget.page === 'footer') {
+                                  newColorSystem.footer = { 
+                                    ...newColorSystem.footer, 
+                                    [synthTarget.type === 'backgrounds' ? 'background' : 'text']: grad 
+                                  };
+                               } else {
+                                  const targetSection = synthTarget.type as 'backgrounds' | 'text';
+                                  newColorSystem[targetSection] = {
+                                    ...(newColorSystem[targetSection] as any),
+                                    [synthTarget.page]: grad
+                                  };
+                               }
+
                                updateSettings({
                                  ...settings, 
-                                 colorSystem: { 
-                                   ...colorSystem, 
-                                   backgrounds: { ...colorSystem.backgrounds, home: grad } 
-                                 }
+                                 colorSystem: newColorSystem
                                });
                             }}
-                            className="w-full h-11 bg-white text-black rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-cyan-400 hover:text-white transition-all shadow-xl"
+                            className="w-full h-11 bg-white text-black rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-cyan-400 hover:text-white transition-all shadow-xl active:scale-95"
                           >
-                             Apply to Home
+                             Inject Synthesis
                           </button>
                        </div>
                     </div>

@@ -72,6 +72,13 @@ export default async function StorefrontLayout({
     product: { price: '#0f172a', salePrice: '#ef4444' }
   };
 
+  // Determine current page type for specific styling
+  const pageType = children?.toString().includes('Shop') ? 'shop' : 
+                   children?.toString().includes('Category') ? 'categories' :
+                   children?.toString().includes('Product') ? 'product' :
+                   children?.toString().includes('Cart') ? 'cart' :
+                   children?.toString().includes('Checkout') ? 'checkout' : 'home';
+
   const customStyles = {
     '--dynamic-primary': colorSystem.brand?.primary || store.primaryColor,
     '--color-bg-home': colorSystem.backgrounds?.home || defaultHomeBg,
@@ -100,12 +107,40 @@ export default async function StorefrontLayout({
   return (
     <div 
       className={`theme-${store.template} flex flex-col min-h-screen transition-all duration-700 ${isOwner ? 'pt-10' : ''}`} 
-      style={{
-        ...customStyles,
-        background: 'var(--color-bg-home)',
-        color: 'var(--color-text-home)'
-      }}
+      style={customStyles}
     >
+      <style dangerouslySetInnerHTML={{ __html: `
+        :root {
+          --current-bg: var(--color-bg-home);
+          --current-text: var(--color-text-home);
+        }
+        [data-page="shop"] { --current-bg: var(--color-bg-shop); --current-text: var(--color-text-shop); }
+        [data-page="categories"] { --current-bg: var(--color-bg-categories); --current-text: var(--color-text-categories); }
+        [data-page="product"] { --current-bg: var(--color-bg-product); --current-text: var(--color-text-product); }
+        [data-page="cart"] { --current-bg: var(--color-bg-cart); --current-text: var(--color-text-cart); }
+        [data-page="checkout"] { --current-bg: var(--color-bg-checkout); --current-text: var(--color-text-checkout); }
+        [data-page="footer"] { --current-bg: var(--color-footer-bg); --current-text: var(--color-footer-text); }
+
+        .store-container {
+          background: var(--current-bg);
+          color: var(--current-text);
+        }
+
+        /* Support for Gradient Text */
+        .gradient-text-support {
+          background: var(--current-text);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent !important;
+          display: inline-block;
+        }
+        
+        /* If current text is NOT a gradient, don't use transparent */
+        .current-text-color {
+          color: var(--current-text);
+        }
+      `}} />
+
       {isSignature && <CustomCursor />}
       <VisitorTracker slug={slug} />
       <Suspense fallback={null}>
@@ -133,10 +168,12 @@ export default async function StorefrontLayout({
           slug={slug}
           session={session}
         />
-        <main className="flex-grow flex flex-col">
+        <main className="flex-grow flex flex-col store-container">
           {children}
         </main>
-        <Footer />
+        <div data-page="footer">
+          <Footer />
+        </div>
         <WhatsAppButton />
       </PreviewWrapper>
     </div>
