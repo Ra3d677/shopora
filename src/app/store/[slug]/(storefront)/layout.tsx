@@ -131,7 +131,7 @@ export default async function StorefrontLayout({
       style={customStyles}
     >
       <style dangerouslySetInnerHTML={{ __html: `
-                        :root {
+                                :root {
           --current-bg: var(--color-bg-home);
           --current-text: var(--color-text-home);
         }
@@ -146,6 +146,31 @@ export default async function StorefrontLayout({
         .store-container {
           background: var(--current-bg) !important;
           color: var(--current-text) !important;
+        }
+
+        /* Force children to respect the synthesized text color unless they are specific links/buttons */
+        .store-container h1, 
+        .store-container h2, 
+        .store-container h3, 
+        .store-container h4, 
+        .store-container h5, 
+        .store-container h6,
+        .store-container p,
+        .store-container .text-zinc-900,
+        .store-container .text-slate-900,
+        .store-container .text-zinc-800,
+        .store-container .text-slate-800 {
+           color: inherit;
+        }
+
+        /* Enhanced Gradient Text Support */
+        .gradient-text-support {
+          background: var(--current-text) !important;
+          -webkit-background-clip: text !important;
+          background-clip: text !important;
+          color: transparent !important;
+          -webkit-text-fill-color: transparent !important;
+          display: inline-block;
         }
 
         /* Support for Gradient Text */
