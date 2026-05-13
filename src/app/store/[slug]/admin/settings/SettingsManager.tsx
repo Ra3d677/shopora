@@ -36,7 +36,7 @@ export default function SettingsManager({
   };
   const [activeTab, setActiveTab] = useState("general");
   const [linkInput, setLinkInput] = useState<{ [key: string]: string }>({});
-  const [synthTarget, setSynthTarget] = useState<{page: string, type: 'backgrounds' | 'text'}>({ page: 'home', type: 'backgrounds' });
+  const [synthTarget, setSynthTarget] = useState<{page: string, type: 'backgrounds' | 'text' | 'salePrice' | 'price'}>({ page: 'home', type: 'backgrounds' });
   const router = useRouter();
 
      const defaultColorSystem = {
