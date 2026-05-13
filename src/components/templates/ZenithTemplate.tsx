@@ -15,15 +15,16 @@ import HeroSlider from "../ui/HeroSlider";
 import SaleSection from "../ui/SaleSection";
 
 interface ZenithTemplateProps {
-  store: any;
+  banners: any[];
+  settings: any;
+  products: any[];
   slug: string;
+  categories: any[];
 }
 
-export default function ZenithTemplate({ store, slug }: ZenithTemplateProps) {
-  const settings = store.settings || {};
+export default function ZenithTemplate({ banners, settings, products, slug, categories = [] }: ZenithTemplateProps) {
   const homepageLayout = settings.homepageLayout || [];
-  const topBanners = store.banners?.filter((b: any) => b.placement === 'top') || [];
-  const products = store.products || [];
+  const topBanners = banners?.filter((b: any) => b.placement === 'top') || [];
 
   const renderSection = (section: any) => {
     switch (section.type) {
@@ -221,7 +222,7 @@ export default function ZenithTemplate({ store, slug }: ZenithTemplateProps) {
                 <h2 className="text-5xl md:text-7xl font-light tracking-tighter uppercase italic">Curated Series</h2>
              </div>
              <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                {store.categories.slice(0, 3).map((cat: any) => (
+                {categories.slice(0, 3).map((cat: any) => (
                    <Link key={cat.id} href={`/store/${slug}/category/${cat.id}`} className="group relative aspect-[3/4] overflow-hidden bg-zinc-50">
                       <SmartImage src={cat.imageUrl || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80"} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={cat.name} />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500" />
