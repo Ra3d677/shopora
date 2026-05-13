@@ -73,8 +73,8 @@ export default async function StorefrontLayout({
     checkout: '#ffffff'
   };
 
-  const rawColorSystem = storeSettings.colorSystem || {};
-  const colorSystem = {
+    const rawColorSystem = storeSettings.colorSystem || {};
+  const colorSystem: any = {
     backgrounds: { ...defaultBackgrounds, ...(rawColorSystem.backgrounds || {}) },
     text: { 
       primary: '#0f172a', 
@@ -89,7 +89,8 @@ export default async function StorefrontLayout({
     },
     brand: { primary: store.primaryColor, ...(rawColorSystem.brand || {}) },
     footer: { background: '#0f172a', text: '#ffffff', ...(rawColorSystem.footer || {}) },
-    product: { price: '#0f172a', salePrice: '#ef4444', ...(rawColorSystem.product || {}) }
+    product: { price: '#0f172a', salePrice: '#ef4444', ...(rawColorSystem.product || {}) },
+    testimonial: { background: '#0f172a', text: '#ffffff', ...(rawColorSystem.testimonial || {}) }
   };
 
   // Determine current page type for specific styling
