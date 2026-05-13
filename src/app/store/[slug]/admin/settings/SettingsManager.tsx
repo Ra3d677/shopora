@@ -49,7 +49,7 @@ export default function SettingsManager({
          home: '#0f172a', shop: '#0f172a', categories: '#0f172a', 
          product: '#0f172a', cart: '#0f172a', checkout: '#0f172a' 
       },
-      brand: { primary: store.primaryColor || '#000000' },
+      brand: { primary: #000000 || '#000000' },
       footer: { background: '#0f172a', text: '#ffffff' },
       product: { price: '#0f172a', salePrice: '#ef4444' }
    };
