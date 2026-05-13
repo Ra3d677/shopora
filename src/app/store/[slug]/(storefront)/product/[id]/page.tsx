@@ -18,7 +18,7 @@ export default async function ProductPage({ params }: { params: { slug: string, 
 
   return (
     <div 
-      className="min-h-screen py-12 transition-colors duration-500"
+      className="store-container min-h-screen py-12 transition-all duration-700"
       data-page="product"
       style={{ background: 'var(--color-bg-product)', color: 'var(--color-text-product)' }}
     >

@@ -21,7 +21,7 @@ export default function CartPage() {
 
   return (
     <div 
-      className="min-h-screen py-16 transition-colors duration-500"
+      className="store-container min-h-screen py-16 transition-all duration-700"
       data-page="cart"
       style={{ background: 'var(--color-bg-cart)', color: 'var(--color-text-cart)' }}
     >

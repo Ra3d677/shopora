@@ -113,7 +113,7 @@ export default function CheckoutPage() {
 
   return (
     <div 
-      className="min-h-screen pt-12 pb-24 font-sans transition-colors duration-500"
+      className="store-container min-h-screen pt-12 pb-24 font-sans transition-all duration-700"
       data-page="checkout"
       style={{ background: 'var(--color-bg-checkout)', color: 'var(--color-text-checkout)' }}
     >

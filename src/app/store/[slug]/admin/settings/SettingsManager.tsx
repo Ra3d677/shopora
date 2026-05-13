@@ -393,20 +393,52 @@ export default function SettingsManager({
                        <h3 className="text-sm font-black text-white uppercase italic tracking-wider">Dynamic Gradient Synthesis (Mixed Colors)</h3>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
+                        <div className="space-y-4">
+                           <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase A</label>
+                           <div className="flex gap-4 items-center bg-black/60 p-2 rounded-2xl border border-white/[0.05] hover:border-cyan-400/50 transition-all">
+                              <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/20 shadow-lg">
+                                 <input 
+                                   type="color" 
+                                   defaultValue="#0f172a" 
+                                   id="gradA" 
+                                   className="w-full h-full scale-[2] cursor-pointer bg-transparent" 
+                                   onChange={(e) => {
+                                      const t = document.getElementById('gradTextA') as HTMLInputElement;
+                                      if(t) t.value = e.target.value.toUpperCase();
+                                   }}
+                                 />
+                              </div>
+                              <input 
+                                type="text" 
+                                defaultValue="#0F172A" 
+                                id="gradTextA" 
+                                className="flex-1 bg-transparent text-white font-mono text-xs p-1 uppercase outline-none" 
+                              />
+                           </div>
+                        </div>
                        <div className="space-y-4">
-                          <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase A</label>
-                          <div className="flex gap-2 items-center bg-black/40 p-2 rounded-xl border border-white/[0.05]">
-                             <input type="color" defaultValue="#0f172a" id="gradA" className="w-8 h-8 rounded-lg bg-transparent cursor-pointer" />
-                             <input type="text" defaultValue="#0f172a" id="gradTextA" className="flex-1 bg-transparent text-white font-mono text-[10px] uppercase" />
-                          </div>
-                       </div>
-                       <div className="space-y-4">
-                          <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase B</label>
-                          <div className="flex gap-2 items-center bg-black/40 p-2 rounded-xl border border-white/[0.05]">
-                             <input type="color" defaultValue="#0a0c14" id="gradB" className="w-8 h-8 rounded-lg bg-transparent cursor-pointer" />
-                             <input type="text" defaultValue="#0a0c14" id="gradTextB" className="flex-1 bg-transparent text-white font-mono text-[10px] uppercase" />
-                          </div>
-                       </div>
+                           <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase B</label>
+                           <div className="flex gap-4 items-center bg-black/60 p-2 rounded-2xl border border-white/[0.05] hover:border-pink-400/50 transition-all">
+                              <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/20 shadow-lg">
+                                 <input 
+                                   type="color" 
+                                   defaultValue="#0a0c14" 
+                                   id="gradB" 
+                                   className="w-full h-full scale-[2] cursor-pointer bg-transparent" 
+                                   onChange={(e) => {
+                                      const t = document.getElementById('gradTextB') as HTMLInputElement;
+                                      if(t) t.value = e.target.value.toUpperCase();
+                                   }}
+                                 />
+                              </div>
+                              <input 
+                                type="text" 
+                                defaultValue="#0A0C14" 
+                                id="gradTextB" 
+                                className="flex-1 bg-transparent text-white font-mono text-xs p-1 uppercase outline-none" 
+                              />
+                           </div>
+                        </div>
                        <div className="space-y-4">
                           <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Direction</label>
                           <select id="gradDir" className="w-full bg-black/40 p-3 rounded-xl border border-white/[0.05] text-white text-[10px] uppercase font-black">
@@ -489,7 +521,7 @@ export default function SettingsManager({
                             }}
                             className="w-full h-11 bg-white text-black rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-cyan-400 hover:text-white transition-all shadow-xl active:scale-95"
                           >
-                             Inject Synthesis
+                             Apply Synthesis
                           </button>
                        </div>
                     </div>

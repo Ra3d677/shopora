@@ -86,7 +86,7 @@ export default async function ProductsPage({
 
   return (
     <div 
-      className={`min-h-screen pb-16 transition-colors duration-500`} 
+      className={`store-container min-h-screen pb-16 transition-all duration-700`} 
       data-page={category ? "categories" : "shop"}
       style={isPremiumBg ? premiumStyle : { 
         background: category ? 'var(--color-bg-categories)' : 'var(--color-bg-shop)', 

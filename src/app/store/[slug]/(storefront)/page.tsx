@@ -72,7 +72,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
   const isPremiumBg = currentThemeId !== 'default';
 
   return (
-    <div className="w-full bg-transparent">
+    <div data-page="home" className="store-container w-full bg-transparent transition-all duration-700">
       {renderTemplate()}
     </div>
   );
