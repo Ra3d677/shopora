@@ -7,13 +7,11 @@ import EditableText from "../editor/EditableText";
 import VideoSection from "../ui/VideoSection";
 import ProductCard from "../products/ProductCard";
 import EditableButton from "../editor/EditableButton";
-import BannerButton from "../editor/BannerButton";
+import BannerButton from "../ui/BannerButton";
 import Link from "next/link";
 import SectionDivider from "../ui/SectionDivider";
-import MarqueeSection from "../ui/MarqueeSection";
-import TestimonialSection from "../ui/TestimonialSection";
+import StoreMarquee from "../ui/StoreMarquee";
 import HeroSlider from "../ui/HeroSlider";
-import CategoriesSection from "../ui/CategoriesSection";
 import SaleSection from "../ui/SaleSection";
 
 interface ZenithTemplateProps {
@@ -213,10 +211,29 @@ export default function ZenithTemplate({ store, slug }: ZenithTemplateProps) {
         );
 
       case 'marquee':
-        return <MarqueeSection key={section.id} section={section} slug={slug} />;
+        return <StoreMarquee key={section.id} settings={section.config as any} />;
 
       case 'categories':
-        return <CategoriesSection key={section.id} section={section} categories={store.categories} slug={slug} template="zenith" />;
+        return (
+          <section key={section.id} className="py-40 container mx-auto px-8 bg-transparent">
+             <div className="text-center mb-24">
+                <div className="text-[10px] font-black uppercase tracking-[0.8em] text-[#c5a368] mb-8 block">THE COLLECTIONS</div>
+                <h2 className="text-5xl md:text-7xl font-light tracking-tighter uppercase italic">Curated Series</h2>
+             </div>
+             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                {store.categories.slice(0, 3).map((cat: any) => (
+                   <Link key={cat.id} href={`/store/${slug}/category/${cat.id}`} className="group relative aspect-[3/4] overflow-hidden bg-zinc-50">
+                      <SmartImage src={cat.imageUrl || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80"} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={cat.name} />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500" />
+                      <div className="absolute bottom-12 left-12 text-white">
+                         <span className="text-[10px] font-black uppercase tracking-[0.4em] mb-4 block opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0">EXPLORE</span>
+                         <h3 className="text-3xl font-light tracking-tighter uppercase italic">{cat.name}</h3>
+                      </div>
+                   </Link>
+                ))}
+             </div>
+          </section>
+        );
 
       case 'products':
         const displayProducts = section.config?.limit ? products.slice(0, section.config.limit) : products.slice(0, 8);
@@ -245,7 +262,32 @@ export default function ZenithTemplate({ store, slug }: ZenithTemplateProps) {
         return <SaleSection key={section.id} section={section} products={products} slug={slug} template="zenith" />;
 
       case 'testimonials':
-        return <TestimonialSection key={section.id} section={section} slug={slug} template="zenith" />;
+        const testimonials = section.config?.items || [
+          { id: '1', name: 'Alexander Knight', role: 'Premium Collector', content: 'The attention to detail and the sheer quality of the products exceeded all my expectations.' }
+        ];
+        return (
+          <section key={section.id} className="py-40 bg-zinc-50/50">
+            <div className="container mx-auto px-8">
+               <div className="max-w-4xl mx-auto text-center">
+                  <div className="text-[10px] font-black uppercase tracking-[0.8em] text-[#c5a368] mb-12 block">VOICES</div>
+                  <div className="grid gap-24">
+                     {testimonials.map((t: any) => (
+                        <div key={t.id} className="group">
+                           <p className="text-3xl md:text-5xl font-light italic tracking-tighter text-zinc-900 leading-tight mb-12">
+                              "{t.content}"
+                           </p>
+                           <div className="flex flex-col items-center">
+                              <div className="w-12 h-[1px] bg-zinc-200 mb-6" />
+                              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-900">{t.name}</h4>
+                              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 mt-2">{t.role}</p>
+                           </div>
+                        </div>
+                     ))}
+                  </div>
+               </div>
+            </div>
+          </section>
+        );
 
       case 'text_block':
       case 'intro':
