@@ -387,130 +387,113 @@ export default function SettingsManager({
                   </div>
 
                   {/* Gradient Matrix (Mixed Colors) */}
-                                     <div className="mb-12 bg-white/[0.02] p-8 rounded-[2rem] border border-white/[0.05] shadow-2xl relative overflow-hidden group">
-                     <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+                                                        <div className="mb-12 bg-white/[0.02] p-8 rounded-[3rem] border border-white/[0.08] shadow-2xl relative overflow-hidden group">
+                     <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
                      
-                     <div className="flex items-center justify-between mb-8 relative z-10">
-                        <div className="flex items-center gap-3">
-                           <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
-                           <h3 className="text-sm font-black text-white uppercase italic tracking-wider">Dynamic Gradient Synthesis (Mixed Colors)</h3>
+                     <div className="flex items-center justify-between mb-10 relative z-10">
+                        <div className="flex items-center gap-4">
+                           <div className="w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.8)]"></div>
+                           <div>
+                              <h3 className="text-lg font-black text-white uppercase italic tracking-tighter">Aesthetic Synthesis Engine</h3>
+                              <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-1">Global Color Injection & Matrix Control</p>
+                           </div>
                         </div>
-                        <div className="px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[9px] font-black text-cyan-400 uppercase tracking-widest">Aesthetic Matrix</div>
+                        <div className="px-6 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-black text-cyan-400 uppercase tracking-[0.2em] shadow-xl">V4.0 Active</div>
                      </div>
 
-                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 relative z-10">
+                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 relative z-10">
                         <div className="space-y-4">
-                           <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase A</label>
-                           <div className="flex items-center bg-black/60 p-2 rounded-2xl border border-white/[0.05] hover:border-cyan-400/50 transition-all shadow-inner gap-3">
-                              <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-white/10 shadow-lg group/picker">
-                                 <input 
-                                   type="color" 
-                                   defaultValue="#0F172A" 
-                                   id="gradA" 
-                                   className="absolute inset-0 w-full h-full scale-[3] cursor-pointer opacity-0 z-20" 
-                                   onChange={(e) => {
-                                      const text = document.getElementById('gradTextA') as HTMLInputElement;
-                                      const preview = document.getElementById('gradPreviewA') as HTMLDivElement;
-                                      if(text) text.value = e.target.value.toUpperCase();
-                                      if(preview) preview.style.backgroundColor = e.target.value;
-                                   }}
-                                 />
-                                 <div id="gradPreviewA" className="absolute inset-0 z-10 pointer-events-none transition-transform duration-500 group-hover/picker:scale-110" style={{backgroundColor: '#0F172A'}}></div>
-                              </div>
+                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase A (Primary)</label>
+                           <div className="relative group/synthesis h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] hover:border-cyan-400/50 transition-all overflow-hidden flex items-center justify-center">
+                              <input 
+                                type="color" 
+                                defaultValue="#0F172A" 
+                                id="gradA" 
+                                className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" 
+                                onChange={(e) => {
+                                   const t = document.getElementById('gradTextA') as HTMLInputElement;
+                                   const p = document.getElementById('gradPreviewA') as HTMLDivElement;
+                                   if(t) t.value = e.target.value.toUpperCase();
+                                   if(p) p.style.backgroundColor = e.target.value;
+                                }}
+                              />
+                              <div id="gradPreviewA" className="absolute inset-0 z-10 opacity-30 group-hover/synthesis:opacity-50 transition-opacity" style={{backgroundColor: '#0F172A'}}></div>
                               <input 
                                 type="text" 
                                 defaultValue="#0F172A" 
                                 id="gradTextA" 
-                                className="flex-1 bg-transparent text-white font-mono text-[11px] p-1 uppercase outline-none font-bold" 
-                                onChange={(e) => {
-                                   const picker = document.getElementById('gradA') as HTMLInputElement;
-                                   const preview = document.getElementById('gradPreviewA') as HTMLDivElement;
-                                   if(picker && /^#[0-9A-F]{6}$/i.test(e.target.value)) {
-                                      picker.value = e.target.value;
-                                      if(preview) preview.style.backgroundColor = e.target.value;
-                                   }
-                                }}
+                                className="relative z-20 bg-transparent text-white font-mono text-sm uppercase outline-none font-black text-center w-full pointer-events-none" 
                               />
                            </div>
                         </div>
 
                         <div className="space-y-4">
-                           <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase B</label>
-                           <div className="flex items-center bg-black/60 p-2 rounded-2xl border border-white/[0.05] hover:border-pink-400/50 transition-all shadow-inner gap-3">
-                              <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-white/10 shadow-lg group/picker">
-                                 <input 
-                                   type="color" 
-                                   defaultValue="#0A0C14" 
-                                   id="gradB" 
-                                   className="absolute inset-0 w-full h-full scale-[3] cursor-pointer opacity-0 z-20" 
-                                   onChange={(e) => {
-                                      const text = document.getElementById('gradTextB') as HTMLInputElement;
-                                      const preview = document.getElementById('gradPreviewB') as HTMLDivElement;
-                                      if(text) text.value = e.target.value.toUpperCase();
-                                      if(preview) preview.style.backgroundColor = e.target.value;
-                                   }}
-                                 />
-                                 <div id="gradPreviewB" className="absolute inset-0 z-10 pointer-events-none transition-transform duration-500 group-hover/picker:scale-110" style={{backgroundColor: '#0A0C14'}}></div>
-                              </div>
+                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase B (Secondary)</label>
+                           <div className="relative group/synthesis h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] hover:border-pink-400/50 transition-all overflow-hidden flex items-center justify-center">
+                              <input 
+                                type="color" 
+                                defaultValue="#0A0C14" 
+                                id="gradB" 
+                                className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" 
+                                onChange={(e) => {
+                                   const t = document.getElementById('gradTextB') as HTMLInputElement;
+                                   const p = document.getElementById('gradPreviewB') as HTMLDivElement;
+                                   if(t) t.value = e.target.value.toUpperCase();
+                                   if(p) p.style.backgroundColor = e.target.value;
+                                }}
+                              />
+                              <div id="gradPreviewB" className="absolute inset-0 z-10 opacity-30 group-hover/synthesis:opacity-50 transition-opacity" style={{backgroundColor: '#0A0C14'}}></div>
                               <input 
                                 type="text" 
                                 defaultValue="#0A0C14" 
                                 id="gradTextB" 
-                                className="flex-1 bg-transparent text-white font-mono text-[11px] p-1 uppercase outline-none font-bold" 
-                                onChange={(e) => {
-                                   const picker = document.getElementById('gradB') as HTMLInputElement;
-                                   const preview = document.getElementById('gradPreviewB') as HTMLDivElement;
-                                   if(picker && /^#[0-9A-F]{6}$/i.test(e.target.value)) {
-                                      picker.value = e.target.value;
-                                      if(preview) preview.style.backgroundColor = e.target.value;
-                                   }
-                                }}
+                                className="relative z-20 bg-transparent text-white font-mono text-sm uppercase outline-none font-black text-center w-full pointer-events-none" 
                               />
                            </div>
                         </div>
 
                         <div className="space-y-4">
-                           <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Direction</label>
-                           <div className="bg-black/60 p-1 rounded-2xl border border-white/[0.05]">
-                              <select id="gradDir" className="w-full bg-transparent p-3.5 text-white text-[10px] uppercase font-black outline-none cursor-pointer">
-                                 <option value="to bottom" className="bg-slate-900">To Bottom</option>
-                                 <option value="to right" className="bg-slate-900">To Right</option>
-                                 <option value="to bottom right" className="bg-slate-900">Diagonal</option>
-                                 <option value="radial-gradient(circle at center" className="bg-slate-900">Radial</option>
+                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Flow Pattern</label>
+                           <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center px-2">
+                              <select id="gradDir" className="w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer">
+                                 <option value="to bottom" className="bg-slate-900">Linear (Vertical)</option>
+                                 <option value="to right" className="bg-slate-900">Linear (Horizontal)</option>
+                                 <option value="to bottom right" className="bg-slate-900">Diagonal (Flow)</option>
+                                 <option value="radial-gradient(circle at center" className="bg-slate-900">Radial (Core)</option>
                               </select>
                            </div>
                         </div>
 
                         <div className="space-y-4">
-                           <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Target Node</label>
-                           <div className="bg-black/60 p-1 rounded-2xl border border-white/[0.05]">
+                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Injection Node</label>
+                           <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center px-2">
                               <select 
                                 value={synthTarget.page}
                                 onChange={(e) => setSynthTarget({...synthTarget, page: e.target.value})}
-                                className="w-full bg-transparent p-3.5 text-white text-[10px] uppercase font-black outline-none cursor-pointer"
+                                className="w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer"
                               >
-                                 <option value="all" className="bg-slate-900">All Modules (Global)</option>
-                                 <option value="home" className="bg-slate-900">Home Page</option>
-                                 <option value="shop" className="bg-slate-900">Shop Page</option>
-                                 <option value="categories" className="bg-slate-900">Categories</option>
-                                 <option value="product" className="bg-slate-900">Product Details</option>
-                                 <option value="cart" className="bg-slate-900">Cart</option>
-                                 <option value="checkout" className="bg-slate-900">Checkout</option>
-                                 <option value="footer" className="bg-slate-900">Global Footer</option>
+                                 <option value="all" className="bg-slate-900">Global (Full Mesh)</option>
+                                 <option value="home" className="bg-slate-900">Nexus (Home)</option>
+                                 <option value="shop" className="bg-slate-900">Archive (Shop)</option>
+                                 <option value="categories" className="bg-slate-900">Neural (Categories)</option>
+                                 <option value="product" className="bg-slate-900">Signal (Product)</option>
+                                 <option value="cart" className="bg-slate-900">Gateway (Cart)</option>
+                                 <option value="checkout" className="bg-slate-900">Secure (Checkout)</option>
+                                 <option value="footer" className="bg-slate-900">Base (Footer)</option>
                               </select>
                            </div>
                         </div>
 
                         <div className="space-y-4">
-                           <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Target Property</label>
-                           <div className="bg-black/60 p-1 rounded-2xl border border-white/[0.05]">
+                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Target Stream</label>
+                           <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center px-2">
                               <select 
                                 value={synthTarget.type}
                                 onChange={(e) => setSynthTarget({...synthTarget, type: e.target.value as any})}
-                                className="w-full bg-transparent p-3.5 text-white text-[10px] uppercase font-black outline-none cursor-pointer"
+                                className="w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer"
                               >
                                  <option value="backgrounds" className="bg-slate-900">Atmosphere (BG)</option>
-                                 <option value="text" className="bg-slate-900">Signal (Text)</option>
+                                 <option value="text" className="bg-slate-900">Frequency (Text)</option>
                               </select>
                            </div>
                         </div>
@@ -558,10 +541,11 @@ export default function SettingsManager({
                                  colorSystem: newColorSystem
                                });
                             }}
-                            className="w-full h-11 bg-white text-black rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-cyan-400 hover:text-white transition-all shadow-xl active:scale-95"
-                          >
-                             Apply Synthesis
-                          </button>
+                                                         className="w-full h-20 bg-white text-black rounded-[1.5rem] font-black uppercase tracking-[0.2em] text-[11px] hover:bg-cyan-400 hover:text-white transition-all shadow-[0_20px_50px_rgba(255,255,255,0.1)] active:scale-95 flex flex-col items-center justify-center gap-1 group/btn"
+                           >
+                              <span className="group-hover/btn:scale-110 transition-transform">Apply Synthesis</span>
+                              <span className="text-[7px] opacity-40">Sync to Cloud</span>
+                           </button>
                        </div>
                     </div>
                   </div>
