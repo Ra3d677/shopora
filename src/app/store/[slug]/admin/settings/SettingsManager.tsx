@@ -39,29 +39,28 @@ export default function SettingsManager({
   const [synthTarget, setSynthTarget] = useState<{page: string, type: 'backgrounds' | 'text'}>({ page: 'home', type: 'backgrounds' });
   const router = useRouter();
 
-  const colorSystem = settings.colorSystem || {
-    backgrounds: { 
-      home: '#ffffff', 
-      shop: '#f8fafc', 
-      categories: '#ffffff',
-      product: '#ffffff',
-      cart: '#ffffff',
-      checkout: '#ffffff'
-    },
-    text: { 
-      home: '#0f172a', 
-      shop: '#0f172a', 
-      categories: '#0f172a',
-      product: '#0f172a',
-      cart: '#0f172a',
-      checkout: '#0f172a',
-      primary: '#0f172a', 
-      secondary: '#64748b' 
-    },
-    brand: { primary: '#3b82f6', secondary: '#1e40af', accent: '#06b6d4' },
-    footer: { background: '#0f172a', text: '#f8fafc' },
-    product: { price: '#0f172a', salePrice: '#ef4444' }
-  };
+     const defaultColorSystem = {
+      backgrounds: { 
+         home: '#ffffff', shop: '#f8fafc', categories: '#ffffff', 
+         product: '#ffffff', cart: '#ffffff', checkout: '#ffffff' 
+      },
+      text: { 
+         primary: '#0f172a', secondary: '#64748b',
+         home: '#0f172a', shop: '#0f172a', categories: '#0f172a', 
+         product: '#0f172a', cart: '#0f172a', checkout: '#0f172a' 
+      },
+      brand: { primary: store.primaryColor || '#000000' },
+      footer: { background: '#0f172a', text: '#ffffff' },
+      product: { price: '#0f172a', salePrice: '#ef4444' }
+   };
+
+   const colorSystem = settings.colorSystem ? {
+      ...defaultColorSystem,
+      ...settings.colorSystem,
+      backgrounds: { ...defaultColorSystem.backgrounds, ...(settings.colorSystem.backgrounds || {}) },
+      text: { ...defaultColorSystem.text, ...(settings.colorSystem.text || {}) },
+      footer: { ...defaultColorSystem.footer, ...(settings.colorSystem.footer || {}) }
+   } : defaultColorSystem;
 
   const premiumBackgrounds = [
     { id: 'default', name: 'Void', desc: 'Pure dark matter.', style: { backgroundColor: '#0a0c14' } },

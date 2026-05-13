@@ -64,12 +64,32 @@ export default async function StorefrontLayout({
   const premiumStyle = getPremiumBackgroundStyle(currentThemeId);
   const isPremiumBg = currentThemeId !== 'default';
 
-  const colorSystem = storeSettings.colorSystem || {
-    backgrounds: { home: defaultHomeBg, shop: '#f8fafc', categories: '#ffffff' },
-    text: { primary: '#0f172a', secondary: '#64748b' },
-    brand: { primary: store.primaryColor },
-    footer: { background: '#0f172a', text: '#ffffff' },
-    product: { price: '#0f172a', salePrice: '#ef4444' }
+    const defaultBackgrounds = { 
+    home: defaultHomeBg, 
+    shop: '#f8fafc', 
+    categories: '#ffffff',
+    product: '#ffffff',
+    cart: '#ffffff',
+    checkout: '#ffffff'
+  };
+
+  const rawColorSystem = storeSettings.colorSystem || {};
+  const colorSystem = {
+    backgrounds: { ...defaultBackgrounds, ...(rawColorSystem.backgrounds || {}) },
+    text: { 
+      primary: '#0f172a', 
+      secondary: '#64748b', 
+      home: '#000000',
+      shop: '#000000',
+      categories: '#000000',
+      product: '#000000',
+      cart: '#000000',
+      checkout: '#000000',
+      ...(rawColorSystem.text || {}) 
+    },
+    brand: { primary: store.primaryColor, ...(rawColorSystem.brand || {}) },
+    footer: { background: '#0f172a', text: '#ffffff', ...(rawColorSystem.footer || {}) },
+    product: { price: '#0f172a', salePrice: '#ef4444', ...(rawColorSystem.product || {}) }
   };
 
   // Determine current page type for specific styling
@@ -110,10 +130,11 @@ export default async function StorefrontLayout({
       style={customStyles}
     >
       <style dangerouslySetInnerHTML={{ __html: `
-        :root {
+                        :root {
           --current-bg: var(--color-bg-home);
           --current-text: var(--color-text-home);
         }
+        [data-page="home"] { --current-bg: var(--color-bg-home); --current-text: var(--color-text-home); }
         [data-page="shop"] { --current-bg: var(--color-bg-shop); --current-text: var(--color-text-shop); }
         [data-page="categories"] { --current-bg: var(--color-bg-categories); --current-text: var(--color-text-categories); }
         [data-page="product"] { --current-bg: var(--color-bg-product); --current-text: var(--color-text-product); }
@@ -122,8 +143,8 @@ export default async function StorefrontLayout({
         [data-page="footer"] { --current-bg: var(--color-footer-bg); --current-text: var(--color-footer-text); }
 
         .store-container {
-          background: var(--current-bg);
-          color: var(--current-text);
+          background: var(--current-bg) !important;
+          color: var(--current-text) !important;
         }
 
         /* Support for Gradient Text */
