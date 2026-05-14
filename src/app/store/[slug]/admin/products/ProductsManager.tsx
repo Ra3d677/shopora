@@ -43,7 +43,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
     
     setFormData({ 
       ...formData, 
-      colors: [...normalizedColors, { name: colorInput.trim(), value: colorInput.trim(), imageUrl: null }] 
+      colors: [...normalizedColors, { name: colorInput.trim(), value: colorInput.trim(), imageUrl: null, stock: 10 }] 
     });
     setColorInput("");
   };
@@ -53,9 +53,9 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
     setFormData({ ...formData, colors: colors.filter((_: any, i: number) => i !== index) });
   };
 
-  const handleUpdateColorImage = (index: number, imageUrl: string | null) => {
+  const handleUpdateColorField = (index: number, field: string, value: any) => {
     const colors = [...(formData.colors || [])];
-    colors[index] = { ...colors[index], imageUrl };
+    colors[index] = { ...colors[index], [field]: value };
     setFormData({ ...formData, colors });
   };
 
@@ -278,35 +278,47 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                             </button>
                           </div>
                           
-                          <div className="flex items-center gap-3 bg-black/20 p-2 rounded-xl">
-                             <div className="shrink-0">
-                                {color.imageUrl ? (
-                                  <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-white/10">
-                                     <Image src={color.imageUrl} alt="Variant" fill className="object-cover" />
-                                     <button 
-                                       type="button" 
-                                       onClick={() => handleUpdateColorImage(index, null)}
-                                       className="absolute inset-0 bg-black/60 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center text-white"
-                                     >
-                                       <X className="w-3 h-3" />
-                                     </button>
-                                  </div>
-                                ) : (
-                                  <div className="w-10 h-10 rounded-lg bg-white/[0.02] border-2 border-dashed border-white/5 flex items-center justify-center text-white/5">
-                                     <Plus className="w-4 h-4" />
-                                  </div>
-                                )}
+                          <div className="flex flex-col gap-3">
+                             <div className="flex items-center gap-3 bg-black/20 p-2 rounded-xl">
+                                <div className="shrink-0">
+                                   {color.imageUrl ? (
+                                     <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-white/10">
+                                        <Image src={color.imageUrl} alt="Variant" fill className="object-cover" />
+                                        <button 
+                                          type="button" 
+                                          onClick={() => handleUpdateColorField(index, 'imageUrl', null)}
+                                          className="absolute inset-0 bg-black/60 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center text-white"
+                                        >
+                                          <X className="w-3 h-3" />
+                                        </button>
+                                     </div>
+                                   ) : (
+                                     <div className="w-10 h-10 rounded-lg bg-white/[0.02] border-2 border-dashed border-white/5 flex items-center justify-center text-white/5">
+                                        <Plus className="w-4 h-4" />
+                                     </div>
+                                   )}
+                                </div>
+                                <select 
+                                   className="flex-1 bg-transparent border-none text-[8px] font-black uppercase tracking-widest text-slate-500 focus:ring-0 cursor-pointer"
+                                   value={color.imageUrl || ''}
+                                   onChange={(e) => handleUpdateColorField(index, 'imageUrl', e.target.value || null)}
+                                >
+                                   <option value="" className="bg-[#1a1d2d]">No Link</option>
+                                   {formData.images?.map((img: string, i: number) => (
+                                     <option key={i} value={img} className="bg-[#1a1d2d]">Visual {i + 1}</option>
+                                   ))}
+                                </select>
                              </div>
-                             <select 
-                                className="flex-1 bg-transparent border-none text-[8px] font-black uppercase tracking-widest text-slate-500 focus:ring-0 cursor-pointer"
-                                value={color.imageUrl || ''}
-                                onChange={(e) => handleUpdateColorImage(index, e.target.value || null)}
-                             >
-                                <option value="" className="bg-[#1a1d2d]">No Link</option>
-                                {formData.images?.map((img: string, i: number) => (
-                                  <option key={i} value={img} className="bg-[#1a1d2d]">Visual {i + 1}</option>
-                                ))}
-                             </select>
+
+                             <div className="flex items-center gap-2 px-3 py-2 bg-white/[0.02] rounded-xl border border-white/5">
+                                <span className="text-[8px] font-black text-slate-600 uppercase tracking-widest">Stock:</span>
+                                <input 
+                                  type="number"
+                                  value={color.stock || 0}
+                                  onChange={(e) => handleUpdateColorField(index, 'stock', Number(e.target.value))}
+                                  className="w-full bg-transparent border-none p-0 text-[10px] font-black text-cyan-400 focus:ring-0"
+                                />
+                             </div>
                           </div>
                         </div>
                       );

@@ -148,19 +148,26 @@ export interface Category {
   created_at?: string;
 }
 
+export interface ColorVariant {
+  name: string;
+  value: string;
+  imageUrl: string | null;
+  stock?: number;
+}
+
 export interface Product {
   id: string;
-  storeId: string; // Linked to the store
   name: string;
   description: string | null;
-  category_id: string;
   price: number;
   discount_price: number | null;
-  sizes: any;
-  colors: any;
-  images: any;
-  stock_quantity: number;
+  images: string[]; // Array of URLs
+  sizes: string[];
+  colors: ColorVariant[];
+  category_id: string;
+  storeId: string;
   status: string;
+  stock_quantity: number;
   created_at?: any;
 }
 

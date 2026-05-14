@@ -22,6 +22,9 @@ export default function ProductDetailClient({ product, store }: { product: Produ
   const [selectedColor, setSelectedColor] = useState<any>(productColors[0] || null);
   const [isAdding, setIsAdding] = useState(false);
   
+  const selectedColorStock = selectedColor?.stock ?? product.stock_quantity;
+  const isOutOfStock = selectedColorStock <= 0;
+  
   const addItem = useCartStore(state => state.addItem);
 
   // Track ViewContent on mount
@@ -149,8 +152,9 @@ export default function ProductDetailClient({ product, store }: { product: Produ
                 key={idx}
                 onClick={() => setSelectedColor(color)}
                 className={cn(
-                  "h-12 w-12 rounded-full border border-slate-200 flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md",
-                  selectedColor?.value === color.value ? "ring-2 ring-slate-900 ring-offset-4 scale-110" : "hover:scale-110"
+                  "h-12 w-12 rounded-full border border-slate-200 flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md relative",
+                  selectedColor?.value === color.value ? "ring-2 ring-slate-900 ring-offset-4 scale-110" : "hover:scale-110",
+                  (color.stock <= 0) && "opacity-40 grayscale"
                 )}
                 style={{ backgroundColor: color.value }}
                 aria-label={`Select color ${color.name}`}
@@ -158,9 +162,22 @@ export default function ProductDetailClient({ product, store }: { product: Produ
                 {selectedColor?.value === color.value && (
                   <Check className={cn("h-6 w-6", color.value === '#ffffff' ? "text-slate-900" : "text-white")} />
                 )}
+                {color.stock <= 0 && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-full h-[1px] bg-red-500 rotate-45"></div>
+                  </div>
+                )}
               </button>
             ))}
           </div>
+          {selectedColor && (
+            <p className={cn(
+              "mt-4 text-[10px] font-bold uppercase tracking-widest",
+              isOutOfStock ? "text-red-500" : selectedColorStock < 5 ? "text-amber-500" : "text-green-600"
+            )}>
+              {isOutOfStock ? "Out of Stock" : selectedColorStock < 5 ? `Only ${selectedColorStock} left - Order soon!` : "In Stock"}
+            </p>
+          )}
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-12">
@@ -198,15 +215,27 @@ export default function ProductDetailClient({ product, store }: { product: Produ
             <div className="flex gap-4">
               <button 
                 onClick={handleAddToCart}
-                className="flex-1 bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-900 h-16 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                disabled={isOutOfStock}
+                className={cn(
+                  "flex-1 h-16 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all",
+                  isOutOfStock 
+                    ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed" 
+                    : "bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-900 hover:scale-[1.02] active:scale-[0.98]"
+                )}
               >
-                <ShoppingBag className="h-5 w-5" /> Add to Cart
+                <ShoppingBag className="h-5 w-5" /> {isOutOfStock ? "Sold Out" : "Add to Cart"}
               </button>
               <button 
                 onClick={handleBuyNow}
-                className="flex-1 bg-slate-900 hover:bg-black text-white h-16 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-slate-900/20"
+                disabled={isOutOfStock}
+                className={cn(
+                  "flex-1 h-16 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all active:scale-[0.98] shadow-2xl",
+                  isOutOfStock
+                    ? "bg-slate-200 text-slate-400 cursor-not-allowed shadow-none"
+                    : "bg-slate-900 hover:bg-black text-white hover:scale-[1.02] shadow-slate-900/20"
+                )}
               >
-                Buy Now
+                {isOutOfStock ? "Unavailable" : "Buy Now"}
               </button>
             </div>
           )}
@@ -326,23 +355,39 @@ function SennoProductDetail({
                 <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-4">
                    Select Color <div className="flex-1 h-[1px] bg-slate-100" />
                 </h3>
-                <div className="flex flex-wrap gap-4">
-                    {productColors.map((color: any, idx: number) => (
-                      <button
-                        key={idx}
-                        onClick={() => setSelectedColor(color)}
-                        className={cn(
-                          "h-12 w-12 rounded-full border border-slate-100 flex items-center justify-center transition-all duration-500",
-                          selectedColor?.value === color.value ? "ring-2 ring-[#f06292] ring-offset-4 scale-110 shadow-xl shadow-[#f06292]/20" : "hover:scale-110"
-                        )}
-                        style={{ backgroundColor: color.value }}
-                      >
-                        {selectedColor?.value === color.value && (
-                          <Check className={cn("h-6 w-6", color.value === '#ffffff' ? "text-slate-900" : "text-white")} />
-                        )}
-                      </button>
-                    ))}
-                </div>
+                 <div className="flex flex-wrap gap-4">
+                     {productColors.map((color: any, idx: number) => {
+                       const isColOutOfStock = (color.stock || 0) <= 0;
+                       return (
+                       <button
+                         key={idx}
+                         onClick={() => setSelectedColor(color)}
+                         className={cn(
+                           "h-12 w-12 rounded-full border border-slate-100 flex items-center justify-center transition-all duration-500 relative",
+                           selectedColor?.value === color.value ? "ring-2 ring-[#f06292] ring-offset-4 scale-110 shadow-xl shadow-[#f06292]/20" : "hover:scale-110",
+                           isColOutOfStock && "opacity-30 grayscale"
+                         )}
+                         style={{ backgroundColor: color.value }}
+                       >
+                         {selectedColor?.value === color.value && (
+                           <Check className={cn("h-6 w-6", color.value === '#ffffff' ? "text-slate-900" : "text-white")} />
+                         )}
+                         {isColOutOfStock && (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="w-full h-[1px] bg-red-500 rotate-45"></div>
+                            </div>
+                         )}
+                       </button>
+                     )})}
+                 </div>
+                 {selectedColor && (
+                    <p className={cn(
+                      "mt-4 text-[10px] font-black uppercase tracking-[0.2em]",
+                      (selectedColor.stock <= 0) ? "text-red-500" : (selectedColor.stock < 5) ? "text-amber-500" : "text-[#f06292]"
+                    )}>
+                      {(selectedColor.stock <= 0) ? "Out of Stock" : (selectedColor.stock < 5) ? `Low Stock: ${selectedColor.stock} Units` : "Inventory Available"}
+                    </p>
+                 )}
              </motion.div>
 
              {/* Sizes */}
@@ -370,32 +415,40 @@ function SennoProductDetail({
 
              {/* Add to Cart and Buy Now */}
              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                <div className="flex gap-4">
-                   <button 
-                     onClick={handleAddToCart}
-                     disabled={isAdding}
-                     className={cn(
-                       "flex-1 h-20 rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-4 transition-all duration-700",
-                       isAdding 
-                         ? "bg-green-600 text-white" 
-                         : "bg-white text-[#f06292] border-2 border-[#f06292] hover:bg-[#fcf2f4] hover:scale-[1.02]"
-                     )}
-                   >
-                      {isAdding ? (
-                        <><Check size={20} /> Added</>
-                      ) : (
-                        <><ShoppingBag size={20} /> Add to Bag</>
+                 <div className="flex gap-4">
+                    <button 
+                      onClick={handleAddToCart}
+                      disabled={isAdding || (selectedColor?.stock <= 0)}
+                      className={cn(
+                        "flex-1 h-20 rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-4 transition-all duration-700",
+                        isAdding 
+                          ? "bg-green-600 text-white" 
+                          : (selectedColor?.stock <= 0)
+                            ? "bg-slate-100 text-slate-400 border-2 border-slate-200 cursor-not-allowed"
+                            : "bg-white text-[#f06292] border-2 border-[#f06292] hover:bg-[#fcf2f4] hover:scale-[1.02]"
                       )}
-                   </button>
-                   <button 
-                     onClick={handleBuyNow}
-                     className={cn(
-                       "flex-1 h-20 rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-4 transition-all duration-700 bg-[#f06292] text-white hover:bg-slate-900 hover:scale-[1.02] shadow-2xl shadow-[#f06292]/20"
-                     )}
-                   >
-                     Buy Now
-                   </button>
-                </div>
+                    >
+                       {isAdding ? (
+                         <><Check size={20} /> Added</>
+                       ) : (selectedColor?.stock <= 0) ? (
+                         "Sold Out"
+                       ) : (
+                         <><ShoppingBag size={20} /> Add to Bag</>
+                       )}
+                    </button>
+                    <button 
+                      onClick={handleBuyNow}
+                      disabled={(selectedColor?.stock <= 0)}
+                      className={cn(
+                        "flex-1 h-20 rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-4 transition-all duration-700",
+                        (selectedColor?.stock <= 0)
+                          ? "bg-slate-200 text-slate-400 cursor-not-allowed"
+                          : "bg-[#f06292] text-white hover:bg-slate-900 hover:scale-[1.02] shadow-2xl shadow-[#f06292]/20"
+                      )}
+                    >
+                      {(selectedColor?.stock <= 0) ? "Unavailable" : "Buy Now"}
+                    </button>
+                 </div>
              </motion.div>
 
              {/* Description */}

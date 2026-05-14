@@ -44,6 +44,35 @@ export async function createOrder(data: {
     });
 
     revalidatePath(`/store/[slug]/admin/orders`, 'page');
+
+    // Update stock for each variant
+    try {
+      for (const item of data.items) {
+        const product = await prisma.product.findUnique({ where: { id: item.product.id } });
+        if (product) {
+          const colors = typeof product.colors === 'string' ? JSON.parse(product.colors || '[]') : (product.colors || []);
+          const updatedColors = colors.map((c: any) => {
+            if (c.name === item.selectedColor || c.value === item.selectedColor) {
+              const currentStock = typeof c.stock === 'number' ? c.stock : 10;
+              return { ...c, stock: Math.max(0, currentStock - item.quantity) };
+            }
+            return c;
+          });
+          
+          await prisma.product.update({
+            where: { id: item.product.id },
+            data: { 
+              colors: JSON.stringify(updatedColors),
+              stock_quantity: { decrement: item.quantity }
+            }
+          });
+        }
+      }
+    } catch (stockError) {
+      console.error('Failed to update stock:', stockError);
+      // We don't fail the order if stock update fails, but we log it
+    }
+
     return { success: true, orderId: order.id };
   } catch (error: any) {
     console.error('Error creating order:', error);
