@@ -1,11 +1,12 @@
-import { Product as PrismaProduct, Category as PrismaCategory, Banner as PrismaBanner, Store as PrismaStore } from "@prisma/client";
+import { Store as PrismaStore } from "@prisma/client";
+import { Product as CustomProduct, Category as CustomCategory, Banner as CustomBanner, StoreSettings } from "./types";
 import prisma from "./prisma";
-import { StoreSettings } from "./types";
 
-// Re-export types from Prisma with our own extensions if needed
-export type Product = PrismaProduct;
-export type Category = PrismaCategory;
-export type Banner = PrismaBanner;
+// Re-export types with our custom extensions
+export type Product = CustomProduct;
+export type Category = CustomCategory;
+export type Banner = CustomBanner;
+
 export interface Store extends Omit<PrismaStore, 'settings'> {
   settings: StoreSettings;
   products: Product[];
@@ -75,7 +76,7 @@ export const getStoreBySlug = async (slug: string) => {
     return {
       ...store,
       settings,
-      products
+      products: products as Product[]
     } as unknown as Store;
   }
   return null;
@@ -100,7 +101,7 @@ export const getStoreById = async (id: string) => {
         images: typeof p.images === 'string' ? JSON.parse(p.images || '[]') : p.images || [],
         colors: typeof p.colors === 'string' ? JSON.parse(p.colors || '[]') : p.colors || [],
         sizes: typeof p.sizes === 'string' ? JSON.parse(p.sizes || '[]') : p.sizes || []
-      }))
+      })) as Product[]
     } as unknown as Store;
   }
   return null;
@@ -116,7 +117,7 @@ export const getStoreProducts = async (slug: string) => {
     images: typeof p.images === 'string' ? JSON.parse(p.images || '[]') : p.images || [],
     colors: typeof p.colors === 'string' ? JSON.parse(p.colors || '[]') : p.colors || [],
     sizes: typeof p.sizes === 'string' ? JSON.parse(p.sizes || '[]') : p.sizes || []
-  })) || [];
+  })) as Product[] || [];
 };
 
 export const getStoreCategories = async (slug: string) => {
