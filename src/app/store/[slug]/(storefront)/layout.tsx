@@ -209,6 +209,7 @@ export default async function StorefrontLayout({
               storeName: store.settings.storeName || store.name,
               primaryColor: store.settings.colorSystem?.brand?.primary || store.primaryColor,
           }} 
+          storeId={store.id}
           categories={store.categories}
           products={store.products}
           lang={lang} 

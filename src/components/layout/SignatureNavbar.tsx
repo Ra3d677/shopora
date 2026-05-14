@@ -27,23 +27,24 @@ interface SignatureNavbarProps {
   storeName: string;
   logoUrl?: string;
   slug: string;
+  storeId?: string;
   products: any[];
   categories?: any[];
   session?: any;
   storeSettings?: any;
 }
 
-export default function SignatureNavbar({ storeName, logoUrl, slug, products, categories = [], session, storeSettings }: SignatureNavbarProps) {
+export default function SignatureNavbar({ storeName, logoUrl, slug, storeId, products, categories = [], session, storeSettings }: SignatureNavbarProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
-  const items = useCartStore((state) => state.items);
+  const allItems = useCartStore((state) => state.items);
 
   const categoryTree = buildCategoryTree(categories);
 
-  const cartItemCount = items.filter(i => products.some(p => p.id === i.product?.id)).reduce((acc, item) => acc + item.quantity, 0);
+  const cartItemCount = allItems.filter(i => i.storeId === storeId).reduce((acc, item) => acc + item.quantity, 0);
 
   const headerLinks = storeSettings?.headerSettings?.links || [
     { id: 'home', label: 'Home', url: `/store/${slug}` },

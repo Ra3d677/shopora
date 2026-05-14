@@ -39,7 +39,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
   const handleAddToCart = () => {
     setIsAdding(true);
     addItem({
-      id: `${product.id}-${selectedSize}-${selectedColor?.name || selectedColor?.value || 'default'}`,
+      id: `${product.storeId}-${product.id}-${selectedSize}-${selectedColor?.name || selectedColor?.value || 'default'}`,
       storeId: product.storeId,
       product,
       quantity: 1,
@@ -52,7 +52,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
 
   const handleBuyNow = () => {
     addItem({
-      id: `${product.id}-${selectedSize}-${selectedColor?.name || selectedColor?.value || 'default'}`,
+      id: `${product.storeId}-${product.id}-${selectedSize}-${selectedColor?.name || selectedColor?.value || 'default'}`,
       storeId: product.storeId,
       product,
       quantity: 1,

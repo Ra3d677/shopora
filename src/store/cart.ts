@@ -7,8 +7,8 @@ interface CartState {
   addItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
-  clearCart: () => void;
-  getCartTotal: () => number;
+  clearCart: (storeId?: string) => void;
+  getCartTotal: (storeId: string) => number;
 }
 
 export const useCartStore = create<CartState>()(
@@ -17,7 +17,11 @@ export const useCartStore = create<CartState>()(
       items: [],
       addItem: (newItem) =>
         set((state) => {
-          const existingItemIndex = state.items.findIndex((item) => item.id === newItem.id);
+          // Scoped find: check both ID and storeId
+          const existingItemIndex = state.items.findIndex(
+            (item) => item.id === newItem.id && item.storeId === newItem.storeId
+          );
+          
           if (existingItemIndex > -1) {
             const updatedItems = [...state.items];
             updatedItems[existingItemIndex].quantity += newItem.quantity;
@@ -35,12 +39,19 @@ export const useCartStore = create<CartState>()(
             item.id === id ? { ...item, quantity } : item
           ),
         })),
-      clearCart: () => set({ items: [] }),
-      getCartTotal: () => {
-        return get().items.reduce((total, item) => {
-          const price = item.product.discount_price || item.product.price;
-          return total + price * item.quantity;
-        }, 0);
+      clearCart: (storeId) => 
+        set((state) => ({ 
+          items: storeId 
+            ? state.items.filter(item => item.storeId !== storeId) 
+            : [] 
+        })),
+      getCartTotal: (storeId) => {
+        return get().items
+          .filter(item => item.storeId === storeId)
+          .reduce((total, item) => {
+            const price = item.product.discount_price || item.product.price;
+            return total + price * item.quantity;
+          }, 0);
       },
     }),
     {

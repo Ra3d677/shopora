@@ -11,9 +11,11 @@ import { motion } from "framer-motion";
 
 export default function CheckoutPage() {
   const [mounted, setMounted] = useState(false);
-  const { items, getCartTotal, clearCart } = useCartStore();
+  const { items: allItems, getCartTotal, clearCart } = useCartStore();
   const { store, user } = useStore();
   const router = useRouter();
+
+  const items = allItems.filter(item => item.storeId === store.id);
 
   const [formData, setFormData] = useState({
     name: user?.name || "",
@@ -42,18 +44,14 @@ export default function CheckoutPage() {
     setError("");
 
     try {
-      // 1. Filter valid items
+      // 1. Filter valid items (already filtered by storeId, but check if they still exist in store products)
       const validItems = items.filter(item => store.products.some(p => p.id === item.product.id));
       if (validItems.length === 0) {
         throw new Error("Sorry, the items in your cart are no longer available.");
       }
 
-      // 2. Calculate total
-      const total_price = validItems.reduce((total, item) => {
-        const latestProduct = store.products.find(p => p.id === item.product.id) || item.product;
-        const price = latestProduct.discount_price || latestProduct.price;
-        return total + price * item.quantity;
-      }, 0);
+      // 2. Calculate total for this store
+      const total_price = getCartTotal(store.id);
 
       const result = await createOrder({
         storeId: store.id,
@@ -90,7 +88,7 @@ export default function CheckoutPage() {
         console.warn("WhatsApp notification failed, but order was saved:", waError);
       }
 
-      clearCart();
+      clearCart(store.id);
       router.push(`/store/${store.slug}/success?orderId=${orderId}`);
     } catch (err: any) {
       setError(err.message || "An error occurred during checkout.");
@@ -233,7 +231,7 @@ export default function CheckoutPage() {
                   {isSubmitting ? (
                     <><Loader2 className="h-6 w-6 animate-spin" /> Processing...</>
                   ) : (
-                    <>Complete Purchase &mdash; ${(getCartTotal()).toFixed(2)} <Lock className="h-4 w-4" /></>
+                    <>Complete Purchase &mdash; ${(getCartTotal(store.id)).toFixed(2)} <Lock className="h-4 w-4" /></>
                   )}
                 </button>
                 <div className="mt-8 flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] opacity-40">
@@ -278,7 +276,7 @@ export default function CheckoutPage() {
               <div className="space-y-5 border-t border-white/10 pt-8">
                 <div className="flex justify-between text-xs font-black opacity-50 uppercase tracking-widest">
                   <span>Subtotal</span>
-                  <span className="opacity-100">${getCartTotal().toFixed(2)}</span>
+                  <span className="opacity-100">${getCartTotal(store.id).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-xs font-black opacity-50 uppercase tracking-widest">
                   <span>Delivery</span>
@@ -286,7 +284,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="pt-6 mt-4 flex justify-between items-end border-t-2 border-white">
                   <span className="text-xs font-black uppercase tracking-[0.3em]">Total</span>
-                  <span className="text-5xl font-black tracking-tighter">${getCartTotal().toFixed(2)}</span>
+                  <span className="text-5xl font-black tracking-tighter">${getCartTotal(store.id).toFixed(2)}</span>
                 </div>
               </div>
             </div>

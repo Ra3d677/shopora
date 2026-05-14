@@ -10,8 +10,10 @@ import { trackInitiateCheckout } from "@/lib/tracking";
 
 export default function CartPage() {
   const [mounted, setMounted] = useState(false);
-  const { items, removeItem, updateQuantity, getCartTotal } = useCartStore();
+  const { items: allItems, removeItem, updateQuantity, getCartTotal, clearCart } = useCartStore();
   const { store } = useStore();
+
+  const items = allItems.filter(item => item.storeId === store.id);
 
   useEffect(() => {
     setMounted(true);
@@ -29,7 +31,6 @@ export default function CartPage() {
         <h1 className="text-4xl font-bold tracking-tight mb-12">
           <span className="gradient-text-support">Shopping Cart</span>
         </h1>
-        {/* ... existing content ... */}
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <div className="h-24 w-24 bg-black/10 rounded-full flex items-center justify-center mb-6">
@@ -82,10 +83,10 @@ export default function CartPage() {
             <div className="lg:col-span-1">
               <div className="bg-white/5 rounded-2xl p-8 border border-white/10 lg:sticky lg:top-24">
                 <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
-                <div className="flex justify-between mb-4 opacity-50"><span>Subtotal</span><span>${getCartTotal().toFixed(2)}</span></div>
+                <div className="flex justify-between mb-4 opacity-50"><span>Subtotal</span><span>${getCartTotal(store.id).toFixed(2)}</span></div>
                 <div className="flex justify-between mb-6 opacity-50"><span>Shipping</span><span>Calculated at checkout</span></div>
-                <div className="border-t border-white/10 pt-6 mb-8 flex justify-between items-end"><span className="font-medium text-lg">Total</span><span className="text-3xl font-bold">${getCartTotal().toFixed(2)}</span></div>
-                <Link href={`/store/${store.slug}/checkout`} onClick={() => trackInitiateCheckout(items, getCartTotal(), store)} className="w-full bg-white text-black hover:opacity-80 h-14 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 transition-all active:scale-[0.98]">Proceed to Checkout <ArrowRight className="h-5 w-5" /></Link>
+                <div className="border-t border-white/10 pt-6 mb-8 flex justify-between items-end"><span className="font-medium text-lg">Total</span><span className="text-3xl font-bold">${getCartTotal(store.id).toFixed(2)}</span></div>
+                <Link href={`/store/${store.slug}/checkout`} onClick={() => trackInitiateCheckout(items, getCartTotal(store.id), store)} className="w-full bg-white text-black hover:opacity-80 h-14 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 transition-all active:scale-[0.98]">Proceed to Checkout <ArrowRight className="h-5 w-5" /></Link>
               </div>
             </div>
           </div>

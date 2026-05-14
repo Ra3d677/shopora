@@ -33,6 +33,7 @@ export default function Navbar({
   storeSettings, 
   lang = 'en',
   slug,
+  storeId,
   categories = [],
   products = [],
   session = null
@@ -41,6 +42,7 @@ export default function Navbar({
   storeSettings?: any, 
   lang?: 'en' | 'ar',
   slug?: string,
+  storeId?: string,
   categories?: any[],
   products?: any[],
   session?: any
@@ -58,8 +60,10 @@ export default function Navbar({
     { id: 'home', label: t('home') || 'Home', url: `/store/${slug}` },
     { id: 'shop', label: t('shop') || 'Shop', url: `/store/${slug}/categories` }
   ];
-  const items = useCartStore((state) => state.items);
-  const cartItemCount = items.filter(i => products?.some(p => p.id === i.product?.id)).reduce((acc, item) => acc + item.quantity, 0);
+  const allItems = useCartStore((state) => state.items);
+  // Filter by storeId
+  const items = allItems.filter(item => item.storeId === storeId);
+  const cartItemCount = items.reduce((acc, item) => acc + item.quantity, 0);
 
   const rawLayout = storeSettings?.headerSettings?.layout;
   const effectiveLayout = (rawLayout && rawLayout !== 'default') ? rawLayout : activeTemplate;
@@ -154,6 +158,7 @@ export default function Navbar({
           storeName={storeSettings?.storeName || 'Store'} 
           logoUrl={storeSettings?.logoUrl} 
           slug={slug || ''} 
+          storeId={storeId}
           products={products}
           categories={categories}
           session={session}
