@@ -268,15 +268,15 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                       const color = typeof colorObj === 'string' ? { name: colorObj, value: colorObj, imageUrl: null } : colorObj;
                       return (
                         <div key={index} className="bg-[#1a1d2d]/60 border border-white/[0.05] rounded-3xl p-5 hover:border-cyan-500/30 transition-all duration-300 relative group/row">
-                          <div className="flex items-center gap-4">
+                          <div className="flex flex-col lg:flex-row lg:items-center gap-6">
                             {/* Identity Section */}
-                            <div className="flex items-center gap-3 shrink-0">
-                              <div className="flex flex-col items-center gap-1.5">
+                            <div className="flex items-center gap-4 shrink-0">
+                              <div className="flex flex-col items-center gap-1.5 w-16">
                                 <div className="w-8 h-8 rounded-full border-2 border-white/10 shadow-2xl" style={{backgroundColor: color.value}}></div>
-                                <span className="text-[8px] font-black text-white uppercase tracking-tighter truncate w-14 text-center">{color.name}</span>
+                                <span className="text-[8px] font-black text-white uppercase tracking-tighter truncate w-full text-center">{color.name}</span>
                               </div>
                               
-                              <div className="relative w-16 h-16 rounded-xl bg-black/40 border border-white/5 overflow-hidden group/media shadow-xl">
+                              <div className="relative w-16 h-16 rounded-xl bg-black/40 border border-white/5 overflow-hidden group/media shadow-xl shrink-0">
                                  {color.imageUrl ? (
                                    <>
                                      <Image src={color.imageUrl} alt="Variant" fill className="object-cover" />
@@ -298,8 +298,8 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                             </div>
 
                             {/* Controls Section */}
-                            <div className="flex-1 flex flex-col sm:flex-row items-end sm:items-center gap-4">
-                               <div className="flex-1 w-full sm:w-auto space-y-1.5">
+                            <div className="flex-1 flex flex-col sm:flex-row items-end sm:items-center gap-4 max-w-2xl">
+                               <div className="flex-1 w-full space-y-1.5">
                                   <label className="block text-[8px] font-black text-slate-500 uppercase tracking-widest ml-1">Visual Link</label>
                                   <select 
                                      className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-widest text-cyan-400 focus:ring-1 focus:ring-cyan-500/50 cursor-pointer outline-none"
@@ -313,7 +313,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                                   </select>
                                </div>
 
-                               <div className="w-full sm:w-40 space-y-1.5">
+                               <div className="w-full sm:w-44 space-y-1.5">
                                   <label className="block text-[8px] font-black text-slate-500 uppercase tracking-widest ml-1">Stock</label>
                                   <div className="flex items-center bg-white/5 border border-white/5 rounded-xl overflow-hidden focus-within:border-cyan-500/30 transition-all h-9">
                                      <button 
@@ -334,13 +334,13 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                                      >+</button>
                                   </div>
                                </div>
-                            </div>
 
-                            {/* Delete Action - Smaller & Further Right */}
-                            <div className="shrink-0 flex items-end pt-5">
-                              <button type="button" onClick={() => handleRemoveColor(index)} className="w-8 h-8 rounded-xl bg-rose-500/5 text-rose-500/40 hover:text-rose-500 hover:bg-rose-500/10 transition-all flex items-center justify-center border border-white/5 hover:border-rose-500/20 shadow-sm">
-                                <Trash2 className="w-3.5 h-3.5" />
-                              </button>
+                               {/* Delete Action - Now explicitly inside the row's flex and more to the left */}
+                               <div className="shrink-0 pt-5">
+                                 <button type="button" onClick={() => handleRemoveColor(index)} className="w-8 h-8 rounded-xl bg-rose-500/5 text-rose-500/40 hover:text-rose-500 hover:bg-rose-500/10 transition-all flex items-center justify-center border border-white/5 hover:border-rose-500/20 shadow-sm">
+                                   <Trash2 className="w-3.5 h-3.5" />
+                                 </button>
+                               </div>
                             </div>
                           </div>
                         </div>
