@@ -18,7 +18,7 @@ export async function createOrder(data: {
   try {
     // 0. Preliminary Stock Check
     for (const item of data.items) {
-      const product = await prisma.product.findUnique({ where: { id: item.productId || item.product.id } });
+      const product = await prisma.product.findUnique({ where: { id: item.product.id } });
       if (!product) throw new Error(`Product ${item.product.name} no longer exists.`);
       
       const colors = typeof product.colors === 'string' ? JSON.parse(product.colors || '[]') : (product.colors || []);
