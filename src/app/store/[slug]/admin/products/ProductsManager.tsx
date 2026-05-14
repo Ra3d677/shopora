@@ -263,24 +263,20 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                     <div className="h-[1px] flex-1 bg-white/[0.05] mx-4"></div>
                   </div>
                   
-                   <div className="space-y-3 mb-8">
+                   <div className="space-y-4 mb-8">
                     {formData.colors?.map((colorObj: any, index: number) => {
                       const color = typeof colorObj === 'string' ? { name: colorObj, value: colorObj, imageUrl: null } : colorObj;
                       return (
-                        <div key={index} className="bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] rounded-2xl p-4 transition-all duration-300">
-                          <div className="flex flex-col md:flex-row items-center gap-6">
-                            {/* Color Preview */}
-                            <div className="flex items-center gap-3 w-40 shrink-0">
-                              <div className="w-8 h-8 rounded-full border border-white/10 shadow-lg" style={{backgroundColor: color.value}}></div>
-                              <div className="overflow-hidden">
-                                <span className="text-[10px] font-black text-white uppercase tracking-tighter block truncate">{color.name}</span>
-                                <span className="text-[8px] font-bold text-slate-600 uppercase tracking-widest">{color.value}</span>
+                        <div key={index} className="bg-[#1a1d2d]/60 border border-white/[0.05] rounded-3xl p-5 hover:border-cyan-500/30 transition-all duration-300 relative group/row">
+                          <div className="flex items-center gap-6">
+                            {/* Identity Section */}
+                            <div className="flex items-center gap-4 shrink-0">
+                              <div className="flex flex-col items-center gap-2">
+                                <div className="w-10 h-10 rounded-full border-2 border-white/10 shadow-2xl" style={{backgroundColor: color.value}}></div>
+                                <span className="text-[9px] font-black text-white uppercase tracking-tighter truncate w-16 text-center">{color.name}</span>
                               </div>
-                            </div>
-
-                            {/* Linked Media */}
-                            <div className="flex items-center gap-4 flex-1 min-w-[200px]">
-                              <div className="relative w-12 h-12 rounded-lg bg-black/40 border border-white/5 overflow-hidden group/media shrink-0">
+                              
+                              <div className="relative w-20 h-20 rounded-2xl bg-black/40 border border-white/5 overflow-hidden group/media shadow-xl">
                                  {color.imageUrl ? (
                                    <>
                                      <Image src={color.imageUrl} alt="Variant" fill className="object-cover" />
@@ -289,57 +285,63 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                                        onClick={() => handleUpdateColorField(index, 'imageUrl', null)}
                                        className="absolute inset-0 bg-black/60 opacity-0 group-hover/media:opacity-100 transition-opacity flex items-center justify-center text-white"
                                      >
-                                       <X className="w-4 h-4" />
+                                       <X className="w-5 h-5" />
                                      </button>
                                    </>
                                  ) : (
-                                   <div className="w-full h-full flex items-center justify-center text-slate-700">
-                                      <Plus className="w-4 h-4" />
+                                   <div className="w-full h-full flex flex-col items-center justify-center gap-1 text-[8px] font-black text-slate-700 uppercase">
+                                      <Plus className="w-5 h-5" />
+                                      <span>Link</span>
                                    </div>
                                  )}
                               </div>
-                              <div className="flex-1">
-                                <label className="block text-[8px] font-black text-slate-600 uppercase tracking-widest mb-1">Visual Link</label>
-                                <select 
-                                   className="w-full bg-white/5 border border-white/5 rounded-lg px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-cyan-400 focus:ring-1 focus:ring-cyan-500/50 cursor-pointer outline-none"
-                                   value={color.imageUrl || ''}
-                                   onChange={(e) => handleUpdateColorField(index, 'imageUrl', e.target.value || null)}
-                                >
-                                   <option value="" className="bg-[#1a1d2d]">No Selection</option>
-                                   {formData.images?.map((img: string, i: number) => (
-                                     <option key={i} value={img} className="bg-[#1a1d2d]">Visual {i + 1}</option>
-                                   ))}
-                                </select>
-                              </div>
                             </div>
 
-                            {/* Stock Control */}
-                            <div className="w-40 shrink-0">
-                              <label className="block text-[8px] font-black text-slate-600 uppercase tracking-widest mb-1">Stock</label>
-                              <div className="flex items-center bg-white/5 border border-white/5 rounded-lg overflow-hidden focus-within:border-cyan-500/30">
-                                 <button 
-                                   type="button" 
-                                   onClick={() => handleUpdateColorField(index, 'stock', Math.max(0, (color.stock || 0) - 1))}
-                                   className="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/5 transition-all text-sm font-bold"
-                                 >-</button>
-                                 <input 
-                                   type="number"
-                                   value={color.stock || 0}
-                                   onChange={(e) => handleUpdateColorField(index, 'stock', Number(e.target.value))}
-                                   className="w-full bg-transparent border-none text-center text-xs font-black text-white focus:ring-0 p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                 />
-                                 <button 
-                                   type="button" 
-                                   onClick={() => handleUpdateColorField(index, 'stock', (color.stock || 0) + 1)}
-                                   className="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/5 transition-all text-sm font-bold"
-                                 >+</button>
-                              </div>
+                            {/* Controls Section - Stacked Vertically to prevent overflow */}
+                            <div className="flex-1 space-y-4">
+                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                  <div className="space-y-2">
+                                     <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Visual Link</label>
+                                     <select 
+                                        className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-cyan-400 focus:ring-1 focus:ring-cyan-500/50 cursor-pointer outline-none transition-all"
+                                        value={color.imageUrl || ''}
+                                        onChange={(e) => handleUpdateColorField(index, 'imageUrl', e.target.value || null)}
+                                     >
+                                        <option value="" className="bg-[#1a1d2d]">No Selection</option>
+                                        {formData.images?.map((img: string, i: number) => (
+                                          <option key={i} value={img} className="bg-[#1a1d2d]">Visual Node {i + 1}</option>
+                                        ))}
+                                     </select>
+                                  </div>
+
+                                  <div className="space-y-2">
+                                     <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Inventory (Stock)</label>
+                                     <div className="flex items-center bg-white/5 border border-white/5 rounded-xl overflow-hidden focus-within:border-cyan-500/30 transition-all">
+                                        <button 
+                                          type="button" 
+                                          onClick={() => handleUpdateColorField(index, 'stock', Math.max(0, (color.stock || 0) - 1))}
+                                          className="w-12 h-10 flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/5 transition-all text-sm font-bold"
+                                        >-</button>
+                                        <input 
+                                          type="number"
+                                          value={color.stock || 0}
+                                          onChange={(e) => handleUpdateColorField(index, 'stock', Number(e.target.value))}
+                                          className="w-full bg-transparent border-none text-center text-sm font-black text-white focus:ring-0 p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        />
+                                        <button 
+                                          type="button" 
+                                          onClick={() => handleUpdateColorField(index, 'stock', (color.stock || 0) + 1)}
+                                          className="w-12 h-10 flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/5 transition-all text-sm font-bold"
+                                        >+</button>
+                                     </div>
+                                  </div>
+                               </div>
                             </div>
 
                             {/* Delete Action */}
                             <div className="shrink-0">
-                              <button type="button" onClick={() => handleRemoveColor(index)} className="w-10 h-10 rounded-xl bg-rose-500/5 text-rose-500/40 hover:text-rose-500 hover:bg-rose-500/10 transition-all flex items-center justify-center border border-transparent hover:border-rose-500/20">
-                                <Trash2 className="w-4 h-4" />
+                              <button type="button" onClick={() => handleRemoveColor(index)} className="w-12 h-12 rounded-2xl bg-rose-500/5 text-rose-500/40 hover:text-rose-500 hover:bg-rose-500/10 transition-all flex items-center justify-center border border-transparent hover:border-rose-500/20 group-hover/row:scale-110">
+                                <Trash2 className="w-5 h-5" />
                               </button>
                             </div>
                           </div>
