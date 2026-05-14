@@ -5,7 +5,7 @@ import SmartImage from "@/components/ui/SmartImage";
 import { Product } from "@/lib/types";
 import { useCartStore } from "@/store/cart";
 import { cn } from "@/lib/utils";
-import { Check, ShoppingBag, ArrowRight, Shield, RefreshCcw, Truck } from "lucide-react";
+import { Check, ShoppingBag, ArrowRight, Shield, RefreshCcw, Truck, Minus, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 import { trackViewContent, trackAddToCart } from "@/lib/tracking";
@@ -21,6 +21,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
   const [selectedSize, setSelectedSize] = useState(product.sizes[0] || "");
   const [selectedColor, setSelectedColor] = useState<any>(productColors[0] || null);
   const [isAdding, setIsAdding] = useState(false);
+  const [quantity, setQuantity] = useState(1);
   
   const selectedColorStock = selectedColor?.stock ?? product.stock_quantity;
   const isOutOfStock = selectedColorStock <= 0;
@@ -39,32 +40,41 @@ export default function ProductDetailClient({ product, store }: { product: Produ
     }
   }, [selectedColor]);
 
+  // Reset quantity if it exceeds new color's stock
+  useEffect(() => {
+    if (quantity > selectedColorStock) {
+      setQuantity(Math.max(1, selectedColorStock));
+    }
+  }, [selectedColor, selectedColorStock]);
+
   const handleAddToCart = () => {
+    if (quantity > selectedColorStock) return;
     setIsAdding(true);
     addItem({
       id: `${product.storeId}-${product.id}-${selectedSize}-${selectedColor?.name || selectedColor?.value || 'default'}`,
       storeId: product.storeId,
       product,
-      quantity: 1,
+      quantity,
       selectedSize,
       selectedColor: selectedColor?.name || selectedColor?.value || 'default',
       selectedImage
     });
-    trackAddToCart(product, 1, store);
+    trackAddToCart(product, quantity, store);
     recordCartAdd(store.slug, product.id);
   };
 
   const handleBuyNow = () => {
+    if (quantity > selectedColorStock) return;
     addItem({
       id: `${product.storeId}-${product.id}-${selectedSize}-${selectedColor?.name || selectedColor?.value || 'default'}`,
       storeId: product.storeId,
       product,
-      quantity: 1,
+      quantity,
       selectedSize,
       selectedColor: selectedColor?.name || selectedColor?.value || 'default',
       selectedImage
     });
-    trackAddToCart(product, 1, store);
+    trackAddToCart(product, quantity, store);
     recordCartAdd(store.slug, product.id);
     router.push(`/store/${store.slug}/checkout`);
   };
@@ -180,7 +190,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
           )}
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-12">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-10">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Size</h3>
             <button className="text-xs font-bold underline hover:text-blue-600 transition-colors">Size Guide</button>
@@ -203,21 +213,59 @@ export default function ProductDetailClient({ product, store }: { product: Produ
           </div>
         </motion.div>
 
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="mb-12">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Quantity</h3>
+            {selectedColor && (
+              <span className={cn(
+                "text-[10px] font-black uppercase tracking-widest",
+                selectedColorStock <= 0 ? "text-red-500" : selectedColorStock < 10 ? "text-amber-500" : "text-green-600"
+              )}>
+                {selectedColorStock <= 0 ? "Sold Out" : `${selectedColorStock} Units Available`}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center bg-slate-50 border-2 border-slate-100 rounded-2xl h-16 w-full sm:w-48 overflow-hidden group focus-within:border-slate-900 transition-all">
+            <button 
+              onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+              disabled={quantity <= 1 || isOutOfStock}
+              className="w-16 h-full flex items-center justify-center text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-all disabled:opacity-20"
+            >
+              <Minus className="h-5 w-5" />
+            </button>
+            <div className="flex-1 flex items-center justify-center font-black text-lg">
+              {quantity}
+            </div>
+            <button 
+              onClick={() => setQuantity(prev => Math.min(selectedColorStock, prev + 1))}
+              disabled={quantity >= selectedColorStock || isOutOfStock}
+              className="w-16 h-full flex items-center justify-center text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-all disabled:opacity-20"
+            >
+              <Plus className="h-5 w-5" />
+            </button>
+          </div>
+          {quantity >= selectedColorStock && selectedColorStock > 0 && (
+            <p className="mt-3 text-[10px] font-bold text-amber-600 uppercase tracking-widest animate-pulse">
+              Maximum available stock reached
+            </p>
+          )}
+        </motion.div>
+
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
           {isAdding ? (
             <Link 
               href={`/store/${store.slug}/cart`}
-              className="w-full bg-green-600 hover:bg-green-700 text-white h-16 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all shadow-xl shadow-green-600/20"
+              className="w-full bg-green-600 hover:bg-green-700 text-white h-20 rounded-[1.5rem] font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all shadow-xl shadow-green-600/20"
             >
               <Check className="h-5 w-5" /> Added! View Cart <ArrowRight className="h-5 w-5" />
             </Link>
           ) : (
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <button 
                 onClick={handleAddToCart}
                 disabled={isOutOfStock}
                 className={cn(
-                  "flex-1 h-16 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all",
+                  "flex-1 h-20 rounded-[1.5rem] font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all",
                   isOutOfStock 
                     ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed" 
                     : "bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-900 hover:scale-[1.02] active:scale-[0.98]"
@@ -229,7 +277,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
                 onClick={handleBuyNow}
                 disabled={isOutOfStock}
                 className={cn(
-                  "flex-1 h-16 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all active:scale-[0.98] shadow-2xl",
+                  "flex-1 h-20 rounded-[1.5rem] font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all active:scale-[0.98] shadow-2xl",
                   isOutOfStock
                     ? "bg-slate-200 text-slate-400 cursor-not-allowed shadow-none"
                     : "bg-slate-900 hover:bg-black text-white hover:scale-[1.02] shadow-slate-900/20"

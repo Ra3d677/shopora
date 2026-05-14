@@ -16,6 +16,23 @@ export async function createOrder(data: {
   userId?: string;
 }) {
   try {
+    // 0. Preliminary Stock Check
+    for (const item of data.items) {
+      const product = await prisma.product.findUnique({ where: { id: item.productId || item.product.id } });
+      if (!product) throw new Error(`Product ${item.product.name} no longer exists.`);
+      
+      const colors = typeof product.colors === 'string' ? JSON.parse(product.colors || '[]') : (product.colors || []);
+      const colorObj = colors.find((c: any) => (c.name === item.selectedColor || c.value === item.selectedColor));
+      const currentStock = colorObj?.stock ?? product.stock_quantity;
+      
+      if (currentStock < item.quantity) {
+        return { 
+          success: false, 
+          error: `Sorry, only ${currentStock} units of ${product.name} (${item.selectedColor}) are left in stock.` 
+        };
+      }
+    }
+
     const order = await prisma.order.create({
       data: {
         storeId: data.storeId,

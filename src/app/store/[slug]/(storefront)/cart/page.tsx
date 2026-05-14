@@ -67,11 +67,37 @@ export default function CartPage() {
                         </div>
                         <span className="font-semibold text-lg">${(price * item.quantity).toFixed(2)}</span>
                       </div>
-                      <div className="flex justify-between items-end">
-                        <div className="flex items-center border border-white/10 rounded-lg h-10 w-32">
-                          <button className="flex-1 flex items-center justify-center hover:opacity-50" onClick={() => item.quantity > 1 ? updateQuantity(item.id, item.quantity - 1) : removeItem(item.id)}><Minus className="h-4 w-4" /></button>
-                          <span className="flex-1 flex items-center justify-center font-medium text-sm">{item.quantity}</span>
-                          <button className="flex-1 flex items-center justify-center hover:opacity-50" onClick={() => updateQuantity(item.id, item.quantity + 1)}><Plus className="h-4 w-4" /></button>
+                       <div className="flex justify-between items-end">
+                        <div className="space-y-2">
+                          <div className="flex items-center border border-white/10 rounded-lg h-10 w-32">
+                            <button className="flex-1 flex items-center justify-center hover:opacity-50" onClick={() => item.quantity > 1 ? updateQuantity(item.id, item.quantity - 1) : removeItem(item.id)}><Minus className="h-4 w-4" /></button>
+                            <span className="flex-1 flex items-center justify-center font-medium text-sm">{item.quantity}</span>
+                            <button 
+                              className="flex-1 flex items-center justify-center hover:opacity-50 disabled:opacity-20" 
+                              onClick={() => {
+                                const colors = Array.isArray(latestProduct.colors) ? latestProduct.colors : JSON.parse(latestProduct.colors || '[]');
+                                const colorObj = colors.find((c: any) => (c.name === item.selectedColor || c.value === item.selectedColor));
+                                const stock = colorObj?.stock ?? latestProduct.stock_quantity;
+                                if (item.quantity < stock) {
+                                  updateQuantity(item.id, item.quantity + 1);
+                                }
+                              }}
+                              disabled={(() => {
+                                const colors = Array.isArray(latestProduct.colors) ? latestProduct.colors : JSON.parse(latestProduct.colors || '[]');
+                                const colorObj = colors.find((c: any) => (c.name === item.selectedColor || c.value === item.selectedColor));
+                                const stock = colorObj?.stock ?? latestProduct.stock_quantity;
+                                return item.quantity >= stock;
+                              })()}
+                            ><Plus className="h-4 w-4" /></button>
+                          </div>
+                          {(() => {
+                            const colors = Array.isArray(latestProduct.colors) ? latestProduct.colors : JSON.parse(latestProduct.colors || '[]');
+                            const colorObj = colors.find((c: any) => (c.name === item.selectedColor || c.value === item.selectedColor));
+                            const stock = colorObj?.stock ?? latestProduct.stock_quantity;
+                            return item.quantity >= stock && (
+                              <p className="text-[10px] text-amber-500 font-bold uppercase tracking-widest">Max stock reached</p>
+                            );
+                          })()}
                         </div>
                         <button onClick={() => removeItem(item.id)} className="text-sm opacity-50 hover:text-red-500 transition-colors flex items-center gap-1"><Trash2 className="h-4 w-4" /> Remove</button>
                       </div>
