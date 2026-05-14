@@ -209,7 +209,7 @@ export default function OrdersManager({ initialOrders, slug }: { initialOrders: 
                     <div className="space-y-4">
                       {(selectedOrder.items || []).map((item: any, idx: number) => {
                         const productImages = item.product.images ? (typeof item.product.images === 'string' ? JSON.parse(item.product.images) : item.product.images) : [];
-                        const imageUrl = productImages.length > 0 ? productImages[0] : '';
+                        const imageUrl = item.image || (productImages.length > 0 ? productImages[0] : '');
                         return (
                         <div key={idx} className="bg-white/[0.02] p-5 rounded-2xl border border-white/[0.05] flex items-center gap-5 group/item transition-all hover:bg-white/[0.04]">
                           <div className="w-20 h-20 bg-black/40 rounded-2xl overflow-hidden relative shrink-0 border border-white/5 shadow-2xl">

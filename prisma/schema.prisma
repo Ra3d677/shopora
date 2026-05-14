@@ -141,6 +141,7 @@ model OrderItem {
   price     Float // Price at the time of purchase
   size      String?
   color     String?
+  image     String?
 }
 
 model Visit {

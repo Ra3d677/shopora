@@ -18,7 +18,7 @@ Address: ${customer.address}
 Notes: ${customer.notes || 'None'}
 
 *Items:*
-${items.map((item: any) => `- ${item.quantity}x ${item.product.name} (${item.selectedSize}, ${item.selectedColor}) - $${(item.product.discount_price || item.product.price) * item.quantity}`).join('\n')}
+${items.map((item: any) => `- ${item.quantity}x ${item.product.name} (${item.selectedSize}, ${item.selectedColor}) - $${(item.product.discount_price || item.product.price) * item.quantity}${item.selectedImage ? `\n  Image: ${item.selectedImage}` : ''}`).join('\n')}
 
 *Total:* $${total.toFixed(2)}
     `.trim();

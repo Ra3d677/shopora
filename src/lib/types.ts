@@ -171,6 +171,7 @@ export interface CartItem {
   quantity: number;
   selectedSize: string;
   selectedColor: string;
+  selectedImage?: string;
 }
 
 export interface Order {

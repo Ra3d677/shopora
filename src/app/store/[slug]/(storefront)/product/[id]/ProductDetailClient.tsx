@@ -44,7 +44,8 @@ export default function ProductDetailClient({ product, store }: { product: Produ
       product,
       quantity: 1,
       selectedSize,
-      selectedColor: selectedColor?.name || selectedColor?.value || 'default'
+      selectedColor: selectedColor?.name || selectedColor?.value || 'default',
+      selectedImage
     });
     trackAddToCart(product, 1, store);
     recordCartAdd(store.slug, product.id);
@@ -57,7 +58,8 @@ export default function ProductDetailClient({ product, store }: { product: Produ
       product,
       quantity: 1,
       selectedSize,
-      selectedColor: selectedColor?.name || selectedColor?.value || 'default'
+      selectedColor: selectedColor?.name || selectedColor?.value || 'default',
+      selectedImage
     });
     trackAddToCart(product, 1, store);
     recordCartAdd(store.slug, product.id);

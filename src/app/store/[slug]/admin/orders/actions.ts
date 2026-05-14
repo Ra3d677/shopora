@@ -32,7 +32,8 @@ export async function createOrder(data: {
             quantity: item.quantity,
             price: item.product.discount_price || item.product.price,
             size: item.selectedSize,
-            color: item.selectedColor
+            color: item.selectedColor,
+            image: item.selectedImage
           }))
         },
         userId: data.userId

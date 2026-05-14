@@ -51,7 +51,7 @@ export default function CartPage() {
                 return (
                   <div key={item.id} className="flex gap-6 py-6 border-b border-white/10">
                     <Link href={`/store/${store.slug}/product/${latestProduct.id}`} className="relative h-32 w-24 rounded-lg overflow-hidden bg-white/5 flex-shrink-0">
-                      <Image src={latestProduct.images[0]} alt={latestProduct.name} fill className="object-cover" />
+                      <Image src={item.selectedImage || latestProduct.images[0]} alt={latestProduct.name} fill className="object-cover" />
                     </Link>
                     <div className="flex flex-col flex-grow justify-between py-1">
                       <div className="flex justify-between items-start">

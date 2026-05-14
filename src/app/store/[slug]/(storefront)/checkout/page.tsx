@@ -253,7 +253,7 @@ export default function CheckoutPage() {
                   return (
                     <div key={item.id} className="flex gap-6 group">
                       <div className="relative h-28 w-24 rounded-[1.5rem] overflow-hidden bg-white/5 flex-shrink-0 border border-white/10 shadow-sm">
-                        <Image src={latestProduct.images[0]} alt={latestProduct.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <Image src={item.selectedImage || latestProduct.images[0]} alt={latestProduct.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                         <div className="absolute -top-2 -right-2 bg-white text-black text-[10px] font-black h-8 w-8 flex items-center justify-center rounded-full shadow-2xl border-2 border-black">
                           {item.quantity}
                         </div>
