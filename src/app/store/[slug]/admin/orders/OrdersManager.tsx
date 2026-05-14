@@ -223,8 +223,21 @@ export default function OrdersManager({ initialOrders, slug }: { initialOrders: 
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-base font-black text-white italic truncate uppercase tracking-tight">{item.product.name}</p>
-                            <p className="text-[10px] font-black text-slate-500 mt-1 uppercase tracking-widest">
-                               Units: {item.quantity} × <span className="text-cyan-500">${item.price?.toFixed(2)}</span>
+                            <div className="flex items-center gap-3 mt-1.5">
+                               {item.size && (
+                                 <span className="text-[8px] font-black px-2 py-1 bg-white/5 border border-white/10 rounded-md text-slate-400 uppercase tracking-widest">
+                                   Size: {item.size}
+                                 </span>
+                               )}
+                               {item.color && (
+                                 <div className="flex items-center gap-1.5">
+                                   <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Color:</span>
+                                   <div className="w-3 h-3 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: item.color }} />
+                                 </div>
+                               )}
+                            </div>
+                            <p className="text-[10px] font-black text-cyan-500 mt-2 uppercase tracking-widest">
+                               Units: {item.quantity} × ${item.price?.toFixed(2)}
                             </p>
                           </div>
                           <div className="text-right">
@@ -233,6 +246,17 @@ export default function OrdersManager({ initialOrders, slug }: { initialOrders: 
                         </div>
                       )})}
                     </div>
+
+                    {selectedOrder.notes && (
+                      <div className="bg-amber-500/5 border border-amber-500/10 p-6 rounded-2xl space-y-3">
+                         <h4 className="text-[9px] font-black text-amber-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                           <FileText className="w-3 h-3" /> Customer Intelligence / Notes
+                         </h4>
+                         <p className="text-xs font-bold text-amber-200/60 leading-relaxed italic">
+                           "{selectedOrder.notes}"
+                         </p>
+                      </div>
+                    )}
                     
                     <div className="bg-gradient-to-r from-cyan-600 to-blue-700 p-8 rounded-3xl text-white flex justify-between items-center shadow-2xl shadow-cyan-500/20 relative overflow-hidden group/total">
                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent)] pointer-events-none"></div>
