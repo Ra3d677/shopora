@@ -17,9 +17,7 @@ export default function Footer() {
       >
         <div className="max-w-screen-2xl mx-auto flex flex-col lg:flex-row justify-between gap-20">
           <div className="max-w-sm">
-            {store.settings?.logoUrl ? (
-              <img src={store.settings.logoUrl} alt={store.name} className="h-10 w-auto object-contain mb-8 brightness-0 invert" />
-            ) : (
+            {store.name && (
               <h2 className="text-white text-2xl font-bold uppercase tracking-tighter mb-8">
                 <span className="gradient-text-support">{store.name}</span>
               </h2>
@@ -198,9 +196,7 @@ export default function Footer() {
       style={{ background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
     >
       <div className="max-w-screen-2xl mx-auto px-12 text-center">
-        {store.settings?.logoUrl ? (
-          <img src={store.settings.logoUrl} alt={store.name} className="h-20 mx-auto w-auto object-contain mb-16 brightness-0 invert opacity-80" />
-        ) : (
+        {store.name && (
           <h2 className="text-white text-5xl font-serif font-light tracking-[0.2em] uppercase mb-16">
             <span className="gradient-text-support">{store.name}</span>
           </h2>
