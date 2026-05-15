@@ -12,6 +12,7 @@ import PreviewWrapper from "@/components/editor/PreviewWrapper";
 import { getSession } from "@/lib/auth";
 import VisitorTracker from "@/components/layout/VisitorTracker";
 import PixelTracker from "@/components/layout/PixelTracker";
+import KineticBackground from "@/components/ui/premium/KineticBackground";
 import { Suspense } from "react";
 import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
 export const dynamic = 'force-dynamic';
@@ -125,6 +126,18 @@ export default async function StorefrontLayout({
     ...(isPremiumBg ? premiumStyle : {})
   } as React.CSSProperties;
 
+  // Inject exact colors for kinetic interactive backgrounds
+  ['home', 'shop', 'categories', 'product', 'cart', 'checkout', 'footer'].forEach(p => {
+    if (colorSystem.animatedBackgrounds?.[p]) {
+       const synthKey = `${p}-backgrounds`;
+       const state = storeSettings.colorSystem?.synthesisStates?.[synthKey];
+       if (state) {
+          (customStyles as any)[`--color-a-${p}`] = state.a;
+          (customStyles as any)[`--color-b-${p}`] = state.b;
+       }
+    }
+  });
+
   return (
     <div 
       className={`theme-${store.template} flex flex-col min-h-screen transition-all duration-700 ${isOwner ? 'pt-10' : ''}`} 
@@ -148,18 +161,12 @@ export default async function StorefrontLayout({
           color: var(--current-text) !important;
         }
 
-        @keyframes kineticGradient {
-          0% { background-position: 0% 0%; }
-          50% { background-position: 100% 100%; }
-          100% { background-position: 0% 0%; }
-        }
-
-        /* Animated Background Injection */
+        /* Animated Interactive Background Injection (Kinetic Spotlight) */
         ${['home', 'shop', 'categories', 'product', 'cart', 'checkout', 'footer'].map(p => 
           colorSystem.animatedBackgrounds?.[p] ? `
             body:has([data-page="${p}"]) .store-container, [data-page="${p}"] { 
-              background-size: 400% 400% !important; 
-              animation: kineticGradient 8s ease infinite !important; 
+              background: radial-gradient(circle 800px at var(--mouse-x, 50vw) var(--mouse-y, 50vh), var(--color-a-${p}, var(--current-bg)), var(--color-b-${p}, #000000)) !important;
+              background-attachment: fixed !important;
             }
           ` : ''
         ).join('')}
@@ -205,6 +212,7 @@ export default async function StorefrontLayout({
       `}} />
 
       {isSignature && <CustomCursor />}
+      <KineticBackground />
       <VisitorTracker slug={slug} />
       <Suspense fallback={null}>
         <PixelTracker 
