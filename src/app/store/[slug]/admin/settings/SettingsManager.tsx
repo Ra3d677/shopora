@@ -539,8 +539,8 @@ export default function SettingsManager({
 
                                 // Persist the synthesis state for this specific target
                                 const key = `${synthTarget.page}-${synthTarget.type}`;
-                                if (!newColorSystem.synthesisStates) newColorSystem.synthesisStates = {};
-                                newColorSystem.synthesisStates[key] = { a, b, dir };
+                                if (!(newColorSystem as any).synthesisStates) (newColorSystem as any).synthesisStates = {};
+                                (newColorSystem as any).synthesisStates[key] = { a, b, dir };
 
                                 if (synthTarget.type === 'salePrice' || synthTarget.type === 'price') {
                                    newColorSystem.product = {
