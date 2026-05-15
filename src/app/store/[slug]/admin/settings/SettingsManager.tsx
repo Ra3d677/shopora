@@ -40,6 +40,7 @@ export default function SettingsManager({
   const [gradA, setGradA] = useState('#0F172A');
   const [gradB, setGradB] = useState('#0A0C14');
   const [gradDir, setGradDir] = useState('to bottom');
+  const [isAnimated, setIsAnimated] = useState(false);
   const router = useRouter();
 
   // Sync synthesis inputs when target changes
@@ -53,6 +54,11 @@ export default function SettingsManager({
       setGradA(savedState.a);
       setGradB(savedState.b);
       setGradDir(savedState.dir);
+      if (synthTarget.type === 'backgrounds' && synthTarget.page !== 'all') {
+         setIsAnimated(!!settings.colorSystem.animatedBackgrounds?.[synthTarget.page]);
+      } else {
+         setIsAnimated(false);
+      }
     } else {
       // Fallback: try to get the solid color if it's not a gradient
       let currentColor = '';
@@ -530,19 +536,29 @@ export default function SettingsManager({
                            </div>
                         </div>
 
-                                                                        <div className="space-y-4">
-                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Target Stream</label>
-                           <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center px-2">
-                              <select 
-                                value={synthTarget.type}
-                                onChange={(e) => setSynthTarget({...synthTarget, type: e.target.value as any})}
-                                className="w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer"
-                              >
-                                 <option value="backgrounds" className="bg-slate-900">Atmosphere (BG)</option>
-                                 <option value="text" className="bg-slate-900">Frequency (Text)</option>
-                              </select>
-                           </div>
-                        </div>
+                         <div className="space-y-4">
+                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Target Stream</label>
+                            <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center px-2">
+                               <select 
+                                 value={synthTarget.type}
+                                 onChange={(e) => setSynthTarget({...synthTarget, type: e.target.value as any})}
+                                 className="w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer"
+                               >
+                                  <option value="backgrounds" className="bg-slate-900">Atmosphere (BG)</option>
+                                  <option value="text" className="bg-slate-900">Frequency (Text)</option>
+                               </select>
+                            </div>
+                         </div>
+
+                         <div className={`space-y-4 ${synthTarget.type !== 'backgrounds' ? 'opacity-50 pointer-events-none' : ''}`}>
+                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Kinetic Motion</label>
+                            <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center justify-between px-6 cursor-pointer hover:bg-white/[0.05] transition-all" onClick={() => setIsAnimated(!isAnimated)}>
+                               <span className="text-[11px] font-black uppercase text-white">Animated</span>
+                               <div className={`w-10 h-5 rounded-full relative transition-colors ${isAnimated ? 'bg-cyan-500' : 'bg-white/10'}`}>
+                                  <div className={`absolute top-1 left-1 w-3 h-3 rounded-full bg-white transition-transform ${isAnimated ? 'translate-x-5' : ''}`}></div>
+                               </div>
+                            </div>
+                         </div>
 
                         <div className="flex items-end">
                           <button 
@@ -557,17 +573,24 @@ export default function SettingsManager({
 
                                 // Persist the synthesis state
                                 if (!(newColorSystem as any).synthesisStates) (newColorSystem as any).synthesisStates = {};
+                                if (!(newColorSystem as any).animatedBackgrounds) (newColorSystem as any).animatedBackgrounds = {};
                                 
                                 if (synthTarget.page === 'all') {
                                    const pages = ['home', 'shop', 'categories', 'product', 'cart', 'checkout'];
                                    pages.forEach(p => {
                                       (newColorSystem as any).synthesisStates[`${p}-${synthTarget.type}`] = { a, b, dir };
+                                      if (synthTarget.type === 'backgrounds') {
+                                         (newColorSystem as any).animatedBackgrounds[p] = isAnimated;
+                                      }
                                    });
                                    (newColorSystem as any).synthesisStates[`footer-${synthTarget.type}`] = { a, b, dir };
                                    (newColorSystem as any).synthesisStates[`all-${synthTarget.type}`] = { a, b, dir };
                                 } else {
                                    const key = `${synthTarget.page}-${synthTarget.type}`;
                                    (newColorSystem as any).synthesisStates[key] = { a, b, dir };
+                                   if (synthTarget.type === 'backgrounds') {
+                                      (newColorSystem as any).animatedBackgrounds[synthTarget.page] = isAnimated;
+                                   }
                                 }
 
                                 if (synthTarget.type === 'salePrice' || synthTarget.type === 'price') {
