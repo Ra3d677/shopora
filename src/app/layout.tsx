@@ -18,6 +18,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Multi-Store Platform",
   description: "A premium multi-store e-commerce platform",
+  icons: {
+    icon: "/_favicon.ico",
+  }
 };
 
 export default async function RootLayout({

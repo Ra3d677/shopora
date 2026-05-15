@@ -15,7 +15,8 @@ export async function generateMetadata({
 
   const storeSettings = (store.settings as any) || {};
   const version = store.updatedAt ? new Date(store.updatedAt).getTime() : Date.now();
-  const faviconWithVersion = storeSettings.faviconUrl ? `${storeSettings.faviconUrl}${storeSettings.faviconUrl.includes('?') ? '&' : '?'}v=${version}` : '/favicon.ico';
+  const faviconUrl = storeSettings.faviconUrl || '/_favicon.ico';
+  const faviconWithVersion = `${faviconUrl}${faviconUrl.includes('?') ? '&' : '?'}v=${version}`;
   
   return {
     title: {
@@ -25,14 +26,19 @@ export async function generateMetadata({
     description: storeSettings.description || `Welcome to ${store.name}`,
     icons: {
       icon: [
-        { url: faviconWithVersion },
-        { url: faviconWithVersion, sizes: '32x32', type: 'image/png' },
+        { url: faviconWithVersion, type: 'image/x-icon' },
+        { url: faviconWithVersion, type: 'image/png' },
       ],
-      shortcut: faviconWithVersion,
-      apple: faviconWithVersion,
+      shortcut: [faviconWithVersion],
+      apple: [
+        { url: faviconWithVersion, sizes: '180x180', type: 'image/png' },
+      ],
     }
   };
 }
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function TenantStoreLayout({
   children,
