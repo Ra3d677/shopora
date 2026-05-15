@@ -23,28 +23,6 @@ import { logoutUser } from "@/app/auth/actions";
 import SidebarNav from "./SidebarNav";
 import { AdminThemeProvider } from "./AdminThemeProvider";
 import AdminThemeToggle from "./AdminThemeToggle";
-import { Metadata } from "next";
-
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: Promise<{ slug: string }> 
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const store = await getStoreBySlug(slug);
-  if (!store) return {};
-
-  const storeSettings = (store.settings as any) || {};
-  
-  return {
-    title: `Admin | ${store.name}`,
-    icons: {
-      icon: storeSettings.faviconUrl || '/favicon.ico',
-      apple: storeSettings.faviconUrl || '/favicon.ico',
-    }
-  };
-}
-
 export default async function AdminLayout({
   children,
   params
