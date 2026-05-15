@@ -15,7 +15,7 @@ export async function generateMetadata({
 
   const storeSettings = (store.settings as any) || {};
   const version = store.updatedAt ? new Date(store.updatedAt).getTime() : Date.now();
-  const faviconUrl = storeSettings.faviconUrl || '/_favicon.ico';
+  const faviconUrl = storeSettings.faviconUrl || '/favicon.ico';
   const faviconWithVersion = `${faviconUrl}${faviconUrl.includes('?') ? '&' : '?'}v=${version}`;
   
   return {
