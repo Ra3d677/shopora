@@ -207,27 +207,50 @@ export default function MediaPicker({ value, onChange, slug, className }: MediaP
           <Library className="w-4 h-4 text-blue-600" /> Library
         </button>
 
-        <div className="relative group">
+        <div className="relative">
           <button 
             type="button"
-            className="bg-white text-slate-700 px-5 py-2.5 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-slate-50 transition-all border border-slate-200 shadow-sm"
+            onClick={() => setActiveTab(activeTab === 'url' ? 'upload' : 'url')}
+            className={cn(
+              "px-5 py-2.5 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-2 transition-all border shadow-sm",
+              activeTab === 'url' ? "bg-purple-600 text-white border-purple-600 shadow-purple-600/20" : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+            )}
           >
-            <LinkIcon className="w-4 h-4 text-purple-600" /> Image URL
+            <LinkIcon className={cn("w-4 h-4", activeTab === 'url' ? "text-white" : "text-purple-600")} /> Image URL
           </button>
           
           {/* URL Popover */}
-          <div className="absolute left-0 bottom-full mb-2 w-72 bg-white rounded-2xl shadow-2xl border border-slate-100 p-4 opacity-0 scale-95 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all z-20">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Paste Image URL</label>
-            <div className="flex gap-2">
-              <input 
-                type="text" 
-                value={value} 
-                onChange={e => onChange(e.target.value)} 
-                placeholder="https://example.com/image.jpg"
-                className="flex-1 px-3 py-2 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-xs"
-              />
+          {activeTab === 'url' && (
+            <div className="absolute left-0 bottom-full mb-4 w-80 bg-white rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-slate-100 p-6 z-30 animate-in slide-in-from-bottom-2 duration-300">
+              <div className="flex justify-between items-center mb-4">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">External Asset Link</label>
+                <button onClick={() => setActiveTab('upload')} className="text-slate-400 hover:text-slate-600">
+                  <X size={14} />
+                </button>
+              </div>
+              <div className="space-y-4">
+                <div className="relative">
+                  <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <input 
+                    type="text" 
+                    value={value} 
+                    onChange={e => onChange(e.target.value)} 
+                    placeholder="https://images.unsplash.com/..."
+                    className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:ring-2 focus:ring-purple-500 text-xs font-medium"
+                    autoFocus
+                  />
+                </div>
+                <button 
+                  type="button"
+                  onClick={() => setActiveTab('upload')}
+                  className="w-full py-3 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all"
+                >
+                  Set URL Resource
+                </button>
+              </div>
+              <div className="absolute -bottom-2 left-6 w-4 h-4 bg-white border-b border-r border-slate-100 rotate-45"></div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 

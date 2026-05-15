@@ -134,18 +134,30 @@ export default function SettingsManager({
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Market Name</label>
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Market Identity (Title)</label>
                       <input 
                         type="text" 
                         value={settings.storeName} 
                         onChange={e => updateSettings({...settings, storeName: e.target.value})} 
                         className="w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black uppercase tracking-tight italic" 
-                        placeholder="Enter Identifier"
+                        placeholder="Enter Store Name"
                       />
                     </div>
+                    
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Signature Logo</label>
-                      <div className="bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] p-4">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">SEO Signal (Description)</label>
+                      <input 
+                        type="text" 
+                        value={settings.description || ''} 
+                        onChange={e => updateSettings({...settings, description: e.target.value})} 
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-bold text-xs" 
+                        placeholder="Premium e-commerce experience..."
+                      />
+                    </div>
+
+                    <div className="space-y-4">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Signature Logo (Header)</label>
+                      <div className="bg-white/[0.03] border border-white/[0.05] rounded-[2rem] p-6">
                         <MediaPicker 
                           slug={slug}
                           value={settings.logoUrl || ''} 
@@ -156,8 +168,8 @@ export default function SettingsManager({
                     </div>
 
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Browser Icon (Favicon)</label>
-                      <div className="bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] p-4">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Browser Node (Favicon)</label>
+                      <div className="bg-white/[0.03] border border-white/[0.05] rounded-[2rem] p-6">
                         <MediaPicker 
                           slug={slug}
                           value={settings.faviconUrl || ''} 
@@ -165,13 +177,16 @@ export default function SettingsManager({
                           className="bg-transparent"
                         />
                       </div>
-                      <p className="text-[9px] text-slate-500 px-4">Recommended: 32x32px or 64x64px PNG/ICO</p>
+                      <div className="flex items-center gap-3 px-4">
+                        <div className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse"></div>
+                        <p className="text-[9px] text-slate-500 font-medium tracking-wide">Global standard: 32x32px or 64x64px Resource.</p>
+                      </div>
                     </div>
 
                     <div className="lg:col-span-2 bg-white/[0.02] p-8 rounded-[2rem] border border-white/[0.03] flex flex-col md:flex-row gap-10">
                       <div className="flex-1 space-y-6">
                         <div className="flex justify-between items-center px-2">
-                          <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Vertical Scale</h4>
+                          <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Header Logo Scale</h4>
                           <span className="text-[10px] font-black text-cyan-400 bg-cyan-500/10 px-4 py-1.5 rounded-full border border-cyan-500/20">{settings.headerSettings?.logoHeight || 40}PX</span>
                         </div>
                         <input 
@@ -189,8 +204,8 @@ export default function SettingsManager({
 
                       <div className="flex-1 flex items-center justify-between">
                         <div>
-                          <h4 className="text-[10px] font-black text-white uppercase tracking-[0.2em]">Alpha Blend Mode</h4>
-                          <p className="text-[9px] text-slate-500 mt-2 font-medium tracking-wide">Sync logo transparency with header matrix.</p>
+                          <h4 className="text-[10px] font-black text-white uppercase tracking-[0.2em]">Alpha Synthesis</h4>
+                          <p className="text-[9px] text-slate-500 mt-2 font-medium tracking-wide">Remove background from header logo resource.</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input 

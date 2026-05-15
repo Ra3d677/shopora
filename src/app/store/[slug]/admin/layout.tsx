@@ -106,17 +106,25 @@ export default async function AdminLayout({
           
           <div className="p-6" style={{ borderBottom: '1px solid var(--admin-border)' }}>
             <div className="flex items-center gap-3 group/logo">
-              <div className="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.3)] group-hover/logo:rotate-12 transition-transform duration-500">
-                <ShoppingBag className="w-4.5 h-4.5 text-white" />
+              <div className="w-10 h-10 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.1)] group-hover/logo:rotate-12 transition-all duration-500 overflow-hidden border border-white/5">
+                {((store.settings as any)?.faviconUrl || (store.settings as any)?.logoUrl) ? (
+                  <img 
+                    src={(store.settings as any).faviconUrl || (store.settings as any).logoUrl} 
+                    alt={store.name} 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <ShoppingBag className="w-5 h-5 text-cyan-400" />
+                )}
               </div>
-              <div>
+              <div className="overflow-hidden">
                 <h1
-                  className="text-lg font-black italic tracking-tighter uppercase leading-none"
+                  className="text-lg font-black italic tracking-tighter uppercase leading-none truncate"
                   style={{ color: 'var(--admin-text-primary)' }}
                 >
-                  Shopora
+                  {store.name}
                 </h1>
-                <p className="text-[6px] font-black tracking-[0.4em] text-cyan-400 uppercase mt-1">Admin OS</p>
+                <p className="text-[6px] font-black tracking-[0.4em] text-cyan-400 uppercase mt-1">Terminal Active</p>
               </div>
             </div>
           </div>
