@@ -552,11 +552,21 @@ export default function SettingsManager({
 
                          <div className={`space-y-4 ${synthTarget.type !== 'backgrounds' ? 'opacity-50 pointer-events-none' : ''}`}>
                             <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Kinetic Motion</label>
-                            <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center justify-between px-6 cursor-pointer hover:bg-white/[0.05] transition-all" onClick={() => setIsAnimated(!isAnimated)}>
-                               <span className="text-[11px] font-black uppercase text-white">Animated</span>
-                               <div className={`w-10 h-5 rounded-full relative transition-colors ${isAnimated ? 'bg-cyan-500' : 'bg-white/10'}`}>
-                                  <div className={`absolute top-1 left-1 w-3 h-3 rounded-full bg-white transition-transform ${isAnimated ? 'translate-x-5' : ''}`}></div>
-                               </div>
+                            <div className="flex bg-black/60 rounded-[1.5rem] border border-white/[0.1] p-2 h-20">
+                               <button 
+                                 type="button" 
+                                 onClick={() => setIsAnimated(false)}
+                                 className={`flex-1 rounded-[1rem] text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${!isAnimated ? 'bg-white text-black shadow-lg scale-100' : 'text-slate-500 hover:text-white scale-95'}`}
+                               >
+                                  Static
+                               </button>
+                               <button 
+                                 type="button" 
+                                 onClick={() => setIsAnimated(true)}
+                                 className={`flex-1 rounded-[1rem] text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${isAnimated ? 'bg-cyan-500 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-100' : 'text-slate-500 hover:text-white scale-95'}`}
+                               >
+                                  Animated
+                               </button>
                             </div>
                          </div>
 

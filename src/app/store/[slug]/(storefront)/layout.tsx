@@ -147,6 +147,22 @@ export default async function StorefrontLayout({
           color: var(--current-text) !important;
         }
 
+        @keyframes kineticGradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        /* Animated Background Injection */
+        ${['home', 'shop', 'categories', 'product', 'cart', 'checkout', 'footer'].map(p => 
+          colorSystem.animatedBackgrounds?.[p] ? `
+            body:has([data-page="${p}"]) .store-container, [data-page="${p}"] { 
+              background-size: 400% 400% !important; 
+              animation: kineticGradient 15s ease infinite !important; 
+            }
+          ` : ''
+        ).join('')}
+
         /* Force children to respect the synthesized text color unless they are specific links/buttons */
         .store-container h1, 
         .store-container h2, 
