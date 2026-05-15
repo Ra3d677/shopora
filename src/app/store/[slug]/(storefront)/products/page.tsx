@@ -6,6 +6,8 @@ import SmartImage from "@/components/ui/SmartImage";
 import { notFound } from "next/navigation";
 import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
 
+import StorefrontFilterSidebar from "@/components/ui/premium/StorefrontFilterSidebar";
+
 export const dynamic = 'force-dynamic';
 
 export default async function ProductsPage({ 
@@ -13,7 +15,7 @@ export default async function ProductsPage({
   searchParams 
 }: { 
   params: { slug: string },
-  searchParams: Promise<{ category?: string, sort?: string }> 
+  searchParams: Promise<{ category?: string, sort?: string, min?: string, max?: string, colors?: string }> 
 }) {
   const { slug } = await params;
   const { category, sort } = await searchParams;
@@ -55,6 +57,36 @@ export default async function ProductsPage({
     }
   }
 
+  // Calculate available colors and max price for the sidebar based on category-filtered products
+  const availableColorsMap = new Map<string, string>();
+  let maxPossiblePrice = 0;
+
+  displayedProducts.forEach(p => {
+    const price = p.discount_price || p.price;
+    if (price > maxPossiblePrice) maxPossiblePrice = price;
+    
+    p.colors?.forEach((c: any) => {
+      if (c.name && c.value) availableColorsMap.set(c.name, c.value);
+    });
+  });
+
+  const availableColors = Array.from(availableColorsMap.entries()).map(([name, value]) => ({ name, value }));
+  maxPossiblePrice = Math.ceil(maxPossiblePrice / 100) * 100;
+  if (maxPossiblePrice === 0) maxPossiblePrice = 1000;
+
+  // Apply Price & Color Filters
+  const { min, max, colors } = await searchParams;
+  
+  if (min) displayedProducts = displayedProducts.filter(p => (p.discount_price || p.price) >= Number(min));
+  if (max) displayedProducts = displayedProducts.filter(p => (p.discount_price || p.price) <= Number(max));
+  if (colors) {
+    const selectedColors = colors.split(',');
+    displayedProducts = displayedProducts.filter(p => {
+       const pColors = p.colors?.map((c: any) => c.name) || [];
+       return pColors.some((c: string) => selectedColors.includes(c));
+    });
+  }
+
   // Apply Sorting
   if (sort) {
     if (sort === 'price_asc') {
@@ -76,6 +108,8 @@ export default async function ProductsPage({
         category={category} 
         pageTitle={pageTitle} 
         pageDescription={pageDescription} 
+        availableColors={availableColors}
+        maxPossiblePrice={maxPossiblePrice}
       />
     );
   }
@@ -101,45 +135,29 @@ export default async function ProductsPage({
         <p className="text-muted-foreground text-lg max-w-2xl">{pageDescription}</p>
       </div>
 
-      {/* Filters bar */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 pb-6 border-b border-border gap-4">
-        <div className="flex flex-col gap-4 w-full">
-          <div className="flex gap-2 overflow-x-auto pb-2 w-full hide-scrollbar">
-            <Link href={`/store/${slug}/products`} className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${!category ? 'bg-slate-950 text-white shadow-md' : 'border border-border text-foreground hover:border-slate-400'}`}>All</Link>
-            {store.categories.filter(c => !c.parentId).map((cat: any) => (
-              <Link 
-                key={cat.id}
-                href={`/store/${slug}/products?category=${cat.id}`} 
-                className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${category === cat.id || store.categories.find(c => c.id === category)?.parentId === cat.id ? 'bg-slate-950 text-white shadow-md' : 'border border-border text-foreground hover:border-slate-400'}`}
-              >
-                {cat.name}
-              </Link>
-            ))}
-            <Link href={`/store/${slug}/products?category=sale`} className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${category === 'sale' ? 'bg-red-500 text-white shadow-md' : 'border border-border text-red-500 hover:border-red-500'}`}>Sale</Link>
-          </div>
+      <div className="flex flex-col lg:flex-row gap-12 items-start relative w-full">
+        {/* World-Class Filter Sidebar */}
+        <StorefrontFilterSidebar 
+          categories={store.categories}
+          availableColors={availableColors}
+          maxPossiblePrice={maxPossiblePrice}
+        />
 
-          {category && store.categories.some(c => c.parentId === category || (store.categories.find(curr => curr.id === category)?.parentId === c.parentId && c.parentId)) && (
-            <div className="flex gap-2 overflow-x-auto pb-2 w-full hide-scrollbar border-t border-slate-100 pt-4">
-              {(store.categories.find(c => c.id === category)?.parentId 
-                ? store.categories.filter(c => c.parentId === store.categories.find(curr => curr.id === category)?.parentId)
-                : store.categories.filter(c => c.parentId === category)
-              ).map((sub: any) => (
-                <Link 
-                  key={sub.id}
-                  href={`/store/${slug}/products?category=${sub.id}`} 
-                  className={`px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-full whitespace-nowrap transition-all ${category === sub.id ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
-                >
-                  {sub.name}
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <span className="text-sm text-muted-foreground font-medium">Sort by:</span>
-          <SortDropdown />
-        </div>
-      </div>
+        {/* Main Product Area */}
+        <div className="flex-1 w-full">
+           <div className="flex justify-between items-center mb-8 border-b border-border/50 pb-6 hidden lg:flex">
+              <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{displayedProducts.length} Items</span>
+              <div className="flex items-center gap-4">
+                 <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Sort by</span>
+                 <SortDropdown />
+              </div>
+           </div>
+
+           {/* Mobile Sort (Visible only on small screens when Sidebar is a drawer) */}
+           <div className="flex lg:hidden justify-between items-center mb-8 border-b border-border/50 pb-6 w-full">
+              <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{displayedProducts.length} Items</span>
+              <SortDropdown />
+           </div>
 
       {displayedProducts.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -195,11 +213,12 @@ export default async function ProductsPage({
         </div>
       )}
       </div>
+      </div>
     </div>
   );
 }
 
-function SennoProducts({ slug, store, products, category, pageTitle, pageDescription }: any) {
+function SennoProducts({ slug, store, products, category, pageTitle, pageDescription, availableColors, maxPossiblePrice }: any) {
   const pink = "#f06292";
 
   return (
@@ -217,31 +236,30 @@ function SennoProducts({ slug, store, products, category, pageTitle, pageDescrip
           </div>
        </div>
 
-       <div className="container mx-auto px-6 md:px-12 -mt-8">
-          {/* Filters */}
-          <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 p-8 mb-20 flex flex-col md:flex-row justify-between items-center gap-8 border border-slate-100">
-             <div className="flex gap-4 overflow-x-auto w-full md:w-auto scrollbar-hide pb-2 md:pb-0">
-                <Link 
-                  href={`/store/${slug}/products`} 
-                  className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${!category ? 'bg-[#f06292] text-white shadow-lg' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}
-                >
-                  All Items
-                </Link>
-                {store.categories.map((cat: any) => (
-                  <Link 
-                    key={cat.id}
-                    href={`/store/${slug}/products?category=${cat.id}`} 
-                    className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${category === cat.id ? 'bg-[#f06292] text-white shadow-lg' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}
-                  >
-                    {cat.name}
-                  </Link>
-                ))}
-             </div>
-             <div className="flex items-center gap-4 w-full md:w-auto">
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Sort by</span>
-                <SortDropdown />
-             </div>
-          </div>
+       <div className="container mx-auto px-6 md:px-12 -mt-8 relative z-10">
+          <div className="flex flex-col lg:flex-row gap-12 items-start w-full">
+            {/* World-Class Filter Sidebar */}
+            <StorefrontFilterSidebar 
+              categories={store.categories}
+              availableColors={availableColors}
+              maxPossiblePrice={maxPossiblePrice}
+            />
+
+            {/* Main Product Area */}
+            <div className="flex-1 w-full">
+               <div className="flex justify-between items-center mb-10 bg-white rounded-2xl shadow-xl shadow-slate-200/50 p-6 border border-slate-100 hidden lg:flex">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{products.length} Items</span>
+                  <div className="flex items-center gap-4">
+                     <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Sort by</span>
+                     <SortDropdown />
+                  </div>
+               </div>
+
+               {/* Mobile Sort */}
+               <div className="flex lg:hidden justify-between items-center mb-10 bg-white rounded-2xl shadow-xl shadow-slate-200/50 p-6 border border-slate-100 w-full">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{products.length} Items</span>
+                  <SortDropdown />
+               </div>
 
           {/* Grid */}
           {products.length === 0 ? (
@@ -288,7 +306,8 @@ function SennoProducts({ slug, store, products, category, pageTitle, pageDescrip
               ))}
             </div>
           )}
-       </div>
+        </div>
+      </div>
     </div>
   );
 }
