@@ -46,7 +46,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
   const isPremiumBg = currentThemeId !== 'default';
 
   return (
-    <div className={`min-h-screen pb-24 transition-colors duration-500`} style={isPremiumBg ? premiumStyle : { background: 'var(--color-bg-categories)', color: 'var(--color-text-primary)' }}>
+    <div data-page="categories" className={`min-h-screen pb-24 transition-colors duration-500`} style={isPremiumBg ? premiumStyle : { background: 'var(--color-bg-categories)', color: 'var(--color-text-primary)' }}>
       {/* Header / Banner */}
       {collectionsBanners.length > 0 ? (
         <HeroSlider 
@@ -179,7 +179,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
 
 function SennoCategories({ slug, collections, banners, settings }: any) {
   return (
-    <div className="min-h-screen bg-white pb-32">
+    <div data-page="categories" className="min-h-screen bg-white pb-32">
        {/* Header / Banner */}
        {banners && banners.length > 0 ? (
          <HeroSlider 
