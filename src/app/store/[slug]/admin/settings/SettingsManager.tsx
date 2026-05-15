@@ -155,6 +155,19 @@ export default function SettingsManager({
                       </div>
                     </div>
 
+                    <div className="space-y-4">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Browser Icon (Favicon)</label>
+                      <div className="bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] p-4">
+                        <MediaPicker 
+                          slug={slug}
+                          value={settings.faviconUrl || ''} 
+                          onChange={url => updateSettings({...settings, faviconUrl: url})} 
+                          className="bg-transparent"
+                        />
+                      </div>
+                      <p className="text-[9px] text-slate-500 px-4">Recommended: 32x32px or 64x64px PNG/ICO</p>
+                    </div>
+
                     <div className="lg:col-span-2 bg-white/[0.02] p-8 rounded-[2rem] border border-white/[0.03] flex flex-col md:flex-row gap-10">
                       <div className="flex-1 space-y-6">
                         <div className="flex justify-between items-center px-2">

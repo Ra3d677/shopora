@@ -56,6 +56,7 @@ export interface StoreSettings {
     speed: number;
   };
   logoUrl?: string;
+  faviconUrl?: string;
   contactInfo?: {
     phone: string;
     email: string;

@@ -14,6 +14,31 @@ import VisitorTracker from "@/components/layout/VisitorTracker";
 import PixelTracker from "@/components/layout/PixelTracker";
 import { Suspense } from "react";
 import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
+import { Metadata } from "next";
+
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const store = await getStoreBySlug(slug);
+  if (!store) return {};
+
+  const storeSettings = (store.settings as any) || {};
+  
+  return {
+    title: {
+      template: `%s | ${store.name}`,
+      default: store.name,
+    },
+    description: storeSettings.description || `Welcome to ${store.name}`,
+    icons: {
+      icon: storeSettings.faviconUrl || '/favicon.ico',
+      apple: storeSettings.faviconUrl || '/favicon.ico',
+    }
+  };
+}
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
