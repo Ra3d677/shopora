@@ -310,6 +310,7 @@ function SennoProducts({ slug, store, products, category, pageTitle, pageDescrip
         </div>
       </div>
     </div>
+    </div>
   );
 }
 
