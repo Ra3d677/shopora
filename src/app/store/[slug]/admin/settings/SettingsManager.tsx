@@ -44,15 +44,33 @@ export default function SettingsManager({
 
   // Sync synthesis inputs when target changes
   useEffect(() => {
-    if (!settings.colorSystem?.synthesisStates) return;
+    if (!settings.colorSystem) return;
+    
     const key = `${synthTarget.page}-${synthTarget.type}`;
-    const savedState = settings.colorSystem.synthesisStates[key];
+    const savedState = settings.colorSystem.synthesisStates?.[key];
+    
     if (savedState) {
       setGradA(savedState.a);
       setGradB(savedState.b);
       setGradDir(savedState.dir);
+    } else {
+      // Fallback: try to get the solid color if it's not a gradient
+      let currentColor = '';
+      if (synthTarget.type === 'salePrice' || synthTarget.type === 'price') {
+         currentColor = settings.colorSystem.product?.[synthTarget.type] || '';
+      } else if (synthTarget.page === 'footer') {
+         currentColor = settings.colorSystem.footer?.[synthTarget.type === 'backgrounds' ? 'background' : 'text'] || '';
+      } else if (synthTarget.page !== 'all') {
+         const targetSection = synthTarget.type as 'backgrounds' | 'text';
+         currentColor = (settings.colorSystem[targetSection] as any)?.[synthTarget.page] || '';
+      }
+      
+      if (currentColor && currentColor.startsWith('#')) {
+         setGradA(currentColor);
+         setGradB('#0A0C14');
+      }
     }
-  }, [synthTarget.page, synthTarget.type, settings.colorSystem?.synthesisStates]);
+  }, [synthTarget.page, synthTarget.type, settings.colorSystem]);
 
      const defaultColorSystem = {
       backgrounds: { 
@@ -537,10 +555,20 @@ export default function SettingsManager({
                                 
                                 let newColorSystem = { ...colorSystem };
 
-                                // Persist the synthesis state for this specific target
-                                const key = `${synthTarget.page}-${synthTarget.type}`;
+                                // Persist the synthesis state
                                 if (!(newColorSystem as any).synthesisStates) (newColorSystem as any).synthesisStates = {};
-                                (newColorSystem as any).synthesisStates[key] = { a, b, dir };
+                                
+                                if (synthTarget.page === 'all') {
+                                   const pages = ['home', 'shop', 'categories', 'product', 'cart', 'checkout'];
+                                   pages.forEach(p => {
+                                      (newColorSystem as any).synthesisStates[`${p}-${synthTarget.type}`] = { a, b, dir };
+                                   });
+                                   (newColorSystem as any).synthesisStates[`footer-${synthTarget.type}`] = { a, b, dir };
+                                   (newColorSystem as any).synthesisStates[`all-${synthTarget.type}`] = { a, b, dir };
+                                } else {
+                                   const key = `${synthTarget.page}-${synthTarget.type}`;
+                                   (newColorSystem as any).synthesisStates[key] = { a, b, dir };
+                                }
 
                                 if (synthTarget.type === 'salePrice' || synthTarget.type === 'price') {
                                    newColorSystem.product = {
