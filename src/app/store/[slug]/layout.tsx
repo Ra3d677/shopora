@@ -16,7 +16,10 @@ export async function generateMetadata({
   const storeSettings = (store.settings as any) || {};
   const version = store.updatedAt ? new Date(store.updatedAt).getTime() : Date.now();
   const faviconUrl = storeSettings.faviconUrl || '/favicon.ico';
-  const faviconWithVersion = `${faviconUrl}${faviconUrl.includes('?') ? '&' : '?'}v=${version}`;
+  // Root Cause Fix: Don't add versioning to base64 strings as it corrupts them
+  const faviconWithVersion = faviconUrl.startsWith('data:') 
+    ? faviconUrl 
+    : `${faviconUrl}${faviconUrl.includes('?') ? '&' : '?'}v=${version}`;
   
   return {
     title: {
