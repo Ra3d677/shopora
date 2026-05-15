@@ -55,7 +55,7 @@ export default function SettingsManager({
       setGradB(savedState.b);
       setGradDir(savedState.dir);
       if (synthTarget.type === 'backgrounds' && synthTarget.page !== 'all') {
-         setIsAnimated(!!settings.colorSystem.animatedBackgrounds?.[synthTarget.page]);
+         setIsAnimated(!!(settings.colorSystem as any).animatedBackgrounds?.[synthTarget.page]);
       } else {
          setIsAnimated(false);
       }
