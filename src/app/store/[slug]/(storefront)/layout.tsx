@@ -89,7 +89,8 @@ export default async function StorefrontLayout({
     brand: { primary: store.primaryColor, ...(rawColorSystem.brand || {}) },
     footer: { background: '#0f172a', text: '#ffffff', ...(rawColorSystem.footer || {}) },
     product: { price: '#0f172a', salePrice: '#ef4444', ...(rawColorSystem.product || {}) },
-    testimonial: { background: '#0f172a', text: '#ffffff', ...(rawColorSystem.testimonial || {}) }
+    testimonial: { background: '#0f172a', text: '#ffffff', ...(rawColorSystem.testimonial || {}) },
+    animatedBackgrounds: rawColorSystem.animatedBackgrounds || {}
   };
 
   // Determine current page type for specific styling
