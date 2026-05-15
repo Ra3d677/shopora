@@ -162,7 +162,7 @@ export default async function StorefrontLayout({
         }
 
         /* Animated Interactive Background Injection (Kinetic Spotlight) */
-        ${['home', 'shop', 'categories', 'product', 'cart', 'checkout', 'footer'].map(p => 
+        ${['home', 'shop', 'categories', 'product', 'cart', 'checkout'].map(p => 
           colorSystem.animatedBackgrounds?.[p] ? `
             body:has([data-page="${p}"]) .store-container, [data-page="${p}"] { 
               background: radial-gradient(circle 800px at var(--mouse-x, 50vw) var(--mouse-y, 50vh), var(--color-a-${p}, var(--current-bg)), var(--color-b-${p}, #000000)) !important;
@@ -170,6 +170,13 @@ export default async function StorefrontLayout({
             }
           ` : ''
         ).join('')}
+
+        ${colorSystem.animatedBackgrounds?.['footer'] ? `
+            [data-page="footer"] footer { 
+              background: radial-gradient(circle 800px at var(--mouse-x, 50vw) var(--mouse-y, 50vh), var(--color-a-footer, var(--color-footer-bg)), var(--color-b-footer, #000000)) !important;
+              background-attachment: fixed !important;
+            }
+        ` : ''}
 
         /* Force children to respect the synthesized text color unless they are specific links/buttons */
         .store-container h1, 
