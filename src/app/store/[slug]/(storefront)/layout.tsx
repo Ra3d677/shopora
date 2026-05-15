@@ -149,9 +149,9 @@ export default async function StorefrontLayout({
         }
 
         @keyframes kineticGradient {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+          0% { background-position: 0% 0%; }
+          50% { background-position: 100% 100%; }
+          100% { background-position: 0% 0%; }
         }
 
         /* Animated Background Injection */
@@ -159,7 +159,7 @@ export default async function StorefrontLayout({
           colorSystem.animatedBackgrounds?.[p] ? `
             body:has([data-page="${p}"]) .store-container, [data-page="${p}"] { 
               background-size: 400% 400% !important; 
-              animation: kineticGradient 15s ease infinite !important; 
+              animation: kineticGradient 8s ease infinite !important; 
             }
           ` : ''
         ).join('')}
