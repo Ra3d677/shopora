@@ -25,6 +25,13 @@ export interface StoreSettings {
       background: string;
       text: string;
     };
+    synthesisStates?: {
+      [key: string]: {
+        a: string;
+        b: string;
+        dir: string;
+      }
+    };
   };
   pageThemes?: {
     themeId: string;

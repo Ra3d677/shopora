@@ -37,7 +37,22 @@ export default function SettingsManager({
   const [activeTab, setActiveTab] = useState("general");
   const [linkInput, setLinkInput] = useState<{ [key: string]: string }>({});
   const [synthTarget, setSynthTarget] = useState<{page: string, type: 'backgrounds' | 'text' | 'salePrice' | 'price'}>({ page: 'home', type: 'backgrounds' });
+  const [gradA, setGradA] = useState('#0F172A');
+  const [gradB, setGradB] = useState('#0A0C14');
+  const [gradDir, setGradDir] = useState('to bottom');
   const router = useRouter();
+
+  // Sync synthesis inputs when target changes
+  useEffect(() => {
+    if (!settings.colorSystem?.synthesisStates) return;
+    const key = `${synthTarget.page}-${synthTarget.type}`;
+    const savedState = settings.colorSystem.synthesisStates[key];
+    if (savedState) {
+      setGradA(savedState.a);
+      setGradB(savedState.b);
+      setGradDir(savedState.dir);
+    }
+  }, [synthTarget.page, synthTarget.type, settings.colorSystem?.synthesisStates]);
 
      const defaultColorSystem = {
       backgrounds: { 
@@ -429,67 +444,53 @@ export default function SettingsManager({
                      </div>
 
                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 relative z-10">
-                        <div className="space-y-4">
-                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase A (Primary)</label>
-                           <div className="relative group/synthesis h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] hover:border-cyan-400/50 transition-all overflow-hidden flex items-center justify-center">
-                              <input 
-                                type="color" 
-                                defaultValue="#0F172A" 
-                                id="gradA" 
-                                className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" 
-                                onChange={(e) => {
-                                   const t = document.getElementById('gradTextA') as HTMLInputElement;
-                                   const p = document.getElementById('gradPreviewA') as HTMLDivElement;
-                                   if(t) t.value = e.target.value.toUpperCase();
-                                   if(p) p.style.backgroundColor = e.target.value;
-                                }}
-                              />
-                              <div id="gradPreviewA" className="absolute inset-0 z-10 opacity-30 group-hover/synthesis:opacity-50 transition-opacity" style={{backgroundColor: '#0F172A'}}></div>
-                              <input 
-                                type="text" 
-                                defaultValue="#0F172A" 
-                                id="gradTextA" 
-                                className="relative z-20 bg-transparent text-white font-mono text-sm uppercase outline-none font-black text-center w-full pointer-events-none" 
-                              />
-                           </div>
-                        </div>
+                         <div className="space-y-4">
+                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase A (Primary)</label>
+                            <div className="relative group/synthesis h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] hover:border-cyan-400/50 transition-all overflow-hidden flex items-center justify-center">
+                               <input 
+                                 type="color" 
+                                 value={gradA} 
+                                 className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" 
+                                 onChange={(e) => setGradA(e.target.value.toUpperCase())}
+                               />
+                               <div className="absolute inset-0 z-10 opacity-30 group-hover/synthesis:opacity-50 transition-opacity" style={{backgroundColor: gradA}}></div>
+                               <div className="relative z-20 text-white font-mono text-sm uppercase font-black text-center w-full pointer-events-none">
+                                  {gradA}
+                               </div>
+                            </div>
+                         </div>
 
-                        <div className="space-y-4">
-                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase B (Secondary)</label>
-                           <div className="relative group/synthesis h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] hover:border-pink-400/50 transition-all overflow-hidden flex items-center justify-center">
-                              <input 
-                                type="color" 
-                                defaultValue="#0A0C14" 
-                                id="gradB" 
-                                className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" 
-                                onChange={(e) => {
-                                   const t = document.getElementById('gradTextB') as HTMLInputElement;
-                                   const p = document.getElementById('gradPreviewB') as HTMLDivElement;
-                                   if(t) t.value = e.target.value.toUpperCase();
-                                   if(p) p.style.backgroundColor = e.target.value;
-                                }}
-                              />
-                              <div id="gradPreviewB" className="absolute inset-0 z-10 opacity-30 group-hover/synthesis:opacity-50 transition-opacity" style={{backgroundColor: '#0A0C14'}}></div>
-                              <input 
-                                type="text" 
-                                defaultValue="#0A0C14" 
-                                id="gradTextB" 
-                                className="relative z-20 bg-transparent text-white font-mono text-sm uppercase outline-none font-black text-center w-full pointer-events-none" 
-                              />
-                           </div>
-                        </div>
+                         <div className="space-y-4">
+                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase B (Secondary)</label>
+                            <div className="relative group/synthesis h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] hover:border-pink-400/50 transition-all overflow-hidden flex items-center justify-center">
+                               <input 
+                                 type="color" 
+                                 value={gradB} 
+                                 className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" 
+                                 onChange={(e) => setGradB(e.target.value.toUpperCase())}
+                               />
+                               <div className="absolute inset-0 z-10 opacity-30 group-hover/synthesis:opacity-50 transition-opacity" style={{backgroundColor: gradB}}></div>
+                               <div className="relative z-20 text-white font-mono text-sm uppercase font-black text-center w-full pointer-events-none">
+                                  {gradB}
+                               </div>
+                            </div>
+                         </div>
 
-                        <div className="space-y-4">
-                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Flow Pattern</label>
-                           <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center px-2">
-                              <select id="gradDir" className="w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer">
-                                 <option value="to bottom" className="bg-slate-900">Linear (Vertical)</option>
-                                 <option value="to right" className="bg-slate-900">Linear (Horizontal)</option>
-                                 <option value="to bottom right" className="bg-slate-900">Diagonal (Flow)</option>
-                                 <option value="radial-gradient(circle at center" className="bg-slate-900">Radial (Core)</option>
-                              </select>
-                           </div>
-                        </div>
+                         <div className="space-y-4">
+                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Flow Pattern</label>
+                            <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center px-2">
+                               <select 
+                                 value={gradDir} 
+                                 onChange={(e) => setGradDir(e.target.value)}
+                                 className="w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer"
+                               >
+                                  <option value="to bottom" className="bg-slate-900">Linear (Vertical)</option>
+                                  <option value="to right" className="bg-slate-900">Linear (Horizontal)</option>
+                                  <option value="to bottom right" className="bg-slate-900">Diagonal (Flow)</option>
+                                  <option value="radial-gradient(circle at center" className="bg-slate-900">Radial (Core)</option>
+                               </select>
+                            </div>
+                         </div>
 
                         <div className="space-y-4">
                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Injection Node</label>
@@ -528,13 +529,18 @@ export default function SettingsManager({
                         <div className="flex items-end">
                           <button 
                             type="button"
-                            onClick={() => {
-                               const a = (document.getElementById('gradA') as HTMLInputElement).value;
-                               const b = (document.getElementById('gradB') as HTMLInputElement).value;
-                               const dir = (document.getElementById('gradDir') as HTMLSelectElement).value;
-                               const grad = dir.includes('radial') ? `${dir}, ${a}, ${b})` : `linear-gradient(${dir}, ${a}, ${b})`;
-                               
-                                                               let newColorSystem = { ...colorSystem };
+                             onClick={() => {
+                                const a = gradA;
+                                const b = gradB;
+                                const dir = gradDir;
+                                const grad = dir.includes('radial') ? `${dir}, ${a}, ${b})` : `linear-gradient(${dir}, ${a}, ${b})`;
+                                
+                                let newColorSystem = { ...colorSystem };
+
+                                // Persist the synthesis state for this specific target
+                                const key = `${synthTarget.page}-${synthTarget.type}`;
+                                if (!newColorSystem.synthesisStates) newColorSystem.synthesisStates = {};
+                                newColorSystem.synthesisStates[key] = { a, b, dir };
 
                                 if (synthTarget.type === 'salePrice' || synthTarget.type === 'price') {
                                    newColorSystem.product = {
@@ -542,37 +548,37 @@ export default function SettingsManager({
                                       [synthTarget.type]: grad
                                    };
                                 } else if (synthTarget.page === 'all') {
-                                  // Apply to everything
-                                  if (synthTarget.type === 'backgrounds') {
-                                     newColorSystem.backgrounds = {
-                                        home: grad, shop: grad, categories: grad, product: grad, cart: grad, checkout: grad
-                                     };
-                                     newColorSystem.footer = { ...newColorSystem.footer, background: grad };
-                                  } else {
-                                     newColorSystem.text = {
-                                        ...newColorSystem.text,
-                                        home: grad, shop: grad, categories: grad, product: grad, cart: grad, checkout: grad
-                                     };
-                                     newColorSystem.footer = { ...newColorSystem.footer, text: grad };
-                                  }
-                               } else if (synthTarget.page === 'footer') {
-                                  newColorSystem.footer = { 
-                                    ...newColorSystem.footer, 
-                                    [synthTarget.type === 'backgrounds' ? 'background' : 'text']: grad 
-                                  };
-                               } else {
-                                  const targetSection = synthTarget.type as 'backgrounds' | 'text';
-                                  newColorSystem[targetSection] = {
-                                    ...(newColorSystem[targetSection] as any),
-                                    [synthTarget.page]: grad
-                                  };
-                               }
+                                   // Apply to everything
+                                   if (synthTarget.type === 'backgrounds') {
+                                      newColorSystem.backgrounds = {
+                                         home: grad, shop: grad, categories: grad, product: grad, cart: grad, checkout: grad
+                                      };
+                                      newColorSystem.footer = { ...newColorSystem.footer, background: grad };
+                                   } else {
+                                      newColorSystem.text = {
+                                         ...newColorSystem.text,
+                                         home: grad, shop: grad, categories: grad, product: grad, cart: grad, checkout: grad
+                                      };
+                                      newColorSystem.footer = { ...newColorSystem.footer, text: grad };
+                                   }
+                                } else if (synthTarget.page === 'footer') {
+                                   newColorSystem.footer = { 
+                                     ...newColorSystem.footer, 
+                                     [synthTarget.type === 'backgrounds' ? 'background' : 'text']: grad 
+                                   };
+                                } else {
+                                   const targetSection = synthTarget.type as 'backgrounds' | 'text';
+                                   newColorSystem[targetSection] = {
+                                     ...(newColorSystem[targetSection] as any),
+                                     [synthTarget.page]: grad
+                                   };
+                                }
 
-                               updateSettings({
-                                 ...settings, 
-                                 colorSystem: newColorSystem
-                               });
-                            }}
+                                updateSettings({
+                                  ...settings, 
+                                  colorSystem: newColorSystem
+                                });
+                             }}
                                                          className="w-full h-20 bg-white text-black rounded-[1.5rem] font-black uppercase tracking-[0.2em] text-[11px] hover:bg-cyan-400 hover:text-white transition-all shadow-[0_20px_50px_rgba(255,255,255,0.1)] active:scale-95 flex flex-col items-center justify-center gap-1 group/btn"
                            >
                               <span className="group-hover/btn:scale-110 transition-transform">Apply Synthesis</span>
