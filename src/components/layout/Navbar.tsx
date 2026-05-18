@@ -154,7 +154,7 @@ export default function Navbar({
     </AnimatePresence>
   );
 
-    if (effectiveLayout === 'signature') {
+    if (storeSettings?.type !== 'WEBSITE' && effectiveLayout === 'signature') {
     return (
       <>
         <LogoTransparencyFilter />
@@ -172,7 +172,7 @@ export default function Navbar({
     );
   }
 
-    if (effectiveLayout === 'senno') {
+    if (storeSettings?.type !== 'WEBSITE' && effectiveLayout === 'senno') {
     return (
       <>
         <LogoTransparencyFilter />
@@ -366,6 +366,71 @@ export default function Navbar({
       </Link>
     );
   };
+
+  // === CUSTOM TOURISM NAVBAR FOR WEBSITES ===
+  const TourismNavbar = () => {
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+      const handleScroll = () => setScrolled(window.scrollY > 30);
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    return (
+      <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 font-sans ${scrolled ? 'bg-slate-950/80 backdrop-blur-xl py-4 border-b border-white/5 shadow-2xl text-white' : 'bg-transparent py-7 text-white'}`}>
+        <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
+          {/* Left: Navigation Links */}
+          <div className="flex-1 hidden md:flex items-center gap-10 text-[10px] font-black uppercase tracking-[0.4em] text-white/70">
+            {headerLinks.map((link: any) => (
+              <Link key={link.id} href={link.url} className="hover:text-cyan-400 transition-colors duration-300">
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Center: Elegant Travel Logo */}
+          <Link href={`/store/${slug}`} className="flex-1 flex justify-center">
+            {storeSettings?.logoUrl ? (
+              <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
+                <img 
+                  src={storeSettings.logoUrl} 
+                  alt={storeSettings.storeName} 
+                  className="h-9 w-auto object-contain brightness-0 invert grayscale"
+                  style={{
+                    height: storeSettings?.headerSettings?.logoHeight || 36
+                  }}
+                />
+              </div>
+            ) : (
+              <h1 className="text-2xl font-black tracking-[0.35em] text-white uppercase italic hover:text-cyan-400 transition-colors duration-500">
+                {storeSettings?.storeName || 'Store'}
+              </h1>
+            )}
+          </Link>
+
+          {/* Right: Actions */}
+          <div className="flex-1 flex justify-end items-center gap-6 text-white">
+            <LanguageSwitcher dark />
+            <SearchBar dark />
+            <button className="md:hidden p-2 hover:text-cyan-400 transition-colors" onClick={() => setIsMobileMenuOpen(true)}>
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      </nav>
+    );
+  };
+
+  if (storeSettings?.type === 'WEBSITE') {
+    return (
+      <>
+        <LogoTransparencyFilter />
+        <TourismNavbar />
+        <MobileMenuDrawer />
+      </>
+    );
+  }
 
   // 1. MINIMAL NAVBAR
   if (effectiveLayout === 'minimal') {
