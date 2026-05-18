@@ -40,6 +40,21 @@ export async function getUserStore() {
   const user = await getSession();
   if (!user) return null;
   
-  const stores = await getAllStores();
-  return stores.find(s => s.ownerId === user.id) || null;
+  const store = await prisma.store.findFirst({
+    where: { ownerId: user.id }
+  });
+  
+  if (!store) return null;
+  
+  let settings = {};
+  try {
+    settings = typeof store.settings === 'string' ? JSON.parse(store.settings) : store.settings;
+  } catch (e) {
+    settings = {};
+  }
+  
+  return {
+    ...store,
+    settings
+  } as any;
 }

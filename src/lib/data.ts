@@ -16,8 +16,10 @@ export interface Store extends Omit<PrismaStore, 'settings'> {
 
 export const getAllStores = async () => {
   try {
-    // Fetch stores without include and without order to avoid validation errors
-    const stores = await prisma.store.findMany();
+    // Fetch stores with a limit of 20 to avoid SELECT * without limit
+    const stores = await prisma.store.findMany({
+      take: 20
+    });
 
     // Fetch owners separately
     const ownerIds = [...new Set(stores.map(s => s.ownerId))];

@@ -13,6 +13,7 @@ export default async function OrdersPage({ params }: { params: Promise<{ slug: s
     return <div>Store not found</div>;
   }
 
+  // Get first page (20 items) and total count to avoid SELECT * without limit
   const orders = await prisma.order.findMany({
     where: { storeId: store.id },
     include: {
@@ -24,8 +25,20 @@ export default async function OrdersPage({ params }: { params: Promise<{ slug: s
     },
     orderBy: {
       createdAt: 'desc'
-    }
+    },
+    take: 20
   });
 
-  return <OrdersManager initialOrders={orders} slug={slug} />;
+  const totalCount = await prisma.order.count({
+    where: { storeId: store.id }
+  });
+
+  return (
+    <OrdersManager 
+      initialOrders={orders} 
+      slug={slug} 
+      storeId={store.id} 
+      initialHasMore={orders.length < totalCount}
+    />
+  );
 }

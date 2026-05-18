@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, ArrowRight, ShoppingBag } from "lucide-react";
+import SmartImage from "@/components/ui/SmartImage";
 
 interface SmartSearchProps {
   isOpen: boolean;
@@ -86,8 +87,8 @@ export default function SmartSearch({ isOpen, onClose, products }: SmartSearchPr
                      {results.length > 0 ? (
                        results.map(product => (
                          <button key={product.id} className="flex items-center gap-6 group w-full text-left">
-                            <div className="w-16 h-16 bg-slate-100 rounded-2xl overflow-hidden flex-shrink-0">
-                               <img src={product.images[0]} className="w-full h-full object-cover" alt="" />
+                            <div className="w-16 h-16 bg-slate-100 rounded-2xl overflow-hidden flex-shrink-0 relative">
+                               <SmartImage src={product.images[0]} width={100} className="w-full h-full object-cover" alt="" />
                             </div>
                             <div className="flex-1">
                                <p className="font-bold uppercase tracking-tighter text-lg">{product.name}</p>

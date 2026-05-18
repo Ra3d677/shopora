@@ -19,6 +19,7 @@ export default function ProductCard({ product, slug, view = 'grid' }: ProductCar
           <SmartImage 
             src={product.images[0]} 
             alt={product.name} 
+            width={200}
             className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
           />
         </div>
@@ -38,6 +39,7 @@ export default function ProductCard({ product, slug, view = 'grid' }: ProductCar
       <div className="aspect-[4/5] bg-slate-100 overflow-hidden rounded-3xl mb-6 relative">
         <SmartImage 
           src={product.images[0]}
+          width={500}
           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           alt={product.name}
         />

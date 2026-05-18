@@ -99,6 +99,7 @@ export async function createOrder(data: {
 
 export async function getStoreOrders(storeId: string) {
   try {
+    // Limit to 20 to prevent SELECT * without limit
     const orders = await prisma.order.findMany({
       where: { storeId },
       include: {
@@ -110,12 +111,74 @@ export async function getStoreOrders(storeId: string) {
       },
       orderBy: {
         createdAt: 'desc'
-      }
+      },
+      take: 20
     });
     return orders;
   } catch (error) {
     console.error('Error fetching orders:', error);
     return [];
+  }
+}
+
+export async function getStoreOrdersPaginated({
+  storeId,
+  page = 1,
+  limit = 20,
+  search = '',
+  status = ''
+}: {
+  storeId: string;
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+}) {
+  try {
+    const where: any = { storeId };
+    
+    if (status && status !== 'all') {
+      where.status = status;
+    }
+    
+    if (search) {
+      where.OR = [
+        { customerName: { contains: search, mode: 'insensitive' } },
+        { customerEmail: { contains: search, mode: 'insensitive' } },
+        { customerPhone: { contains: search, mode: 'insensitive' } },
+        { id: { contains: search, mode: 'insensitive' } }
+      ];
+    }
+    
+    const skip = (page - 1) * limit;
+    
+    const orders = await prisma.order.findMany({
+      where,
+      include: {
+        items: {
+          include: {
+            product: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      skip,
+      take: limit
+    });
+    
+    const totalCount = await prisma.order.count({ where });
+    
+    return {
+      success: true,
+      orders,
+      hasMore: skip + orders.length < totalCount,
+      totalCount
+    };
+  } catch (error: any) {
+    console.error('Error fetching paginated orders:', error);
+    return { success: false, orders: [], hasMore: false, totalCount: 0, error: error.message };
   }
 }
 

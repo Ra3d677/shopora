@@ -1,29 +1,122 @@
 'use client';
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect, useRef } from "react";
 import { Order } from "@/lib/types";
-import { updateOrderStatus } from "./actions";
-import { ShoppingBag, User, MapPin, Phone, Calendar, ChevronDown, Loader2, Package, CheckCircle2, Clock, Truck, XCircle, Mail, FileText } from "lucide-react";
+import { updateOrderStatus, getStoreOrdersPaginated } from "./actions";
+import { ShoppingBag, User, MapPin, Phone, Calendar, ChevronDown, Loader2, Package, CheckCircle2, Clock, Truck, XCircle, Mail, FileText, Search, Filter } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-export default function OrdersManager({ initialOrders, slug }: { initialOrders: any[], slug: string }) {
+export default function OrdersManager({ 
+  initialOrders, 
+  slug, 
+  storeId, 
+  initialHasMore 
+}: { 
+  initialOrders: any[], 
+  slug: string, 
+  storeId: string, 
+  initialHasMore: boolean 
+}) {
   const [orders, setOrders] = useState<any[]>(initialOrders);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
 
+  // Pagination & Filtering States
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("all");
+  const [hasMore, setHasMore] = useState(initialHasMore);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [filtering, setFiltering] = useState(false);
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
+  // Simple UI query cache to reduce database requests
+  const cache = useRef<Record<string, { orders: any[], hasMore: boolean, page: number }>>({});
+
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     startTransition(async () => {
       const result = await updateOrderStatus(orderId, newStatus);
       if (result.success) {
+        // Invalidate UI Cache because state has changed
+        cache.current = {};
+        
         setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
+        if (selectedOrder?.id === orderId) {
+          setSelectedOrder({ ...selectedOrder, status: newStatus });
+        }
         router.refresh();
       } else {
         alert("Failed to update status");
       }
     });
   };
+
+  const fetchFilteredOrders = async (reset: boolean = false) => {
+    const targetPage = reset ? 1 : page + 1;
+    const cacheKey = `${status}_${search}`;
+
+    if (reset) {
+      // Check cache first to avoid redundant requests
+      if (cache.current[cacheKey]) {
+        const cached = cache.current[cacheKey];
+        setOrders(cached.orders);
+        setPage(cached.page);
+        setHasMore(cached.hasMore);
+        return;
+      }
+      setFiltering(true);
+    } else {
+      setLoadingMore(true);
+    }
+
+    const result = await getStoreOrdersPaginated({
+      storeId,
+      page: targetPage,
+      limit: 20,
+      search,
+      status: status === 'all' ? '' : status
+    });
+
+    if (result.success) {
+      let newOrders = [];
+      if (reset) {
+        newOrders = result.orders;
+        setOrders(newOrders);
+        setPage(1);
+      } else {
+        newOrders = [...orders, ...result.orders];
+        setOrders(newOrders);
+        setPage(targetPage);
+      }
+      setHasMore(result.hasMore);
+
+      // Save to cache
+      cache.current[cacheKey] = {
+        orders: newOrders,
+        hasMore: result.hasMore,
+        page: reset ? 1 : targetPage
+      };
+    }
+
+    setFiltering(false);
+    setLoadingMore(false);
+  };
+
+  // Debouncing effect for search & filter inputs
+  useEffect(() => {
+    if (isFirstRender) {
+      setIsFirstRender(false);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      fetchFilteredOrders(true);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [search, status]);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -58,11 +151,43 @@ export default function OrdersManager({ initialOrders, slug }: { initialOrders: 
         </div>
       </div>
 
+      {/* Search & Server-side Filters */}
+      <div className="flex flex-col sm:flex-row gap-4 bg-[#1a1d2d]/60 backdrop-blur-3xl p-5 rounded-[2rem] border border-white/5 shadow-2xl">
+        <div className="relative flex-1 group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors" />
+          <input
+            type="text"
+            placeholder="Search orders (Name, Email, Phone, ID)..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-12 pr-4 py-3.5 bg-[#0a0c14] border border-white/5 rounded-2xl text-xs font-bold text-white uppercase tracking-wider focus:outline-none focus:border-cyan-500/50 transition-colors placeholder:text-slate-600"
+          />
+        </div>
+        <div className="relative shrink-0 sm:w-48 group">
+          <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors" />
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            className="w-full pl-12 pr-8 py-3.5 bg-[#0a0c14] border border-white/5 rounded-2xl text-xs font-bold text-white uppercase tracking-wider focus:outline-none focus:border-cyan-500/50 transition-colors appearance-none cursor-pointer"
+          >
+            <option value="all">ALL STATUSES</option>
+            <option value="pending">PENDING</option>
+            <option value="processing">PROCESSING</option>
+            <option value="shipped">SHIPPED</option>
+            <option value="delivered">DELIVERED</option>
+            <option value="cancelled">CANCELLED</option>
+          </select>
+          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Orders List */}
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center justify-between px-2 mb-4">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Active Records ({orders.length})</h3>
+            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">
+              {filtering ? "Scanning Matrix..." : `Active Records (${orders.length})`}
+            </h3>
           </div>
           
           {orders.length === 0 ? (
@@ -134,6 +259,27 @@ export default function OrdersManager({ initialOrders, slug }: { initialOrders: 
                 </div>
               </div>
             ))
+          )}
+
+          {/* Pagination Load More Button */}
+          {hasMore && (
+            <div className="pt-6 text-center">
+              <button
+                type="button"
+                onClick={() => fetchFilteredOrders(false)}
+                disabled={loadingMore}
+                className="px-10 py-4 bg-white/5 hover:bg-white/10 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] border border-white/5 transition-all duration-300 flex items-center justify-center gap-3 mx-auto disabled:opacity-50 hover:border-cyan-500/30 hover:shadow-[0_0_20px_rgba(6,182,212,0.1)]"
+              >
+                {loadingMore ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
+                    <span>Syncing Next Node...</span>
+                  </>
+                ) : (
+                  <span>LOAD MORE ORDERS</span>
+                )}
+              </button>
+            </div>
           )}
         </div>
 

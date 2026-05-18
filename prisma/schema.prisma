@@ -78,6 +78,9 @@ model Product {
   status         String      @default("active")
   stock_quantity Int         @default(0)
   orderItems     OrderItem[]
+
+  @@index([storeId])
+  @@index([category_id])
 }
 
 model Category {
@@ -129,6 +132,11 @@ model Order {
   user            User?       @relation("CustomerOrders", fields: [userId], references: [id])
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
+
+  @@index([storeId])
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
 }
 
 model OrderItem {
@@ -149,6 +157,9 @@ model Visit {
   storeId   String
   store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+
+  @@index([storeId])
+  @@index([createdAt])
 }
 
 model CartAdd {
@@ -157,4 +168,7 @@ model CartAdd {
   store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
   productId String
   createdAt DateTime @default(now())
+
+  @@index([storeId])
+  @@index([createdAt])
 }

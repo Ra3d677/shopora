@@ -6,9 +6,19 @@ import Image from "next/image";
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 
-export default async function CustomerAccountPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function CustomerAccountPage({ 
+  params,
+  searchParams
+}: { 
+  params: Promise<{ slug: string }>,
+  searchParams: Promise<{ page?: string }>
+}) {
   const { slug } = await params;
   const user = await getSession();
+  const sp = (await searchParams) || {};
+  const page = Math.max(1, parseInt(sp.page || "1", 10));
+  const limit = 20;
+  const skip = (page - 1) * limit;
 
   if (!user) {
     redirect(`/store/${slug}/login`);
@@ -22,6 +32,7 @@ export default async function CustomerAccountPage({ params }: { params: Promise<
     redirect("/");
   }
 
+  // Get paginated orders (limit to 20) and total count to avoid SELECT * without limit
   const orders = await prisma.order.findMany({
     where: {
       userId: user.id,
@@ -36,8 +47,19 @@ export default async function CustomerAccountPage({ params }: { params: Promise<
     },
     orderBy: {
       createdAt: 'desc'
+    },
+    skip,
+    take: limit
+  });
+
+  const totalCount = await prisma.order.count({
+    where: {
+      userId: user.id,
+      storeId: store.id
     }
   });
+
+  const hasMore = skip + orders.length < totalCount;
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -81,7 +103,7 @@ export default async function CustomerAccountPage({ params }: { params: Promise<
         <div className="flex items-center gap-3 mb-8">
             <ShoppingBag className="w-6 h-6 text-slate-900" />
             <h2 className="text-xl font-black uppercase tracking-tight">Order History</h2>
-            <span className="bg-slate-900 text-white text-[10px] font-black px-2 py-0.5 rounded-full">{orders.length}</span>
+            <span className="bg-slate-900 text-white text-[10px] font-black px-2 py-0.5 rounded-full">{totalCount}</span>
         </div>
 
         {orders.length === 0 ? (
@@ -143,6 +165,37 @@ export default async function CustomerAccountPage({ params }: { params: Promise<
                 </div>
               </div>
             ))}
+
+            {/* Storefront Pagination Controls */}
+            {(page > 1 || hasMore) && (
+              <div className="flex flex-col sm:flex-row justify-between items-center mt-12 p-6 bg-white rounded-3xl border border-slate-100 shadow-sm gap-4">
+                {page > 1 ? (
+                  <Link 
+                    href={`/store/${slug}/account?page=${page - 1}`}
+                    className="w-full sm:w-auto text-center bg-white border border-slate-200 px-6 py-3 rounded-full font-bold uppercase tracking-widest text-[10px] text-slate-700 hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
+                  >
+                    ← Previous Page
+                  </Link>
+                ) : (
+                  <div className="hidden sm:block w-32" />
+                )}
+                
+                <span className="text-slate-500 font-bold tracking-widest text-[10px] uppercase text-center">
+                  Page {page} of {Math.ceil(totalCount / limit) || 1}
+                </span>
+                
+                {hasMore ? (
+                  <Link 
+                    href={`/store/${slug}/account?page=${page + 1}`}
+                    className="w-full sm:w-auto text-center bg-slate-900 text-white px-8 py-3 rounded-full font-black uppercase tracking-widest text-[10px] hover:bg-black transition-all flex items-center justify-center gap-2"
+                  >
+                    Next Page →
+                  </Link>
+                ) : (
+                  <div className="hidden sm:block w-32" />
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>
