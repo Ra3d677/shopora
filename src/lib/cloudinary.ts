@@ -21,10 +21,22 @@ export async function uploadToCloudinary(fileUri: string, folder: string = "shop
       return { success: true, url: fileUri, publicId: "" };
     }
 
-    const result = await cloudinary.uploader.upload(fileUri, {
+    const isImage = fileUri.startsWith("data:image/") || 
+                    (fileUri.startsWith("http") && /\.(jpg|jpeg|png|webp|gif|svg|avif|heic)/i.test(fileUri)) ||
+                    !fileUri.startsWith("http"); // Fallback to true if base64 or other files
+
+    const uploadOptions: any = {
       folder: folder,
-      resource_type: "auto", // Automatically detects whether it is an image or video
-    });
+      resource_type: "auto",
+    };
+
+    if (isImage) {
+      uploadOptions.transformation = [
+        { width: 800, height: 800, crop: "limit", fetch_format: "auto", quality: "auto" }
+      ];
+    }
+
+    const result = await cloudinary.uploader.upload(fileUri, uploadOptions);
     
     return {
       success: true,
