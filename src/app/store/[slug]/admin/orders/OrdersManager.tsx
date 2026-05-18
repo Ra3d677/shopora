@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useTransition, useEffect, useRef } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { Order } from "@/lib/types";
-import { updateOrderStatus, getStoreOrdersPaginated } from "./actions";
+import { useOrdersStore } from "@/store/orders";
 import { ShoppingBag, User, MapPin, Phone, Calendar, ChevronDown, Loader2, Package, CheckCircle2, Clock, Truck, XCircle, Mail, FileText, Search, Filter } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -18,93 +18,67 @@ export default function OrdersManager({
   storeId: string, 
   initialHasMore: boolean 
 }) {
-  const [orders, setOrders] = useState<any[]>(initialOrders);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
 
-  // Pagination & Filtering States
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("all");
-  const [hasMore, setHasMore] = useState(initialHasMore);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [filtering, setFiltering] = useState(false);
+  // Zustand Store States and Actions
+  const {
+    orders,
+    page,
+    search,
+    status,
+    hasMore,
+    loading,
+    loadingMore,
+    filtering,
+    setFilters,
+    fetchOrders,
+    updateOrderStatusOptimistic,
+    clearCache
+  } = useOrdersStore();
+
+  // Local states for text inputs to prevent typing lag
+  const [localSearch, setLocalSearch] = useState("");
+  const [localStatus, setLocalStatus] = useState("all");
   const [isFirstRender, setIsFirstRender] = useState(true);
 
-  // Simple UI query cache to reduce database requests
-  const cache = useRef<Record<string, { orders: any[], hasMore: boolean, page: number }>>({});
+  // Seed initial data in Zustand store on mount to prevent double initial loading
+  useEffect(() => {
+    useOrdersStore.setState({
+      orders: initialOrders,
+      hasMore: initialHasMore,
+      page: 1,
+      search: "",
+      status: "all",
+      cache: {
+        [`${storeId}_all_`]: {
+          orders: initialOrders,
+          hasMore: initialHasMore,
+          page: 1
+        }
+      }
+    });
+
+    return () => {
+      // Clear store cache when component unmounts to save client memory
+      clearCache();
+    };
+  }, [initialOrders, initialHasMore, storeId]);
 
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     startTransition(async () => {
-      const result = await updateOrderStatus(orderId, newStatus);
-      if (result.success) {
-        // Invalidate UI Cache because state has changed
-        cache.current = {};
-        
-        setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
+      const success = await updateOrderStatusOptimistic(orderId, newStatus);
+      if (success) {
         if (selectedOrder?.id === orderId) {
           setSelectedOrder({ ...selectedOrder, status: newStatus });
         }
         router.refresh();
-      } else {
-        alert("Failed to update status");
       }
     });
   };
 
-  const fetchFilteredOrders = async (reset: boolean = false) => {
-    const targetPage = reset ? 1 : page + 1;
-    const cacheKey = `${status}_${search}`;
-
-    if (reset) {
-      // Check cache first to avoid redundant requests
-      if (cache.current[cacheKey]) {
-        const cached = cache.current[cacheKey];
-        setOrders(cached.orders);
-        setPage(cached.page);
-        setHasMore(cached.hasMore);
-        return;
-      }
-      setFiltering(true);
-    } else {
-      setLoadingMore(true);
-    }
-
-    const result = await getStoreOrdersPaginated({
-      storeId,
-      page: targetPage,
-      limit: 10,
-      search,
-      status: status === 'all' ? '' : status
-    });
-
-    if (result.success) {
-      let newOrders = [];
-      if (reset) {
-        newOrders = result.orders;
-        setOrders(newOrders);
-        setPage(1);
-      } else {
-        newOrders = [...orders, ...result.orders];
-        setOrders(newOrders);
-        setPage(targetPage);
-      }
-      setHasMore(result.hasMore);
-
-      // Save to cache
-      cache.current[cacheKey] = {
-        orders: newOrders,
-        hasMore: result.hasMore,
-        page: reset ? 1 : targetPage
-      };
-    }
-
-    setFiltering(false);
-    setLoadingMore(false);
-  };
-
-  // Debouncing effect for search & filter inputs
+  // Debounced search and filtering effect
   useEffect(() => {
     if (isFirstRender) {
       setIsFirstRender(false);
@@ -112,11 +86,11 @@ export default function OrdersManager({
     }
 
     const timer = setTimeout(() => {
-      fetchFilteredOrders(true);
-    }, 300);
+      setFilters(localSearch, localStatus, storeId);
+    }, 350); // Robust 350ms debouncing to protect the free tier Supabase server
 
     return () => clearTimeout(timer);
-  }, [search, status]);
+  }, [localSearch, localStatus]);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -158,16 +132,16 @@ export default function OrdersManager({
           <input
             type="text"
             placeholder="Search orders (Name, Email, Phone, ID)..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
             className="w-full pl-12 pr-4 py-3.5 bg-[#0a0c14] border border-white/5 rounded-2xl text-xs font-bold text-white uppercase tracking-wider focus:outline-none focus:border-cyan-500/50 transition-colors placeholder:text-slate-600"
           />
         </div>
         <div className="relative shrink-0 sm:w-48 group">
           <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors" />
           <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
+            value={localStatus}
+            onChange={(e) => setLocalStatus(e.target.value)}
             className="w-full pl-12 pr-8 py-3.5 bg-[#0a0c14] border border-white/5 rounded-2xl text-xs font-bold text-white uppercase tracking-wider focus:outline-none focus:border-cyan-500/50 transition-colors appearance-none cursor-pointer"
           >
             <option value="all">ALL STATUSES</option>
@@ -266,7 +240,7 @@ export default function OrdersManager({
             <div className="pt-6 text-center">
               <button
                 type="button"
-                onClick={() => fetchFilteredOrders(false)}
+                onClick={() => fetchOrders(storeId, false)}
                 disabled={loadingMore}
                 className="px-10 py-4 bg-white/5 hover:bg-white/10 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] border border-white/5 transition-all duration-300 flex items-center justify-center gap-3 mx-auto disabled:opacity-50 hover:border-cyan-500/30 hover:shadow-[0_0_20px_rgba(6,182,212,0.1)]"
               >
