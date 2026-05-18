@@ -68,6 +68,9 @@ export async function recordVisit(slug: string) {
         visits: 1
       }
     });
+
+    // Fire-and-forget probabilistic pruning of old raw logs (older than 7 days)
+    pruneOldAnalytics();
   } catch (error) {
     console.error("Failed to record visit:", error);
   }
@@ -104,7 +107,34 @@ export async function recordCartAdd(slug: string, productId: string) {
         cartAdds: 1
       }
     });
+
+    // Fire-and-forget probabilistic pruning of old raw logs (older than 7 days)
+    pruneOldAnalytics();
   } catch (error) {
     console.error("Failed to record cart add:", error);
+  }
+}
+
+async function pruneOldAnalytics() {
+  // 5% chance of triggering auto-pruning to save database CPU
+  if (Math.random() < 0.05) {
+    try {
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      
+      await prisma.visit.deleteMany({
+        where: {
+          createdAt: { lt: sevenDaysAgo }
+        }
+      });
+      
+      await prisma.cartAdd.deleteMany({
+        where: {
+          createdAt: { lt: sevenDaysAgo }
+        }
+      });
+    } catch (e) {
+      console.error("Probabilistic pruning failed:", e);
+    }
   }
 }
