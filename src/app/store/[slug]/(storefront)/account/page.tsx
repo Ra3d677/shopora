@@ -17,7 +17,7 @@ export default async function CustomerAccountPage({
   const user = await getSession();
   const sp = (await searchParams) || {};
   const page = Math.max(1, parseInt(sp.page || "1", 10));
-  const limit = 20;
+  const limit = 10;
   const skip = (page - 1) * limit;
 
   if (!user) {

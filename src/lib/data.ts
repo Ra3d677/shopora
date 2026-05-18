@@ -16,9 +16,9 @@ export interface Store extends Omit<PrismaStore, 'settings'> {
 
 export const getAllStores = async () => {
   try {
-    // Fetch stores with a limit of 20 to avoid SELECT * without limit
+    // Fetch stores with a limit of 10 to avoid SELECT * without limit
     const stores = await prisma.store.findMany({
-      take: 20
+      take: 10
     });
 
     // Fetch owners separately

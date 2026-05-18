@@ -99,7 +99,7 @@ export async function createOrder(data: {
 
 export async function getStoreOrders(storeId: string) {
   try {
-    // Limit to 20 to prevent SELECT * without limit
+    // Limit to 10 to prevent SELECT * without limit
     const orders = await prisma.order.findMany({
       where: { storeId },
       include: {
@@ -112,7 +112,7 @@ export async function getStoreOrders(storeId: string) {
       orderBy: {
         createdAt: 'desc'
       },
-      take: 20
+      take: 10
     });
     return orders;
   } catch (error) {
@@ -124,7 +124,7 @@ export async function getStoreOrders(storeId: string) {
 export async function getStoreOrdersPaginated({
   storeId,
   page = 1,
-  limit = 20,
+  limit = 10,
   search = '',
   status = ''
 }: {

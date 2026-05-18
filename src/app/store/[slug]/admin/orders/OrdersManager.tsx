@@ -74,7 +74,7 @@ export default function OrdersManager({
     const result = await getStoreOrdersPaginated({
       storeId,
       page: targetPage,
-      limit: 20,
+      limit: 10,
       search,
       status: status === 'all' ? '' : status
     });
