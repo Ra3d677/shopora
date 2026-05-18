@@ -38,28 +38,42 @@ export default async function AdminDashboard({ params, searchParams }: { params:
 
   const store = await prisma.store.findUnique({
     where: { slug },
-    include: {
+    select: {
+      id: true,
+      name: true,
+      slug: true,
       orders: {
         where: baseWhereCondition,
         orderBy: { createdAt: 'desc' },
-        include: {
+        select: {
+          id: true,
+          status: true,
+          totalAmount: true,
+          createdAt: true,
+          customerEmail: true,
+          customerName: true,
+          customerPhone: true,
           items: {
-            include: {
-              product: true
+            select: {
+              productId: true,
+              quantity: true
             }
           }
         }
       },
       products: {
-        include: {
-          category: true
+        select: {
+          id: true,
+          name: true,
+          price: true,
+          images: true,
+          stock_quantity: true,
+          category: {
+            select: {
+              name: true
+            }
+          }
         }
-      },
-      visits: {
-        where: baseWhereCondition
-      },
-      cartAdds: {
-        where: baseWhereCondition
       }
     }
   });
@@ -72,6 +86,21 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       </div>
     );
   }
+
+  // Count visits and cart additions directly in the database (egress optimized)
+  const totalVisits = await prisma.visit.count({
+    where: {
+      storeId: store.id,
+      ...baseWhereCondition
+    }
+  });
+
+  const totalCartAdds = await prisma.cartAdd.count({
+    where: {
+      storeId: store.id,
+      ...baseWhereCondition
+    }
+  });
 
   const totalOrders = store.orders.length;
   // Only include shipped or delivered orders in total revenue
@@ -92,6 +121,10 @@ export default async function AdminDashboard({ params, searchParams }: { params:
     where: {
       storeId: store.id,
       createdAt: { gte: prevStartDate, lt: prevEndDate }
+    },
+    select: {
+      status: true,
+      totalAmount: true
     }
   }) : [];
 
@@ -100,7 +133,6 @@ export default async function AdminDashboard({ params, searchParams }: { params:
     .reduce((sum, order) => sum + Number(order.totalAmount || 0), 0);
   const revenueGrowth = prevRevenue > 0 ? ((totalRevenue - prevRevenue) / prevRevenue) * 100 : 100;
 
-  const totalVisits = store.visits.length;
   const uniqueCustomers = new Set(store.orders.map(o => o.customerEmail)).size;
   const inStockProducts = store.products.filter(p => p.stock_quantity > 0).length;
 
@@ -113,7 +145,6 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const retentionRate = uniqueCustomers > 0 ? ((returningCustomers / uniqueCustomers) * 100).toFixed(1) : "0.0";
 
   // Abandonment Rate
-  const totalCartAdds = store.cartAdds.length;
   const abandonmentRate = totalCartAdds > 0 ? (((totalCartAdds - totalOrders) / totalCartAdds) * 100).toFixed(1) : "0.0";
 
   // Heatmap Data (Orders by Hour and Day - Adjusted for UTC+3)
@@ -182,6 +213,10 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const allStoreOrders = await prisma.order.findMany({
     where: {
       storeId: store.id
+    },
+    select: {
+      createdAt: true,
+      totalAmount: true
     }
   });
 
