@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 export async function GET(
   req: NextRequest,
@@ -45,9 +46,18 @@ export async function POST(
       return NextResponse.json({ error: "URL is required" }, { status: 400 });
     }
 
+    let finalUrl = url;
+    if (url.startsWith("data:")) {
+      const uploadResult = await uploadToCloudinary(url, `shopora/${slug}`);
+      if (!uploadResult.success) {
+        return NextResponse.json({ error: "Failed to upload to Cloudinary: " + uploadResult.error }, { status: 500 });
+      }
+      finalUrl = uploadResult.url!;
+    }
+
     const media = await prisma.media.create({
       data: {
-        url,
+        url: finalUrl,
         name: name || "Uploaded Image",
         type: type || "image",
         storeId: store.id

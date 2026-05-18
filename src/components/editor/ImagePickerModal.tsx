@@ -49,13 +49,17 @@ export default function ImagePickerModal({ slug, isOpen, onClose, onSelect, curr
       const reader = new FileReader();
       reader.onloadend = async () => {
         const base64String = reader.result as string;
-        await addMedia(slug, {
+        const result = await addMedia(slug, {
           url: base64String,
           name: file.name,
           type: "image"
         });
         await loadMedia();
-        setSelectedUrl(base64String);
+        if (result.success && result.media) {
+          setSelectedUrl(result.media.url);
+        } else {
+          setSelectedUrl(base64String);
+        }
         setIsUploading(false);
       };
       reader.readAsDataURL(file);

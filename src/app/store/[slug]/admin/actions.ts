@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 export async function deleteProduct(slug: string, productId: string) {
   await prisma.product.delete({
@@ -223,15 +224,25 @@ export async function addMedia(slug: string, mediaData: { url: string, name: str
   const store = await prisma.store.findUnique({ where: { slug } });
   if (!store) return { success: false, error: "Store not found" };
 
-  await prisma.media.create({
+  let finalUrl = mediaData.url;
+  if (mediaData.url.startsWith("data:")) {
+    const uploadResult = await uploadToCloudinary(mediaData.url, `shopora/${slug}`);
+    if (!uploadResult.success) {
+      return { success: false, error: "Failed to upload to Cloudinary: " + uploadResult.error };
+    }
+    finalUrl = uploadResult.url!;
+  }
+
+  const media = await prisma.media.create({
     data: {
       ...mediaData,
+      url: finalUrl,
       storeId: store.id
     }
   });
 
   revalidatePath(`/store/${slug}/admin/media`);
-  return { success: true };
+  return { success: true, media };
 }
 
 export async function deleteMedia(slug: string, mediaId: string) {
