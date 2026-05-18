@@ -42,7 +42,15 @@ export default async function AdminLayout({
 
   const adminPath = `/store/${slug}/admin`;
 
-  const mainItems = [
+  const isWebsite = store.type === 'WEBSITE';
+
+  const mainItems = isWebsite ? [
+    { label: 'Overview', iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
+    { label: 'Tours & Packages', iconName: 'ShoppingBag', path: '/products', color: 'text-purple-500' },
+    { label: 'Booking Inquiries', iconName: 'Package', path: '/orders', color: 'text-pink-500' },
+    { label: 'Media Hub', iconName: 'Library', path: '/media', color: 'text-amber-500' },
+    { label: 'Banners & Sliders', iconName: 'ImageIcon', path: '/banners', color: 'text-red-500' },
+  ] : [
     { label: 'Overview', iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
     { label: 'Products', iconName: 'ShoppingBag', path: '/products', color: 'text-purple-500' },
     { label: 'Orders', iconName: 'Package', path: '/orders', color: 'text-pink-500' },
@@ -57,8 +65,8 @@ export default async function AdminLayout({
   ] : [];
 
   const customItems = [
-    { label: 'Store Builder', iconName: 'Blocks', path: '/builder', color: 'text-blue-500' },
-    { label: 'General Settings', iconName: 'Settings', path: '/settings', color: 'text-slate-500' },
+    { label: isWebsite ? 'Site Builder' : 'Store Builder', iconName: 'Blocks', path: '/builder', color: 'text-blue-500' },
+    { label: isWebsite ? 'Site Settings' : 'General Settings', iconName: 'Settings', path: '/settings', color: 'text-slate-500' },
   ];
 
   console.log("Admin Layout Session:", { id: session?.id, email: session?.email, role: session?.role });

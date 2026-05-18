@@ -237,6 +237,7 @@ export default async function StorefrontLayout({
           activeTemplate={store.template as any} 
           storeSettings={{
               ...store.settings,
+              type: store.type,
               storeName: store.settings.storeName || store.name,
               primaryColor: store.settings.colorSystem?.brand?.primary || store.primaryColor,
           }} 

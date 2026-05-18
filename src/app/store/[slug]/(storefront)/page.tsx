@@ -9,6 +9,7 @@ import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
 import SignatureTemplate from "@/components/templates/SignatureTemplate";
 import ZenithTemplate from "@/components/templates/ZenithTemplate";
 import ModernTemplate from "@/components/templates/ModernTemplate";
+import TourismTemplate from "@/components/templates/TourismTemplate";
 
 export const dynamic = 'force-dynamic';
 
@@ -52,6 +53,8 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
   
   // FORCE TEMPLATE RENDERING (Step 4)
   const renderTemplate = () => {
+    if (store.type === 'WEBSITE') return <TourismTemplate {...props} />;
+    
     if (activeTemplate === 'zenith') return <ZenithTemplate {...props} />;
     if (activeTemplate === 'modern') return <ModernTemplate {...props} />;
     

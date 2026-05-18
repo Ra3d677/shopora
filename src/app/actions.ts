@@ -11,7 +11,7 @@ export async function setLanguageCookie(lang: 'en' | 'ar') {
   cookieStore.set('NEXT_LOCALE', lang, { path: '/' });
 }
 
-export async function createStoreAction(data: { name: string; slug: string; template: string }) {
+export async function createStoreAction(data: { name: string; slug: string; template: string; type: string }) {
   const user = await getSession();
   
   if (!user) {

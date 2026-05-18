@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ShoppingBag, ArrowRight, Loader2, Store as StoreIcon } from "lucide-react";
+import { ShoppingBag, ArrowRight, ArrowLeft, Loader2, Store as StoreIcon, Compass } from "lucide-react";
 import { createStoreAction } from "@/app/actions";
 
 export default function CreateStorePage() {
   const [step, setStep] = useState(1);
+  const [type, setType] = useState<"STORE" | "WEBSITE">("STORE");
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [template, setTemplate] = useState("signature");
@@ -16,11 +17,17 @@ export default function CreateStorePage() {
 
   const [error, setError] = useState<string | null>(null);
 
-  const templates = [
+  const storeTemplates = [
     { id: 'modern', name: 'Modern Commerce', desc: 'Clean lines, premium materials, unparalleled comfort.', img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&q=80' },
     { id: 'zenith', name: 'Zenith Luxury', desc: 'Cinematic, minimalist, ultra high-end.', img: 'https://images.unsplash.com/photo-1505529848141-144c6747d765?w=400&q=80' },
     { id: 'signature', name: 'Signature Brand', desc: 'A high-end, typography-focused template.', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80' }
   ];
+
+  const websiteTemplates = [
+    { id: 'tourism', name: 'Tourism & Travel Showcase', desc: 'High-definition destination banners, detailed itineraries, and a seamless booking inquiry system.', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80' }
+  ];
+
+  const templates = type === 'STORE' ? storeTemplates : websiteTemplates;
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,21 +35,25 @@ export default function CreateStorePage() {
       setStep(2);
       return;
     }
+    if (step === 2) {
+      setStep(3);
+      return;
+    }
 
     setIsPending(true);
     setError(null);
     
     try {
-      const result = await createStoreAction({ name, slug, template });
+      const result = await createStoreAction({ name, slug, template, type });
       if (result.success) {
         router.push(`/store/${slug}/admin/dashboard`);
       } else {
-        setError(result.error || "Failed to create store.");
-        setStep(1); // Go back to step 1 so they can change the slug
+        setError(result.error || "Failed to create site.");
+        setStep(2); // Go back to step 2 so they can change the slug
       }
     } catch (err: any) {
-      setError(err.message || "Failed to create store. Slug might already be in use.");
-      setStep(1);
+      setError(err.message || "Failed to create site. Slug might already be in use.");
+      setStep(2);
       console.error(err);
     } finally {
       setIsPending(false);
@@ -50,36 +61,88 @@ export default function CreateStorePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 py-20">
-      <div className={`w-full transition-all duration-500 ${step === 1 ? 'max-w-md' : 'max-w-4xl'} bg-white rounded-[2.5rem] shadow-2xl overflow-hidden`}>
-        <div className="bg-slate-900 p-12 text-white text-center">
-          <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <StoreIcon size={32} />
+    <div className="min-h-screen bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-950 flex items-center justify-center p-6 py-20 relative overflow-hidden">
+      {/* Decorative Glows */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] -z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] -z-10 pointer-events-none" />
+
+      <div className={`w-full transition-all duration-500 ${step === 3 ? 'max-w-4xl' : 'max-w-xl'} bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-[2.5rem] shadow-2xl overflow-hidden`}>
+        <div className="bg-slate-955/80 p-12 text-center border-b border-white/5">
+          <div className="w-16 h-16 bg-gradient-to-tr from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/10">
+            {type === 'STORE' ? <StoreIcon className="text-white" size={32} /> : <Compass className="text-white" size={32} />}
           </div>
-          <h1 className="text-3xl font-black tracking-tight mb-2">
-            {step === 1 ? 'Build Your Store' : 'Choose Your Vibe'}
+          <h1 className="text-3xl font-black tracking-tight text-white mb-2 uppercase">
+            {step === 1 && 'What are you building?'}
+            {step === 2 && 'Identity & Address'}
+            {step === 3 && 'Choose Your Vibe'}
           </h1>
-          <p className="text-slate-400">
-            {step === 1 ? 'Create your unique brand identity in seconds.' : 'Select a template that matches your brand style.'}
+          <p className="text-slate-400 text-sm max-w-md mx-auto">
+            {step === 1 && 'Select the purpose of your website to customize the experience.'}
+            {step === 2 && 'Define your brand name and custom web slug.'}
+            {step === 3 && 'Select a highly optimized template to match your style.'}
           </p>
         </div>
 
         <form onSubmit={handleCreate} className="p-12">
           {error && (
-            <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm font-bold border border-red-100 mb-6">
+            <div className="bg-red-500/10 text-red-400 p-4 rounded-2xl text-sm font-bold border border-red-500/20 mb-6">
               {error}
             </div>
           )}
           
-          {step === 1 ? (
+          {step === 1 && (
+            <div className="space-y-6">
+              <div 
+                onClick={() => {
+                  setType("STORE");
+                  setTemplate("signature");
+                }}
+                className={`p-6 rounded-3xl border-2 cursor-pointer transition-all duration-300 flex gap-5 items-start ${
+                  type === "STORE" 
+                    ? "border-blue-500 bg-blue-500/5 shadow-lg shadow-blue-500/5 text-white" 
+                    : "border-slate-800 bg-slate-950/40 text-slate-400 hover:border-slate-700"
+                }`}
+              >
+                <div className={`p-4 rounded-xl ${type === 'STORE' ? 'bg-blue-500 text-white' : 'bg-slate-900 text-slate-400'} shrink-0`}>
+                  <ShoppingBag size={24} />
+                </div>
+                <div>
+                  <h3 className="font-black text-lg mb-1">E-Commerce Store (متجر إلكتروني)</h3>
+                  <p className="text-xs text-slate-400 font-medium">Sell physical or digital products, manage dynamic inventories, cart, and orders with standard checkout processes.</p>
+                </div>
+              </div>
+
+              <div 
+                onClick={() => {
+                  setType("WEBSITE");
+                  setTemplate("tourism");
+                }}
+                className={`p-6 rounded-3xl border-2 cursor-pointer transition-all duration-300 flex gap-5 items-start ${
+                  type === "WEBSITE" 
+                    ? "border-cyan-500 bg-cyan-500/5 shadow-lg shadow-cyan-500/5 text-white" 
+                    : "border-slate-800 bg-slate-950/40 text-slate-400 hover:border-slate-700"
+                }`}
+              >
+                <div className={`p-4 rounded-xl ${type === 'WEBSITE' ? 'bg-cyan-500 text-white' : 'bg-slate-900 text-slate-400'} shrink-0`}>
+                  <Compass size={24} />
+                </div>
+                <div>
+                  <h3 className="font-black text-lg mb-1">Tourism & Showcase Site (موقع سياحة وتعريف)</h3>
+                  <p className="text-xs text-slate-400 font-medium">Display premium services, high-res travel destination packages, itineraries, and receive custom booking inquiries directly.</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {step === 2 && (
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wider">Store Name</label>
+                <label className="block text-xs font-black text-slate-400 mb-2 uppercase tracking-widest">Brand / Website Name</label>
                 <input 
                   required
                   type="text" 
-                  placeholder="e.g. Vintage Goods"
-                  className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-slate-900 focus:bg-white rounded-2xl outline-none transition-all font-medium"
+                  placeholder={type === 'STORE' ? "e.g. Vintage Apparel" : "e.g. Dream Tour Agency"}
+                  className="w-full px-6 py-4 bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-2xl outline-none transition-all font-medium text-white placeholder-slate-600"
                   value={name}
                   onChange={(e) => {
                     setName(e.target.value);
@@ -91,37 +154,39 @@ export default function CreateStorePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wider">Store URL (Slug)</label>
+                <label className="block text-xs font-black text-slate-400 mb-2 uppercase tracking-widest">Website Address URL (Slug)</label>
                 <div className="flex items-center gap-2">
-                  <span className="text-slate-400 font-medium">multo.com/store/</span>
+                  <span className="text-slate-500 font-medium text-sm">shopora.app/store/</span>
                   <input 
                     required
                     type="text" 
-                    placeholder="your-store-name"
-                    className="flex-1 px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-slate-900 focus:bg-white rounded-2xl outline-none transition-all font-bold text-slate-900"
+                    placeholder="brand-url-slug"
+                    className="flex-1 px-6 py-4 bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-2xl outline-none transition-all font-bold text-white placeholder-slate-600"
                     value={slug}
                     onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, ''))}
                   />
                 </div>
               </div>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+          )}
+
+          {step === 3 && (
+            <div className={`grid grid-cols-1 md:grid-cols-2 ${type === 'STORE' ? 'lg:grid-cols-3' : 'lg:grid-cols-1'} gap-6 mb-10`}>
                {templates.map((t) => (
                  <div 
                    key={t.id}
                    onClick={() => setTemplate(t.id)}
-                   className={`relative cursor-pointer group rounded-3xl overflow-hidden border-4 transition-all duration-300 ${template === t.id ? 'border-slate-900 scale-105 shadow-xl' : 'border-transparent hover:border-slate-200'}`}
+                   className={`relative cursor-pointer group rounded-3xl overflow-hidden border-4 transition-all duration-300 ${template === t.id ? 'border-blue-500 scale-[1.02] shadow-2xl shadow-blue-500/5' : 'border-transparent hover:border-slate-800'}`}
                  >
-                    <div className="aspect-[4/5] relative">
+                    <div className="aspect-[16/10] md:aspect-[4/3] relative">
                       <img src={t.img} alt={t.name} className="object-cover w-full h-full" />
-                      <div className={`absolute inset-0 bg-slate-900/40 flex items-center justify-center transition-opacity ${template === t.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-                        <div className="bg-white text-slate-900 px-4 py-2 rounded-full font-bold text-xs uppercase">Selected</div>
+                      <div className={`absolute inset-0 bg-slate-950/70 flex items-center justify-center transition-opacity duration-300 ${template === t.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                        <div className="bg-blue-500 text-white px-5 py-2 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg shadow-blue-500/20">Selected</div>
                       </div>
                     </div>
-                    <div className="p-4 bg-white border-t">
-                       <h3 className="font-bold text-sm text-slate-900">{t.name}</h3>
-                       <p className="text-[10px] text-slate-500 mt-1 mb-4">{t.desc}</p>
+                    <div className="p-6 bg-slate-950 border-t border-white/5">
+                       <h3 className="font-bold text-md text-white">{t.name}</h3>
+                       <p className="text-xs text-slate-400 mt-2 mb-4 leading-relaxed">{t.desc}</p>
                        <div className="flex flex-col gap-2">
                           <button 
                             type="button"
@@ -129,18 +194,10 @@ export default function CreateStorePage() {
                               e.stopPropagation();
                               setTemplate(t.id);
                             }}
-                            className={`w-full py-2 rounded-xl text-xs font-bold transition-all ${template === t.id ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                            className={`w-full py-3.5 rounded-xl text-xs font-bold transition-all ${template === t.id ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20' : 'bg-slate-900 text-slate-400 hover:bg-slate-850 hover:text-white'}`}
                           >
-                            {template === t.id ? '✓ Selected' : 'Select'}
+                            {template === t.id ? '✓ Selected Theme' : 'Select Theme'}
                           </button>
-                          <Link 
-                            href={`/preview/${t.id}`}
-                            target="_blank"
-                            onClick={(e) => e.stopPropagation()}
-                            className="w-full py-2 rounded-xl text-[10px] font-bold text-center border-2 border-slate-100 text-slate-400 hover:border-slate-900 hover:text-slate-900 transition-all uppercase tracking-widest"
-                          >
-                            Live Preview
-                          </Link>
                        </div>
                     </div>
                  </div>
@@ -149,24 +206,24 @@ export default function CreateStorePage() {
           )}
 
           <div className="flex gap-4 mt-10">
-            {step === 2 && (
+            {step > 1 && (
               <button 
                 type="button"
-                onClick={() => setStep(1)}
-                className="flex-1 bg-slate-100 text-slate-900 py-5 rounded-2xl font-bold hover:bg-slate-200 transition-all active:scale-95"
+                onClick={() => setStep(step - 1)}
+                className="flex-1 bg-slate-955 border border-slate-800 text-white py-5 rounded-2xl font-bold hover:bg-slate-900 transition-all flex items-center justify-center gap-2"
               >
-                Back
+                <ArrowLeft size={16} /> Back
               </button>
             )}
             <button 
-              disabled={isPending || !name || !slug}
+              disabled={isPending || (step === 2 && (!name || !slug))}
               type="submit"
-              className="flex-[2] bg-slate-900 text-white py-5 rounded-2xl font-black text-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl active:scale-95"
+              className="flex-[2] bg-gradient-to-r from-blue-600 to-cyan-600 text-white py-5 rounded-2xl font-black text-lg hover:from-blue-500 hover:to-cyan-500 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-blue-500/10"
             >
               {isPending ? (
                 <Loader2 className="animate-spin" />
               ) : (
-                <>{step === 1 ? 'Next Step' : 'Launch Store'} <ArrowRight /></>
+                <>{step === 3 ? 'Launch Site' : 'Continue'} <ArrowRight size={20} /></>
               )}
             </button>
           </div>

@@ -345,16 +345,19 @@ export default function Navbar({
     )
   );
 
-  const CartButton = () => (
-    <Link href={`/store/${slug}/cart`} className="relative p-2 transition-all hover:scale-110 group">
-      <ShoppingCart className="h-5 w-5" />
-      {mounted && cartItemCount > 0 && (
-        <span className="absolute top-0 right-0 h-4 w-4 rounded-full bg-blue-600 shadow-sm text-[10px] font-bold text-white flex items-center justify-center transform group-hover:scale-110 transition-transform">
-          {cartItemCount}
-        </span>
-      )}
-    </Link>
-  );
+  const CartButton = () => {
+    if (storeSettings?.type === 'WEBSITE') return null;
+    return (
+      <Link href={`/store/${slug}/cart`} className="relative p-2 transition-all hover:scale-110 group">
+        <ShoppingCart className="h-5 w-5" />
+        {mounted && cartItemCount > 0 && (
+          <span className="absolute top-0 right-0 h-4 w-4 rounded-full bg-blue-600 shadow-sm text-[10px] font-bold text-white flex items-center justify-center transform group-hover:scale-110 transition-transform">
+            {cartItemCount}
+          </span>
+        )}
+      </Link>
+    );
+  };
 
   // 1. MINIMAL NAVBAR
   if (effectiveLayout === 'minimal') {
@@ -707,11 +710,13 @@ function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, 
         </Link>
 
         <div className="flex-1 flex justify-end items-center gap-8">
-           <div className="hidden md:flex gap-8 text-[10px] uppercase tracking-[0.4em] font-sans font-bold">
-              <Link href={`/store/${slug}/cart`} className="hover:text-[#c5a368] transition-colors flex items-center gap-2">
-                Cart ({cartItemCount})
-              </Link>
-           </div>
+           {storeSettings?.type !== 'WEBSITE' && (
+              <div className="hidden md:flex gap-8 text-[10px] uppercase tracking-[0.4em] font-sans font-bold">
+                 <Link href={`/store/${slug}/cart`} className="hover:text-[#c5a368] transition-colors flex items-center gap-2">
+                   Cart ({cartItemCount})
+                 </Link>
+              </div>
+           )}
            <button className="md:hidden p-2" onClick={onMenuClick}>
              <Menu className="w-6 h-6" />
            </button>
@@ -749,9 +754,11 @@ function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings
         </Link>
 
         <div className="flex-1 flex justify-end items-center gap-8">
-           <Link href={`/store/${slug}/cart`} className="text-[10px] font-black uppercase tracking-[0.5em] flex items-center gap-2">
-             Cart [{cartItemCount}]
-           </Link>
+           {storeSettings?.type !== 'WEBSITE' && (
+              <Link href={`/store/${slug}/cart`} className="text-[10px] font-black uppercase tracking-[0.5em] flex items-center gap-2">
+                Cart [{cartItemCount}]
+              </Link>
+           )}
            <button className="p-2" onClick={onMenuClick}>
              <Menu className="w-6 h-6" />
            </button>
@@ -837,20 +844,22 @@ function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSe
                   <Heart size={20} strokeWidth={2.5} />
                   <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#f06292] text-white text-[8px] font-black rounded-full flex items-center justify-center">0</span>
                </button>
-               <Link href={`/store/${slug}/cart`} className="flex items-center gap-2 group">
-                  <div className="relative p-1 group-hover:text-[#f06292] transition-colors">
-                     <ShoppingBag size={20} strokeWidth={2.5} />
-                     {cartItemCount > 0 && (
-                       <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#f06292] text-white text-[8px] font-black rounded-full flex items-center justify-center">
-                         {cartItemCount}
-                       </span>
-                     )}
-                  </div>
-                  <div className="hidden md:block">
-                     <p className="text-[10px] font-bold text-slate-400 uppercase leading-none">Cart</p>
-                     <p className="text-[11px] font-black text-slate-900 leading-tight">$0.00</p>
-                  </div>
-               </Link>
+               {storeSettings?.type !== 'WEBSITE' && (
+                 <Link href={`/store/${slug}/cart`} className="flex items-center gap-2 group">
+                    <div className="relative p-1 group-hover:text-[#f06292] transition-colors">
+                       <ShoppingBag size={20} strokeWidth={2.5} />
+                       {cartItemCount > 0 && (
+                         <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#f06292] text-white text-[8px] font-black rounded-full flex items-center justify-center">
+                           {cartItemCount}
+                         </span>
+                       )}
+                    </div>
+                    <div className="hidden md:block">
+                       <p className="text-[10px] font-bold text-slate-400 uppercase leading-none">Cart</p>
+                       <p className="text-[11px] font-black text-slate-900 leading-tight">$0.00</p>
+                    </div>
+                 </Link>
+               )}
             </div>
          </div>
       </nav>

@@ -234,7 +234,7 @@ export const getStoreTemplate = async (slug: string) => {
   )();
 };
 
-export const createStore = async (storeData: { name: string; slug: string; ownerId: string; template: string }) => {
+export const createStore = async (storeData: { name: string; slug: string; ownerId: string; template: string; type?: string }) => {
   const user = await prisma.user.findUnique({ where: { id: storeData.ownerId } });
   if (!user) {
     throw new Error("User not found.");
@@ -246,6 +246,7 @@ export const createStore = async (storeData: { name: string; slug: string; owner
       slug: storeData.slug,
       ownerId: user.id,
       template: storeData.template,
+      type: storeData.type || "STORE",
       settings: JSON.stringify({
         categoriesLayout: 'grid',
         productsLayout: 'static',

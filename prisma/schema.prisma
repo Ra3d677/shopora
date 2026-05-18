@@ -22,6 +22,7 @@ model Store {
   id           String     @id @default(cuid())
   name         String
   slug         String     @unique
+  type         String     @default("STORE") // "STORE" or "WEBSITE"
   template     String     @default("modern")
   primaryColor String     @default("#3b82f6")
   settings     String     @default("{}") // JSON string

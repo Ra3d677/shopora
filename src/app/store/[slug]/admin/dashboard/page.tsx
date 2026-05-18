@@ -1,4 +1,4 @@
-import { DollarSign, ShoppingBag, Users, TrendingUp, Package, Activity, CheckCircle2, XCircle, Clock, Eye, ArrowUpCircle, ArrowDownCircle } from "lucide-react";
+import { DollarSign, ShoppingBag, Users, TrendingUp, Package, Activity, CheckCircle2, XCircle, Clock, Eye, ArrowUpCircle, ArrowDownCircle, Compass } from "lucide-react";
 import prisma from "@/lib/prisma";
 export const dynamic = 'force-dynamic';
 import ExportButton from "./ExportButton";
@@ -42,6 +42,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       id: true,
       name: true,
       slug: true,
+      type: true,
       orders: {
         where: baseWhereCondition,
         orderBy: { createdAt: 'desc' },
@@ -231,15 +232,19 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const maxMonthRevenue = Math.max(...monthlyRevenue, 1);
   const trendData = monthlyRevenue.map(rev => (rev / maxMonthRevenue) * 100);
 
+  const isWebsite = store.type === 'WEBSITE';
+
   return (
     <div className="min-h-screen bg-[#0a0c14] text-slate-100 p-8 pb-24 font-sans selection:bg-cyan-500/30">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
         <div>
            <h1 className="text-5xl font-black italic tracking-tighter text-white mb-2 drop-shadow-[0_0_15px_rgba(34,211,238,0.3)] uppercase">
-             Analytics <span className="text-cyan-400">Dashboard</span>
+             {isWebsite ? 'Website' : 'Analytics'} <span className="text-cyan-400">{isWebsite ? 'Analytics' : 'Dashboard'}</span>
            </h1>
-           <p className="text-slate-500 font-medium tracking-wide">Comprehensive overview of your store's digital performance.</p>
+           <p className="text-slate-500 font-medium tracking-wide">
+             {isWebsite ? 'Comprehensive overview of your showcase website and booking inquiries.' : "Comprehensive overview of your store's digital performance."}
+           </p>
         </div>
         <div className="flex items-center gap-4 bg-[#1a1d2d] p-2 rounded-2xl border border-white/5 shadow-2xl">
            <DateFilter />
@@ -249,51 +254,74 @@ export default async function AdminDashboard({ params, searchParams }: { params:
 
       {/* KPI Blocks - Row 1 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-         {/* Revenue Card */}
+         {/* Revenue / Inquiries Card */}
          <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-cyan-500/50 transition-all duration-500">
             <div className="absolute -right-8 -top-8 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all"></div>
             <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2">
-               <DollarSign className="w-3 h-3 text-cyan-400" /> Total Revenue
+               {isWebsite ? <Users className="w-3 h-3 text-cyan-400" /> : <DollarSign className="w-3 h-3 text-cyan-400" />} 
+               {isWebsite ? "Inquiry Leads" : "Total Revenue"}
             </h4>
             <div className="flex items-end gap-3 mb-4">
                <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
-                 ${totalRevenue > 1000 ? (totalRevenue/1000).toFixed(1) + 'k' : totalRevenue.toFixed(0)}
+                 {isWebsite 
+                   ? totalOrders 
+                   : `$${totalRevenue > 1000 ? (totalRevenue/1000).toFixed(1) + 'k' : totalRevenue.toFixed(0)}`
+                 }
                </h3>
-               <div className={`flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 ${revenueGrowth >= 0 ? 'bg-cyan-500/10 text-cyan-400' : 'bg-red-500/10 text-red-400'}`}>
-                  {revenueGrowth >= 0 ? '▲' : '▼'} {Math.abs(revenueGrowth).toFixed(1)}%
-               </div>
+               {!isWebsite && (
+                 <div className={`flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 ${revenueGrowth >= 0 ? 'bg-cyan-500/10 text-cyan-400' : 'bg-red-500/10 text-red-400'}`}>
+                    {revenueGrowth >= 0 ? '▲' : '▼'} {Math.abs(revenueGrowth).toFixed(1)}%
+                 </div>
+               )}
+               {isWebsite && (
+                 <div className="flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 bg-cyan-500/10 text-cyan-400">
+                    {uniqueCustomers} Unique Leads
+                 </div>
+               )}
             </div>
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Vs Last Month: <span className="text-white">${prevRevenue.toFixed(0)}</span></p>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+              {isWebsite ? "Response Rate:" : "Vs Last Month:"} <span className="text-white">{isWebsite ? "100%" : `$${prevRevenue.toFixed(0)}`}</span>
+            </p>
          </div>
 
-         {/* Orders Card */}
+         {/* Orders / Visits Card */}
          <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-pink-500/50 transition-all duration-500">
             <div className="absolute -right-8 -top-top w-32 h-32 bg-pink-500/10 rounded-full blur-3xl group-hover:bg-pink-500/20 transition-all"></div>
             <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2">
-               <ShoppingBag className="w-3 h-3 text-pink-400" /> Total Orders
+               {isWebsite ? <Eye className="w-3 h-3 text-pink-400" /> : <ShoppingBag className="w-3 h-3 text-pink-400" />} 
+               {isWebsite ? "Page Visits" : "Total Orders"}
             </h4>
             <div className="flex items-end gap-3 mb-4">
-               <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">{totalOrders}</h3>
+               <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
+                 {isWebsite ? totalVisits : totalOrders}
+               </h3>
                <div className="flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 bg-pink-500/10 text-pink-400">
-                  {uniqueCustomers} Customers
+                  {isWebsite ? `${conversionRate}% Conversion` : `${uniqueCustomers} Customers`}
                </div>
             </div>
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Avg Value: <span className="text-white">${averageOrderValue.toFixed(0)}</span></p>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+              {isWebsite ? "Traffic Source:" : "Avg Value:"} <span className="text-white">{isWebsite ? "Organic Direct" : `$${averageOrderValue.toFixed(0)}`}</span>
+            </p>
          </div>
 
-         {/* Inventory Card */}
+         {/* Inventory / Packages Card */}
          <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-amber-500/50 transition-all duration-500">
             <div className="absolute -right-8 -top-8 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl group-hover:bg-amber-500/20 transition-all"></div>
             <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2">
-               <Package className="w-3 h-3 text-amber-400" /> In Stock
+               {isWebsite ? <Compass className="w-3 h-3 text-amber-400" /> : <Package className="w-3 h-3 text-amber-400" />} 
+               {isWebsite ? "Active Packages" : "In Stock"}
             </h4>
             <div className="flex items-end gap-3 mb-4">
-               <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">{inStockProducts}</h3>
+               <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
+                 {isWebsite ? store.products.length : inStockProducts}
+               </h3>
                <div className="flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 bg-amber-500/10 text-amber-400">
-                  {lowStockProducts.length} Needs Attention
+                  {isWebsite ? "Showcase Live" : `${lowStockProducts.length} Needs Attention`}
                </div>
             </div>
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Active Products: <span className="text-white">{store.products.length}</span></p>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+              {isWebsite ? "Tourism Template:" : "Active Products:"} <span className="text-white">{isWebsite ? "Active" : store.products.length}</span>
+            </p>
          </div>
       </div>
 
@@ -301,42 +329,50 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
          {/* Left Column: Funnel */}
          <div className="lg:col-span-1 space-y-8">
-            {/* Sales Funnel */}
+            {/* Sales / Leads Funnel */}
             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 shadow-2xl">
-               <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">Sales <span className="text-cyan-400">Funnel</span></h3>
+               <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">
+                 {isWebsite ? 'Leads' : 'Sales'} <span className="text-cyan-400">Funnel</span>
+               </h3>
                <div className="space-y-6">
-                  {/* Step 1: Add to Cart */}
+                  {/* Step 1: Add to Cart / Visits */}
                   <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-purple-500/30 transition-all">
                      <div className="flex items-center gap-4">
                         <div className="w-10 h-10 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400 shadow-lg shadow-purple-500/5">
-                           <ShoppingBag className="w-5 h-5" />
+                           {isWebsite ? <Eye className="w-5 h-5" /> : <ShoppingBag className="w-5 h-5" />}
                         </div>
                         <div>
-                           <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Add to Cart</p>
-                           <h4 className="text-2xl font-black text-white">{totalCartAdds}</h4>
+                           <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                             {isWebsite ? "Website Visits" : "Add to Cart"}
+                           </p>
+                           <h4 className="text-2xl font-black text-white">{isWebsite ? totalVisits : totalCartAdds}</h4>
                         </div>
                      </div>
                   </div>
-                  {/* Step 2: Checkout */}
+                  {/* Step 2: Clicks / Checkout */}
                   <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-amber-500/30 transition-all">
                      <div className="flex items-center gap-4">
                         <div className="w-10 h-10 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-400 shadow-lg shadow-amber-500/5">
-                           <DollarSign className="w-5 h-5" />
+                           {isWebsite ? <Compass className="w-5 h-5" /> : <DollarSign className="w-5 h-5" />}
                         </div>
                         <div>
-                           <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Checkout</p>
-                           <h4 className="text-2xl font-black text-white">---</h4>
+                           <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                             {isWebsite ? "Package Clicks" : "Checkout"}
+                           </p>
+                           <h4 className="text-2xl font-black text-white">{isWebsite ? totalCartAdds : "---"}</h4>
                         </div>
                      </div>
                   </div>
-                  {/* Step 3: Purchased */}
+                  {/* Step 3: Purchased / Inquiries */}
                   <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-green-500/30 transition-all">
                      <div className="flex items-center gap-4">
                         <div className="w-10 h-10 bg-green-500/10 rounded-2xl flex items-center justify-center text-green-400 shadow-lg shadow-green-500/5">
                            <CheckCircle2 className="w-5 h-5" />
                         </div>
                         <div>
-                           <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Purchased</p>
+                           <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                             {isWebsite ? "Inquiries Submitted" : "Purchased"}
+                           </p>
                            <h4 className="text-2xl font-black text-white">{totalOrders}</h4>
                         </div>
                      </div>
@@ -348,10 +384,12 @@ export default async function AdminDashboard({ params, searchParams }: { params:
 
          {/* Right Column: Top Products and Heatmap */}
          <div className="lg:col-span-2 space-y-8">
-            {/* Best Sellers Ranked List */}
+            {/* Best Sellers / Popular Packages Ranked List */}
             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5">
                <div className="flex justify-between items-center mb-10">
-                  <h3 className="text-2xl font-black italic text-white tracking-tight">Best <span className="text-cyan-400">Sellers</span></h3>
+                  <h3 className="text-2xl font-black italic text-white tracking-tight">
+                    {isWebsite ? 'Popular' : 'Best'} <span className="text-cyan-400">{isWebsite ? 'Packages' : 'Sellers'}</span>
+                  </h3>
                   <div className="w-10 h-10 bg-cyan-500/10 rounded-full flex items-center justify-center text-cyan-400">🏆</div>
                </div>
                <div className="space-y-8">
@@ -364,11 +402,15 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                            </div>
                            <div>
                               <h4 className="text-lg font-black text-white group-hover:text-cyan-400 transition-colors line-clamp-1">{p.name}</h4>
-                              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{p.salesCount} Units Sold</p>
+                              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                {p.salesCount} {isWebsite ? 'Inquiries Received' : 'Units Sold'}
+                              </p>
                            </div>
                         </div>
                         <div className="text-right">
-                           <h5 className="text-xl font-black text-white">${(p.salesCount * p.price).toFixed(0)}</h5>
+                           <h5 className="text-xl font-black text-white">
+                             {isWebsite ? 'Live' : `$${(p.salesCount * p.price).toFixed(0)}`}
+                           </h5>
                         </div>
                      </div>
                   ))}
@@ -377,7 +419,9 @@ export default async function AdminDashboard({ params, searchParams }: { params:
 
             {/* Activity Heatmap */}
             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 overflow-x-auto">
-               <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">Activity <span className="text-amber-400">Heatmap</span></h3>
+               <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">
+                 {isWebsite ? 'Inquiry' : 'Activity'} <span className="text-amber-400">{isWebsite ? 'Activity' : 'Heatmap'}</span>
+               </h3>
                <div className="min-w-[700px]">
                   <div className="flex mb-4">
                      <div className="w-16 shrink-0" />
@@ -395,7 +439,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                               key={hIdx} 
                               className="flex-1 aspect-square rounded-lg transition-all hover:scale-125 cursor-help m-[2px] shadow-sm"
                               style={{ backgroundColor: `rgba(34, 211, 238, ${opacity})`, boxShadow: val > 0 ? '0 0 10px rgba(34, 211, 238, 0.2)' : 'none' }}
-                              title={`${val} orders at ${hIdx}:00 on ${day}`}
+                              title={`${val} ${isWebsite ? 'inquiries' : 'orders'} at ${hIdx}:00 on ${day}`}
                             />
                           );
                         })}
