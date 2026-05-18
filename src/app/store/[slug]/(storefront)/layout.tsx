@@ -140,7 +140,7 @@ export default async function StorefrontLayout({
 
   return (
     <div 
-      className={`theme-${store.template} flex flex-col min-h-screen transition-all duration-700 ${isOwner ? 'pt-10' : ''}`} 
+      className={`theme-${store.template} flex flex-col min-h-screen transition-all duration-700`} 
       style={customStyles}
     >
       <style dangerouslySetInnerHTML={{ __html: `
