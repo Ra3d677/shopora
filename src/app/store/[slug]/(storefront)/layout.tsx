@@ -252,7 +252,7 @@ export default async function StorefrontLayout({
           {children}
         </main>
         <div data-page="footer">
-          <Footer />
+          {store.type !== 'WEBSITE' && <Footer />}
         </div>
         <WhatsAppButton />
       </PreviewWrapper>

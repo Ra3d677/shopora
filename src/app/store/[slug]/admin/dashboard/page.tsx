@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic';
 import ExportButton from "./ExportButton";
 import DateFilter from "./DateFilter";
 import CustomerPreviewButton from "./CustomerPreviewButton";
+import TourismDemoSeedButton from "./TourismDemoSeedButton";
 
 export default async function AdminDashboard({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ range?: string }> }) {
   const { slug } = await params;
@@ -251,6 +252,8 @@ export default async function AdminDashboard({ params, searchParams }: { params:
            <ExportButton />
         </div>
       </div>
+
+      {isWebsite && <TourismDemoSeedButton storeId={store.id} />}
 
       {/* KPI Blocks - Row 1 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">

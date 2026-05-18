@@ -56,10 +56,14 @@ export default function Navbar({
   };
 
   
-  const headerLinks = storeSettings?.headerSettings?.links || [
+  const isWebsite = storeSettings?.type === 'WEBSITE';
+  const headerLinks = storeSettings?.headerSettings?.links || (isWebsite ? [
+    { id: 'home', label: 'Home', url: `/store/${slug}` },
+    { id: 'destinations', label: 'Destinations', url: `/store/${slug}#destinations` }
+  ] : [
     { id: 'home', label: t('home') || 'Home', url: `/store/${slug}` },
     { id: 'shop', label: t('shop') || 'Shop', url: `/store/${slug}/categories` }
-  ];
+  ]);
   const allItems = useCartStore((state) => state.items);
   // Filter by storeId
   const items = allItems.filter(item => item.storeId === storeId);
@@ -180,6 +184,7 @@ export default function Navbar({
           session={session}
           storeSettings={storeSettings}
           onMenuClick={() => setIsMobileMenuOpen(true)}
+          headerLinks={headerLinks}
         />
         <MobileMenuDrawer />
       </>
@@ -452,6 +457,7 @@ export default function Navbar({
           slug={slug || ''} 
           cartItemCount={cartItemCount}
           onMenuClick={() => setIsMobileMenuOpen(true)}
+          headerLinks={headerLinks}
         />
         <MobileMenuDrawer />
       </>
@@ -469,6 +475,7 @@ export default function Navbar({
           slug={slug || ''} 
           cartItemCount={cartItemCount}
           onMenuClick={() => setIsMobileMenuOpen(true)}
+          headerLinks={headerLinks}
         />
         <MobileMenuDrawer />
       </>
@@ -674,9 +681,8 @@ export default function Navbar({
   );
 }
 
-function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, onMenuClick }: any) {
+function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, onMenuClick, headerLinks }: any) {
   const [scrolled, setScrolled] = useState(false);
-  const headerLinks = storeSettings?.headerSettings?.links || [{ id: 'home', label: 'Home', url: `/store/${slug}` }, { id: 'shop', label: 'Shop', url: `/store/${slug}/categories` }];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -726,8 +732,7 @@ function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, 
   );
 }
 
-function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, onMenuClick }: any) {
-  const headerLinks = storeSettings?.headerSettings?.links || [{ id: 'home', label: 'Home', url: `/store/${slug}` }, { id: 'shop', label: 'Shop', url: `/store/${slug}/categories` }];
+function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, onMenuClick, headerLinks }: any) {
   return (
     <nav className="fixed top-0 w-full z-[100] bg-transparent py-8 text-white">
       <div className="container mx-auto px-8 md:px-16 flex justify-between items-center">
@@ -768,7 +773,7 @@ function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings
   );
 }
 
-function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSettings, onMenuClick }: any) {
+function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSettings, onMenuClick, headerLinks }: any) {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
@@ -779,11 +784,6 @@ function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSe
   }, []);
 
   const isHome = pathname === `/store/${slug}`;
-  const headerLinks = storeSettings?.headerSettings?.links || [
-    { id: '1', label: 'HOME', url: `/store/${slug}` },
-    { id: '2', label: 'SHOP', url: `/store/${slug}/categories` },
-    { id: '3', label: 'PRODUCTS', url: `/store/${slug}/products` }
-  ];
 
   return (
     <>
