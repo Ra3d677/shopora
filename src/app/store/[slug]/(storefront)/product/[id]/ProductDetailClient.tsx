@@ -136,7 +136,7 @@ export default function ProductDetailClient({ product, store }: { product: Produ
     }
   };
 
-  if (store.template === 'senno') {
+  if (store.type !== 'WEBSITE' && store.template === 'senno') {
     return (
       <SennoProductDetail 
         product={product} 

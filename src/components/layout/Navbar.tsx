@@ -232,54 +232,57 @@ export default function Navbar({
   };
 
   // Common User Menu Dropdown
-  const UserMenuDropdown = () => (
-    <div className="relative" ref={userMenuRef}>
-      <button 
-        onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} 
-        className="p-2 transition-all hover:scale-110 flex items-center" 
-        aria-label="User account"
-      >
-        {user && user.photoURL ? (
-           <img src={user.photoURL} alt="User" className="w-6 h-6 rounded-full border border-slate-600" />
-        ) : (
-           <UserIcon className="h-5 w-5" />
-        )}
-      </button>
-      
-      {isUserMenuOpen && mounted && (
-        <div className={`absolute ${lang === 'ar' ? 'left-0 origin-top-left' : 'right-0 origin-top-right'} mt-3 w-56 bg-white border border-slate-200 rounded-xl shadow-2xl py-2 z-50 transform transition-all`}>
-          {session ? (
-            <>
-              <div className="px-4 py-3 border-b border-slate-100 mb-1">
-                <p className="text-sm font-medium text-slate-900 truncate">{session.name || 'User'}</p>
-                <p className="text-xs text-slate-500 truncate">{session.email}</p>
-              </div>
-              <Link href={`/store/${slug}/account`} onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors">
-                <UserIcon className="w-4 h-4" /> {t('myAccount')}
-              </Link>
-              {session.role === 'superadmin' && (
-                <Link href="/admin" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors">
-                  <LayoutDashboard className="w-4 h-4" /> {t('adminPanel')}
-                </Link>
-              )}
-              <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors text-left mt-1 border-t border-slate-100 pt-3">
-                <LogOut className="w-4 h-4" /> {t('signOut')}
-              </button>
-            </>
+  const UserMenuDropdown = () => {
+    if (storeSettings?.type === 'WEBSITE') return null;
+    return (
+      <div className="relative" ref={userMenuRef}>
+        <button 
+          onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} 
+          className="p-2 transition-all hover:scale-110 flex items-center" 
+          aria-label="User account"
+        >
+          {user && user.photoURL ? (
+             <img src={user.photoURL} alt="User" className="w-6 h-6 rounded-full border border-slate-600" />
           ) : (
-            <>
-              <Link href={`/store/${slug}/login`} onClick={() => setIsUserMenuOpen(false)} className="block px-4 py-2.5 text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors">
-                {t('signIn')}
-              </Link>
-              <Link href={`/store/${slug}/register`} onClick={() => setIsUserMenuOpen(false)} className="block px-4 py-2.5 text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors">
-                {t('createAccount')}
-              </Link>
-            </>
+             <UserIcon className="h-5 w-5" />
           )}
-        </div>
-      )}
-    </div>
-  );
+        </button>
+        
+        {isUserMenuOpen && mounted && (
+          <div className={`absolute ${lang === 'ar' ? 'left-0 origin-top-left' : 'right-0 origin-top-right'} mt-3 w-56 bg-white border border-slate-200 rounded-xl shadow-2xl py-2 z-50 transform transition-all`}>
+            {session ? (
+              <>
+                <div className="px-4 py-3 border-b border-slate-100 mb-1">
+                  <p className="text-sm font-medium text-slate-900 truncate">{session.name || 'User'}</p>
+                  <p className="text-xs text-slate-500 truncate">{session.email}</p>
+                </div>
+                <Link href={`/store/${slug}/account`} onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors">
+                  <UserIcon className="w-4 h-4" /> {t('myAccount')}
+                </Link>
+                {session.role === 'superadmin' && (
+                  <Link href="/admin" onClick={() => setIsUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors">
+                    <LayoutDashboard className="w-4 h-4" /> {t('adminPanel')}
+                  </Link>
+                )}
+                <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors text-left mt-1 border-t border-slate-100 pt-3">
+                  <LogOut className="w-4 h-4" /> {t('signOut')}
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href={`/store/${slug}/login`} onClick={() => setIsUserMenuOpen(false)} className="block px-4 py-2.5 text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors">
+                  {t('signIn')}
+                </Link>
+                <Link href={`/store/${slug}/register`} onClick={() => setIsUserMenuOpen(false)} className="block px-4 py-2.5 text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-colors">
+                  {t('createAccount')}
+                </Link>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   const LanguageSwitcher = ({ dark = false }) => {
     const [isOpen, setIsOpen] = useState(false);

@@ -141,9 +141,26 @@ async function pruneOldAnalytics() {
 
 export async function seedTourismDemoData(storeId: string) {
   try {
-    // Delete existing products and categories for this store to remove clothing items
+    // Delete existing products, categories, and banners to clear clothing themes completely
     await prisma.product.deleteMany({ where: { storeId } });
     await prisma.category.deleteMany({ where: { storeId } });
+    await prisma.banner.deleteMany({ where: { storeId } });
+
+    // Create a breathtaking premium travel banner for the home screen
+    await prisma.banner.create({
+      data: {
+        title: "Pristine Luxury Escapes",
+        subtitle: "Embark on bespoke private villa getaways and custom curated alpine tours.",
+        imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80",
+        buttonText: "Explore Packages",
+        buttonLink: "#destinations",
+        showButton: true,
+        isActive: true,
+        position: "top",
+        targetPage: "home",
+        storeId
+      }
+    });
 
     // Create 3 beautiful Travel & Adventure categories
     const cat1 = await prisma.category.create({
