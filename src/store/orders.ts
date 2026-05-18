@@ -18,8 +18,8 @@ interface OrdersState {
   filtering: boolean;
   
   // Cache storage
-  cache: Record<string, QueryCache>;
-  activeRequests: Record<string, Promise<any>>;
+  cache: Record<string, QueryCache | undefined>;
+  activeRequests: Record<string, Promise<any> | undefined>;
 
   // Actions
   setFilters: (search: string, status: string, storeId: string) => void;
