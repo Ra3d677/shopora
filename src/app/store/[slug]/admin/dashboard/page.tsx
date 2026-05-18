@@ -248,7 +248,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       </div>
 
       {/* KPI Blocks - Row 1 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
          {/* Revenue Card */}
          <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-cyan-500/50 transition-all duration-500">
             <div className="absolute -right-8 -top-8 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all"></div>
@@ -266,24 +266,9 @@ export default async function AdminDashboard({ params, searchParams }: { params:
             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Vs Last Month: <span className="text-white">${prevRevenue.toFixed(0)}</span></p>
          </div>
 
-         {/* Visitors Card */}
-         <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-purple-500/50 transition-all duration-500">
-            <div className="absolute -right-8 -top-8 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-all"></div>
-            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2">
-               <Users className="w-3 h-3 text-purple-400" /> Total Visitors
-            </h4>
-            <div className="flex items-end gap-3 mb-4">
-               <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">{totalVisits}</h3>
-               <div className="flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 bg-purple-500/10 text-purple-400">
-                  {conversionRate}% Rate
-               </div>
-            </div>
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Daily Average: <span className="text-white">{(totalVisits/30).toFixed(0)}</span></p>
-         </div>
-
          {/* Orders Card */}
          <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-pink-500/50 transition-all duration-500">
-            <div className="absolute -right-8 -top-8 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl group-hover:bg-pink-500/20 transition-all"></div>
+            <div className="absolute -right-8 -top-top w-32 h-32 bg-pink-500/10 rounded-full blur-3xl group-hover:bg-pink-500/20 transition-all"></div>
             <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2">
                <ShoppingBag className="w-3 h-3 text-pink-400" /> Total Orders
             </h4>
@@ -314,25 +299,13 @@ export default async function AdminDashboard({ params, searchParams }: { params:
 
       {/* Main Grid Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-         {/* Left Column: Funnel and Traffic */}
+         {/* Left Column: Funnel */}
          <div className="lg:col-span-1 space-y-8">
             {/* Sales Funnel */}
             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 shadow-2xl">
                <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">Sales <span className="text-cyan-400">Funnel</span></h3>
                <div className="space-y-6">
-                  {/* Step 1 */}
-                  <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-cyan-500/30 transition-all">
-                     <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-cyan-500/10 rounded-2xl flex items-center justify-center text-cyan-400 shadow-lg shadow-cyan-500/5">
-                           <Eye className="w-5 h-5" />
-                        </div>
-                        <div>
-                           <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Visits</p>
-                           <h4 className="text-2xl font-black text-white">{totalVisits}</h4>
-                        </div>
-                     </div>
-                  </div>
-                  {/* Step 2 */}
+                  {/* Step 1: Add to Cart */}
                   <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-purple-500/30 transition-all">
                      <div className="flex items-center gap-4">
                         <div className="w-10 h-10 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400 shadow-lg shadow-purple-500/5">
@@ -343,9 +316,8 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                            <h4 className="text-2xl font-black text-white">{totalCartAdds}</h4>
                         </div>
                      </div>
-                     <span className="text-[10px] font-black text-slate-500">{totalVisits > 0 ? ((totalCartAdds/totalVisits)*100).toFixed(1) : 0}%</span>
                   </div>
-                  {/* Step 3 */}
+                  {/* Step 2: Checkout */}
                   <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-amber-500/30 transition-all">
                      <div className="flex items-center gap-4">
                         <div className="w-10 h-10 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-400 shadow-lg shadow-amber-500/5">
@@ -357,7 +329,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                         </div>
                      </div>
                   </div>
-                  {/* Step 4 */}
+                  {/* Step 3: Purchased */}
                   <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-green-500/30 transition-all">
                      <div className="flex items-center gap-4">
                         <div className="w-10 h-10 bg-green-500/10 rounded-2xl flex items-center justify-center text-green-400 shadow-lg shadow-green-500/5">
@@ -372,112 +344,10 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                   </div>
                </div>
             </div>
-
-            {/* Traffic Sources */}
-            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5">
-               <h3 className="text-xl font-black italic text-white mb-8 tracking-tight flex items-center gap-3">
-                 <Activity className="w-5 h-5 text-cyan-400" /> Traffic <span className="text-cyan-400">Sources</span>
-               </h3>
-               <div className="space-y-6">
-                  {[
-                    { name: 'Direct / Organic', value: totalVisits > 0 ? 100 : 0, color: 'bg-cyan-400' },
-                    { name: 'Search', value: 0, color: 'bg-purple-400' },
-                    { name: 'Social', value: 0, color: 'bg-amber-400' },
-                    { name: 'Ads', value: 0, color: 'bg-pink-400' }
-                  ].map((source) => (
-                    <div key={source.name} className="space-y-2">
-                       <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
-                          <span className="text-slate-400">{source.name}</span>
-                          <span className="text-white">{source.value}%</span>
-                       </div>
-                       <div className="w-full bg-[#0f111a] h-1.5 rounded-full overflow-hidden">
-                          <div className={`${source.color} h-full rounded-full shadow-[0_0_10px_rgba(34,211,238,0.2)]`} style={{ width: `${source.value}%` }}></div>
-                       </div>
-                    </div>
-                  ))}
-               </div>
-               <div className="mt-10 pt-8 border-t border-white/5 flex justify-between">
-                  <div>
-                     <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Avg AOV</p>
-                     <h4 className="text-xl font-black text-amber-400 italic">${averageOrderValue.toFixed(0)}</h4>
-                  </div>
-                  <div className="text-right">
-                     <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Unique Customers</p>
-                     <h4 className="text-xl font-black text-cyan-400 italic">{uniqueCustomers}</h4>
-                  </div>
-               </div>
-            </div>
-
-            {/* Smart Alerts */}
-            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5">
-               <h3 className="text-xl font-black italic text-white mb-8 tracking-tight flex items-center gap-3">
-                 <Activity className="w-5 h-5 text-amber-400" /> Smart <span className="text-amber-400">Alerts</span>
-               </h3>
-               <div className="space-y-4">
-                  {lowStockProducts.length > 0 && (
-                     <div className="bg-amber-500/5 border border-amber-500/20 p-5 rounded-3xl flex items-start gap-4">
-                        <Package className="w-5 h-5 text-amber-400 mt-1 shrink-0" />
-                        <div>
-                           <h5 className="text-[10px] font-black uppercase tracking-widest text-amber-400 mb-1">Low Inventory</h5>
-                           <p className="text-xs font-bold text-slate-400 leading-relaxed">
-                              {lowStockProducts[0].name} is critically low. Less than 5 units left.
-                           </p>
-                        </div>
-                     </div>
-                  )}
-                  <div className="bg-cyan-500/5 border border-cyan-500/20 p-5 rounded-3xl flex items-start gap-4">
-                     <TrendingUp className="w-5 h-5 text-cyan-400 mt-1 shrink-0" />
-                     <div>
-                        <h5 className="text-[10px] font-black uppercase tracking-widest text-cyan-400 mb-1">Conversion Growth</h5>
-                        <p className="text-xs font-bold text-slate-400 leading-relaxed">
-                           Conversion rate is {conversionRate}%. Aim for 2% for better ROI.
-                        </p>
-                     </div>
-                  </div>
-                  {leastSeller && (
-                    <div className="bg-purple-500/5 border border-purple-500/20 p-5 rounded-3xl flex items-start gap-4">
-                       <Activity className="w-5 h-5 text-purple-400 mt-1 shrink-0" />
-                       <div>
-                          <h5 className="text-[10px] font-black uppercase tracking-widest text-purple-400 mb-1">Stagnant Product</h5>
-                          <p className="text-xs font-bold text-slate-400 leading-relaxed">
-                             {leastSeller.name} hasn't sold much recently. Consider a discount?
-                          </p>
-                       </div>
-                    </div>
-                  )}
-               </div>
-            </div>
          </div>
 
-         {/* Right Column: Charts and Top Products */}
+         {/* Right Column: Top Products and Heatmap */}
          <div className="lg:col-span-2 space-y-8">
-            {/* Revenue Chart Placeholder / Area */}
-            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 min-h-[400px] flex flex-col relative overflow-hidden">
-               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(192,132,252,0.1),transparent)] pointer-events-none"></div>
-               <div className="flex justify-between items-center mb-10 relative z-10">
-                  <h3 className="text-2xl font-black italic text-white tracking-tight">Revenue <span className="text-purple-400">Trend</span></h3>
-                  <div className="bg-purple-500/10 text-purple-400 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border border-purple-500/20">Live</div>
-               </div>
-               <div className="flex items-end justify-between gap-2 h-[300px] mb-4 relative z-10 px-2">
-                  {trendData.map((h, i) => (
-                    <div key={i} className="flex-1 h-full flex flex-col justify-end group/bar relative">
-                       {/* The Actual Bar */}
-                       <div 
-                         className="w-full bg-cyan-400 rounded-t-md shadow-[0_0_15px_rgba(34,211,238,0.4)] border border-cyan-300/50 transition-all duration-700" 
-                         style={{ height: `${Math.max(h, 4)}%` }}
-                       />
-                       {/* Tooltip on hover */}
-                       <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] font-bold py-1 px-2 rounded opacity-0 group-hover/bar:opacity-100 transition-opacity z-50 whitespace-nowrap pointer-events-none">
-                          ${monthlyRevenue[i].toLocaleString()}
-                       </div>
-                    </div>
-                  ))}
-               </div>
-               <div className="flex justify-between mt-6 text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] px-2 relative z-10">
-                  <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
-               </div>
-            </div>
-
             {/* Best Sellers Ranked List */}
             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5">
                <div className="flex justify-between items-center mb-10">
@@ -486,21 +356,21 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                </div>
                <div className="space-y-8">
                   {topProducts.map((p, idx) => (
-                    <div key={p.id} className="flex items-center justify-between group">
-                       <div className="flex items-center gap-6">
-                          <span className="text-2xl font-black italic text-slate-800 group-hover:text-cyan-500/50 transition-colors">#{idx + 1}</span>
-                          <div className="w-16 h-16 bg-[#0f111a] rounded-2xl overflow-hidden border border-white/5 group-hover:border-cyan-500/30 transition-all shadow-xl">
-                             {p.image && <img src={p.image} className="w-full h-full object-cover" alt={p.name} />}
-                          </div>
-                          <div>
-                             <h4 className="text-lg font-black text-white group-hover:text-cyan-400 transition-colors line-clamp-1">{p.name}</h4>
-                             <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{p.salesCount} Units Sold</p>
-                          </div>
-                       </div>
-                       <div className="text-right">
-                          <h5 className="text-xl font-black text-white">${(p.salesCount * p.price).toFixed(0)}</h5>
-                       </div>
-                    </div>
+                     <div key={p.id} className="flex items-center justify-between group">
+                        <div className="flex items-center gap-6">
+                           <span className="text-2xl font-black italic text-slate-800 group-hover:text-cyan-500/50 transition-colors">#{idx + 1}</span>
+                           <div className="w-16 h-16 bg-[#0f111a] rounded-2xl overflow-hidden border border-white/5 group-hover:border-cyan-500/30 transition-all shadow-xl">
+                              {p.image && <img src={p.image} className="w-full h-full object-cover" alt={p.name} />}
+                           </div>
+                           <div>
+                              <h4 className="text-lg font-black text-white group-hover:text-cyan-400 transition-colors line-clamp-1">{p.name}</h4>
+                              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{p.salesCount} Units Sold</p>
+                           </div>
+                        </div>
+                        <div className="text-right">
+                           <h5 className="text-xl font-black text-white">${(p.salesCount * p.price).toFixed(0)}</h5>
+                        </div>
+                     </div>
                   ))}
                </div>
             </div>
@@ -516,20 +386,20 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                      ))}
                   </div>
                   {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, dIdx) => (
-                    <div key={day} className="flex items-center mb-1.5">
-                       <div className="w-16 shrink-0 text-[10px] font-black text-slate-400 uppercase tracking-widest">{day}</div>
-                       {heatmap[dIdx].map((val, hIdx) => {
-                         const opacity = Math.min(val * 0.3 + 0.05, 1);
-                         return (
-                           <div 
-                             key={hIdx} 
-                             className="flex-1 aspect-square rounded-lg transition-all hover:scale-125 cursor-help m-[2px] shadow-sm"
-                             style={{ backgroundColor: `rgba(34, 211, 238, ${opacity})`, boxShadow: val > 0 ? '0 0 10px rgba(34, 211, 238, 0.2)' : 'none' }}
-                             title={`${val} orders at ${hIdx}:00 on ${day}`}
-                           />
-                         );
-                       })}
-                    </div>
+                     <div key={day} className="flex items-center mb-1.5">
+                        <div className="w-16 shrink-0 text-[10px] font-black text-slate-400 uppercase tracking-widest">{day}</div>
+                        {heatmap[dIdx].map((val, hIdx) => {
+                          const opacity = Math.min(val * 0.3 + 0.05, 1);
+                          return (
+                            <div 
+                              key={hIdx} 
+                              className="flex-1 aspect-square rounded-lg transition-all hover:scale-125 cursor-help m-[2px] shadow-sm"
+                              style={{ backgroundColor: `rgba(34, 211, 238, ${opacity})`, boxShadow: val > 0 ? '0 0 10px rgba(34, 211, 238, 0.2)' : 'none' }}
+                              title={`${val} orders at ${hIdx}:00 on ${day}`}
+                            />
+                          );
+                        })}
+                     </div>
                   ))}
                </div>
             </div>
