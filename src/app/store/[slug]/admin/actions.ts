@@ -1,13 +1,27 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { uploadToCloudinary } from "@/lib/cloudinary";
+
+function revalidateStoreCache(slug: string) {
+  try {
+    updateTag(`store-${slug}`);
+    updateTag(`products-${slug}`);
+    updateTag(`categories-${slug}`);
+    updateTag(`banners-${slug}`);
+    updateTag(`settings-${slug}`);
+    updateTag(`template-${slug}`);
+  } catch (e) {
+    console.error("Cache Revalidation Error:", e);
+  }
+}
 
 export async function deleteProduct(slug: string, productId: string) {
   await prisma.product.delete({
     where: { id: productId }
   });
+  revalidateStoreCache(slug);
   revalidatePath("/", "layout");
 }
 
@@ -31,6 +45,7 @@ export async function addProduct(slug: string, productData: any) {
     }
   });
   
+  revalidateStoreCache(slug);
   revalidatePath("/", "layout");
 }
 
@@ -46,6 +61,7 @@ export async function updateProduct(slug: string, productId: string, updates: an
       colors: updates.colors ? JSON.stringify(updates.colors) : undefined,
     }
   });
+  revalidateStoreCache(slug);
   revalidatePath("/", "layout");
 }
 
@@ -53,6 +69,7 @@ export async function deleteCategory(slug: string, categoryId: string) {
   await prisma.category.delete({
     where: { id: categoryId }
   });
+  revalidateStoreCache(slug);
   revalidatePath("/", "layout");
 }
 
@@ -70,6 +87,7 @@ export async function addCategory(slug: string, categoryData: any) {
     }
   });
   
+  revalidateStoreCache(slug);
   revalidatePath("/", "layout");
 }
 
@@ -82,6 +100,7 @@ export async function updateCategory(slug: string, categoryId: string, updates: 
       parentId: parentId === "" ? null : parentId
     }
   });
+  revalidateStoreCache(slug);
   revalidatePath("/", "layout");
 }
 
@@ -90,6 +109,7 @@ export async function updateActiveTemplateAction(slug: string, template: string)
     where: { slug },
     data: { template }
   });
+  revalidateStoreCache(slug);
   revalidatePath("/", "layout");
 }
 
@@ -162,6 +182,7 @@ export async function saveStoreSettings(slug: string, settings: any) {
         settings: JSON.stringify(updatedSettings)
       }
     });
+    revalidateStoreCache(slug);
     revalidatePath(`/store/${slug}`, 'page');
     revalidatePath(`/store/${slug}/admin/colors`);
     revalidatePath(`/`, 'layout');
@@ -209,6 +230,7 @@ export async function saveBanners(slug: string, banners: any[]) {
       }
     }
 
+    revalidateStoreCache(slug);
     revalidatePath(`/store/${slug}`, 'layout');
     revalidatePath(`/store/${slug}/admin/banners`);
     revalidatePath(`/store/${slug}/(storefront)`, 'layout');
@@ -293,6 +315,7 @@ export async function updateStoreSettings(slug: string, updates: Record<string, 
         settings: JSON.stringify(settings)
       }
     });
+    revalidateStoreCache(slug);
     revalidatePath(`/store/${slug}`, 'page');
     revalidatePath(`/`, 'layout');
     return { success: true };

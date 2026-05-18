@@ -209,25 +209,23 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const bestSeller = topProducts[0]?.salesCount > 0 ? topProducts[0] : null;
   const leastSeller = allProductsWithSales.length > 0 ? bottomProducts[0] : null;
 
-  // Get all orders for this store (Broadest possible search for debugging)
-  const allStoreOrders = await prisma.order.findMany({
+  // Get aggregated daily metrics for this store to draw the line chart (egress optimized)
+  const dailyMetrics = await prisma.dailyMetric.findMany({
     where: {
       storeId: store.id
     },
     select: {
-      createdAt: true,
-      totalAmount: true
+      date: true,
+      revenue: true
     }
   });
 
-  const currentYear = now.getFullYear();
   const monthlyRevenue = Array(12).fill(0);
   
-  allStoreOrders.forEach(order => {
-    const d = new Date(order.createdAt);
-    // Include all years for now just to see if the chart moves
+  dailyMetrics.forEach(metric => {
+    const d = new Date(metric.date);
     const month = d.getMonth();
-    monthlyRevenue[month] += Number(order.totalAmount || 0);
+    monthlyRevenue[month] += Number(metric.revenue || 0);
   });
 
   const maxMonthRevenue = Math.max(...monthlyRevenue, 1);

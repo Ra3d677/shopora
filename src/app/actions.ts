@@ -48,6 +48,26 @@ export async function recordVisit(slug: string) {
         storeId: store.id
       }
     });
+
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+
+    await prisma.dailyMetric.upsert({
+      where: {
+        storeId_date: {
+          storeId: store.id,
+          date: today
+        }
+      },
+      update: {
+        visits: { increment: 1 }
+      },
+      create: {
+        storeId: store.id,
+        date: today,
+        visits: 1
+      }
+    });
   } catch (error) {
     console.error("Failed to record visit:", error);
   }
@@ -62,6 +82,26 @@ export async function recordCartAdd(slug: string, productId: string) {
       data: {
         storeId: store.id,
         productId
+      }
+    });
+
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+
+    await prisma.dailyMetric.upsert({
+      where: {
+        storeId_date: {
+          storeId: store.id,
+          date: today
+        }
+      },
+      update: {
+        cartAdds: { increment: 1 }
+      },
+      create: {
+        storeId: store.id,
+        date: today,
+        cartAdds: 1
       }
     });
   } catch (error) {

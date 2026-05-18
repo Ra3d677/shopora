@@ -1,6 +1,7 @@
 import { Store as PrismaStore } from "@prisma/client";
 import { Product as CustomProduct, Category as CustomCategory, Banner as CustomBanner, StoreSettings } from "./types";
 import prisma from "./prisma";
+import { unstable_cache } from "next/cache";
 
 // Re-export types with our custom extensions
 export type Product = CustomProduct;
@@ -46,96 +47,141 @@ export const getAllStores = async () => {
 };
 
 export const getStoreBySlug = async (slug: string) => {
-  const store = await prisma.store.findUnique({
-    where: { slug },
-    include: {
-      products: true,
-      categories: true,
-      banners: true,
-    },
-  });
-  
-  if (store) {
-    let settings = {};
-    try {
-      settings = typeof store.settings === 'string' ? JSON.parse(store.settings) : (store.settings || {});
-    } catch (e) {
-      console.error("Settings Parse Error:", e);
-    }
+  return unstable_cache(
+    async () => {
+      const store = await prisma.store.findUnique({
+        where: { slug },
+        include: {
+          products: true,
+          categories: true,
+          banners: true,
+        },
+      });
+      
+      if (store) {
+        let settings = {};
+        try {
+          settings = typeof store.settings === 'string' ? JSON.parse(store.settings) : (store.settings || {});
+        } catch (e) {
+          console.error("Settings Parse Error:", e);
+        }
 
-    const products = store.products.map(p => {
-      let images = [], colors = [], sizes = [];
-      try {
-        images = typeof p.images === 'string' ? JSON.parse(p.images || '[]') : p.images || [];
-        colors = typeof p.colors === 'string' ? JSON.parse(p.colors || '[]') : p.colors || [];
-        sizes = typeof p.sizes === 'string' ? JSON.parse(p.sizes || '[]') : p.sizes || [];
-      } catch (e) {
-        console.error("Product Data Parse Error:", e);
+        const products = store.products.map(p => {
+          let images = [], colors = [], sizes = [];
+          try {
+            images = typeof p.images === 'string' ? JSON.parse(p.images || '[]') : p.images || [];
+            colors = typeof p.colors === 'string' ? JSON.parse(p.colors || '[]') : p.colors || [];
+            sizes = typeof p.sizes === 'string' ? JSON.parse(p.sizes || '[]') : p.sizes || [];
+          } catch (e) {
+            console.error("Product Data Parse Error:", e);
+          }
+          return { ...p, images, colors, sizes };
+        });
+
+        return {
+          ...store,
+          settings,
+          products: products as Product[]
+        } as unknown as Store;
       }
-      return { ...p, images, colors, sizes };
-    });
-
-    return {
-      ...store,
-      settings,
-      products: products as Product[]
-    } as unknown as Store;
-  }
-  return null;
+      return null;
+    },
+    [`store-slug-${slug}`],
+    {
+      tags: [`store-${slug}`],
+      revalidate: 600
+    }
+  )();
 };
 
 export const getStoreById = async (id: string) => {
-  const store = await prisma.store.findUnique({
-    where: { id },
-    include: {
-      products: true,
-      categories: true,
-      banners: true,
-    },
-  });
+  return unstable_cache(
+    async () => {
+      const store = await prisma.store.findUnique({
+        where: { id },
+        include: {
+          products: true,
+          categories: true,
+          banners: true,
+        },
+      });
 
-  if (store) {
-    return {
-      ...store,
-      settings: typeof store.settings === 'string' ? JSON.parse(store.settings) : store.settings,
-      products: store.products.map(p => ({
-        ...p,
-        images: typeof p.images === 'string' ? JSON.parse(p.images || '[]') : p.images || [],
-        colors: typeof p.colors === 'string' ? JSON.parse(p.colors || '[]') : p.colors || [],
-        sizes: typeof p.sizes === 'string' ? JSON.parse(p.sizes || '[]') : p.sizes || []
-      })) as Product[]
-    } as unknown as Store;
-  }
-  return null;
+      if (store) {
+        return {
+          ...store,
+          settings: typeof store.settings === 'string' ? JSON.parse(store.settings) : store.settings,
+          products: store.products.map(p => ({
+            ...p,
+            images: typeof p.images === 'string' ? JSON.parse(p.images || '[]') : p.images || [],
+            colors: typeof p.colors === 'string' ? JSON.parse(p.colors || '[]') : p.colors || [],
+            sizes: typeof p.sizes === 'string' ? JSON.parse(p.sizes || '[]') : p.sizes || []
+          })) as Product[]
+        } as unknown as Store;
+      }
+      return null;
+    },
+    [`store-id-${id}`],
+    {
+      tags: [`store-id-${id}`],
+      revalidate: 600
+    }
+  )();
 };
 
 export const getStoreProducts = async (slug: string) => {
-  const store = await prisma.store.findUnique({
-    where: { slug },
-    include: { products: true },
-  });
-  return store?.products.map(p => ({ 
-    ...p, 
-    images: typeof p.images === 'string' ? JSON.parse(p.images || '[]') : p.images || [],
-    colors: typeof p.colors === 'string' ? JSON.parse(p.colors || '[]') : p.colors || [],
-    sizes: typeof p.sizes === 'string' ? JSON.parse(p.sizes || '[]') : p.sizes || []
-  })) as Product[] || [];
+  return unstable_cache(
+    async () => {
+      const store = await prisma.store.findUnique({
+        where: { slug },
+        include: { products: true },
+      });
+      return store?.products.map(p => ({ 
+        ...p, 
+        images: typeof p.images === 'string' ? JSON.parse(p.images || '[]') : p.images || [],
+        colors: typeof p.colors === 'string' ? JSON.parse(p.colors || '[]') : p.colors || [],
+        sizes: typeof p.sizes === 'string' ? JSON.parse(p.sizes || '[]') : p.sizes || []
+      })) as Product[] || [];
+    },
+    [`products-slug-${slug}`],
+    {
+      tags: [`products-${slug}`],
+      revalidate: 600
+    }
+  )();
 };
 
 export const getStoreCategories = async (slug: string) => {
-  const store = await prisma.store.findUnique({
-    where: { slug },
-    include: { categories: true },
-  });
-  return store?.categories || [];
+  return unstable_cache(
+    async () => {
+      const store = await prisma.store.findUnique({
+        where: { slug },
+        include: { categories: true },
+      });
+      return store?.categories || [];
+    },
+    [`categories-slug-${slug}`],
+    {
+      tags: [`categories-${slug}`],
+      revalidate: 600
+    }
+  )();
 };
 
 export const getStoreBannersBySlug = async (slug: string) => {
-  const store = await prisma.store.findUnique({
-    where: { slug },
-    include: { banners: true },
-  });
-  return store?.banners || [];
+  return unstable_cache(
+    async () => {
+      const store = await prisma.store.findUnique({
+        where: { slug },
+        include: { banners: true },
+      });
+      return store?.banners || [];
+    },
+    [`banners-slug-${slug}`],
+    {
+      tags: [`banners-${slug}`],
+      revalidate: 600
+    }
+  )();
 };
 
 export const getStoreMedia = async (slug: string) => {
@@ -147,27 +193,45 @@ export const getStoreMedia = async (slug: string) => {
 };
 
 export const getStoreSettingsBySlug = async (slug: string) => {
-  const store = await prisma.store.findUnique({
-    where: { slug },
-  });
-  if (!store) return {};
-  const settings = JSON.parse(store.settings);
-  return { 
-    ...settings, 
-    storeName: store.name,
-    facebookPixelId: store.facebookPixelId,
-    tiktokPixelId: store.tiktokPixelId,
-    snapchatPixelId: store.snapchatPixelId,
-    googleAnalyticsId: store.googleAnalyticsId
-  };
+  return unstable_cache(
+    async () => {
+      const store = await prisma.store.findUnique({
+        where: { slug },
+      });
+      if (!store) return {};
+      const settings = JSON.parse(store.settings);
+      return { 
+        ...settings, 
+        storeName: store.name,
+        facebookPixelId: store.facebookPixelId,
+        tiktokPixelId: store.tiktokPixelId,
+        snapchatPixelId: store.snapchatPixelId,
+        googleAnalyticsId: store.googleAnalyticsId
+      };
+    },
+    [`settings-slug-${slug}`],
+    {
+      tags: [`settings-${slug}`],
+      revalidate: 600
+    }
+  )();
 };
 
 export const getStoreTemplate = async (slug: string) => {
-  const store = await prisma.store.findUnique({
-    where: { slug },
-    select: { template: true },
-  });
-  return store?.template || 'modern';
+  return unstable_cache(
+    async () => {
+      const store = await prisma.store.findUnique({
+        where: { slug },
+        select: { template: true },
+      });
+      return store?.template || 'modern';
+    },
+    [`template-slug-${slug}`],
+    {
+      tags: [`template-${slug}`],
+      revalidate: 600
+    }
+  )();
 };
 
 export const createStore = async (storeData: { name: string; slug: string; ownerId: string; template: string }) => {

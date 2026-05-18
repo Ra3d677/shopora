@@ -172,3 +172,17 @@ model CartAdd {
   @@index([storeId])
   @@index([createdAt])
 }
+
+model DailyMetric {
+  id        String   @id @default(cuid())
+  storeId   String
+  date      DateTime // Midnight UTC of the day represented
+  visits    Int      @default(0)
+  cartAdds  Int      @default(0)
+  orders    Int      @default(0)
+  revenue   Float    @default(0.0)
+
+  @@unique([storeId, date])
+  @@index([storeId])
+  @@index([date])
+}

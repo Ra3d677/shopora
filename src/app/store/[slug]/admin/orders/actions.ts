@@ -62,6 +62,33 @@ export async function createOrder(data: {
 
     revalidatePath(`/store/[slug]/admin/orders`, 'page');
 
+    // Record order metric in DailyMetric table (egress optimized)
+    try {
+      const today = new Date();
+      today.setUTCHours(0, 0, 0, 0);
+
+      await prisma.dailyMetric.upsert({
+        where: {
+          storeId_date: {
+            storeId: data.storeId,
+            date: today
+          }
+        },
+        update: {
+          orders: { increment: 1 },
+          revenue: { increment: data.totalAmount }
+        },
+        create: {
+          storeId: data.storeId,
+          date: today,
+          orders: 1,
+          revenue: data.totalAmount
+        }
+      });
+    } catch (e) {
+      console.error("Failed to record order metric:", e);
+    }
+
     // Update stock for each variant
     try {
       for (const item of data.items) {
