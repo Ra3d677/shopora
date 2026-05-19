@@ -15,6 +15,24 @@ import PixelTracker from "@/components/layout/PixelTracker";
 import KineticBackground from "@/components/ui/premium/KineticBackground";
 import { Suspense } from "react";
 import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
+function hexToRgb(hex: string) {
+  if (!hex) return '6, 182, 212';
+  const cleanHex = hex.replace('#', '');
+  if (cleanHex.length === 3) {
+    const r = parseInt(cleanHex[0] + cleanHex[0], 16);
+    const g = parseInt(cleanHex[1] + cleanHex[1], 16);
+    const b = parseInt(cleanHex[2] + cleanHex[2], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  if (cleanHex.length === 6) {
+    const r = parseInt(cleanHex.substring(0, 2), 16);
+    const g = parseInt(cleanHex.substring(2, 4), 16);
+    const b = parseInt(cleanHex.substring(4, 6), 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '6, 182, 212';
+}
+
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const fetchCache = 'force-no-store';
@@ -103,6 +121,7 @@ export default async function StorefrontLayout({
 
   const customStyles = {
     '--dynamic-primary': colorSystem.brand?.primary || store.primaryColor,
+    '--dynamic-primary-rgb': hexToRgb(colorSystem.brand?.primary || store.primaryColor || '#22d3ee'),
     '--color-bg-home': colorSystem.backgrounds?.home || defaultHomeBg,
     '--color-bg-shop': colorSystem.backgrounds?.shop || '#ffffff',
     '--color-bg-categories': colorSystem.backgrounds?.categories || '#ffffff',
@@ -216,6 +235,51 @@ export default async function StorefrontLayout({
         .current-text-color {
           color: var(--current-text);
         }
+
+        /* Override cyan colors in WEBSITE store type dynamically */
+        ${store.type === 'WEBSITE' ? `
+          .text-cyan-400 {
+            color: var(--dynamic-primary, #22d3ee) !important;
+          }
+          .bg-cyan-500 {
+            background-color: var(--dynamic-primary, #06b6d4) !important;
+          }
+          .bg-cyan-500\\/10 {
+            background-color: rgba(var(--dynamic-primary-rgb, 6, 182, 212), 0.1) !important;
+          }
+          .bg-cyan-500\\/20 {
+            background-color: rgba(var(--dynamic-primary-rgb, 6, 182, 212), 0.2) !important;
+          }
+          .bg-cyan-950\\/40 {
+            background-color: rgba(var(--dynamic-primary-rgb, 6, 182, 212), 0.05) !important;
+          }
+          .border-cyan-500 {
+            border-color: var(--dynamic-primary, #06b6d4) !important;
+          }
+          .border-cyan-500\\/50 {
+            border-color: rgba(var(--dynamic-primary-rgb, 6, 182, 212), 0.5) !important;
+          }
+          .hover\\:border-cyan-500\\/50:hover {
+            border-color: rgba(var(--dynamic-primary-rgb, 6, 182, 212), 0.5) !important;
+          }
+          .hover\\:bg-cyan-400:hover {
+            background-color: var(--dynamic-primary, #22d3ee) !important;
+          }
+          .hover\\:bg-cyan-300:hover {
+            background-color: var(--dynamic-primary, #67e8f9) !important;
+          }
+          .hover\\:text-cyan-400:hover {
+            color: var(--dynamic-primary, #22d3ee) !important;
+          }
+          .group-hover\\:text-cyan-400:hover, 
+          .group:hover .group-hover\\:text-cyan-400 {
+            color: var(--dynamic-primary, #22d3ee) !important;
+          }
+          .group-hover\\:bg-cyan-500\\/20:hover, 
+          .group:hover .group-hover\\:bg-cyan-500\\/20 {
+            background-color: rgba(var(--dynamic-primary-rgb, 6, 182, 212), 0.2) !important;
+          }
+        ` : ''}
       `}} />
 
       {isSignature && <CustomCursor />}

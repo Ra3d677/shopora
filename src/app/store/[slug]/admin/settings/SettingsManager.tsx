@@ -19,11 +19,13 @@ const PRESET_GRADIENTS = [
 export default function SettingsManager({ 
   initialSettings, 
   activeTemplate,
-  slug
+  slug,
+  storeType = 'ECOMMERCE'
 }: { 
   initialSettings: StoreSettings;
   activeTemplate: string;
   slug: string;
+  storeType?: string;
 }) {
   const [settings, setSettings] = useState<StoreSettings>(initialSettings);
   const [isPending, startTransition] = useTransition();
@@ -613,14 +615,24 @@ export default function SettingsManager({
                                 onChange={(e) => setSynthTarget({...synthTarget, page: e.target.value})}
                                 className="w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer"
                               >
-                                 <option value="all" className="bg-slate-900">Global (Full Mesh)</option>
-                                 <option value="home" className="bg-slate-900">Nexus (Home)</option>
-                                 <option value="shop" className="bg-slate-900">Archive (Shop)</option>
-                                 <option value="categories" className="bg-slate-900">Neural (Categories)</option>
-                                 <option value="product" className="bg-slate-900">Signal (Product)</option>
-                                 <option value="cart" className="bg-slate-900">Gateway (Cart)</option>
-                                 <option value="checkout" className="bg-slate-900">Secure (Checkout)</option>
-                                 <option value="footer" className="bg-slate-900">Base (Footer)</option>
+                                {storeType === 'WEBSITE' ? (
+                                  <>
+                                    <option value="all" className="bg-slate-900">Global (Full Mesh)</option>
+                                    <option value="home" className="bg-slate-900">Nexus (Home)</option>
+                                    <option value="footer" className="bg-slate-900">Base (Footer)</option>
+                                  </>
+                                ) : (
+                                  <>
+                                    <option value="all" className="bg-slate-900">Global (Full Mesh)</option>
+                                    <option value="home" className="bg-slate-900">Nexus (Home)</option>
+                                    <option value="shop" className="bg-slate-900">Archive (Shop)</option>
+                                    <option value="categories" className="bg-slate-900">Neural (Categories)</option>
+                                    <option value="product" className="bg-slate-900">Signal (Product)</option>
+                                    <option value="cart" className="bg-slate-900">Gateway (Cart)</option>
+                                    <option value="checkout" className="bg-slate-900">Secure (Checkout)</option>
+                                    <option value="footer" className="bg-slate-900">Base (Footer)</option>
+                                  </>
+                                )}
                               </select>
                            </div>
                         </div>
@@ -740,14 +752,14 @@ export default function SettingsManager({
 
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                     {/* Page Specific Settings */}
-                    {[
+                    {([
                       { id: 'home', label: 'Home Page', desc: 'Main entry point and landing experience.' },
                       { id: 'shop', label: 'Product Gallery', desc: 'Main shop and product listing grid.' },
                       { id: 'categories', label: 'Collections', desc: 'Category browsing and discovery.' },
                       { id: 'product', label: 'Product Details', desc: 'Individual product showcase page.' },
                       { id: 'cart', label: 'Shopping Cart', desc: 'Review and cart management layer.' },
                       { id: 'checkout', label: 'Checkout Phase', desc: 'Transaction and secure payment node.' }
-                    ].map((page) => (
+                    ] as { id: string; label: string; desc: string }[]).filter(page => storeType !== 'WEBSITE' || page.id === 'home').map((page) => (
                       <div key={page.id} className="bg-white/[0.02] p-8 rounded-[2rem] border border-white/[0.05] hover:border-white/10 transition-all group/page">
                         <div className="flex items-center gap-3 mb-8">
                           <div className="w-2 h-2 rounded-full bg-cyan-500 group-hover/page:scale-150 transition-transform"></div>

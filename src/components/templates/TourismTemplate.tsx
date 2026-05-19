@@ -528,7 +528,13 @@ export default function TourismTemplate({
   };
 
   return (
-    <div className="bg-[#0f111a] text-slate-100 min-h-screen font-sans antialiased overflow-x-hidden">
+    <div 
+      className="min-h-screen font-sans antialiased overflow-x-hidden"
+      style={{ 
+        background: 'var(--color-bg-home, #0f111a)', 
+        color: 'var(--color-text-home, #f1f5f9)' 
+      }}
+    >
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap');
         body {
@@ -545,7 +551,13 @@ export default function TourismTemplate({
       })}
 
       {/* Simple Footer */}
-      <footer className="py-12 border-t border-white/10 bg-[#070913] text-center">
+      <footer 
+        className="py-12 border-t border-white/10 text-center"
+        style={{ 
+          background: 'var(--color-footer-bg, #070913)', 
+          color: 'var(--color-footer-text, #64748b)' 
+        }}
+      >
         <EditableText 
           content={settings.tourismSettings?.footerText || `© 2026 ${settings.storeName || "Company"}. All rights reserved.`} 
           slug={slug} 
