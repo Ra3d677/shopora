@@ -224,14 +224,14 @@ export default function SettingsManager({
                       </div>
                       <div className="flex items-center gap-3 px-4">
                         <div className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse"></div>
-                        <p className="text-[9px] text-slate-500 font-medium tracking-wide">Global standard: 32x32px or 64x64px Resource.</p>
+                        <p className={`text-[9px] text-slate-500 font-medium tracking-wide ${language === 'ar' ? 'font-arabic' : ''}`}>{language === 'ar' ? "المقاس القياسي: 32x32 بكسل أو 64x64 بكسل." : "Global standard: 32x32px or 64x64px Resource."}</p>
                       </div>
                     </div>
 
                     <div className="lg:col-span-2 bg-white/[0.02] p-8 rounded-[2rem] border border-white/[0.03] flex flex-col md:flex-row gap-10">
                       <div className="flex-1 space-y-6">
                         <div className="flex justify-between items-center px-2">
-                          <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Header Logo Scale</h4>
+                          <h4 className={`text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ${language === 'ar' ? 'font-arabic' : ''}`}>{language === 'ar' ? "حجم شعار الترويسة" : "Header Logo Scale"}</h4>
                           <span className="text-[10px] font-black text-cyan-400 bg-cyan-500/10 px-4 py-1.5 rounded-full border border-cyan-500/20">{settings.headerSettings?.logoHeight || 40}PX</span>
                         </div>
                         <input 
@@ -248,9 +248,9 @@ export default function SettingsManager({
                       <div className="w-[1px] bg-white/5 hidden md:block"></div>
 
                       <div className="flex-1 flex items-center justify-between">
-                        <div>
-                          <h4 className="text-[10px] font-black text-white uppercase tracking-[0.2em]">Alpha Synthesis</h4>
-                          <p className="text-[9px] text-slate-500 mt-2 font-medium tracking-wide">Remove background from header logo resource.</p>
+                        <div className={`${language === 'ar' ? 'text-right' : ''}`}>
+                          <h4 className={`text-[10px] font-black text-white uppercase tracking-[0.2em] ${language === 'ar' ? 'font-arabic' : ''}`}>{language === 'ar' ? "دمج الشفافية (Alpha)" : "Alpha Synthesis"}</h4>
+                          <p className={`text-[9px] text-slate-500 mt-2 font-medium tracking-wide ${language === 'ar' ? 'font-arabic' : ''}`}>{language === 'ar' ? "إزالة الخلفية من ملف الشعار في الترويسة." : "Remove background from header logo resource."}</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input 
@@ -275,32 +275,32 @@ export default function SettingsManager({
                 <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
                   <div className="flex items-center gap-4 mb-10">
                     <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Comm Channels</h2>
+                    <h2 className={`text-2xl font-black text-white italic uppercase tracking-tighter ${language === 'ar' ? 'font-arabic' : ''}`}>{language === 'ar' ? "قنوات الاتصال" : "Comm Channels"}</h2>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Uplink Email</label>
+                      <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{language === 'ar' ? "البريد الإلكتروني للاتصال" : "Uplink Email"}</label>
                       <input 
                         type="email" 
                         value={settings.contactInfo?.email || ''} 
                         onChange={e => updateSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), email: e.target.value}})} 
-                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black italic" 
+                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black italic ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
                         placeholder="support@hq.com"
                       />
                     </div>
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Voice Direct</label>
+                      <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{language === 'ar' ? "رقم الهاتف المباشر" : "Voice Direct"}</label>
                       <input 
                         type="text" 
                         value={settings.contactInfo?.phone || ''} 
                         onChange={e => updateSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), phone: e.target.value}})} 
-                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black tracking-widest" 
+                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black tracking-widest ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
                         placeholder="+1 (000) 000-0000"
                       />
                     </div>
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Secure WhatsApp</label>
+                      <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{language === 'ar' ? "رقم الواتساب الآمن" : "Secure WhatsApp"}</label>
                       <input 
                         type="text" 
                         value={settings.contactInfo?.whatsapp || ''} 
@@ -319,17 +319,17 @@ export default function SettingsManager({
                 <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
                   <div className="flex items-center gap-4 mb-10">
                     <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Header Topology</h2>
+                    <h2 className={`text-2xl font-black text-white italic uppercase tracking-tighter ${language === 'ar' ? 'font-arabic' : ''}`}>{t('headerTopology')}</h2>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {[
-                      { id: 'default', name: 'Legacy', desc: 'Original structure parameters.' },
-                      { id: 'standard', name: 'Symmetric', desc: 'Logo Left, Balanced Central Matrix.' },
-                      { id: 'centered', name: 'Focus', desc: 'Links Left, Identity Center Node.' },
-                      { id: 'minimal', name: 'Discrete', desc: 'Stealth Identity, Action Focused.' },
-                      { id: 'luxury', name: 'High-End', desc: 'Vertical Stacked Premium Identity.' },
-                      { id: 'hamburger', name: 'Fluid', desc: 'Mobile-First Dynamic Interface.' }
+                      { id: 'default', name: language === 'ar' ? 'تقليدي' : 'Legacy', desc: language === 'ar' ? 'المعايير والهيكلية الأصلية.' : 'Original structure parameters.' },
+                      { id: 'standard', name: language === 'ar' ? 'متماثل' : 'Symmetric', desc: language === 'ar' ? 'الشعار على اليسار، مع روابط متوازنة في المنتصف.' : 'Logo Left, Balanced Central Matrix.' },
+                      { id: 'centered', name: language === 'ar' ? 'تركيز' : 'Focus', desc: language === 'ar' ? 'الروابط على اليسار، الشعار في المنتصف.' : 'Links Left, Identity Center Node.' },
+                      { id: 'minimal', name: language === 'ar' ? 'مبسط' : 'Discrete', desc: language === 'ar' ? 'شعار خفي، يركز على الإجراءات.' : 'Stealth Identity, Action Focused.' },
+                      { id: 'luxury', name: language === 'ar' ? 'فاخر' : 'High-End', desc: language === 'ar' ? 'هوية مكدسة رأسياً بمظهر فاخر.' : 'Vertical Stacked Premium Identity.' },
+                      { id: 'hamburger', name: language === 'ar' ? 'مرن (همبرغر)' : 'Fluid', desc: language === 'ar' ? 'واجهة ديناميكية مصممة للهواتف أولاً.' : 'Mobile-First Dynamic Interface.' }
                     ].map((layout) => (
                       <label 
                         key={layout.id} 
@@ -356,8 +356,8 @@ export default function SettingsManager({
                              className="sr-only"
                            />
                         </div>
-                        <p className={`font-black text-base mb-2 transition-colors uppercase italic ${(settings.headerSettings?.layout || 'default') === layout.id ? 'text-cyan-400' : 'text-white'}`}>{layout.name}</p>
-                        <p className="text-[10px] text-slate-500 leading-relaxed font-medium uppercase tracking-widest">{layout.desc}</p>
+                        <p className={`font-black text-base mb-2 transition-colors uppercase italic ${language === 'ar' ? 'font-arabic' : ''} ${(settings.headerSettings?.layout || 'default') === layout.id ? 'text-cyan-400' : 'text-white'}`}>{layout.name}</p>
+                        <p className={`text-[10px] text-slate-500 leading-relaxed font-medium uppercase tracking-widest ${language === 'ar' ? 'font-arabic' : ''}`}>{layout.desc}</p>
                       </label>
                     ))}
                   </div>
@@ -367,14 +367,14 @@ export default function SettingsManager({
                    <div className="flex justify-between items-center mb-10">
                     <div className="flex items-center gap-4">
                       <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-                      <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Navigation Nodes</h2>
+                      <h2 className={`text-2xl font-black text-white italic uppercase tracking-tighter ${language === 'ar' ? 'font-arabic' : ''}`}>{t('navigationNodes')}</h2>
                     </div>
                     <button 
                       type="button"
                       onClick={() => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: [...(settings.headerSettings?.links || [{id: '1', label: 'Home', url: `/store/${slug}`}, {id: '2', label: 'Shop', url: `/store/${slug}/categories`}]), {id: Math.random().toString(36).substr(2, 9), label: 'New Link', url: '#'}]}})}
-                      className="px-8 py-4 bg-cyan-500 text-white rounded-[1.5rem] font-black text-[10px] uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_10px_25px_rgba(6,182,212,0.3)]"
+                      className={`px-8 py-4 bg-cyan-500 text-white rounded-[1.5rem] font-black text-[10px] uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_10px_25px_rgba(6,182,212,0.3)] ${language === 'ar' ? 'font-arabic' : ''}`}
                     >
-                      + Inject Link
+                      {t('injectLink')}
                     </button>
                   </div>
                   
@@ -386,7 +386,7 @@ export default function SettingsManager({
                       <div key={link.id} className="flex gap-6 items-center p-8 bg-white/[0.02] border border-white/[0.05] rounded-[2rem] hover:border-white/10 transition-all group/node relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl -z-10 group-hover/node:bg-cyan-500/5 transition-all"></div>
                         <div className="flex-1 space-y-4">
-                           <label className="block text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Label</label>
+                           <label className={`block text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('label')}</label>
                            <input 
                              type="text"
                              value={link.label}
@@ -399,11 +399,11 @@ export default function SettingsManager({
                                newLinks[idx].label = e.target.value;
                                updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
                              }}
-                             className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-5 py-3 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-black text-xs uppercase italic"
+                             className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-5 py-3 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-black text-xs uppercase italic ${language === 'ar' ? 'font-arabic text-right' : ''}`}
                            />
                         </div>
                         <div className="flex-[2] space-y-4">
-                           <label className="block text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Uplink Path</label>
+                           <label className={`block text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('uplinkPath')}</label>
                            <input 
                              type="text"
                              value={link.url}
@@ -420,21 +420,21 @@ export default function SettingsManager({
                            />
                         </div>
                         <div className="pt-8">
-                          <button 
-                            type="button"
-                            onClick={() => {
-                               const currentLinks = (settings.headerSettings?.links?.length ?? 0) > 0 ? settings.headerSettings!.links! : [
-                                  {id: '1', label: 'Home', url: `/store/${slug}`},
-                                  {id: '2', label: 'Shop', url: `/store/${slug}/categories`}
-                               ];
-                               const newLinks = [...currentLinks];
-                               newLinks.splice(idx, 1);
-                               updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
-                            }}
-                            className="w-12 h-12 bg-rose-500/5 text-rose-500 border border-rose-500/10 rounded-2xl flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all shadow-xl"
-                          >
-                            <Trash2 size={20} />
-                          </button>
+                           <button 
+                             type="button"
+                             onClick={() => {
+                                const currentLinks = (settings.headerSettings?.links?.length ?? 0) > 0 ? settings.headerSettings!.links! : [
+                                   {id: '1', label: 'Home', url: `/store/${slug}`},
+                                   {id: '2', label: 'Shop', url: `/store/${slug}/categories`}
+                                ];
+                                const newLinks = [...currentLinks];
+                                newLinks.splice(idx, 1);
+updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: newLinks}});
+                             }}
+                             className="w-12 h-12 bg-rose-500/5 text-rose-500 border border-rose-500/10 rounded-2xl flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all shadow-xl"
+                           >
+                             <Trash2 size={20} />
+                           </button>
                         </div>
                       </div>
                     ))}
@@ -453,31 +453,31 @@ export default function SettingsManager({
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
                     <div className="flex items-center gap-4">
                       <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-                      <div>
-                        <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter">Color Architecture</h2>
-                        <p className="text-slate-500 text-[10px] font-medium tracking-[0.2em] uppercase mt-1">Define the visual DNA of your storefront across all modules.</p>
+                      <div className={`${language === 'ar' ? 'text-right' : ''}`}>
+                        <h2 className={`text-3xl font-black text-white italic uppercase tracking-tighter ${language === 'ar' ? 'font-arabic' : ''}`}>{t('colorArchitecture')}</h2>
+                        <p className={`text-slate-500 text-[10px] font-medium tracking-[0.2em] uppercase mt-1 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('colorArchitectureDesc')}</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Gradient Matrix (Mixed Colors) */}
-                                                        <div className="mb-12 bg-white/[0.02] p-8 rounded-[3rem] border border-white/[0.08] shadow-2xl relative overflow-hidden group">
+                  <div className="mb-12 bg-white/[0.02] p-8 rounded-[3rem] border border-white/[0.08] shadow-2xl relative overflow-hidden group">
                      <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
                      
                      <div className="flex items-center justify-between mb-10 relative z-10">
                         <div className="flex items-center gap-4">
                            <div className="w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.8)]"></div>
-                           <div>
-                              <h3 className="text-lg font-black text-white uppercase italic tracking-tighter">Aesthetic Synthesis Engine</h3>
-                              <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-1">Global Color Injection & Matrix Control</p>
+                           <div className={`${language === 'ar' ? 'text-right' : ''}`}>
+                              <h3 className={`text-lg font-black text-white uppercase italic tracking-tighter ${language === 'ar' ? 'font-arabic' : ''}`}>{t('aestheticSynthesis')}</h3>
+                              <p className={`text-[9px] font-black text-slate-500 uppercase tracking-widest mt-1 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('globalColorControl')}</p>
                            </div>
                         </div>
-                        <div className="px-6 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-black text-cyan-400 uppercase tracking-[0.2em] shadow-xl">V4.0 Active</div>
+                        <div className="px-6 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-black text-cyan-400 uppercase tracking-[0.2em] shadow-xl">{t('versionActive')}</div>
                      </div>
 
                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 relative z-10">
                          <div className="space-y-4">
-                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase A (Primary)</label>
+                            <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('phaseA')}</label>
                             <div className="relative group/synthesis h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] hover:border-cyan-400/50 transition-all overflow-hidden flex items-center justify-center">
                                <input 
                                  type="color" 
@@ -493,7 +493,7 @@ export default function SettingsManager({
                          </div>
 
                          <div className="space-y-4">
-                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Phase B (Secondary)</label>
+                            <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('phaseB')}</label>
                             <div className="relative group/synthesis h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] hover:border-pink-400/50 transition-all overflow-hidden flex items-center justify-center">
                                <input 
                                  type="color" 
@@ -509,45 +509,45 @@ export default function SettingsManager({
                          </div>
 
                          <div className="space-y-4">
-                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Flow Pattern</label>
+                            <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('flowPattern')}</label>
                             <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center px-2">
                                <select 
                                  value={gradDir} 
                                  onChange={(e) => setGradDir(e.target.value)}
-                                 className="w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer"
+                                 className={`w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer ${language === 'ar' ? 'font-arabic text-right' : ''}`}
                                >
-                                  <option value="to bottom" className="bg-slate-900">Linear (Vertical)</option>
-                                  <option value="to right" className="bg-slate-900">Linear (Horizontal)</option>
-                                  <option value="to bottom right" className="bg-slate-900">Diagonal (Flow)</option>
-                                  <option value="radial-gradient(circle at center" className="bg-slate-900">Radial (Core)</option>
+                                  <option value="to bottom" className="bg-slate-900">{t('linearVertical')}</option>
+                                  <option value="to right" className="bg-slate-900">{t('linearHorizontal')}</option>
+                                  <option value="to bottom right" className="bg-slate-900">{t('diagonalFlow')}</option>
+                                  <option value="radial-gradient(circle at center" className="bg-slate-900">{t('radialCore')}</option>
                                </select>
                             </div>
                          </div>
 
                         <div className="space-y-4">
-                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Injection Node</label>
+                           <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('injectionNode')}</label>
                            <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center px-2">
                               <select 
                                 value={synthTarget.page}
                                 onChange={(e) => setSynthTarget({...synthTarget, page: e.target.value})}
-                                className="w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer"
+                                className={`w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer ${language === 'ar' ? 'font-arabic text-right' : ''}`}
                               >
                                 {storeType === 'WEBSITE' ? (
                                   <>
-                                    <option value="all" className="bg-slate-900">Global (Full Mesh)</option>
-                                    <option value="home" className="bg-slate-900">Nexus (Home)</option>
-                                    <option value="footer" className="bg-slate-900">Base (Footer)</option>
+                                    <option value="all" className="bg-slate-900">{t('globalFullMesh')}</option>
+                                    <option value="home" className="bg-slate-900">{t('nexusHome')}</option>
+                                    <option value="footer" className="bg-slate-900">{t('baseFooter')}</option>
                                   </>
                                 ) : (
                                   <>
-                                    <option value="all" className="bg-slate-900">Global (Full Mesh)</option>
-                                    <option value="home" className="bg-slate-900">Nexus (Home)</option>
-                                    <option value="shop" className="bg-slate-900">Archive (Shop)</option>
-                                    <option value="categories" className="bg-slate-900">Neural (Categories)</option>
-                                    <option value="product" className="bg-slate-900">Signal (Product)</option>
-                                    <option value="cart" className="bg-slate-900">Gateway (Cart)</option>
-                                    <option value="checkout" className="bg-slate-900">Secure (Checkout)</option>
-                                    <option value="footer" className="bg-slate-900">Base (Footer)</option>
+                                    <option value="all" className="bg-slate-900">{t('globalFullMesh')}</option>
+                                    <option value="home" className="bg-slate-900">{t('nexusHome')}</option>
+                                    <option value="shop" className="bg-slate-900">{t('archiveShop')}</option>
+                                    <option value="categories" className="bg-slate-900">{t('neuralCategories')}</option>
+                                    <option value="product" className="bg-slate-900">{t('signalProduct')}</option>
+                                    <option value="cart" className="bg-slate-900">{t('gatewayCart')}</option>
+                                    <option value="checkout" className="bg-slate-900">{t('secureCheckout')}</option>
+                                    <option value="footer" className="bg-slate-900">{t('baseFooter')}</option>
                                   </>
                                 )}
                               </select>
@@ -555,35 +555,35 @@ export default function SettingsManager({
                         </div>
 
                          <div className="space-y-4">
-                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Target Stream</label>
+                            <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('targetStream')}</label>
                             <div className="h-20 bg-black/60 rounded-[1.5rem] border border-white/[0.1] flex items-center px-2">
                                <select 
                                  value={synthTarget.type}
                                  onChange={(e) => setSynthTarget({...synthTarget, type: e.target.value as any})}
-                                 className="w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer"
+                                 className={`w-full bg-transparent p-4 text-white text-[11px] uppercase font-black outline-none cursor-pointer ${language === 'ar' ? 'font-arabic text-right' : ''}`}
                                >
-                                  <option value="backgrounds" className="bg-slate-900">Atmosphere (BG)</option>
-                                  <option value="text" className="bg-slate-900">Frequency (Text)</option>
+                                  <option value="backgrounds" className="bg-slate-900">{t('atmosphereBg')}</option>
+                                  <option value="text" className="bg-slate-900">{t('frequencyText')}</option>
                                </select>
                             </div>
                          </div>
 
                          <div className={`space-y-4 ${synthTarget.type !== 'backgrounds' ? 'opacity-50 pointer-events-none' : ''}`}>
-                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Kinetic Motion</label>
+                            <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('kineticMotion')}</label>
                             <div className="flex bg-black/60 rounded-[1.5rem] border border-white/[0.1] p-2 h-20">
                                <button 
                                  type="button" 
                                  onClick={() => setIsAnimated(false)}
-                                 className={`flex-1 rounded-[1rem] text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${!isAnimated ? 'bg-white text-black shadow-lg scale-100' : 'text-slate-500 hover:text-white scale-95'}`}
+                                 className={`flex-1 rounded-[1rem] text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${!isAnimated ? 'bg-white text-black shadow-lg scale-100' : 'text-slate-500 hover:text-white scale-95'} ${language === 'ar' ? 'font-arabic text-[9px]' : ''}`}
                                >
-                                  Static
+                                  {t('static')}
                                </button>
                                <button 
                                  type="button" 
                                  onClick={() => setIsAnimated(true)}
-                                 className={`flex-1 rounded-[1rem] text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${isAnimated ? 'bg-cyan-500 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-100' : 'text-slate-500 hover:text-white scale-95'}`}
+                                 className={`flex-1 rounded-[1rem] text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${isAnimated ? 'bg-cyan-500 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-100' : 'text-slate-500 hover:text-white scale-95'} ${language === 'ar' ? 'font-arabic text-[9px]' : ''}`}
                                >
-                                  Animated
+                                  {t('animated')}
                                </button>
                             </div>
                          </div>
@@ -658,10 +658,10 @@ export default function SettingsManager({
                                   colorSystem: newColorSystem
                                 });
                              }}
-                                                         className="w-full h-20 bg-white text-black rounded-[1.5rem] font-black uppercase tracking-[0.2em] text-[11px] hover:bg-cyan-400 hover:text-white transition-all shadow-[0_20px_50px_rgba(255,255,255,0.1)] active:scale-95 flex flex-col items-center justify-center gap-1 group/btn"
+                             className="w-full h-20 bg-white text-black rounded-[1.5rem] font-black uppercase tracking-[0.2em] text-[11px] hover:bg-cyan-400 hover:text-white transition-all shadow-[0_20px_50px_rgba(255,255,255,0.1)] active:scale-95 flex flex-col items-center justify-center gap-1 group/btn"
                            >
-                              <span className="group-hover/btn:scale-110 transition-transform">Apply Synthesis</span>
-                              <span className="text-[7px] opacity-40">Sync to Cloud</span>
+                              <span className={`group-hover/btn:scale-110 transition-transform ${language === 'ar' ? 'font-arabic' : ''}`}>{t('applySynthesis')}</span>
+                              <span className={`text-[7px] opacity-40 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('syncToCloud')}</span>
                            </button>
                        </div>
                     </div>
@@ -670,23 +670,23 @@ export default function SettingsManager({
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                     {/* Page Specific Settings */}
                     {([
-                      { id: 'home', label: 'Home Page', desc: 'Main entry point and landing experience.' },
-                      { id: 'shop', label: 'Product Gallery', desc: 'Main shop and product listing grid.' },
-                      { id: 'categories', label: 'Collections', desc: 'Category browsing and discovery.' },
-                      { id: 'product', label: 'Product Details', desc: 'Individual product showcase page.' },
-                      { id: 'cart', label: 'Shopping Cart', desc: 'Review and cart management layer.' },
-                      { id: 'checkout', label: 'Checkout Phase', desc: 'Transaction and secure payment node.' }
+                      { id: 'home', label: t('homePageLabel'), desc: t('homePageDesc') },
+                      { id: 'shop', label: t('productGalleryLabel'), desc: t('productGalleryDesc') },
+                      { id: 'categories', label: t('collectionsLabel'), desc: t('collectionsDesc') },
+                      { id: 'product', label: t('productDetailsLabel'), desc: t('productDetailsDesc') },
+                      { id: 'cart', label: t('shoppingCartLabel'), desc: t('shoppingCartDesc') },
+                      { id: 'checkout', label: t('checkoutPhaseLabel'), desc: t('checkoutPhaseDesc') }
                     ] as { id: string; label: string; desc: string }[]).filter(page => storeType !== 'WEBSITE' || page.id === 'home').map((page) => (
                       <div key={page.id} className="bg-white/[0.02] p-8 rounded-[2rem] border border-white/[0.05] hover:border-white/10 transition-all group/page">
                         <div className="flex items-center gap-3 mb-8">
                           <div className="w-2 h-2 rounded-full bg-cyan-500 group-hover/page:scale-150 transition-transform"></div>
-                          <h3 className="text-sm font-black text-white uppercase italic tracking-wider">{page.label}</h3>
+                          <h3 className={`text-sm font-black text-white uppercase italic tracking-wider ${language === 'ar' ? 'font-arabic' : ''}`}>{page.label}</h3>
                         </div>
                         
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           {/* Background Color */}
                           <div className="space-y-4">
-                            <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Atmosphere (BG)</label>
+                            <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('atmosphereBg')}</label>
                             <div className="flex gap-3 items-center bg-black/40 p-2.5 rounded-2xl border border-white/[0.05]">
                               <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0" style={{ background: (colorSystem.backgrounds as any)[page.id] || '#ffffff' }}>
                                 <input 
@@ -719,7 +719,7 @@ export default function SettingsManager({
 
                           {/* Text Color */}
                           <div className="space-y-4">
-                            <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Signal (Text)</label>
+                            <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('frequencyText')}</label>
                             <div className="flex gap-3 items-center bg-black/40 p-2.5 rounded-2xl border border-white/[0.05]">
                               <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0" style={{ backgroundColor: (colorSystem.text as any)[page.id] || '#000000' }}>
                                 <input 
@@ -761,12 +761,12 @@ export default function SettingsManager({
                                       ...settings, 
                                       colorSystem: { 
                                         ...colorSystem, 
-                                        backgrounds: { ...colorSystem.backgrounds, [page.id]: grad } 
+                                    backgrounds: { ...colorSystem.backgrounds, [page.id]: grad } 
                                       }
                                     })}
                                     className="w-5 h-5 rounded-lg border border-white/10 hover:scale-125 hover:rotate-6 transition-all cursor-pointer shadow-xl active:scale-95"
                                     style={{ background: grad }}
-                                    title="Inject Gradient Matrix"
+                                    title={language === 'ar' ? "تطبيق التدرج" : "Inject Gradient Matrix"}
                                   />
                                 ))}
                              </div>
@@ -776,96 +776,95 @@ export default function SettingsManager({
                     ))}
                   </div>
 
-                  {/* Footer & Global Overrides */}
                   <div className="mt-12 space-y-10">
                     <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05] relative overflow-hidden">
-                       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-500/[0.02] to-transparent pointer-events-none"></div>
-                       <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-8 border-b border-white/5 pb-4">Global Signal & Footer Matrix</h3>
-                       
-                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                          {/* Brand Color */}
-                          <div className="space-y-4">
-                            <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Primary Brand Identity</label>
-                            <div className="flex gap-4 items-center bg-black/40 p-4 rounded-3xl border border-white/[0.05]">
-                              <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: colorSystem.brand.primary }}>
-                                <input 
-                                  type="color" 
-                                  value={colorSystem.brand.primary} 
-                                  onChange={e => updateSettings({
-                                    ...settings, 
-                                    colorSystem: { ...colorSystem, brand: { ...colorSystem.brand, primary: e.target.value } }
-                                  })} 
-                                  className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
-                                />
-                              </div>
-                              <input 
-                                type="text" 
-                                value={colorSystem.brand.primary} 
-                                onChange={e => updateSettings({
-                                  ...settings, 
-                                  colorSystem: { ...colorSystem, brand: { ...colorSystem.brand, primary: e.target.value } }
-                                })} 
-                                className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
-                              />
-                            </div>
-                          </div>
+                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-500/[0.02] to-transparent pointer-events-none"></div>
+                        <h3 className={`text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-8 border-b border-white/5 pb-4 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('globalSignalFooter')}</h3>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                           {/* Brand Color */}
+                           <div className="space-y-4">
+                             <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('primaryBrandIdentity')}</label>
+                             <div className="flex gap-4 items-center bg-black/40 p-4 rounded-3xl border border-white/[0.05]">
+                               <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: colorSystem.brand.primary }}>
+                                 <input 
+                                   type="color" 
+                                   value={colorSystem.brand.primary} 
+                                   onChange={e => updateSettings({
+                                     ...settings, 
+                                     colorSystem: { ...colorSystem, brand: { ...colorSystem.brand, primary: e.target.value } }
+                                   })} 
+                                   className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
+                                 />
+                               </div>
+                               <input 
+                                 type="text" 
+                                 value={colorSystem.brand.primary} 
+                                 onChange={e => updateSettings({
+                                   ...settings, 
+                                   colorSystem: { ...colorSystem, brand: { ...colorSystem.brand, primary: e.target.value } }
+                                 })} 
+                                 className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
+                               />
+                             </div>
+                           </div>
 
-                          {/* Footer Background */}
-                          <div className="space-y-4">
-                            <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Footer Atmosphere (BG)</label>
-                            <div className="flex gap-4 items-center bg-black/40 p-4 rounded-3xl border border-white/[0.05]">
-                              <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ background: colorSystem.footer.background }}>
-                                <input 
-                                  type="color" 
-                                  value={colorSystem.footer.background.includes('gradient') ? '#000000' : colorSystem.footer.background} 
-                                  onChange={e => updateSettings({
-                                    ...settings, 
-                                    colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, background: e.target.value } }
-                                  })} 
-                                  className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
-                                />
-                              </div>
-                              <input 
-                                type="text" 
-                                value={colorSystem.footer.background} 
-                                onChange={e => updateSettings({
-                                  ...settings, 
-                                  colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, background: e.target.value } }
-                                })} 
-                                className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
-                              />
-                            </div>
-                          </div>
+                           {/* Footer Background */}
+                           <div className="space-y-4">
+                             <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('footerAtmosphereBg')}</label>
+                             <div className="flex gap-4 items-center bg-black/40 p-4 rounded-3xl border border-white/[0.05]">
+                               <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ background: colorSystem.footer.background }}>
+                                 <input 
+                                   type="color" 
+                                   value={colorSystem.footer.background.includes('gradient') ? '#000000' : colorSystem.footer.background} 
+                                   onChange={e => updateSettings({
+                                     ...settings, 
+                                     colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, background: e.target.value } }
+                                   })} 
+                                   className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
+                                 />
+                               </div>
+                               <input 
+                                 type="text" 
+                                 value={colorSystem.footer.background} 
+                                 onChange={e => updateSettings({
+                                   ...settings, 
+                                   colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, background: e.target.value } }
+                                 })} 
+                                 className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
+                               />
+                             </div>
+                           </div>
 
-                          {/* Footer Text */}
-                          <div className="space-y-4">
-                            <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">Footer Signal (Text)</label>
-                            <div className="flex gap-4 items-center bg-black/40 p-4 rounded-3xl border border-white/[0.05]">
-                              <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: colorSystem.footer.text }}>
-                                <input 
-                                  type="color" 
-                                  value={colorSystem.footer.text} 
-                                  onChange={e => updateSettings({
-                                    ...settings, 
-                                    colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, text: e.target.value } }
-                                  })} 
-                                  className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
-                                />
-                              </div>
-                              <input 
-                                type="text" 
-                                value={colorSystem.footer.text} 
-                                onChange={e => updateSettings({
-                                  ...settings, 
-                                  colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, text: e.target.value } }
-                                })} 
-                                className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
-                              />
-                            </div>
-                          </div>
+                           {/* Footer Text */}
+                           <div className="space-y-4">
+                             <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('footerSignalText')}</label>
+                             <div className="flex gap-4 items-center bg-black/40 p-4 rounded-3xl border border-white/[0.05]">
+                               <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: colorSystem.footer.text }}>
+                                 <input 
+                                   type="color" 
+                                   value={colorSystem.footer.text} 
+                                   onChange={e => updateSettings({
+                                     ...settings, 
+                                     colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, text: e.target.value } }
+                                   })} 
+                                   className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
+                                 />
+                               </div>
+                               <input 
+                                 type="text" 
+                                 value={colorSystem.footer.text} 
+                                 onChange={e => updateSettings({
+                                   ...settings, 
+                                   colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, text: e.target.value } }
+                                 })} 
+                                 className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
+                               />
+                             </div>
+                           </div>
 
-                    </div>
-                  </div>
+                        </div>
+                     </div>
                   </div>
 
                   {/* Financial Signal Matrix */}
@@ -875,17 +874,17 @@ export default function SettingsManager({
                      <div className="flex items-center justify-between mb-10 relative z-10">
                         <div className="flex items-center gap-4">
                            <div className="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.8)]"></div>
-                           <div>
-                              <h3 className="text-lg font-black text-white uppercase italic tracking-tighter">Financial Signal Matrix</h3>
-                              <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-1">Price Dynamics & Sale Pulse Control</p>
+                           <div className={`${language === 'ar' ? 'text-right' : ''}`}>
+                              <h3 className={`text-lg font-black text-white uppercase italic tracking-tighter ${language === 'ar' ? 'font-arabic' : ''}`}>{t('financialSignalMatrix')}</h3>
+                              <p className={`text-[9px] font-black text-slate-500 uppercase tracking-widest mt-1 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('priceDynamicsControl')}</p>
                            </div>
                         </div>
-                        <div className="px-6 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-[10px] font-black text-red-400 uppercase tracking-[0.2em] shadow-xl">Economy Module</div>
+                        <div className="px-6 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-[10px] font-black text-red-400 uppercase tracking-[0.2em] shadow-xl">{t('economyModule')}</div>
                      </div>
 
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
                         <div className="space-y-4">
-                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Core Price Signal (Regular)</label>
+                           <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('corePriceSignal')}</label>
                            <div className="relative group/price h-24 bg-black/60 rounded-[2rem] border border-white/[0.1] hover:border-slate-400 transition-all overflow-hidden flex items-center justify-center">
                               <input 
                                 type="color" 
@@ -904,13 +903,13 @@ export default function SettingsManager({
                               <div className="absolute inset-0 z-10 opacity-20 group-hover/price:opacity-40 transition-opacity" style={{backgroundColor: colorSystem.product?.price || '#0f172a'}}></div>
                               <div className="relative z-20 flex flex-col items-center">
                                  <span className="text-white font-mono text-lg uppercase font-black tracking-widest">{colorSystem.product?.price || '#0F172A'}</span>
-                                 <span className="text-[8px] text-slate-500 uppercase font-black mt-2">Standard Rate Color</span>
+                                 <span className={`text-[8px] text-slate-500 uppercase font-black mt-2 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('standardRateColor')}</span>
                               </div>
                            </div>
                         </div>
 
                         <div className="space-y-4">
-                           <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Pulse Signal (Sale Price)</label>
+                           <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('pulseSignalSale')}</label>
                            <div className="relative group/price h-24 bg-black/60 rounded-[2rem] border border-white/[0.1] hover:border-red-500/50 transition-all overflow-hidden flex items-center justify-center">
                               <input 
                                 type="color" 
@@ -929,7 +928,7 @@ export default function SettingsManager({
                               <div className="absolute inset-0 z-10 opacity-20 group-hover/price:opacity-40 transition-opacity" style={{backgroundColor: colorSystem.product?.salePrice || '#ef4444'}}></div>
                               <div className="relative z-20 flex flex-col items-center">
                                  <span className="text-red-500 font-mono text-lg uppercase font-black tracking-widest">{colorSystem.product?.salePrice || '#EF4444'}</span>
-                                 <span className="text-[8px] text-slate-500 uppercase font-black mt-2">Discount Pulse Color</span>
+                                 <span className={`text-[8px] text-slate-500 uppercase font-black mt-2 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('discountPulseColor')}</span>
                               </div>
                            </div>
                         </div>
@@ -946,15 +945,15 @@ export default function SettingsManager({
                 <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
                   <div className="flex items-center gap-4 mb-10">
                     <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Observatory Pixels</h2>
+                    <h2 className={`text-2xl font-black text-white italic uppercase tracking-tighter ${language === 'ar' ? 'font-arabic' : ''}`}>{t('observatoryPixels')}</h2>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {[
-                      { id: 'facebookPixelId', name: 'Meta Pixel', color: 'bg-blue-600', placeholder: '1234567890' },
-                      { id: 'tiktokPixelId', name: 'TikTok Signal', color: 'bg-slate-900', placeholder: 'C1234567890' },
-                      { id: 'snapchatPixelId', name: 'Snap Protocol', color: 'bg-yellow-400', placeholder: '123456-7890' },
-                      { id: 'googleAnalyticsId', name: 'Analytics G4', color: 'bg-orange-500', placeholder: 'G-XXXXXXXX' }
+                      { id: 'facebookPixelId', name: language === 'ar' ? 'بكسل ميتا (فيسبوك)' : 'Meta Pixel', color: 'bg-blue-600', placeholder: '1234567890' },
+                      { id: 'tiktokPixelId', name: language === 'ar' ? 'إشارات تيك توك' : 'TikTok Signal', color: 'bg-slate-900', placeholder: 'C1234567890' },
+                      { id: 'snapchatPixelId', name: language === 'ar' ? 'سناب شات' : 'Snap Snapchat', color: 'bg-yellow-400', placeholder: '123456-7890' },
+                      { id: 'googleAnalyticsId', name: language === 'ar' ? 'تحليلات جوجل (GA4)' : 'Analytics G4', color: 'bg-orange-500', placeholder: 'G-XXXXXXXX' }
                     ].map((pixel) => (
                       <div key={pixel.id} className="bg-white/[0.02] p-8 rounded-[2rem] border border-white/[0.05] space-y-6 relative overflow-hidden group">
                          <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl -z-10 group-hover:bg-cyan-500/5 transition-all"></div>
@@ -962,10 +961,10 @@ export default function SettingsManager({
                             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-2xl ${pixel.color}`}>
                                <Settings size={20} />
                             </div>
-                            <h3 className="text-base font-black text-white uppercase italic tracking-tight">{pixel.name}</h3>
+                            <h3 className={`text-base font-black text-white uppercase italic tracking-tight ${language === 'ar' ? 'font-arabic' : ''}`}>{pixel.name}</h3>
                          </div>
                          <div className="space-y-3">
-                            <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Secret ID</label>
+                            <label className={`block text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('secretId')}</label>
                             <input 
                               type="text"
                               value={(settings as any)[pixel.id] || ''}
