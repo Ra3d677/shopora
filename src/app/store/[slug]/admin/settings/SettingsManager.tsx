@@ -130,7 +130,6 @@ export default function SettingsManager({
     { id: "header", label: "Header & Navigation" },
     { id: "signature", label: "Elite Features" },
     { id: "siteBuilder", label: "Site Builder" },
-    { id: "layout", label: "Spatial Dividers" },
     { id: "tracking", label: "Pixels & Tracking" },
     { id: "business", label: "Economics" },
   ];
@@ -1011,97 +1010,7 @@ export default function SettingsManager({
               </div>
             )}
             
-            {activeTab === 'layout' && (
-              <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">
-                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
-                  <div className="flex items-center gap-4 mb-10">
-                    <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Spatial Dividers</h2>
-                  </div>
 
-                  <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05] mb-10 flex flex-col md:flex-row gap-10 items-center">
-                    <div className="flex-1 space-y-4">
-                       <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Spectral Hue</label>
-                       <div className="flex gap-4 items-center bg-white/[0.03] p-3 rounded-[1.25rem] border border-white/[0.05] max-w-xs">
-                          <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-white/10">
-                             <input 
-                                type="color" 
-                                value={settings.dividerColor || '#ffffff'} 
-                                onChange={e => setSettings({...settings, dividerColor: e.target.value})} 
-                                className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer" 
-                              />
-                          </div>
-                          <input 
-                            type="text" 
-                            value={settings.dividerColor || '#ffffff'} 
-                            onChange={e => setSettings({...settings, dividerColor: e.target.value})} 
-                            className="flex-1 bg-transparent text-white focus:outline-none font-mono text-sm uppercase font-black" 
-                          />
-                        </div>
-                    </div>
-                    <div className="w-[1px] h-16 bg-white/5 hidden md:block"></div>
-                    <div className="flex-1">
-                       <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.3em] mb-2">Active Protocol</p>
-                       <p className="text-3xl font-black text-cyan-400 uppercase italic tracking-tighter">{settings.dividerStyle || 'NULL'}</p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {[
-                      { id: 'none', name: 'Void', desc: 'Zero-point spatial clearance.' },
-                      { id: 'line', name: 'Vector', desc: 'Precise 1px horizontal nexus.' },
-                      { id: 'minimal_dots', name: 'Cluster', desc: 'Floating geometric coordinates.' },
-                      { id: 'wave', name: 'Fluid', desc: 'Sinusoidal liquid transition.' },
-                      { id: 'curve', name: 'Spherical', desc: 'Organic boundary curvature.' },
-                      { id: 'triangle', name: 'Prism', desc: 'Sharp geometric convergence.' },
-                      { id: 'zigzag', name: 'Pulse', desc: 'High-frequency serrated edge.' },
-                      { id: 'geometric', name: 'Array', desc: 'Polygonal depth structures.' },
-                      { id: 'slash', name: 'Angular', desc: 'Dynamic spatial intersection.' },
-                      { id: 'mountains', name: 'Summit', desc: 'Symmetric layered peak matrix.' },
-                      { id: 'fan', name: 'Radial', desc: 'Curved volumetric expansion.' },
-                      { id: 'steps', name: 'Ladder', desc: 'Orthogonal hierarchical levels.' },
-                      { id: 'drops', name: 'Liquid', desc: 'Floating circular elements.' },
-                      { id: 'arabic_pattern', name: 'Pattern', desc: 'Star-matrix geometric weave.' },
-                    ].map((divider) => (
-                      <label 
-                        key={divider.id} 
-                        className={`group relative cursor-pointer p-8 rounded-3xl border transition-all duration-500 ${
-                          (settings.dividerStyle || 'none') === divider.id 
-                            ? 'border-cyan-500/50 bg-cyan-500/5 shadow-[0_0_30px_rgba(6,182,212,0.1)]' 
-                            : 'border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/[0.04]'
-                        }`}
-                      >
-                        <div className="flex justify-between items-start mb-6">
-                           <div className={`w-10 h-10 rounded-2xl border flex items-center justify-center transition-all duration-500 ${
-                             (settings.dividerStyle || 'none') === divider.id 
-                               ? 'bg-cyan-500 border-cyan-400 text-white shadow-lg shadow-cyan-500/30' 
-                               : 'bg-white/5 border-white/5 text-slate-700'
-                           }`}>
-                             {settings.dividerStyle === divider.id ? <CheckCircle2 size={16} /> : <div className="w-2 h-2 rounded-full bg-current"></div>}
-                           </div>
-                           <input 
-                             type="radio" 
-                             name="dividerStyle"
-                             value={divider.id}
-                             checked={(settings.dividerStyle || 'none') === divider.id}
-                             onChange={(e) => setSettings({...settings, dividerStyle: e.target.value})}
-                             className="sr-only"
-                           />
-                        </div>
-                        <p className={`font-black text-lg mb-2 transition-colors uppercase italic ${(settings.dividerStyle || 'none') === divider.id ? 'text-cyan-400' : 'text-white'}`}>{divider.name}</p>
-                        <p className="text-[10px] text-slate-500 leading-relaxed font-medium uppercase tracking-widest mb-6">{divider.desc}</p>
-                        
-                        <div className="h-20 bg-black/40 rounded-2xl border border-white/5 flex items-center justify-center overflow-hidden">
-                           <div className="w-full scale-[0.4] opacity-50">
-                              <SectionDividerPreview style={divider.id} color={settings.dividerColor} />
-                           </div>
-                        </div>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
 
             {activeTab === 'tracking' && (
               <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">

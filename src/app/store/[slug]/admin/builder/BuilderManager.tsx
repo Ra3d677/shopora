@@ -284,7 +284,7 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                         {style}
                       </button>
                     ))}
-                    {activeSection.type === 'packages' && ['grid', 'list', 'cards'].map(style => (
+                    {activeSection.type === 'packages' && ['grid', 'list', 'cards', 'compact', 'featured'].map(style => (
                       <button 
                         key={style}
                         onClick={() => updateSection(activeSection.id, { style })}
@@ -529,21 +529,7 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                     </div>
                   )}
                   
-                  {/* Divider Toggle */}
-                  <div className="pt-6 border-t border-slate-100 flex items-center justify-between group cursor-pointer" onClick={() => toggleDivider(activeSection.id)}>
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${activeSection.showDivider !== false ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' : 'bg-slate-100 text-slate-400'}`}>
-                        <GripVertical className="w-5 h-5 rotate-90" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-slate-800">Section Divider</h4>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Show separator below this block</p>
-                      </div>
-                    </div>
-                    <div className={`w-12 h-6 rounded-full transition-all relative ${activeSection.showDivider !== false ? 'bg-blue-600' : 'bg-slate-200'}`}>
-                      <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all shadow-sm ${activeSection.showDivider !== false ? 'left-7' : 'left-1'}`} />
-                    </div>
-                  </div>
+                  {/* Divider Toggle Removed */}
                 </div>
               </div>
             </div>

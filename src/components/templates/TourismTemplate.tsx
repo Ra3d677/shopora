@@ -48,76 +48,238 @@ export default function TourismTemplate({
     </section>
   );
 
-  const renderPackages = (section: any) => (
-    <section key={section.id} className="py-24 max-w-7xl mx-auto px-6" id="packages">
-      <div className="text-center mb-16">
-        <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white mb-4">
-          {section.config?.title || settings.tourismSettings?.packagesTitle || "Our Packages & Offers"}
-        </h2>
-        <EditableText 
-          content={settings.tourismSettings?.packagesSubtitle || "Select the perfect plan designed to meet your specific needs."} 
-          slug={slug} 
-          settingsKey="tourismSettings.packagesSubtitle" 
-          as="p"
-          className="text-slate-400 text-sm md:text-base max-w-2xl mx-auto block"
-        />
-      </div>
+  const renderPackages = (section: any) => {
+    const style = section.style || 'grid';
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredProducts.map((product) => (
-          <div key={product.id} className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 hover:border-cyan-500/50 hover:bg-white/[0.04] transition-all flex flex-col group shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-[50px] -z-10 group-hover:bg-cyan-500/20 transition-all"></div>
-            
-            <div className="mb-6 border-b border-white/5 pb-6">
-              <h3 className="text-2xl font-black text-white mb-2 group-hover:text-cyan-400 transition-colors">{product.name}</h3>
-              <p className="text-slate-400 text-sm whitespace-pre-wrap leading-relaxed">{product.description}</p>
-            </div>
+    return (
+      <section key={section.id} className="py-24 max-w-7xl mx-auto px-6" id="packages">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white mb-4">
+            {section.config?.title || settings.tourismSettings?.packagesTitle || "Our Packages & Offers"}
+          </h2>
+          <EditableText 
+            content={settings.tourismSettings?.packagesSubtitle || "Select the perfect plan designed to meet your specific needs."} 
+            slug={slug} 
+            settingsKey="tourismSettings.packagesSubtitle" 
+            as="p"
+            className="text-slate-400 text-sm md:text-base max-w-2xl mx-auto block"
+          />
+        </div>
 
-            <div className="mb-8">
-              <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-black text-white">${product.price}</span>
-                <EditableText 
-                  content={settings.tourismSettings?.priceSuffix || "/Month"} 
-                  slug={slug} 
-                  settingsKey="tourismSettings.priceSuffix" 
-                  as="span"
-                  className="text-sm font-bold text-slate-500 uppercase tracking-widest block"
-                />
+        {/* Style selection */}
+        {style === 'list' && (
+          <div className="space-y-6">
+            {filteredProducts.map((product) => (
+              <div key={product.id} className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 hover:border-cyan-500/50 hover:bg-white/[0.04] transition-all flex flex-col md:flex-row justify-between items-center gap-8 shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-[50px] -z-10 group-hover:bg-cyan-500/20 transition-all"></div>
+                
+                <div className="flex-1 space-y-4">
+                  <h3 className="text-2xl font-black text-white group-hover:text-cyan-400 transition-colors">{product.name}</h3>
+                  <p className="text-slate-400 text-sm whitespace-pre-wrap leading-relaxed max-w-xl">{product.description}</p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-black text-white">${product.price}</span>
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{settings.tourismSettings?.priceSuffix || "/Month"}</span>
+                  </div>
+                </div>
+
+                <div className="w-full md:w-auto shrink-0 flex flex-col md:items-end gap-6">
+                  <div>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 md:text-right">Included Features</h4>
+                    <ul className="flex flex-wrap md:justify-end gap-3 max-w-md">
+                      {product.specs && product.specs.length > 0 ? (
+                        product.specs.map((spec: any, idx: number) => (
+                          <li key={idx} className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 text-xs font-bold text-white">
+                            <Check size={10} className="text-cyan-400" />
+                            <span>{spec.label}: {spec.value}</span>
+                          </li>
+                        ))
+                      ) : (
+                        <li className="text-xs text-slate-500 italic">No features listed.</li>
+                      )}
+                    </ul>
+                  </div>
+                  <Link 
+                    href={`/store/${slug}/product/${product.id}`}
+                    className="w-full md:w-48 py-4 bg-white border border-white/10 rounded-2xl text-black font-black text-xs uppercase tracking-widest text-center hover:bg-cyan-400 hover:border-cyan-400 hover:text-slate-900 transition-all shadow-xl block"
+                  >
+                    {settings.tourismSettings?.bookButtonText || "Select Package"}
+                  </Link>
+                </div>
               </div>
-            </div>
-
-            <div className="flex-1 mb-8">
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4">Included Features</h4>
-              <ul className="space-y-4">
-                {product.specs && product.specs.length > 0 ? (
-                  product.specs.map((spec: any, idx: number) => (
-                    <li key={idx} className="flex items-start gap-3">
-                      <div className="mt-0.5 bg-cyan-500/20 text-cyan-400 p-1 rounded-full"><Check size={12} strokeWidth={4} /></div>
-                      <div>
-                        <span className="text-sm font-bold text-white block">{spec.label}</span>
-                        <span className="text-xs text-slate-400 block">{spec.value}</span>
-                      </div>
-                    </li>
-                  ))
-                ) : (
-                  <li className="text-xs text-slate-500 italic">No specific features listed.</li>
-                )}
-              </ul>
-            </div>
-
-            <Link 
-              href={`/store/${slug}/product/${product.id}`}
-              className="w-full py-4 bg-white border border-white/10 rounded-2xl text-black font-black text-xs uppercase tracking-widest text-center hover:bg-cyan-400 hover:border-cyan-400 hover:text-slate-900 transition-all shadow-xl block"
-            >
-              <EditableText 
-                content={settings.tourismSettings?.bookButtonText || "Select Package"} 
-                slug={slug} 
-                settingsKey="tourismSettings.bookButtonText" 
-                as="span"
-              />
-            </Link>
+            ))}
           </div>
-        ))}
+        )}
+
+        {style === 'cards' && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {filteredProducts.map((product) => (
+              <div key={product.id} className="border border-white/10 rounded-3xl p-8 hover:border-white/20 transition-all flex flex-col justify-between bg-black/40">
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-2">{product.name}</h3>
+                  <p className="text-slate-400 text-xs mb-6 leading-relaxed">{product.description}</p>
+                  <div className="flex items-baseline gap-2 mb-6">
+                    <span className="text-3xl font-black text-white">${product.price}</span>
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{settings.tourismSettings?.priceSuffix || "/Month"}</span>
+                  </div>
+                  <ul className="space-y-3 mb-8">
+                    {product.specs && product.specs.length > 0 ? (
+                      product.specs.map((spec: any, idx: number) => (
+                        <li key={idx} className="flex items-center gap-2 text-xs text-slate-300">
+                          <Check size={12} className="text-cyan-400 shrink-0" />
+                          <span>{spec.label}</span>
+                        </li>
+                      ))
+                    ) : (
+                      <li className="text-xs text-slate-500 italic">No features.</li>
+                    )}
+                  </ul>
+                </div>
+                <Link 
+                  href={`/store/${slug}/product/${product.id}`}
+                  className="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-white font-bold text-xs uppercase tracking-wider text-center hover:bg-white hover:text-black transition-all block"
+                >
+                  {settings.tourismSettings?.bookButtonText || "Select Package"}
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {style === 'compact' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {filteredProducts.map((product) => (
+              <div key={product.id} className="bg-white/[0.01] border border-white/5 rounded-2xl p-6 hover:bg-white/[0.03] transition-all flex flex-col justify-between">
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-1 truncate">{product.name}</h3>
+                  <div className="text-2xl font-black text-cyan-400 mb-4">${product.price}</div>
+                  <p className="text-slate-500 text-xs line-clamp-2 mb-4">{product.description}</p>
+                </div>
+                <Link 
+                  href={`/store/${slug}/product/${product.id}`}
+                  className="w-full py-2.5 bg-white border border-white/5 rounded-xl text-black font-black text-[10px] uppercase tracking-wider text-center hover:bg-cyan-400 hover:text-slate-900 transition-all block"
+                >
+                  {settings.tourismSettings?.bookButtonText || "Select"}
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {style === 'featured' && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+            {filteredProducts.map((product, idx) => {
+              const isFeatured = idx === 1 || filteredProducts.length === 1;
+              return (
+                <div 
+                  key={product.id} 
+                  className={`rounded-3xl p-8 transition-all flex flex-col justify-between relative overflow-hidden ${
+                    isFeatured 
+                      ? 'bg-gradient-to-b from-cyan-950/40 to-slate-950 border-2 border-cyan-500 shadow-[0_0_50px_rgba(6,182,212,0.15)] md:scale-105 z-10' 
+                      : 'bg-white/[0.02] border border-white/10 hover:border-white/20'
+                  }`}
+                >
+                  {isFeatured && (
+                    <div className="absolute top-4 right-4 bg-cyan-500 text-slate-950 text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
+                      Best Seller
+                    </div>
+                  )}
+                  <div>
+                    <h3 className="text-2xl font-black text-white mb-2">{product.name}</h3>
+                    <p className="text-slate-400 text-sm mb-6 leading-relaxed">{product.description}</p>
+                    <div className="flex items-baseline gap-2 mb-8">
+                      <span className="text-4xl font-black text-white">${product.price}</span>
+                      <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{settings.tourismSettings?.priceSuffix || "/Month"}</span>
+                    </div>
+                    <ul className="space-y-4 mb-8">
+                      {product.specs && product.specs.length > 0 ? (
+                        product.specs.map((spec: any, sIdx: number) => (
+                          <li key={sIdx} className="flex items-start gap-3">
+                            <div className="mt-0.5 bg-cyan-500/20 text-cyan-400 p-1 rounded-full"><Check size={12} strokeWidth={4} /></div>
+                            <div>
+                              <span className="text-sm font-bold text-white block">{spec.label}</span>
+                              <span className="text-xs text-slate-400 block">{spec.value}</span>
+                            </div>
+                          </li>
+                        ))
+                      ) : (
+                        <li className="text-xs text-slate-500 italic">No features.</li>
+                      )}
+                    </ul>
+                  </div>
+                  <Link 
+                    href={`/store/${slug}/product/${product.id}`}
+                    className={`w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest text-center transition-all block ${
+                      isFeatured 
+                        ? 'bg-cyan-400 text-slate-950 hover:bg-cyan-300' 
+                        : 'bg-white text-black hover:bg-cyan-400 hover:text-slate-950'
+                    }`}
+                  >
+                    {settings.tourismSettings?.bookButtonText || "Select Package"}
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {style === 'grid' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProducts.map((product) => (
+              <div key={product.id} className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 hover:border-cyan-500/50 hover:bg-white/[0.04] transition-all flex flex-col group shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-[50px] -z-10 group-hover:bg-cyan-500/20 transition-all"></div>
+                
+                <div className="mb-6 border-b border-white/5 pb-6">
+                  <h3 className="text-2xl font-black text-white mb-2 group-hover:text-cyan-400 transition-colors">{product.name}</h3>
+                  <p className="text-slate-400 text-sm whitespace-pre-wrap leading-relaxed">{product.description}</p>
+                </div>
+
+                <div className="mb-8">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-black text-white">${product.price}</span>
+                    <EditableText 
+                      content={settings.tourismSettings?.priceSuffix || "/Month"} 
+                      slug={slug} 
+                      settingsKey="tourismSettings.priceSuffix" 
+                      as="span"
+                      className="text-sm font-bold text-slate-500 uppercase tracking-widest block"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex-1 mb-8">
+                  <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4">Included Features</h4>
+                  <ul className="space-y-4">
+                    {product.specs && product.specs.length > 0 ? (
+                      product.specs.map((spec: any, idx: number) => (
+                        <li key={idx} className="flex items-start gap-3">
+                          <div className="mt-0.5 bg-cyan-500/20 text-cyan-400 p-1 rounded-full"><Check size={12} strokeWidth={4} /></div>
+                          <div>
+                            <span className="text-sm font-bold text-white block">{spec.label}</span>
+                            <span className="text-xs text-slate-400 block">{spec.value}</span>
+                          </div>
+                        </li>
+                      ))
+                    ) : (
+                      <li className="text-xs text-slate-500 italic">No specific features listed.</li>
+                    )}
+                  </ul>
+                </div>
+
+                <Link 
+                  href={`/store/${slug}/product/${product.id}`}
+                  className="w-full py-4 bg-white border border-white/10 rounded-2xl text-black font-black text-xs uppercase tracking-widest text-center hover:bg-cyan-400 hover:border-cyan-400 hover:text-slate-900 transition-all shadow-xl block"
+                >
+                  <EditableText 
+                    content={settings.tourismSettings?.bookButtonText || "Select Package"} 
+                    slug={slug} 
+                    settingsKey="tourismSettings.bookButtonText" 
+                    as="span"
+                  />
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
 
         {filteredProducts.length === 0 && (
           <div className="col-span-full py-20 text-center border border-dashed border-white/10 rounded-3xl bg-white/[0.01]">
@@ -130,9 +292,9 @@ export default function TourismTemplate({
             />
           </div>
         )}
-      </div>
-    </section>
-  );
+      </section>
+    );
+  };
 
   const renderAboutUs = (section: any) => {
     const title = section.config?.title || settings.tourismSettings?.aboutTitle || "Dedicated to elevating your professional journey.";
