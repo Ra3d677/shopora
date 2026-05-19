@@ -12,10 +12,10 @@ export default function Footer() {
   if (activeTemplate === 'minimal') {
     return (
       <footer 
-        className="py-32 px-12 transition-all duration-500"
+        className="py-16 px-6 md:px-12 transition-all duration-500"
         style={{ background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
       >
-        <div className="max-w-screen-2xl mx-auto flex flex-col lg:flex-row justify-between gap-20">
+        <div className="max-w-screen-2xl mx-auto flex flex-col lg:flex-row justify-between gap-12">
           <div className="max-w-sm">
             {store.name && (
               <h2 className="text-white text-2xl font-bold uppercase tracking-tighter mb-8">
@@ -61,7 +61,7 @@ export default function Footer() {
              </div>
           </div>
         </div>
-        <div className="max-w-screen-2xl mx-auto mt-32 pt-12 border-t border-zinc-900 flex justify-between items-center text-[8px] font-black uppercase tracking-widest text-zinc-600">
+        <div className="max-w-screen-2xl mx-auto mt-16 pt-8 border-t border-zinc-900 flex justify-between items-center text-[8px] font-black uppercase tracking-widest text-zinc-600">
            <span>© {new Date().getFullYear()} {store.name}</span>
            <span>Built by Antigravity</span>
         </div>
@@ -72,11 +72,11 @@ export default function Footer() {
   if (activeTemplate === 'apple') {
     return (
       <footer 
-        className="font-sans text-xs pt-12 pb-8 border-t border-white/10 transition-all duration-500"
+        className="font-sans text-xs pt-8 pb-6 border-t border-white/10 transition-all duration-500"
         style={{ background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
       >
         <div className="max-w-[1000px] mx-auto px-4">
-          <div className="border-b border-[#d2d2d7] pb-8 mb-6 text-[#86868b]">
+          <div className="border-b border-[#d2d2d7] pb-6 mb-4 text-[#86868b]">
             <div className="mb-2">
               <EditableText 
                 content={store.settings?.footerAppleDisclaimer1 || "1. Trade-in values will vary based on the condition, year, and configuration of your eligible trade-in device."} 
@@ -93,7 +93,7 @@ export default function Footer() {
             </div>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-8 text-[#1d1d1f]">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-6 text-[#1d1d1f]">
             <div>
               <h4 className="font-semibold mb-2">Shop and Learn</h4>
               <ul className="space-y-2">
@@ -143,11 +143,11 @@ export default function Footer() {
   if (activeTemplate === 'obsidian') {
     return (
       <footer 
-        className="py-40 font-sans border-t border-white/5 transition-all duration-500"
+        className="py-20 font-sans border-t border-white/5 transition-all duration-500"
         style={{ background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
       >
         <div className="container mx-auto px-8 md:px-16">
-          <div className="flex flex-col lg:flex-row justify-between gap-32 mb-40">
+          <div className="flex flex-col lg:flex-row justify-between gap-20 mb-20">
              <div className="max-w-xl">
                 <div className="text-6xl md:text-8xl font-black tracking-tighter italic mb-12 uppercase leading-none">
                   <EditableText content={store.settings?.footerMarketingTitle || "The Syndicate"} settingsKey="footerMarketingTitle" slug={slug} />
@@ -177,7 +177,7 @@ export default function Footer() {
              </div>
           </div>
           
-          <div className="flex flex-col md:flex-row justify-between items-center gap-12 pt-20 border-t border-white/5 text-[9px] font-black uppercase tracking-[0.5em] text-white/40">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-12 pt-10 border-t border-white/5 text-[9px] font-black uppercase tracking-[0.5em] text-white/40">
              <span>© {new Date().getFullYear()} {store.name} / All Rights Reserved</span>
              <div className="flex gap-12 italic">
                 <span>RAW MATERIALS</span>
@@ -192,17 +192,17 @@ export default function Footer() {
   // DEFAULT FOOTER
   return (
     <footer 
-      className="py-40 font-sans transition-all duration-500"
+      className="py-16 font-sans transition-all duration-500"
       style={{ background: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
     >
       <div className="max-w-screen-2xl mx-auto px-12 text-center">
         {store.name && (
-          <h2 className="text-white text-5xl font-serif font-light tracking-[0.2em] uppercase mb-16">
+          <h2 className="text-white text-4xl font-serif font-light tracking-[0.2em] uppercase mb-10">
             <span className="gradient-text-support">{store.name}</span>
           </h2>
         )}
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-20 text-[10px] font-black uppercase tracking-[0.4em] mb-32 border-y border-white/5 py-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-[10px] font-black uppercase tracking-[0.4em] mb-16 border-y border-white/5 py-10">
            <div className="space-y-6">
               <p className="text-white mb-8">Contact Us</p>
               {store.settings?.contactInfo?.address && <p>{store.settings.contactInfo.address}</p>}
