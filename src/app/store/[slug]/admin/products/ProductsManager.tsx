@@ -7,8 +7,12 @@ import { Edit, Trash2, Plus, X, Loader2, Package } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import MediaPicker from "../media/MediaPicker";
+import { useLanguageStore } from "@/store/language";
 
 export default function ProductsManager({ initialProducts, slug, categories }: { initialProducts: Product[], slug: string, categories: Category[] }) {
+  const { t, language } = useLanguageStore();
+  const isRTL = language === 'ar';
+  
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -158,13 +162,13 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
   };
 
   return (
-    <div className="p-10 space-y-10 animate-in fade-in duration-700">
-      <div className="flex justify-between items-end">
-        <div>
+    <div dir={isRTL ? "rtl" : "ltr"} className={`p-10 space-y-10 animate-in fade-in duration-700 ${isRTL ? 'text-right' : 'text-left'}`}>
+      <div className={`flex justify-between items-end ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className={isRTL ? 'text-right' : 'text-left'}>
           <h1 className="text-5xl font-black tracking-tighter bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent italic uppercase">
-            Inventory <span className="text-cyan-400">Vault</span>
+            {t('inventoryVault')}
           </h1>
-          <p className="text-slate-500 mt-3 font-medium tracking-widest text-[10px] uppercase">Control your product ecosystem with precision.</p>
+          <p className="text-slate-500 mt-3 font-medium tracking-widest text-[10px] uppercase">{t('controlProductEco')}</p>
         </div>
         {!isAdding && !isEditing && (
           <button 
@@ -172,7 +176,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
             className="group relative px-8 py-4 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl font-black text-[11px] uppercase tracking-widest text-white shadow-[0_10px_30px_rgba(6,182,212,0.2)] hover:scale-105 active:scale-95 transition-all flex items-center gap-3"
           >
             <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"></div>
-            <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" /> Add New Asset
+            <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" /> {t('addNewAsset')}
           </button>
         )}
       </div>
@@ -181,11 +185,11 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
         <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] border border-white/[0.05] shadow-2xl p-10 relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-cyan-500/10 blur-[100px] -z-10 group-hover:bg-cyan-500/20 transition-all"></div>
           
-          <div className="flex justify-between items-center mb-10">
-            <div className="flex items-center gap-4">
+          <div className={`flex justify-between items-center mb-10 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
                <div className="w-1.5 h-10 bg-cyan-400 rounded-full"></div>
                <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic">
-                 {isEditing ? 'Modify Identity' : 'Initiate New Asset'}
+                 {isEditing ? t('modifyIdentity') : t('initiateNewAsset')}
                </h2>
             </div>
             <button 
@@ -199,13 +203,13 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
           <form onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div className="lg:col-span-7 space-y-8">
               <div className="flex bg-white/[0.02] border border-white/[0.05] rounded-2xl p-1 mb-6">
-                <button type="button" onClick={() => setAssetType('physical')} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${assetType === 'physical' ? 'bg-cyan-500 text-slate-950 shadow-lg' : 'text-slate-500 hover:text-white'}`}>Physical Asset</button>
-                <button type="button" onClick={() => { setAssetType('service'); setFormData({...formData, stock_quantity: 9999, sizes: [], colors: []}); }} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${assetType === 'service' ? 'bg-cyan-500 text-slate-950 shadow-lg' : 'text-slate-500 hover:text-white'}`}>Service / Package</button>
+                <button type="button" onClick={() => setAssetType('physical')} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${assetType === 'physical' ? 'bg-cyan-500 text-slate-950 shadow-lg' : 'text-slate-500 hover:text-white'}`}>{t('physicalAsset')}</button>
+                <button type="button" onClick={() => { setAssetType('service'); setFormData({...formData, stock_quantity: 9999, sizes: [], colors: []}); }} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${assetType === 'service' ? 'bg-cyan-500 text-slate-950 shadow-lg' : 'text-slate-500 hover:text-white'}`}>{t('servicePackage')}</button>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Asset Designation</label>
+                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">{t('assetDesignation')}</label>
                   <input 
                     required 
                     type="text" 
@@ -216,7 +220,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Asset Narrative</label>
+                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">{t('assetNarrative')}</label>
                   <textarea 
                     required 
                     placeholder="Describe the essence of this product..."
@@ -229,7 +233,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
 
               <div className="grid grid-cols-2 gap-6">
                 <div className="bg-white/[0.01] p-6 rounded-2xl border border-white/[0.03]">
-                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">Base Valuation ($)</label>
+                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">{t('baseValuation')}</label>
                   <input 
                     required 
                     type="number" 
@@ -239,7 +243,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                   />
                 </div>
                 <div className="bg-white/[0.01] p-6 rounded-2xl border border-white/[0.03]">
-                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">Flash Discount ($)</label>
+                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">{t('flashDiscount')}</label>
                   <input 
                     type="number" 
                     value={formData.discount_price || ''} 
@@ -254,7 +258,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                 <div className="space-y-6">
                   <div className="p-8 bg-white/[0.02] border border-white/[0.03] rounded-3xl">
                   <div className="flex items-center justify-between mb-6">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Dimension Scale</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('dimensionScale')}</label>
                     <div className="h-[1px] flex-1 bg-white/[0.05] mx-4"></div>
                   </div>
                   
@@ -267,7 +271,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                         </button>
                       </div>
                     ))}
-                    {(!formData.sizes || formData.sizes.length === 0) && <span className="text-[10px] text-slate-600 font-bold uppercase tracking-widest italic">Universal Scale</span>}
+                    {(!formData.sizes || formData.sizes.length === 0) && <span className="text-[10px] text-slate-600 font-bold uppercase tracking-widest italic">{t('universalScale')}</span>}
                   </div>
                   
                   <div className="flex gap-3">
@@ -277,15 +281,15 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                       onChange={e => setSizeInput(e.target.value)} 
                       onKeyDown={e => e.key === 'Enter' && handleAddSize(e)}
                       className="flex-1 bg-white/[0.03] border border-white/[0.05] rounded-xl px-5 py-3 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 text-sm" 
-                      placeholder="Add size (e.g. XL, 42)..." 
+                      placeholder={t('addSizePlaceholder')} 
                     />
-                    <button type="button" onClick={handleAddSize} className="px-6 py-3 bg-white text-black rounded-xl hover:bg-cyan-400 transition-all text-xs font-black uppercase tracking-widest">Add</button>
+                    <button type="button" onClick={handleAddSize} className="px-6 py-3 bg-white text-black rounded-xl hover:bg-cyan-400 transition-all text-xs font-black uppercase tracking-widest">{t('injectSize')}</button>
                   </div>
                 </div>
 
                 <div className="p-8 bg-white/[0.02] border border-white/[0.03] rounded-3xl">
                    <div className="flex items-center justify-between mb-6">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Color Spectrum</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('colorSpectrum')}</label>
                     <div className="h-[1px] flex-1 bg-white/[0.05] mx-4"></div>
                   </div>
                   
@@ -321,13 +325,13 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                             {/* Controls */}
                             <div className="flex-1 flex items-center gap-3">
                                <div className="flex-1 min-w-[80px]">
-                                  <label className="block text-[7px] font-black text-slate-500 uppercase tracking-widest mb-1 ml-1">Visual Link</label>
+                                  <label className="block text-[7px] font-black text-slate-500 uppercase tracking-widest mb-1 ml-1">{t('visualLink')}</label>
                                   <select 
                                      className="w-full bg-white/5 border border-white/5 rounded-lg px-2 py-1 text-[9px] font-black uppercase tracking-widest text-cyan-400 focus:ring-0 outline-none"
                                      value={color.imageUrl || ''}
                                      onChange={(e) => handleUpdateColorField(index, 'imageUrl', e.target.value || null)}
                                   >
-                                     <option value="" className="bg-[#1a1d2d]">None</option>
+                                     <option value="" className="bg-[#1a1d2d]">{t('none')}</option>
                                      {formData.images?.map((img: string, i: number) => (
                                        <option key={i} value={img} className="bg-[#1a1d2d]">V{i + 1}</option>
                                      ))}
@@ -335,7 +339,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                                </div>
 
                                <div className="w-24">
-                                  <label className="block text-[7px] font-black text-slate-500 uppercase tracking-widest mb-1 ml-1">Stock</label>
+                                  <label className="block text-[7px] font-black text-slate-500 uppercase tracking-widest mb-1 ml-1">{t('stock')}</label>
                                   <div className="flex items-center bg-white/5 border border-white/5 rounded-lg overflow-hidden focus-within:border-cyan-500/30 transition-all h-7">
                                      <button 
                                        type="button" 
@@ -382,10 +386,10 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                         onChange={e => setColorInput(e.target.value)} 
                         onKeyDown={e => e.key === 'Enter' && handleAddColor(e)}
                         className="flex-1 bg-transparent px-4 py-3 text-white text-sm focus:outline-none" 
-                        placeholder="Add Hex or Name..." 
+                        placeholder={t('addColorPlaceholder')} 
                       />
                     </div>
-                    <button type="button" onClick={handleAddColor} className="px-6 py-3 bg-white text-black rounded-xl hover:bg-cyan-400 transition-all text-xs font-black uppercase tracking-widest">Inject</button>
+                    <button type="button" onClick={handleAddColor} className="px-6 py-3 bg-white text-black rounded-xl hover:bg-cyan-400 transition-all text-xs font-black uppercase tracking-widest">{t('injectColor')}</button>
                   </div>
                 </div>
                 </div>
@@ -393,7 +397,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                 <div className="space-y-6">
                   <div className="p-8 bg-white/[0.02] border border-white/[0.03] rounded-3xl">
                     <div className="flex items-center justify-between mb-6">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Package Features & Specs</label>
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('packageFeaturesSpecs')}</label>
                       <div className="h-[1px] flex-1 bg-white/[0.05] mx-4"></div>
                     </div>
                     
@@ -407,7 +411,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                           </button>
                         </div>
                       ))}
-                      {(!formData.specs || formData.specs.length === 0) && <span className="text-[10px] text-slate-600 font-bold uppercase tracking-widest italic">No features added</span>}
+                      {(!formData.specs || formData.specs.length === 0) && <span className="text-[10px] text-slate-600 font-bold uppercase tracking-widest italic">{t('noFeaturesAdded')}</span>}
                     </div>
                     
                     <div className="flex flex-col sm:flex-row gap-3">
@@ -416,7 +420,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                         value={specInput.label} 
                         onChange={e => setSpecInput({...specInput, label: e.target.value})} 
                         className="flex-1 bg-white/[0.03] border border-white/[0.05] rounded-xl px-5 py-3 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 text-sm" 
-                        placeholder="Feature (e.g. Duration)" 
+                        placeholder={t('featurePlaceholder')} 
                       />
                       <input 
                         type="text" 
@@ -424,9 +428,9 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                         onChange={e => setSpecInput({...specInput, value: e.target.value})} 
                         onKeyDown={e => e.key === 'Enter' && handleAddSpec(e)}
                         className="flex-[2] bg-white/[0.03] border border-white/[0.05] rounded-xl px-5 py-3 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 text-sm" 
-                        placeholder="Value (e.g. 1 Month)" 
+                        placeholder={t('valuePlaceholder')} 
                       />
-                      <button type="button" onClick={handleAddSpec} className="px-6 py-3 bg-white text-black rounded-xl hover:bg-cyan-400 transition-all text-xs font-black uppercase tracking-widest shrink-0">Add</button>
+                      <button type="button" onClick={handleAddSpec} className="px-6 py-3 bg-white text-black rounded-xl hover:bg-cyan-400 transition-all text-xs font-black uppercase tracking-widest shrink-0">{t('addFeature')}</button>
                     </div>
                   </div>
                 </div>
@@ -435,7 +439,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
 
             <div className="lg:col-span-5 space-y-8">
               <div className="p-8 bg-white/[0.02] border border-white/[0.03] rounded-3xl">
-                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-6">Market Sector</label>
+                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-6">{t('marketSector')}</label>
                 <select 
                   value={formData.category_id || defaultCategoryId} 
                   onChange={e => setFormData({...formData, category_id: e.target.value})} 
@@ -452,12 +456,12 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                       <option key={cat.id} value={cat.id} className="bg-[#1a1d2d]">{getCategoryLabel(cat, categories).toUpperCase()}</option>
                     );
                   })}
-                  {categories.length === 0 && <option value="" disabled className="bg-[#1a1d2d]">NO SECTORS DEFINED</option>}
+                  {categories.length === 0 && <option value="" disabled className="bg-[#1a1d2d]">{t('noSectorsDefined')}</option>}
                 </select>
               </div>
 
               <div className="p-8 bg-white/[0.02] border border-white/[0.03] rounded-3xl">
-                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-6">Visual Matrix</label>
+                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-6">{t('visualMatrix')}</label>
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   {(formData.images || []).map((img: string, i: number) => (
                     <div key={i} className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 group/img shadow-2xl">
@@ -474,7 +478,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
-                          <span className="text-[8px] font-black text-white uppercase tracking-[0.2em]">Visual node {i + 1}</span>
+                          <span className="text-[8px] font-black text-white uppercase tracking-[0.2em]">{t('visualNode')} {i + 1}</span>
                        </div>
                     </div>
                   ))}
@@ -482,7 +486,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                     <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-slate-500 group-hover/addimg:text-cyan-400 group-hover/addimg:scale-110 transition-all">
                        <Plus className="w-6 h-6" />
                     </div>
-                    <span className="text-[8px] font-black text-slate-600 uppercase tracking-[0.2em] group-hover/addimg:text-cyan-400 transition-colors">Capture Asset</span>
+                    <span className="text-[8px] font-black text-slate-600 uppercase tracking-[0.2em] group-hover/addimg:text-cyan-400 transition-colors">{t('captureAsset')}</span>
                     <MediaPicker 
                        slug={slug} 
                        value="" 
@@ -496,7 +500,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
               <div className="grid grid-cols-2 gap-6">
                 {assetType === 'physical' && (
                   <div className="p-6 bg-white/[0.02] border border-white/[0.03] rounded-2xl">
-                    <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Stock Units</label>
+                    <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">{t('stockUnits')}</label>
                     <input 
                       required 
                       type="number" 
@@ -507,14 +511,14 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                   </div>
                 )}
                 <div className={`p-6 bg-white/[0.02] border border-white/[0.03] rounded-2xl ${assetType === 'service' ? 'col-span-2' : ''}`}>
-                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Deployment Status</label>
+                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">{t('deploymentStatus')}</label>
                   <select 
                     value={formData.status || 'active'} 
                     onChange={e => setFormData({...formData, status: e.target.value as 'active' | 'draft'})} 
                     className="w-full bg-transparent text-xs font-black text-white outline-none uppercase tracking-widest cursor-pointer"
                   >
-                    <option value="active" className="bg-[#1a1d2d]">Active</option>
-                    <option value="draft" className="bg-[#1a1d2d]">Draft</option>
+                    <option value="active" className="bg-[#1a1d2d]">{t('activeStatus')}</option>
+                    <option value="draft" className="bg-[#1a1d2d]">{t('draftStatus')}</option>
                   </select>
                 </div>
               </div>
@@ -526,14 +530,14 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                   className="w-full py-5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-[2rem] text-white font-black uppercase tracking-[0.3em] text-xs hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(6,182,212,0.3)] disabled:opacity-50"
                 >
                   {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Package className="w-5 h-5" />}
-                  {isEditing ? 'Sync Matrix' : 'Deploy Asset'}
+                  {isEditing ? t('syncMatrix') : t('deployAsset')}
                 </button>
                 <button 
                   type="button" 
                   onClick={() => { setIsEditing(null); setIsAdding(false); }} 
                   className="w-full py-5 bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.05] rounded-[2rem] text-slate-500 font-black uppercase tracking-[0.3em] text-[10px] transition-all"
                 >
-                  Abort Mission
+                  {t('abortMission')}
                 </button>
               </div>
             </div>
@@ -549,13 +553,13 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
           <table className="w-full text-left">
             <thead className="bg-white/[0.01] border-b border-white/[0.05]">
               <tr>
-                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Asset Identity</th>
-                <th className="px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Sector</th>
-                <th className="px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Valuation</th>
-                <th className="px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Variants</th>
-                <th className="px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Inventory</th>
-                <th className="px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Status</th>
-                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 text-right">Operations</th>
+                <th className={`px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('assetIdentity')}</th>
+                <th className={`px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('sector')}</th>
+                <th className={`px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('valuation')}</th>
+                <th className={`px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('variants')}</th>
+                <th className={`px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('inventory')}</th>
+                <th className={`px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('status')}</th>
+                <th className={`px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-left' : 'text-right'}`}>{t('operations')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.03]">
@@ -607,7 +611,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                   <td className="px-8 py-8">
                     <div className="flex flex-col gap-2">
                        <span className={`text-[10px] font-black uppercase tracking-widest ${product.stock_quantity > 0 ? 'text-green-500' : 'text-rose-500'}`}>
-                         {product.stock_quantity} Units
+                         {product.stock_quantity} {t('units')}
                        </span>
                        <div className="w-20 h-1 bg-white/[0.05] rounded-full overflow-hidden">
                           <div className={`h-full ${product.stock_quantity > 5 ? 'bg-green-500' : 'bg-rose-500'} transition-all`} style={{ width: `${Math.min(product.stock_quantity * 5, 100)}%` }}></div>
@@ -618,12 +622,12 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                     <div className="flex items-center gap-3">
                        <div className={`w-2 h-2 rounded-full animate-pulse ${product.status === 'active' ? 'bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]' : 'bg-slate-700'}`}></div>
                        <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${product.status === 'active' ? 'text-white' : 'text-slate-600'}`}>
-                         {product.status}
+                         {product.status === 'active' ? t('activeStatus') : t('draftStatus')}
                        </span>
                     </div>
                   </td>
-                  <td className="px-10 py-8 text-right">
-                    <div className="flex justify-end gap-3">
+                  <td className={`px-10 py-8 ${isRTL ? 'text-left' : 'text-right'}`}>
+                    <div className={`flex gap-3 ${isRTL ? 'justify-start' : 'justify-end'}`}>
                       <button 
                         onClick={() => startEdit(product)} 
                         className="w-10 h-10 bg-white/[0.03] border border-white/[0.05] rounded-xl flex items-center justify-center text-slate-500 hover:text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400/30 transition-all shadow-xl"
@@ -647,8 +651,8 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                <div className="w-20 h-20 bg-white/[0.02] border border-white/[0.05] rounded-full flex items-center justify-center mx-auto mb-6">
                  <Package className="w-10 h-10 text-slate-700" />
                </div>
-               <h3 className="text-xl font-black text-white uppercase tracking-tighter italic mb-2">Vault Empty</h3>
-               <p className="text-slate-600 text-sm font-medium">No assets have been deployed to your inventory yet.</p>
+               <h3 className="text-xl font-black text-white uppercase tracking-tighter italic mb-2">{t('vaultEmpty')}</h3>
+               <p className="text-slate-600 text-sm font-medium">{t('noAssetsDeployed')}</p>
             </div>
           )}
         </div>

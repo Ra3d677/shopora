@@ -6,6 +6,7 @@ import { useOrdersStore } from "@/store/orders";
 import { ShoppingBag, User, MapPin, Phone, Calendar, ChevronDown, Loader2, Package, CheckCircle2, Clock, Truck, XCircle, Mail, FileText, Search, Filter } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useLanguageStore } from "@/store/language";
 
 export default function OrdersManager({ 
   initialOrders, 
@@ -21,6 +22,9 @@ export default function OrdersManager({
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
+
+  const { t, language } = useLanguageStore();
+  const isRTL = language === 'ar';
 
   // Zustand Store States and Actions
   const {
@@ -115,18 +119,18 @@ export default function OrdersManager({
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 pb-20">
-      <div className="flex justify-between items-end">
-        <div>
+    <div dir={isRTL ? "rtl" : "ltr"} className={`space-y-8 animate-in fade-in duration-500 pb-20 ${isRTL ? 'text-right' : 'text-left'}`}>
+      <div className={`flex justify-between items-end ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className={isRTL ? 'text-right' : 'text-left'}>
           <h1 className="text-4xl font-black italic tracking-tighter text-white uppercase">
-            Order <span className="text-cyan-400">Stream</span>
+            {t('orderStream')}
           </h1>
-          <p className="text-slate-500 mt-1 font-medium tracking-widest text-[10px] uppercase">Real-time transaction matrix and fulfillment control.</p>
+          <p className="text-slate-500 mt-1 font-medium tracking-widest text-[10px] uppercase">{t('realtimeTransactionMatrix')}</p>
         </div>
       </div>
 
       {/* Search & Server-side Filters */}
-      <div className="flex flex-col sm:flex-row gap-4 bg-[#1a1d2d]/60 backdrop-blur-3xl p-5 rounded-[2rem] border border-white/5 shadow-2xl">
+      <div className={`flex flex-col sm:flex-row gap-4 bg-[#1a1d2d]/60 backdrop-blur-3xl p-5 rounded-[2rem] border border-white/5 shadow-2xl ${isRTL ? 'flex-row-reverse' : ''}`}>
         <div className="relative flex-1 group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors" />
           <input
@@ -158,9 +162,9 @@ export default function OrdersManager({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Orders List */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="flex items-center justify-between px-2 mb-4">
+          <div className={`flex items-center justify-between px-2 mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">
-              {filtering ? "Scanning Matrix..." : `Active Records (${orders.length})`}
+              {filtering ? t('scanningMatrix') : `${t('activeRecords')} (${orders.length})`}
             </h3>
           </div>
           
@@ -169,7 +173,7 @@ export default function OrdersManager({
                <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto border border-white/5 shadow-2xl">
                   <ShoppingBag className="w-10 h-10 text-slate-700" />
                </div>
-               <p className="text-slate-500 font-black uppercase tracking-widest text-xs">No active transactions</p>
+               <p className="text-slate-500 font-black uppercase tracking-widest text-xs">{t('noActiveTransactions')}</p>
             </div>
           ) : (
             orders.map((order) => (
@@ -191,7 +195,7 @@ export default function OrdersManager({
                       <div>
                         <h3 className="font-black text-white text-lg leading-none mb-2 tracking-tight uppercase italic">{order.customerName}</h3>
                         <p className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                          Node <span className="text-cyan-500">#{order.id.slice(-8).toUpperCase()}</span>
+                          {t('node')} <span className="text-cyan-500">#{order.id.slice(-8).toUpperCase()}</span>
                         </p>
                       </div>
                     </div>
@@ -210,24 +214,24 @@ export default function OrdersManager({
                     </div>
                   </div>
 
-                  <div className="mt-8 pt-8 border-t border-white/[0.03] grid grid-cols-2 sm:grid-cols-4 gap-6">
+                  <div className={`mt-8 pt-8 border-t border-white/[0.03] grid grid-cols-2 sm:grid-cols-4 gap-6 ${isRTL ? 'text-right' : 'text-left'}`}>
                     <div className="space-y-2">
-                      <p className="text-[9px] font-black text-slate-600 uppercase tracking-widest">Revenue</p>
+                      <p className="text-[9px] font-black text-slate-600 uppercase tracking-widest">{t('revenue')}</p>
                       <p className="text-xl font-black text-white italic">${order.totalAmount?.toFixed(2)}</p>
                     </div>
                     <div className="space-y-2">
-                      <p className="text-[9px] font-black text-slate-600 uppercase tracking-widest">Matrix Units</p>
+                      <p className="text-[9px] font-black text-slate-600 uppercase tracking-widest">{t('matrixUnits')}</p>
                       <p className="text-xl font-black text-white italic">{order.items?.length || 0}</p>
                     </div>
                     <div className="space-y-2">
-                      <p className="text-[9px] font-black text-slate-600 uppercase tracking-widest">Time Stamp</p>
+                      <p className="text-[9px] font-black text-slate-600 uppercase tracking-widest">{t('timeStamp')}</p>
                       <p className="text-[11px] font-black text-slate-400 uppercase">
                         {new Date(order.createdAt).toLocaleDateString()}
                       </p>
                     </div>
                     <div className="space-y-2">
-                      <p className="text-[9px] font-black text-slate-600 uppercase tracking-widest">Status</p>
-                      <p className="text-[10px] font-black text-green-400 uppercase tracking-widest">Verified</p>
+                      <p className="text-[9px] font-black text-slate-600 uppercase tracking-widest">{t('statusLabel')}</p>
+                      <p className="text-[10px] font-black text-green-400 uppercase tracking-widest">{t('verified')}</p>
                     </div>
                   </div>
                 </div>
@@ -247,10 +251,10 @@ export default function OrdersManager({
                 {loadingMore ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
-                    <span>Syncing Next Node...</span>
+                    <span>{t('syncingNextNode')}</span>
                   </>
                 ) : (
-                  <span>LOAD MORE ORDERS</span>
+                  <span>{t('loadMoreOrders')}</span>
                 )}
               </button>
             </div>
@@ -265,15 +269,15 @@ export default function OrdersManager({
                 <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-8 border border-white/5 shadow-inner">
                   <FileText className="w-10 h-10 text-slate-700" />
                 </div>
-                <h3 className="text-xl font-black text-white uppercase italic tracking-tighter mb-3">Awaiting Selection</h3>
-                <p className="text-xs font-medium leading-relaxed max-w-[200px] mx-auto">Click on a transaction node to initiate detailed analysis and fulfillment.</p>
+                <h3 className="text-xl font-black text-white uppercase italic tracking-tighter mb-3">{t('awaitingSelection')}</h3>
+                <p className="text-xs font-medium leading-relaxed max-w-[200px] mx-auto">{t('clickTransactionNode')}</p>
               </div>
             ) : (
               <div className="flex flex-col h-full animate-in fade-in zoom-in-95 duration-500">
-                <div className="p-10 bg-white/[0.02] border-b border-white/[0.05] flex items-center justify-between">
+                <div className={`p-10 bg-white/[0.02] border-b border-white/[0.05] flex items-center justify-between ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
                   <div>
-                    <h2 className="text-2xl font-black text-white italic tracking-tighter uppercase">Order <span className="text-cyan-400">Analysis</span></h2>
-                    <p className="text-[9px] text-slate-500 font-black uppercase tracking-[0.3em] mt-1">Uplink: {selectedOrder.id.toUpperCase()}</p>
+                    <h2 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('orderAnalysis')}</h2>
+                    <p className="text-[9px] text-slate-500 font-black uppercase tracking-[0.3em] mt-1">{t('uplink')}: {selectedOrder.id.toUpperCase()}</p>
                   </div>
                   <div className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest border flex items-center gap-2 ${
                     selectedOrder.status === 'delivered' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 
@@ -286,37 +290,37 @@ export default function OrdersManager({
 
                 <div className="flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar">
                   {/* Customer Info Card */}
-                  <div className="space-y-6">
-                    <h4 className="text-[10px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Identity & Logistics</h4>
+                  <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <h4 className={`text-[10px] font-black text-slate-600 uppercase tracking-[0.3em] ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('identityLogistics')}</h4>
                     <div className="bg-white/[0.02] p-8 rounded-3xl border border-white/[0.05] space-y-8 relative overflow-hidden group">
                        <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 blur-3xl -z-10 group-hover:bg-cyan-500/10 transition-all"></div>
                        
-                       <div className="flex items-start gap-5">
+                       <div className={`flex items-start gap-5 ${isRTL ? 'flex-row-reverse' : ''}`}>
                           <div className="w-12 h-12 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-center shrink-0 shadow-lg">
                              <User className="w-6 h-6 text-slate-500" />
                           </div>
                           <div>
-                             <p className="text-[9px] text-slate-600 font-black uppercase tracking-widest mb-1.5">Subject</p>
+                             <p className="text-[9px] text-slate-600 font-black uppercase tracking-widest mb-1.5">{t('subject')}</p>
                              <p className="text-base font-black text-white italic">{selectedOrder.customerName}</p>
                           </div>
                        </div>
                        
-                       <div className="flex items-start gap-5">
+                       <div className={`flex items-start gap-5 ${isRTL ? 'flex-row-reverse' : ''}`}>
                           <div className="w-12 h-12 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-center shrink-0 shadow-lg">
                              <MapPin className="w-6 h-6 text-slate-500" />
                           </div>
                           <div className="flex-1">
-                             <p className="text-[9px] text-slate-600 font-black uppercase tracking-widest mb-1.5">Delivery Coordinates</p>
-                             <p className="text-sm font-bold text-slate-300 leading-relaxed italic">{selectedOrder.shippingAddress || 'No coordinates provided'}</p>
+                             <p className="text-[9px] text-slate-600 font-black uppercase tracking-widest mb-1.5">{t('deliveryCoordinates')}</p>
+                             <p className="text-sm font-bold text-slate-300 leading-relaxed italic">{selectedOrder.shippingAddress || t('noCoordinatesProvided')}</p>
                           </div>
                        </div>
 
-                       <div className="flex items-start gap-5">
+                       <div className={`flex items-start gap-5 ${isRTL ? 'flex-row-reverse' : ''}`}>
                           <div className="w-12 h-12 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-center shrink-0 shadow-lg">
                              <Phone className="w-6 h-6 text-slate-500" />
                           </div>
                           <div>
-                             <p className="text-[9px] text-slate-600 font-black uppercase tracking-widest mb-1.5">Comm Channel</p>
+                             <p className="text-[9px] text-slate-600 font-black uppercase tracking-widest mb-1.5">{t('commChannel')}</p>
                              <p className="text-sm font-black text-cyan-400 tracking-widest">{selectedOrder.customerPhone || 'N/A'}</p>
                           </div>
                        </div>
@@ -324,14 +328,14 @@ export default function OrdersManager({
                   </div>
 
                   {/* Order Items */}
-                  <div className="space-y-6">
-                    <h4 className="text-[10px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Product Matrix</h4>
+                  <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <h4 className={`text-[10px] font-black text-slate-600 uppercase tracking-[0.3em] ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('productMatrix')}</h4>
                     <div className="space-y-4">
                       {(selectedOrder.items || []).map((item: any, idx: number) => {
                         const productImages = item.product.images ? (typeof item.product.images === 'string' ? JSON.parse(item.product.images) : item.product.images) : [];
                         const imageUrl = item.image || (productImages.length > 0 ? productImages[0] : '');
                         return (
-                        <div key={idx} className="bg-white/[0.02] p-5 rounded-2xl border border-white/[0.05] flex items-center gap-5 group/item transition-all hover:bg-white/[0.04]">
+                        <div key={idx} className={`bg-white/[0.02] p-5 rounded-2xl border border-white/[0.05] flex items-center gap-5 group/item transition-all hover:bg-white/[0.04] ${isRTL ? 'flex-row-reverse' : ''}`}>
                           <div className="w-20 h-20 bg-black/40 rounded-2xl overflow-hidden relative shrink-0 border border-white/5 shadow-2xl">
                              {imageUrl ? (
                                <Image src={imageUrl} alt={item.product.name} fill className="object-cover group-hover/item:scale-110 transition-transform duration-700" />
@@ -341,26 +345,25 @@ export default function OrdersManager({
                                 </div>
                              )}
                           </div>
-                          <div className="flex-1 min-w-0">
+                          <div className={`flex-1 min-w-0 ${isRTL ? 'text-right' : 'text-left'}`}>
                             <p className="text-base font-black text-white italic truncate uppercase tracking-tight">{item.product.name}</p>
-                            <div className="flex items-center gap-3 mt-1.5">
+                            <div className={`flex items-center gap-3 mt-1.5 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                                {item.size && (
                                  <span className="text-[8px] font-black px-2 py-1 bg-white/5 border border-white/10 rounded-md text-slate-400 uppercase tracking-widest">
-                                   Size: {item.size}
+                                   {item.size}
                                  </span>
                                )}
                                {item.color && (
-                                 <div className="flex items-center gap-1.5">
-                                   <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Color:</span>
+                                 <div className={`flex items-center gap-1.5 ${isRTL ? 'flex-row-reverse' : ''}`}>
                                    <div className="w-3 h-3 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: item.color }} />
                                  </div>
                                )}
                             </div>
                             <p className="text-[10px] font-black text-cyan-500 mt-2 uppercase tracking-widest">
-                               Units: {item.quantity} × ${item.price?.toFixed(2)}
+                               {item.quantity} × ${item.price?.toFixed(2)}
                             </p>
                           </div>
-                          <div className="text-right">
+                          <div className={isRTL ? 'text-left' : 'text-right'}>
                             <p className="text-lg font-black text-white italic">${(item.quantity * item.price).toFixed(2)}</p>
                           </div>
                         </div>
@@ -368,9 +371,9 @@ export default function OrdersManager({
                     </div>
 
                     {selectedOrder.notes && (
-                      <div className="bg-amber-500/5 border border-amber-500/10 p-6 rounded-2xl space-y-3">
-                         <h4 className="text-[9px] font-black text-amber-500 uppercase tracking-[0.2em] flex items-center gap-2">
-                           <FileText className="w-3 h-3" /> Customer Intelligence / Notes
+                      <div className={`bg-amber-500/5 border border-amber-500/10 p-6 rounded-2xl space-y-3 ${isRTL ? 'text-right' : 'text-left'}`}>
+                         <h4 className={`text-[9px] font-black text-amber-500 uppercase tracking-[0.2em] flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                           <FileText className="w-3 h-3" /> {t('customerIntelligence')}
                          </h4>
                          <p className="text-xs font-bold text-amber-200/60 leading-relaxed italic">
                            "{selectedOrder.notes}"
@@ -378,16 +381,16 @@ export default function OrdersManager({
                       </div>
                     )}
                     
-                    <div className="bg-gradient-to-r from-cyan-600 to-blue-700 p-8 rounded-3xl text-white flex justify-between items-center shadow-2xl shadow-cyan-500/20 relative overflow-hidden group/total">
+                    <div className={`bg-gradient-to-r from-cyan-600 to-blue-700 p-8 rounded-3xl text-white flex justify-between items-center shadow-2xl shadow-cyan-500/20 relative overflow-hidden group/total ${isRTL ? 'flex-row-reverse' : ''}`}>
                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent)] pointer-events-none"></div>
-                       <span className="text-[11px] font-black uppercase tracking-[0.4em] opacity-70">Accumulated Total</span>
+                       <span className="text-[11px] font-black uppercase tracking-[0.4em] opacity-70">{t('accumulatedTotal')}</span>
                        <span className="text-3xl font-black italic tracking-tighter">${selectedOrder.totalAmount?.toFixed(2)}</span>
                     </div>
                   </div>
 
                   {/* Order Fulfillment */}
-                  <div className="space-y-6">
-                    <h4 className="text-[10px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Protocol Execution</h4>
+                  <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <h4 className={`text-[10px] font-black text-slate-600 uppercase tracking-[0.3em] ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('protocolExecution')}</h4>
                     <div className="grid grid-cols-2 gap-3 pb-10">
                        {[
                          { id: 'pending', label: 'Pending', icon: Clock },

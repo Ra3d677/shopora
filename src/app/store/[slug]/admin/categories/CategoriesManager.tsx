@@ -8,11 +8,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import MediaPicker from "../media/MediaPicker";
+import { useLanguageStore } from "@/store/language";
 
 export default function CategoriesManager({ initialCategories, slug, settings }: { initialCategories: Category[], slug: string, settings: any }) {
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const { t, language } = useLanguageStore();
+  const isRTL = language === 'ar';
 
   const [isEditing, setIsEditing] = useState<Category | null>(null);
   const [isAdding, setIsAdding] = useState(false);
@@ -64,7 +67,7 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
   });
 
   const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this category?")) {
+    if (confirm(t('confirmDeleteCategory'))) {
       setCategories(categories.filter(c => c.id !== id));
       startTransition(async () => {
         await deleteCategory(slug, id);
@@ -110,22 +113,22 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
   };
 
   return (
-    <div className="p-10 space-y-12 animate-in fade-in duration-700">
-      <div className="flex justify-between items-end">
-        <div>
+    <div dir={isRTL ? "rtl" : "ltr"} className={`p-10 space-y-12 animate-in fade-in duration-700 ${isRTL ? 'text-right' : 'text-left'}`}>
+      <div className={`flex justify-between items-end ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className={isRTL ? 'text-right' : 'text-left'}>
           <h1 className="text-5xl font-black tracking-tighter bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent italic uppercase">
-            Collection <span className="text-green-400">Hub</span>
+            {t('collectionHub')}
           </h1>
-          <p className="text-slate-500 mt-3 font-medium tracking-widest text-[10px] uppercase">Architect your store's navigational structure.</p>
+          <p className="text-slate-500 mt-3 font-medium tracking-widest text-[10px] uppercase">{t('architectNavStructure')}</p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
           {showSuccess && (
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               className="bg-green-500/10 text-green-400 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest border border-green-500/20 backdrop-blur-md"
             >
-              Sync Successful
+              {t('syncSuccessful')}
             </motion.div>
           )}
           {hasChanges && (
@@ -135,7 +138,7 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
               className="px-10 py-4 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_10px_30px_rgba(34,197,94,0.2)] flex items-center gap-3"
             >
               {isUpdatingLayout ? <Loader2 size={16} className="animate-spin" /> : <div className="w-2 h-2 rounded-full bg-white animate-pulse" />}
-              Commit Changes
+              {t('commitChanges')}
             </button>
           )}
           {!isAdding && !isEditing && (
@@ -143,7 +146,7 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
               onClick={startAdd}
               className="px-8 py-4 bg-white text-black rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-green-400 hover:text-black transition-all flex items-center gap-3 shadow-2xl"
             >
-              <Plus className="w-5 h-5" /> New Collection
+              <Plus className="w-5 h-5" /> {t('newCollection')}
             </button>
           )}
         </div>
@@ -153,30 +156,30 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
       <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/[0.05] shadow-2xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-green-500/5 blur-[120px] -z-10 group-hover:bg-green-500/10 transition-all"></div>
         
-        <div className="flex items-center justify-between mb-10">
-          <div className="flex items-center gap-4">
+        <div className={`flex items-center justify-between mb-10 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
+          <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
              <div className="w-1.5 h-10 bg-green-400 rounded-full"></div>
              <div>
-               <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Visual Matrix</h2>
-               <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Define your storefront aesthetic.</p>
+               <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">{t('visualMatrix')}</h2>
+               <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">{t('defineStorefrontAesthetic')}</p>
              </div>
           </div>
           {isUpdatingLayout && <Loader2 className="w-5 h-5 animate-spin text-green-400" />}
         </div>
 
         {/* Tab Selector - Minimalist & Sleek */}
-        <div className="flex gap-3 mb-10 bg-black/20 p-2 rounded-2xl w-fit border border-white/[0.03]">
+        <div className={`flex gap-3 mb-10 bg-black/20 p-2 rounded-2xl w-fit border border-white/[0.03] ${isRTL ? 'ml-auto flex-row-reverse' : ''}`}>
            <button 
              onClick={() => setActiveTab('home')}
              className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'home' ? 'bg-white text-black shadow-xl' : 'text-slate-500 hover:text-white'}`}
            >
-             Landing Page
+             {t('landingPage')}
            </button>
            <button 
              onClick={() => setActiveTab('collections')}
              className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'collections' ? 'bg-white text-black shadow-xl' : 'text-slate-500 hover:text-white'}`}
            >
-             All Collections
+             {t('allCollections')}
            </button>
         </div>
 
@@ -205,11 +208,11 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
 
       {(isAdding || isEditing) && (
         <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] border border-white/[0.05] shadow-2xl p-10 relative overflow-hidden">
-          <div className="flex justify-between items-center mb-10">
-            <div className="flex items-center gap-4">
+          <div className={`flex justify-between items-center mb-10 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
+            <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
                <div className="w-1.5 h-10 bg-green-400 rounded-full"></div>
                <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic">
-                 {isEditing ? 'Modify Sector' : 'Register New Sector'}
+                 {isEditing ? t('modifySector') : t('registerNewSector')}
                </h2>
             </div>
             <button 
@@ -221,30 +224,30 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
           </div>
 
           <form onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            <div className="space-y-8">
+            <div className={`space-y-8 ${isRTL ? 'text-right' : 'text-left'}`}>
               <div>
-                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Sector Designation</label>
+                <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ${isRTL ? 'mr-1' : 'ml-1'}`}>{t('sectorDesignation')}</label>
                 <input 
                   required 
                   type="text" 
                   value={formData.name || ''} 
                   onChange={e => setFormData({...formData, name: e.target.value})} 
-                  className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all font-bold" 
-                  placeholder="e.g. Summer Essentials"
+                  className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all font-bold ${isRTL ? 'text-right' : 'text-left'}`} 
+                  placeholder={isRTL ? 'مثال: مستلزمات الصيف' : 'e.g. Summer Essentials'}
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Narrative Description</label>
+                <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ${isRTL ? 'mr-1' : 'ml-1'}`}>{t('narrativeDescription')}</label>
                 <textarea 
                   required 
                   value={formData.description || ''} 
                   onChange={e => setFormData({...formData, description: e.target.value})} 
-                  className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all h-32 font-medium" 
-                  placeholder="Elaborate on this collection's theme..."
+                  className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all h-32 font-medium ${isRTL ? 'text-right' : 'text-left'}`} 
+                  placeholder={isRTL ? 'اشرح تفاصيل هذه المجموعة...' : 'Elaborate on this collection\'s theme...'}
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Structural Hierarchy</label>
+                <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ${isRTL ? 'mr-1' : 'ml-1'}`}>{t('structuralHierarchy')}</label>
                 <select 
                   value={formData.parentId || ''} 
                   onChange={e => setFormData({...formData, parentId: e.target.value})} 
@@ -260,9 +263,9 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
               </div>
             </div>
 
-            <div className="space-y-8">
+            <div className={`space-y-8 ${isRTL ? 'text-right' : 'text-left'}`}>
               <div>
-                <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Visual Signature</label>
+                <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ${isRTL ? 'mr-1' : 'ml-1'}`}>{t('visualSignature')}</label>
                 <div className="bg-white/[0.03] border border-white/[0.05] rounded-[2rem] p-4">
                   <MediaPicker 
                     slug={slug}
@@ -280,7 +283,7 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
                   className="flex-1 py-5 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-black uppercase tracking-[0.3em] text-xs rounded-[2rem] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-2xl disabled:opacity-50"
                 >
                   {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse" />}
-                  {isEditing ? 'Update Registry' : 'Initialize Sector'}
+                  {isEditing ? (isRTL ? 'تحديث السجل' : 'Update Registry') : (isRTL ? 'تفعيل القطاع' : 'Initialize Sector')}
                 </button>
                 <button 
                   type="button" 
@@ -301,11 +304,11 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
         
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-white/[0.01] border-b border-white/[0.05]">
+            <thead className={`bg-white/[0.01] border-b border-white/[0.05] ${isRTL ? 'text-right' : 'text-left'}`}>
               <tr>
-                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Collection Identity</th>
-                <th className="px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Registry Code</th>
-                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 text-right">Operations</th>
+                <th className={`px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('collectionIdentity')}</th>
+                <th className={`px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('registryCode')}</th>
+                <th className={`px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-left' : 'text-right'}`}>{t('operations')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.03]">
@@ -317,18 +320,18 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
                         <Image src={category.image} alt={category.name} fill className="object-cover" />
                       </div>
                       <div>
-                        <div className="flex items-center gap-4 mb-2">
+                        <div className={`flex items-center gap-4 mb-2 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                           <div className="font-black text-white uppercase tracking-tighter text-xl">{category.name}</div>
                           {category.parentId && (
-                            <div className="flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full">
+                            <div className={`flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full ${isRTL ? 'flex-row-reverse' : ''}`}>
                                <div className="w-1 h-1 bg-green-400 rounded-full animate-pulse"></div>
                                <span className="text-[8px] font-black text-green-400 uppercase tracking-widest">
-                                  Node of {categories.find(c => c.id === category.parentId)?.name.toUpperCase() || 'ROOT'}
+                                  {isRTL ? 'عقدة من' : 'Node of'} {categories.find(c => c.id === category.parentId)?.name.toUpperCase() || (isRTL ? 'الجذر' : 'ROOT')}
                                </span>
                             </div>
                           )}
                         </div>
-                        <div className="text-slate-500 text-[10px] font-medium tracking-wide italic max-w-[400px] line-clamp-1 opacity-60 group-hover:opacity-100 transition-opacity">{category.description}</div>
+                        <div className={`text-slate-500 text-[10px] font-medium tracking-wide italic max-w-[400px] line-clamp-1 opacity-60 group-hover:opacity-100 transition-opacity ${isRTL ? 'text-right' : 'text-left'}`}>{category.description}</div>
                       </div>
                     </div>
                   </td>
@@ -337,8 +340,8 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
                       {category.id.toUpperCase()}
                     </span>
                   </td>
-                  <td className="px-10 py-8 text-right">
-                    <div className="flex justify-end gap-3">
+                  <td className={`px-10 py-8 ${isRTL ? 'text-left' : 'text-right'}`}>
+                    <div className={`flex gap-3 ${isRTL ? 'justify-start' : 'justify-end'}`}>
                       <button 
                         onClick={() => startEdit(category)} 
                         className="w-12 h-12 bg-white/[0.03] border border-white/[0.05] rounded-2xl flex items-center justify-center text-slate-500 hover:text-green-400 hover:bg-green-400/10 hover:border-green-400/30 transition-all shadow-xl"
@@ -362,8 +365,8 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
                <div className="w-24 h-24 bg-white/[0.02] border border-white/[0.05] rounded-full flex items-center justify-center mx-auto mb-8 animate-pulse">
                  <LayoutGrid className="w-12 h-12 text-slate-800" />
                </div>
-               <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic mb-3">No Matrix Data</h3>
-               <p className="text-slate-600 text-sm font-medium">Initialize your first sector to begin deployment.</p>
+               <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic mb-3">{isRTL ? 'لا توجد بيانات' : 'No Matrix Data'}</h3>
+               <p className="text-slate-600 text-sm font-medium">{isRTL ? 'ابدأ القطاع الأول لبدء النشر.' : 'Initialize your first sector to begin deployment.'}</p>
             </div>
           )}
         </div>

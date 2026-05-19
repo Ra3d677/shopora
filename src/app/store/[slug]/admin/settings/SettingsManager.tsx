@@ -140,7 +140,7 @@ export default function SettingsManager({
   ];
 
   return (
-    <div className="space-y-10 animate-in fade-in duration-700 pb-32">
+    <div dir={language === 'ar' ? "rtl" : "ltr"} className={`space-y-10 animate-in fade-in duration-700 pb-32 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
         <div>
           <h1 className="text-5xl font-black italic tracking-tighter text-white uppercase">

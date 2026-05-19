@@ -7,6 +7,7 @@ import { Loader2, Plus, Save, Trash2, ArrowUp, ArrowDown, Image as ImageIcon, Se
 import { useRouter } from "next/navigation";
 import MediaPicker from "../media/MediaPicker";
 import SmartImage from "@/components/ui/SmartImage";
+import { useLanguageStore } from "@/store/language";
 
 export default function BannersManager({ initialBanners, slug, initialSettings }: { initialBanners: Banner[], slug: string, initialSettings: BannerSettings }) {
   const [banners, setBanners] = useState<Banner[]>(initialBanners.sort((a, b) => a.order - b.order));
@@ -14,6 +15,9 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
   const [isPending, startTransition] = useTransition();
   const [saveMessage, setSaveMessage] = useState("");
   const router = useRouter();
+
+  const { t, language } = useLanguageStore();
+  const isRTL = language === 'ar';
 
   const handleAddBanner = () => {
     const newBanner: Banner = {
@@ -76,46 +80,46 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
   };
 
   return (
-    <div className="p-10 space-y-12 animate-in fade-in duration-700">
-      <div className="flex justify-between items-end">
-        <div>
+    <div dir={isRTL ? "rtl" : "ltr"} className={`p-10 space-y-12 animate-in fade-in duration-700 ${isRTL ? 'text-right' : 'text-left'}`}>
+      <div className={`flex justify-between items-end ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className={isRTL ? 'text-right' : 'text-left'}>
           <h1 className="text-5xl font-black tracking-tighter bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent italic uppercase">
-            Motion <span className="text-yellow-400">Canvas</span>
+            {t('motionCanvas')}
           </h1>
-          <p className="text-slate-500 mt-3 font-medium tracking-widest text-[10px] uppercase">Curate your store's high-impact visual narrative.</p>
+          <p className="text-slate-500 mt-3 font-medium tracking-widest text-[10px] uppercase">{t('curateVisualNarrative')}</p>
         </div>
       </div>
 
       <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/[0.05] shadow-2xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-yellow-500/5 blur-[120px] -z-10 group-hover:bg-yellow-500/10 transition-all"></div>
         
-        <div className="flex items-center gap-4 mb-10">
+        <div className={`flex items-center gap-4 mb-10 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
            <div className="w-1.5 h-10 bg-yellow-400 rounded-full shadow-[0_0_15px_rgba(250,204,21,0.5)]"></div>
            <div>
-             <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">Slider Dynamics</h2>
-             <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Global behavior and transition protocols.</p>
+             <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">{t('sliderDynamics')}</h2>
+             <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">{t('globalTransitionProtocols')}</p>
            </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 ${isRTL ? 'text-right' : 'text-left'}`}>
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
-              <Play className="w-3.5 h-3.5 text-yellow-400" /> Automatic Cycle
+            <label className={`text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Play className="w-3.5 h-3.5 text-yellow-400" /> {t('autoCycle')}
             </label>
-            <div className="flex items-center gap-4">
+            <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                <button 
                 onClick={() => setSliderSettings(prev => ({ ...prev, autoPlay: !prev.autoPlay }))}
                 className={`w-14 h-7 rounded-full transition-all relative border border-white/10 ${sliderSettings.autoPlay ? 'bg-yellow-400' : 'bg-white/5'}`}
                >
                  <div className={`absolute top-1 w-5 h-5 rounded-full transition-all shadow-xl ${sliderSettings.autoPlay ? 'left-8 bg-black' : 'left-1 bg-slate-500'}`} />
                </button>
-               <span className="text-[10px] font-black text-white uppercase">{sliderSettings.autoPlay ? 'ENABLED' : 'MANUAL'}</span>
+               <span className="text-[10px] font-black text-white uppercase">{sliderSettings.autoPlay ? (isRTL ? 'مفعل' : 'ENABLED') : (isRTL ? 'يدوي' : 'MANUAL')}</span>
             </div>
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
-              <Clock className="w-3.5 h-3.5 text-yellow-400" /> Latency (MS)
+            <label className={`text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Clock className="w-3.5 h-3.5 text-yellow-400" /> {t('latencyMs')}
             </label>
             <input 
               type="number" 
@@ -123,27 +127,27 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
               onChange={e => setSliderSettings(prev => ({ ...prev, interval: parseInt(e.target.value) || 5000 }))}
               step={500}
               min={1000}
-              className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black text-xs"
+              className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black text-xs ${isRTL ? 'text-right' : 'text-left'}`}
             />
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
-              <Zap className="w-3.5 h-3.5 text-yellow-400" /> Morph Effect
+            <label className={`text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Zap className="w-3.5 h-3.5 text-yellow-400" /> {t('morphEffect')}
             </label>
             <select 
               value={sliderSettings.transition}
               onChange={e => setSliderSettings(prev => ({ ...prev, transition: e.target.value as any }))}
               className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black text-[10px] uppercase tracking-widest cursor-pointer"
             >
-              <option value="slide" className="bg-[#1a1d2d]">TRANSLATION</option>
-              <option value="fade" className="bg-[#1a1d2d]">DISSOLVE</option>
+              <option value="slide" className="bg-[#1a1d2d]">{isRTL ? 'انزلاق' : 'TRANSLATION'}</option>
+              <option value="fade" className="bg-[#1a1d2d]">{isRTL ? 'تلاشي' : 'DISSOLVE'}</option>
             </select>
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">UI Controls</label>
-            <label className="flex items-center gap-3 cursor-pointer group/nav">
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{t('uiControls')}</label>
+            <label className={`flex items-center gap-3 cursor-pointer group/nav ${isRTL ? 'flex-row-reverse' : ''}`}>
               <div className="relative">
                 <input 
                   type="checkbox" 
@@ -156,13 +160,13 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                    <div className="w-1.5 h-1.5 rounded-full bg-black"></div>
                 </div>
               </div>
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover/nav:text-white transition-colors">Tactile Arrows</span>
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover/nav:text-white transition-colors">{t('tactileArrows')}</span>
             </label>
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Progress Map</label>
-            <label className="flex items-center gap-3 cursor-pointer group/nav">
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{t('progressMap')}</label>
+            <label className={`flex items-center gap-3 cursor-pointer group/nav ${isRTL ? 'flex-row-reverse' : ''}`}>
               <div className="relative">
                 <input 
                   type="checkbox" 
@@ -175,22 +179,22 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                    <div className="w-1.5 h-1.5 rounded-full bg-black"></div>
                 </div>
               </div>
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover/nav:text-white transition-colors">Visual Nodes</span>
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover/nav:text-white transition-colors">{t('visualNodes')}</span>
             </label>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between items-center px-2">
-        <div className="flex items-center gap-6">
+      <div className={`flex justify-between items-center px-2 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
+        <div className={`flex items-center gap-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
            <div className="w-1.5 h-10 bg-yellow-400 rounded-full"></div>
-           <h2 className="text-3xl font-black text-white uppercase tracking-tighter italic">Frame Inventory</h2>
+           <h2 className="text-3xl font-black text-white uppercase tracking-tighter italic">{t('frameInventory')}</h2>
         </div>
         <button 
           onClick={handleAddBanner}
-          className="px-8 py-4 bg-white text-black rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-yellow-400 hover:text-black transition-all flex items-center gap-3 shadow-2xl"
+          className={`px-8 py-4 bg-white text-black rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-yellow-400 hover:text-black transition-all flex items-center gap-3 shadow-2xl ${isRTL ? 'flex-row-reverse' : ''}`}
         >
-          <Plus className="w-5 h-5" /> Append Frame
+          <Plus className="w-5 h-5" /> {t('appendFrame')}
         </button>
       </div>
 
@@ -199,10 +203,10 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
           <div className="bg-white/[0.01] rounded-[3rem] border-2 border-dashed border-white/5 p-40 text-center relative overflow-hidden group">
             <div className="absolute inset-0 bg-yellow-500/5 blur-[100px] -z-10 group-hover:bg-yellow-500/10 transition-all duration-700"></div>
             <ImageIcon className="w-20 h-20 text-slate-800 mx-auto mb-8 animate-pulse" />
-            <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic mb-4">No Media Projected</h3>
-            <p className="text-slate-600 text-sm font-medium mb-10 max-w-sm mx-auto">Initialize your first cinematic frame to establish store presence.</p>
+            <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic mb-4">{t('noMediaProjected')}</h3>
+            <p className="text-slate-600 text-sm font-medium mb-10 max-w-sm mx-auto">{t('initializeCinematicFrame')}</p>
             <button onClick={handleAddBanner} className="text-yellow-400 font-black uppercase tracking-[0.3em] text-[10px] hover:text-white transition-all">
-              Launch Sequence
+              {t('launchSequence')}
             </button>
           </div>
         ) : (
@@ -222,25 +226,25 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                 ) : (
                   <div className="flex flex-col items-center gap-4 text-slate-800">
                     <ImageIcon className="w-16 h-16" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Null Output</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest">{isRTL ? "مخرجات فارغة" : "Null Output"}</span>
                   </div>
                 )}
                 
                 {/* Content Preview Overlay */}
-                <div className="absolute inset-0 p-12 flex flex-col justify-center max-w-[80%]">
-                  <div className="inline-block px-3 py-1 bg-yellow-400 text-black text-[8px] font-black uppercase tracking-widest mb-6 w-fit rounded shadow-[0_0_20px_rgba(250,204,21,0.5)]">
-                    FRAME {index + 1}
+                <div className={`absolute inset-0 p-12 flex flex-col justify-center max-w-[80%] ${isRTL ? 'text-right right-0' : 'text-left left-0'}`}>
+                  <div className={`inline-block px-3 py-1 bg-yellow-400 text-black text-[8px] font-black uppercase tracking-widest mb-6 w-fit rounded shadow-[0_0_20px_rgba(250,204,21,0.5)] ${isRTL ? 'mr-0 ml-auto' : ''}`}>
+                    {t('frame')} {index + 1}
                   </div>
                   <h3 className="text-4xl font-black text-white uppercase italic tracking-tighter mb-4 leading-none">
-                    {banner.title || 'FRAME_TITLE'}
+                    {banner.title || (isRTL ? 'عنوان_الإطار' : 'FRAME_TITLE')}
                   </h3>
                   <p className="text-slate-400 text-xs font-bold uppercase tracking-widest line-clamp-2 max-w-sm">
-                    {banner.subtitle || 'System subtext initialized...'}
+                    {banner.subtitle || (isRTL ? "تم تهيئة النص الفرعي للنظام..." : "System subtext initialized...")}
                   </p>
                   
                   {banner.showButton !== false && (
-                    <div className="mt-8 px-6 py-3 border border-white/20 text-white text-[10px] font-black uppercase tracking-widest w-fit rounded-xl backdrop-blur-md">
-                      {banner.buttonText || 'ACTION_TRIGGER'}
+                    <div className={`mt-8 px-6 py-3 border border-white/20 text-white text-[10px] font-black uppercase tracking-widest w-fit rounded-xl backdrop-blur-md ${isRTL ? 'mr-0 ml-auto' : ''}`}>
+                      {banner.buttonText || (isRTL ? "تفعيل_الحدث" : "ACTION_TRIGGER")}
                     </div>
                   )}
                 </div>
@@ -263,7 +267,7 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                            <div className="w-2 h-2 rounded-full bg-black"></div>
                         </div>
                       </div>
-                      <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest group-hover/active:text-white transition-colors">Production Status</span>
+                      <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest group-hover/active:text-white transition-colors">{t('productionStatus')}</span>
                     </label>
                   </div>
                   <div className="flex items-center gap-4">
@@ -293,12 +297,12 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                  <div className="grid grid-cols-1 gap-8 col-span-1 md:col-span-2">
+                  <div className={`grid grid-cols-1 gap-8 col-span-1 md:col-span-2 ${isRTL ? 'text-right' : 'text-left'}`}>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                        <div className="space-y-4">
-                        <div className="flex justify-between items-end mb-2 px-1">
-                          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Main Distribution (16:9)</label>
-                          <span className="text-[8px] font-black text-yellow-400/50 uppercase italic tracking-widest">UHD RECOMMENDED</span>
+                        <div className={`flex justify-between items-end mb-2 px-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest">{t('mainDistribution')}</label>
+                          <span className="text-[8px] font-black text-yellow-400/50 uppercase italic tracking-widest">{isRTL ? 'يوصى بـ UHD' : 'UHD RECOMMENDED'}</span>
                         </div>
                         <div className="bg-white/[0.03] border border-white/[0.05] rounded-[2rem] p-3">
                           <MediaPicker 
@@ -309,9 +313,9 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                         </div>
                       </div>
                       <div className="space-y-4">
-                        <div className="flex justify-between items-end mb-2 px-1">
-                          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Mobile Node (9:16)</label>
-                          <span className="text-[8px] font-black text-yellow-400/50 uppercase italic tracking-widest">PORTRAIT OPTIMIZED</span>
+                        <div className={`flex justify-between items-end mb-2 px-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest">{t('mobileNode')}</label>
+                          <span className="text-[8px] font-black text-yellow-400/50 uppercase italic tracking-widest">{isRTL ? 'مُحسّن للوضع الرأسي' : 'PORTRAIT OPTIMIZED'}</span>
                         </div>
                         <div className="bg-white/[0.03] border border-white/[0.05] rounded-[2rem] p-3">
                           <MediaPicker 
@@ -324,52 +328,52 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                     </div>
                   </div>
                   
-                  <div className="space-y-6">
+                  <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
                     <div>
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Manifest Title</label>
+                      <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ${isRTL ? 'mr-1' : 'ml-1'}`}>{t('manifestTitle')}</label>
                       <input 
                         type="text" 
                         value={banner.title || ""} 
                         onChange={e => updateBanner(index, 'title', e.target.value)} 
-                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black uppercase tracking-tighter text-xl italic"
-                        placeholder="ENTER HEADLINE"
+                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black uppercase tracking-tighter text-xl italic ${isRTL ? 'text-right' : 'text-left'}`}
+                        placeholder={isRTL ? 'أدخل العنوان' : 'ENTER HEADLINE'}
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Supporting Narrative</label>
+                      <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ${isRTL ? 'mr-1' : 'ml-1'}`}>{t('supportingNarrative')}</label>
                       <textarea 
                         value={banner.subtitle || ""} 
                         onChange={e => updateBanner(index, 'subtitle', e.target.value)} 
-                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-medium text-sm h-28"
-                        placeholder="Define the vision for this frame..."
+                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-medium text-sm h-28 ${isRTL ? 'text-right' : 'text-left'}`}
+                        placeholder={isRTL ? 'حدد رؤية هذا الإطار...' : 'Define the vision for this frame...'}
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-8">
+                  <div className={`space-y-8 ${isRTL ? 'text-right' : 'text-left'}`}>
                      <div className="grid grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Trigger Text</label>
+                          <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ${isRTL ? 'mr-1' : 'ml-1'}`}>{t('triggerText')}</label>
                           <input 
                             type="text" 
                             value={banner.buttonText || ""} 
                             onChange={e => updateBanner(index, 'buttonText', e.target.value)} 
-                            className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-bold text-xs"
+                            className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-bold text-xs ${isRTL ? 'text-right' : 'text-left'}`}
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Deployment URL</label>
+                          <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ${isRTL ? 'mr-1' : 'ml-1'}`}>{t('deploymentUrl')}</label>
                           <input 
                             type="text" 
                             value={banner.buttonLink || ""} 
                             onChange={e => updateBanner(index, 'buttonLink', e.target.value)} 
-                            className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-bold text-xs"
+                            className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-bold text-xs ${isRTL ? 'text-right' : 'text-left'}`}
                           />
                         </div>
                      </div>
 
                      <div className="bg-black/20 rounded-[2rem] p-8 border border-white/[0.03] space-y-8">
-                        <label className="flex items-center gap-4 cursor-pointer group/ui">
+                        <label className={`flex items-center gap-4 cursor-pointer group/ui ${isRTL ? 'flex-row-reverse' : ''}`}>
                            <div className="relative">
                               <input 
                                 type="checkbox" 
@@ -382,13 +386,13 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                                  <div className="w-2 h-2 rounded-full bg-black"></div>
                               </div>
                            </div>
-                           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover/ui:text-white transition-colors">Render Action UI</span>
+                           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover/ui:text-white transition-colors">{t('renderActionUi')}</span>
                         </label>
 
                         {banner.showButton !== false && (
                           <div className="grid grid-cols-2 gap-6 animate-in slide-in-from-top-4 duration-500">
                             <div>
-                              <label className="block text-[9px] font-black text-slate-600 uppercase tracking-widest mb-3 ml-1">Spatial Position</label>
+                              <label className={`block text-[9px] font-black text-slate-600 uppercase tracking-widest mb-3 ${isRTL ? 'mr-1' : 'ml-1'}`}>{t('spatialPosition')}</label>
                               <select 
                                 value={banner.buttonPosition || "center"} 
                                 onChange={e => updateBanner(index, 'buttonPosition', e.target.value)} 
@@ -400,15 +404,15 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                               </select>
                             </div>
                             <div>
-                              <label className="block text-[9px] font-black text-slate-600 uppercase tracking-widest mb-3 ml-1">Visual Architecture</label>
+                              <label className={`block text-[9px] font-black text-slate-600 uppercase tracking-widest mb-3 ${isRTL ? 'mr-1' : 'ml-1'}`}>{t('visualArchitecture')}</label>
                               <select 
                                 value={banner.buttonShape || "rounded"} 
                                 onChange={e => updateBanner(index, 'buttonShape', e.target.value)} 
                                 className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black uppercase text-[10px] tracking-widest cursor-pointer"
                               >
-                                <option value="rounded" className="bg-[#1a1d2d]">GEOMETRIC</option>
-                                <option value="square" className="bg-[#1a1d2d]">MINIMALIST</option>
-                                <option value="pill" className="bg-[#1a1d2d]">ORGANIC</option>
+                                <option value="rounded" className="bg-[#1a1d2d]">{isRTL ? 'هندسي' : 'GEOMETRIC'}</option>
+                                <option value="square" className="bg-[#1a1d2d]">{isRTL ? 'تبسيطي' : 'MINIMALIST'}</option>
+                                <option value="pill" className="bg-[#1a1d2d]">{isRTL ? 'عضوي' : 'ORGANIC'}</option>
                               </select>
                             </div>
                           </div>
@@ -416,32 +420,32 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                      </div>
                   </div>
 
-                  <div className="col-span-1 md:col-span-2 pt-10 border-t border-white/[0.05] grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <div className={`col-span-1 md:col-span-2 pt-10 border-t border-white/[0.05] grid grid-cols-1 md:grid-cols-2 gap-10 ${isRTL ? 'text-right' : 'text-left'}`}>
                     <div>
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1 italic">Spatial Context</label>
+                      <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 italic ${isRTL ? 'mr-1' : 'ml-1'}`}>{t('spatialContext')}</label>
                       <div className="flex gap-4">
                         <select 
                           value={banner.targetPage || "home"} 
                           onChange={e => updateBanner(index, 'targetPage', e.target.value)} 
                           className="flex-1 bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black uppercase tracking-widest text-[10px] cursor-pointer"
                         >
-                          <option value="home" className="bg-[#1a1d2d]">LANDING_PAGE</option>
-                          <option value="collections" className="bg-[#1a1d2d]">COLLECTION_NODES</option>
+                          <option value="home" className="bg-[#1a1d2d]">{isRTL ? 'الصفحة الرئيسية' : 'LANDING_PAGE'}</option>
+                          <option value="collections" className="bg-[#1a1d2d]">{isRTL ? 'عقد المجموعات' : 'COLLECTION_NODES'}</option>
                         </select>
                         <select 
                           value={banner.position || "top"} 
                           onChange={e => updateBanner(index, 'position', e.target.value)} 
                           className="flex-1 bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-black uppercase tracking-widest text-[10px] cursor-pointer"
                         >
-                          <option value="top" className="bg-[#1a1d2d]">TOP_SECTOR</option>
-                          <option value="middle" className="bg-[#1a1d2d]">CORE_SECTOR</option>
-                          <option value="bottom" className="bg-[#1a1d2d]">BASE_SECTOR</option>
+                          <option value="top" className="bg-[#1a1d2d]">{isRTL ? 'القطاع العلوي' : 'TOP_SECTOR'}</option>
+                          <option value="middle" className="bg-[#1a1d2d]">{isRTL ? 'القطاع الأساسي' : 'CORE_SECTOR'}</option>
+                          <option value="bottom" className="bg-[#1a1d2d]">{isRTL ? 'القطاع الأساسي (سفلي)' : 'BASE_SECTOR'}</option>
                         </select>
                       </div>
                     </div>
                     <div className="flex items-center">
-                       <p className="text-[9px] font-medium text-slate-600 leading-relaxed italic border-l border-white/5 pl-8">
-                         Define the precise geographical coordinates of this frame within your storefront architecture.
+                       <p className={`text-[9px] font-medium text-slate-600 leading-relaxed italic border-white/5 ${isRTL ? 'border-r pr-8' : 'border-l pl-8'}`}>
+                         {t('definePreciseGeographicalCoordinates')}
                        </p>
                     </div>
                   </div>
@@ -455,27 +459,27 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
       {/* Premium Sticky Save Bar */}
       <div className="sticky bottom-10 z-[50] group/save">
         <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-[2.5rem] blur-[30px] opacity-20 group-hover/save:opacity-40 transition-opacity"></div>
-        <div className="relative bg-[#0f111a]/80 backdrop-blur-2xl border border-white/[0.1] p-6 rounded-[2.5rem] flex items-center justify-between shadow-2xl">
-          <div className="pl-6">
+        <div className={`relative bg-[#0f111a]/80 backdrop-blur-2xl border border-white/[0.1] p-6 rounded-[2.5rem] flex items-center justify-between shadow-2xl ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={isRTL ? 'pr-6' : 'pl-6'}>
             {saveMessage ? (
-              <div className="flex items-center gap-4 animate-in slide-in-from-left-4 duration-500">
+              <div className={`flex items-center gap-4 animate-in duration-500 ${isRTL ? 'slide-in-from-right-4 flex-row-reverse' : 'slide-in-from-left-4'}`}>
                  <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,1)]"></div>
-                 <span className="text-[10px] font-black text-white uppercase tracking-[0.3em] italic">Manifest Synchronized</span>
+                 <span className="text-[10px] font-black text-white uppercase tracking-[0.3em] italic">{isRTL ? "تمت المزامنة بنجاح" : "Manifest Synchronized"}</span>
               </div>
             ) : (
-              <div className="flex items-center gap-4 text-slate-500">
+              <div className={`flex items-center gap-4 text-slate-500 ${isRTL ? 'flex-row-reverse' : ''}`}>
                  <div className="w-2 h-2 rounded-full bg-slate-800"></div>
-                 <span className="text-[10px] font-black uppercase tracking-[0.3em]">Awaiting Instruction</span>
+                 <span className="text-[10px] font-black uppercase tracking-[0.3em]">{isRTL ? "في انتظار الأوامر" : "Awaiting Instruction"}</span>
               </div>
             )}
           </div>
           <button 
             onClick={handleSave}
             disabled={isPending} 
-            className="px-12 py-5 bg-white text-black rounded-[2rem] font-black text-[12px] uppercase tracking-[0.4em] hover:bg-yellow-400 transition-all flex items-center gap-4 shadow-2xl disabled:opacity-50"
+            className={`px-12 py-5 bg-white text-black rounded-[2rem] font-black text-[12px] uppercase tracking-[0.4em] hover:bg-yellow-400 transition-all flex items-center gap-4 shadow-2xl disabled:opacity-50 ${isRTL ? 'flex-row-reverse' : ''}`}
           >
             {isPending ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
-            Commit to Registry
+            {t('commitToRegistry')}
           </button>
         </div>
       </div>

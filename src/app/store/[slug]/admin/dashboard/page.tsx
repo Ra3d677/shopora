@@ -5,11 +5,16 @@ import ExportButton from "./ExportButton";
 import DateFilter from "./DateFilter";
 import CustomerPreviewButton from "./CustomerPreviewButton";
 import TourismDemoSeedButton from "./TourismDemoSeedButton";
+import { getTranslation, getLang } from "@/lib/i18n";
 
 export default async function AdminDashboard({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ range?: string }> }) {
   const { slug } = await params;
   const sp = (await searchParams) || {};
   const currentRange = sp.range || 'all_time';
+
+  const t = await getTranslation();
+  const lang = await getLang();
+  const isRTL = lang === 'ar';
 
   const now = new Date();
   let startDate: Date | null = null;
@@ -236,15 +241,15 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const isWebsite = store.type === 'WEBSITE';
 
   return (
-    <div className="min-h-screen bg-[#0a0c14] text-slate-100 p-8 pb-24 font-sans selection:bg-cyan-500/30">
+    <div dir={isRTL ? "rtl" : "ltr"} className={`min-h-screen bg-[#0a0c14] text-slate-100 p-8 pb-24 font-sans selection:bg-cyan-500/30 ${isRTL ? 'text-right' : 'text-left'}`}>
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
+      <div className={`flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
         <div>
            <h1 className="text-5xl font-black italic tracking-tighter text-white mb-2 drop-shadow-[0_0_15px_rgba(34,211,238,0.3)] uppercase">
-             {isWebsite ? 'Website' : 'Analytics'} <span className="text-cyan-400">{isWebsite ? 'Analytics' : 'Dashboard'}</span>
+             {isWebsite ? t('websiteAnalytics') : t('analyticsDashboard')}
            </h1>
            <p className="text-slate-500 font-medium tracking-wide">
-             {isWebsite ? 'Comprehensive overview of your showcase website and booking inquiries.' : "Comprehensive overview of your store's digital performance."}
+             {isWebsite ? t('websiteAnalyticsDesc') : t('analyticsDashboardDesc')}
            </p>
         </div>
         <div className="flex items-center gap-4 bg-[#1a1d2d] p-2 rounded-2xl border border-white/5 shadow-2xl">
@@ -259,10 +264,10 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
          {/* Revenue / Inquiries Card */}
          <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-cyan-500/50 transition-all duration-500">
-            <div className="absolute -right-8 -top-8 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all"></div>
-            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2">
+            <div className={`absolute -right-8 -top-8 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all ${isRTL ? 'right-auto -left-8' : ''}`}></div>
+            <h4 className={`text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2 ${isRTL ? 'justify-start' : ''}`}>
                {isWebsite ? <Users className="w-3 h-3 text-cyan-400" /> : <DollarSign className="w-3 h-3 text-cyan-400" />} 
-               {isWebsite ? "Inquiry Leads" : "Total Revenue"}
+               {isWebsite ? t('inquiryLeads') : t('totalRevenue')}
             </h4>
             <div className="flex items-end gap-3 mb-4">
                <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
@@ -278,52 +283,52 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                )}
                {isWebsite && (
                  <div className="flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 bg-cyan-500/10 text-cyan-400">
-                    {uniqueCustomers} Unique Leads
+                    {uniqueCustomers} {t('uniqueLeads')}
                  </div>
                )}
             </div>
             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-              {isWebsite ? "Response Rate:" : "Vs Last Month:"} <span className="text-white">{isWebsite ? "100%" : `$${prevRevenue.toFixed(0)}`}</span>
+              {isWebsite ? `${t('responseRate')}:` : `${t('vsLastMonth')}:`} <span className="text-white">{isWebsite ? "100%" : `$${prevRevenue.toFixed(0)}`}</span>
             </p>
          </div>
 
          {/* Orders / Visits Card */}
          <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-pink-500/50 transition-all duration-500">
-            <div className="absolute -right-8 -top-top w-32 h-32 bg-pink-500/10 rounded-full blur-3xl group-hover:bg-pink-500/20 transition-all"></div>
-            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2">
+            <div className={`absolute -right-8 -top-8 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl group-hover:bg-pink-500/20 transition-all ${isRTL ? 'right-auto -left-8' : ''}`}></div>
+            <h4 className={`text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2 ${isRTL ? 'justify-start' : ''}`}>
                {isWebsite ? <Eye className="w-3 h-3 text-pink-400" /> : <ShoppingBag className="w-3 h-3 text-pink-400" />} 
-               {isWebsite ? "Page Visits" : "Total Orders"}
+               {isWebsite ? t('pageVisits') : t('totalOrders')}
             </h4>
             <div className="flex items-end gap-3 mb-4">
                <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
                  {isWebsite ? totalVisits : totalOrders}
                </h3>
                <div className="flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 bg-pink-500/10 text-pink-400">
-                  {isWebsite ? `${conversionRate}% Conversion` : `${uniqueCustomers} Customers`}
+                  {isWebsite ? `${conversionRate}% ${t('conversionRate')}` : `${uniqueCustomers} ${isRTL ? 'عميل' : 'Customers'}`}
                </div>
             </div>
             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-              {isWebsite ? "Traffic Source:" : "Avg Value:"} <span className="text-white">{isWebsite ? "Organic Direct" : `$${averageOrderValue.toFixed(0)}`}</span>
+              {isWebsite ? `${t('trafficSource')}:` : `${t('avgValue')}:`} <span className="text-white">{isWebsite ? (isRTL ? 'مباشر / طبيعي' : 'Organic Direct') : `$${averageOrderValue.toFixed(0)}`}</span>
             </p>
          </div>
 
          {/* Inventory / Packages Card */}
          <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-amber-500/50 transition-all duration-500">
-            <div className="absolute -right-8 -top-8 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl group-hover:bg-amber-500/20 transition-all"></div>
-            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2">
+            <div className={`absolute -right-8 -top-8 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl group-hover:bg-amber-500/20 transition-all ${isRTL ? 'right-auto -left-8' : ''}`}></div>
+            <h4 className={`text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2 ${isRTL ? 'justify-start' : ''}`}>
                {isWebsite ? <Compass className="w-3 h-3 text-amber-400" /> : <Package className="w-3 h-3 text-amber-400" />} 
-               {isWebsite ? "Active Packages" : "In Stock"}
+               {isWebsite ? t('activePackages') : t('inStock')}
             </h4>
             <div className="flex items-end gap-3 mb-4">
                <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
                  {isWebsite ? store.products.length : inStockProducts}
                </h3>
                <div className="flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 bg-amber-500/10 text-amber-400">
-                  {isWebsite ? "Showcase Live" : `${lowStockProducts.length} Needs Attention`}
+                  {isWebsite ? t('showcaseLive') : `${lowStockProducts.length} ${t('needsAttention')}`}
                </div>
             </div>
             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-              {isWebsite ? "Tourism Template:" : "Active Products:"} <span className="text-white">{isWebsite ? "Active" : store.products.length}</span>
+              {isWebsite ? `${t('tourismTemplate')}:` : `${t('activeProducts')}:`} <span className="text-white">{isWebsite ? (isRTL ? 'نشط' : 'Active') : store.products.length}</span>
             </p>
          </div>
       </div>
@@ -335,7 +340,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
             {/* Sales / Leads Funnel */}
             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 shadow-2xl">
                <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">
-                 {isWebsite ? 'Leads' : 'Sales'} <span className="text-cyan-400">Funnel</span>
+                 {isWebsite ? t('leadsFunnel') : t('salesFunnel')}
                </h3>
                <div className="space-y-6">
                   {/* Step 1: Add to Cart / Visits */}
@@ -346,7 +351,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                         </div>
                         <div>
                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                             {isWebsite ? "Website Visits" : "Add to Cart"}
+                             {isWebsite ? t('websiteVisits') : t('addToCartLabel')}
                            </p>
                            <h4 className="text-2xl font-black text-white">{isWebsite ? totalVisits : totalCartAdds}</h4>
                         </div>
@@ -360,7 +365,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                         </div>
                         <div>
                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                             {isWebsite ? "Package Clicks" : "Checkout"}
+                             {isWebsite ? t('packageClicks') : t('checkoutLabel')}
                            </p>
                            <h4 className="text-2xl font-black text-white">{isWebsite ? totalCartAdds : "---"}</h4>
                         </div>
@@ -374,12 +379,12 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                         </div>
                         <div>
                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                             {isWebsite ? "Inquiries Submitted" : "Purchased"}
+                             {isWebsite ? t('inquiriesSubmitted') : t('purchasedLabel')}
                            </p>
                            <h4 className="text-2xl font-black text-white">{totalOrders}</h4>
                         </div>
                      </div>
-                     <span className="text-[10px] font-black text-green-400 shadow-green-400/50 drop-shadow-md">Goal</span>
+                     <span className="text-[10px] font-black text-green-400 shadow-green-400/50 drop-shadow-md">{t('goalLabel')}</span>
                   </div>
                </div>
             </div>
@@ -391,7 +396,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5">
                <div className="flex justify-between items-center mb-10">
                   <h3 className="text-2xl font-black italic text-white tracking-tight">
-                    {isWebsite ? 'Popular' : 'Best'} <span className="text-cyan-400">{isWebsite ? 'Packages' : 'Sellers'}</span>
+                    {isWebsite ? t('popularPackages') : t('bestSellers')}
                   </h3>
                   <div className="w-10 h-10 bg-cyan-500/10 rounded-full flex items-center justify-center text-cyan-400">🏆</div>
                </div>
@@ -406,13 +411,13 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                            <div>
                               <h4 className="text-lg font-black text-white group-hover:text-cyan-400 transition-colors line-clamp-1">{p.name}</h4>
                               <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                                {p.salesCount} {isWebsite ? 'Inquiries Received' : 'Units Sold'}
+                                {p.salesCount} {isWebsite ? t('inquiriesReceived') : t('unitsSold')}
                               </p>
                            </div>
                         </div>
                         <div className="text-right">
                            <h5 className="text-xl font-black text-white">
-                             {isWebsite ? 'Live' : `$${(p.salesCount * p.price).toFixed(0)}`}
+                             {isWebsite ? (isRTL ? 'مباشر' : 'Live') : `$${(p.salesCount * p.price).toFixed(0)}`}
                            </h5>
                         </div>
                      </div>
@@ -423,7 +428,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
             {/* Activity Heatmap */}
             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 overflow-x-auto">
                <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">
-                 {isWebsite ? 'Inquiry' : 'Activity'} <span className="text-amber-400">{isWebsite ? 'Activity' : 'Heatmap'}</span>
+                 {isWebsite ? t('inquiryActivity') : t('activityHeatmap')}
                </h3>
                <div className="min-w-[700px]">
                   <div className="flex mb-4">
@@ -432,7 +437,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                         <div key={i} className="flex-1 text-center text-[9px] font-black text-slate-500">{i}h</div>
                      ))}
                   </div>
-                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, dIdx) => (
+                  {(isRTL ? ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'] : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']).map((day, dIdx) => (
                      <div key={day} className="flex items-center mb-1.5">
                         <div className="w-16 shrink-0 text-[10px] font-black text-slate-400 uppercase tracking-widest">{day}</div>
                         {heatmap[dIdx].map((val, hIdx) => {
@@ -442,7 +447,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                               key={hIdx} 
                               className="flex-1 aspect-square rounded-lg transition-all hover:scale-125 cursor-help m-[2px] shadow-sm"
                               style={{ backgroundColor: `rgba(34, 211, 238, ${opacity})`, boxShadow: val > 0 ? '0 0 10px rgba(34, 211, 238, 0.2)' : 'none' }}
-                              title={`${val} ${isWebsite ? 'inquiries' : 'orders'} at ${hIdx}:00 on ${day}`}
+                              title={`${val} ${isWebsite ? t('inquiriesReceived') : t('unitsSold')} ${isRTL ? 'عند' : 'at'} ${hIdx}:00 ${isRTL ? 'في يوم' : 'on'} ${day}`}
                             />
                           );
                         })}

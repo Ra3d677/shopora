@@ -116,7 +116,7 @@ export default async function AdminLayout({
                 >
                   {store.name}
                 </h1>
-                <p className="text-[6px] font-black tracking-[0.4em] text-cyan-400 uppercase mt-1">Terminal Active</p>
+                <p className="text-[6px] font-black tracking-[0.4em] text-cyan-400 uppercase mt-1">{isRTL ? "المنصة نشطة" : "Terminal Active"}</p>
               </div>
             </div>
           </div>
@@ -152,7 +152,7 @@ export default async function AdminLayout({
                         className="text-[5px] font-black uppercase tracking-widest leading-none"
                         style={{ color: 'var(--admin-text-muted)' }}
                       >
-                        Uplink Active
+                        {isRTL ? "الاتصال نشط" : "Uplink Active"}
                       </p>
                    </div>
                 </div>
@@ -161,7 +161,7 @@ export default async function AdminLayout({
                 <Link
                   href={`/store/${slug}`}
                   target="_blank"
-                  title="View Store"
+                  title={isRTL ? "عرض المتجر" : "View Store"}
                   className="flex-1 flex items-center justify-center py-1.5 rounded-lg transition-all group/btn hover:text-cyan-400"
                   style={{ background: 'var(--admin-input-bg)', border: '1px solid var(--admin-border)', color: 'var(--admin-text-muted)' }}
                 >
@@ -170,7 +170,7 @@ export default async function AdminLayout({
                 <form action={logoutUser} className="flex-1">
                   <button
                     type="submit"
-                    title="Logout"
+                    title={isRTL ? "تسجيل الخروج" : "Logout"}
                     className="w-full flex items-center justify-center py-1.5 rounded-lg transition-all group/btn hover:text-red-400"
                     style={{ background: 'var(--admin-input-bg)', border: '1px solid var(--admin-border)', color: 'var(--admin-text-muted)' }}
                   >
@@ -208,7 +208,7 @@ export default async function AdminLayout({
                   className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em]"
                   style={{ color: 'var(--admin-text-muted)' }}
                 >
-                   <span>Terminal</span>
+                   <span>{isRTL ? "المنصة" : "Terminal"}</span>
                    <ChevronDown className="w-3 h-3 rotate-[-90deg]" />
                    <span className="text-cyan-400 italic">{(store.name || 'Store').toUpperCase()}</span>
                 </div>
