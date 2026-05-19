@@ -10,6 +10,6 @@ export async function getLang() {
 export async function getTranslation() {
   const lang = await getLang();
   return (key: TranslationKey) => {
-    return translations[lang][key] || key;
+    return (translations[lang] as any)[key] || key;
   };
 }
