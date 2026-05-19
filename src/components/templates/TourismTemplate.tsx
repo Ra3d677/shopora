@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Check, Star, Quote } from "lucide-react";
 import EditableText from "@/components/editor/EditableText";
 import EditableImage from "@/components/editor/EditableImage";
+import ReviewForm from "@/components/templates/ReviewForm";
 
 interface LandingTemplateProps {
   banners: any[];
@@ -354,80 +355,89 @@ export default function TourismTemplate({
   };
 
   const renderTestimonials = (section: any) => {
-    const hasItems = section.config?.items && section.config.items.length > 0;
+    // Priority: settings.signatureSettings.testimonials > section.config.items > legacy static
+    const settingsReviews = settings.signatureSettings?.testimonials || [];
+    const sectionItems = section.config?.items || [];
+    const reviews = settingsReviews.length > 0 ? settingsReviews : sectionItems;
+    const hasReviews = reviews.length > 0;
     
     return (
       <section key={section.id} className="py-24 max-w-7xl mx-auto px-6" id="reviews">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white mb-4">
-             {section.config?.title || settings.tourismSettings?.reviewsTitle || "Client Success Stories"}
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4" style={{ color: 'var(--color-text-home, #ffffff)' }}>
+             {section.config?.title || settings.tourismSettings?.reviewsTitle || "What Our Clients Say"}
           </h2>
+          <p className="text-slate-400 text-sm font-medium uppercase tracking-widest">Real experiences from real people</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {hasItems ? section.config.items.map((item: any, idx: number) => (
-            <div key={item.id || idx} className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-10 relative">
+        {hasReviews ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+            {reviews.map((item: any, idx: number) => (
+              <div key={idx} className="bg-white/[0.03] border border-white/[0.07] rounded-[2rem] p-8 relative hover:bg-white/[0.06] transition-all duration-300 group">
+                <Quote className="absolute top-6 right-6 w-10 h-10 text-white/5 group-hover:text-white/10 transition-all" />
+                <div className="flex gap-1 mb-5" style={{ color: 'var(--dynamic-primary, #22d3ee)' }}>
+                  {[1,2,3,4,5].map(i => <Star key={i} fill="currentColor" size={14} />)}
+                </div>
+                <p className="text-slate-300 italic mb-7 leading-relaxed text-sm">"{item.content}"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full shrink-0 flex items-center justify-center text-white font-black text-sm" style={{ background: 'var(--dynamic-primary, #22d3ee)', opacity: 0.85 }}>
+                    {item.name?.charAt(0)?.toUpperCase() || "?"}
+                  </div>
+                  <div>
+                    <h5 className="text-white font-bold text-sm">{item.name}</h5>
+                    {item.role && <span className="text-slate-500 text-xs">{item.role}</span>}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          // Fallback to legacy static reviews when no reviews exist at all
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+            <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-10 relative">
               <Quote className="absolute top-8 right-8 w-12 h-12 text-white/5" />
               <div className="flex gap-1 mb-6 text-yellow-500">
-                {[1,2,3,4,5].map(i => <Star key={i} fill="currentColor" size={16} />)}
+                <Star fill="currentColor" size={16} />
+                <Star fill="currentColor" size={16} />
+                <Star fill="currentColor" size={16} />
+                <Star fill="currentColor" size={16} />
+                <Star fill="currentColor" size={16} />
               </div>
-              <p className="text-slate-300 italic mb-8 leading-relaxed">"{item.content}"</p>
+              <EditableText 
+                content={settings.tourismSettings?.review1Text || "This service completely transformed the way we operate. The packages are incredibly well-structured and the support is phenomenal."} 
+                slug={slug} 
+                settingsKey="tourismSettings.review1Text" 
+                as="p"
+                className="text-slate-300 italic mb-8 leading-relaxed block"
+              />
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 shrink-0 bg-slate-800"></div>
+                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 shrink-0">
+                  <EditableImage 
+                    src={settings.tourismSettings?.review1Avatar || "https://ui-avatars.com/api/?name=Sarah+J&background=random"}
+                    alt="Avatar"
+                    slug={slug}
+                    settingsKey="tourismSettings.review1Avatar"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div>
-                  <h5 className="text-white font-bold text-sm">{item.name}</h5>
-                  <span className="text-slate-500 text-xs">{item.role}</span>
+                  <EditableText 
+                    content={settings.tourismSettings?.review1Name || "Sarah Jenkins"} 
+                    slug={slug} 
+                    settingsKey="tourismSettings.review1Name" 
+                    as="h5"
+                    className="text-white font-bold text-sm block"
+                  />
+                  <EditableText 
+                    content={settings.tourismSettings?.review1Role || "CEO, TechCorp"} 
+                    slug={slug} 
+                    settingsKey="tourismSettings.review1Role" 
+                    as="span"
+                    className="text-slate-500 text-xs block"
+                  />
                 </div>
               </div>
             </div>
-          )) : (
-            // Fallback to legacy static reviews
-            <>
-              {/* Review 1 */}
-              <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-10 relative">
-                <Quote className="absolute top-8 right-8 w-12 h-12 text-white/5" />
-                <div className="flex gap-1 mb-6 text-yellow-500">
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                  <Star fill="currentColor" size={16} />
-                </div>
-                <EditableText 
-                  content={settings.tourismSettings?.review1Text || "This service completely transformed the way we operate. The packages are incredibly well-structured and the support is phenomenal."} 
-                  slug={slug} 
-                  settingsKey="tourismSettings.review1Text" 
-                  as="p"
-                  className="text-slate-300 italic mb-8 leading-relaxed block"
-                />
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 shrink-0">
-                    <EditableImage 
-                      src={settings.tourismSettings?.review1Avatar || "https://ui-avatars.com/api/?name=Sarah+J&background=random"}
-                      alt="Avatar"
-                      slug={slug}
-                      settingsKey="tourismSettings.review1Avatar"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <EditableText 
-                      content={settings.tourismSettings?.review1Name || "Sarah Jenkins"} 
-                      slug={slug} 
-                      settingsKey="tourismSettings.review1Name" 
-                      as="h5"
-                      className="text-white font-bold text-sm block"
-                    />
-                    <EditableText 
-                      content={settings.tourismSettings?.review1Role || "CEO, TechCorp"} 
-                      slug={slug} 
-                      settingsKey="tourismSettings.review1Role" 
-                      as="span"
-                      className="text-slate-500 text-xs block"
-                    />
-                  </div>
-                </div>
-              </div>
 
               {/* Review 2 */}
               <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-10 relative">
@@ -520,9 +530,12 @@ export default function TourismTemplate({
                   </div>
                 </div>
               </div>
-            </>
-          )}
-        </div>
+            </div>
+        )}
+
+        {/* Public Review Submission Form */}
+        <ReviewForm slug={slug} />
+
       </section>
     );
   };
