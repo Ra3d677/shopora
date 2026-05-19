@@ -370,6 +370,48 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                     </div>
                   )}
 
+                  {activeSection.type === 'about_us' && (
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-500 uppercase">Section Image</label>
+                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                          <MediaPicker 
+                            slug={slug}
+                            value={activeSection.config.image || ''} 
+                            onChange={url => updateSectionConfig(activeSection.id, 'image', url)} 
+                            className="bg-white"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-500 uppercase">Tagline</label>
+                        <input 
+                          type="text" 
+                          value={activeSection.config.tagline || ''} 
+                          onChange={(e) => updateSectionConfig(activeSection.id, 'tagline', e.target.value)}
+                          className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all text-sm"
+                          placeholder="WHO WE ARE"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-500 uppercase">Primary Description</label>
+                        <textarea 
+                          value={activeSection.config.desc1 || ''} 
+                          onChange={(e) => updateSectionConfig(activeSection.id, 'desc1', e.target.value)}
+                          className="w-full h-24 px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all resize-none text-sm"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-500 uppercase">Secondary Description</label>
+                        <textarea 
+                          value={activeSection.config.desc2 || ''} 
+                          onChange={(e) => updateSectionConfig(activeSection.id, 'desc2', e.target.value)}
+                          className="w-full h-24 px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all resize-none text-sm"
+                        />
+                      </div>
+                    </div>
+                  )}
+
                   {activeSection.type === 'testimonials' && (
                     <div className="space-y-6">
                       <div className="flex justify-between items-center">
