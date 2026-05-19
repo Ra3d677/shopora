@@ -49,9 +49,9 @@ export default function Navbar({
 }) {
   const t = (key: TranslationKey): string => {
     try {
-      return translations[lang || 'en'][key] || key;
+      return (translations[lang || 'en'] as any)[key] || (key as string);
     } catch (e) {
-      return key;
+      return key as string;
     }
   };
 

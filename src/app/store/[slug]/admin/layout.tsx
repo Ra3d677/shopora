@@ -23,6 +23,8 @@ import { logoutUser } from "@/app/auth/actions";
 import SidebarNav from "./SidebarNav";
 import { AdminThemeProvider } from "./AdminThemeProvider";
 import AdminThemeToggle from "./AdminThemeToggle";
+import LanguageToggle from "@/components/ui/LanguageToggle";
+import { getTranslation } from "@/lib/i18n";
 export default async function AdminLayout({
   children,
   params
@@ -33,6 +35,7 @@ export default async function AdminLayout({
   const { slug } = await params;
   const session = await getSession();
   const store = await getStoreBySlug(slug);
+  const t = await getTranslation();
 
   const isSuperAdmin = session?.role === 'superadmin' || session?.email === 'ksh128395@gmail.com';
 
@@ -45,28 +48,28 @@ export default async function AdminLayout({
   const isWebsite = store.type === 'WEBSITE';
 
   const mainItems = isWebsite ? [
-    { label: 'Overview', iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
-    { label: 'Tours & Packages', iconName: 'ShoppingBag', path: '/products', color: 'text-purple-500' },
-    { label: 'Booking Inquiries', iconName: 'Package', path: '/orders', color: 'text-pink-500' },
-    { label: 'Media Hub', iconName: 'Library', path: '/media', color: 'text-amber-500' },
-    { label: 'Banners & Sliders', iconName: 'ImageIcon', path: '/banners', color: 'text-red-500' },
+    { label: t('overview'), iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
+    { label: t('toursPackages'), iconName: 'ShoppingBag', path: '/products', color: 'text-purple-500' },
+    { label: t('bookingInquiries'), iconName: 'Package', path: '/orders', color: 'text-pink-500' },
+    { label: t('mediaHub'), iconName: 'Library', path: '/media', color: 'text-amber-500' },
+    { label: t('bannersSliders'), iconName: 'ImageIcon', path: '/banners', color: 'text-red-500' },
   ] : [
-    { label: 'Overview', iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
-    { label: 'Products', iconName: 'ShoppingBag', path: '/products', color: 'text-purple-500' },
-    { label: 'Orders', iconName: 'Package', path: '/orders', color: 'text-pink-500' },
-    { label: 'Media Hub', iconName: 'Library', path: '/media', color: 'text-amber-500' },
-    { label: 'Categories', iconName: 'Tag', path: '/categories', color: 'text-green-500' },
-    { label: 'Banners', iconName: 'ImageIcon', path: '/banners', color: 'text-red-500' },
+    { label: t('overview'), iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
+    { label: t('products'), iconName: 'ShoppingBag', path: '/products', color: 'text-purple-500' },
+    { label: t('orders'), iconName: 'Package', path: '/orders', color: 'text-pink-500' },
+    { label: t('mediaHub'), iconName: 'Library', path: '/media', color: 'text-amber-500' },
+    { label: t('categories'), iconName: 'Tag', path: '/categories', color: 'text-green-500' },
+    { label: t('banners'), iconName: 'ImageIcon', path: '/banners', color: 'text-red-500' },
   ];
 
   const systemItems = isSuperAdmin ? [
-    { label: 'Platform Stores', iconName: 'Globe', path: '/platform-stores', color: 'text-indigo-500' },
-    { label: 'Templates', iconName: 'LayoutTemplate', path: '/templates', color: 'text-fuchsia-500' },
+    { label: t('platformStores'), iconName: 'Globe', path: '/platform-stores', color: 'text-indigo-500' },
+    { label: t('templates'), iconName: 'LayoutTemplate', path: '/templates', color: 'text-fuchsia-500' },
   ] : [];
 
   const customItems = [
-    { label: isWebsite ? 'Site Builder' : 'Store Builder', iconName: 'Blocks', path: '/builder', color: 'text-blue-500' },
-    { label: isWebsite ? 'Site Settings' : 'General Settings', iconName: 'Settings', path: '/settings', color: 'text-slate-500' },
+    { label: isWebsite ? t('siteBuilder') : t('storeBuilder'), iconName: 'Blocks', path: '/builder', color: 'text-blue-500' },
+    { label: isWebsite ? t('siteSettings') : t('generalSettings'), iconName: 'Settings', path: '/settings', color: 'text-slate-500' },
   ];
 
   console.log("Admin Layout Session:", { id: session?.id, email: session?.email, role: session?.role });
@@ -225,6 +228,8 @@ export default async function AdminLayout({
                       {slug}.shopora.app <ExternalLink className="w-3 h-3" />
                    </Link>
                 </div>
+                <div className="w-[1px] h-10" style={{ background: 'var(--admin-border)' }} />
+                <LanguageToggle />
                 <div className="w-[1px] h-10" style={{ background: 'var(--admin-border)' }} />
                 {/* Dark / Light Mode Toggle */}
                 <AdminThemeToggle />

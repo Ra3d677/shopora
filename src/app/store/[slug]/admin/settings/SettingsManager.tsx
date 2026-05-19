@@ -6,6 +6,7 @@ import { saveStoreSettings } from "../actions";
 import { Settings, Loader2, Save, X, Trash2, CheckCircle2, Globe } from "lucide-react";
 import { StoreSettings } from "@/lib/types";
 import MediaPicker from "../media/MediaPicker";
+import { useLanguageStore } from '@/store/language';
 
 const PRESET_GRADIENTS = [
   'radial-gradient(ellipse at top, #0f172a, #0a0c14, #000000)', // Abyss
@@ -28,6 +29,7 @@ export default function SettingsManager({
   storeType?: string;
 }) {
   const [settings, setSettings] = useState<StoreSettings>(initialSettings);
+  const { t, language } = useLanguageStore();
   const [isPending, startTransition] = useTransition();
   const [saveMessage, setSaveMessage] = useState("");
   const [isDirty, setIsDirty] = useState(false);
@@ -118,7 +120,7 @@ export default function SettingsManager({
     
     startTransition(async () => {
       await saveStoreSettings(slug, settings);
-      setSaveMessage("Protocol Execution Successful");
+      setSaveMessage(t('settingsSaved'));
       setIsDirty(false);
       router.refresh();
       
@@ -127,13 +129,13 @@ export default function SettingsManager({
   };
 
   const tabs = [
-    { id: "general", label: "General" },
-    { id: "theme", label: "Colors & Style" },
-    { id: "header", label: "Header & Navigation" },
-    { id: "signature", label: storeType === 'WEBSITE' ? "What our clients says" : "Elite Features" },
-    { id: "tracking", label: "Pixels & Tracking" },
+    { id: "general", label: t('general') },
+    { id: "theme", label: t('theme') },
+    { id: "header", label: t('header') },
+    { id: "signature", label: t('signature') },
+    { id: "tracking", label: t('tracking') },
     ...(storeType === 'WEBSITE' ? [] : [
-      { id: "business", label: "Economics" },
+      { id: "business", label: t('business') },
     ]),
   ];
 
@@ -142,9 +144,9 @@ export default function SettingsManager({
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
         <div>
           <h1 className="text-5xl font-black italic tracking-tighter text-white uppercase">
-            Store <span className="text-cyan-400">Core</span>
+            {t('storeCore')}
           </h1>
-          <p className="text-slate-500 mt-2 font-medium tracking-widest text-[10px] uppercase">Master control for your brand identity and ecosystem.</p>
+          <p className="text-slate-500 mt-2 font-medium tracking-widest text-[10px] uppercase">{t('masterControl')}</p>
         </div>
         
         <div className="flex bg-white/5 backdrop-blur-3xl p-2 rounded-[2rem] border border-white/5 shadow-2xl overflow-x-auto max-w-full no-scrollbar">
@@ -153,7 +155,7 @@ export default function SettingsManager({
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`px-8 py-4 rounded-3xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 whitespace-nowrap ${activeTab === tab.id ? 'bg-cyan-500 text-white shadow-[0_10px_20px_rgba(6,182,212,0.3)] scale-105' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}
+              className={`px-8 py-4 rounded-3xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 whitespace-nowrap ${activeTab === tab.id ? 'bg-cyan-500 text-white shadow-[0_10px_20px_rgba(6,182,212,0.3)] scale-105' : 'text-slate-500 hover:text-white hover:bg-white/5'} ${language === 'ar' ? 'font-arabic' : ''}`}
             >
               {tab.label}
             </button>
@@ -172,34 +174,34 @@ export default function SettingsManager({
                   
                   <div className="flex items-center gap-4 mb-10">
                     <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Brand Matrix</h2>
+                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">{t('brandMatrix')}</h2>
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Market Identity (Title)</label>
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">{t('marketIdentity')}</label>
                       <input 
                         type="text" 
                         value={settings.storeName} 
                         onChange={e => updateSettings({...settings, storeName: e.target.value})} 
-                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black uppercase tracking-tight italic" 
-                        placeholder="Enter Store Name"
+                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black uppercase tracking-tight italic ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
+                        placeholder={t('enterStoreName')}
                       />
                     </div>
                     
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">SEO Signal (Description)</label>
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">{t('seoSignal')}</label>
                       <input 
                         type="text" 
                         value={settings.description || ''} 
                         onChange={e => updateSettings({...settings, description: e.target.value})} 
-                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-bold text-xs" 
-                        placeholder="Premium e-commerce experience..."
+                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-bold text-xs ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
+                        placeholder={t('premiumExperience')}
                       />
                     </div>
 
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Signature Logo (Header)</label>
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">{t('signatureLogo')}</label>
                       <div className="bg-white/[0.03] border border-white/[0.05] rounded-[2rem] p-6">
                         <MediaPicker 
                           slug={slug}
@@ -211,7 +213,7 @@ export default function SettingsManager({
                     </div>
 
                     <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Browser Node (Favicon)</label>
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">{t('browserNode')}</label>
                       <div className="bg-white/[0.03] border border-white/[0.05] rounded-[2rem] p-6">
                         <MediaPicker 
                           slug={slug}
@@ -985,7 +987,7 @@ export default function SettingsManager({
                    <div className="flex items-center gap-4 mb-10">
                     <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
                     <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">
-                      {storeType === 'WEBSITE' ? "What our clients says" : "Elite Features"}
+                      {t('signature')}
                     </h2>
                   </div>
 
@@ -993,8 +995,8 @@ export default function SettingsManager({
                     <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05] mb-10 group">
                        <div className="flex items-center justify-between mb-8">
                           <div>
-                             <h3 className="text-lg font-black text-white uppercase italic tracking-tight">Live Pulse Notifications</h3>
-                             <p className="text-[10px] text-slate-500 mt-2 font-medium uppercase tracking-widest">Real-time social proof stream for visitors.</p>
+                             <h3 className="text-lg font-black text-white uppercase italic tracking-tight">{t('livePulse')}</h3>
+                             <p className="text-[10px] text-slate-500 mt-2 font-medium uppercase tracking-widest">{language === 'ar' ? "إشعار فوري بحركات الشراء للمتصفحين" : "Real-time social proof stream for visitors."}</p>
                           </div>
                           <label className="relative inline-flex items-center cursor-pointer">
                              <input 
@@ -1018,7 +1020,7 @@ export default function SettingsManager({
                        {settings.signatureSettings?.liveSales?.enabled && (
                          <div className="bg-white/[0.03] p-6 rounded-2xl border border-white/[0.05] flex items-center gap-8 animate-in slide-in-from-top-4 duration-500">
                             <div className="flex-1 space-y-3">
-                               <label className="block text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Pulse Interval (Seconds)</label>
+                               <label className="block text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">{t('pulseInterval')}</label>
                                <input 
                                   type="number"
                                   value={(settings.signatureSettings?.liveSales?.interval || 15000) / 1000}
@@ -1043,14 +1045,14 @@ export default function SettingsManager({
                   <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05]">
                      <div className="flex justify-between items-center mb-10">
                         <h3 className="text-lg font-black text-white uppercase italic tracking-tight">
-                          {storeType === 'WEBSITE' ? "What our clients says" : "Social Proof Matrix"}
+                          {t('socialProof')}
                         </h3>
                         <button 
                           type="button"
                           onClick={() => updateSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), testimonials: [...(settings.signatureSettings?.testimonials || []), {name: '', role: '', content: ''}]}})}
-                          className="px-6 py-3 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-cyan-400 hover:text-white transition-all shadow-2xl"
+                          className={`px-6 py-3 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-cyan-400 hover:text-white transition-all shadow-2xl ${language === 'ar' ? 'font-arabic' : ''}`}
                         >
-                          {storeType === 'WEBSITE' ? "+ Add Client Review" : "+ Inject Review"}
+                          {t('injectReview')}
                         </button>
                      </div>
 
@@ -1059,46 +1061,46 @@ export default function SettingsManager({
                            <div key={idx} className="bg-white/[0.03] p-10 rounded-[2.5rem] border border-white/[0.05] shadow-2xl relative group/card transition-all hover:bg-white/[0.05]">
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                                  <div className="space-y-3">
-                                    <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Identity</label>
+                                    <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">{t('identity')}</label>
                                     <input 
                                        type="text" 
                                        value={t.name}
-                                       placeholder="Subject Name"
+                                       placeholder={language === 'ar' ? "الاسم الكامل" : "Subject Name"}
                                        onChange={e => {
                                           const newList = [...(settings.signatureSettings?.testimonials || [])];
                                           newList[idx].name = e.target.value;
                                           updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
                                        }}
-                                       className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-black text-xs uppercase"
+                                       className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-black text-xs uppercase ${language === 'ar' ? 'font-arabic text-right' : ''}`}
                                     />
                                  </div>
                                  <div className="space-y-3">
-                                    <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Coordinates</label>
+                                    <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">{t('coordinates')}</label>
                                     <input 
                                        type="text" 
                                        value={t.role}
-                                       placeholder="Sector / Location"
+                                       placeholder={language === 'ar' ? "الوظيفة / الموقع" : "Sector / Location"}
                                        onChange={e => {
                                           const newList = [...(settings.signatureSettings?.testimonials || [])];
                                           newList[idx].role = e.target.value;
                                           updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
                                        }}
-                                       className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-slate-400 focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-bold text-xs uppercase"
+                                       className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-slate-400 focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-bold text-xs uppercase ${language === 'ar' ? 'font-arabic text-right' : ''}`}
                                     />
                                  </div>
                               </div>
                               <div className="space-y-3">
-                                 <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Manifesto</label>
+                                 <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">{t('reviewContent')}</label>
                                  <textarea 
                                     value={t.content}
-                                    placeholder="Input signal content..."
+                                    placeholder={language === 'ar' ? "اكتب نص المراجعة هنا..." : "Input signal content..."}
                                     rows={3}
                                     onChange={e => {
                                        const newList = [...(settings.signatureSettings?.testimonials || [])];
                                        newList[idx].content = e.target.value;
                                        updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
                                     }}
-                                    className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-medium text-xs leading-relaxed italic"
+                                    className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-medium text-xs leading-relaxed italic ${language === 'ar' ? 'font-arabic text-right' : ''}`}
                                  />
                               </div>
                               <button 
@@ -1108,9 +1110,9 @@ export default function SettingsManager({
                                     newList.splice(idx, 1);
                                     updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
                                   }}
-                                 className="mt-8 text-[9px] font-black text-rose-500 uppercase tracking-[0.4em] hover:text-rose-400 transition-colors"
+                                 className={`mt-8 text-[9px] font-black text-rose-500 uppercase tracking-[0.4em] hover:text-rose-400 transition-colors ${language === 'ar' ? 'font-arabic' : ''}`}
                               >
-                                 {storeType === 'WEBSITE' ? "Delete Review" : "Terminated Review"}
+                                 {language === 'ar' ? "حذف المراجعة" : "Delete Review"}
                               </button>
                            </div>
                         ))}
@@ -1125,40 +1127,40 @@ export default function SettingsManager({
                 <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
                    <div className="flex items-center gap-4 mb-10">
                     <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Economic Parameters</h2>
+                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">{t('business')}</h2>
                   </div>
 
                   <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05]">
                      <div className="flex justify-between items-center mb-10">
-                        <h3 className="text-lg font-black text-white uppercase italic tracking-tight">Logistics Grids</h3>
+                        <h3 className="text-lg font-black text-white uppercase italic tracking-tight">{t('logisticsGrids')}</h3>
                         <button 
                           type="button"
                           onClick={() => updateSettings({...settings, businessSettings: {...(settings.businessSettings || {}), shippingRates: [...(settings.businessSettings?.shippingRates || []), {zone: '', rate: 0}]}})}
-                          className="px-6 py-3 bg-cyan-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-2xl"
+                          className={`px-6 py-3 bg-cyan-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-2xl ${language === 'ar' ? 'font-arabic' : ''}`}
                         >
-                          + Define Grid
+                          {t('defineGrid')}
                         </button>
                      </div>
 
-                     <div className="space-y-4">
+                      <div className="space-y-4">
                         {(settings.businessSettings?.shippingRates || []).map((r: any, idx: number) => (
                            <div key={idx} className="flex gap-6 items-center bg-white/[0.03] p-6 rounded-[1.5rem] border border-white/[0.05] group transition-all hover:bg-white/[0.05]">
                               <div className="flex-1 space-y-3">
-                                 <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Zone Identifier</label>
+                                 <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">{t('zoneIdentifier')}</label>
                                  <input 
                                     type="text" 
                                     value={r.zone}
-                                    placeholder="e.g. Global"
+                                    placeholder={language === 'ar' ? "مثال: الشحن المحلي" : "e.g. Global"}
                                     onChange={e => {
                                        const newList = [...(settings.businessSettings?.shippingRates || [])];
                                        newList[idx].zone = e.target.value;
                                        updateSettings({...settings, businessSettings: {...settings.businessSettings, shippingRates: newList}});
                                     }}
-                                    className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-5 py-3 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-black text-xs uppercase"
+                                    className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-5 py-3 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-black text-xs uppercase ${language === 'ar' ? 'font-arabic text-right' : ''}`}
                                  />
                               </div>
                               <div className="w-40 space-y-3">
-                                 <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Rate Value ($)</label>
+                                 <label className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">{t('rateValue')}</label>
                                  <input 
                                     type="number" 
                                     value={r.rate}
@@ -1210,10 +1212,10 @@ export default function SettingsManager({
               <button 
                 type="submit"
                 disabled={isPending}
-                className="px-10 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-[1.75rem] font-black text-xs uppercase tracking-[0.3em] hover:scale-105 active:scale-95 transition-all flex items-center gap-4 shadow-2xl shadow-cyan-500/20 disabled:opacity-50"
+                className={`px-10 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-[1.75rem] font-black text-xs uppercase tracking-[0.3em] hover:scale-105 active:scale-95 transition-all flex items-center gap-4 shadow-2xl shadow-cyan-500/20 disabled:opacity-50 ${language === 'ar' ? 'font-arabic' : ''}`}
               >
                 {isPending ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
-                Sync Protocol
+                {isPending ? t('saving') : t('saveChanges')}
               </button>
             </div>
           </div>
