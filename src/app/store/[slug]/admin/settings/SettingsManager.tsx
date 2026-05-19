@@ -130,10 +130,14 @@ export default function SettingsManager({
     { id: "general", label: "General" },
     { id: "theme", label: "Colors & Style" },
     { id: "header", label: "Header & Navigation" },
-    { id: "signature", label: "Elite Features" },
-    { id: "siteBuilder", label: "Site Builder" },
+    { id: "signature", label: storeType === 'WEBSITE' ? "What our clients says" : "Elite Features" },
+    ...(storeType === 'WEBSITE' ? [] : [
+      { id: "siteBuilder", label: "Site Builder" },
+    ]),
     { id: "tracking", label: "Pixels & Tracking" },
-    { id: "business", label: "Economics" },
+    ...(storeType === 'WEBSITE' ? [] : [
+      { id: "business", label: "Economics" },
+    ]),
   ];
 
   return (
@@ -440,7 +444,7 @@ export default function SettingsManager({
               </div>
             )}
             
-            {activeTab === 'siteBuilder' && (
+            {activeTab === 'siteBuilder' && storeType !== 'WEBSITE' && (
               <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">
                 <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
                   <div className="flex items-center gap-4 mb-10">
@@ -1069,67 +1073,73 @@ export default function SettingsManager({
                 <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
                    <div className="flex items-center gap-4 mb-10">
                     <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Elite Features</h2>
+                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">
+                      {storeType === 'WEBSITE' ? "What our clients says" : "Elite Features"}
+                    </h2>
                   </div>
 
-                  <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05] mb-10 group">
-                     <div className="flex items-center justify-between mb-8">
-                        <div>
-                           <h3 className="text-lg font-black text-white uppercase italic tracking-tight">Live Pulse Notifications</h3>
-                           <p className="text-[10px] text-slate-500 mt-2 font-medium uppercase tracking-widest">Real-time social proof stream for visitors.</p>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                           <input 
-                              type="checkbox" 
-                              className="sr-only peer"
-                              checked={settings.signatureSettings?.liveSales?.enabled}
-                              onChange={e => updateSettings({
-                                ...settings, 
-                                signatureSettings: {
-                                  ...(settings.signatureSettings || {}), 
-                                  liveSales: {
-                                    ...(settings.signatureSettings?.liveSales || {enabled: false, interval: 15000}), 
-                                    enabled: e.target.checked
-                                  }
-                                }
-                              })}
-                           />
-                           <div className="w-14 h-7 bg-white/5 rounded-full peer peer-checked:bg-green-500 transition-all after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:after:translate-x-7"></div>
-                        </label>
-                     </div>
-                     {settings.signatureSettings?.liveSales?.enabled && (
-                       <div className="bg-white/[0.03] p-6 rounded-2xl border border-white/[0.05] flex items-center gap-8 animate-in slide-in-from-top-4 duration-500">
-                          <div className="flex-1 space-y-3">
-                             <label className="block text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Pulse Interval (Seconds)</label>
+                  {storeType !== 'WEBSITE' && (
+                    <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05] mb-10 group">
+                       <div className="flex items-center justify-between mb-8">
+                          <div>
+                             <h3 className="text-lg font-black text-white uppercase italic tracking-tight">Live Pulse Notifications</h3>
+                             <p className="text-[10px] text-slate-500 mt-2 font-medium uppercase tracking-widest">Real-time social proof stream for visitors.</p>
+                          </div>
+                          <label className="relative inline-flex items-center cursor-pointer">
                              <input 
-                                type="number"
-                                value={(settings.signatureSettings?.liveSales?.interval || 15000) / 1000}
+                                type="checkbox" 
+                                className="sr-only peer"
+                                checked={settings.signatureSettings?.liveSales?.enabled}
                                 onChange={e => updateSettings({
                                   ...settings, 
                                   signatureSettings: {
                                     ...(settings.signatureSettings || {}), 
                                     liveSales: {
                                       ...(settings.signatureSettings?.liveSales || {enabled: false, interval: 15000}), 
-                                      interval: Number(e.target.value) * 1000
+                                      enabled: e.target.checked
                                     }
                                   }
                                 })}
-                                className="w-32 bg-black/40 border border-white/5 rounded-xl px-6 py-3 text-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-black text-sm"
                              />
-                          </div>
+                             <div className="w-14 h-7 bg-white/5 rounded-full peer peer-checked:bg-green-500 transition-all after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:after:translate-x-7"></div>
+                          </label>
                        </div>
-                     )}
-                  </div>
+                       {settings.signatureSettings?.liveSales?.enabled && (
+                         <div className="bg-white/[0.03] p-6 rounded-2xl border border-white/[0.05] flex items-center gap-8 animate-in slide-in-from-top-4 duration-500">
+                            <div className="flex-1 space-y-3">
+                               <label className="block text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Pulse Interval (Seconds)</label>
+                               <input 
+                                  type="number"
+                                  value={(settings.signatureSettings?.liveSales?.interval || 15000) / 1000}
+                                  onChange={e => updateSettings({
+                                    ...settings, 
+                                    signatureSettings: {
+                                      ...(settings.signatureSettings || {}), 
+                                      liveSales: {
+                                        ...(settings.signatureSettings?.liveSales || {enabled: false, interval: 15000}), 
+                                        interval: Number(e.target.value) * 1000
+                                      }
+                                    }
+                                  })}
+                                  className="w-32 bg-black/40 border border-white/5 rounded-xl px-6 py-3 text-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-black text-sm"
+                               />
+                            </div>
+                         </div>
+                       )}
+                    </div>
+                  )}
 
                   <div className="bg-white/[0.02] p-10 rounded-[2.5rem] border border-white/[0.05]">
                      <div className="flex justify-between items-center mb-10">
-                        <h3 className="text-lg font-black text-white uppercase italic tracking-tight">Social Proof Matrix</h3>
+                        <h3 className="text-lg font-black text-white uppercase italic tracking-tight">
+                          {storeType === 'WEBSITE' ? "What our clients says" : "Social Proof Matrix"}
+                        </h3>
                         <button 
                           type="button"
                           onClick={() => updateSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), testimonials: [...(settings.signatureSettings?.testimonials || []), {name: '', role: '', content: ''}]}})}
                           className="px-6 py-3 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-cyan-400 hover:text-white transition-all shadow-2xl"
                         >
-                          + Inject Review
+                          {storeType === 'WEBSITE' ? "+ Add Client Review" : "+ Inject Review"}
                         </button>
                      </div>
 
@@ -1186,10 +1196,10 @@ export default function SettingsManager({
                                     const newList = [...(settings.signatureSettings?.testimonials || [])];
                                     newList.splice(idx, 1);
                                     updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
-                                 }}
+                                  }}
                                  className="mt-8 text-[9px] font-black text-rose-500 uppercase tracking-[0.4em] hover:text-rose-400 transition-colors"
                               >
-                                 Terminated Review
+                                 {storeType === 'WEBSITE' ? "Delete Review" : "Terminated Review"}
                               </button>
                            </div>
                         ))}
@@ -1199,7 +1209,7 @@ export default function SettingsManager({
               </div>
             )}
 
-            {activeTab === 'business' && (activeTab === 'business' && (
+            {activeTab === 'business' && storeType !== 'WEBSITE' && (activeTab === 'business' && (
               <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">
                 <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
                    <div className="flex items-center gap-4 mb-10">
