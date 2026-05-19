@@ -558,7 +558,7 @@ export const translations = {
     tourismTemplate: "قالب السياحة",
     activeProducts: "المنتجات النشطة",
     leadsFunnel: "قمع الاستفسارات",
-    salesFunnel: "قمع المبيعات",
+    salesFunnel: "المبيعات",
     websiteVisits: "زيارات الموقع",
     addToCartLabel: "إضافة للسلة",
     packageClicks: "نقرات الباقات",
@@ -574,9 +574,9 @@ export const translations = {
     activityHeatmap: "خريطة النشاط",
 
     // Products / Assets
-    inventoryVault: "خزينة المخزون",
+    inventoryVault: "المخزون",
     controlProductPrecision: "تحكم في نظام المنتجات الخاص بك بدقة.",
-    addNewAsset: "إضافة أصل جديد",
+    addNewAsset: "إضافة منتج جديد",
     physicalAsset: "أصل مادي",
     servicePackage: "خدمة / باقة",
     assetDesignation: "تسمية الأصل",
@@ -644,14 +644,14 @@ export const translations = {
     confirmDeleteCategory: "هل أنت متأكد من حذف هذا القسم؟",
 
     // Orders
-    orderStream: "سلسلة الطلبات",
+    orderStream: "الطلبات",
     realtimeTransactionMatrix: "مصفوفة المعاملات في الوقت الفعلي والتحكم في التنفيذ.",
     scanningMatrix: "جاري فحص المصفوفة...",
     activeRecords: "سجلات نشطة",
     noActiveTransactions: "لا توجد معاملات نشطة",
     node: "العقدة",
     revenue: "الإيرادات",
-    matrixUnits: "وحدات المصفوفة",
+    matrixUnits: "العدد",
     timeStamp: "الطابع الزمني",
     statusLabel: "الحالة",
     verified: "مؤكد",
