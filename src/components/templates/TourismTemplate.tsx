@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Compass, Calendar, Users, ArrowRight, Eye, Phone, Mail, Clock, ShieldCheck, MapPin } from "lucide-react";
+import EditableText from "@/components/editor/EditableText";
 
 interface TourismTemplateProps {
   banners: any[];
@@ -57,21 +58,40 @@ export default function TourismTemplate({
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 px-4 py-2 rounded-full mb-8 backdrop-blur-md">
             <Compass className="text-cyan-400 w-4 h-4 animate-spin-slow" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-cyan-300">Start Your Adventure</span>
+            <EditableText 
+              content={settings.tourismSettings?.startBadge || "Start Your Adventure"} 
+              slug={slug} 
+              settingsKey="tourismSettings.startBadge" 
+              className="text-[10px] font-black uppercase tracking-widest text-cyan-300" 
+              as="span" 
+            />
           </div>
           
           <h1 className="text-5xl md:text-7xl font-black tracking-tight text-white mb-6 uppercase leading-none">
-            {heroTitle}
+            <EditableText 
+              content={settings.tourismSettings?.heroTitle || heroTitle} 
+              slug={slug} 
+              settingsKey="tourismSettings.heroTitle" 
+            />
           </h1>
           <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-            {heroSubtitle}
+            <EditableText 
+              content={settings.tourismSettings?.heroSubtitle || heroSubtitle} 
+              slug={slug} 
+              settingsKey="tourismSettings.heroSubtitle" 
+            />
           </p>
 
           <a 
             href="#destinations" 
             className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-black text-xs uppercase tracking-widest px-8 py-5 rounded-2xl shadow-xl shadow-cyan-500/10 transition-all hover:scale-105"
           >
-            Explore Tour Packages <ArrowRight size={16} />
+            <EditableText 
+              content={settings.tourismSettings?.exploreButton || "Explore Tour Packages"} 
+              slug={slug} 
+              settingsKey="tourismSettings.exploreButton" 
+              as="span" 
+            /> <ArrowRight size={16} />
           </a>
         </div>
 
@@ -90,8 +110,20 @@ export default function TourismTemplate({
               <ShieldCheck size={24} />
             </div>
             <div>
-              <h4 className="font-bold text-sm text-white uppercase tracking-wider mb-1">Guaranteed Safety</h4>
-              <p className="text-xs text-slate-400">Certified local guides, 24/7 client support line.</p>
+              <EditableText 
+                content={settings.tourismSettings?.badge1Title || "Guaranteed Safety"} 
+                slug={slug} 
+                settingsKey="tourismSettings.badge1Title" 
+                className="font-bold text-sm text-white uppercase tracking-wider mb-1 block" 
+                as="h4" 
+              />
+              <EditableText 
+                content={settings.tourismSettings?.badge1Desc || "Certified local guides, 24/7 client support line."} 
+                slug={slug} 
+                settingsKey="tourismSettings.badge1Desc" 
+                className="text-xs text-slate-400 block" 
+                as="p" 
+              />
             </div>
           </div>
 
@@ -100,8 +132,20 @@ export default function TourismTemplate({
               <Calendar size={24} />
             </div>
             <div>
-              <h4 className="font-bold text-sm text-white uppercase tracking-wider mb-1">Flexible Bookings</h4>
-              <p className="text-xs text-slate-400">Easy booking change up to 48 hours in advance.</p>
+              <EditableText 
+                content={settings.tourismSettings?.badge2Title || "Flexible Bookings"} 
+                slug={slug} 
+                settingsKey="tourismSettings.badge2Title" 
+                className="font-bold text-sm text-white uppercase tracking-wider mb-1 block" 
+                as="h4" 
+              />
+              <EditableText 
+                content={settings.tourismSettings?.badge2Desc || "Easy booking change up to 48 hours in advance."} 
+                slug={slug} 
+                settingsKey="tourismSettings.badge2Desc" 
+                className="text-xs text-slate-400 block" 
+                as="p" 
+              />
             </div>
           </div>
 
@@ -110,8 +154,20 @@ export default function TourismTemplate({
               <Users size={24} />
             </div>
             <div>
-              <h4 className="font-bold text-sm text-white uppercase tracking-wider mb-1">Tailored Experiences</h4>
-              <p className="text-xs text-slate-400">Private trips or friendly group outings.</p>
+              <EditableText 
+                content={settings.tourismSettings?.badge3Title || "Tailored Experiences"} 
+                slug={slug} 
+                settingsKey="tourismSettings.badge3Title" 
+                className="font-bold text-sm text-white uppercase tracking-wider mb-1 block" 
+                as="h4" 
+              />
+              <EditableText 
+                content={settings.tourismSettings?.badge3Desc || "Private trips or friendly group outings."} 
+                slug={slug} 
+                settingsKey="tourismSettings.badge3Desc" 
+                className="text-xs text-slate-400 block" 
+                as="p" 
+              />
             </div>
           </div>
         </div>
@@ -121,10 +177,28 @@ export default function TourismTemplate({
       <section id="destinations" className="py-24 max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
           <div>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-4 uppercase">
-              Dream <span className="text-cyan-400">Destinations</span>
+            <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-4 uppercase flex gap-3 flex-wrap">
+              <EditableText 
+                content={settings.tourismSettings?.sectionTitlePart1 || "Dream"} 
+                slug={slug} 
+                settingsKey="tourismSettings.sectionTitlePart1" 
+                as="span" 
+              />
+              <EditableText 
+                content={settings.tourismSettings?.sectionTitlePart2 || "Destinations"} 
+                slug={slug} 
+                settingsKey="tourismSettings.sectionTitlePart2" 
+                className="text-cyan-400" 
+                as="span" 
+              />
             </h2>
-            <p className="text-slate-400 max-w-md text-sm font-medium">Explore our premium selection of curated tourism packages and tours.</p>
+            <EditableText 
+              content={settings.tourismSettings?.sectionSubtitle || "Explore our premium selection of curated tourism packages and tours."} 
+              slug={slug} 
+              settingsKey="tourismSettings.sectionSubtitle" 
+              className="text-slate-400 max-w-md text-sm font-medium block mb-4" 
+              as="p" 
+            />
           </div>
 
           {/* Categories Tab Selector */}
@@ -138,7 +212,7 @@ export default function TourismTemplate({
                     : "bg-slate-900 border-white/5 text-slate-400 hover:border-slate-800 hover:text-white"
                 }`}
               >
-                All Packages
+                {settings.tourismSettings?.allPackagesText || "All Packages"}
               </button>
               {categories.map((cat) => (
                 <button
@@ -161,17 +235,29 @@ export default function TourismTemplate({
         {filteredProducts.length === 0 ? (
           <div className="text-center py-20 bg-slate-900/20 border border-dashed border-white/5 rounded-[2rem] p-12">
             <Compass className="w-12 h-12 text-slate-600 mx-auto mb-4 animate-bounce" />
-            <h4 className="font-bold text-lg text-white mb-2">No Tour Packages Active Yet</h4>
-            <p className="text-xs text-slate-500">Check back soon or contact us directly to design your dream itinerary.</p>
+            <EditableText 
+              content={settings.tourismSettings?.emptyStateTitle || "No Tour Packages Active Yet"} 
+              slug={slug} 
+              settingsKey="tourismSettings.emptyStateTitle" 
+              className="font-bold text-lg text-white mb-2 block" 
+              as="h4" 
+            />
+            <EditableText 
+              content={settings.tourismSettings?.emptyStateDesc || "Check back soon or contact us directly to design your dream itinerary."} 
+              slug={slug} 
+              settingsKey="tourismSettings.emptyStateDesc" 
+              className="text-xs text-slate-500 block" 
+              as="p" 
+            />
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.map((product) => {
               // Extract specs or setup defaults
-              const duration = product.specs?.find((s: any) => s.label.toLowerCase() === 'duration')?.value || "7 Days";
-              const groupSize = product.specs?.find((s: any) => s.label.toLowerCase() === 'group size')?.value || "Max 12";
-              const location = product.specs?.find((s: any) => s.label.toLowerCase() === 'location')?.value || "Global Destination";
-              const image = product.images?.[0]?.url || "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80";
+              const duration = product.specs?.find((s: any) => s.label.toLowerCase() === 'duration')?.value;
+              const groupSize = product.specs?.find((s: any) => s.label.toLowerCase() === 'group size')?.value;
+              const location = product.specs?.find((s: any) => s.label.toLowerCase() === 'location')?.value;
+              const image = product.images?.[0]?.url || product.images?.[0] || "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80";
 
               return (
                 <div 
@@ -188,7 +274,9 @@ export default function TourismTemplate({
                     {/* Badge */}
                     <div className="absolute top-6 left-6 bg-slate-950/80 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-xl flex items-center gap-1.5">
                       <Clock size={12} className="text-cyan-400" />
-                      <span className="text-[10px] font-black uppercase tracking-widest text-cyan-300">{duration}</span>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-cyan-300">
+                        {duration || <EditableText content={settings.tourismSettings?.defaultDuration || "7 Days"} slug={slug} settingsKey="tourismSettings.defaultDuration" />}
+                      </span>
                     </div>
                   </div>
 
@@ -197,7 +285,9 @@ export default function TourismTemplate({
                     <div>
                       <div className="flex items-center gap-1 text-slate-500 mb-2">
                         <MapPin size={12} className="text-slate-600" />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">{location}</span>
+                        <span className="text-[10px] font-bold uppercase tracking-wider">
+                          {location || <EditableText content={settings.tourismSettings?.defaultLocation || "Global Destination"} slug={slug} settingsKey="tourismSettings.defaultLocation" />}
+                        </span>
                       </div>
                       <h3 className="text-xl font-black text-white group-hover:text-cyan-400 transition-colors mb-4 line-clamp-1">
                         {product.name}
@@ -210,8 +300,16 @@ export default function TourismTemplate({
                     <div>
                       {/* Specs Row */}
                       <div className="flex justify-between items-center py-4 border-t border-white/5 text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-6">
-                        <span className="flex items-center gap-1.5"><Users size={12} className="text-slate-500" /> {groupSize}</span>
-                        <span className="text-white text-md font-black italic tracking-tighter">${product.price.toFixed(0)} <span className="text-[9px] font-normal text-slate-500 not-italic">/Person</span></span>
+                        <span className="flex items-center gap-1.5">
+                          <Users size={12} className="text-slate-500" /> 
+                          {groupSize || <EditableText content={settings.tourismSettings?.defaultGroupSize || "Max 12"} slug={slug} settingsKey="tourismSettings.defaultGroupSize" />}
+                        </span>
+                        <span className="text-white text-md font-black italic tracking-tighter">
+                          ${product.price.toFixed(0)} 
+                          <span className="text-[9px] font-normal text-slate-500 not-italic ml-1">
+                            <EditableText content={settings.tourismSettings?.priceSuffix || "/Person"} slug={slug} settingsKey="tourismSettings.priceSuffix" />
+                          </span>
+                        </span>
                       </div>
 
                       {/* Action Button */}
@@ -219,7 +317,12 @@ export default function TourismTemplate({
                         href={`/store/${slug}/product/${product.id}`}
                         className="w-full py-4 bg-slate-950 border border-slate-800 text-white rounded-2xl text-xs font-black uppercase tracking-widest transition-all hover:bg-cyan-500 hover:border-cyan-500 hover:text-slate-950 flex items-center justify-center gap-2 group-hover:shadow-lg group-hover:shadow-cyan-500/5"
                       >
-                        Book / Inquire <ArrowRight size={12} />
+                        <EditableText 
+                          content={settings.tourismSettings?.bookButtonText || "Book / Inquire"} 
+                          slug={slug} 
+                          settingsKey="tourismSettings.bookButtonText" 
+                          as="span" 
+                        /> <ArrowRight size={12} />
                       </Link>
                     </div>
                   </div>
@@ -235,31 +338,74 @@ export default function TourismTemplate({
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
             <h3 className="text-2xl font-black italic text-white mb-6 uppercase tracking-wider">{settings.storeName}</h3>
-            <p className="text-xs text-slate-400 leading-relaxed font-light max-w-sm mb-6">
-              Designing exclusive travel packages, high-end cruises, and unforgettable private tours across the globe.
-            </p>
+            <EditableText 
+              content={settings.tourismSettings?.footerDesc || "Designing exclusive travel packages, high-end cruises, and unforgettable private tours across the globe."} 
+              slug={slug} 
+              settingsKey="tourismSettings.footerDesc" 
+              className="text-xs text-slate-400 leading-relaxed font-light max-w-sm mb-6 block" 
+              as="p" 
+            />
             <div className="flex items-center gap-2 text-[10px] font-black text-cyan-400 uppercase tracking-widest">
-              <Compass size={14} className="animate-spin-slow" /> Discover the unexplored
+              <Compass size={14} className="animate-spin-slow" /> 
+              <EditableText 
+                content={settings.tourismSettings?.footerSlogan || "Discover the unexplored"} 
+                slug={slug} 
+                settingsKey="tourismSettings.footerSlogan" 
+                as="span" 
+              />
             </div>
           </div>
 
           <div>
-            <h4 className="font-bold text-xs uppercase tracking-widest text-slate-400 mb-6">Office Location</h4>
-            <p className="text-xs text-slate-500 leading-relaxed mb-4">
-              104 Al Tagamoa Al Khames, Suite 4<br />
-              New Cairo, Egypt
-            </p>
-            <span className="text-xs text-cyan-400 font-bold">Open: 9 AM - 6 PM (Sun-Thu)</span>
+            <EditableText 
+              content={settings.tourismSettings?.footerLocationTitle || "Office Location"} 
+              slug={slug} 
+              settingsKey="tourismSettings.footerLocationTitle" 
+              className="font-bold text-xs uppercase tracking-widest text-slate-400 mb-6 block" 
+              as="h4" 
+            />
+            <EditableText 
+              content={settings.tourismSettings?.footerAddress || "104 Al Tagamoa Al Khames, Suite 4\nNew Cairo, Egypt"} 
+              slug={slug} 
+              settingsKey="tourismSettings.footerAddress" 
+              className="text-xs text-slate-500 leading-relaxed mb-4 whitespace-pre-wrap block" 
+              as="p" 
+            />
+            <EditableText 
+              content={settings.tourismSettings?.footerHours || "Open: 9 AM - 6 PM (Sun-Thu)"} 
+              slug={slug} 
+              settingsKey="tourismSettings.footerHours" 
+              className="text-xs text-cyan-400 font-bold block" 
+              as="span" 
+            />
           </div>
 
           <div>
-            <h4 className="font-bold text-xs uppercase tracking-widest text-slate-400 mb-6">Get in Touch</h4>
+            <EditableText 
+              content={settings.tourismSettings?.footerContactTitle || "Get in Touch"} 
+              slug={slug} 
+              settingsKey="tourismSettings.footerContactTitle" 
+              className="font-bold text-xs uppercase tracking-widest text-slate-400 mb-6 block" 
+              as="h4" 
+            />
             <div className="space-y-4">
-              <a href="tel:+201000000000" className="flex items-center gap-3 text-xs text-slate-400 hover:text-cyan-400 transition-colors">
-                <Phone size={14} className="text-cyan-500" /> +2 Egyptian Helpline
+              <a href={`tel:${settings.tourismSettings?.footerPhone || "+201000000000"}`} className="flex items-center gap-3 text-xs text-slate-400 hover:text-cyan-400 transition-colors">
+                <Phone size={14} className="text-cyan-500" /> 
+                <EditableText 
+                  content={settings.tourismSettings?.footerPhoneText || "+2 Egyptian Helpline"} 
+                  slug={slug} 
+                  settingsKey="tourismSettings.footerPhoneText" 
+                  as="span" 
+                />
               </a>
-              <a href="mailto:info@shopora.app" className="flex items-center gap-3 text-xs text-slate-400 hover:text-cyan-400 transition-colors">
-                <Mail size={14} className="text-cyan-500" /> bookings@{slug}.com
+              <a href={`mailto:${settings.tourismSettings?.footerEmail || "info@shopora.app"}`} className="flex items-center gap-3 text-xs text-slate-400 hover:text-cyan-400 transition-colors">
+                <Mail size={14} className="text-cyan-500" /> 
+                <EditableText 
+                  content={settings.tourismSettings?.footerEmailText || `bookings@${slug}.com`} 
+                  slug={slug} 
+                  settingsKey="tourismSettings.footerEmailText" 
+                  as="span" 
+                />
               </a>
             </div>
           </div>
