@@ -59,7 +59,8 @@ export default function Navbar({
   const isWebsite = storeSettings?.type === 'WEBSITE';
   const headerLinks = storeSettings?.headerSettings?.links || (isWebsite ? [
     { id: 'home', label: 'Home', url: `/store/${slug}` },
-    { id: 'destinations', label: 'Destinations', url: `/store/${slug}#destinations` }
+    { id: 'packages', label: 'Packages', url: `/store/${slug}#packages` },
+    { id: 'about', label: 'About Us', url: `/store/${slug}#about` }
   ] : [
     { id: 'home', label: t('home') || 'Home', url: `/store/${slug}` },
     { id: 'shop', label: t('shop') || 'Shop', url: `/store/${slug}/categories` }
