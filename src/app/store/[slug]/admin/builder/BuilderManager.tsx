@@ -21,7 +21,8 @@ import {
   Settings,
   Video,
   PlayCircle,
-  Link2
+  Link2,
+  Info
 } from "lucide-react";
 import MediaPicker from "../media/MediaPicker";
 
@@ -33,7 +34,7 @@ export interface LayoutSection {
   showDivider?: boolean;
 }
 
-const SECTION_DEFINITIONS = [
+const ECOMMERCE_SECTION_DEFINITIONS = [
   { id: 'hero', name: 'Hero Section', icon: ImageIcon, defaultStyle: 'luxury' },
   { id: 'banners', name: 'Banners Slider', icon: ImageIcon, defaultStyle: 'default' },
   { id: 'categories', name: 'Categories', icon: Tag, defaultStyle: 'grid' },
@@ -45,9 +46,26 @@ const SECTION_DEFINITIONS = [
   { id: 'marquee', name: 'Announcement Marquee', icon: Type, defaultStyle: 'default' },
 ];
 
-export default function BuilderManager({ initialSettings, slug }: { initialSettings: StoreSettings, slug: string }) {
+const WEBSITE_SECTION_DEFINITIONS = [
+  { id: 'hero', name: 'Hero Section', icon: ImageIcon, defaultStyle: 'default' },
+  { id: 'packages', name: 'Packages & Services', icon: ShoppingBag, defaultStyle: 'grid' },
+  { id: 'about_us', name: 'About Us', icon: Info, defaultStyle: 'split' },
+  { id: 'testimonials', name: 'Testimonials', icon: MessageSquare, defaultStyle: 'cards' },
+  { id: 'text_block', name: 'Rich Text', icon: Type, defaultStyle: 'centered' },
+  { id: 'video', name: 'Video Section', icon: Video, defaultStyle: 'default' },
+  { id: 'marquee', name: 'Announcement Marquee', icon: Type, defaultStyle: 'default' },
+];
+
+export default function BuilderManager({ initialSettings, slug, storeType = 'ECOMMERCE' }: { initialSettings: StoreSettings, slug: string, storeType?: string }) {
+  const SECTION_DEFINITIONS = storeType === 'WEBSITE' ? WEBSITE_SECTION_DEFINITIONS : ECOMMERCE_SECTION_DEFINITIONS;
+
   // Initialize with a default layout if none exists
-  const defaultLayout: LayoutSection[] = [
+  const defaultLayout: LayoutSection[] = storeType === 'WEBSITE' ? [
+    { id: 'sec-1', type: 'hero', style: 'default', config: { title: 'Welcome to our platform', subtitle: 'Discover amazing services' } },
+    { id: 'sec-2', type: 'packages', style: 'grid', config: { title: 'Our Packages' } },
+    { id: 'sec-3', type: 'about_us', style: 'split', config: { title: 'About Us' } },
+    { id: 'sec-4', type: 'testimonials', style: 'cards', config: { title: 'What our clients say' } }
+  ] : [
     { id: 'sec-1', type: 'hero', style: 'luxury', config: { title: 'Welcome to our store', subtitle: 'Discover amazing products' } },
     { id: 'sec-3', type: 'categories', style: 'grid', config: { title: 'Shop by Category' } },
     { id: 'sec-4', type: 'featured_products', style: 'grid', config: { title: 'Trending Now' } },
@@ -258,6 +276,24 @@ export default function BuilderManager({ initialSettings, slug }: { initialSetti
                       </button>
                     ))}
                     {activeSection.type === 'categories' && ['grid', 'carousel', 'circles'].map(style => (
+                      <button 
+                        key={style}
+                        onClick={() => updateSection(activeSection.id, { style })}
+                        className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}
+                      >
+                        {style}
+                      </button>
+                    ))}
+                    {activeSection.type === 'packages' && ['grid', 'list', 'cards'].map(style => (
+                      <button 
+                        key={style}
+                        onClick={() => updateSection(activeSection.id, { style })}
+                        className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}
+                      >
+                        {style}
+                      </button>
+                    ))}
+                    {activeSection.type === 'about_us' && ['split', 'centered', 'minimal'].map(style => (
                       <button 
                         key={style}
                         onClick={() => updateSection(activeSection.id, { style })}
