@@ -75,7 +75,7 @@ export default function TourismTemplate({
               
               <div className="mb-6 border-b border-white/5 pb-6">
                 <h3 className="text-2xl font-black text-white mb-2 group-hover:text-cyan-400 transition-colors">{product.name}</h3>
-                <p className="text-slate-400 text-sm h-12 overflow-hidden">{product.description}</p>
+                <p className="text-slate-400 text-sm whitespace-pre-wrap leading-relaxed">{product.description}</p>
               </div>
 
               <div className="mb-8">
