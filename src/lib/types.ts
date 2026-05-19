@@ -172,6 +172,7 @@ export interface Product {
   images: string[]; // Array of URLs
   sizes: string[];
   colors: ColorVariant[];
+  specs?: { label: string; value: string }[];
   category_id: string;
   storeId: string;
   status: string;

@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Compass, Calendar, Users, ArrowRight, Eye, Phone, Mail, Clock, ShieldCheck, MapPin } from "lucide-react";
+import { Check, Star, Quote } from "lucide-react";
 import EditableText from "@/components/editor/EditableText";
+import EditableImage from "@/components/editor/EditableImage";
 
-interface TourismTemplateProps {
+interface LandingTemplateProps {
   banners: any[];
   settings: any;
   products: any[];
@@ -19,21 +20,15 @@ export default function TourismTemplate({
   products,
   slug,
   categories
-}: TourismTemplateProps) {
+}: LandingTemplateProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  // Active banner image or elegant travel fallback
-  const heroBanner = banners[0]?.imageUrl || "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80";
-  const heroTitle = banners[0]?.title || settings.storeName || "Unforgettable Journeys";
-  const heroSubtitle = banners[0]?.description || settings.description || "Discover handpicked premium travel experiences designed just for you.";
-
-  // Filter products (tours) based on category selection
   const filteredProducts = selectedCategory
     ? products.filter(p => p.categoryId === selectedCategory)
     : products;
 
   return (
-    <div className="bg-[#070913] text-slate-100 min-h-screen font-sans antialiased overflow-x-hidden">
+    <div className="bg-[#0f111a] text-slate-100 min-h-screen font-sans antialiased overflow-x-hidden">
       {/* Dynamic Styled Google Font Import */}
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap');
@@ -42,379 +37,314 @@ export default function TourismTemplate({
         }
       `}</style>
 
-      {/* Hero Section */}
-      <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Background Image with Dark Glassy Overlay */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src={heroBanner} 
-            alt={heroTitle}
-            className="w-full h-full object-cover scale-105 animate-pulse duration-[10s]"
+      {/* Hero Banner Section (No text, just editable image) */}
+      <section className="relative w-full h-[60vh] md:h-[80vh] bg-slate-900 border-b border-white/5">
+        <EditableImage 
+          src={banners[0]?.imageUrl || settings.tourismSettings?.heroBannerImage || "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&q=80"}
+          alt="Hero Banner"
+          slug={slug}
+          settingsKey="tourismSettings.heroBannerImage"
+          className="w-full h-full object-cover"
+        />
+      </section>
+
+      {/* Packages / Offers Section */}
+      <section className="py-24 max-w-7xl mx-auto px-6" id="packages">
+        <div className="text-center mb-16">
+          <EditableText 
+            content={settings.tourismSettings?.packagesTitle || "Our Packages & Offers"} 
+            slug={slug} 
+            settingsKey="tourismSettings.packagesTitle" 
+            as="h2"
+            className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white mb-4 block"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-slate-950/80 to-[#070913]" />
+          <EditableText 
+            content={settings.tourismSettings?.packagesSubtitle || "Select the perfect plan designed to meet your specific needs."} 
+            slug={slug} 
+            settingsKey="tourismSettings.packagesSubtitle" 
+            as="p"
+            className="text-slate-400 text-sm md:text-base max-w-2xl mx-auto block"
+          />
         </div>
 
-        {/* Hero Content */}
-        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 px-4 py-2 rounded-full mb-8 backdrop-blur-md">
-            <Compass className="text-cyan-400 w-4 h-4 animate-spin-slow" />
-            <EditableText 
-              content={settings.tourismSettings?.startBadge || "Start Your Adventure"} 
-              slug={slug} 
-              settingsKey="tourismSettings.startBadge" 
-              className="text-[10px] font-black uppercase tracking-widest text-cyan-300" 
-              as="span" 
-            />
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-black tracking-tight text-white mb-6 uppercase leading-none">
-            <EditableText 
-              content={settings.tourismSettings?.heroTitle || heroTitle} 
-              slug={slug} 
-              settingsKey="tourismSettings.heroTitle" 
-            />
-          </h1>
-          <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-            <EditableText 
-              content={settings.tourismSettings?.heroSubtitle || heroSubtitle} 
-              slug={slug} 
-              settingsKey="tourismSettings.heroSubtitle" 
-            />
-          </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredProducts.map((product) => (
+            <div key={product.id} className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 hover:border-cyan-500/50 hover:bg-white/[0.04] transition-all flex flex-col group shadow-2xl relative overflow-hidden">
+              {/* Highlight effect */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-[50px] -z-10 group-hover:bg-cyan-500/20 transition-all"></div>
+              
+              <div className="mb-6 border-b border-white/5 pb-6">
+                <h3 className="text-2xl font-black text-white mb-2 group-hover:text-cyan-400 transition-colors">{product.name}</h3>
+                <p className="text-slate-400 text-sm h-12 overflow-hidden">{product.description}</p>
+              </div>
 
-          <a 
-            href="#destinations" 
-            className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-black text-xs uppercase tracking-widest px-8 py-5 rounded-2xl shadow-xl shadow-cyan-500/10 transition-all hover:scale-105"
-          >
-            <EditableText 
-              content={settings.tourismSettings?.exploreButton || "Explore Tour Packages"} 
-              slug={slug} 
-              settingsKey="tourismSettings.exploreButton" 
-              as="span" 
-            /> <ArrowRight size={16} />
-          </a>
-        </div>
+              <div className="mb-8">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-black text-white">${product.price}</span>
+                  <EditableText 
+                    content={settings.tourismSettings?.priceSuffix || "/Month"} 
+                    slug={slug} 
+                    settingsKey="tourismSettings.priceSuffix" 
+                    as="span"
+                    className="text-sm font-bold text-slate-500 uppercase tracking-widest block"
+                  />
+                </div>
+              </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
-          <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">Scroll Down</span>
-          <div className="w-1 h-6 bg-cyan-400/50 rounded-full" />
-        </div>
-      </section>
+              <div className="flex-1 mb-8">
+                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4">Included Features</h4>
+                <ul className="space-y-4">
+                  {product.specs && product.specs.length > 0 ? (
+                    product.specs.map((spec: any, idx: number) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <div className="mt-0.5 bg-cyan-500/20 text-cyan-400 p-1 rounded-full"><Check size={12} strokeWidth={4} /></div>
+                        <div>
+                          <span className="text-sm font-bold text-white block">{spec.label}</span>
+                          <span className="text-xs text-slate-400 block">{spec.value}</span>
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="text-xs text-slate-500 italic">No specific features listed.</li>
+                  )}
+                </ul>
+              </div>
 
-      {/* Trust Badges */}
-      <section className="py-12 bg-slate-950/60 border-y border-white/5 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-          <div className="flex flex-col md:flex-row items-center gap-4 group">
-            <div className="w-12 h-12 bg-cyan-500/10 rounded-2xl flex items-center justify-center text-cyan-400 shrink-0 group-hover:scale-110 transition-all">
-              <ShieldCheck size={24} />
-            </div>
-            <div>
-              <EditableText 
-                content={settings.tourismSettings?.badge1Title || "Guaranteed Safety"} 
-                slug={slug} 
-                settingsKey="tourismSettings.badge1Title" 
-                className="font-bold text-sm text-white uppercase tracking-wider mb-1 block" 
-                as="h4" 
-              />
-              <EditableText 
-                content={settings.tourismSettings?.badge1Desc || "Certified local guides, 24/7 client support line."} 
-                slug={slug} 
-                settingsKey="tourismSettings.badge1Desc" 
-                className="text-xs text-slate-400 block" 
-                as="p" 
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-col md:flex-row items-center gap-4 group">
-            <div className="w-12 h-12 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400 shrink-0 group-hover:scale-110 transition-all">
-              <Calendar size={24} />
-            </div>
-            <div>
-              <EditableText 
-                content={settings.tourismSettings?.badge2Title || "Flexible Bookings"} 
-                slug={slug} 
-                settingsKey="tourismSettings.badge2Title" 
-                className="font-bold text-sm text-white uppercase tracking-wider mb-1 block" 
-                as="h4" 
-              />
-              <EditableText 
-                content={settings.tourismSettings?.badge2Desc || "Easy booking change up to 48 hours in advance."} 
-                slug={slug} 
-                settingsKey="tourismSettings.badge2Desc" 
-                className="text-xs text-slate-400 block" 
-                as="p" 
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-col md:flex-row items-center gap-4 group">
-            <div className="w-12 h-12 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-400 shrink-0 group-hover:scale-110 transition-all">
-              <Users size={24} />
-            </div>
-            <div>
-              <EditableText 
-                content={settings.tourismSettings?.badge3Title || "Tailored Experiences"} 
-                slug={slug} 
-                settingsKey="tourismSettings.badge3Title" 
-                className="font-bold text-sm text-white uppercase tracking-wider mb-1 block" 
-                as="h4" 
-              />
-              <EditableText 
-                content={settings.tourismSettings?.badge3Desc || "Private trips or friendly group outings."} 
-                slug={slug} 
-                settingsKey="tourismSettings.badge3Desc" 
-                className="text-xs text-slate-400 block" 
-                as="p" 
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Main Content Destinations Section */}
-      <section id="destinations" className="py-24 max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
-          <div>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-4 uppercase flex gap-3 flex-wrap">
-              <EditableText 
-                content={settings.tourismSettings?.sectionTitlePart1 || "Dream"} 
-                slug={slug} 
-                settingsKey="tourismSettings.sectionTitlePart1" 
-                as="span" 
-              />
-              <EditableText 
-                content={settings.tourismSettings?.sectionTitlePart2 || "Destinations"} 
-                slug={slug} 
-                settingsKey="tourismSettings.sectionTitlePart2" 
-                className="text-cyan-400" 
-                as="span" 
-              />
-            </h2>
-            <EditableText 
-              content={settings.tourismSettings?.sectionSubtitle || "Explore our premium selection of curated tourism packages and tours."} 
-              slug={slug} 
-              settingsKey="tourismSettings.sectionSubtitle" 
-              className="text-slate-400 max-w-md text-sm font-medium block mb-4" 
-              as="p" 
-            />
-          </div>
-
-          {/* Categories Tab Selector */}
-          {categories.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setSelectedCategory(null)}
-                className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all border ${
-                  selectedCategory === null 
-                    ? "bg-cyan-500 border-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/10" 
-                    : "bg-slate-900 border-white/5 text-slate-400 hover:border-slate-800 hover:text-white"
-                }`}
+              <Link 
+                href={`/store/${slug}/product/${product.id}`}
+                className="w-full py-4 bg-white border border-white/10 rounded-2xl text-black font-black text-xs uppercase tracking-widest text-center hover:bg-cyan-400 hover:border-cyan-400 hover:text-slate-900 transition-all shadow-xl block"
               >
-                {settings.tourismSettings?.allPackagesText || "All Packages"}
-              </button>
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all border ${
-                    selectedCategory === cat.id 
-                      ? "bg-cyan-500 border-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/10" 
-                      : "bg-slate-900 border-white/5 text-slate-400 hover:border-slate-800 hover:text-white"
-                  }`}
-                >
-                  {cat.name}
-                </button>
-              ))}
+                <EditableText 
+                  content={settings.tourismSettings?.bookButtonText || "Select Package"} 
+                  slug={slug} 
+                  settingsKey="tourismSettings.bookButtonText" 
+                  as="span"
+                />
+              </Link>
+            </div>
+          ))}
+
+          {filteredProducts.length === 0 && (
+            <div className="col-span-full py-20 text-center border border-dashed border-white/10 rounded-3xl bg-white/[0.01]">
+              <EditableText 
+                content={settings.tourismSettings?.noPackagesText || "No packages currently available."} 
+                slug={slug} 
+                settingsKey="tourismSettings.noPackagesText" 
+                as="p"
+                className="text-slate-400 font-medium block"
+              />
             </div>
           )}
         </div>
-
-        {/* Packages Grid */}
-        {filteredProducts.length === 0 ? (
-          <div className="text-center py-20 bg-slate-900/20 border border-dashed border-white/5 rounded-[2rem] p-12">
-            <Compass className="w-12 h-12 text-slate-600 mx-auto mb-4 animate-bounce" />
-            <EditableText 
-              content={settings.tourismSettings?.emptyStateTitle || "No Tour Packages Active Yet"} 
-              slug={slug} 
-              settingsKey="tourismSettings.emptyStateTitle" 
-              className="font-bold text-lg text-white mb-2 block" 
-              as="h4" 
-            />
-            <EditableText 
-              content={settings.tourismSettings?.emptyStateDesc || "Check back soon or contact us directly to design your dream itinerary."} 
-              slug={slug} 
-              settingsKey="tourismSettings.emptyStateDesc" 
-              className="text-xs text-slate-500 block" 
-              as="p" 
-            />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProducts.map((product) => {
-              // Extract specs or setup defaults
-              const duration = product.specs?.find((s: any) => s.label.toLowerCase() === 'duration')?.value;
-              const groupSize = product.specs?.find((s: any) => s.label.toLowerCase() === 'group size')?.value;
-              const location = product.specs?.find((s: any) => s.label.toLowerCase() === 'location')?.value;
-              const image = product.images?.[0]?.url || product.images?.[0] || "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80";
-
-              return (
-                <div 
-                  key={product.id}
-                  className="bg-slate-900/30 border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-cyan-500/30 hover:scale-[1.01] transition-all duration-300 group flex flex-col justify-between"
-                >
-                  {/* Tour Image */}
-                  <div className="aspect-[4/3] relative overflow-hidden bg-slate-950">
-                    <img 
-                      src={image} 
-                      alt={product.name} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500"
-                    />
-                    {/* Badge */}
-                    <div className="absolute top-6 left-6 bg-slate-950/80 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-xl flex items-center gap-1.5">
-                      <Clock size={12} className="text-cyan-400" />
-                      <span className="text-[10px] font-black uppercase tracking-widest text-cyan-300">
-                        {duration || <EditableText content={settings.tourismSettings?.defaultDuration || "7 Days"} slug={slug} settingsKey="tourismSettings.defaultDuration" />}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Tour Details */}
-                  <div className="p-8 flex-1 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center gap-1 text-slate-500 mb-2">
-                        <MapPin size={12} className="text-slate-600" />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">
-                          {location || <EditableText content={settings.tourismSettings?.defaultLocation || "Global Destination"} slug={slug} settingsKey="tourismSettings.defaultLocation" />}
-                        </span>
-                      </div>
-                      <h3 className="text-xl font-black text-white group-hover:text-cyan-400 transition-colors mb-4 line-clamp-1">
-                        {product.name}
-                      </h3>
-                      <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed mb-6 font-light">
-                        {product.description}
-                      </p>
-                    </div>
-
-                    <div>
-                      {/* Specs Row */}
-                      <div className="flex justify-between items-center py-4 border-t border-white/5 text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-6">
-                        <span className="flex items-center gap-1.5">
-                          <Users size={12} className="text-slate-500" /> 
-                          {groupSize || <EditableText content={settings.tourismSettings?.defaultGroupSize || "Max 12"} slug={slug} settingsKey="tourismSettings.defaultGroupSize" />}
-                        </span>
-                        <span className="text-white text-md font-black italic tracking-tighter">
-                          ${product.price.toFixed(0)} 
-                          <span className="text-[9px] font-normal text-slate-500 not-italic ml-1">
-                            <EditableText content={settings.tourismSettings?.priceSuffix || "/Person"} slug={slug} settingsKey="tourismSettings.priceSuffix" />
-                          </span>
-                        </span>
-                      </div>
-
-                      {/* Action Button */}
-                      <Link 
-                        href={`/store/${slug}/product/${product.id}`}
-                        className="w-full py-4 bg-slate-950 border border-slate-800 text-white rounded-2xl text-xs font-black uppercase tracking-widest transition-all hover:bg-cyan-500 hover:border-cyan-500 hover:text-slate-950 flex items-center justify-center gap-2 group-hover:shadow-lg group-hover:shadow-cyan-500/5"
-                      >
-                        <EditableText 
-                          content={settings.tourismSettings?.bookButtonText || "Book / Inquire"} 
-                          slug={slug} 
-                          settingsKey="tourismSettings.bookButtonText" 
-                          as="span" 
-                        /> <ArrowRight size={12} />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
       </section>
 
-      {/* Premium Footer */}
-      <footer className="bg-slate-950/80 border-t border-white/5 py-20">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
-          <div>
-            <h3 className="text-2xl font-black italic text-white mb-6 uppercase tracking-wider">{settings.storeName}</h3>
-            <EditableText 
-              content={settings.tourismSettings?.footerDesc || "Designing exclusive travel packages, high-end cruises, and unforgettable private tours across the globe."} 
-              slug={slug} 
-              settingsKey="tourismSettings.footerDesc" 
-              className="text-xs text-slate-400 leading-relaxed font-light max-w-sm mb-6 block" 
-              as="p" 
+      {/* About Us Section */}
+      <section className="py-24 bg-white/[0.01] border-y border-white/5 relative overflow-hidden" id="about">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div className="relative aspect-square md:aspect-[4/5] rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl">
+            <EditableImage 
+              src={settings.tourismSettings?.aboutImage || "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80"}
+              alt="About Us"
+              slug={slug}
+              settingsKey="tourismSettings.aboutImage"
+              className="w-full h-full object-cover"
             />
-            <div className="flex items-center gap-2 text-[10px] font-black text-cyan-400 uppercase tracking-widest">
-              <Compass size={14} className="animate-spin-slow" /> 
-              <EditableText 
-                content={settings.tourismSettings?.footerSlogan || "Discover the unexplored"} 
-                slug={slug} 
-                settingsKey="tourismSettings.footerSlogan" 
-                as="span" 
-              />
+          </div>
+          <div>
+            <EditableText 
+              content={settings.tourismSettings?.aboutTagline || "WHO WE ARE"} 
+              slug={slug} 
+              settingsKey="tourismSettings.aboutTagline" 
+              as="h4"
+              className="text-cyan-400 text-xs font-black uppercase tracking-[0.3em] mb-4 block"
+            />
+            <EditableText 
+              content={settings.tourismSettings?.aboutTitle || "Dedicated to elevating your professional journey."} 
+              slug={slug} 
+              settingsKey="tourismSettings.aboutTitle" 
+              as="h2"
+              className="text-4xl md:text-5xl font-black text-white leading-tight mb-8 block"
+            />
+            <EditableText 
+              content={settings.tourismSettings?.aboutDesc1 || "We provide top-tier consulting and resources for businesses and individuals looking to scale. Our approach is uniquely tailored to every client."} 
+              slug={slug} 
+              settingsKey="tourismSettings.aboutDesc1" 
+              as="p"
+              className="text-slate-400 text-base md:text-lg mb-6 leading-relaxed block"
+            />
+            <EditableText 
+              content={settings.tourismSettings?.aboutDesc2 || "With years of industry experience, our dedicated team ensures you have the support and strategy needed to succeed in competitive markets."} 
+              slug={slug} 
+              settingsKey="tourismSettings.aboutDesc2" 
+              as="p"
+              className="text-slate-400 text-base md:text-lg mb-10 leading-relaxed block"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Customer Reviews Section */}
+      <section className="py-24 max-w-7xl mx-auto px-6" id="reviews">
+        <div className="text-center mb-16">
+          <EditableText 
+            content={settings.tourismSettings?.reviewsTitle || "Client Success Stories"} 
+            slug={slug} 
+            settingsKey="tourismSettings.reviewsTitle" 
+            as="h2"
+            className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white mb-4 block"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Review 1 */}
+          <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-10 relative">
+            <Quote className="absolute top-8 right-8 w-12 h-12 text-white/5" />
+            <div className="flex gap-1 mb-6 text-yellow-500">
+              <Star fill="currentColor" size={16} />
+              <Star fill="currentColor" size={16} />
+              <Star fill="currentColor" size={16} />
+              <Star fill="currentColor" size={16} />
+              <Star fill="currentColor" size={16} />
+            </div>
+            <EditableText 
+              content={settings.tourismSettings?.review1Text || "This service completely transformed the way we operate. The packages are incredibly well-structured and the support is phenomenal."} 
+              slug={slug} 
+              settingsKey="tourismSettings.review1Text" 
+              as="p"
+              className="text-slate-300 italic mb-8 leading-relaxed block"
+            />
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 shrink-0">
+                 <EditableImage 
+                   src={settings.tourismSettings?.review1Avatar || "https://ui-avatars.com/api/?name=Sarah+J&background=random"}
+                   alt="Avatar"
+                   slug={slug}
+                   settingsKey="tourismSettings.review1Avatar"
+                   className="w-full h-full object-cover"
+                 />
+              </div>
+              <div>
+                <EditableText 
+                  content={settings.tourismSettings?.review1Name || "Sarah Jenkins"} 
+                  slug={slug} 
+                  settingsKey="tourismSettings.review1Name" 
+                  as="h5"
+                  className="text-white font-bold text-sm block"
+                />
+                <EditableText 
+                  content={settings.tourismSettings?.review1Role || "CEO, TechCorp"} 
+                  slug={slug} 
+                  settingsKey="tourismSettings.review1Role" 
+                  as="span"
+                  className="text-slate-500 text-xs block"
+                />
+              </div>
             </div>
           </div>
 
-          <div>
+          {/* Review 2 */}
+          <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-10 relative">
+            <Quote className="absolute top-8 right-8 w-12 h-12 text-white/5" />
+            <div className="flex gap-1 mb-6 text-yellow-500">
+              <Star fill="currentColor" size={16} />
+              <Star fill="currentColor" size={16} />
+              <Star fill="currentColor" size={16} />
+              <Star fill="currentColor" size={16} />
+              <Star fill="currentColor" size={16} />
+            </div>
             <EditableText 
-              content={settings.tourismSettings?.footerLocationTitle || "Office Location"} 
+              content={settings.tourismSettings?.review2Text || "Worth every penny. The clarity and strategic value provided in these packages gave us a clear roadmap for the entire year."} 
               slug={slug} 
-              settingsKey="tourismSettings.footerLocationTitle" 
-              className="font-bold text-xs uppercase tracking-widest text-slate-400 mb-6 block" 
-              as="h4" 
+              settingsKey="tourismSettings.review2Text" 
+              as="p"
+              className="text-slate-300 italic mb-8 leading-relaxed block"
             />
-            <EditableText 
-              content={settings.tourismSettings?.footerAddress || "104 Al Tagamoa Al Khames, Suite 4\nNew Cairo, Egypt"} 
-              slug={slug} 
-              settingsKey="tourismSettings.footerAddress" 
-              className="text-xs text-slate-500 leading-relaxed mb-4 whitespace-pre-wrap block" 
-              as="p" 
-            />
-            <EditableText 
-              content={settings.tourismSettings?.footerHours || "Open: 9 AM - 6 PM (Sun-Thu)"} 
-              slug={slug} 
-              settingsKey="tourismSettings.footerHours" 
-              className="text-xs text-cyan-400 font-bold block" 
-              as="span" 
-            />
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 shrink-0">
+                 <EditableImage 
+                   src={settings.tourismSettings?.review2Avatar || "https://ui-avatars.com/api/?name=Michael+D&background=random"}
+                   alt="Avatar"
+                   slug={slug}
+                   settingsKey="tourismSettings.review2Avatar"
+                   className="w-full h-full object-cover"
+                 />
+              </div>
+              <div>
+                <EditableText 
+                  content={settings.tourismSettings?.review2Name || "Michael Dubois"} 
+                  slug={slug} 
+                  settingsKey="tourismSettings.review2Name" 
+                  as="h5"
+                  className="text-white font-bold text-sm block"
+                />
+                <EditableText 
+                  content={settings.tourismSettings?.review2Role || "Marketing Director"} 
+                  slug={slug} 
+                  settingsKey="tourismSettings.review2Role" 
+                  as="span"
+                  className="text-slate-500 text-xs block"
+                />
+              </div>
+            </div>
           </div>
 
-          <div>
+          {/* Review 3 */}
+          <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-10 relative">
+            <Quote className="absolute top-8 right-8 w-12 h-12 text-white/5" />
+            <div className="flex gap-1 mb-6 text-yellow-500">
+              <Star fill="currentColor" size={16} />
+              <Star fill="currentColor" size={16} />
+              <Star fill="currentColor" size={16} />
+              <Star fill="currentColor" size={16} />
+              <Star fill="currentColor" size={16} />
+            </div>
             <EditableText 
-              content={settings.tourismSettings?.footerContactTitle || "Get in Touch"} 
+              content={settings.tourismSettings?.review3Text || "Highly professional. We booked a consultation package and within weeks we saw measurable results in our team's performance."} 
               slug={slug} 
-              settingsKey="tourismSettings.footerContactTitle" 
-              className="font-bold text-xs uppercase tracking-widest text-slate-400 mb-6 block" 
-              as="h4" 
+              settingsKey="tourismSettings.review3Text" 
+              as="p"
+              className="text-slate-300 italic mb-8 leading-relaxed block"
             />
-            <div className="space-y-4">
-              <a href={`tel:${settings.tourismSettings?.footerPhone || "+201000000000"}`} className="flex items-center gap-3 text-xs text-slate-400 hover:text-cyan-400 transition-colors">
-                <Phone size={14} className="text-cyan-500" /> 
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/10 shrink-0">
+                 <EditableImage 
+                   src={settings.tourismSettings?.review3Avatar || "https://ui-avatars.com/api/?name=Elena+R&background=random"}
+                   alt="Avatar"
+                   slug={slug}
+                   settingsKey="tourismSettings.review3Avatar"
+                   className="w-full h-full object-cover"
+                 />
+              </div>
+              <div>
                 <EditableText 
-                  content={settings.tourismSettings?.footerPhoneText || "+2 Egyptian Helpline"} 
+                  content={settings.tourismSettings?.review3Name || "Elena Rodriguez"} 
                   slug={slug} 
-                  settingsKey="tourismSettings.footerPhoneText" 
-                  as="span" 
+                  settingsKey="tourismSettings.review3Name" 
+                  as="h5"
+                  className="text-white font-bold text-sm block"
                 />
-              </a>
-              <a href={`mailto:${settings.tourismSettings?.footerEmail || "info@shopora.app"}`} className="flex items-center gap-3 text-xs text-slate-400 hover:text-cyan-400 transition-colors">
-                <Mail size={14} className="text-cyan-500" /> 
                 <EditableText 
-                  content={settings.tourismSettings?.footerEmailText || `bookings@${slug}.com`} 
+                  content={settings.tourismSettings?.review3Role || "Startup Founder"} 
                   slug={slug} 
-                  settingsKey="tourismSettings.footerEmailText" 
-                  as="span" 
+                  settingsKey="tourismSettings.review3Role" 
+                  as="span"
+                  className="text-slate-500 text-xs block"
                 />
-              </a>
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-        <div className="max-w-7xl mx-auto px-6 border-t border-white/5 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-500 font-bold uppercase tracking-widest">
-          <p>© {new Date().getFullYear()} {settings.storeName}. All rights reserved.</p>
-          <p>Powered by <span className="text-cyan-400">Shopora Platform</span></p>
-        </div>
+      {/* Simple Footer */}
+      <footer className="py-12 border-t border-white/10 bg-[#070913] text-center">
+        <EditableText 
+          content={settings.tourismSettings?.footerText || `© 2026 ${settings.storeName || "Company"}. All rights reserved.`} 
+          slug={slug} 
+          settingsKey="tourismSettings.footerText" 
+          as="p"
+          className="text-slate-500 text-xs uppercase tracking-widest font-bold block"
+        />
       </footer>
     </div>
   );

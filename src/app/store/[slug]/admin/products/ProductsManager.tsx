@@ -16,8 +16,10 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
   const [isEditing, setIsEditing] = useState<Product | null>(null);
   const [isAdding, setIsAdding] = useState(false);
   
+  const [assetType, setAssetType] = useState<'physical' | 'service'>('physical');
   const [sizeInput, setSizeInput] = useState("");
   const [colorInput, setColorInput] = useState("");
+  const [specInput, setSpecInput] = useState({ label: "", value: "" });
 
   const handleAddSize = (e: React.KeyboardEvent | React.MouseEvent) => {
     e.preventDefault();
@@ -59,6 +61,20 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
     setFormData({ ...formData, colors });
   };
 
+  const handleAddSpec = (e: React.KeyboardEvent | React.MouseEvent) => {
+    e.preventDefault();
+    if (!specInput.label.trim() || !specInput.value.trim()) return;
+    setFormData({ 
+      ...formData, 
+      specs: [...(formData.specs || []), { label: specInput.label.trim(), value: specInput.value.trim() }] 
+    });
+    setSpecInput({ label: "", value: "" });
+  };
+
+  const handleRemoveSpec = (index: number) => {
+    setFormData({ ...formData, specs: (formData.specs || []).filter((_: any, i: number) => i !== index) });
+  };
+
   const defaultCategoryId = categories.length > 0 ? categories[0].id : "";
 
   const [formData, setFormData] = useState<Partial<Product>>({
@@ -69,6 +85,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
     category_id: defaultCategoryId,
     sizes: ["M", "L"],
     colors: [{ name: "Black", value: "#000000", imageUrl: null }],
+    specs: [],
     images: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80"],
     stock_quantity: 10,
     status: "active"
@@ -118,6 +135,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
     setFormData(product);
     setIsEditing(product);
     setIsAdding(false);
+    setAssetType(product.specs && product.specs.length > 0 ? 'service' : 'physical');
   };
 
   const startAdd = () => {
@@ -129,12 +147,14 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
       category_id: defaultCategoryId,
       sizes: ["M", "L"],
       colors: [{ name: "Black", value: "#000000", imageUrl: null }],
+      specs: [],
       images: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80"],
       stock_quantity: 10,
       status: "active"
     });
     setIsAdding(true);
     setIsEditing(null);
+    setAssetType('physical');
   };
 
   return (
@@ -178,6 +198,11 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
 
           <form onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div className="lg:col-span-7 space-y-8">
+              <div className="flex bg-white/[0.02] border border-white/[0.05] rounded-2xl p-1 mb-6">
+                <button type="button" onClick={() => setAssetType('physical')} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${assetType === 'physical' ? 'bg-cyan-500 text-slate-950 shadow-lg' : 'text-slate-500 hover:text-white'}`}>Physical Asset</button>
+                <button type="button" onClick={() => { setAssetType('service'); setFormData({...formData, stock_quantity: 9999, sizes: [], colors: []}); }} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${assetType === 'service' ? 'bg-cyan-500 text-slate-950 shadow-lg' : 'text-slate-500 hover:text-white'}`}>Service / Package</button>
+              </div>
+
               <div className="space-y-6">
                 <div>
                   <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Asset Designation</label>
@@ -225,8 +250,9 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                 </div>
               </div>
 
-              <div className="space-y-6">
-                <div className="p-8 bg-white/[0.02] border border-white/[0.03] rounded-3xl">
+              {assetType === 'physical' ? (
+                <div className="space-y-6">
+                  <div className="p-8 bg-white/[0.02] border border-white/[0.03] rounded-3xl">
                   <div className="flex items-center justify-between mb-6">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Dimension Scale</label>
                     <div className="h-[1px] flex-1 bg-white/[0.05] mx-4"></div>
@@ -362,7 +388,49 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                     <button type="button" onClick={handleAddColor} className="px-6 py-3 bg-white text-black rounded-xl hover:bg-cyan-400 transition-all text-xs font-black uppercase tracking-widest">Inject</button>
                   </div>
                 </div>
-              </div>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <div className="p-8 bg-white/[0.02] border border-white/[0.03] rounded-3xl">
+                    <div className="flex items-center justify-between mb-6">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Package Features & Specs</label>
+                      <div className="h-[1px] flex-1 bg-white/[0.05] mx-4"></div>
+                    </div>
+                    
+                    <div className="space-y-3 mb-6">
+                      {formData.specs?.map((spec: any, index: number) => (
+                        <div key={index} className="flex items-center gap-3 bg-white/[0.02] border border-white/[0.05] px-4 py-3 rounded-xl group/spec">
+                          <span className="text-xs font-black text-cyan-400 uppercase w-1/3 truncate">{spec.label}</span>
+                          <span className="text-xs font-medium text-white flex-1 truncate">{spec.value}</span>
+                          <button type="button" onClick={() => handleRemoveSpec(index)} className="text-slate-500 hover:text-rose-500 transition-colors">
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                      {(!formData.specs || formData.specs.length === 0) && <span className="text-[10px] text-slate-600 font-bold uppercase tracking-widest italic">No features added</span>}
+                    </div>
+                    
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <input 
+                        type="text" 
+                        value={specInput.label} 
+                        onChange={e => setSpecInput({...specInput, label: e.target.value})} 
+                        className="flex-1 bg-white/[0.03] border border-white/[0.05] rounded-xl px-5 py-3 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 text-sm" 
+                        placeholder="Feature (e.g. Duration)" 
+                      />
+                      <input 
+                        type="text" 
+                        value={specInput.value} 
+                        onChange={e => setSpecInput({...specInput, value: e.target.value})} 
+                        onKeyDown={e => e.key === 'Enter' && handleAddSpec(e)}
+                        className="flex-[2] bg-white/[0.03] border border-white/[0.05] rounded-xl px-5 py-3 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 text-sm" 
+                        placeholder="Value (e.g. 1 Month)" 
+                      />
+                      <button type="button" onClick={handleAddSpec} className="px-6 py-3 bg-white text-black rounded-xl hover:bg-cyan-400 transition-all text-xs font-black uppercase tracking-widest shrink-0">Add</button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="lg:col-span-5 space-y-8">
@@ -426,17 +494,19 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
               </div>
 
               <div className="grid grid-cols-2 gap-6">
-                <div className="p-6 bg-white/[0.02] border border-white/[0.03] rounded-2xl">
-                  <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Stock Units</label>
-                  <input 
-                    required 
-                    type="number" 
-                    value={formData.stock_quantity || 0} 
-                    onChange={e => setFormData({...formData, stock_quantity: Number(e.target.value)})} 
-                    className="w-full bg-transparent text-2xl font-black text-white outline-none" 
-                  />
-                </div>
-                <div className="p-6 bg-white/[0.02] border border-white/[0.03] rounded-2xl">
+                {assetType === 'physical' && (
+                  <div className="p-6 bg-white/[0.02] border border-white/[0.03] rounded-2xl">
+                    <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Stock Units</label>
+                    <input 
+                      required 
+                      type="number" 
+                      value={formData.stock_quantity || 0} 
+                      onChange={e => setFormData({...formData, stock_quantity: Number(e.target.value)})} 
+                      className="w-full bg-transparent text-2xl font-black text-white outline-none" 
+                    />
+                  </div>
+                )}
+                <div className={`p-6 bg-white/[0.02] border border-white/[0.03] rounded-2xl ${assetType === 'service' ? 'col-span-2' : ''}`}>
                   <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Deployment Status</label>
                   <select 
                     value={formData.status || 'active'} 
