@@ -129,6 +129,7 @@ export default function SettingsManager({
     { id: "theme", label: "Colors & Style" },
     { id: "header", label: "Header & Navigation" },
     { id: "signature", label: "Elite Features" },
+    { id: "siteBuilder", label: "Site Builder" },
     { id: "layout", label: "Spatial Dividers" },
     { id: "tracking", label: "Pixels & Tracking" },
     { id: "business", label: "Economics" },
@@ -433,6 +434,94 @@ export default function SettingsManager({
                         </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {activeTab === 'siteBuilder' && (
+              <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">
+                <div className="bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/5 shadow-2xl relative">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-1.5 h-8 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                    <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">About Us Section</h2>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* About Us Image */}
+                    <div className="space-y-4 lg:col-span-2">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Section Image</label>
+                      <div className="bg-white/[0.03] border border-white/[0.05] rounded-[2rem] p-6">
+                        <MediaPicker 
+                          slug={slug}
+                          value={settings.tourismSettings?.aboutImage || ''} 
+                          onChange={url => updateSettings({
+                            ...settings, 
+                            tourismSettings: { ...(settings.tourismSettings || {}), aboutImage: url }
+                          })} 
+                          className="bg-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Tagline */}
+                    <div className="space-y-4">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Tagline (e.g., WHO WE ARE)</label>
+                      <input 
+                        type="text" 
+                        value={settings.tourismSettings?.aboutTagline || ''} 
+                        onChange={e => updateSettings({
+                          ...settings, 
+                          tourismSettings: { ...(settings.tourismSettings || {}), aboutTagline: e.target.value }
+                        })} 
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-bold text-xs" 
+                        placeholder="WHO WE ARE"
+                      />
+                    </div>
+
+                    {/* Title */}
+                    <div className="space-y-4">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Main Title</label>
+                      <input 
+                        type="text" 
+                        value={settings.tourismSettings?.aboutTitle || ''} 
+                        onChange={e => updateSettings({
+                          ...settings, 
+                          tourismSettings: { ...(settings.tourismSettings || {}), aboutTitle: e.target.value }
+                        })} 
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-bold text-xs" 
+                        placeholder="Dedicated to elevating your professional journey."
+                      />
+                    </div>
+
+                    {/* Description 1 */}
+                    <div className="space-y-4 lg:col-span-2">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Primary Description</label>
+                      <textarea 
+                        value={settings.tourismSettings?.aboutDesc1 || ''} 
+                        onChange={e => updateSettings({
+                          ...settings, 
+                          tourismSettings: { ...(settings.tourismSettings || {}), aboutDesc1: e.target.value }
+                        })} 
+                        className="w-full h-32 bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-bold text-xs resize-none" 
+                        placeholder="We provide top-tier consulting..."
+                      />
+                    </div>
+
+                    {/* Description 2 */}
+                    <div className="space-y-4 lg:col-span-2">
+                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Secondary Description</label>
+                      <textarea 
+                        value={settings.tourismSettings?.aboutDesc2 || ''} 
+                        onChange={e => updateSettings({
+                          ...settings, 
+                          tourismSettings: { ...(settings.tourismSettings || {}), aboutDesc2: e.target.value }
+                        })} 
+                        className="w-full h-32 bg-white/[0.03] border border-white/[0.05] rounded-[1.5rem] px-8 py-5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-bold text-xs resize-none" 
+                        placeholder="With years of industry experience..."
+                      />
+                    </div>
+
                   </div>
                 </div>
               </div>
