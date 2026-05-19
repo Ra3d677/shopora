@@ -428,6 +428,67 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
             return <SaleSection key={section.id} section={section} products={products} slug={slug} template="modern" />;
           }
 
+          if (section.type === 'about_us') {
+            const title = section.config?.title || settings.tourismSettings?.aboutTitle || "Dedicated to elevating your professional journey.";
+            const tagline = section.config?.tagline || settings.tourismSettings?.aboutTagline || "WHO WE ARE";
+            const desc1 = section.config?.desc1 || settings.tourismSettings?.aboutDesc1 || "We provide top-tier consulting and resources for businesses and individuals looking to scale. Our approach is uniquely tailored to every client.";
+            const desc2 = section.config?.desc2 || settings.tourismSettings?.aboutDesc2 || "With years of industry experience, our dedicated team ensures you have the support and strategy needed to succeed in competitive markets.";
+            const image = section.config?.image || settings.tourismSettings?.aboutImage || "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80";
+            const style = section.style || 'split';
+
+            let aboutContent;
+            if (style === 'centered') {
+              aboutContent = (
+                <section className="py-24 bg-transparent text-center animate-in fade-in duration-500" id="about">
+                  <div className="max-w-4xl mx-auto px-6">
+                    <span className="text-blue-600 font-bold uppercase tracking-[0.3em] text-xs mb-4 block">{tagline}</span>
+                    <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight mb-8 uppercase italic">{title}</h2>
+                    <p className="text-slate-500 text-lg mb-6 leading-relaxed">{desc1}</p>
+                    {desc2 && <p className="text-slate-500 text-lg mb-10 leading-relaxed">{desc2}</p>}
+                  </div>
+                  <div className="max-w-6xl mx-auto px-6 mt-12">
+                    <div className="relative aspect-[21/9] rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-2xl">
+                      <SmartImage src={image} alt="About Us" className="w-full h-full object-cover" />
+                    </div>
+                  </div>
+                </section>
+              );
+            } else if (style === 'minimal') {
+              aboutContent = (
+                <section className="py-24 bg-transparent animate-in fade-in duration-500" id="about">
+                  <div className="max-w-3xl mx-auto px-6 border-l-4 border-blue-600 pl-8 md:pl-12">
+                    <span className="text-blue-600 font-bold uppercase tracking-[0.3em] text-xs mb-4 block">{tagline}</span>
+                    <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-tight mb-8 uppercase italic">{title}</h2>
+                    <p className="text-slate-500 text-lg mb-6 leading-relaxed">{desc1}</p>
+                    {desc2 && <p className="text-slate-500 text-lg leading-relaxed">{desc2}</p>}
+                  </div>
+                </section>
+              );
+            } else {
+              aboutContent = (
+                <section className="py-24 bg-transparent animate-in fade-in duration-500" id="about">
+                  <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                    <div className="relative aspect-square md:aspect-[4/5] rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-2xl">
+                      <SmartImage src={image} alt="About Us" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <span className="text-blue-600 font-bold uppercase tracking-[0.3em] text-xs mb-4 block">{tagline}</span>
+                      <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight mb-8 uppercase italic">{title}</h2>
+                      <p className="text-slate-500 text-lg mb-6 leading-relaxed">{desc1}</p>
+                      <p className="text-slate-500 text-lg leading-relaxed">{desc2}</p>
+                    </div>
+                  </div>
+                </section>
+              );
+            }
+
+            return (
+              <div key={section.id} className="w-full">
+                {aboutContent}
+              </div>
+            );
+          }
+
           if (section.type === 'video') {
             return <VideoSection key={section.id} section={section} slug={slug} />;
           }

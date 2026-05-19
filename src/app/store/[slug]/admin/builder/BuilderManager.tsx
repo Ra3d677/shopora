@@ -40,6 +40,7 @@ const ECOMMERCE_SECTION_DEFINITIONS = [
   { id: 'categories', name: 'Categories', icon: Tag, defaultStyle: 'grid' },
   { id: 'featured_products', name: 'Featured Products', icon: ShoppingBag, defaultStyle: 'grid' },
   { id: 'sale', name: 'Sale Offers', icon: Tag, defaultStyle: 'grid' },
+  { id: 'about_us', name: 'About Us', icon: Info, defaultStyle: 'split' },
   { id: 'testimonials', name: 'Testimonials', icon: MessageSquare, defaultStyle: 'cards' },
   { id: 'text_block', name: 'Rich Text', icon: Type, defaultStyle: 'centered' },
   { id: 'video', name: 'Video Section', icon: Video, defaultStyle: 'default' },

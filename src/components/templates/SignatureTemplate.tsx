@@ -687,6 +687,68 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           );
         }
 
+        if (section.type === 'about_us') {
+          const title = section.config?.title || settings.tourismSettings?.aboutTitle || "Dedicated to elevating your professional journey.";
+          const tagline = section.config?.tagline || settings.tourismSettings?.aboutTagline || "WHO WE ARE";
+          const desc1 = section.config?.desc1 || settings.tourismSettings?.aboutDesc1 || "We provide top-tier consulting and resources for businesses and individuals looking to scale. Our approach is uniquely tailored to every client.";
+          const desc2 = section.config?.desc2 || settings.tourismSettings?.aboutDesc2 || "With years of industry experience, our dedicated team ensures you have the support and strategy needed to succeed in competitive markets.";
+          const image = section.config?.image || settings.tourismSettings?.aboutImage || "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80";
+          const style = section.style || 'split';
+
+          let aboutContent;
+          if (style === 'centered') {
+            aboutContent = (
+              <section className="py-32 bg-transparent text-center animate-in fade-in duration-500" id="about">
+                <div className="max-w-4xl mx-auto px-8">
+                  <span className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-6 block">{tagline}</span>
+                  <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight mb-8 italic">{title}</h2>
+                  <p className="text-slate-500 text-lg mb-6 leading-relaxed">{desc1}</p>
+                  {desc2 && <p className="text-slate-500 text-lg mb-10 leading-relaxed">{desc2}</p>}
+                </div>
+                <div className="max-w-6xl mx-auto px-8 mt-12">
+                  <div className="relative aspect-[21/9] rounded-[3rem] overflow-hidden border border-slate-100 shadow-2xl">
+                    <SmartImage src={image} alt="About Us" className="w-full h-full object-cover" />
+                  </div>
+                </div>
+              </section>
+            );
+          } else if (style === 'minimal') {
+            aboutContent = (
+              <section className="py-32 bg-transparent animate-in fade-in duration-500" id="about">
+                <div className="max-w-3xl mx-auto px-8 border-l-4 border-slate-900 pl-8 md:pl-12">
+                  <span className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-6 block">{tagline}</span>
+                  <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-tight mb-8 italic">{title}</h2>
+                  <p className="text-slate-500 text-lg mb-6 leading-relaxed">{desc1}</p>
+                  {desc2 && <p className="text-slate-500 text-lg leading-relaxed">{desc2}</p>}
+                </div>
+              </section>
+            );
+          } else {
+            aboutContent = (
+              <section className="py-32 bg-transparent animate-in fade-in duration-500" id="about">
+                <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+                  <div className="relative aspect-square md:aspect-[4/5] rounded-[3rem] overflow-hidden border border-slate-100 shadow-2xl">
+                    <SmartImage src={image} alt="About Us" className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-6 block">{tagline}</span>
+                    <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight mb-8 italic">{title}</h2>
+                    <p className="text-slate-500 text-lg mb-6 leading-relaxed">{desc1}</p>
+                    <p className="text-slate-500 text-lg leading-relaxed">{desc2}</p>
+                  </div>
+                </div>
+              </section>
+            );
+          }
+
+          return (
+            <React.Fragment key={section.id}>
+              {aboutContent}
+              {divider}
+            </React.Fragment>
+          );
+        }
+
         if (section.type === 'video') {
           return (
             <React.Fragment key={section.id}>

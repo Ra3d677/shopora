@@ -55,7 +55,7 @@ export default function TourismTemplate({
     return (
       <section key={section.id} className="py-24 max-w-7xl mx-auto px-6" id="packages">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4" style={{ color: 'var(--color-text-home, #ffffff)' }}>
             {section.config?.title || settings.tourismSettings?.packagesTitle || "Our Packages & Offers"}
           </h2>
           <EditableText 
@@ -71,11 +71,11 @@ export default function TourismTemplate({
         {style === 'list' && (
           <div className="space-y-6">
             {filteredProducts.map((product) => (
-              <div key={product.id} className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 hover:border-cyan-500/50 hover:bg-white/[0.04] transition-all flex flex-col md:flex-row justify-between items-center gap-8 shadow-2xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-[50px] -z-10 group-hover:bg-cyan-500/20 transition-all"></div>
+              <div key={product.id} className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 hover:bg-white/[0.04] transition-all flex flex-col md:flex-row justify-between items-center gap-8 shadow-2xl relative overflow-hidden group" style={{'--hover-border': 'var(--dynamic-primary, #22d3ee)'} as any}>
+                <div className="absolute top-0 right-0 w-32 h-32 blur-[50px] -z-10 transition-all" style={{ background: 'rgba(var(--dynamic-primary-rgb, 6,182,212), 0.1)' }}></div>
                 
                 <div className="flex-1 space-y-4">
-                  <h3 className="text-2xl font-black text-white group-hover:text-cyan-400 transition-colors">{product.name}</h3>
+                  <h3 className="text-2xl font-black text-white transition-colors" style={{ color: 'var(--color-text-home, #ffffff)' }}>{product.name}</h3>
                   <p className="text-slate-400 text-sm whitespace-pre-wrap leading-relaxed max-w-xl">{product.description}</p>
                   <div className="flex items-baseline gap-2">
                     <span className="text-4xl font-black text-white">${product.price}</span>
@@ -90,7 +90,7 @@ export default function TourismTemplate({
                       {product.specs && product.specs.length > 0 ? (
                         product.specs.map((spec: any, idx: number) => (
                           <li key={idx} className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 text-xs font-bold text-white">
-                            <Check size={10} className="text-cyan-400" />
+                            <Check size={10} style={{ color: 'var(--dynamic-primary, #22d3ee)' }} />
                             <span>{spec.label}: {spec.value}</span>
                           </li>
                         ))
@@ -101,7 +101,7 @@ export default function TourismTemplate({
                   </div>
                   <Link 
                     href={`/store/${slug}/product/${product.id}`}
-                    className="w-full md:w-48 py-4 bg-white border border-white/10 rounded-2xl text-black font-black text-xs uppercase tracking-widest text-center hover:bg-cyan-400 hover:border-cyan-400 hover:text-slate-900 transition-all shadow-xl block"
+                    className="w-full md:w-48 py-4 bg-white border border-white/10 rounded-2xl text-black font-black text-xs uppercase tracking-widest text-center transition-all shadow-xl block hover:opacity-90"
                   >
                     {settings.tourismSettings?.bookButtonText || "Select Package"}
                   </Link>
@@ -126,7 +126,7 @@ export default function TourismTemplate({
                     {product.specs && product.specs.length > 0 ? (
                       product.specs.map((spec: any, idx: number) => (
                         <li key={idx} className="flex items-center gap-2 text-xs text-slate-300">
-                          <Check size={12} className="text-cyan-400 shrink-0" />
+                          <Check size={12} className="shrink-0" style={{ color: 'var(--dynamic-primary, #22d3ee)' }} />
                           <span>{spec.label}</span>
                         </li>
                       ))
@@ -152,12 +152,12 @@ export default function TourismTemplate({
               <div key={product.id} className="bg-white/[0.01] border border-white/5 rounded-2xl p-6 hover:bg-white/[0.03] transition-all flex flex-col justify-between">
                 <div>
                   <h3 className="text-lg font-bold text-white mb-1 truncate">{product.name}</h3>
-                  <div className="text-2xl font-black text-cyan-400 mb-4">${product.price}</div>
+                  <div className="text-2xl font-black mb-4" style={{ color: 'var(--dynamic-primary, #22d3ee)' }}>${product.price}</div>
                   <p className="text-slate-500 text-xs line-clamp-2 mb-4">{product.description}</p>
                 </div>
                 <Link 
                   href={`/store/${slug}/product/${product.id}`}
-                  className="w-full py-2.5 bg-white border border-white/5 rounded-xl text-black font-black text-[10px] uppercase tracking-wider text-center hover:bg-cyan-400 hover:text-slate-900 transition-all block"
+                    className="w-full py-2.5 bg-white border border-white/5 rounded-xl text-black font-black text-[10px] uppercase tracking-wider text-center transition-all block hover:opacity-90"
                 >
                   {settings.tourismSettings?.bookButtonText || "Select"}
                 </Link>
@@ -175,12 +175,17 @@ export default function TourismTemplate({
                   key={product.id} 
                   className={`rounded-3xl p-8 transition-all flex flex-col justify-between relative overflow-hidden ${
                     isFeatured 
-                      ? 'bg-gradient-to-b from-cyan-950/40 to-slate-950 border-2 border-cyan-500 shadow-[0_0_50px_rgba(6,182,212,0.15)] md:scale-105 z-10' 
+                      ? 'border-2 md:scale-105 z-10' 
                       : 'bg-white/[0.02] border border-white/10 hover:border-white/20'
                   }`}
+                  style={isFeatured ? {
+                    background: `linear-gradient(to bottom, rgba(var(--dynamic-primary-rgb, 6,182,212), 0.05), #060913)`,
+                    borderColor: 'var(--dynamic-primary, #06b6d4)',
+                    boxShadow: '0 0 50px rgba(var(--dynamic-primary-rgb, 6,182,212), 0.15)'
+                  } : {}}
                 >
                   {isFeatured && (
-                    <div className="absolute top-4 right-4 bg-cyan-500 text-slate-950 text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
+                    <div className="absolute top-4 right-4 text-slate-950 text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full" style={{ background: 'var(--dynamic-primary, #06b6d4)' }}>
                       Best Seller
                     </div>
                   )}
@@ -195,7 +200,7 @@ export default function TourismTemplate({
                       {product.specs && product.specs.length > 0 ? (
                         product.specs.map((spec: any, sIdx: number) => (
                           <li key={sIdx} className="flex items-start gap-3">
-                            <div className="mt-0.5 bg-cyan-500/20 text-cyan-400 p-1 rounded-full"><Check size={12} strokeWidth={4} /></div>
+                            <div className="mt-0.5 p-1 rounded-full" style={{ background: 'rgba(var(--dynamic-primary-rgb, 6,182,212), 0.2)', color: 'var(--dynamic-primary, #22d3ee)' }}><Check size={12} strokeWidth={4} /></div>
                             <div>
                               <span className="text-sm font-bold text-white block">{spec.label}</span>
                               <span className="text-xs text-slate-400 block">{spec.value}</span>
@@ -209,11 +214,8 @@ export default function TourismTemplate({
                   </div>
                   <Link 
                     href={`/store/${slug}/product/${product.id}`}
-                    className={`w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest text-center transition-all block ${
-                      isFeatured 
-                        ? 'bg-cyan-400 text-slate-950 hover:bg-cyan-300' 
-                        : 'bg-white text-black hover:bg-cyan-400 hover:text-slate-950'
-                    }`}
+                    className={`w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest text-center transition-all block hover:opacity-90`}
+                    style={isFeatured ? { background: 'var(--dynamic-primary, #22d3ee)', color: '#0f172a' } : { background: '#ffffff', color: '#0f172a' }}
                   >
                     {settings.tourismSettings?.bookButtonText || "Select Package"}
                   </Link>
@@ -226,11 +228,11 @@ export default function TourismTemplate({
         {style === 'grid' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
-              <div key={product.id} className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 hover:border-cyan-500/50 hover:bg-white/[0.04] transition-all flex flex-col group shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-[50px] -z-10 group-hover:bg-cyan-500/20 transition-all"></div>
+              <div key={product.id} className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 hover:bg-white/[0.04] transition-all flex flex-col group shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 blur-[50px] -z-10 transition-all" style={{ background: 'rgba(var(--dynamic-primary-rgb, 6,182,212), 0.1)' }}></div>
                 
                 <div className="mb-6 border-b border-white/5 pb-6">
-                  <h3 className="text-2xl font-black text-white mb-2 group-hover:text-cyan-400 transition-colors">{product.name}</h3>
+                  <h3 className="text-2xl font-black mb-2 transition-colors" style={{ color: 'var(--color-text-home, #ffffff)' }}>{product.name}</h3>
                   <p className="text-slate-400 text-sm whitespace-pre-wrap leading-relaxed">{product.description}</p>
                 </div>
 
@@ -253,7 +255,7 @@ export default function TourismTemplate({
                     {product.specs && product.specs.length > 0 ? (
                       product.specs.map((spec: any, idx: number) => (
                         <li key={idx} className="flex items-start gap-3">
-                          <div className="mt-0.5 bg-cyan-500/20 text-cyan-400 p-1 rounded-full"><Check size={12} strokeWidth={4} /></div>
+                          <div className="mt-0.5 p-1 rounded-full" style={{ background: 'rgba(var(--dynamic-primary-rgb, 6,182,212), 0.2)', color: 'var(--dynamic-primary, #22d3ee)' }}><Check size={12} strokeWidth={4} /></div>
                           <div>
                             <span className="text-sm font-bold text-white block">{spec.label}</span>
                             <span className="text-xs text-slate-400 block">{spec.value}</span>
@@ -268,7 +270,7 @@ export default function TourismTemplate({
 
                 <Link 
                   href={`/store/${slug}/product/${product.id}`}
-                  className="w-full py-4 bg-white border border-white/10 rounded-2xl text-black font-black text-xs uppercase tracking-widest text-center hover:bg-cyan-400 hover:border-cyan-400 hover:text-slate-900 transition-all shadow-xl block"
+                  className="w-full py-4 bg-white border border-white/10 rounded-2xl text-black font-black text-xs uppercase tracking-widest text-center transition-all shadow-xl block hover:opacity-90"
                 >
                   <EditableText 
                     content={settings.tourismSettings?.bookButtonText || "Select Package"} 
@@ -309,8 +311,8 @@ export default function TourismTemplate({
       return (
         <section key={section.id} className="py-24 bg-white/[0.01] border-y border-white/5 relative overflow-hidden text-center" id="about">
           <div className="max-w-4xl mx-auto px-6">
-            <h4 className="text-cyan-400 text-xs font-black uppercase tracking-[0.3em] mb-4">{tagline}</h4>
-            <h2 className="text-4xl md:text-5xl font-black text-white leading-tight mb-8">{title}</h2>
+            <h4 className="text-xs font-black uppercase tracking-[0.3em] mb-4" style={{ color: 'var(--dynamic-primary, #22d3ee)' }}>{tagline}</h4>
+            <h2 className="text-4xl md:text-5xl font-black leading-tight mb-8" style={{ color: 'var(--color-text-home, #ffffff)' }}>{title}</h2>
             <p className="text-slate-400 text-base md:text-lg mb-6 leading-relaxed">{desc1}</p>
             {desc2 && <p className="text-slate-400 text-base md:text-lg mb-10 leading-relaxed">{desc2}</p>}
           </div>
@@ -325,10 +327,10 @@ export default function TourismTemplate({
 
     if (style === 'minimal') {
       return (
-        <section key={section.id} className="py-24 bg-[#0a0c14] relative overflow-hidden" id="about">
-          <div className="max-w-3xl mx-auto px-6 border-l-4 border-cyan-500 pl-8 md:pl-12">
-            <h4 className="text-cyan-400 text-xs font-black uppercase tracking-[0.3em] mb-4">{tagline}</h4>
-            <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-8">{title}</h2>
+        <section key={section.id} className="py-24 relative overflow-hidden" style={{ background: 'var(--color-bg-home, #0a0c14)' }} id="about">
+          <div className="max-w-3xl mx-auto px-6 pl-8 md:pl-12" style={{ borderLeft: '4px solid var(--dynamic-primary, #22d3ee)' }}>
+            <h4 className="text-xs font-black uppercase tracking-[0.3em] mb-4" style={{ color: 'var(--dynamic-primary, #22d3ee)' }}>{tagline}</h4>
+            <h2 className="text-3xl md:text-4xl font-black leading-tight mb-8" style={{ color: 'var(--color-text-home, #ffffff)' }}>{title}</h2>
             <p className="text-slate-400 text-base md:text-lg mb-6 leading-relaxed">{desc1}</p>
             {desc2 && <p className="text-slate-400 text-base md:text-lg leading-relaxed">{desc2}</p>}
           </div>
@@ -344,8 +346,8 @@ export default function TourismTemplate({
             <img src={image} alt="About Us" className="w-full h-full object-cover" />
           </div>
           <div>
-            <h4 className="text-cyan-400 text-xs font-black uppercase tracking-[0.3em] mb-4 block">{tagline}</h4>
-            <h2 className="text-4xl md:text-5xl font-black text-white leading-tight mb-8">{title}</h2>
+            <h4 className="text-xs font-black uppercase tracking-[0.3em] mb-4 block" style={{ color: 'var(--dynamic-primary, #22d3ee)' }}>{tagline}</h4>
+            <h2 className="text-4xl md:text-5xl font-black leading-tight mb-8" style={{ color: 'var(--color-text-home, #ffffff)' }}>{title}</h2>
             <p className="text-slate-400 text-base md:text-lg mb-6 leading-relaxed block">{desc1}</p>
             <p className="text-slate-400 text-base md:text-lg mb-10 leading-relaxed block">{desc2}</p>
           </div>
