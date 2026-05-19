@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LucideIcon } from "lucide-react";
+import { useLanguageStore } from "@/store/language";
 
 interface NavItem {
   label: string;
@@ -49,11 +50,15 @@ export default function SidebarNav({
   customItems?: NavItem[]
 }) {
   const pathname = usePathname();
+  const { t, language } = useLanguageStore();
+  const isRTL = language === 'ar';
 
   return (
     <>
-      <div className="mb-1 px-4">
-        <span className="text-[9px] font-black uppercase tracking-[0.2em]" style={{ color: 'var(--admin-text-muted)' }}>Main Control</span>
+      <div className={`mb-1 px-4 ${isRTL ? 'text-right' : ''}`}>
+        <span className={`text-[9px] font-black uppercase tracking-[0.2em] ${isRTL ? 'font-arabic' : ''}`} style={{ color: 'var(--admin-text-muted)' }}>
+          {t('mainControl')}
+        </span>
       </div>
 
       {items.map((item) => {
@@ -64,8 +69,10 @@ export default function SidebarNav({
           <Link
             key={item.label}
             href={fullPath}
-            className={`flex items-center gap-2.5 px-4 py-1.5 rounded-xl transition-all duration-300 group/nav border-l-2 ${
-              isActive ? 'border-cyan-500' : 'border-transparent'
+            className={`flex items-center gap-2.5 px-4 py-1.5 rounded-xl transition-all duration-300 group/nav ${
+              isRTL 
+                ? `border-r-2 ${isActive ? 'border-cyan-500' : 'border-transparent'}` 
+                : `border-l-2 ${isActive ? 'border-cyan-500' : 'border-transparent'}`
             }`}
             style={isActive
               ? { background: 'var(--admin-nav-active-bg)', color: 'var(--admin-text-primary)' }
@@ -73,16 +80,20 @@ export default function SidebarNav({
             }
           >
             <Icon className={`w-3.5 h-3.5 transition-transform duration-500 ${isActive ? item.color : 'group-hover/nav:text-cyan-400'}`} />
-            <span className="text-[9px] font-black uppercase tracking-widest">{item.label}</span>
-            {isActive && <div className="ml-auto w-1 h-1 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>}
+            <span className={`text-[9px] font-black uppercase tracking-widest ${isRTL ? 'font-arabic' : ''}`}>{item.label}</span>
+            {isActive && (
+              <div className={`${isRTL ? 'mr-auto' : 'ml-auto'} w-1 h-1 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]`}></div>
+            )}
           </Link>
         );
       })}
 
       {systemItems && systemItems.length > 0 && (
         <div className="space-y-0.5 mt-4">
-          <div className="mb-1 px-4">
-            <span className="text-[8px] font-black uppercase tracking-[0.2em]" style={{ color: 'var(--admin-text-muted)' }}>System Admin</span>
+          <div className={`mb-1 px-4 ${isRTL ? 'text-right' : ''}`}>
+            <span className={`text-[8px] font-black uppercase tracking-[0.2em] ${isRTL ? 'font-arabic' : ''}`} style={{ color: 'var(--admin-text-muted)' }}>
+              {t('systemAdmin')}
+            </span>
           </div>
           {systemItems.map((item) => {
             const fullPath = `${adminPath}${item.path}`;
@@ -92,8 +103,10 @@ export default function SidebarNav({
               <Link
                 key={item.label}
                 href={fullPath}
-                className={`flex items-center gap-2.5 px-4 py-1.5 rounded-xl transition-all duration-300 group/nav border-l-2 ${
-                  isActive ? 'border-cyan-500' : 'border-transparent'
+                className={`flex items-center gap-2.5 px-4 py-1.5 rounded-xl transition-all duration-300 group/nav ${
+                  isRTL 
+                    ? `border-r-2 ${isActive ? 'border-cyan-500' : 'border-transparent'}` 
+                    : `border-l-2 ${isActive ? 'border-cyan-500' : 'border-transparent'}`
                 }`}
                 style={isActive
                   ? { background: 'var(--admin-nav-active-bg)', color: 'var(--admin-text-primary)' }
@@ -101,8 +114,10 @@ export default function SidebarNav({
                 }
               >
                 <Icon className={`w-3.5 h-3.5 transition-transform duration-500 ${isActive ? item.color : 'group-hover/nav:text-cyan-400'}`} />
-                <span className="text-[9px] font-black uppercase tracking-widest">{item.label}</span>
-                {isActive && <div className="ml-auto w-1 h-1 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>}
+                <span className={`text-[9px] font-black uppercase tracking-widest ${isRTL ? 'font-arabic' : ''}`}>{item.label}</span>
+                {isActive && (
+                  <div className={`${isRTL ? 'mr-auto' : 'ml-auto'} w-1 h-1 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]`}></div>
+                )}
               </Link>
             );
           })}
@@ -111,8 +126,10 @@ export default function SidebarNav({
 
       {customItems && customItems.length > 0 && (
         <div className="space-y-0.5 mt-4">
-          <div className="mb-1 px-4">
-            <span className="text-[8px] font-black uppercase tracking-[0.2em]" style={{ color: 'var(--admin-text-muted)' }}>Customization</span>
+          <div className={`mb-1 px-4 ${isRTL ? 'text-right' : ''}`}>
+            <span className={`text-[8px] font-black uppercase tracking-[0.2em] ${isRTL ? 'font-arabic' : ''}`} style={{ color: 'var(--admin-text-muted)' }}>
+              {t('customization')}
+            </span>
           </div>
           {customItems.map((item) => {
             const fullPath = `${adminPath}${item.path}`;
@@ -122,8 +139,10 @@ export default function SidebarNav({
               <Link
                 key={item.label}
                 href={fullPath}
-                className={`flex items-center gap-2.5 px-4 py-1.5 rounded-xl transition-all duration-300 group/nav border-l-2 ${
-                  isActive ? 'border-cyan-500' : 'border-transparent'
+                className={`flex items-center gap-2.5 px-4 py-1.5 rounded-xl transition-all duration-300 group/nav ${
+                  isRTL 
+                    ? `border-r-2 ${isActive ? 'border-cyan-500' : 'border-transparent'}` 
+                    : `border-l-2 ${isActive ? 'border-cyan-500' : 'border-transparent'}`
                 }`}
                 style={isActive
                   ? { background: 'var(--admin-nav-active-bg)', color: 'var(--admin-text-primary)' }
@@ -131,8 +150,10 @@ export default function SidebarNav({
                 }
               >
                 <Icon className={`w-3.5 h-3.5 transition-transform duration-500 ${isActive ? item.color : 'group-hover/nav:text-cyan-400'}`} />
-                <span className="text-[9px] font-black uppercase tracking-widest">{item.label}</span>
-                {isActive && <div className="ml-auto w-1 h-1 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>}
+                <span className={`text-[9px] font-black uppercase tracking-widest ${isRTL ? 'font-arabic' : ''}`}>{item.label}</span>
+                {isActive && (
+                  <div className={`${isRTL ? 'mr-auto' : 'ml-auto'} w-1 h-1 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)]`}></div>
+                )}
               </Link>
             );
           })}

@@ -50,6 +50,9 @@ export const translations = {
     toursPackages: "Tours & Packages",
     bookingInquiries: "Booking Inquiries",
     bannersSliders: "Banners & Sliders",
+    mainControl: "Main Control",
+    systemAdmin: "System Admin",
+    customization: "Customization",
 
     // Admin settings tabs and headers
     general: "General",
@@ -128,6 +131,9 @@ export const translations = {
     toursPackages: "الرحلات والبرامج",
     bookingInquiries: "طلبات الحجز",
     bannersSliders: "البانرات والشرائح",
+    mainControl: "التحكم الرئيسي",
+    systemAdmin: "إدارة النظام",
+    customization: "التخصيص",
 
     // Admin settings tabs and headers
     general: "عام",

@@ -24,7 +24,7 @@ import SidebarNav from "./SidebarNav";
 import { AdminThemeProvider } from "./AdminThemeProvider";
 import AdminThemeToggle from "./AdminThemeToggle";
 import LanguageToggle from "@/components/ui/LanguageToggle";
-import { getTranslation } from "@/lib/i18n";
+import { getTranslation, getLang } from "@/lib/i18n";
 export default async function AdminLayout({
   children,
   params
@@ -36,6 +36,8 @@ export default async function AdminLayout({
   const session = await getSession();
   const store = await getStoreBySlug(slug);
   const t = await getTranslation();
+  const lang = await getLang();
+  const isRTL = lang === 'ar';
 
   const isSuperAdmin = session?.role === 'superadmin' || session?.email === 'ksh128395@gmail.com';
 
@@ -82,14 +84,15 @@ export default async function AdminLayout({
       >
         {/* Sidebar */}
         <aside
-          className="w-80 backdrop-blur-3xl flex flex-col fixed inset-y-0 z-40 group overflow-hidden transition-colors duration-500"
+          className={`w-80 backdrop-blur-3xl flex flex-col fixed inset-y-0 z-40 group overflow-hidden transition-colors duration-500 ${isRTL ? 'right-0' : 'left-0'}`}
           style={{
             background: 'var(--admin-sidebar-bg)',
-            borderRight: '1px solid var(--admin-border)',
+            borderRight: isRTL ? 'none' : '1px solid var(--admin-border)',
+            borderLeft: isRTL ? '1px solid var(--admin-border)' : 'none',
           }}
         >
           <div
-            className="absolute inset-y-0 right-0 w-[1px]"
+            className={`absolute inset-y-0 ${isRTL ? 'left-0' : 'right-0'} w-[1px]`}
             style={{ background: 'linear-gradient(to bottom, transparent, rgba(6,182,212,0.2), transparent)' }}
           />
           
@@ -179,7 +182,7 @@ export default async function AdminLayout({
         </aside>
 
         <main
-          className="flex-1 ml-80 flex flex-col relative overflow-hidden transition-colors duration-500"
+          className={`flex-1 ${isRTL ? 'mr-80' : 'ml-80'} flex flex-col relative overflow-hidden transition-colors duration-500`}
           style={{ backgroundColor: 'var(--admin-bg)' }}
         >
           {/* Background Decorations */}
@@ -212,17 +215,17 @@ export default async function AdminLayout({
              </div>
              
              <div className="flex items-center gap-4">
-                <div className="flex flex-col items-end">
+                <div className={`flex flex-col ${isRTL ? 'items-start' : 'items-end'}`}>
                    <p
-                     className="text-[10px] font-black uppercase tracking-widest mb-1"
+                     className={`text-[10px] font-black uppercase tracking-widest mb-1 ${isRTL ? 'font-arabic' : ''}`}
                      style={{ color: 'var(--admin-text-muted)' }}
                    >
-                     Live Endpoint
+                     {isRTL ? "النطاق المباشر" : "Live Endpoint"}
                    </p>
                    <Link
                      href={`/store/${slug}`}
                      target="_blank"
-                     className="text-xs font-black hover:text-cyan-400 transition-colors uppercase italic flex items-center gap-2"
+                     className={`text-xs font-black hover:text-cyan-400 transition-colors uppercase italic flex items-center gap-2 ${isRTL ? 'font-arabic' : ''}`}
                      style={{ color: 'var(--admin-text-primary)' }}
                    >
                       {slug}.shopora.app <ExternalLink className="w-3 h-3" />
