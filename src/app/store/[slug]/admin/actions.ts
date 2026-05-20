@@ -29,13 +29,25 @@ export async function addProduct(slug: string, productData: any) {
   const store = await prisma.store.findUnique({ where: { slug } });
   if (!store) return;
 
+  let finalImages = [];
+  if (productData.images && Array.isArray(productData.images)) {
+    for (const img of productData.images) {
+      if (img.startsWith('data:')) {
+        const uploadResult = await uploadToCloudinary(img, `shopora/${slug}/products`);
+        if (uploadResult.success) finalImages.push(uploadResult.url);
+      } else {
+        finalImages.push(img);
+      }
+    }
+  }
+
   await prisma.product.create({
     data: {
       name: productData.name,
       description: productData.description,
       price: parseFloat(productData.price),
       discount_price: productData.discount_price ? parseFloat(productData.discount_price) : null,
-      images: JSON.stringify(productData.images || []),
+      images: JSON.stringify(finalImages),
       sizes: JSON.stringify(productData.sizes || []),
       colors: JSON.stringify(productData.colors || []),
       category_id: productData.category_id,
@@ -50,13 +62,26 @@ export async function addProduct(slug: string, productData: any) {
 }
 
 export async function updateProduct(slug: string, productId: string, updates: any) {
+  let finalImages = updates.images;
+  if (updates.images && Array.isArray(updates.images)) {
+    finalImages = [];
+    for (const img of updates.images) {
+      if (img.startsWith('data:')) {
+        const uploadResult = await uploadToCloudinary(img, `shopora/${slug}/products`);
+        if (uploadResult.success) finalImages.push(uploadResult.url);
+      } else {
+        finalImages.push(img);
+      }
+    }
+  }
+
   await prisma.product.update({
     where: { id: productId },
     data: {
       ...updates,
       price: updates.price ? parseFloat(updates.price) : undefined,
       discount_price: updates.discount_price !== undefined ? (updates.discount_price ? parseFloat(updates.discount_price) : null) : undefined,
-      images: updates.images ? JSON.stringify(updates.images) : undefined,
+      images: finalImages ? JSON.stringify(finalImages) : undefined,
       sizes: updates.sizes ? JSON.stringify(updates.sizes) : undefined,
       colors: updates.colors ? JSON.stringify(updates.colors) : undefined,
     }

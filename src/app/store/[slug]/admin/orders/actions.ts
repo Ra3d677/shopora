@@ -18,10 +18,11 @@ export async function createOrder(data: {
   try {
     // 0. Preliminary Stock Check
     for (const item of data.items) {
-      const product = await prisma.product.findUnique({ where: { id: item.product.id } });
-      if (!product) throw new Error(`Product ${item.product.name} no longer exists.`);
-      
-      const colors = typeof product.colors === 'string' ? JSON.parse(product.colors || '[]') : (product.colors || []);
+      const product = await prisma.product.findUnique({ 
+        where: { id: item.product.id },
+        select: { name: true, colors: true, stock_quantity: true }
+      });
+      if (!product) throw new Error(`Product ${item.product?.name || 'Unknown'} no longer exists.`);
       const colorObj = colors.find((c: any) => (c.name === item.selectedColor || c.value === item.selectedColor));
       const currentStock = colorObj?.stock ?? product.stock_quantity;
       
@@ -55,8 +56,8 @@ export async function createOrder(data: {
         },
         userId: data.userId
       },
-      include: {
-        items: true
+      select: {
+        id: true
       }
     });
 
@@ -92,7 +93,10 @@ export async function createOrder(data: {
     // Update stock for each variant
     try {
       for (const item of data.items) {
-        const product = await prisma.product.findUnique({ where: { id: item.product.id } });
+        const product = await prisma.product.findUnique({ 
+          where: { id: item.product.id },
+          select: { id: true, colors: true }
+        });
         if (product) {
           const colors = typeof product.colors === 'string' ? JSON.parse(product.colors || '[]') : (product.colors || []);
           const updatedColors = colors.map((c: any) => {
@@ -131,8 +135,22 @@ export async function getStoreOrders(storeId: string) {
       where: { storeId },
       include: {
         items: {
-          include: {
-            product: true
+          select: {
+            id: true,
+            orderId: true,
+            productId: true,
+            quantity: true,
+            price: true,
+            size: true,
+            color: true,
+            image: true,
+            product: {
+              select: {
+                id: true,
+                name: true,
+                images: true
+              }
+            }
           }
         }
       },
@@ -183,8 +201,22 @@ export async function getStoreOrdersPaginated({
       where,
       include: {
         items: {
-          include: {
-            product: true
+          select: {
+            id: true,
+            orderId: true,
+            productId: true,
+            quantity: true,
+            price: true,
+            size: true,
+            color: true,
+            image: true,
+            product: {
+              select: {
+                id: true,
+                name: true,
+                images: true
+              }
+            }
           }
         }
       },
