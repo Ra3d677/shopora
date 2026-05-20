@@ -23,6 +23,8 @@ export async function createOrder(data: {
         select: { name: true, colors: true, stock_quantity: true }
       });
       if (!product) throw new Error(`Product ${item.product?.name || 'Unknown'} no longer exists.`);
+      
+      const colors = typeof product.colors === 'string' ? JSON.parse(product.colors || '[]') : (product.colors || []);
       const colorObj = colors.find((c: any) => (c.name === item.selectedColor || c.value === item.selectedColor));
       const currentStock = colorObj?.stock ?? product.stock_quantity;
       
