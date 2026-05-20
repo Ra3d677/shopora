@@ -86,7 +86,8 @@ export async function createOrder(data: {
           date: today,
           orders: 1,
           revenue: data.totalAmount
-        }
+        },
+        select: { id: true }
       });
     } catch (e) {
       console.error("Failed to record order metric:", e);
@@ -114,7 +115,8 @@ export async function createOrder(data: {
             data: { 
               colors: JSON.stringify(updatedColors),
               stock_quantity: { decrement: item.quantity }
-            }
+            },
+            select: { id: true }
           });
         }
       }
