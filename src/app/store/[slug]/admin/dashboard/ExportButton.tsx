@@ -211,7 +211,7 @@ export default function ExportButton(props: ExportProps) {
 
     const productsData = [["Product", "Price", "Stock", "Sales"]];
     allProducts.forEach((p) => {
-      productsData.push([p.name, p.price, p.stock_quantity, p.salesCount]);
+      productsData.push([p.name, `$${p.price.toFixed(0)}`, `${p.stock_quantity}`, `${p.salesCount}`]);
     });
     if (productsData.length > 1) {
       const ws3 = XLSX.utils.aoa_to_sheet(productsData);
@@ -220,7 +220,7 @@ export default function ExportButton(props: ExportProps) {
 
     const lowData = [["Product", "Stock"]];
     lowStockProducts.forEach((p) => {
-      lowData.push([p.name, p.stock_quantity]);
+      lowData.push([p.name, `${p.stock_quantity}`]);
     });
     if (lowData.length > 1) {
       const ws4 = XLSX.utils.aoa_to_sheet(lowData);
