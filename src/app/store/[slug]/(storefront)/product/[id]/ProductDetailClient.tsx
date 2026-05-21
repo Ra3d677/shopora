@@ -5,7 +5,7 @@ import SmartImage from "@/components/ui/SmartImage";
 import { Product } from "@/lib/types";
 import { useCartStore } from "@/store/cart";
 import { cn } from "@/lib/utils";
-import { Check, ShoppingBag, ArrowRight, Shield, RefreshCcw, Truck, Minus, Plus, Compass, Calendar, Users, Phone, Eye } from "lucide-react";
+import { Check, ShoppingBag, ArrowRight, Shield, RefreshCcw, Truck, Minus, Plus, Compass, Calendar, Users, Phone, Eye, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 import { trackViewContent, trackAddToCart } from "@/lib/tracking";
@@ -13,6 +13,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { recordCartAdd } from "@/app/actions";
 import { createOrder } from "../../../admin/orders/actions";
+import { useWishlistStore } from "@/store/wishlist";
+import ProductReviews from "@/components/store/ProductReviews";
 
 export default function ProductDetailClient({ product, store }: { product: Product, store: any }) {
   const router = useRouter();
@@ -39,6 +41,8 @@ export default function ProductDetailClient({ product, store }: { product: Produ
   const isOutOfStock = selectedColorStock <= 0;
   
   const addItem = useCartStore(state => state.addItem);
+  const { addItem: addWishlist, removeItem: removeWishlist, isWishlisted } = useWishlistStore();
+  const wishlisted = isWishlisted(product.id);
 
   // Track ViewContent on mount
   useEffect(() => {
@@ -351,7 +355,15 @@ export default function ProductDetailClient({ product, store }: { product: Produ
         ) : (
           <div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-              <h1 className="text-4xl md:text-5xl font-black tracking-tighter uppercase mb-6">{product.name}</h1>
+              <div className="flex items-center justify-between gap-4 mb-6">
+                <h1 className="text-4xl md:text-5xl font-black tracking-tighter uppercase">{product.name}</h1>
+                <button
+                  onClick={() => wishlisted ? removeWishlist(product.id) : addWishlist({ productId: product.id, storeId: product.storeId, name: product.name, price: product.price, image: product.images[0] || '', slug: store.slug })}
+                  className={`shrink-0 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all ${wishlisted ? 'bg-red-50 border-red-200 text-red-500' : 'border-slate-200 text-slate-400 hover:border-slate-900 hover:text-slate-900'}`}
+                >
+                  <Heart className={`w-5 h-5 ${wishlisted ? 'fill-current' : ''}`} />
+                </button>
+              </div>
               
               <div className="flex items-center gap-6 mb-12">
                 {product.discount_price ? (
@@ -529,6 +541,28 @@ export default function ProductDetailClient({ product, store }: { product: Produ
             <p className="text-xs font-bold uppercase tracking-widest">Easy Returns</p>
           </div>
         </motion.div>
+
+        <ProductReviews productId={product.id} storeSlug={store.slug} />
+
+        {store.products.filter((p: any) => p.id !== product.id && p.category_id === product.category_id).length > 0 && (
+          <div className="mt-16 pt-10 border-t border-slate-100">
+            <h3 className="font-black uppercase tracking-widest text-sm mb-8">You May Also Like</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {store.products
+                .filter((p: any) => p.id !== product.id && p.category_id === product.category_id)
+                .slice(0, 4)
+                .map((related: any) => (
+                  <Link key={related.id} href={`/store/${store.slug}/product/${related.id}`} className="group">
+                    <div className="aspect-square rounded-2xl overflow-hidden bg-slate-50 mb-4 border border-slate-100">
+                      <img src={related.images?.[0]} alt={related.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    </div>
+                    <h4 className="text-xs font-black tracking-tight group-hover:text-blue-600 transition-colors line-clamp-1">{related.name}</h4>
+                    <p className="text-sm font-bold mt-1">${(related.discount_price || related.price).toFixed(2)}</p>
+                  </Link>
+                ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

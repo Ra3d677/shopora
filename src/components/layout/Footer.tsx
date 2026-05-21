@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useStore } from "@/components/providers/StoreProvider";
 import EditableText from "@/components/editor/EditableText";
 
@@ -202,48 +203,54 @@ export default function Footer() {
           </h2>
         )}
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-[10px] font-black uppercase tracking-[0.4em] mb-16 border-y border-white/5 py-10">
-           <div className="space-y-6">
-              <p className="text-white mb-8">Contact Us</p>
-              {store.settings?.contactInfo?.address && <p>{store.settings.contactInfo.address}</p>}
-              {store.settings?.contactInfo?.phone && <p>{store.settings.contactInfo.phone}</p>}
-              {store.settings?.contactInfo?.email && <p>{store.settings.contactInfo.email}</p>}
-              {!store.settings?.contactInfo && (
-                <>
-                  <div>
-                    <EditableText 
-                      content={store.settings?.footerLuxuryAddress1 || "New York, 5th Ave"} 
-                      settingsKey="footerLuxuryAddress1" 
-                      slug={slug} 
-                    />
-                  </div>
-                  <div>
-                    <EditableText 
-                      content={store.settings?.footerLuxuryAddress2 || "Paris, Rue de Rivoli"} 
-                      settingsKey="footerLuxuryAddress2" 
-                      slug={slug} 
-                    />
-                  </div>
-                </>
-              )}
-           </div>
-           <div className="space-y-6">
-              <p className="text-white mb-8">Client Service</p>
-              <Link href={`/store/${slug}/shipping`} className="block hover:text-white">Shipping & Returns</Link>
-              <Link href={`/store/${slug}/account`} className="block hover:text-white">Track Order</Link>
-              <Link href={`/store/${slug}/contact`} className="block hover:text-white">Appointments</Link>
-           </div>
-           <div className="space-y-6">
-              <p className="text-white mb-8">House Matters</p>
-              <Link href={`/store/${slug}/about`} className="block hover:text-white">Sustainability</Link>
-              <Link href={`/store/${slug}/about`} className="block hover:text-white">Heritage</Link>
-              <Link href={`/store/${slug}/about`} className="block hover:text-white">Careers</Link>
-              <div className="pt-4 mt-4 border-t border-white/5 space-y-4">
-                <Link href={`/store/${slug}/terms`} className="block hover:text-white">Terms of Service</Link>
-                <Link href={`/store/${slug}/privacy`} className="block hover:text-white">Privacy Policy</Link>
-              </div>
-           </div>
-        </div>
+         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-[10px] font-black uppercase tracking-[0.4em] mb-16 border-y border-white/5 py-10">
+            <div className="space-y-6">
+               <p className="text-white mb-8">Contact Us</p>
+               {store.settings?.contactInfo?.address && <p>{store.settings.contactInfo.address}</p>}
+               {store.settings?.contactInfo?.phone && <p>{store.settings.contactInfo.phone}</p>}
+               {store.settings?.contactInfo?.email && <p>{store.settings.contactInfo.email}</p>}
+               {!store.settings?.contactInfo && (
+                 <>
+                   <div>
+                     <EditableText 
+                       content={store.settings?.footerLuxuryAddress1 || "New York, 5th Ave"} 
+                       settingsKey="footerLuxuryAddress1" 
+                       slug={slug} 
+                     />
+                   </div>
+                   <div>
+                     <EditableText 
+                       content={store.settings?.footerLuxuryAddress2 || "Paris, Rue de Rivoli"} 
+                       settingsKey="footerLuxuryAddress2" 
+                       slug={slug} 
+                     />
+                   </div>
+                 </>
+               )}
+            </div>
+            <div className="space-y-6">
+               <p className="text-white mb-8">Client Service</p>
+               <Link href={`/store/${slug}/shipping`} className="block hover:text-white">Shipping & Returns</Link>
+               <Link href={`/store/${slug}/account`} className="block hover:text-white">Track Order</Link>
+               <Link href={`/store/${slug}/contact`} className="block hover:text-white">Appointments</Link>
+               <Link href={`/store/${slug}/wishlist`} className="block hover:text-white">Wishlist</Link>
+               <Link href={`/store/${slug}/blog`} className="block hover:text-white">Blog</Link>
+            </div>
+            <div className="space-y-6">
+               <p className="text-white mb-8">House Matters</p>
+               <Link href={`/store/${slug}/about`} className="block hover:text-white">Sustainability</Link>
+               <Link href={`/store/${slug}/about`} className="block hover:text-white">Heritage</Link>
+               <Link href={`/store/${slug}/about`} className="block hover:text-white">Careers</Link>
+               <div className="pt-4 mt-4 border-t border-white/5 space-y-4">
+                 <Link href={`/store/${slug}/terms`} className="block hover:text-white">Terms of Service</Link>
+                 <Link href={`/store/${slug}/privacy`} className="block hover:text-white">Privacy Policy</Link>
+               </div>
+            </div>
+            <div className="space-y-6">
+               <p className="text-white mb-8">Newsletter</p>
+               <NewsletterForm slug={slug} />
+            </div>
+         </div>
         
         <div className="flex flex-col md:flex-row justify-between items-center gap-12 text-[9px] uppercase tracking-[0.3em]">
            <div className="flex gap-12">
@@ -264,8 +271,46 @@ export default function Footer() {
               )}
            </div>
            <span>© {new Date().getFullYear()} {store.name} — Handcrafted for Excellence</span>
-        </div>
-      </div>
-    </footer>
+         </div>
+       </div>
+     </footer>
+   );
+ }
+
+function NewsletterForm({ slug }: { slug: string }) {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    setStatus("loading");
+    try {
+      const res = await fetch(`/api/newsletter/${slug}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok) { setStatus("success"); setEmail(""); }
+      else { setStatus("error"); }
+    } catch { setStatus("error"); }
+  };
+
+  if (status === "success") {
+    return <p className="text-green-400 text-[10px] font-black uppercase tracking-widest">Thanks for subscribing!</p>;
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <p className="text-[8px] uppercase tracking-widest text-white/40">Subscribe for exclusive drops and offers.</p>
+      <input
+        type="email" required placeholder="your@email.com"
+        value={email} onChange={e => setEmail(e.target.value)}
+        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-white/40 transition-all text-xs text-white placeholder:text-white/20"
+      />
+      <button type="submit" disabled={status === "loading"} className="w-full bg-white text-black py-3 rounded-xl font-black uppercase tracking-widest text-[10px] hover:opacity-80 transition-all disabled:opacity-50">
+        {status === "loading" ? "Subscribing..." : "Subscribe"}
+      </button>
+    </form>
   );
 }

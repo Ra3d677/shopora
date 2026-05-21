@@ -47,6 +47,11 @@ model Store {
   orders       Order[]
   visits       Visit[]
   cartAdds     CartAdd[]
+  blogPosts    BlogPost[]
+  reviews      Review[]
+  wishlistItems WishlistItem[]
+  coupons      Coupon[]
+  subscribers  NewsletterSubscriber[]
 }
 
 model Template {
@@ -84,6 +89,8 @@ model Product {
   status         String      @default("active")
   stock_quantity Int         @default(0)
   orderItems     OrderItem[]
+  reviews        Review[]
+  wishlistItems  WishlistItem[]
 
   @@index([storeId])
   @@index([category_id])
@@ -191,4 +198,82 @@ model DailyMetric {
   @@unique([storeId, date])
   @@index([storeId])
   @@index([date])
+}
+
+model BlogPost {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String
+  content   String
+  excerpt   String?
+  image     String?
+  author    String   @default("Admin")
+  published Boolean  @default(false)
+  storeId   String
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([storeId, slug])
+  @@index([storeId])
+  @@index([published])
+}
+
+model Review {
+  id            String   @id @default(cuid())
+  rating        Int
+  comment       String?
+  customerName  String
+  customerEmail String?
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  storeId       String
+  store         Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+
+  @@index([productId])
+  @@index([storeId])
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  storeId   String
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@index([storeId])
+}
+
+model Coupon {
+  id            String   @id @default(cuid())
+  code          String
+  discountType  String   @default("percentage") // "percentage" or "fixed"
+  discountValue Float
+  minOrder      Float?
+  expiresAt     DateTime?
+  usageLimit    Int?
+  usedCount     Int      @default(0)
+  isActive      Boolean  @default(true)
+  storeId       String
+  store         Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+
+  @@unique([storeId, code])
+  @@index([storeId])
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String
+  storeId   String
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([storeId, email])
+  @@index([storeId])
 }

@@ -26,6 +26,10 @@ export default function CheckoutPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [couponMsg, setCouponMsg] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -35,6 +39,30 @@ export default function CheckoutPage() {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
+
+  const applyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setCouponLoading(true);
+    setCouponMsg("");
+    try {
+      const res = await fetch(`/api/store/${store.slug}/coupon`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: couponCode, subtotal: getCartTotal(store.id) }),
+      });
+      const data = await res.json();
+      if (data.valid) {
+        setDiscount(data.discount);
+        setCouponMsg(`Discount applied: -$${data.discount.toFixed(2)}`);
+      } else {
+        setDiscount(0);
+        setCouponMsg(data.error || "Invalid code");
+      }
+    } catch { setCouponMsg("Error validating coupon"); }
+    setCouponLoading(false);
+  };
+
+  const totalAfterDiscount = Math.max(0, getCartTotal(store.id) - discount);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,8 +87,8 @@ export default function CheckoutPage() {
         customerEmail: formData.email,
         customerPhone: formData.phone,
         shippingAddress: formData.address,
-        notes: formData.notes,
-        totalAmount: total_price,
+        notes: formData.notes + (discount > 0 ? `\nCoupon discount: -$${discount.toFixed(2)}` : ""),
+        totalAmount: totalAfterDiscount,
         items: validItems,
         userId: user?.id // Link to user if logged in
       });
@@ -231,7 +259,7 @@ export default function CheckoutPage() {
                   {isSubmitting ? (
                     <><Loader2 className="h-6 w-6 animate-spin" /> Processing...</>
                   ) : (
-                    <>Complete Purchase &mdash; ${(getCartTotal(store.id)).toFixed(2)} <Lock className="h-4 w-4" /></>
+                    <>Complete Purchase &mdash; ${totalAfterDiscount.toFixed(2)} <Lock className="h-4 w-4" /></>
                   )}
                 </button>
                 <div className="mt-8 flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] opacity-40">
@@ -278,13 +306,39 @@ export default function CheckoutPage() {
                   <span>Subtotal</span>
                   <span className="opacity-100">${getCartTotal(store.id).toFixed(2)}</span>
                 </div>
+
+                {/* Coupon */}
+                <div className="border-t border-white/5 pt-5">
+                  <div className="flex gap-3 mb-3">
+                    <input
+                      type="text" placeholder="Coupon Code"
+                      value={couponCode} onChange={e => setCouponCode(e.target.value.toUpperCase())}
+                      className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 outline-none focus:border-white/40 transition-all text-xs font-bold tracking-widest uppercase"
+                    />
+                    <button onClick={applyCoupon} disabled={couponLoading || !couponCode} className="px-5 py-3 bg-white text-black rounded-xl font-black uppercase tracking-widest text-[10px] hover:opacity-80 transition-all disabled:opacity-30">
+                      {couponLoading ? "..." : "Apply"}
+                    </button>
+                  </div>
+                  {couponMsg && (
+                    <p className={`text-[10px] font-bold tracking-widest ${discount > 0 ? 'text-green-500' : 'text-red-400'}`}>
+                      {couponMsg}
+                    </p>
+                  )}
+                </div>
+
                 <div className="flex justify-between text-xs font-black opacity-50 uppercase tracking-widest">
                   <span>Delivery</span>
                   <span className="text-green-500">Complimentary</span>
                 </div>
+                {discount > 0 && (
+                  <div className="flex justify-between text-xs font-black uppercase tracking-widest text-green-500">
+                    <span>Discount</span>
+                    <span>-${discount.toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="pt-6 mt-4 flex justify-between items-end border-t-2 border-white">
                   <span className="text-xs font-black uppercase tracking-[0.3em]">Total</span>
-                  <span className="text-5xl font-black tracking-tighter">${getCartTotal(store.id).toFixed(2)}</span>
+                  <span className="text-5xl font-black tracking-tighter">${totalAfterDiscount.toFixed(2)}</span>
                 </div>
               </div>
             </div>
