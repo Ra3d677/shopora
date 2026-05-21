@@ -74,7 +74,7 @@ export default async function CustomersPage({ params }: { params: Promise<{ slug
   const avgOrderValue = totalCustomers > 0 ? (totalRevenue / totalCustomers) : 0;
 
   return (
-    <div dir={isRTL ? "rtl" : "ltr"} className="min-h-screen p-8 font-sans selection:bg-cyan-500/30" style={{ color: 'var(--admin-text-primary)' }}>
+    <div dir={isRTL ? "rtl" : "ltr"} className="min-h-screen p-8 font-sans selection:bg-cyan-500/30 admin-bg admin-text">
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
         <div>

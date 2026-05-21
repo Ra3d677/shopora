@@ -88,3 +88,12 @@ body.font-arabic {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ── Admin Panel Dynamic Theme Utilities ── */
+.admin-bg { background-color: var(--admin-bg) !important; }
+.admin-card { background-color: var(--admin-card-bg-solid) !important; }
+.admin-subcard { background-color: var(--admin-card-bg-darker) !important; }
+.admin-border { border-color: var(--admin-border) !important; }
+.admin-text { color: var(--admin-text-primary) !important; }
+.admin-text-secondary { color: var(--admin-text-secondary) !important; }
+.admin-text-muted { color: var(--admin-text-muted) !important; }
