@@ -18,12 +18,12 @@ export default function DateFilter() {
   };
 
   return (
-    <div className="flex items-center gap-3 bg-[#1a1d2d] border border-white/5 rounded-2xl px-5 py-3 shadow-2xl group hover:border-cyan-500/30 transition-all print:hidden">
+    <div className="flex items-center gap-3 admin-card border admin-border rounded-xl px-4 py-2.5 shadow-2xl group hover:border-cyan-500/30 transition-all print:hidden">
       <Calendar className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
       <select 
         value={currentRange}
         onChange={handleChange}
-        className="bg-transparent text-[11px] font-black text-slate-400 uppercase tracking-widest outline-none cursor-pointer focus:text-white transition-colors"
+        className="bg-transparent text-[11px] font-black text-slate-400 uppercase tracking-widest outline-none cursor-pointer focus:text-white dark:focus:text-white transition-colors"
       >
         <option value="all_time" className="bg-[#0f111a]">All Time</option>
         <option value="today" className="bg-[#0f111a]">Today</option>

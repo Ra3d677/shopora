@@ -11,13 +11,13 @@ export default function LowStockAlerts({ products }: { products: LowStockItem[] 
   if (products.length === 0) return null;
 
   return (
-    <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-red-500/20 shadow-2xl mt-8">
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 bg-red-500/10 rounded-2xl flex items-center justify-center text-red-400">
-          <AlertTriangle className="w-5 h-5" />
+    <div className="admin-card rounded-2xl border border-red-500/20 shadow-2xl mt-6 p-6">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-8 h-8 bg-red-500/10 rounded-xl flex items-center justify-center text-red-400">
+          <AlertTriangle className="w-4 h-4" />
         </div>
         <div>
-          <h3 className="text-2xl font-black italic text-white tracking-tight">
+          <h3 className="text-lg font-black italic admin-text tracking-tight">
             Low Stock Alerts
           </h3>
           <p className="text-[10px] font-bold text-red-400 uppercase tracking-widest">
@@ -44,7 +44,7 @@ export default function LowStockAlerts({ products }: { products: LowStockItem[] 
                   <td className="py-4">
                     <div className="flex items-center gap-3">
                       <Package className="w-4 h-4 text-slate-600" />
-                      <span className="text-sm font-bold text-white">{p.name}</span>
+                      <span className="text-sm font-bold admin-text">{p.name}</span>
                     </div>
                   </td>
                   <td className="py-4 text-right">

@@ -39,11 +39,11 @@ export default function RecentActivity({
   const isRTL = language === "ar";
 
   return (
-    <div className="bg-[#1a1d2d] rounded-[2.5rem] border border-white/5 p-8">
+    <div className="admin-card rounded-2xl border admin-border p-6">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
           <Clock className="w-5 h-5 text-cyan-400" />
-          <h3 className="text-xl font-black italic text-white tracking-tight">
+           <h3 className="text-lg font-black italic admin-text tracking-tight">
             {isRTL ? "آخر النشاطات" : "Recent Activity"}
           </h3>
         </div>
@@ -78,7 +78,7 @@ export default function RecentActivity({
                     <Package size={16} className="text-cyan-400" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">
+                    <p className="text-sm font-bold admin-text group-hover:text-cyan-400 transition-colors">
                       {order.customerName}
                     </p>
                     <div className="flex items-center gap-2 mt-0.5">

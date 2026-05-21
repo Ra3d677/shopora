@@ -76,44 +76,44 @@ export default async function CustomersPage({ params }: { params: Promise<{ slug
   return (
     <div dir={isRTL ? "rtl" : "ltr"} className="min-h-screen p-8 font-sans selection:bg-cyan-500/30 admin-bg admin-text">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
         <div>
-          <h1 className="text-5xl font-black italic tracking-tighter text-white mb-2 drop-shadow-[0_0_15px_rgba(34,211,238,0.3)] uppercase">
+          <h1 className="text-3xl lg:text-4xl font-black italic tracking-tighter admin-text mb-2 uppercase">
             {t('customers')}
           </h1>
-          <p className="text-slate-500 font-medium tracking-wide">
+          <p className="admin-text-secondary font-medium tracking-wide text-[13px]">
             {totalCustomers} {isRTL ? 'عميل مسجل' : 'registered customers'} · ${totalRevenue.toFixed(0)} {isRTL ? 'إجمالي الإنفاق' : 'total spend'}
           </p>
         </div>
       </div>
 
       {/* KPI Mini Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <div className="bg-[#1a1d2d] p-6 rounded-[2rem] border border-white/5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="admin-card p-5 rounded-2xl border admin-border">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-cyan-500/10 rounded-2xl flex items-center justify-center text-cyan-400"><ShoppingBag size={18} /></div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">{isRTL ? 'إجمالي العملاء' : 'Total Customers'}</p>
+            <div className="w-9 h-9 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400"><ShoppingBag size={16} /></div>
+            <p className="text-[9px] font-black uppercase tracking-widest admin-text-muted">{isRTL ? 'إجمالي العملاء' : 'Total Customers'}</p>
           </div>
-          <h3 className="text-4xl font-black text-white">{totalCustomers}</h3>
+          <h3 className="text-3xl font-black admin-text">{totalCustomers}</h3>
         </div>
-        <div className="bg-[#1a1d2d] p-6 rounded-[2rem] border border-white/5">
+        <div className="admin-card p-5 rounded-2xl border admin-border">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400"><DollarSign size={18} /></div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">{isRTL ? 'إجمالي الإنفاق' : 'Total Spend'}</p>
+            <div className="w-9 h-9 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400"><DollarSign size={16} /></div>
+            <p className="text-[9px] font-black uppercase tracking-widest admin-text-muted">{isRTL ? 'إجمالي الإنفاق' : 'Total Spend'}</p>
           </div>
-          <h3 className="text-4xl font-black text-white">${totalRevenue.toFixed(0)}</h3>
+          <h3 className="text-3xl font-black admin-text">${totalRevenue.toFixed(0)}</h3>
         </div>
-        <div className="bg-[#1a1d2d] p-6 rounded-[2rem] border border-white/5">
+        <div className="admin-card p-5 rounded-2xl border admin-border">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-400"><TrendingUp size={18} /></div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">{isRTL ? 'متوسط الإنفاق' : 'Avg. Spend'}</p>
+            <div className="w-9 h-9 bg-amber-500/10 rounded-xl flex items-center justify-center text-amber-400"><TrendingUp size={16} /></div>
+            <p className="text-[9px] font-black uppercase tracking-widest admin-text-muted">{isRTL ? 'متوسط الإنفاق' : 'Avg. Spend'}</p>
           </div>
-          <h3 className="text-4xl font-black text-white">${avgOrderValue.toFixed(0)}</h3>
+          <h3 className="text-3xl font-black admin-text">${avgOrderValue.toFixed(0)}</h3>
         </div>
       </div>
 
       {/* Customers Table */}
-      <div className="bg-[#1a1d2d] rounded-[2.5rem] border border-white/5 overflow-hidden">
+      <div className="admin-card rounded-2xl border admin-border overflow-hidden">
         {customers.length === 0 ? (
           <div className="text-center py-20">
             <ShoppingBag size={40} className="mx-auto mb-4 opacity-20 text-slate-500" />
@@ -138,10 +138,10 @@ export default async function CustomersPage({ params }: { params: Promise<{ slug
                   <tr key={c.email} className="border-b border-white/5 hover:bg-white/[0.02] transition-all">
                     <td className="p-5">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500/20 to-blue-600/20 flex items-center justify-center text-white text-xs font-black border border-white/5">
+                        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500/20 to-blue-600/20 flex items-center justify-center admin-text text-xs font-black border border-white/5">
                           {c.name.charAt(0).toUpperCase()}
                         </div>
-                        <span className="text-sm font-bold text-white">{c.name}</span>
+                        <span className="text-sm font-bold admin-text">{c.name}</span>
                       </div>
                     </td>
                     <td className="p-5 hidden md:table-cell">
@@ -151,7 +151,7 @@ export default async function CustomersPage({ params }: { params: Promise<{ slug
                       <span className="text-xs font-medium text-slate-400">{c.phone}</span>
                     </td>
                     <td className="p-5 text-center">
-                      <span className="text-sm font-black text-white">{c.orders}</span>
+                      <span className="text-sm font-black admin-text">{c.orders}</span>
                     </td>
                     <td className="p-5 text-right">
                       <span className="text-sm font-black text-emerald-400">${c.totalSpent.toFixed(0)}</span>

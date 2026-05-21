@@ -91,7 +91,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   if (!store) {
     return (
       <div className="p-20 text-center bg-[#0a0c14] min-h-screen">
-         <h1 className="text-2xl font-black text-white uppercase italic">Sector Not Found</h1>
+         <h1 className="text-2xl font-black admin-text uppercase italic">Sector Not Found</h1>
          <p className="admin-text-muted mt-4 font-bold uppercase tracking-widest text-xs">The requested store instance does not exist in the matrix.</p>
       </div>
     );
@@ -258,7 +258,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       {/* Header Section */}
       <div className={`flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
         <div>
-           <h1 className="text-5xl font-black italic tracking-tighter text-white mb-2 drop-shadow-[0_0_15px_rgba(34,211,238,0.3)] uppercase">
+           <h1 className="text-3xl lg:text-4xl font-black italic tracking-tighter admin-text mb-2 uppercase">
              {isWebsite ? t('websiteAnalytics') : t('analyticsDashboard')}
            </h1>
            <p className="admin-text-muted font-medium tracking-wide">
@@ -301,7 +301,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                {isWebsite ? t('inquiryLeads') : t('totalRevenue')}
             </h4>
             <div className="flex items-end gap-3 mb-4">
-               <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
+               <h3 className="text-4xl font-black tracking-tighter admin-text drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
                  {isWebsite 
                    ? totalOrders 
                    : `$${totalRevenue > 1000 ? (totalRevenue/1000).toFixed(1) + 'k' : totalRevenue.toFixed(0)}`
@@ -319,7 +319,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                )}
             </div>
             <p className="text-[10px] font-bold admin-text-muted uppercase tracking-widest">
-              {isWebsite ? `${t('responseRate')}:` : `${t('vsLastMonth')}:`} <span className="text-white">{isWebsite ? "100%" : `$${prevRevenue.toFixed(0)}`}</span>
+              {isWebsite ? `${t('responseRate')}:` : `${t('vsLastMonth')}:`}               <span className="admin-text">{isWebsite ? "100%" : `$${prevRevenue.toFixed(0)}`}</span>
             </p>
          </div>
 
@@ -331,7 +331,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                {isWebsite ? t('pageVisits') : t('totalOrders')}
             </h4>
             <div className="flex items-end gap-3 mb-4">
-               <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
+               <h3 className="text-4xl font-black tracking-tighter admin-text drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
                  {isWebsite ? totalVisits : totalOrders}
                </h3>
                <div className="flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 bg-pink-500/10 text-pink-400">
@@ -339,7 +339,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                </div>
             </div>
             <p className="text-[10px] font-bold admin-text-muted uppercase tracking-widest">
-              {isWebsite ? `${t('trafficSource')}:` : `${t('avgValue')}:`} <span className="text-white">{isWebsite ? (isRTL ? 'مباشر / طبيعي' : 'Organic Direct') : `$${averageOrderValue.toFixed(0)}`}</span>
+              {isWebsite ? `${t('trafficSource')}:` : `${t('avgValue')}:`}               <span className="admin-text">{isWebsite ? (isRTL ? 'مباشر / طبيعي' : 'Organic Direct') : `$${averageOrderValue.toFixed(0)}`}</span>
             </p>
          </div>
 
@@ -351,7 +351,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                {isWebsite ? t('activePackages') : t('inStock')}
             </h4>
             <div className="flex items-end gap-3 mb-4">
-               <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
+               <h3 className="text-4xl font-black tracking-tighter admin-text drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
                  {isWebsite ? store.products.length : inStockProducts}
                </h3>
                <div className="flex items-center text-[10px] font-black px-2 py-0.5 rounded-full mb-1 bg-amber-500/10 text-amber-400">
@@ -359,7 +359,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                </div>
             </div>
             <p className="text-[10px] font-bold admin-text-muted uppercase tracking-widest">
-              {isWebsite ? `${t('tourismTemplate')}:` : `${t('activeProducts')}:`} <span className="text-white">{isWebsite ? (isRTL ? 'نشط' : 'Active') : store.products.length}</span>
+              {isWebsite ? `${t('tourismTemplate')}:` : `${t('activeProducts')}:`} <span className="admin-text">{isWebsite ? (isRTL ? 'نشط' : 'Active') : store.products.length}</span>
             </p>
          </div>
       </div>
@@ -368,7 +368,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       <div className="mb-8 admin-card p-8 rounded-[2.5rem] border admin-border">
         <div className="flex items-center gap-3 mb-8">
           <BarChart3 className="w-5 h-5 text-cyan-400" />
-          <h3 className="text-xl font-black italic text-white tracking-tight">
+          <h3 className="text-lg font-black italic admin-text tracking-tight">
             {isRTL ? "اتجاه الإيرادات الشهري" : "Monthly Revenue Trend"}
           </h3>
         </div>
@@ -382,9 +382,9 @@ export default async function AdminDashboard({ params, searchParams }: { params:
           {/* Left Column: Funnel + Recent Activity */}
           <div className="lg:col-span-1 space-y-8">
              {/* Sales / Leads Funnel */}
-             <div className="admin-card p-10 rounded-[2.5rem] border admin-border shadow-2xl">
-               <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">
-                 {isWebsite ? t('leadsFunnel') : t('salesFunnel')}
+              <div className="admin-card p-6 rounded-2xl border admin-border shadow-2xl">
+                <h3 className="text-lg font-black italic admin-text mb-6 tracking-tight">
+                  {isWebsite ? t('leadsFunnel') : t('salesFunnel')}
                </h3>
                <div className="space-y-6">
                   {/* Step 1: Add to Cart / Visits */}
@@ -397,7 +397,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                            <p className="text-[10px] font-black uppercase tracking-widest admin-text-muted">
                              {isWebsite ? t('websiteVisits') : t('addToCartLabel')}
                            </p>
-                           <h4 className="text-2xl font-black text-white">{isWebsite ? totalVisits : totalCartAdds}</h4>
+                            <h4 className="text-xl font-black admin-text">{isWebsite ? totalVisits : totalCartAdds}</h4>
                         </div>
                      </div>
                   </div>
@@ -411,7 +411,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                            <p className="text-[10px] font-black uppercase tracking-widest admin-text-muted">
                              {isWebsite ? t('packageClicks') : t('checkoutLabel')}
                            </p>
-                           <h4 className="text-2xl font-black text-white">{isWebsite ? totalCartAdds : "---"}</h4>
+                            <h4 className="text-xl font-black admin-text">{isWebsite ? totalCartAdds : "---"}</h4>
                         </div>
                      </div>
                   </div>
@@ -425,7 +425,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                            <p className="text-[10px] font-black uppercase tracking-widest admin-text-muted">
                              {isWebsite ? t('inquiriesSubmitted') : t('purchasedLabel')}
                            </p>
-                           <h4 className="text-2xl font-black text-white">{totalOrders}</h4>
+                            <h4 className="text-xl font-black admin-text">{totalOrders}</h4>
                         </div>
                      </div>
                      <span className="text-[10px] font-black text-green-400 shadow-green-400/50 drop-shadow-md">{t('goalLabel')}</span>
@@ -448,10 +448,10 @@ export default async function AdminDashboard({ params, searchParams }: { params:
           {/* Right Column: Top Products and Heatmap */}
          <div className="lg:col-span-2 space-y-8">
             {/* Best Sellers / Popular Packages Ranked List */}
-            <div className="admin-card p-10 rounded-[2.5rem] border admin-border">
-               <div className="flex justify-between items-center mb-10">
-                  <h3 className="text-2xl font-black italic text-white tracking-tight">
-                    {isWebsite ? t('popularPackages') : t('bestSellers')}
+             <div className="admin-card p-6 rounded-2xl border admin-border">
+                <div className="flex justify-between items-center mb-6">
+                   <h3 className="text-lg font-black italic admin-text tracking-tight">
+                     {isWebsite ? t('popularPackages') : t('bestSellers')}
                   </h3>
                   <div className="w-10 h-10 bg-cyan-500/10 rounded-full flex items-center justify-center text-cyan-400">🏆</div>
                </div>
@@ -464,16 +464,16 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                               {p.image && <img src={p.image} className="w-full h-full object-cover" alt={p.name} />}
                            </div>
                            <div>
-                              <h4 className="text-lg font-black text-white group-hover:text-cyan-400 transition-colors line-clamp-1">{p.name}</h4>
+                               <h4 className="text-base font-black admin-text group-hover:text-cyan-400 transition-colors line-clamp-1">{p.name}</h4>
                               <p className="text-[10px] font-black admin-text-muted uppercase tracking-widest">
                                 {p.salesCount} {isWebsite ? t('inquiriesReceived') : t('unitsSold')}
                               </p>
                            </div>
                         </div>
                         <div className="text-right">
-                           <h5 className="text-xl font-black text-white">
-                             {isWebsite ? (isRTL ? 'مباشر' : 'Live') : `$${(p.salesCount * p.price).toFixed(0)}`}
-                           </h5>
+                            <h5 className="text-base font-black admin-text">
+                              {isWebsite ? (isRTL ? 'مباشر' : 'Live') : `$${(p.salesCount * p.price).toFixed(0)}`}
+                            </h5>
                         </div>
                      </div>
                   ))}
@@ -481,8 +481,8 @@ export default async function AdminDashboard({ params, searchParams }: { params:
             </div>
 
             {/* Activity Heatmap */}
-            <div className="admin-card p-10 rounded-[2.5rem] border admin-border overflow-x-auto">
-               <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">
+            <div className="admin-card p-6 rounded-2xl border admin-border overflow-x-auto">
+               <h3 className="text-lg font-black italic admin-text mb-6 tracking-tight">
                  {isWebsite ? t('inquiryActivity') : t('activityHeatmap')}
                </h3>
                <div className="min-w-[700px]">

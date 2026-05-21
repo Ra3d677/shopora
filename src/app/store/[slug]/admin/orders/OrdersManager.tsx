@@ -130,7 +130,7 @@ export default function OrdersManager({
       </div>
 
       {/* Search & Server-side Filters */}
-      <div className={`flex flex-col sm:flex-row gap-4 bg-[#1a1d2d]/60 backdrop-blur-3xl p-5 rounded-[2rem] border border-white/5 shadow-2xl ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <div className={`flex flex-col sm:flex-row gap-4 admin-card backdrop-blur-3xl p-5 rounded-2xl border admin-border shadow-2xl ${isRTL ? 'flex-row-reverse' : ''}`}>
         <div className="relative flex-1 group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors" />
           <input
@@ -169,7 +169,7 @@ export default function OrdersManager({
           </div>
           
           {orders.length === 0 ? (
-            <div className="bg-[#1a1d2d]/50 backdrop-blur-3xl rounded-[2.5rem] p-20 border border-white/5 text-center space-y-6">
+            <div className="admin-card backdrop-blur-3xl rounded-2xl p-16 border admin-border text-center space-y-6">
                <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto border border-white/5 shadow-2xl">
                   <ShoppingBag className="w-10 h-10 text-slate-700" />
                </div>
@@ -180,10 +180,10 @@ export default function OrdersManager({
               <div 
                 key={order.id} 
                 onClick={() => setSelectedOrder(order)}
-                className={`group relative bg-[#1a1d2d]/60 backdrop-blur-3xl rounded-[2rem] border transition-all duration-500 cursor-pointer overflow-hidden ${
-                  selectedOrder?.id === order.id 
-                    ? 'border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.15)] ring-1 ring-cyan-500/30' 
-                    : 'border-white/5 hover:border-white/10 hover:bg-[#1a1d2d]/80'
+                className={`group relative admin-subcard backdrop-blur-3xl rounded-2xl border transition-all duration-500 cursor-pointer overflow-hidden ${
+                  selectedOrder?.id === order.id
+                    ? 'border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.15)]'
+                    : 'border admin-border hover:border-white/10'
                 }`}
               >
                 <div className="p-8">
@@ -263,7 +263,7 @@ export default function OrdersManager({
 
         {/* Order Details Panel */}
         <div className="lg:col-span-5">
-          <div className="sticky top-8 bg-[#1a1d2d]/80 backdrop-blur-3xl rounded-[2.5rem] border border-white/5 shadow-[0_30px_60px_rgba(0,0,0,0.4)] overflow-hidden flex flex-col min-h-[700px]">
+          <div className="sticky top-8 admin-card backdrop-blur-3xl rounded-2xl border admin-border shadow-[0_30px_60px_rgba(0,0,0,0.4)] overflow-hidden flex flex-col min-h-[700px]">
             {!selectedOrder ? (
               <div className="flex-1 flex flex-col items-center justify-center p-16 text-center text-slate-600">
                 <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-8 border border-white/5 shadow-inner">

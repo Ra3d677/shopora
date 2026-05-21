@@ -297,7 +297,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                     {formData.colors?.map((colorObj: any, index: number) => {
                       const color = typeof colorObj === 'string' ? { name: colorObj, value: colorObj, imageUrl: null } : colorObj;
                       return (
-                        <div key={index} className="bg-[#1a1d2d]/60 border border-white/[0.05] rounded-2xl p-4 hover:border-cyan-500/30 transition-all duration-300 w-full max-w-[500px]">
+                         <div key={index} className="admin-subcard border admin-border rounded-2xl p-4 hover:border-cyan-500/30 transition-all duration-300 w-full max-w-[500px]">
                           <div className="flex items-center gap-4">
                             {/* Identity (Color + Image) */}
                             <div className="flex items-center gap-2 shrink-0">
