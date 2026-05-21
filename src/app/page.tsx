@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ShieldCheck, ArrowRight, Zap, Sparkles, Check } from "lucide-react";
-import { getLang } from "@/lib/i18n";
+import { getMarketingLang } from "@/lib/i18n";
 import ShoporaHeader from "@/components/layout/ShoporaHeader";
 
 export const dynamic = 'force-dynamic';
@@ -81,7 +81,7 @@ const homeT = {
 };
 
 export default async function IndexPage() {
-  const lang = await getLang();
+  const lang = await getMarketingLang();
   const currentT = homeT[lang];
 
   const plans = [

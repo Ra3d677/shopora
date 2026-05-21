@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Globe, Menu, X, ArrowRight, ShieldCheck, Zap } from "lucide-react";
-import { setLanguageCookie } from "@/app/actions";
+import { setMarketingLanguageCookie } from "@/app/actions";
 
 interface ShoporaHeaderProps {
   lang: "en" | "ar";
@@ -38,8 +38,8 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
   }, []);
 
   const handleLanguageChange = async (newLang: "en" | "ar") => {
-    document.cookie = `NEXT_LOCALE=${newLang}; path=/; max-age=31536000; SameSite=Lax`;
-    await setLanguageCookie(newLang);
+    document.cookie = `SHOPORA_MARKETING_LOCALE=${newLang}; path=/; max-age=31536000; SameSite=Lax`;
+    await setMarketingLanguageCookie(newLang);
     setIsOpen(false);
     setMobileMenuOpen(false);
     window.location.reload();

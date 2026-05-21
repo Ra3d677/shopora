@@ -7,6 +7,12 @@ export async function getLang() {
   return lang as 'en' | 'ar';
 }
 
+export async function getMarketingLang() {
+  const cookieStore = await cookies();
+  const lang = cookieStore.get('SHOPORA_MARKETING_LOCALE')?.value || 'en';
+  return lang as 'en' | 'ar';
+}
+
 export async function getTranslation() {
   const lang = await getLang();
   return (key: TranslationKey) => {

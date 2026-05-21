@@ -12,6 +12,12 @@ export async function setLanguageCookie(lang: 'en' | 'ar') {
   revalidatePath("/", "layout");
 }
 
+export async function setMarketingLanguageCookie(lang: 'en' | 'ar') {
+  const cookieStore = await cookies();
+  cookieStore.set('SHOPORA_MARKETING_LOCALE', lang, { path: '/' });
+  revalidatePath("/", "layout");
+}
+
 export async function createStoreAction(data: { name: string; slug: string; template: string; type: string }) {
   const user = await getSession();
   

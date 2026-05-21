@@ -3,7 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 // Vercel Deployment Trigger: Reverting to stable state 2026-05-05 20:53
 import { Cairo } from "next/font/google";
-import { getLang } from "@/lib/i18n";
+import { getLang, getMarketingLang } from "@/lib/i18n";
+import { headers } from "next/headers";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -30,7 +31,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const lang = await getLang();
+  const headersList = await headers();
+  const pathname = headersList.get('x-pathname') || '/';
+  const isMarketing = pathname === '/' || pathname === '/pricing' || pathname.startsWith('/pricing/');
+  const lang = isMarketing ? await getMarketingLang() : await getLang();
 
   return (
     <html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
@@ -42,10 +46,13 @@ export default async function RootLayout({
                 try {
                   var cookies = document.cookie.split(';');
                   var lang = 'en';
+                  var pathname = window.location.pathname;
+                  var isMarketing = pathname === '/' || pathname === '/pricing' || pathname.indexOf('/pricing/') === 0;
+                  var cookieName = isMarketing ? 'SHOPORA_MARKETING_LOCALE' : 'NEXT_LOCALE';
                   for (var i = 0; i < cookies.length; i++) {
                     var c = cookies[i].trim();
-                    if (c.indexOf('NEXT_LOCALE=') === 0) {
-                      lang = c.substring('NEXT_LOCALE='.length);
+                    if (c.indexOf(cookieName + '=') === 0) {
+                      lang = c.substring((cookieName + '=').length);
                       break;
                     }
                   }
