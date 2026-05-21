@@ -41,7 +41,7 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
     await setLanguageCookie(newLang);
     setIsOpen(false);
     setMobileMenuOpen(false);
-    router.refresh();
+    window.location.reload();
   };
 
   // Translations object helper
