@@ -84,14 +84,14 @@ export async function registerUser(formData: FormData) {
       data: { verificationOtp: otp, verificationOtpExpiry: expiry }
     });
 
-    sendVerificationOtp(user.email, user.name || "User", otp);
-    sendWelcomeEmail(user.email, user.name || "User");
+    try { await sendVerificationOtp(user.email, user.name || "User", otp); } catch (e) { console.error("[Email] Failed send OTP:", e); }
+    try { await sendWelcomeEmail(user.email, user.name || "User"); } catch (e) { console.error("[Email] Failed send welcome:", e); }
   } catch (error: any) {
     console.error("Registration Error:", error);
     return { error: "Database connection error. Please check your Vercel Environment Variables for DATABASE_URL." };
   }
 
-  redirect("/auth/verify");
+  redirect(`/auth/verify?email=${encodeURIComponent(email)}`);
 }
 
 export async function logoutUser() {
@@ -143,7 +143,7 @@ export async function resendOtp(email: string) {
       data: { verificationOtp: otp, verificationOtpExpiry: expiry }
     });
 
-    sendVerificationOtp(user.email, user.name || "User", otp);
+    try { await sendVerificationOtp(user.email, user.name || "User", otp); } catch (e) { console.error("[Email] Failed send OTP:", e); }
     return { success: true, message: "New code sent!" };
   } catch (e: any) {
     console.error("Resend OTP Error:", e);
@@ -166,7 +166,7 @@ export async function forgotPassword(email: string) {
       data: { resetToken: token, resetTokenExpiry: expiry }
     });
 
-    sendPasswordReset(user.email, user.name || "User", token);
+    try { await sendPasswordReset(user.email, user.name || "User", token); } catch (e) { console.error("[Email] Failed send password reset:", e); }
     return { success: true, message: "If that email exists, a reset link has been sent." };
   } catch (e: any) {
     console.error("Forgot Password Error:", e);

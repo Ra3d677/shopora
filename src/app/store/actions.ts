@@ -84,10 +84,10 @@ export async function registerCustomer(slug: string, formData: FormData) {
     data: { verificationOtp: otp, verificationOtpExpiry: expiry }
   });
 
-  sendVerificationOtp(user.email, user.name || "Customer", otp);
-  sendWelcomeEmail(user.email, user.name || "Customer");
+  try { await sendVerificationOtp(user.email, user.name || "Customer", otp); } catch (e) { console.error("[Email] Failed send OTP:", e); }
+  try { await sendWelcomeEmail(user.email, user.name || "Customer"); } catch (e) { console.error("[Email] Failed send welcome:", e); }
 
-  redirect(`/store/${slug}/verify`);
+  redirect(`/store/${slug}/verify?email=${encodeURIComponent(email)}`);
 }
 
 export async function verifyCustomerOtp(slug: string, email: string, otp: string) {
