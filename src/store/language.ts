@@ -223,6 +223,15 @@ export const translations = {
     inquiryActivity: "Inquiry Activity",
     activityHeatmap: "Activity Heatmap",
 
+    // Dashboard extras
+    organicDirect: "Organic Direct",
+    active: "Active",
+    monthlyRevenueTrend: "Monthly Revenue Trend",
+    live: "Live",
+    daysOfWeek: "Sun,Mon,Tue,Wed,Thu,Fri,Sat",
+    at: "at",
+    on: "on",
+
     // Products / Assets
     inventoryVault: "Inventory Vault",
     controlProductPrecision: "Control your product ecosystem with precision.",
@@ -574,6 +583,15 @@ export const translations = {
     unitsSold: "الوحدات المباعة",
     inquiryActivity: "نشاط الاستفسارات",
     activityHeatmap: "خريطة النشاط",
+
+    // Dashboard extras
+    organicDirect: "مباشر / طبيعي",
+    active: "نشط",
+    monthlyRevenueTrend: "اتجاه الإيرادات الشهري",
+    live: "مباشر",
+    daysOfWeek: "الأحد,الإثنين,الثلاثاء,الأربعاء,الخميس,الجمعة,السبت",
+    at: "عند",
+    on: "في يوم",
 
     // Products / Assets
     inventoryVault: "المخزون",
