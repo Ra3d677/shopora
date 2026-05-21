@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Store, ShieldCheck, ArrowRight, Zap, Sparkles } from "lucide-react";
+import { ShieldCheck, ArrowRight, Zap, Sparkles } from "lucide-react";
 
 export default function IndexPage() {
   return (
@@ -25,7 +25,7 @@ export default function IndexPage() {
         </div>
 
         {/* Navigation Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mt-12 animate-in slide-in-from-bottom-12 fade-in duration-1000 delay-200">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mt-12 animate-in slide-in-from-bottom-12 fade-in duration-1000 delay-200">
           
           {/* Card 1: Login */}
           <Link 
@@ -63,23 +63,6 @@ export default function IndexPage() {
             </div>
           </Link>
 
-          {/* Card 3: Demo Store */}
-          <Link 
-            href="/store/shopaora"
-            className="group relative flex flex-col items-center p-10 bg-white/[0.02] border border-white/5 rounded-[2.5rem] overflow-hidden hover:bg-white/[0.04] transition-all duration-500"
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="h-20 w-20 bg-purple-500/10 border border-purple-500/20 text-purple-400 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-[0_0_30px_rgba(168,85,247,0.15)]">
-              <Store size={36} strokeWidth={1.5} />
-            </div>
-            <h2 className="text-3xl font-black text-white mb-3 uppercase italic tracking-tight">Demo</h2>
-            <p className="text-slate-400 text-center text-sm font-medium leading-relaxed">
-              Experience the power of our premium storefront templates.
-            </p>
-            <div className="mt-8 flex items-center gap-2 text-purple-400 font-bold uppercase tracking-widest text-xs group-hover:gap-4 transition-all">
-              <span>View Store</span> <ArrowRight size={14} />
-            </div>
-          </Link>
 
         </div>
         
