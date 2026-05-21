@@ -38,6 +38,7 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
   }, []);
 
   const handleLanguageChange = async (newLang: "en" | "ar") => {
+    document.cookie = `NEXT_LOCALE=${newLang}; path=/; max-age=31536000; SameSite=Lax`;
     await setLanguageCookie(newLang);
     setIsOpen(false);
     setMobileMenuOpen(false);
