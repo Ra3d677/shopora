@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShieldCheck, ArrowRight, Zap, Sparkles, Check } from "lucide-react";
+import { ShieldCheck, ArrowRight, Zap, Sparkles, Check, Globe, BarChart3, Layout, Rocket, UserPlus, Settings, Star } from "lucide-react";
 import { getMarketingLang } from "@/lib/i18n";
 import ShoporaHeader from "@/components/layout/ShoporaHeader";
 
@@ -40,7 +40,25 @@ const homeT = {
       "Analytics dashboard",
       "Order management",
       "Media library",
-    ]
+    ],
+    featureTitle: "Everything You Need",
+    featureSubtitle: "Built for modern commerce from the ground up.",
+    features2: [
+      { title: "Multi-Tenant", desc: "Manage multiple stores from one dashboard. Fully isolated and independently scalable." },
+      { title: "Blazing Fast", desc: "Optimized for speed with edge-ready infrastructure. Your store loads in milliseconds." },
+      { title: "Premium Templates", desc: "Stunning mobile-responsive templates. Customize every detail to match your brand." },
+      { title: "Advanced Analytics", desc: "Track sales, traffic, and behavior with real-time dashboards and exportable reports." }
+    ],
+    howTitle: "How It Works",
+    howSubtitle: "Launch your store in 3 simple steps.",
+    steps: [
+      { num: "01", title: "Create Account", desc: "Sign up in seconds with your email. No credit card required." },
+      { num: "02", title: "Customize Store", desc: "Pick a template, add your products, configure your domain." },
+      { num: "03", title: "Start Selling", desc: "Go live instantly. Accept orders, manage inventory, and grow." }
+    ],
+    ctaTitle: "Ready to Launch Your Store?",
+    ctaSubtitle: "Join thousands of merchants using Shopora to power their commerce.",
+    ctaBtn: "Create Your Store Now"
   },
   ar: {
     badge: "التجارة الإلكترونية من الجيل القادم",
@@ -76,7 +94,25 @@ const homeT = {
       "لوحة تحليلات وإحصائيات",
       "إدارة كاملة للطلبات",
       "مكتبة وسائط متكاملة",
-    ]
+    ],
+    featureTitle: "كل ما تحتاجه",
+    featureSubtitle: "صُممت خصيصًا للتجارة الإلكترونية الحديثة من الألف إلى الياء.",
+    features2: [
+      { title: "متعدد المتاجر", desc: "أدر متاجر متعددة من لوحة تحكم واحدة. كل متجر مستقل قابل للتوسع بشكل منفصل." },
+      { title: "سرعة فائقة", desc: "محسّن للسرعة مع بنية تحتية جاهزة للحافة. متجرك يتحمل في أجزاء من الثانية." },
+      { title: "قوالب مميزة", desc: "قوالب مذهلة متجاوبة مع الجوال. خصص كل التفاصيل لتتناسب مع علامتك التجارية." },
+      { title: "تحليلات متقدمة", desc: "تتبع المبيعات والزيارات وسلوك العملاء بلوحات بيانات فورية وتقارير قابلة للتصدير." }
+    ],
+    howTitle: "كيف تعمل",
+    howSubtitle: "أطلق متجرك في 3 خطوات بسيطة.",
+    steps: [
+      { num: "۰۱", title: "إنشاء حساب", desc: "سجل في ثوانٍ باستخدام بريدك الإلكتروني. لا حاجة لبطاقة ائتمان." },
+      { num: "۰۲", title: "تخصيص المتجر", desc: "اختر قالباً، أضف منتجاتك، واختر نطاقك الخاص." },
+      { num: "۰۳", title: "ابدأ البيع", desc: "انطلق فوراً. استقبل الطلبات، وأدر المخزون، ونّمِ أعمالك." }
+    ],
+    ctaTitle: "مستعد لإطلاق متجرك؟",
+    ctaSubtitle: "انضم إلى آلاف التجار الذين يستخدمون شوبورا لإدارة أعمالهم.",
+    ctaBtn: "أنشئ متجرك الآن"
   }
 };
 
@@ -172,6 +208,47 @@ export default async function IndexPage() {
           </p>
         </div>
 
+        {/* ── Features ── */}
+        <div className="animate-in fade-in duration-1000 delay-200">
+          <div className="text-center mb-14 space-y-3">
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-500/60">{currentT.featureTitle}</p>
+            <h2 className="text-4xl sm:text-5xl font-black text-white uppercase italic tracking-tighter">
+              {currentT.featureSubtitle}
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { icon: Globe, color: "blue" },
+              { icon: Zap, color: "emerald" },
+              { icon: Layout, color: "cyan" },
+              { icon: BarChart3, color: "purple" },
+            ].map((feat, i) => {
+              const f = currentT.features2[i];
+              const colors = [
+                { bg: "bg-blue-500/10", text: "text-blue-400", border: "border-blue-500/20" },
+                { bg: "bg-emerald-500/10", text: "text-emerald-400", border: "border-emerald-500/20" },
+                { bg: "bg-cyan-500/10", text: "text-cyan-400", border: "border-cyan-500/20" },
+                { bg: "bg-purple-500/10", text: "text-purple-400", border: "border-purple-500/20" },
+              ];
+              const c = colors[i];
+              const Icon = feat.icon;
+              return (
+                <div
+                  key={f.title}
+                  className="group relative flex flex-col p-7 rounded-[2rem] border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/10 transition-all duration-500"
+                >
+                  <div className={`w-12 h-12 ${c.bg} ${c.border} border rounded-2xl flex items-center justify-center ${c.text} mb-6 group-hover:scale-110 transition-all duration-500`}>
+                    <Icon size={24} strokeWidth={1.5} />
+                  </div>
+                  <h3 className={`text-lg font-black text-white uppercase italic mb-2`}>{f.title}</h3>
+                  <p className="text-slate-400 text-sm font-medium leading-relaxed">{f.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
         {/* ── Nav Cards ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in slide-in-from-bottom-12 fade-in duration-1000 delay-200">
           <Link
@@ -207,6 +284,36 @@ export default async function IndexPage() {
               <span>{currentT.startCardCta}</span><ArrowRight size={14} className={lang === 'ar' ? 'rotate-180' : ''} />
             </div>
           </Link>
+        </div>
+
+        {/* ── How It Works ── */}
+        <div className="animate-in fade-in duration-1000 delay-200">
+          <div className="text-center mb-14 space-y-3">
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-500/60">{currentT.howTitle}</p>
+            <h2 className="text-4xl sm:text-5xl font-black text-white uppercase italic tracking-tighter">
+              {currentT.howSubtitle}
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {currentT.steps.map((step, i) => (
+              <div
+                key={step.num}
+                className="relative flex flex-col items-center text-center p-8 rounded-[2rem] border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500"
+              >
+                <div className="w-16 h-16 rounded-full bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mb-6">
+                  <span className="text-2xl font-black text-cyan-400">{step.num}</span>
+                </div>
+                <h3 className="text-xl font-black text-white uppercase italic mb-2">{step.title}</h3>
+                <p className="text-slate-400 text-sm font-medium leading-relaxed">{step.desc}</p>
+                {i < currentT.steps.length - 1 && (
+                  <div className="hidden md:block absolute top-1/2 -right-4 text-cyan-400/30">
+                    <ArrowRight size={24} className={lang === 'ar' ? 'rotate-180' : ''} />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* ── Pricing ── */}
@@ -284,6 +391,29 @@ export default async function IndexPage() {
             >
               <span>{currentT.viewAllPlans}</span>
               <ArrowRight size={14} className={lang === 'ar' ? 'rotate-180' : ''} />
+            </Link>
+          </div>
+        </div>
+
+        {/* ── CTA ── */}
+        <div className="relative text-center animate-in fade-in duration-1000 delay-200 p-14 rounded-[2.5rem] bg-gradient-to-br from-cyan-600/10 via-blue-700/10 to-purple-600/10 border border-white/5 overflow-hidden">
+          <div className="absolute top-[-30%] left-[-20%] w-[60%] h-[60%] bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-[-30%] right-[-20%] w-[60%] h-[60%] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none" />
+          <div className="relative z-10 space-y-4">
+            <Star className="w-10 h-10 text-cyan-400 mx-auto" strokeWidth={1.5} />
+            <h2 className="text-4xl sm:text-5xl font-black text-white uppercase italic tracking-tighter">
+              {currentT.ctaTitle}
+            </h2>
+            <p className="text-cyan-300/60 text-base font-medium max-w-lg mx-auto">
+              {currentT.ctaSubtitle}
+            </p>
+            <Link
+              href="/auth/register"
+              className="inline-flex items-center gap-3 mt-6 px-10 py-5 rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-700 text-white font-black text-lg hover:from-cyan-700 hover:to-blue-800 transition-all shadow-xl shadow-cyan-600/20 active:scale-[0.98]"
+            >
+              <Rocket size={22} />
+              <span>{currentT.ctaBtn}</span>
+              <ArrowRight size={20} className={lang === 'ar' ? 'rotate-180' : ''} />
             </Link>
           </div>
         </div>
