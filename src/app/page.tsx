@@ -160,11 +160,11 @@ export default async function IndexPage() {
 
         {/* ── Hero ── */}
         <div className="text-center space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-1000">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-slate-300 text-xs font-bold uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-widest shadow-[0_0_30px_rgba(6,182,212,0.15)]">
             <Sparkles className="w-4 h-4 text-cyan-400" />
             <span>{currentT.badge}</span>
           </div>
-          <h1 className="text-6xl sm:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-500 uppercase italic">
+          <h1 className="text-6xl sm:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-blue-400 uppercase italic">
             {currentT.title}
           </h1>
           <p className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
@@ -212,11 +212,11 @@ export default async function IndexPage() {
         {/* ── Pricing ── */}
         <div className="animate-in fade-in duration-1000 delay-300">
           <div className="text-center mb-14 space-y-3">
-            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-600">{currentT.pricingBadge}</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-500/60">{currentT.pricingBadge}</p>
             <h2 className="text-4xl sm:text-5xl font-black text-white uppercase italic tracking-tighter">
               {currentT.pricingTitle}
             </h2>
-            <p className="text-slate-400 text-base font-medium max-w-lg mx-auto">
+            <p className="text-cyan-300/60 text-base font-medium max-w-lg mx-auto">
               {currentT.pricingSubtitle}
             </p>
           </div>
@@ -225,7 +225,7 @@ export default async function IndexPage() {
             {plans.map((plan) => (
               <div
                 key={plan.name}
-                className={`relative flex flex-col p-7 rounded-[2rem] border transition-all duration-500 hover:scale-[1.02] bg-white/[0.02] hover:bg-white/[0.04] ${plan.border} ${plan.popular ? "shadow-[0_0_50px_rgba(6,182,212,0.12)] border-cyan-400/40" : "border-white/5"}`}
+                className={`relative flex flex-col p-7 rounded-[2rem] border transition-all duration-500 hover:scale-[1.02] bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/10 ${plan.border} ${plan.popular ? "shadow-[0_0_60px_rgba(6,182,212,0.2)] border-cyan-400/50" : "border-white/5"}`}
               >
                 {/* Badge */}
                 {plan.badge && (
