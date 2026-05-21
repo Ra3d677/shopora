@@ -15,6 +15,7 @@ export async function setLanguageCookie(lang: 'en' | 'ar') {
 export async function setMarketingLanguageCookie(lang: 'en' | 'ar') {
   const cookieStore = await cookies();
   cookieStore.set('SHOPORA_MARKETING_LOCALE', lang, { path: '/' });
+  cookieStore.set('NEXT_LOCALE', lang, { path: '/' });
   revalidatePath("/", "layout");
 }
 

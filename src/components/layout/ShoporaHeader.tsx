@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Globe, Menu, X, ArrowRight, ShieldCheck, Zap } from "lucide-react";
 import { setMarketingLanguageCookie } from "@/app/actions";
+import { useLanguageStore } from "@/store/language";
 
 interface ShoporaHeaderProps {
   lang: "en" | "ar";
@@ -16,6 +17,8 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
+
+  const { setLanguage } = useLanguageStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,8 +41,14 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
   }, []);
 
   const handleLanguageChange = async (newLang: "en" | "ar") => {
+    // Sync with Zustand store to ensure dashboard uses same language
+    setLanguage(newLang);
+    
+    // Set cookie for server
+    document.cookie = `NEXT_LOCALE=${newLang}; path=/; max-age=31536000; SameSite=Lax`;
     document.cookie = `SHOPORA_MARKETING_LOCALE=${newLang}; path=/; max-age=31536000; SameSite=Lax`;
     await setMarketingLanguageCookie(newLang);
+    
     setIsOpen(false);
     setMobileMenuOpen(false);
     window.location.reload();
