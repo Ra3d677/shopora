@@ -16,7 +16,9 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const langRef = useRef<HTMLDivElement>(null);
+  const desktopLangRef = useRef<HTMLDivElement>(null);
+  const mobileLangRef = useRef<HTMLDivElement>(null);
+  const [isLangOpen, setIsLangOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const { setLanguage } = useLanguageStore();
@@ -27,8 +29,11 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
     };
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (langRef.current && !langRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+      if (
+        desktopLangRef.current && !desktopLangRef.current.contains(event.target as Node) &&
+        mobileLangRef.current && !mobileLangRef.current.contains(event.target as Node)
+      ) {
+        setIsLangOpen(false);
       }
     };
 
@@ -44,15 +49,20 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
   const handleLanguageChange = async (newLang: "en" | "ar") => {
     // Sync with Zustand store to ensure dashboard uses same language
     setLanguage(newLang);
-    
+
     // Set cookie for server
     document.cookie = `NEXT_LOCALE=${newLang}; path=/; max-age=31536000; SameSite=Lax`;
     document.cookie = `SHOPORA_MARKETING_LOCALE=${newLang}; path=/; max-age=31536000; SameSite=Lax`;
-    await setMarketingLanguageCookie(newLang);
-    
-    setIsOpen(false);
+
+    try {
+      await setMarketingLanguageCookie(newLang);
+    } catch {
+      // server action may fail in some contexts; cookies are already set client-side
+    }
+
+    setIsLangOpen(false);
     setMobileMenuOpen(false);
-    
+
     window.location.reload();
   };
 
@@ -121,16 +131,16 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
         {/* Right: Actions / Language Switcher */}
         <div className="hidden md:flex items-center gap-6">
           {/* Language Switcher */}
-          <div className="relative" ref={langRef}>
+          <div className="relative" ref={desktopLangRef}>
             <button
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => setIsLangOpen(!isLangOpen)}
               className="flex items-center gap-2 p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-slate-300 text-xs font-bold transition-all"
               aria-label={t.changeLang}
             >
               <Globe className="h-4 w-4 text-cyan-400" />
               <span>{lang === "en" ? "EN" : "عربي"}</span>
             </button>
-            {isOpen && (
+            {isLangOpen && (
               <div
                 className={`absolute mt-2 w-32 bg-[#0e0e0e] border border-white/10 rounded-xl shadow-2xl py-1.5 z-[60] text-slate-300 ${
                   lang === "ar" ? "left-0" : "right-0"
@@ -177,15 +187,15 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
         {/* Mobile menu trigger */}
         <div className="flex md:hidden items-center gap-4">
           {/* Language Switcher on mobile */}
-          <div className="relative" ref={langRef}>
+          <div className="relative" ref={mobileLangRef}>
             <button
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => setIsLangOpen(!isLangOpen)}
               className="flex items-center gap-1 p-2 rounded-xl bg-white/5 border border-white/10 text-slate-300 text-xs font-bold transition-all"
             >
               <Globe className="h-4 w-4 text-cyan-400" />
               <span>{lang === "en" ? "EN" : "عربي"}</span>
             </button>
-            {isOpen && (
+            {isLangOpen && (
               <div
                 className={`absolute mt-2 w-32 bg-[#0e0e0e] border border-white/10 rounded-xl shadow-2xl py-1.5 z-[60] text-slate-300 ${
                   lang === "ar" ? "left-0" : "right-0"
@@ -210,6 +220,8 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
               </div>
             )}
           </div>
+
+          <button
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
