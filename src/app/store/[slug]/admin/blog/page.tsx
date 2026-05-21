@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, FileText, Eye, Trash2, Calendar, CheckCircle2, XCircle } from "lucide-react";
 import { useLanguageStore } from "@/store/language";
+import MediaPicker from "../media/MediaPicker";
 
 export default function BlogAdminPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -102,8 +103,8 @@ export default function BlogAdminPage({ params }: { params: { slug: string } }) 
               <textarea value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} rows={12} className="w-full px-5 py-3 rounded-xl border border-slate-200 outline-none focus:border-black transition-all text-sm font-medium font-mono" placeholder="<p>Your post content here...</p>" />
             </div>
             <div>
-              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Image URL</label>
-              <input value={form.image} onChange={e => setForm({ ...form, image: e.target.value })} className="w-full px-5 py-3 rounded-xl border border-slate-200 outline-none focus:border-black transition-all text-sm font-medium" placeholder="https://..." />
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Image</label>
+              <MediaPicker value={form.image} onChange={(url) => setForm({ ...form, image: url })} slug={slug} />
             </div>
             <button onClick={handleSave} disabled={saving || !form.title} className="bg-slate-900 text-white px-10 py-4 rounded-full font-black uppercase tracking-widest text-xs hover:bg-black transition-all disabled:opacity-50 shadow-xl">
               {saving ? "Saving..." : "Publish Post"}
