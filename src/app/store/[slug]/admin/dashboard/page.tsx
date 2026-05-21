@@ -1,4 +1,4 @@
-import { DollarSign, ShoppingBag, Users, TrendingUp, Package, Activity, CheckCircle2, XCircle, Clock, Eye, ArrowUpCircle, ArrowDownCircle, Compass } from "lucide-react";
+import { DollarSign, ShoppingBag, Users, TrendingUp, Package, Activity, CheckCircle2, XCircle, Clock, Eye, ArrowUpCircle, ArrowDownCircle, Compass, BarChart3 } from "lucide-react";
 import prisma from "@/lib/prisma";
 export const dynamic = 'force-dynamic';
 import ExportButton from "./ExportButton";
@@ -6,6 +6,8 @@ import DateFilter from "./DateFilter";
 import CustomerPreviewButton from "./CustomerPreviewButton";
 import TourismDemoSeedButton from "./TourismDemoSeedButton";
 import LowStockAlerts from "./LowStockAlerts";
+import RevenueChart from "./RevenueChart";
+import RecentActivity from "./RecentActivity";
 import { getTranslation, getLang } from "@/lib/i18n";
 
 export default async function AdminDashboard({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ range?: string }> }) {
@@ -362,12 +364,25 @@ export default async function AdminDashboard({ params, searchParams }: { params:
          </div>
       </div>
 
+      {/* Revenue Trend Chart */}
+      <div className="mb-8 bg-[#1a1d2d] p-8 rounded-[2.5rem] border border-white/5">
+        <div className="flex items-center gap-3 mb-8">
+          <BarChart3 className="w-5 h-5 text-cyan-400" />
+          <h3 className="text-xl font-black italic text-white tracking-tight">
+            {isRTL ? "اتجاه الإيرادات الشهري" : "Monthly Revenue Trend"}
+          </h3>
+        </div>
+        <div className="h-64 w-full">
+          <RevenueChart data={monthlyRevenue} isRTL={isRTL} />
+        </div>
+      </div>
+
       {/* Main Grid Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-         {/* Left Column: Funnel */}
-         <div className="lg:col-span-1 space-y-8">
-            {/* Sales / Leads Funnel */}
-            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 shadow-2xl">
+          {/* Left Column: Funnel + Recent Activity */}
+          <div className="lg:col-span-1 space-y-8">
+             {/* Sales / Leads Funnel */}
+             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 shadow-2xl">
                <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">
                  {isWebsite ? t('leadsFunnel') : t('salesFunnel')}
                </h3>
@@ -417,9 +432,20 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                   </div>
                </div>
             </div>
-         </div>
 
-         {/* Right Column: Top Products and Heatmap */}
+            <RecentActivity
+              orders={recentOrders.map(o => ({
+                id: o.id,
+                customerName: o.customerName || 'Unknown',
+                totalAmount: Number(o.totalAmount),
+                status: o.status,
+                createdAt: o.createdAt.toISOString(),
+              }))}
+              slug={slug}
+            />
+          </div>
+
+          {/* Right Column: Top Products and Heatmap */}
          <div className="lg:col-span-2 space-y-8">
             {/* Best Sellers / Popular Packages Ranked List */}
             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5">

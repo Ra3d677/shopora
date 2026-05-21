@@ -22,7 +22,8 @@ import {
   Globe,
   LayoutTemplate,
   Blocks,
-  Settings
+  Settings,
+  Users,
 } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -35,7 +36,8 @@ const iconMap: Record<string, LucideIcon> = {
   Globe,
   LayoutTemplate,
   Blocks,
-  Settings
+  Settings,
+  Users,
 };
 
 export default function SidebarNav({ 
