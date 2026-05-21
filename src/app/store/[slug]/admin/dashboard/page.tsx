@@ -5,6 +5,7 @@ import ExportButton from "./ExportButton";
 import DateFilter from "./DateFilter";
 import CustomerPreviewButton from "./CustomerPreviewButton";
 import TourismDemoSeedButton from "./TourismDemoSeedButton";
+import LowStockAlerts from "./LowStockAlerts";
 import { getTranslation, getLang } from "@/lib/i18n";
 
 export default async function AdminDashboard({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ range?: string }> }) {
@@ -238,6 +239,16 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const maxMonthRevenue = Math.max(...monthlyRevenue, 1);
   const trendData = monthlyRevenue.map(rev => (rev / maxMonthRevenue) * 100);
 
+  const dateRangeLabels: Record<string, string> = {
+    all_time: "All Time",
+    today: "Today",
+    last_7_days: "Last 7 Days",
+    this_month: "This Month",
+    last_month: "Last Month",
+    this_year: "This Year",
+  };
+  const dateRange = dateRangeLabels[currentRange] || "All Time";
+
   const isWebsite = store.type === 'WEBSITE';
 
   return (
@@ -254,7 +265,26 @@ export default async function AdminDashboard({ params, searchParams }: { params:
         </div>
         <div className="flex items-center gap-4 bg-[#1a1d2d] p-2 rounded-2xl border border-white/5 shadow-2xl">
            <DateFilter />
-           <ExportButton />
+           <ExportButton
+             storeName={store.name}
+             dateRange={dateRange}
+             metrics={{
+               totalRevenue,
+               revenueGrowth,
+               totalOrders,
+               totalVisits,
+               conversionRate,
+               uniqueCustomers,
+               averageOrderValue,
+               abandonmentRate,
+               retentionRate,
+               inStockProducts,
+             }}
+             topProducts={topProducts.map(p => ({ name: p.name, salesCount: p.salesCount, price: p.price, image: p.image }))}
+             allProducts={allProductsWithSales.map(p => ({ name: p.name, price: p.price, stock_quantity: p.stock_quantity, salesCount: p.salesCount }))}
+             recentOrders={recentOrders.map(o => ({ customerName: o.customerName, totalAmount: Number(o.totalAmount), status: o.status, createdAt: o.createdAt.toISOString() }))}
+             lowStockProducts={lowStockProducts.map(p => ({ name: p.name, stock_quantity: p.stock_quantity }))}
+           />
         </div>
       </div>
 
@@ -457,6 +487,10 @@ export default async function AdminDashboard({ params, searchParams }: { params:
             </div>
          </div>
       </div>
+
+      {!isWebsite && lowStockProducts.length > 0 && (
+        <LowStockAlerts products={lowStockProducts.map(p => ({ name: p.name, stock_quantity: p.stock_quantity }))} />
+      )}
     </div>
   );
 }
