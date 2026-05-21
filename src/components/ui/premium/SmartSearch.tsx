@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, ArrowRight, ShoppingBag } from "lucide-react";
 import SmartImage from "@/components/ui/SmartImage";
+import { useLanguageStore } from "@/store/language";
 
 interface SmartSearchProps {
   isOpen: boolean;
@@ -12,6 +13,7 @@ interface SmartSearchProps {
 }
 
 export default function SmartSearch({ isOpen, onClose, products }: SmartSearchProps) {
+  const { t } = useLanguageStore();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
 
@@ -58,7 +60,7 @@ export default function SmartSearch({ isOpen, onClose, products }: SmartSearchPr
               <input 
                 autoFocus
                 type="text"
-                placeholder="WHAT ARE YOU LOOKING FOR?"
+                placeholder={t('whatAreYouLookingFor')}
                 className="w-full bg-transparent border-b-2 border-slate-100 py-8 pl-20 text-4xl font-black uppercase tracking-tighter focus:border-slate-900 focus:outline-none transition-colors"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -67,22 +69,22 @@ export default function SmartSearch({ isOpen, onClose, products }: SmartSearchPr
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                <div>
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">Popular Categories</h4>
+                  <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">{t('popularCategories')}</h4>
                   <div className="flex flex-col gap-6 text-2xl font-bold uppercase tracking-tighter">
                      <button className="text-left hover:text-blue-600 transition-colors flex items-center group">
-                       New Arrivals <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all" />
+                       {t('newArrivals')} <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all" />
                      </button>
                      <button className="text-left hover:text-blue-600 transition-colors flex items-center group">
-                       Limited Editions <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all" />
+                       {t('limitedEditions')} <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all" />
                      </button>
                      <button className="text-left hover:text-blue-600 transition-colors flex items-center group">
-                       Best Sellers <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all" />
+                       {t('bestSellers')} <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all" />
                      </button>
                   </div>
                </div>
 
                <div>
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">Live Suggestions</h4>
+                  <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">{t('liveSuggestions')}</h4>
                   <div className="space-y-8">
                      {results.length > 0 ? (
                        results.map(product => (
@@ -98,7 +100,7 @@ export default function SmartSearch({ isOpen, onClose, products }: SmartSearchPr
                          </button>
                        ))
                      ) : (
-                       <p className="text-slate-300 italic">Start typing to see magic...</p>
+                       <p className="text-slate-300 italic">{t('startTypingToSeeMagic')}</p>
                      )}
                   </div>
                </div>

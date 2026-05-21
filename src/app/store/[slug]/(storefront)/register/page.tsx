@@ -5,9 +5,11 @@ import { registerCustomer } from "@/app/store/actions";
 import Link from "next/link";
 import { Loader2, Mail, Lock, User, ArrowRight, ShoppingBag } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLanguageStore } from "@/store/language";
 
 export default function CustomerRegisterPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
+  const { t } = useLanguageStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -34,10 +36,10 @@ export default function CustomerRegisterPage({ params }: { params: Promise<{ slu
             </div>
         </div>
         <h2 className="mt-6 text-center text-3xl font-black text-slate-900 uppercase tracking-tighter">
-          Create Account
+          {t('createAccount')}
         </h2>
         <p className="mt-2 text-center text-sm font-bold text-slate-500 uppercase tracking-widest">
-          Join us to manage your shopping experience
+          {t('joinUs')}
         </p>
       </div>
 
@@ -57,7 +59,7 @@ export default function CustomerRegisterPage({ params }: { params: Promise<{ slu
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="name" className="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">
-                Full Name
+                {t('fullNameLabel')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
@@ -69,14 +71,14 @@ export default function CustomerRegisterPage({ params }: { params: Promise<{ slu
                   type="text"
                   required
                   className="block w-full h-14 pl-12 pr-5 bg-slate-50 border-2 border-transparent focus:border-slate-900 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium"
-                  placeholder="John Doe"
+                  placeholder={t('fullNamePlaceholder')}
                 />
               </div>
             </div>
 
             <div>
               <label htmlFor="email" className="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">
-                Email address
+                {t('emailAddress')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
@@ -89,14 +91,14 @@ export default function CustomerRegisterPage({ params }: { params: Promise<{ slu
                   autoComplete="email"
                   required
                   className="block w-full h-14 pl-12 pr-5 bg-slate-50 border-2 border-transparent focus:border-slate-900 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium"
-                  placeholder="name@example.com"
+                  placeholder={t('emailAddress')}
                 />
               </div>
             </div>
 
             <div>
               <label htmlFor="password" className="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">
-                Password
+                {t('password')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
@@ -122,7 +124,7 @@ export default function CustomerRegisterPage({ params }: { params: Promise<{ slu
                 {isSubmitting ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
                 ) : (
-                  <>Create Account <ArrowRight className="h-4 w-4" /></>
+                  <>{t('createAccount')} <ArrowRight className="h-4 w-4" /></>
                 )}
               </button>
             </div>
@@ -130,9 +132,9 @@ export default function CustomerRegisterPage({ params }: { params: Promise<{ slu
 
           <div className="mt-10 pt-8 border-t border-slate-100 text-center">
             <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">
-              Already have an account?{" "}
+              {t('haveAccount')}{" "}
               <Link href={`/store/${slug}/login`} className="text-slate-900 hover:underline">
-                Sign in
+                {t('signInLink')}
               </Link>
             </p>
           </div>

@@ -8,6 +8,7 @@ import EditableText from "@/components/editor/EditableText";
 import EditableImage from "@/components/editor/EditableImage";
 import EditableButton from "@/components/editor/EditableButton";
 import { useEditorStore } from "@/store/editor";
+import { useLanguageStore } from "@/store/language";
 import { updateStoreSettingByKey } from "@/app/store/[slug]/admin/actions";
 import SmartImage from "@/components/ui/SmartImage";
 import HeroSlider from "@/components/ui/HeroSlider";
@@ -26,6 +27,7 @@ interface TemplateProps {
 }
 
 export default function ModernTemplate({ banners, settings, products, slug, categories = [] }: TemplateProps) {
+  const { t } = useLanguageStore();
   const { isEditMode } = useEditorStore();
   const featuredProducts = products.slice(0, 8);
   const modSettings = settings.modernSettings || {};
@@ -270,16 +272,16 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                      <div>
                         <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-none mb-6 uppercase italic">
                            <span className="gradient-text-support">
-                             <EditableText content={modSettings.productsTitle ?? "THE DROP"} slug={slug} settingsKey="modernSettings.productsTitle" />
+                             <EditableText content={modSettings.productsTitle ?? t('theDrop')} slug={slug} settingsKey="modernSettings.productsTitle" />
                            </span>
                         </h2>
                         <div className="flex items-center gap-4">
                            <span className="w-12 h-1 bg-blue-600 rounded-full" />
-                           <p className="text-slate-500 font-bold uppercase tracking-[0.3em] text-[10px]">LATEST ARRIVALS</p>
+                           <p className="text-slate-500 font-bold uppercase tracking-[0.3em] text-[10px]">{t('latestArrivals')}</p>
                         </div>
                      </div>
                      <Link href={`/store/${slug}/products`} className="group flex items-center gap-6 text-slate-900 font-black uppercase tracking-widest text-xs hover:text-blue-600 transition-colors">
-                        VIEW ALL PRODUCTS <div className="w-10 h-10 border border-slate-200 rounded-full flex items-center justify-center group-hover:border-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all"><Plus size={16} /></div>
+                        {t('viewAllProducts')} <div className="w-10 h-10 border border-slate-200 rounded-full flex items-center justify-center group-hover:border-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all"><Plus size={16} /></div>
                      </Link>
                   </div>
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-16 gap-x-8">
@@ -299,7 +301,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                              />
                              <div className="absolute top-6 left-6">
-                                <span className="px-5 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl">In Stock</span>
+                                <span className="px-5 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl">{t('inStock')}</span>
                              </div>
                              <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/20 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
                                 <button className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-slate-900 shadow-2xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 hover:bg-blue-600 hover:text-white">
@@ -333,7 +335,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
               <section key={section.id} className="py-24 bg-transparent px-6">
                 <div className="container mx-auto max-w-4xl text-center">
                   <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-none mb-10 italic">
-                    <EditableText content={section.config?.title ?? "EXCELLENCE IN EVERY DETAIL."} settingsKey={`section-${section.id}-title`} slug={slug} />
+                    <EditableText content={section.config?.title ?? t('excellenceInDetail')} settingsKey={`section-${section.id}-title`} slug={slug} />
                   </h2>
                   <p className="text-xl text-slate-500 leading-relaxed italic">
                     <EditableText content={section.config?.text ?? "We believe that quality is never an accident. It is always the result of high intention, sincere effort, intelligent direction and skillful execution."} settingsKey={`section-${section.id}-text`} slug={slug} />
@@ -394,7 +396,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                  <div className="container mx-auto">
                     <div className="text-center mb-16">
                        <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter uppercase italic mb-4">
-                          <EditableText content={section.config?.title ?? "Voices of Excellence"} settingsKey={`section-${section.id}-title`} slug={slug} />
+                          <EditableText content={section.config?.title ?? t('voicesOfExcellence')} settingsKey={`section-${section.id}-title`} slug={slug} />
                        </h2>
                        <div className="w-24 h-1 bg-blue-600 mx-auto" />
                     </div>
@@ -430,7 +432,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
 
           if (section.type === 'about_us') {
             const title = section.config?.title || settings.tourismSettings?.aboutTitle || "Dedicated to elevating your professional journey.";
-            const tagline = section.config?.tagline || settings.tourismSettings?.aboutTagline || "WHO WE ARE";
+            const tagline = section.config?.tagline || settings.tourismSettings?.aboutTagline || t('whoWeAre');
             const desc1 = section.config?.desc1 || settings.tourismSettings?.aboutDesc1 || "We provide top-tier consulting and resources for businesses and individuals looking to scale. Our approach is uniquely tailored to every client.";
             const desc2 = section.config?.desc2 || settings.tourismSettings?.aboutDesc2 || "With years of industry experience, our dedicated team ensures you have the support and strategy needed to succeed in competitive markets.";
             const image = section.config?.image || settings.tourismSettings?.aboutImage || "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80";

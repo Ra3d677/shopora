@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { X, Upload, Check, Loader2, Image as ImageIcon, Plus } from "lucide-react";
 import { getStoreMedia, addMedia } from "@/app/store/[slug]/admin/actions";
+import { useLanguageStore } from "@/store/language";
 
 interface ImagePickerModalProps {
   slug: string;
@@ -13,6 +14,7 @@ interface ImagePickerModalProps {
 }
 
 export default function ImagePickerModal({ slug, isOpen, onClose, onSelect, currentUrl }: ImagePickerModalProps) {
+  const { t } = useLanguageStore();
   const [media, setMedia] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
@@ -78,13 +80,13 @@ export default function ImagePickerModal({ slug, isOpen, onClose, onSelect, curr
       <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[80vh] overflow-hidden flex flex-col animate-in zoom-in-95 duration-300">
         <div className="p-6 border-b flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900">Media Library</h2>
-            <p className="text-sm text-slate-500">Choose an image or upload a new one</p>
+            <h2 className="text-2xl font-bold text-slate-900">{t('mediaLibrary')}</h2>
+            <p className="text-sm text-slate-500">{t('chooseImageOrUpload')}</p>
           </div>
           <div className="flex items-center gap-2">
             <label className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-bold cursor-pointer hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20">
               {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
-              <span>UPLOAD NEW</span>
+              <span>{t('uploadNew')}</span>
               <input type="file" className="hidden" accept="image/*" onChange={handleFileUpload} disabled={isUploading} />
             </label>
             <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
@@ -97,14 +99,14 @@ export default function ImagePickerModal({ slug, isOpen, onClose, onSelect, curr
           {isLoading ? (
             <div className="h-64 flex flex-col items-center justify-center gap-4">
               <Loader2 size={40} className="animate-spin text-blue-600" />
-              <p className="text-slate-500 font-medium">Loading your media...</p>
+              <p className="text-slate-500 font-medium">{t('loadingYourMedia')}</p>
             </div>
           ) : media.length === 0 ? (
             <div className="h-64 flex flex-col items-center justify-center gap-4 border-2 border-dashed border-slate-200 rounded-3xl">
               <ImageIcon size={48} className="text-slate-300" />
               <div className="text-center">
-                <p className="text-slate-900 font-bold">No images yet</p>
-                <p className="text-slate-500 text-sm">Upload your first image to the dashboard</p>
+                <p className="text-slate-900 font-bold">{t('noImagesYet')}</p>
+                <p className="text-slate-500 text-sm">{t('uploadFirstImage')}</p>
               </div>
             </div>
           ) : (
@@ -133,21 +135,21 @@ export default function ImagePickerModal({ slug, isOpen, onClose, onSelect, curr
 
         <div className="p-6 border-t bg-slate-50 flex items-center justify-between gap-4">
           <p className="text-xs text-slate-400 hidden sm:block">
-            Tip: You can upload more images in the Dashboard &gt; Media section.
+            {t('tipUploadMoreImages')}
           </p>
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <button 
               onClick={onClose}
               className="flex-1 sm:flex-none px-6 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold hover:bg-white transition-all"
             >
-              Cancel
+              {t('cancel')}
             </button>
             <button 
               onClick={() => selectedUrl && onSelect(selectedUrl)}
               disabled={!selectedUrl}
               className="flex-1 sm:flex-none px-10 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-600/20"
             >
-              Select Image
+              {t('selectImage')}
             </button>
           </div>
         </div>

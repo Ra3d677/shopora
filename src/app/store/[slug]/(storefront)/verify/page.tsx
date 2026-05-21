@@ -4,11 +4,13 @@ import { useState, use, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { verifyCustomerOtp } from "@/app/store/actions";
 import { ShieldCheck, Loader2, Mail } from "lucide-react";
+import { useLanguageStore } from "@/store/language";
 
 export default function CustomerVerifyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useLanguageStore();
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -39,9 +41,9 @@ export default function CustomerVerifyPage({ params }: { params: Promise<{ slug:
   };
 
   const handleVerify = async () => {
-    if (!email) { setError("No email found."); return; }
+    if (!email) { setError(t('noEmailFound')); return; }
     const code = otp.join("");
-    if (code.length !== 6) { setError("Please enter the full 6-digit code."); return; }
+    if (code.length !== 6) { setError(t('enterFullCode')); return; }
     setLoading(true);
     setError("");
     const result = await verifyCustomerOtp(slug, email, code);
@@ -50,7 +52,7 @@ export default function CustomerVerifyPage({ params }: { params: Promise<{ slug:
       setLoading(false);
       return;
     }
-    setMessage("Verified! Redirecting...");
+    setMessage(t('verifiedRedirect'));
     setTimeout(() => router.push(`/store/${slug}`), 1000);
   };
 
@@ -65,10 +67,10 @@ export default function CustomerVerifyPage({ params }: { params: Promise<{ slug:
           </div>
         </div>
         <h2 className="mt-6 text-center text-3xl font-black text-slate-900 uppercase tracking-tighter">
-          Verify Your Email
+          {t('verifyEmail')}
         </h2>
         <p className="mt-2 text-center text-sm font-bold text-slate-500 uppercase tracking-widest">
-          Enter the 6-digit code sent to your email
+          {t('verifyDesc')}
         </p>
       </div>
 
@@ -102,7 +104,7 @@ export default function CustomerVerifyPage({ params }: { params: Promise<{ slug:
             disabled={loading || !allFilled}
             className="w-full h-14 rounded-2xl font-black text-sm uppercase tracking-widest text-white bg-slate-900 hover:bg-black transition-all flex items-center justify-center gap-3 disabled:opacity-70 shadow-xl active:scale-[0.98]"
           >
-            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <>Verify Email</>}
+            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <>{t('verifyBtn')}</>}
           </button>
         </div>
       </div>

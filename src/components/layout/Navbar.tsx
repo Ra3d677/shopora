@@ -9,7 +9,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useAuthStore } from "@/store/auth";
 import { StoreSettings } from "@/lib/types";
 import { setLanguageCookie } from "@/app/actions";
-import { translations, TranslationKey } from "@/lib/translations";
+import { useLanguageStore } from "@/store/language";
 import SignatureNavbar from "./SignatureNavbar";
 import { logoutCustomer } from "@/app/store/actions";
 import { buildCategoryTree } from "@/lib/utils";
@@ -47,20 +47,13 @@ export default function Navbar({
   products?: any[],
   session?: any
 }) {
-  const t = (key: TranslationKey): string => {
-    try {
-      return (translations[lang || 'en'] as any)[key] || (key as string);
-    } catch (e) {
-      return key as string;
-    }
-  };
-
+  const { t } = useLanguageStore();
   
   const isWebsite = storeSettings?.type === 'WEBSITE';
   const headerLinks = storeSettings?.headerSettings?.links || (isWebsite ? [
-    { id: 'home', label: 'Home', url: `/store/${slug}` },
-    { id: 'packages', label: 'Packages', url: `/store/${slug}#packages` },
-    { id: 'about', label: 'About Us', url: `/store/${slug}#about` }
+    { id: 'home', label: t('homeLink'), url: `/store/${slug}` },
+    { id: 'packages', label: t('packagesLink'), url: `/store/${slug}#packages` },
+    { id: 'about', label: t('aboutUsLink'), url: `/store/${slug}#about` }
   ] : [
     { id: 'home', label: t('home') || 'Home', url: `/store/${slug}` },
     { id: 'shop', label: t('shop') || 'Shop', url: `/store/${slug}/categories` }
@@ -91,7 +84,7 @@ export default function Navbar({
         >
           <div className="flex justify-between items-center mb-12">
             <Link href={`/store/${slug}`} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-black uppercase tracking-tighter" style={{ color: 'var(--color-primary-accent, inherit)' }}>
-              {storeSettings?.logoUrl ? <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="h-8 w-auto object-contain" /> : (storeSettings?.storeName || 'Store')}
+              {storeSettings?.logoUrl ? <img src={storeSettings.logoUrl} alt={storeSettings.storeName || t('storeLogoAlt')} className="h-8 w-auto object-contain" /> : (storeSettings?.storeName || t('storeLogoAlt'))}
             </Link>
             <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-500 hover:text-slate-900">
               <X size={24} />
@@ -107,7 +100,7 @@ export default function Navbar({
             
             {categoryTree.length > 0 && (
               <div className="flex flex-col gap-4 mt-4">
-                <p className="text-[10px] text-slate-400 font-black tracking-[0.2em] uppercase">Collections</p>
+                <p className="text-[10px] text-slate-400 font-black tracking-[0.2em] uppercase">{t('collections')}</p>
                 {categoryTree.map((cat: any) => (
                   <div key={cat.id} className="flex flex-col gap-2">
                     <div className="flex justify-between items-center border-b border-slate-50 pb-2">
@@ -240,10 +233,10 @@ export default function Navbar({
         <button 
           onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} 
           className="p-2 transition-all hover:scale-110 flex items-center" 
-          aria-label="User account"
+          aria-label={t('userAccount')}
         >
           {user && user.photoURL ? (
-             <img src={user.photoURL} alt="User" className="w-6 h-6 rounded-full border border-slate-600" />
+             <img src={user.photoURL} alt={t('userAlt')} className="w-6 h-6 rounded-full border border-slate-600" />
           ) : (
              <UserIcon className="h-5 w-5" />
           )}
@@ -304,7 +297,7 @@ export default function Navbar({
         <button 
           onClick={() => setIsOpen(!isOpen)}
           className={`flex items-center gap-1.5 p-2 transition-all hover:scale-105 font-bold text-sm tracking-widest uppercase ${dark ? 'text-white' : 'text-slate-900'}`}
-          aria-label="Change Language"
+          aria-label={t('changeLanguage')}
         >
           <Globe className="h-5 w-5" />
           <span className="hidden md:inline">{lang === 'en' ? 'EN' : 'عربي'}</span>
@@ -316,7 +309,7 @@ export default function Navbar({
               className={`w-full text-left px-4 py-2.5 text-sm font-medium hover:bg-slate-50 transition-colors ${lang === 'en' ? 'text-blue-600' : ''}`}
               dir="ltr"
             >
-              English
+              {t('englishLabel')}
             </button>
             <button
               onClick={async () => { await setLanguageCookie('ar'); setIsOpen(false); window.location.reload(); }}
@@ -337,7 +330,7 @@ export default function Navbar({
       <form onSubmit={handleSearch} className={`flex items-center rounded-full px-3 py-1.5 border transition-colors ${dark ? 'bg-slate-800/80 border-slate-700 text-white' : 'bg-slate-100 border-slate-200 text-slate-900'}`}>
         <input
           type="text"
-          placeholder="Search..."
+          placeholder={t('searchPlaceholder')}
           className="bg-transparent text-sm placeholder-slate-400 outline-none w-32 md:w-48 transition-all"
           autoFocus
           value={searchQuery}
@@ -567,7 +560,7 @@ export default function Navbar({
                 <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
                   <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 40 }} />
                 </div>
-              ) : (storeSettings?.storeName || 'Store')}
+              ) : (storeSettings?.storeName || t('storeLogoAlt'))}
             </Link>
             <div className="hidden lg:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-600">
               {headerLinks.map((link: any) => (
@@ -621,7 +614,7 @@ export default function Navbar({
                     }}
                   />
                 </div>
-              ) : (storeSettings?.storeName || 'Store')}
+              ) : (storeSettings?.storeName || t('storeLogoAlt'))}
             </Link>
             <div className="flex-1 flex items-center justify-end gap-6">
               <LanguageSwitcher />
@@ -655,7 +648,7 @@ export default function Navbar({
                   <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
                     <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain mx-auto" style={{ height: storeSettings?.headerSettings?.logoHeight || 56 }} />
                   </div>
-                ) : (storeSettings?.storeName || 'Store')}
+                ) : (storeSettings?.storeName || t('storeLogoAlt'))}
               </Link>
              <div className="w-32 flex items-center justify-end gap-4">
                <UserMenuDropdown />
@@ -691,7 +684,7 @@ export default function Navbar({
                 <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
                   <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 40 }} />
                 </div>
-              ) : (storeSettings?.storeName || 'Store')}
+              ) : (storeSettings?.storeName || t('storeLogoAlt'))}
             </Link>
             <div className="flex-1 flex items-center justify-end gap-6">
               <SearchBar />
@@ -843,6 +836,7 @@ function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings
 }
 
 function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSettings, onMenuClick, headerLinks }: any) {
+  const { t } = useLanguageStore();
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
@@ -861,14 +855,14 @@ function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSe
          <div className="hidden md:flex items-center gap-6">
             <div className="flex items-center gap-2">
                <Mail size={12} className="text-[#f06292]" />
-               <span>Email now : {storeSettings?.contactInfo?.email || 'demo@demo.com'}</span>
+               <span>{t('emailNow')} {storeSettings?.contactInfo?.email || 'demo@demo.com'}</span>
             </div>
          </div>
          <div className="flex-1 text-center md:text-right flex justify-center md:justify-end items-center gap-8">
-            <p className="uppercase tracking-widest"><span className="text-[#f06292]">Save 50% off</span> cosmetic beauty discount</p>
+            <p className="uppercase tracking-widest">{t('savePercentOff')}</p>
             <div className="hidden md:flex items-center gap-4 border-l border-white/20 pl-4 uppercase">
-               <button className="flex items-center gap-1">USD $ <ChevronDown size={10} /></button>
-               <button className="flex items-center gap-1">ENGLISH <ChevronDown size={10} /></button>
+               <button className="flex items-center gap-1">{t('usdCurrency')} <ChevronDown size={10} /></button>
+               <button className="flex items-center gap-1">{t('englishLang')} <ChevronDown size={10} /></button>
             </div>
          </div>
       </div>
@@ -924,8 +918,8 @@ function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSe
                        )}
                     </div>
                     <div className="hidden md:block">
-                       <p className="text-[10px] font-bold text-slate-400 uppercase leading-none">Cart</p>
-                       <p className="text-[11px] font-black text-slate-900 leading-tight">$0.00</p>
+<p className="text-[10px] font-bold text-slate-400 uppercase leading-none">{t('cartLabel')}</p>
+                        <p className="text-[11px] font-black text-slate-900 leading-tight">{t('zeroPrice')}</p>
                     </div>
                  </Link>
                )}

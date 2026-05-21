@@ -135,7 +135,7 @@ export default function OrdersManager({
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors" />
           <input
             type="text"
-            placeholder="Search orders (Name, Email, Phone, ID)..."
+            placeholder={t('searchOrdersPlaceholder')}
             value={localSearch}
             onChange={(e) => setLocalSearch(e.target.value)}
             className="w-full pl-12 pr-4 py-3.5 bg-[#0a0c14] border border-white/5 rounded-2xl text-xs font-bold text-white uppercase tracking-wider focus:outline-none focus:border-cyan-500/50 transition-colors placeholder:text-slate-600"
@@ -148,12 +148,12 @@ export default function OrdersManager({
             onChange={(e) => setLocalStatus(e.target.value)}
             className="w-full pl-12 pr-8 py-3.5 bg-[#0a0c14] border border-white/5 rounded-2xl text-xs font-bold text-white uppercase tracking-wider focus:outline-none focus:border-cyan-500/50 transition-colors appearance-none cursor-pointer"
           >
-            <option value="all">ALL STATUSES</option>
-            <option value="pending">PENDING</option>
-            <option value="processing">PROCESSING</option>
-            <option value="shipped">SHIPPED</option>
-            <option value="delivered">DELIVERED</option>
-            <option value="cancelled">CANCELLED</option>
+            <option value="all">{t('allStatuses')}</option>
+            <option value="pending">{t('pending')}</option>
+            <option value="processing">{t('processing')}</option>
+            <option value="shipped">{t('shipped')}</option>
+            <option value="delivered">{t('delivered')}</option>
+            <option value="cancelled">{t('cancelled')}</option>
           </select>
           <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
         </div>
@@ -321,7 +321,7 @@ export default function OrdersManager({
                           </div>
                           <div>
                              <p className="text-[9px] text-slate-600 font-black uppercase tracking-widest mb-1.5">{t('commChannel')}</p>
-                             <p className="text-sm font-black text-cyan-400 tracking-widest">{selectedOrder.customerPhone || 'N/A'}</p>
+                             <p className="text-sm font-black text-cyan-400 tracking-widest">{selectedOrder.customerPhone || t('na')}</p>
                           </div>
                        </div>
                     </div>
@@ -393,12 +393,12 @@ export default function OrdersManager({
                     <h4 className={`text-[10px] font-black text-slate-600 uppercase tracking-[0.3em] ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('protocolExecution')}</h4>
                     <div className="grid grid-cols-2 gap-3 pb-10">
                        {[
-                         { id: 'pending', label: 'Pending', icon: Clock },
-                         { id: 'processing', label: 'Processing', icon: Package },
-                         { id: 'shipped', label: 'Shipped', icon: Truck },
-                         { id: 'delivered', label: 'Delivered', icon: CheckCircle2 },
-                         { id: 'cancelled', label: 'Cancelled', icon: XCircle }
-                       ].map((status) => (
+                          { id: 'pending', icon: Clock },
+                          { id: 'processing', icon: Package },
+                          { id: 'shipped', icon: Truck },
+                          { id: 'delivered', icon: CheckCircle2 },
+                          { id: 'cancelled', icon: XCircle }
+                        ].map((status) => (
                          <button
                            key={status.id}
                            disabled={isPending}
@@ -409,8 +409,8 @@ export default function OrdersManager({
                                : 'bg-white/5 border-white/5 text-slate-600 hover:text-white hover:border-white/10 hover:bg-white/10'
                            }`}
                          >
-                           <status.icon className={`w-6 h-6 transition-transform duration-500 ${selectedOrder.status === status.id ? 'scale-110' : 'opacity-40'}`} />
-                           {status.label}
+                            <status.icon className={`w-6 h-6 transition-transform duration-500 ${selectedOrder.status === status.id ? 'scale-110' : 'opacity-40'}`} />
+                            {t(status.id)}
                          </button>
                        ))}
                     </div>

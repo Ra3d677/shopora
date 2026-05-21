@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Search, X, ArrowRight, Menu } from "lucide-react";
 import SmartSearch from "@/components/ui/premium/SmartSearch";
 import { useCartStore } from "@/store/cart";
+import { useLanguageStore } from "@/store/language";
 import { buildCategoryTree } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 
@@ -35,6 +36,7 @@ interface SignatureNavbarProps {
 }
 
 export default function SignatureNavbar({ storeName, logoUrl, slug, storeId, products, categories = [], session, storeSettings }: SignatureNavbarProps) {
+  const { t } = useLanguageStore();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -47,8 +49,8 @@ export default function SignatureNavbar({ storeName, logoUrl, slug, storeId, pro
   const cartItemCount = allItems.filter(i => i.storeId === storeId).reduce((acc, item) => acc + item.quantity, 0);
 
   const headerLinks = storeSettings?.headerSettings?.links || [
-    { id: 'home', label: 'Home', url: `/store/${slug}` },
-    { id: 'shop', label: 'Shop', url: `/store/${slug}/categories` }
+    { id: 'home', label: t('homeLink'), url: `/store/${slug}` },
+    { id: 'shop', label: t('shop'), url: `/store/${slug}/categories` }
   ];
 
   useEffect(() => {
@@ -89,7 +91,7 @@ export default function SignatureNavbar({ storeName, logoUrl, slug, storeId, pro
 
             {categoryTree.length > 0 && (
               <div className="mt-12 flex flex-col gap-6">
-                <p className="text-xs font-black tracking-[0.3em] uppercase text-slate-400">Collections</p>
+                <p className="text-xs font-black tracking-[0.3em] uppercase text-slate-400">{t('collections')}</p>
                 <div className="flex flex-col gap-4">
                   {categoryTree.map((cat: any) => (
                     <div key={cat.id} className="flex flex-col gap-2">
@@ -144,16 +146,16 @@ export default function SignatureNavbar({ storeName, logoUrl, slug, storeId, pro
                 </Link>
               ) : (
                 <Link href={`/store/${slug}/login`} onClick={() => setIsMenuOpen(false)} className="hover:text-blue-600 transition-colors flex items-center group">
-                  Login <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 transition-all" />
+                  {t('loginLink')} <ArrowRight className="ml-4 opacity-0 group-hover:opacity-100 transition-all" />
                 </Link>
               )}
             </div>
 
             <div className="mt-auto">
                <div className="flex gap-8 text-xs font-bold uppercase tracking-widest text-slate-400">
-                  <Link href="#">Instagram</Link>
-                  <Link href="#">Twitter</Link>
-                  <Link href="#">Facebook</Link>
+                  <Link href="#">{t('instagramLabel')}</Link>
+                  <Link href="#">{t('twitterLabel')}</Link>
+                  <Link href="#">{t('facebookLabel')}</Link>
                </div>
             </div>
           </motion.div>

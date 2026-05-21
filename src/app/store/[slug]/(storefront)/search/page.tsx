@@ -2,6 +2,7 @@ import { getStoreBySlug } from "@/lib/data";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { getTranslation } from "@/lib/i18n";
 
 export default async function SearchPage({ 
   params, 
@@ -15,6 +16,7 @@ export default async function SearchPage({
   const query = q?.toLowerCase() || "";
 
   const store = await getStoreBySlug(slug);
+  const t = await getTranslation();
   if (!store) {
     notFound();
   }
@@ -28,23 +30,23 @@ export default async function SearchPage({
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[80vh]">
       <div className="mb-12">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-primary mb-4">Search Results</h1>
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-primary mb-4">{t('searchResults')}</h1>
         <p className="text-muted-foreground text-lg max-w-2xl">
-          {query ? `Showing results for "${query}"` : "Please enter a search term"}
+          {query ? t('showingResults').replace('{query}', query) : t('searchPlaceholder2')}
         </p>
       </div>
 
       {!query ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <h2 className="text-2xl font-bold text-primary mb-2">Search our store</h2>
-          <p className="text-muted-foreground mb-6">Enter a keyword to find products.</p>
+          <h2 className="text-2xl font-bold text-primary mb-2">{t('searchPlaceholder2')}</h2>
+          <p className="text-muted-foreground mb-6">{t('searchDesc')}</p>
         </div>
       ) : displayedProducts.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <h2 className="text-2xl font-bold text-primary mb-2">No products found</h2>
-          <p className="text-muted-foreground mb-6">We couldn't find any products matching "{query}".</p>
+          <h2 className="text-2xl font-bold text-primary mb-2">{t('noProductsFound')}</h2>
+          <p className="text-muted-foreground mb-6">{t('noProductsMatch').replace('{query}', query)}</p>
           <Link href={`/store/${slug}/products`} className="bg-slate-950 text-white px-6 py-3 rounded-full font-medium hover:bg-slate-800 transition-colors">
-            Browse All Products
+            {t('browseAllProducts')}
           </Link>
         </div>
       ) : (
@@ -60,12 +62,12 @@ export default async function SearchPage({
                 />
                 {product.discount_price && (
                   <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
-                    SALE
+                    {t('saleBadge')}
                   </div>
                 )}
                 <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="bg-white/20 backdrop-blur-md border border-white/30 text-white text-center py-3 rounded-xl font-medium w-full">
-                    View Details
+                    {t('viewDetails')}
                   </div>
                 </div>
               </div>

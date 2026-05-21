@@ -3,9 +3,11 @@
 import { useEditorStore } from "@/store/editor";
 import { ReactNode, useState, useEffect } from "react";
 import { useSearchParams, usePathname } from "next/navigation";
+import { useLanguageStore } from "@/store/language";
 
 export default function PreviewWrapper({ children, isOwner }: { children: ReactNode, isOwner: boolean }) {
   const { device } = useEditorStore();
+  const { t } = useLanguageStore();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   
@@ -48,7 +50,7 @@ export default function PreviewWrapper({ children, isOwner }: { children: ReactN
           <iframe 
             src={iframeUrl} 
             className="w-full h-full border-none pointer-events-auto"
-            title="Mobile Preview"
+            title={t('mobilePreview')}
             sandbox="allow-same-origin allow-scripts allow-forms"
           />
         </div>
@@ -61,7 +63,7 @@ export default function PreviewWrapper({ children, isOwner }: { children: ReactN
       
       {/* Help text */}
       <div className="absolute bottom-8 text-white/50 text-sm font-medium text-center px-6">
-        Mobile Preview Mode - Links within the frame will stay in mobile view.
+        {t('mobilePreviewMode')}
       </div>
     </div>
   );

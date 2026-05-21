@@ -1,17 +1,19 @@
 import { prisma } from "@/lib/prisma";
 import OrdersManager from "./OrdersManager";
+import { getTranslation } from "@/lib/i18n";
 
 export default async function OrdersPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const t = await getTranslation();
 
   const store = await prisma.store.findUnique({
     where: { slug },
     select: { id: true }
   });
 
-  if (!store) {
-    return <div>Store not found</div>;
-  }
+   if (!store) {
+     return <div>{t('storeNotFound')}</div>;
+   }
 
   // Get first page (10 items) and total count to avoid SELECT * without limit
   const orders = await prisma.order.findMany({

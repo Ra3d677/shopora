@@ -6,9 +6,11 @@ import { useState, useEffect } from "react";
 import { updateStoreSettingByKey } from "@/app/store/[slug]/admin/actions";
 import { motion, AnimatePresence } from "framer-motion";
 import ImagePickerModal from "./ImagePickerModal";
+import { useLanguageStore } from "@/store/language";
 
 export default function EditorSidebar() {
   const { isEditMode, selectedElement, setSelectedElement } = useEditorStore();
+  const { t } = useLanguageStore();
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState<any>({});
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
@@ -58,7 +60,7 @@ export default function EditorSidebar() {
             {/* Header */}
             <div className="h-16 border-b border-slate-200 flex items-center justify-between px-6 bg-slate-50">
               <h3 className="font-bold text-slate-900 text-lg">
-                {selectedElement.type === 'button' ? 'Edit Button' : 'Edit Image'}
+                {selectedElement.type === 'button' ? t('editButton') : t('editImage')}
               </h3>
               <button 
                 onClick={() => setSelectedElement(null)}
@@ -78,28 +80,28 @@ export default function EditorSidebar() {
                   {/* Label Input */}
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold text-slate-900">
-                      Button Text
+                      {t('buttonText')}
                     </label>
                     <input 
                       type="text" 
                       value={formData.label || ''}
                       onChange={(e) => setFormData({ ...formData, label: e.target.value })}
                       className="w-full bg-white border-2 border-slate-300 rounded-lg px-4 py-3 text-base text-slate-900 focus:border-blue-600 focus:outline-none"
-                      placeholder="e.g. Shop Now"
+                      placeholder={t('e.gShopNow')}
                     />
                   </div>
                   
                   {/* Link Input */}
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold text-slate-900">
-                      Button Link (URL)
+                      {t('buttonLinkURL')}
                     </label>
                     <input 
                       type="text" 
                       value={formData.link || ''}
                       onChange={(e) => setFormData({ ...formData, link: e.target.value })}
                       className="w-full bg-white border-2 border-slate-300 rounded-lg px-4 py-3 text-base text-slate-900 focus:border-blue-600 focus:outline-none"
-                      placeholder="/store/..."
+                      placeholder={t('storeSlashPlaceholder')}
                       dir="ltr"
                     />
                   </div>
@@ -110,16 +112,16 @@ export default function EditorSidebar() {
               {selectedElement.type === 'image' && (
                 <div className="flex flex-col gap-4">
                   <label className="text-sm font-bold text-slate-900">
-                    Current Image
+                    {t('currentImage')}
                   </label>
                   <div className="w-full h-48 bg-slate-100 border-2 border-slate-300 rounded-lg overflow-hidden flex items-center justify-center p-2">
-                    <img src={formData.src} className="max-w-full max-h-full object-contain" alt="Preview" />
+                    <img src={formData.src} className="max-w-full max-h-full object-contain" alt={t('preview')} />
                   </div>
                   <button 
                     onClick={() => setIsMediaModalOpen(true)}
                     className="w-full py-3 bg-slate-100 border-2 border-slate-300 text-slate-900 font-bold rounded-lg hover:bg-slate-200 transition-colors"
                   >
-                    Change Image
+                    {t('changeImage')}
                   </button>
                 </div>
               )}
@@ -132,7 +134,7 @@ export default function EditorSidebar() {
                 disabled={isSaving}
                 className="w-full py-4 bg-blue-600 text-white text-base font-bold rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                {isSaving ? <Loader2 size={20} className="animate-spin" /> : 'Save Changes'}
+                {isSaving ? <Loader2 size={20} className="animate-spin" /> : t('saveChanges')}
               </button>
             </div>
           </motion.div>

@@ -5,9 +5,11 @@ import { loginCustomer } from "@/app/store/actions";
 import Link from "next/link";
 import { Loader2, Mail, Lock, ArrowRight, ShoppingBag } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLanguageStore } from "@/store/language";
 
 export default function CustomerLoginPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
+  const { t } = useLanguageStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -37,10 +39,10 @@ export default function CustomerLoginPage({ params }: { params: Promise<{ slug: 
           </div>
         </div>
         <h2 className="mt-6 text-center text-3xl font-black text-white uppercase tracking-tighter">
-          Welcome Back
+          {t('welcomeBack')}
         </h2>
         <p className="mt-2 text-center text-sm font-bold text-cyan-300 uppercase tracking-widest">
-          Sign in to track your orders
+          {t('signInToTrack')}
         </p>
       </div>
 
@@ -60,7 +62,7 @@ export default function CustomerLoginPage({ params }: { params: Promise<{ slug: 
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-xs font-black uppercase tracking-widest text-slate-300 mb-2 ml-1">
-                Email address
+                {t('emailAddress')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
@@ -73,14 +75,14 @@ export default function CustomerLoginPage({ params }: { params: Promise<{ slug: 
                   autoComplete="email"
                   required
                   className="block w-full h-14 pl-12 pr-5 bg-slate-800/50 border-2 border-slate-700/50 focus:border-cyan-500 focus:bg-slate-800 rounded-2xl outline-none transition-all text-sm font-medium text-white placeholder:text-slate-500"
-                  placeholder="name@example.com"
+                  placeholder={t('emailAddress')}
                 />
               </div>
             </div>
 
             <div>
               <label htmlFor="password" className="block text-xs font-black uppercase tracking-widest text-slate-300 mb-2 ml-1">
-                Password
+                {t('password')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
@@ -98,7 +100,7 @@ export default function CustomerLoginPage({ params }: { params: Promise<{ slug: 
               </div>
               <div className="text-right -mt-4">
                 <Link href="/auth/forgot-password" className="text-cyan-400 text-sm font-bold hover:text-cyan-300 transition-colors">
-                  Forgot Password?
+                  {t('forgotPassword')}
                 </Link>
               </div>
             </div>
@@ -112,7 +114,7 @@ export default function CustomerLoginPage({ params }: { params: Promise<{ slug: 
                 {isSubmitting ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
                 ) : (
-                  <>Sign In <ArrowRight className="h-4 w-4" /></>
+                  <>{t('signIn')} <ArrowRight className="h-4 w-4" /></>
                 )}
               </button>
             </div>
@@ -120,9 +122,9 @@ export default function CustomerLoginPage({ params }: { params: Promise<{ slug: 
 
           <div className="mt-10 pt-8 border-t border-white/5 text-center">
             <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">
-              Don't have an account?{" "}
+              {t('noAccount')}{" "}
               <Link href={`/store/${slug}/register`} className="text-cyan-400 hover:text-cyan-300 transition-colors hover:underline">
-                Register now
+                {t('registerNow')}
               </Link>
             </p>
           </div>

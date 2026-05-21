@@ -961,6 +961,8 @@ export const translations = {
     rawMaterials: "RAW MATERIALS",
     maximumImpact: "MAXIMUM IMPACT",
 
+    unknown: "Unknown",
+
     // Templates
     storeTemplates: "Store Templates",
     selectLookFeel: "Select the look and feel of your storefront.",

@@ -96,7 +96,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
   });
 
   const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this product?")) {
+    if (confirm(t('confirmDeleteProduct'))) {
       setProducts(products.filter(p => p.id !== id));
       startTransition(async () => {
         await deleteProduct(slug, id);
@@ -109,7 +109,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
     e.preventDefault();
     
     if (!formData.category_id) {
-        alert("Please create a category first before adding products.");
+        alert(t('createCategoryFirst'));
         return;
     }
 
@@ -127,7 +127,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
           window.location.reload(); 
         } catch(err) {
             console.error(err);
-            alert("Error adding product");
+            alert(t('errorAddingProduct'));
         }
       });
     }
@@ -213,7 +213,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                   <input 
                     required 
                     type="text" 
-                    placeholder="e.g. Hyper-Light Sneakers"
+                    placeholder={t('egHyperLightSneakers')}
                     value={formData.name || ''} 
                     onChange={e => setFormData({...formData, name: e.target.value})} 
                     className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white placeholder:text-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-bold" 
@@ -223,7 +223,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                   <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">{t('assetNarrative')}</label>
                   <textarea 
                     required 
-                    placeholder="Describe the essence of this product..."
+                    placeholder={t('describeEssencePlaceholder')}
                     value={formData.description || ''} 
                     onChange={e => setFormData({...formData, description: e.target.value})} 
                     className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white placeholder:text-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all h-32 font-medium" 
@@ -249,7 +249,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                     value={formData.discount_price || ''} 
                     onChange={e => setFormData({...formData, discount_price: e.target.value ? Number(e.target.value) : null})} 
                     className="w-full bg-transparent text-3xl font-black text-rose-500 outline-none" 
-                    placeholder="None" 
+                    placeholder={t('none')} 
                   />
                 </div>
               </div>
@@ -578,7 +578,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
                   </td>
                   <td className="px-4 py-5">
                     <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-white/[0.03] px-3 py-1.5 rounded-full border border-white/[0.05]">
-                      {categories.find(c => c.id === product.category_id)?.name || 'Unknown Sector'}
+                      {categories.find(c => c.id === product.category_id)?.name || t('unknownSector')}
                     </span>
                   </td>
                   <td className="px-4 py-5">

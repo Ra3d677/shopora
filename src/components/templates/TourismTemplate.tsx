@@ -6,6 +6,7 @@ import { Check, Star, Quote } from "lucide-react";
 import EditableText from "@/components/editor/EditableText";
 import EditableImage from "@/components/editor/EditableImage";
 import ReviewForm from "@/components/templates/ReviewForm";
+import { useLanguageStore } from "@/store/language";
 
 interface LandingTemplateProps {
   banners: any[];
@@ -22,6 +23,7 @@ export default function TourismTemplate({
   slug,
   categories
 }: LandingTemplateProps) {
+  const { t } = useLanguageStore();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const filteredProducts = selectedCategory
@@ -56,10 +58,10 @@ export default function TourismTemplate({
       <section key={section.id} className="py-24 max-w-7xl mx-auto px-6" id="packages">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4" style={{ color: 'var(--color-text-home, #ffffff)' }}>
-            {section.config?.title || settings.tourismSettings?.packagesTitle || "Our Packages & Offers"}
+            {section.config?.title || settings.tourismSettings?.packagesTitle || t('ourPackagesOffers')}
           </h2>
           <EditableText 
-            content={settings.tourismSettings?.packagesSubtitle || "Select the perfect plan designed to meet your specific needs."} 
+            content={settings.tourismSettings?.packagesSubtitle || t('packagesSubtitle')} 
             slug={slug} 
             settingsKey="tourismSettings.packagesSubtitle" 
             as="p"
@@ -79,7 +81,7 @@ export default function TourismTemplate({
                   <p className="text-slate-400 text-sm whitespace-pre-wrap leading-relaxed max-w-xl">{product.description}</p>
                   <div className="flex items-baseline gap-2">
                     <span className="text-4xl font-black text-white">${product.price}</span>
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{settings.tourismSettings?.priceSuffix || "/Month"}</span>
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{settings.tourismSettings?.priceSuffix || t('perMonth')}</span>
                   </div>
                 </div>
 
@@ -103,7 +105,7 @@ export default function TourismTemplate({
                     href={`/store/${slug}/product/${product.id}`}
                     className="w-full md:w-48 py-4 bg-white border border-white/10 rounded-2xl text-black font-black text-xs uppercase tracking-widest text-center transition-all shadow-xl block hover:opacity-90"
                   >
-                    {settings.tourismSettings?.bookButtonText || "Select Package"}
+                    {settings.tourismSettings?.bookButtonText || t('selectPackage')}
                   </Link>
                 </div>
               </div>
@@ -120,7 +122,7 @@ export default function TourismTemplate({
                   <p className="text-slate-400 text-xs mb-6 leading-relaxed">{product.description}</p>
                   <div className="flex items-baseline gap-2 mb-6">
                     <span className="text-3xl font-black text-white">${product.price}</span>
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{settings.tourismSettings?.priceSuffix || "/Month"}</span>
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{settings.tourismSettings?.priceSuffix || t('perMonth')}</span>
                   </div>
                   <ul className="space-y-3 mb-8">
                     {product.specs && product.specs.length > 0 ? (
@@ -139,7 +141,7 @@ export default function TourismTemplate({
                   href={`/store/${slug}/product/${product.id}`}
                   className="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-white font-bold text-xs uppercase tracking-wider text-center hover:bg-white hover:text-black transition-all block"
                 >
-                  {settings.tourismSettings?.bookButtonText || "Select Package"}
+                  {settings.tourismSettings?.bookButtonText || t('selectPackage')}
                 </Link>
               </div>
             ))}
@@ -159,7 +161,7 @@ export default function TourismTemplate({
                   href={`/store/${slug}/product/${product.id}`}
                     className="w-full py-2.5 bg-white border border-white/5 rounded-xl text-black font-black text-[10px] uppercase tracking-wider text-center transition-all block hover:opacity-90"
                 >
-                  {settings.tourismSettings?.bookButtonText || "Select"}
+                  {settings.tourismSettings?.bookButtonText || t('selectPackage')}
                 </Link>
               </div>
             ))}
@@ -194,7 +196,7 @@ export default function TourismTemplate({
                     <p className="text-slate-400 text-sm mb-6 leading-relaxed">{product.description}</p>
                     <div className="flex items-baseline gap-2 mb-8">
                       <span className="text-4xl font-black text-white">${product.price}</span>
-                      <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{settings.tourismSettings?.priceSuffix || "/Month"}</span>
+                      <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{settings.tourismSettings?.priceSuffix || t('perMonth')}</span>
                     </div>
                     <ul className="space-y-4 mb-8">
                       {product.specs && product.specs.length > 0 ? (
@@ -217,7 +219,7 @@ export default function TourismTemplate({
                     className={`w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest text-center transition-all block hover:opacity-90`}
                     style={isFeatured ? { background: 'var(--dynamic-primary, #22d3ee)', color: '#0f172a' } : { background: '#ffffff', color: '#0f172a' }}
                   >
-                    {settings.tourismSettings?.bookButtonText || "Select Package"}
+                    {settings.tourismSettings?.bookButtonText || t('selectPackage')}
                   </Link>
                 </div>
               );
@@ -240,7 +242,7 @@ export default function TourismTemplate({
                   <div className="flex items-baseline gap-2">
                     <span className="text-4xl font-black text-white">${product.price}</span>
                     <EditableText 
-                      content={settings.tourismSettings?.priceSuffix || "/Month"} 
+                      content={settings.tourismSettings?.priceSuffix || t('perMonth')} 
                       slug={slug} 
                       settingsKey="tourismSettings.priceSuffix" 
                       as="span"
@@ -273,7 +275,7 @@ export default function TourismTemplate({
                   className="w-full py-4 bg-white border border-white/10 rounded-2xl text-black font-black text-xs uppercase tracking-widest text-center transition-all shadow-xl block hover:opacity-90"
                 >
                   <EditableText 
-                    content={settings.tourismSettings?.bookButtonText || "Select Package"} 
+                    content={settings.tourismSettings?.bookButtonText || t('selectPackage')} 
                     slug={slug} 
                     settingsKey="tourismSettings.bookButtonText" 
                     as="span"
@@ -369,7 +371,7 @@ export default function TourismTemplate({
           <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4" style={{ color: 'var(--color-text-home, #ffffff)' }}>
              {section.config?.title || settings.tourismSettings?.reviewsTitle || "What Our Clients Say"}
           </h2>
-          <p className="text-slate-400 text-sm font-medium uppercase tracking-widest">Real experiences from real people</p>
+          <p className="text-slate-400 text-sm font-medium uppercase tracking-widest">{t('realExperiences')}</p>
         </div>
 
         {hasReviews ? (
@@ -574,7 +576,7 @@ export default function TourismTemplate({
         }}
       >
         <EditableText 
-          content={settings.tourismSettings?.footerText || `© 2026 ${settings.storeName || "Company"}. All rights reserved.`} 
+          content={settings.tourismSettings?.footerText || `© 2026 ${settings.storeName || "Company"}. ${t('allRightsReserved')}`} 
           slug={slug} 
           settingsKey="tourismSettings.footerText" 
           as="p"

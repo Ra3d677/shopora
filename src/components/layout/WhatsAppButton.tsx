@@ -2,8 +2,10 @@
 
 import { MessageCircle } from "lucide-react";
 import { useStore } from "@/components/providers/StoreProvider";
+import { useLanguageStore } from "@/store/language";
 
 export default function WhatsAppButton() {
+  const { t } = useLanguageStore();
   const { store } = useStore();
   const whatsapp = store.settings?.contactInfo?.whatsapp;
 
@@ -18,11 +20,11 @@ export default function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all active:scale-95 group flex items-center gap-2 overflow-hidden max-w-[60px] hover:max-w-[200px]"
-      aria-label="Contact on WhatsApp"
+      aria-label={t('whatsappSupport')}
     >
       <MessageCircle className="h-7 w-7" />
       <span className="font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-        WhatsApp Support
+        {t('whatsappSupport')}
       </span>
     </a>
   );

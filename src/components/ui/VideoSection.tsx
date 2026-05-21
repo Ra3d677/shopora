@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Volume2, VolumeX, ExternalLink, X } from "lucide-react";
+import { useLanguageStore } from "@/store/language";
 
 interface VideoSectionProps {
   section: any;
@@ -10,6 +11,7 @@ interface VideoSectionProps {
 }
 
 export default function VideoSection({ section, slug }: VideoSectionProps) {
+  const { t } = useLanguageStore();
   const { config, style } = section;
   const videos = Array.isArray(config.videos) ? config.videos : (config.videoUrl ? [{ url: config.videoUrl, sourceType: config.sourceType || 'upload' }] : []);
   
@@ -42,7 +44,7 @@ export default function VideoSection({ section, slug }: VideoSectionProps) {
         {videos.length === 0 && (
           <div className="col-span-full py-32 text-center bg-slate-50 rounded-[3rem] border-4 border-dashed border-slate-200">
              <Play size={48} className="mx-auto mb-4 text-slate-300" />
-             <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Add videos to this gallery</p>
+             <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">{t('addVideosToThisGallery')}</p>
           </div>
         )}
       </div>
@@ -51,6 +53,7 @@ export default function VideoSection({ section, slug }: VideoSectionProps) {
 }
 
 function VideoCard({ video, style }: { video: any, style: string }) {
+  const { t } = useLanguageStore();
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -105,7 +108,7 @@ function VideoCard({ video, style }: { video: any, style: string }) {
       ) : (
         <div className="w-full h-full flex flex-col items-center justify-center text-slate-500 p-8 text-center bg-slate-50">
            <Play size={40} className="mb-4 opacity-20" />
-           <p className="text-xs font-black uppercase tracking-widest">Video Missing</p>
+           <p className="text-xs font-black uppercase tracking-widest">{t('videoMissing')}</p>
         </div>
       )}
 

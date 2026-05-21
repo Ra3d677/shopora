@@ -7,6 +7,7 @@ import { updateStoreSettings } from "@/app/store/[slug]/admin/actions";
 import { useEditorStore } from "@/store/editor";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
+import { useLanguageStore } from "@/store/language";
 
 interface TextStyle {
   fontSize?: string;
@@ -41,12 +42,12 @@ const GOOGLE_FONTS = [
 ];
 
 const SHADOW_PRESETS = [
-  { name: 'None', value: 'none' },
-  { name: 'Soft', value: '2px 2px 8px rgba(0,0,0,0.2)' },
-  { name: 'Hard', value: '4px 4px 0px rgba(0,0,0,1)' },
-  { name: 'Glow', value: '0 0 20px rgba(59, 130, 246, 0.5)' },
-  { name: 'Neon', value: '0 0 10px #3b82f6, 0 0 20px #3b82f6' },
-  { name: 'Deep', value: '0 20px 40px rgba(0,0,0,0.4)' },
+  { name: 'none', value: 'none' },
+  { name: 'soft', value: '2px 2px 8px rgba(0,0,0,0.2)' },
+  { name: 'hard', value: '4px 4px 0px rgba(0,0,0,1)' },
+  { name: 'glow', value: '0 0 20px rgba(59, 130, 246, 0.5)' },
+  { name: 'neon', value: '0 0 10px #3b82f6, 0 0 20px #3b82f6' },
+  { name: 'deep', value: '0 20px 40px rgba(0,0,0,0.4)' },
 ];
 
 export default function EditableText({ 
@@ -58,6 +59,7 @@ export default function EditableText({
   as: Component = 'div' 
 }: EditableTextProps) {
   const { isEditMode } = useEditorStore();
+  const { t } = useLanguageStore();
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(content);
@@ -115,14 +117,14 @@ export default function EditableText({
       });
       
       if (res && res.success === false) {
-        alert("Failed to save to database: " + res.error);
+        alert(t('failedToSaveToDatabase') + res.error);
       }
       
       setIsEditing(false);
       router.refresh();
     } catch (error: any) {
       console.error("Save failed:", error);
-      alert("Network error while saving: " + error?.message);
+      alert(t('networkErrorWhileSaving') + error?.message);
     } finally {
       setIsSaving(false);
     }
@@ -197,7 +199,7 @@ export default function EditableText({
                 <div className="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center">
                   <Type size={16} />
                 </div>
-                <span className="text-xs font-black uppercase tracking-widest italic">Text Engine</span>
+                <span className="text-xs font-black uppercase tracking-widest italic">{t('textEngine')}</span>
               </div>
               <button onClick={() => setIsEditing(false)} className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-all">
                 <X size={16} />
@@ -207,25 +209,25 @@ export default function EditableText({
             <div className="p-8 space-y-8 overflow-y-auto max-h-[70vh] custom-scrollbar">
               {/* Content Edit */}
               <div>
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">Content</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">{t('content')}</label>
                 <textarea 
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none h-24 resize-none font-medium text-white transition-all"
-                  placeholder="Enter text..."
+                  placeholder={t('enterText')}
                 />
               </div>
 
               {/* Typography */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">Font Family</label>
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">{t('fontFamily')}</label>
                   <select 
                     value={styles.fontFamily}
                     onChange={(e) => updateStyle({ fontFamily: e.target.value })}
                     className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-xs font-bold outline-none focus:border-blue-500 transition-colors text-white"
                   >
-                    <option value="inherit" className="bg-slate-900">Inherit</option>
+                    <option value="inherit" className="bg-slate-900">{t('inherit')}</option>
                     {GOOGLE_FONTS.map(f => <option key={f} value={f} className="bg-slate-900">{f}</option>)}
                   </select>
                 </div>
@@ -236,14 +238,14 @@ export default function EditableText({
                     onChange={(e) => updateStyle({ fontWeight: e.target.value })}
                     className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-xs font-bold outline-none focus:border-blue-500 transition-colors text-white"
                   >
-                    <option value="inherit" className="bg-slate-900">Inherit</option>
-                    <option value="100" className="bg-slate-900">Thin</option>
-                    <option value="300" className="bg-slate-900">Light</option>
-                    <option value="400" className="bg-slate-900">Normal</option>
-                    <option value="500" className="bg-slate-900">Medium</option>
-                    <option value="600" className="bg-slate-900">Semi-Bold</option>
-                    <option value="700" className="bg-slate-900">Bold</option>
-                    <option value="900" className="bg-slate-900">Black</option>
+                    <option value="inherit" className="bg-slate-900">{t('inherit')}</option>
+                    <option value="100" className="bg-slate-900">{t('thin')}</option>
+                    <option value="300" className="bg-slate-900">{t('light')}</option>
+                    <option value="400" className="bg-slate-900">{t('normal')}</option>
+                    <option value="500" className="bg-slate-900">{t('medium')}</option>
+                    <option value="600" className="bg-slate-900">{t('semiBold')}</option>
+                    <option value="700" className="bg-slate-900">{t('bold')}</option>
+                    <option value="900" className="bg-slate-900">{t('black')}</option>
                   </select>
                 </div>
               </div>
@@ -253,8 +255,8 @@ export default function EditableText({
                 <div>
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">Font Style</label>
                   <div className="flex bg-white/5 p-1 rounded-xl border border-white/10">
-                    <button onClick={() => updateStyle({ fontStyle: 'normal' })} className={`flex-1 py-2 rounded-lg text-[10px] font-black ${styles.fontStyle === 'normal' ? 'bg-blue-600 text-white' : 'text-slate-400'}`}>NORMAL</button>
-                    <button onClick={() => updateStyle({ fontStyle: 'italic' })} className={`flex-1 py-2 rounded-lg text-[10px] font-black italic ${styles.fontStyle === 'italic' ? 'bg-blue-600 text-white' : 'text-slate-400'}`}>ITALIC</button>
+                    <button onClick={() => updateStyle({ fontStyle: 'normal' })} className={`flex-1 py-2 rounded-lg text-[10px] font-black ${styles.fontStyle === 'normal' ? 'bg-blue-600 text-white' : 'text-slate-400'}`}>{t('normal')}</button>
+                    <button onClick={() => updateStyle({ fontStyle: 'italic' })} className={`flex-1 py-2 rounded-lg text-[10px] font-black italic ${styles.fontStyle === 'italic' ? 'bg-blue-600 text-white' : 'text-slate-400'}`}>{t('italic')}</button>
                   </div>
                 </div>
               </div>
@@ -274,7 +276,7 @@ export default function EditableText({
               {/* Colors */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">Text Color</label>
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">{t('textColor')}</label>
                   <div className="flex items-center gap-3 bg-white/5 p-2 rounded-xl border border-white/10">
                     <input 
                       type="color" 
@@ -286,7 +288,7 @@ export default function EditableText({
                   </div>
                 </div>
                 <div>
-                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">Background</label>
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">{t('background')}</label>
                   <div className="flex items-center gap-3 bg-white/5 p-2 rounded-xl border border-white/10">
                     <input 
                       type="color" 
@@ -294,7 +296,7 @@ export default function EditableText({
                       onChange={(e) => updateStyle({ backgroundColor: e.target.value })}
                       className="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-none"
                     />
-                    <button onClick={() => updateStyle({ backgroundColor: 'transparent' })} className="text-[8px] text-blue-400 font-bold">Clear</button>
+                    <button onClick={() => updateStyle({ backgroundColor: 'transparent' })} className="text-[8px] text-blue-400 font-bold">{t('clear')}</button>
                   </div>
                 </div>
               </div>
@@ -303,7 +305,7 @@ export default function EditableText({
               <div className="space-y-6">
                 <div>
                   <div className="flex justify-between mb-3">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Box Padding</label>
+                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{t('boxPadding')}</label>
                     <span className="text-[10px] font-bold text-white">{styles.padding}</span>
                   </div>
                   <input 
@@ -312,11 +314,11 @@ export default function EditableText({
                     onChange={(e) => updateStyle({ padding: `${e.target.value}px` })}
                     className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-blue-500"
                   />
-                  <p className="text-[9px] text-slate-500 mt-2 italic">Controls space inside the background box</p>
+                  <p className="text-[9px] text-slate-500 mt-2 italic">{t('controlsSpaceInsideBackgroundBox')}</p>
                 </div>
                 <div>
                   <div className="flex justify-between mb-3">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Corner Radius</label>
+                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{t('cornerRadius')}</label>
                     <span className="text-[10px] font-bold text-white">{styles.borderRadius}</span>
                   </div>
                   <input 
@@ -325,13 +327,12 @@ export default function EditableText({
                     onChange={(e) => updateStyle({ borderRadius: `${e.target.value}px` })}
                     className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-blue-500"
                   />
-                  <p className="text-[9px] text-slate-500 mt-2 italic">Controls how rounded the corners are</p>
                 </div>
               </div>
 
               {/* Alignment */}
               <div>
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">Alignment</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">{t('alignment')}</label>
                 <div className="flex bg-white/5 p-1 rounded-xl border border-white/10">
                   {(['left', 'center', 'right'] as const).map((a) => (
                     <button
@@ -349,7 +350,7 @@ export default function EditableText({
 
               {/* Effects */}
               <div>
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">Shadow Effects</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">{t('shadowEffects')}</label>
                 <div className="flex flex-wrap gap-2">
                   {SHADOW_PRESETS.map(p => (
                     <button
@@ -357,7 +358,7 @@ export default function EditableText({
                       onClick={() => updateStyle({ textShadow: p.value })}
                       className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border transition-all ${styles.textShadow === p.value ? 'bg-white text-slate-900 border-white' : 'border-white/10 text-slate-400 hover:border-white/20'}`}
                     >
-                      {p.name}
+                      {t(p.name)}
                     </button>
                   ))}
                 </div>
@@ -366,8 +367,8 @@ export default function EditableText({
               {/* Position Control */}
               <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
                  <div className="flex items-center justify-between mb-4">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Drag Position</label>
-                    <button onClick={() => updateStyle({ x: 0, y: 0 })} className="text-[9px] font-black uppercase text-blue-400">Reset</button>
+                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{t('dragPosition')}</label>
+                    <button onClick={() => updateStyle({ x: 0, y: 0 })} className="text-[9px] font-black uppercase text-blue-400">{t('reset')}</button>
                  </div>
                  <div className="grid grid-cols-2 gap-4">
                     <div className="text-[10px] font-mono text-slate-500">X: <span className="text-white">{Math.round(styles.x || 0)}px</span></div>
@@ -381,7 +382,7 @@ export default function EditableText({
                 disabled={isSaving}
                 className="w-full py-4 bg-blue-600 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-blue-700 shadow-xl shadow-blue-600/30 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
               >
-                {isSaving ? <Loader2 size={16} className="animate-spin" /> : <><Check size={16} /> Save All Styles</>}
+                {isSaving ? <Loader2 size={16} className="animate-spin" /> : <><Check size={16} /> {t('saveAllStyles')}</>}
               </button>
             </div>
           </motion.div>

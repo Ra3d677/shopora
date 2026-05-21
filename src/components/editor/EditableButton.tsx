@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 import { updateStoreSettingByKey } from "@/app/store/[slug]/admin/actions";
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { createPortal } from "react-dom";
+import { useLanguageStore } from "@/store/language";
 
 interface ButtonStyle {
   fontSize?: number;
@@ -29,6 +30,7 @@ interface EditableButtonProps {
 
 export default function EditableButton({ label, link, slug, settingsKey, className = "", style = {}, onDelete }: EditableButtonProps) {
   const { isEditMode } = useEditorStore();
+  const { t } = useLanguageStore();
   const [isEditing, setIsEditing] = useState(false);
   const [currentLabel, setCurrentLabel] = useState(label);
   const [currentLink, setCurrentLink] = useState(link);
@@ -151,7 +153,7 @@ export default function EditableButton({ label, link, slug, settingsKey, classNa
             >
               <div className="flex items-center gap-2">
                 <GripHorizontal size={14} className="text-slate-400 group-hover:text-blue-500 transition-colors" />
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Styles & Position</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{t('stylesAndPosition')}</span>
               </div>
               <button 
                 onClick={(e) => {
@@ -179,14 +181,14 @@ export default function EditableButton({ label, link, slug, settingsKey, classNa
                   onClick={() => { setPosX(0); setPosY(0); }}
                   className="px-2 py-1 bg-white border border-slate-200 rounded text-[9px] font-black text-blue-600 hover:bg-blue-50"
                  >
-                    RESET
+                    {t('reset')}
                  </button>
               </div>
 
               {/* Basic Content */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-slate-400 uppercase flex items-center gap-1"><TypeIcon size={10} /> Text</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase flex items-center gap-1"><TypeIcon size={10} /> {t('text')}</label>
                   <input 
                     type="text" 
                     value={currentLabel}
@@ -195,7 +197,7 @@ export default function EditableButton({ label, link, slug, settingsKey, classNa
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-slate-400 uppercase flex items-center gap-1"><LinkIcon size={10} /> URL</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase flex items-center gap-1"><LinkIcon size={10} /> {t('url')}</label>
                   <input 
                     type="text" 
                     value={currentLink}
@@ -209,7 +211,7 @@ export default function EditableButton({ label, link, slug, settingsKey, classNa
               {/* Style Row 1: Font Size & Radius */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-slate-400 uppercase flex items-center gap-1"><Maximize size={10} /> Font Size</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase flex items-center gap-1"><Maximize size={10} /> {t('fontSize')}</label>
                   <div className="flex items-center gap-2">
                     <input 
                       type="range" min="8" max="60" 
@@ -221,7 +223,7 @@ export default function EditableButton({ label, link, slug, settingsKey, classNa
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-slate-400 uppercase flex items-center gap-1"><Square size={10} /> Roundness</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase flex items-center gap-1"><Square size={10} /> {t('roundness')}</label>
                   <div className="flex items-center gap-2">
                     <input 
                       type="range" min="0" max="60" 
@@ -229,7 +231,7 @@ export default function EditableButton({ label, link, slug, settingsKey, classNa
                       onChange={(e) => setBorderRadius(parseInt(e.target.value))}
                       className="flex-1 accent-blue-600"
                     />
-                    <span className="text-[10px] font-bold w-6 text-slate-900">{borderRadius > 60 ? 'Max' : borderRadius}</span>
+                    <span className="text-[10px] font-bold w-6 text-slate-900">{borderRadius > 60 ? t('max') : borderRadius}</span>
                   </div>
                 </div>
               </div>
@@ -237,7 +239,7 @@ export default function EditableButton({ label, link, slug, settingsKey, classNa
               {/* Style Row 2: Colors */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-slate-400 uppercase flex items-center gap-1"><Palette size={10} /> BG Color</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase flex items-center gap-1"><Palette size={10} /> {t('bgColor')}</label>
                   <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg p-1">
                     <input 
                       type="color" 
@@ -249,7 +251,7 @@ export default function EditableButton({ label, link, slug, settingsKey, classNa
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-slate-400 uppercase flex items-center gap-1"><Palette size={10} /> Text Color</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase flex items-center gap-1"><Palette size={10} /> {t('textColor')}</label>
                   <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg p-1">
                     <input 
                       type="color" 
@@ -264,7 +266,7 @@ export default function EditableButton({ label, link, slug, settingsKey, classNa
 
               {/* Style Row 3: Font Family */}
               <div className="space-y-1">
-                <label className="text-[10px] font-black text-slate-400 uppercase">Font Style</label>
+                <label className="text-[10px] font-black text-slate-400 uppercase">{t('fontStyle')}</label>
                 <div className="flex bg-slate-100 p-1 rounded-lg">
                   {['sans', 'serif', 'mono'].map((font) => (
                     <button
@@ -272,7 +274,7 @@ export default function EditableButton({ label, link, slug, settingsKey, classNa
                       onClick={() => setFontFamily(font)}
                       className={`flex-1 py-1.5 text-[10px] font-bold uppercase rounded-md transition-all ${fontFamily === font ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                     >
-                      {font}
+                      {t(font)}
                     </button>
                   ))}
                 </div>
@@ -285,12 +287,12 @@ export default function EditableButton({ label, link, slug, settingsKey, classNa
                   disabled={isSaving}
                   className="flex-1 py-3 bg-blue-600 text-white text-xs font-black uppercase tracking-widest rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                 >
-                  {isSaving ? <Loader2 size={14} className="animate-spin" /> : <><Check size={14} /> Save</>}
+                  {isSaving ? <Loader2 size={14} className="animate-spin" /> : <><Check size={14} /> {t('save')}</>}
                 </button>
                 {onDelete && (
                   <button 
                     onClick={async () => {
-                      if (confirm("Delete this button?")) {
+                      if (confirm(t('deleteThisButton'))) {
                         await onDelete();
                         setIsEditing(false);
                       }

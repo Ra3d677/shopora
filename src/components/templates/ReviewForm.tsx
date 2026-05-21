@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { submitClientReview } from "@/app/store/actions";
 import { Star, Send, CheckCircle2, Loader2 } from "lucide-react";
+import { useLanguageStore } from "@/store/language";
 
 export default function ReviewForm({ slug }: { slug: string }) {
+  const { t } = useLanguageStore();
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [content, setContent] = useState("");
@@ -38,13 +40,13 @@ export default function ReviewForm({ slug }: { slug: string }) {
     return (
       <div className="mt-8 max-w-xl mx-auto text-center bg-white/[0.03] border border-green-500/20 rounded-[2rem] p-12 animate-in fade-in zoom-in-95 duration-500">
         <CheckCircle2 className="w-14 h-14 mx-auto mb-5 text-green-400" />
-        <h3 className="text-white text-xl font-black uppercase tracking-tight mb-2">Thank You!</h3>
-        <p className="text-slate-400 text-sm leading-relaxed mb-6">Your review has been submitted and will appear shortly.</p>
+        <h3 className="text-white text-xl font-black uppercase tracking-tight mb-2">{t('thankYouTitle')}</h3>
+        <p className="text-slate-400 text-sm leading-relaxed mb-6">{t('reviewSubmitted')}</p>
         <button
           onClick={() => setStatus("idle")}
           className="px-8 py-3 bg-white/10 hover:bg-white/20 text-white text-xs font-black uppercase tracking-widest rounded-2xl transition-all"
         >
-          Write Another Review
+          {t('writeAnotherReview')}
         </button>
       </div>
     );
@@ -55,14 +57,14 @@ export default function ReviewForm({ slug }: { slug: string }) {
       {/* Divider */}
       <div className="flex items-center gap-4 mb-10">
         <div className="flex-1 h-px bg-white/[0.06]" />
-        <span className="text-slate-500 text-xs font-black uppercase tracking-[0.25em] whitespace-nowrap">Share Your Experience</span>
+        <span className="text-slate-500 text-xs font-black uppercase tracking-[0.25em] whitespace-nowrap">{t('shareExperience')}</span>
         <div className="flex-1 h-px bg-white/[0.06]" />
       </div>
 
       <form onSubmit={handleSubmit} className="bg-white/[0.03] border border-white/[0.07] rounded-[2rem] p-8 md:p-10 space-y-6">
         {/* Star Rating */}
         <div className="flex flex-col items-center gap-3">
-          <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Your Rating</label>
+          <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">{t('yourRating')}</label>
           <div className="flex gap-2">
             {[1, 2, 3, 4, 5].map((star) => (
               <button
@@ -83,24 +85,24 @@ export default function ReviewForm({ slug }: { slug: string }) {
         {/* Name + Role */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.25em] ml-1">Your Name *</label>
+            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.25em] ml-1">{t('yourNameRequired')}</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              placeholder="John Smith"
+              placeholder={t('namePlaceholder2')}
               className="w-full bg-white/[0.04] border border-white/[0.07] rounded-2xl px-5 py-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:border-transparent transition-all text-sm font-medium"
               style={{ '--tw-ring-color': 'var(--dynamic-primary, #22d3ee)' } as any}
             />
           </div>
           <div className="space-y-2">
-            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.25em] ml-1">Role / Company <span className="text-slate-600">(optional)</span></label>
+            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.25em] ml-1">{t('roleCompany')}</label>
             <input
               type="text"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              placeholder="CEO, Acme Corp"
+              placeholder={t('rolePlaceholder2')}
               className="w-full bg-white/[0.04] border border-white/[0.07] rounded-2xl px-5 py-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:border-transparent transition-all text-sm"
               style={{ '--tw-ring-color': 'var(--dynamic-primary, #22d3ee)' } as any}
             />
@@ -109,12 +111,12 @@ export default function ReviewForm({ slug }: { slug: string }) {
 
         {/* Review content */}
         <div className="space-y-2">
-          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.25em] ml-1">Your Review *</label>
+          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.25em] ml-1">{t('yourReview')}</label>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
-            placeholder="Tell us about your experience..."
+            placeholder={t('reviewPlaceholder2')}
             rows={4}
             className="w-full bg-white/[0.04] border border-white/[0.07] rounded-2xl px-5 py-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:border-transparent transition-all text-sm leading-relaxed italic resize-none"
             style={{ '--tw-ring-color': 'var(--dynamic-primary, #22d3ee)' } as any}
@@ -138,12 +140,12 @@ export default function ReviewForm({ slug }: { slug: string }) {
           {status === "loading" ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin" />
-              Submitting...
+              {t('submitting')}
             </>
           ) : (
             <>
               <Send className="w-5 h-5" />
-              Submit Review
+              {t('submitReview')}
             </>
           )}
         </button>

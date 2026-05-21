@@ -6,12 +6,14 @@ import SmartImage from "@/components/ui/SmartImage";
 import { ArrowRight } from "lucide-react";
 import HeroSlider from "@/components/ui/HeroSlider";
 import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
+import { getTranslation } from "@/lib/i18n";
 
 export const dynamic = 'force-dynamic';
 
 export default async function CollectionsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const store = await getStoreBySlug(slug);
+  const t = await getTranslation();
   
   if (!store) {
     notFound();
@@ -37,7 +39,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
 
   if (store.template === 'senno') {
     return (
-      <SennoCategories slug={slug} collections={COLLECTIONS} banners={collectionsBanners} settings={store.settings} />
+      <SennoCategories slug={slug} collections={COLLECTIONS} banners={collectionsBanners} settings={store.settings} t={t} />
     );
   }
 
@@ -56,7 +58,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
         />
       ) : (
         <div className="bg-slate-950 py-24 text-center">
-          <h1 className="text-5xl font-extrabold tracking-widest text-white uppercase">Collections</h1>
+          <h1 className="text-5xl font-extrabold tracking-widest text-white uppercase">{t('collections')}</h1>
         </div>
       )}
 
@@ -82,7 +84,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
                   <div className="flex items-end justify-between mb-2">
                     <h2 className="text-3xl font-bold text-white tracking-wide">{collection.name}</h2>
                     <span className="text-accent bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-sm font-semibold border border-white/20">
-                      {collection.itemCount} Items
+                      {t('itemsCount').replace('{count}', collection.itemCount)}
                     </span>
                   </div>
                   <p className="text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 line-clamp-2">
@@ -106,7 +108,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                   <div className="absolute bottom-8 left-8 text-white">
                     <h3 className="text-3xl font-black uppercase tracking-tighter">{cat.name}</h3>
-                    <p className="text-white/60 text-[10px] tracking-widest uppercase mt-2">{cat.itemCount} Items</p>
+                    <p className="text-white/60 text-[10px] tracking-widest uppercase mt-2">{t('itemsCount').replace('{count}', cat.itemCount)}</p>
                   </div>
                </Link>
              ))}
@@ -125,7 +127,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-8 left-8 text-white">
                   <h3 className="text-2xl font-black uppercase tracking-tighter">{cat.name}</h3>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">{cat.itemCount} Items</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">{t('itemsCount').replace('{count}', cat.itemCount)}</span>
                 </div>
               </Link>
             ))}
@@ -142,7 +144,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
               >
                 <div>
                   <h3 className="text-6xl font-black uppercase tracking-tighter group-hover:text-blue-600 transition-colors">{cat.name}</h3>
-                  <p className="text-slate-400 mt-2 font-bold uppercase tracking-widest text-xs">{cat.itemCount} Items available</p>
+                  <p className="text-slate-400 mt-2 font-bold uppercase tracking-widest text-xs">{t('itemsCount').replace('{count}', cat.itemCount)}</p>
                 </div>
                 <div className="w-32 h-32 rounded-full overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-0 group-hover:scale-100">
                   <SmartImage src={cat.image} className="w-full h-full object-cover" alt={cat.name} />
@@ -167,7 +169,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
                   </div>
                 </div>
                 <h3 className="text-xl font-black uppercase tracking-widest text-slate-900">{cat.name}</h3>
-                <span className="text-[10px] font-bold text-slate-400 uppercase mt-2">{cat.itemCount} Items</span>
+                <span className="text-[10px] font-bold text-slate-400 uppercase mt-2">{t('itemsCount').replace('{count}', cat.itemCount)}</span>
               </Link>
             ))}
           </div>
@@ -177,7 +179,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
   );
 }
 
-function SennoCategories({ slug, collections, banners, settings }: any) {
+function SennoCategories({ slug, collections, banners, settings, t }: any) {
   return (
     <div data-page="categories" className="min-h-screen bg-white pb-32">
        {/* Header / Banner */}
@@ -191,11 +193,11 @@ function SennoCategories({ slug, collections, banners, settings }: any) {
          <div className="bg-[#fcf2f4] py-32 px-6">
             <div className="container mx-auto text-center">
                <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">
-                  <Link href={`/store/${slug}`} className="hover:text-[#f06292]">Home</Link>
+                  <Link href={`/store/${slug}`} className="hover:text-[#f06292]">{t('homeBreadcrumb')}</Link>
                   <span>/</span>
-                  <span className="text-slate-900">Collections</span>
+                  <span className="text-slate-900">{t('collections')}</span>
                </div>
-               <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-8 tracking-tighter uppercase">Our Collections</h1>
+               <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-8 tracking-tighter uppercase">{t('ourCollections')}</h1>
             </div>
          </div>
        )}
@@ -221,7 +223,7 @@ function SennoCategories({ slug, collections, banners, settings }: any) {
                  <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900 group-hover:text-[#f06292] transition-colors">{cat.name}</h3>
                  <div className="flex items-center gap-2 mt-3">
                     <div className="w-8 h-[1px] bg-slate-200" />
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{cat.itemCount} Products</span>
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('productsCount').replace('{count}', cat.itemCount)}</span>
                     <div className="w-8 h-[1px] bg-slate-200" />
                  </div>
                </Link>

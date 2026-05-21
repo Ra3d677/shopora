@@ -7,9 +7,11 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AddElementMenu from "./AddElementMenu";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguageStore } from "@/store/language";
 
 export default function AdminEditorBar({ slug, isOwner, store }: { slug: string, isOwner: boolean, store: any }) {
   const { isEditMode, toggleEditMode, setEditMode, device, setDevice } = useEditorStore();
+  const { t } = useLanguageStore();
   const [mounted, setMounted] = useState(false);
   const [isExpanded, setIsExpanded] = useState(true);
   const searchParams = useSearchParams();
@@ -45,14 +47,14 @@ export default function AdminEditorBar({ slug, isOwner, store }: { slug: string,
               <button 
                 onClick={() => setDevice('desktop')}
                 className={`p-2.5 rounded-xl transition-all ${device === 'desktop' ? 'bg-white text-slate-900 shadow-lg' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
-                title="Desktop View"
+                title={t('desktopView')}
               >
                 <Monitor size={18} />
               </button>
               <button 
                 onClick={() => setDevice('mobile')}
                 className={`p-2.5 rounded-xl transition-all ${device === 'mobile' ? 'bg-white text-slate-900 shadow-lg' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
-                title="Mobile View"
+                title={t('mobileView')}
               >
                 <Smartphone size={18} />
               </button>
@@ -67,7 +69,7 @@ export default function AdminEditorBar({ slug, isOwner, store }: { slug: string,
                 <button 
                   onClick={() => setEditMode(false)}
                   className="p-3 rounded-2xl bg-red-600/20 text-red-400 hover:bg-red-600/30 transition-all"
-                  title="Exit Editor"
+                  title={t('exitEditor')}
                 >
                   <X size={18} />
                 </button>
@@ -80,7 +82,7 @@ export default function AdminEditorBar({ slug, isOwner, store }: { slug: string,
             <Link 
               href={`/store/${slug}/admin/dashboard`}
               className="p-3 rounded-2xl bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white transition-all border border-white/5"
-              title="Dashboard"
+              title={t('dashboard')}
             >
               <LayoutDashboard size={18} />
             </Link>
@@ -88,7 +90,7 @@ export default function AdminEditorBar({ slug, isOwner, store }: { slug: string,
             <Link 
               href={`/store/${slug}/admin/builder`}
               className="p-3 rounded-2xl bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white transition-all border border-white/5"
-              title="Full Builder"
+              title={t('fullBuilder')}
             >
               <Settings size={18} />
             </Link>

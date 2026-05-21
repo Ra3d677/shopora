@@ -18,7 +18,7 @@ export default async function CustomersPage({ params }: { params: Promise<{ slug
 
   if (!store) {
     return <div className="p-20 text-center">
-      <h1 className="text-2xl font-black text-white uppercase italic">Store Not Found</h1>
+      <h1 className="text-2xl font-black text-white uppercase italic">{t('storeNotFound')}</h1>
     </div>;
   }
 
@@ -55,7 +55,7 @@ export default async function CustomersPage({ params }: { params: Promise<{ slug
       if (order.createdAt > existing.lastOrder) existing.lastOrder = order.createdAt;
     } else {
       customerMap.set(email, {
-        name: order.customerName || 'Unknown',
+        name: order.customerName || t('unknown'),
         email: email,
         phone: order.customerPhone || '—',
         orders: 1,
@@ -82,7 +82,7 @@ export default async function CustomersPage({ params }: { params: Promise<{ slug
             {t('customers')}
           </h1>
           <p className="admin-text-secondary font-medium tracking-wide text-[13px]">
-            {totalCustomers} {isRTL ? 'عميل مسجل' : 'registered customers'} · ${totalRevenue.toFixed(0)} {isRTL ? 'إجمالي الإنفاق' : 'total spend'}
+            {totalCustomers} {t('registeredCustomers')} · ${totalRevenue.toFixed(0)} {t('totalSpend')}
           </p>
         </div>
       </div>
@@ -92,14 +92,14 @@ export default async function CustomersPage({ params }: { params: Promise<{ slug
         <div className="admin-card p-5 rounded-2xl border admin-border">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400"><ShoppingBag size={16} /></div>
-            <p className="text-[9px] font-black uppercase tracking-widest admin-text-muted">{isRTL ? 'إجمالي العملاء' : 'Total Customers'}</p>
+            <p className="text-[9px] font-black uppercase tracking-widest admin-text-muted">{t('totalCustomers')}</p>
           </div>
           <h3 className="text-3xl font-black admin-text">{totalCustomers}</h3>
         </div>
         <div className="admin-card p-5 rounded-2xl border admin-border">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400"><DollarSign size={16} /></div>
-            <p className="text-[9px] font-black uppercase tracking-widest admin-text-muted">{isRTL ? 'إجمالي الإنفاق' : 'Total Spend'}</p>
+            <p className="text-[9px] font-black uppercase tracking-widest admin-text-muted">{t('totalSpendKpi')}</p>
           </div>
           <h3 className="text-3xl font-black admin-text">${totalRevenue.toFixed(0)}</h3>
         </div>

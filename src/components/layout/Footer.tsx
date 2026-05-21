@@ -27,7 +27,7 @@ export default function Footer() {
             )}
             <div className="text-sm leading-relaxed mb-8">
               <EditableText 
-                content={store.settings?.footerMinimalDesc || "A study in form and function. Curated essentials for the modern minimalist. Designed to last a lifetime, not a season."} 
+                content={store.settings?.footerMinimalDesc || t('studyInFormAndFunction')} 
                 settingsKey="footerMinimalDesc" 
                 slug={slug} 
               />
@@ -39,26 +39,26 @@ export default function Footer() {
           </div>
           <div className="grid grid-cols-2 gap-20 text-[10px] font-black uppercase tracking-[0.3em]">
              <div className="flex flex-col gap-4">
-                <span className="text-zinc-600">Links</span>
-                <Link href="#" className="text-white hover:opacity-50">Inprint</Link>
-                <Link href="#" className="text-white hover:opacity-50">Privacy</Link>
-                <Link href="#" className="text-white hover:opacity-50">Contact</Link>
+                <span className="text-zinc-600">{t('links')}</span>
+                <Link href="#" className="text-white hover:opacity-50">{t('inprint')}</Link>
+                <Link href="#" className="text-white hover:opacity-50">{t('privacy')}</Link>
+                <Link href="#" className="text-white hover:opacity-50">{t('contact')}</Link>
              </div>
              <div className="flex flex-col gap-4">
-                <span className="text-zinc-600">Social</span>
+                <span className="text-zinc-600">{t('social')}</span>
                 {store.settings?.socialLinks?.instagram && (
-                  <Link href={store.settings.socialLinks.instagram} target="_blank" className="text-white hover:opacity-50">Instagram</Link>
+                  <Link href={store.settings.socialLinks.instagram} target="_blank" className="text-white hover:opacity-50">{t('instagram')}</Link>
                 )}
                 {store.settings?.socialLinks?.facebook && (
-                  <Link href={store.settings.socialLinks.facebook} target="_blank" className="text-white hover:opacity-50">Facebook</Link>
+                  <Link href={store.settings.socialLinks.facebook} target="_blank" className="text-white hover:opacity-50">{t('facebook')}</Link>
                 )}
                 {store.settings?.socialLinks?.twitter && (
-                  <Link href={store.settings.socialLinks.twitter} target="_blank" className="text-white hover:opacity-50">Twitter</Link>
+                  <Link href={store.settings.socialLinks.twitter} target="_blank" className="text-white hover:opacity-50">{t('twitter')}</Link>
                 )}
                 {!store.settings?.socialLinks && (
                   <>
-                    <Link href="#" className="text-white hover:opacity-50">Instagram</Link>
-                    <Link href="#" className="text-white hover:opacity-50">Twitter</Link>
+                    <Link href="#" className="text-white hover:opacity-50">{t('instagram')}</Link>
+                    <Link href="#" className="text-white hover:opacity-50">{t('twitter')}</Link>
                   </>
                 )}
              </div>
@@ -66,7 +66,7 @@ export default function Footer() {
         </div>
         <div className="max-w-screen-2xl mx-auto mt-16 pt-8 border-t border-zinc-900 flex justify-between items-center text-[8px] font-black uppercase tracking-widest text-zinc-600">
            <span>© {new Date().getFullYear()} {store.name}</span>
-           <span>Built by Antigravity</span>
+           <span>{t('builtByAntigravity')}</span>
         </div>
       </footer>
     );
@@ -98,26 +98,26 @@ export default function Footer() {
           
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-6 text-[#1d1d1f]">
             <div>
-              <h4 className="font-semibold mb-2">Shop and Learn</h4>
+              <h4 className="font-semibold mb-2">{t('shopAndLearn')}</h4>
               <ul className="space-y-2">
-                <li><Link href="#" className="hover:underline">Store</Link></li>
-                <li><Link href="#" className="hover:underline">Mac</Link></li>
-                <li><Link href="#" className="hover:underline">iPad</Link></li>
-                <li><Link href="#" className="hover:underline">iPhone</Link></li>
+                <li><Link href="#" className="hover:underline">{t('store')}</Link></li>
+                <li><Link href="#" className="hover:underline">{t('mac')}</Link></li>
+                <li><Link href="#" className="hover:underline">{t('iPad')}</Link></li>
+                <li><Link href="#" className="hover:underline">{t('iPhone')}</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">Account</h4>
+              <h4 className="font-semibold mb-2">{t('account')}</h4>
               <ul className="space-y-2">
-                <li><Link href="#" className="hover:underline">Manage Your ID</Link></li>
-                <li><Link href="#" className="hover:underline">Store Account</Link></li>
-                <li><Link href="#" className="hover:underline">iCloud.com</Link></li>
+                <li><Link href="#" className="hover:underline">{t('manageYourID')}</Link></li>
+                <li><Link href="#" className="hover:underline">{t('storeAccount')}</Link></li>
+                <li><Link href="#" className="hover:underline">{t('iCloudCom')}</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">For Business</h4>
+              <h4 className="font-semibold mb-2">{t('forBusiness')}</h4>
               <ul className="space-y-2">
-                <li><Link href="#" className="hover:underline">Shop for Business</Link></li>
+                <li><Link href="#" className="hover:underline">{t('shopForBusiness')}</Link></li>
               </ul>
             </div>
           </div>
@@ -131,11 +131,11 @@ export default function Footer() {
               />
             </p>
             <div className="flex gap-4 mt-2 md:mt-0">
-              <Link href="#" className="hover:underline">Privacy Policy</Link>
+              <Link href="#" className="hover:underline">{t('privacyPolicy')}</Link>
               <span className="border-l border-[#d2d2d7]"></span>
-              <Link href="#" className="hover:underline">Terms of Use</Link>
+              <Link href="#" className="hover:underline">{t('termsOfUse')}</Link>
               <span className="border-l border-[#d2d2d7]"></span>
-              <Link href="#" className="hover:underline">Sales and Refunds</Link>
+              <Link href="#" className="hover:underline">{t('salesAndRefunds')}</Link>
             </div>
           </div>
         </div>
@@ -153,29 +153,29 @@ export default function Footer() {
           <div className="flex flex-col lg:flex-row justify-between gap-20 mb-20">
              <div className="max-w-xl">
                 <div className="text-6xl md:text-8xl font-black tracking-tighter italic mb-12 uppercase leading-none">
-                  <EditableText content={store.settings?.footerMarketingTitle || "The Syndicate"} settingsKey="footerMarketingTitle" slug={slug} />
+                  <EditableText content={store.settings?.footerMarketingTitle || t('theSyndicate')} settingsKey="footerMarketingTitle" slug={slug} />
                 </div>
                 <div className="text-white/40 text-lg font-light leading-relaxed">
-                   <EditableText content={store.settings?.footerMarketingDesc || "Boundary-pushing design. Engineered for longevity. Join the movement toward sustainable impact."} settingsKey="footerMarketingDesc" slug={slug} />
+                   <EditableText content={store.settings?.footerMarketingDesc || t('boundaryPushingDesign')} settingsKey="footerMarketingDesc" slug={slug} />
                 </div>
              </div>
              <div className="grid grid-cols-2 md:grid-cols-3 gap-20 text-[10px] font-black uppercase tracking-[0.5em]">
                 <div className="space-y-8">
-                   <p className="text-white/20 mb-12">Navigate</p>
-                   <Link href="#" className="block hover:text-white/50">Series</Link>
-                   <Link href="#" className="block hover:text-white/50">Manifesto</Link>
-                   <Link href="#" className="block hover:text-white/50">Journal</Link>
+                   <p className="text-white/20 mb-12">{t('navigate')}</p>
+                   <Link href="#" className="block hover:text-white/50">{t('series')}</Link>
+                   <Link href="#" className="block hover:text-white/50">{t('manifesto')}</Link>
+                   <Link href="#" className="block hover:text-white/50">{t('journal')}</Link>
                 </div>
                 <div className="space-y-8">
-                   <p className="text-white/20 mb-12">Support</p>
-                   <Link href="#" className="block hover:text-white/50">Shipping</Link>
-                   <Link href="#" className="block hover:text-white/50">Returns</Link>
-                   <Link href="#" className="block hover:text-white/50">Help</Link>
+                   <p className="text-white/20 mb-12">{t('support')}</p>
+                   <Link href="#" className="block hover:text-white/50">{t('shipping')}</Link>
+                   <Link href="#" className="block hover:text-white/50">{t('returns')}</Link>
+                   <Link href="#" className="block hover:text-white/50">{t('help')}</Link>
                 </div>
                 <div className="space-y-8">
-                   <p className="text-white/20 mb-12">Social</p>
-                   <Link href="#" className="block hover:text-white/50">Instagram</Link>
-                   <Link href="#" className="block hover:text-white/50">Discord</Link>
+                   <p className="text-white/20 mb-12">{t('social')}</p>
+                   <Link href="#" className="block hover:text-white/50">{t('instagram')}</Link>
+                   <Link href="#" className="block hover:text-white/50">{t('discord')}</Link>
                 </div>
              </div>
           </div>
@@ -183,8 +183,8 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-12 pt-10 border-t border-white/5 text-[9px] font-black uppercase tracking-[0.5em] text-white/40">
              <span>© {new Date().getFullYear()} {store.name} / All Rights Reserved</span>
              <div className="flex gap-12 italic">
-                <span>RAW MATERIALS</span>
-                <span>MAXIMUM IMPACT</span>
+                <span>{t('rawMaterials')}</span>
+                <span>{t('maximumImpact')}</span>
              </div>
           </div>
         </div>
@@ -254,30 +254,30 @@ export default function Footer() {
             </div>
          </div>
         
-        <div className="flex flex-col md:flex-row justify-between items-center gap-12 text-[9px] uppercase tracking-[0.3em]">
-           <div className="flex gap-12">
-              {store.settings?.socialLinks?.instagram && (
-                <Link href={store.settings.socialLinks.instagram} target="_blank" className="hover:text-white">Instagram</Link>
-              )}
-              {store.settings?.socialLinks?.facebook && (
-                <Link href={store.settings.socialLinks.facebook} target="_blank" className="hover:text-white">Facebook</Link>
-              )}
-              {store.settings?.socialLinks?.twitter && (
-                <Link href={store.settings.socialLinks.twitter} target="_blank" className="hover:text-white">Twitter</Link>
-              )}
-              {!store.settings?.socialLinks && (
-                <>
-                  <Link href="#" className="hover:text-white">Instagram</Link>
-                  <Link href="#" className="hover:text-white">Pinterest</Link>
-                </>
-              )}
-           </div>
-           <span>© {new Date().getFullYear()} {store.name} — Handcrafted for Excellence</span>
-         </div>
-       </div>
-     </footer>
-   );
- }
+         <div className="flex flex-col md:flex-row justify-between items-center gap-12 text-[9px] uppercase tracking-[0.3em]">
+            <div className="flex gap-12">
+               {store.settings?.socialLinks?.instagram && (
+                 <Link href={store.settings.socialLinks.instagram} target="_blank" className="hover:text-white">Instagram</Link>
+               )}
+               {store.settings?.socialLinks?.facebook && (
+                 <Link href={store.settings.socialLinks.facebook} target="_blank" className="hover:text-white">Facebook</Link>
+               )}
+               {store.settings?.socialLinks?.twitter && (
+                 <Link href={store.settings.socialLinks.twitter} target="_blank" className="hover:text-white">Twitter</Link>
+               )}
+               {!store.settings?.socialLinks && (
+                 <>
+                   <Link href="#" className="hover:text-white">Instagram</Link>
+                   <Link href="#" className="hover:text-white">{t('pinterest')}</Link>
+                 </>
+               )}
+            </div>
+            <span>© {new Date().getFullYear()} {store.name} — Handcrafted for Excellence</span>
+          </div>
+        </div>
+      </footer>
+    );
+  }
 
 function NewsletterForm({ slug }: { slug: string }) {
   const { t } = useLanguageStore();

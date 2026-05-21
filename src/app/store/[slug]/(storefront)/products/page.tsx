@@ -5,6 +5,7 @@ import SortDropdown from "./SortDropdown";
 import SmartImage from "@/components/ui/SmartImage";
 import { notFound } from "next/navigation";
 import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
+import { getTranslation } from "@/lib/i18n";
 
 export const dynamic = 'force-dynamic';
 
@@ -19,6 +20,7 @@ export default async function ProductsPage({
   const { category, sort } = await searchParams;
   
   const store = await getStoreBySlug(slug);
+  const t = await getTranslation();
   if (!store) {
     notFound();
   }
@@ -27,14 +29,14 @@ export default async function ProductsPage({
 
   // Filter products based on URL parameter
   let displayedProducts = [...store.products];
-  let pageTitle = "All Collections";
-  let pageDescription = "Explore our full range of premium essentials.";
+  let pageTitle = t('allCollectionsTitle');
+  let pageDescription = t('allCollectionsDesc');
 
   if (category) {
     if (category === 'sale') {
       displayedProducts = displayedProducts.filter(p => p.discount_price !== null);
-      pageTitle = "Sale";
-      pageDescription = "Premium items at exceptional value.";
+      pageTitle = t('saleTitle');
+      pageDescription = t('saleDesc');
     } else {
       // Recursive function to get all subcategory IDs
       const getAllSubCategoryIds = (cats: any[], pId: string): string[] => {
@@ -76,6 +78,7 @@ export default async function ProductsPage({
         category={category} 
         pageTitle={pageTitle} 
         pageDescription={pageDescription} 
+        t={t}
       />
     );
   }
@@ -105,7 +108,7 @@ export default async function ProductsPage({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 pb-6 border-b border-border gap-4">
         <div className="flex flex-col gap-4 w-full">
           <div className="flex gap-2 overflow-x-auto pb-2 w-full hide-scrollbar">
-            <Link href={`/store/${slug}/products`} className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${!category ? 'bg-slate-950 text-white shadow-md' : 'border border-border text-foreground hover:border-slate-400'}`}>All</Link>
+            <Link href={`/store/${slug}/products`} className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${!category ? 'bg-slate-950 text-white shadow-md' : 'border border-border text-foreground hover:border-slate-400'}`}>{t('allItems')}</Link>
             {store.categories.filter(c => !c.parentId).map((cat: any) => (
               <Link 
                 key={cat.id}
@@ -115,7 +118,7 @@ export default async function ProductsPage({
                 {cat.name}
               </Link>
             ))}
-            <Link href={`/store/${slug}/products?category=sale`} className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${category === 'sale' ? 'bg-red-500 text-white shadow-md' : 'border border-border text-red-500 hover:border-red-500'}`}>Sale</Link>
+            <Link href={`/store/${slug}/products?category=sale`} className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${category === 'sale' ? 'bg-red-500 text-white shadow-md' : 'border border-border text-red-500 hover:border-red-500'}`}>{t('saleBadge')}</Link>
           </div>
 
           {category && store.categories.some(c => c.parentId === category || (store.categories.find(curr => curr.id === category)?.parentId === c.parentId && c.parentId)) && (
@@ -136,17 +139,17 @@ export default async function ProductsPage({
           )}
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
-          <span className="text-sm text-muted-foreground font-medium">Sort by:</span>
+          <span className="text-sm text-muted-foreground font-medium">{t('sortBy')}</span>
           <SortDropdown />
         </div>
       </div>
 
       {displayedProducts.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <h2 className="text-2xl font-bold text-primary mb-2">No products found</h2>
-          <p className="text-muted-foreground mb-6">We couldn't find any products in this collection.</p>
+          <h2 className="text-2xl font-bold text-primary mb-2">{t('noProductsFound')}</h2>
+          <p className="text-muted-foreground mb-6">{t('noProductsDesc')}</p>
           <Link href={`/store/${slug}/products`} className="bg-slate-950 text-white px-6 py-3 rounded-full font-medium hover:bg-slate-800 transition-colors">
-            Clear Filters
+            {t('clearFilters')}
           </Link>
         </div>
       ) : (
@@ -165,13 +168,13 @@ export default async function ProductsPage({
                 />
                 {product.discount_price && (
                   <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
-                    SALE
+                    {t('saleBadge')}
                   </div>
                 )}
                 {storeSettings.categoriesLayout !== 'list' && (
                   <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="bg-white/20 backdrop-blur-md border border-white/30 text-white text-center py-3 rounded-xl font-medium w-full">
-                      View Details
+                      {t('viewDetails')}
                     </div>
                   </div>
                 )}
@@ -199,7 +202,7 @@ export default async function ProductsPage({
   );
 }
 
-function SennoProducts({ slug, store, products, category, pageTitle, pageDescription }: any) {
+function SennoProducts({ slug, store, products, category, pageTitle, pageDescription, t }: any) {
   const pink = "#f06292";
 
   return (
@@ -208,7 +211,7 @@ function SennoProducts({ slug, store, products, category, pageTitle, pageDescrip
        <div className="bg-[#fcf2f4] py-24 px-6">
           <div className="container mx-auto">
              <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">
-                <Link href={`/store/${slug}`} className="hover:text-[#f06292]">Home</Link>
+                <Link href={`/store/${slug}`} className="hover:text-[#f06292]">{t('homeBreadcrumb')}</Link>
                 <span>/</span>
                 <span className="text-slate-900">{pageTitle}</span>
              </div>
@@ -225,7 +228,7 @@ function SennoProducts({ slug, store, products, category, pageTitle, pageDescrip
                   href={`/store/${slug}/products`} 
                   className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${!category ? 'bg-[#f06292] text-white shadow-lg' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}
                 >
-                  All Items
+                  {t('allItems')}
                 </Link>
                 {store.categories.map((cat: any) => (
                   <Link 
@@ -238,7 +241,7 @@ function SennoProducts({ slug, store, products, category, pageTitle, pageDescrip
                 ))}
              </div>
              <div className="flex items-center gap-4 w-full md:w-auto">
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Sort by</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{t('sortBy')}</span>
                 <SortDropdown />
              </div>
           </div>
@@ -246,9 +249,9 @@ function SennoProducts({ slug, store, products, category, pageTitle, pageDescrip
           {/* Grid */}
           {products.length === 0 ? (
              <div className="text-center py-32">
-                <h3 className="text-3xl font-black text-slate-900 mb-4">Empty Collection</h3>
-                <p className="text-slate-400 mb-8 italic">We couldn't find any products in this selection.</p>
-                <Link href={`/store/${slug}/products`} className="inline-block px-10 py-4 bg-slate-900 text-white font-black uppercase tracking-widest text-[10px] rounded-full">Explore All</Link>
+                <h3 className="text-3xl font-black text-slate-900 mb-4">{t('emptyCollection')}</h3>
+                <p className="text-slate-400 mb-8 italic">{t('emptyCollectionDesc')}</p>
+                <Link href={`/store/${slug}/products`} className="inline-block px-10 py-4 bg-slate-900 text-white font-black uppercase tracking-widest text-[10px] rounded-full">{t('exploreAll')}</Link>
              </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-16">
@@ -257,7 +260,7 @@ function SennoProducts({ slug, store, products, category, pageTitle, pageDescrip
                    <Link href={`/store/${slug}/product/${product.id}`} className="relative aspect-[3/4] rounded-3xl overflow-hidden bg-[#f5f5f5] mb-6 shadow-sm group-hover:shadow-2xl transition-all duration-700">
                       <SmartImage src={product.images[0]} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt={product.name} />
                       {product.discount_price && (
-                        <div className="absolute top-4 left-4 bg-[#f06292] text-white text-[9px] font-black px-3 py-1 rounded shadow-md">SALE</div>
+                        <div className="absolute top-4 left-4 bg-[#f06292] text-white text-[9px] font-black px-3 py-1 rounded shadow-md">{t('saleBadge')}</div>
                       )}
                       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all transform translate-y-6 group-hover:translate-y-0 duration-500">
                          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-xl hover:bg-[#f06292] hover:text-white transition-all"><Search size={18} /></div>

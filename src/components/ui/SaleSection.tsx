@@ -5,6 +5,7 @@ import SmartImage from "./SmartImage";
 import EditableText from "../editor/EditableText";
 import { motion } from "framer-motion";
 import { ArrowRight, ShoppingBag, Heart, Star } from "lucide-react";
+import { useLanguageStore } from "@/store/language";
 
 interface SaleSectionProps {
   section: any;
@@ -14,6 +15,7 @@ interface SaleSectionProps {
 }
 
 export default function SaleSection({ section, products = [], slug, template }: SaleSectionProps) {
+  const { t } = useLanguageStore();
   if (!products || !Array.isArray(products) || !section) return null;
   
   const saleProducts = products.filter((p: any) => p && p.discount_price);
@@ -40,7 +42,7 @@ export default function SaleSection({ section, products = [], slug, template }: 
                 >
                    <SmartImage src={product.images[0]} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={product.name} />
                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
-                      <div className="bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-full w-fit mb-4">SALE</div>
+                      <div className="bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-full w-fit mb-4">{t('sale')}</div>
                       <h3 className="text-white font-black uppercase tracking-tighter text-2xl md:text-4xl mb-2">{product.name}</h3>
                       <div className="flex items-center gap-4">
                          <span className="text-white/40 line-through text-sm">${product.price}</span>
@@ -67,7 +69,7 @@ export default function SaleSection({ section, products = [], slug, template }: 
                    <div className="p-8 md:p-12 flex-1 flex flex-col justify-center">
                       <div className="flex justify-between items-start mb-6">
                          <div>
-                            <span className="text-red-600 font-black uppercase tracking-widest text-[10px] mb-2 block">Special Drop</span>
+                            <span className="text-red-600 font-black uppercase tracking-widest text-[10px] mb-2 block">{t('specialDrop')}</span>
                             <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic text-white">{product.name}</h3>
                          </div>
                          <div className="text-right">
@@ -75,10 +77,10 @@ export default function SaleSection({ section, products = [], slug, template }: 
                             <span className="block text-red-600 text-4xl font-black italic">-${Math.round(((product.price - product.discount_price) / product.price) * 100)}%</span>
                          </div>
                       </div>
-                      <p className="text-slate-500 max-w-xl mb-8 leading-relaxed">Handcrafted with premium materials and engineered for those who demand excellence in every detail.</p>
+                      <p className="text-slate-500 max-w-xl mb-8 leading-relaxed">{t('handcraftedWithPremiumMaterials')}</p>
                       <div className="flex items-center justify-between">
                          <span className="text-3xl font-black text-white">${product.discount_price}</span>
-                         <button className="bg-white text-black px-10 py-4 rounded-full font-black uppercase tracking-widest text-xs">Add to Bag</button>
+                         <button className="bg-white text-black px-10 py-4 rounded-full font-black uppercase tracking-widest text-xs">{t('addToBag')}</button>
                       </div>
                    </div>
                 </Link>
@@ -97,7 +99,7 @@ export default function SaleSection({ section, products = [], slug, template }: 
                 >
                    <div className="aspect-[3/4] rounded-[2.5rem] overflow-hidden mb-8 shadow-xl relative bg-white/5 backdrop-blur-sm">
                       <SmartImage src={product.images[0]} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={product.name} />
-                      <div className="absolute top-6 left-6 bg-red-600 text-white text-[10px] font-black px-4 py-2 rounded-full">SALE</div>
+                      <div className="absolute top-6 left-6 bg-red-600 text-white text-[10px] font-black px-4 py-2 rounded-full">{t('sale')}</div>
                    </div>
                    <h3 className="text-2xl font-black tracking-tighter uppercase italic mb-2 text-white">{product.name}</h3>
                    <div className="flex items-center gap-4">
@@ -124,7 +126,7 @@ export default function SaleSection({ section, products = [], slug, template }: 
                       </div>
                       <div>
                          <h3 className="text-xl font-black uppercase tracking-tighter group-hover:text-red-600 transition-colors text-white">{product.name}</h3>
-                         <span className="text-xs text-slate-400 font-bold uppercase tracking-widest">Limited Availability</span>
+                         <span className="text-xs text-slate-400 font-bold uppercase tracking-widest">{t('limitedAvailability')}</span>
                       </div>
                    </div>
                    <div className="text-right">
@@ -170,7 +172,7 @@ export default function SaleSection({ section, products = [], slug, template }: 
                 >
                    <div className="aspect-[3/4] bg-white/5 backdrop-blur-sm rounded-3xl overflow-hidden mb-6 relative shadow-sm group-hover:shadow-2xl transition-all duration-500">
                       <SmartImage src={product.images[0]} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={product.name} />
-                      <div className="absolute top-4 left-4 bg-red-600 text-white text-[10px] font-black px-4 py-2 rounded-full">SALE</div>
+                      <div className="absolute top-4 left-4 bg-red-600 text-white text-[10px] font-black px-4 py-2 rounded-full">{t('sale')}</div>
                    </div>
                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-red-600 transition-colors">{product.name}</h3>
                    <div className="flex items-center gap-3">
@@ -192,7 +194,7 @@ export default function SaleSection({ section, products = [], slug, template }: 
       <div className="container mx-auto">
          <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
             <div className="max-w-xl">
-               <span className="text-red-500 font-black uppercase tracking-[0.4em] text-xs mb-4 block italic">Limited Time Drops</span>
+               <span className="text-red-500 font-black uppercase tracking-[0.4em] text-xs mb-4 block italic">{t('limitedTimeDrops')}</span>
                <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase italic leading-none text-white">
                   <EditableText content={section.config?.title || "Season Sale"} settingsKey={`sec-${section.id}-title`} slug={slug} />
                </h2>
@@ -201,7 +203,7 @@ export default function SaleSection({ section, products = [], slug, template }: 
                href={`/store/${slug}/products`} 
                className="text-xs font-black uppercase tracking-widest border-b pb-2 transition-all text-white border-white hover:text-red-500 hover:border-red-500"
             >
-               Shop the sale
+               {t('shopTheSale')}
             </Link>
          </div>
          {renderContent()}

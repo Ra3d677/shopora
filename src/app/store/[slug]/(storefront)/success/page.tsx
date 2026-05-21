@@ -3,6 +3,7 @@ import PurchaseTracker from "@/components/layout/PurchaseTracker";
 import { Suspense } from "react";
 import Link from "next/link";
 import { CheckCircle2, ChevronRight } from "lucide-react";
+import { getTranslation } from "@/lib/i18n";
 
 export default async function SuccessPage({
   params,
@@ -16,6 +17,7 @@ export default async function SuccessPage({
   const orderId = resolvedParams.orderId as string;
   const order = orderId ? await getOrderById(orderId) : null;
   const store = await getStoreBySlug(slug);
+  const t = await getTranslation();
   const displayOrderId = orderId || "ORD-UNKNOWN";
 
   return (
@@ -28,13 +30,13 @@ export default async function SuccessPage({
           <CheckCircle2 className="h-12 w-12 text-success" />
         </div>
         
-        <h1 className="text-3xl font-bold tracking-tight text-primary mb-3">Order Confirmed</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-primary mb-3">{t('orderConfirmed')}</h1>
         <p className="text-muted-foreground mb-8">
-          Thank you for your purchase. We've received your order and are getting it ready for shipment.
+          {t('orderConfirmedDesc')}
         </p>
 
         <div className="bg-muted w-full p-6 rounded-2xl mb-10 border border-border/50">
-          <p className="text-sm text-muted-foreground uppercase tracking-wider mb-1">Order Number</p>
+          <p className="text-sm text-muted-foreground uppercase tracking-wider mb-1">{t('orderNumber')}</p>
           <p className="text-xl font-bold font-mono text-primary">{displayOrderId}</p>
         </div>
 
@@ -42,7 +44,7 @@ export default async function SuccessPage({
           href={`/store/${slug}/products`} 
           className="bg-primary text-white w-full h-14 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 hover:bg-primary/90 transition-all"
         >
-          Continue Shopping <ChevronRight className="h-5 w-5" />
+          {t('continueShopping')} <ChevronRight className="h-5 w-5" />
         </Link>
       </div>
     </div>
