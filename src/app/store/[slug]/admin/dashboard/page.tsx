@@ -281,7 +281,6 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                inStockProducts,
              }}
              topProducts={topProducts.map(p => ({ name: p.name, salesCount: p.salesCount, price: p.price, image: p.image }))}
-             allProducts={allProductsWithSales.map(p => ({ name: p.name, price: p.price, stock_quantity: p.stock_quantity, salesCount: p.salesCount }))}
              recentOrders={recentOrders.map(o => ({ customerName: o.customerName, totalAmount: Number(o.totalAmount), status: o.status, createdAt: o.createdAt.toISOString() }))}
              lowStockProducts={lowStockProducts.map(p => ({ name: p.name, stock_quantity: p.stock_quantity }))}
            />
