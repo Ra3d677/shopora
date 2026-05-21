@@ -202,7 +202,7 @@ export default function ExportButton(props: ExportProps) {
 
     const ordersData = [["Customer", "Amount", "Status", "Date"]];
     recentOrders.forEach((o) => {
-      ordersData.push([o.customerName, o.totalAmount, o.status, new Date(o.createdAt).toLocaleDateString()]);
+      ordersData.push([o.customerName, `$${o.totalAmount.toFixed(0)}`, o.status, new Date(o.createdAt).toLocaleDateString()]);
     });
     if (ordersData.length > 1) {
       const ws2 = XLSX.utils.aoa_to_sheet(ordersData);
