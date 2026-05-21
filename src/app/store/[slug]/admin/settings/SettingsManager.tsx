@@ -146,7 +146,7 @@ export default function SettingsManager({
           <h1 className="text-3xl lg:text-4xl font-black italic tracking-tighter text-white uppercase">
             {t('storeCore')}
           </h1>
-          <p className="text-slate-500 mt-1 font-medium tracking-widest text-[10px] uppercase">{t('masterControl')}</p>
+          <p className="text-slate-500 mt-1 font-medium tracking-[0.08em] text-[10px] uppercase">{t('masterControl')}</p>
         </div>
         
         <div className="flex bg-white/5 backdrop-blur-3xl p-1.5 rounded-xl border border-white/5 shadow-2xl overflow-x-auto max-w-full no-scrollbar">
@@ -155,7 +155,7 @@ export default function SettingsManager({
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`px-5 py-3 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] transition-all duration-500 whitespace-nowrap ${activeTab === tab.id ? 'bg-cyan-500 text-white shadow-[0_10px_20px_rgba(6,182,212,0.3)] scale-105' : 'text-slate-500 hover:text-white hover:bg-white/5'} ${language === 'ar' ? 'font-arabic' : ''}`}
+              className={`px-5 py-3 rounded-xl text-[9px] font-black uppercase tracking-[0.08em] transition-all duration-500 whitespace-nowrap ${activeTab === tab.id ? 'bg-cyan-500 text-white shadow-[0_10px_20px_rgba(6,182,212,0.3)] scale-105' : 'text-slate-500 hover:text-white hover:bg-white/5'} ${language === 'ar' ? 'font-arabic' : ''}`}
             >
               {tab.label}
             </button>
@@ -165,44 +165,44 @@ export default function SettingsManager({
 
       <div className="relative">
         <form onSubmit={handleSave}>
-          <div className="space-y-6">
+              <div className="space-y-5">
             {activeTab === 'general' && (
-              <div className="space-y-6 animate-in fade-in zoom-in-95 duration-500">
+              <div className="space-y-5 animate-in fade-in zoom-in-95 duration-500">
                 {/* Identity Settings */}
-                <div className="admin-card backdrop-blur-3xl rounded-2xl p-6 border admin-border shadow-2xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 blur-[100px] -z-10 group-hover:bg-cyan-500/10 transition-all"></div>
+                <div className="admin-card backdrop-blur-3xl rounded-xl p-5 border admin-border shadow-xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/5 blur-[80px] -z-10"></div>
                   
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-1 h-6 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-                    <h2 className="text-lg font-black text-white italic uppercase tracking-tighter">{t('brandMatrix')}</h2>
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-0.5 h-4 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                    <h2 className="text-base font-black text-white italic uppercase tracking-tight">{t('brandMatrix')}</h2>
                   </div>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div className="space-y-4">
-                      <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">{t('marketIdentity')}</label>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-1">{t('marketIdentity')}</label>
                       <input 
                         type="text" 
                         value={settings.storeName} 
                         onChange={e => updateSettings({...settings, storeName: e.target.value})} 
-                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black uppercase tracking-tight italic ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
+                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-[0.75rem] px-3.5 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black uppercase tracking-tight italic text-sm ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
                         placeholder={t('enterStoreName')}
                       />
                     </div>
                     
-                    <div className="space-y-3">
-                      <label className="block text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">{t('seoSignal')}</label>
+                    <div className="space-y-2">
+                      <label className="block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-1">{t('seoSignal')}</label>
                       <input 
                         type="text" 
                         value={settings.description || ''} 
                         onChange={e => updateSettings({...settings, description: e.target.value})} 
-                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-bold text-xs ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
+                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-[0.75rem] px-3.5 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-bold text-xs ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
                         placeholder={t('premiumExperience')}
                       />
                     </div>
 
-                    <div className="space-y-3">
-                      <label className="block text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">{t('signatureLogo')}</label>
-                      <div className="bg-white/[0.03] border border-white/[0.05] rounded-xl p-4">
+                    <div className="space-y-2">
+                      <label className="block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-1">{t('signatureLogo')}</label>
+                      <div className="bg-white/[0.03] border border-white/[0.05] rounded-[0.75rem] p-3">
                         <MediaPicker 
                           slug={slug}
                           value={settings.logoUrl || ''} 
@@ -212,9 +212,9 @@ export default function SettingsManager({
                       </div>
                     </div>
 
-                    <div className="space-y-3">
-                      <label className="block text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">{t('browserNode')}</label>
-                      <div className="bg-white/[0.03] border border-white/[0.05] rounded-xl p-4">
+                    <div className="space-y-2">
+                      <label className="block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-1">{t('browserNode')}</label>
+                      <div className="bg-white/[0.03] border border-white/[0.05] rounded-[0.75rem] p-3">
                         <MediaPicker 
                           slug={slug}
                           value={settings.faviconUrl || ''} 
@@ -222,17 +222,17 @@ export default function SettingsManager({
                           className="bg-transparent"
                         />
                       </div>
-                      <div className="flex items-center gap-2 px-3">
-                        <div className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse"></div>
-                        <p className={`text-[8px] text-slate-500 font-medium tracking-wide ${language === 'ar' ? 'font-arabic' : ''}`}>{language === 'ar' ? "المقاس القياسي: 32x32 بكسل أو 64x64 بكسل." : "Global standard: 32x32px or 64x64px Resource."}</p>
+                      <div className="flex items-center gap-1.5 px-2">
+                        <div className="w-0.5 h-0.5 rounded-full bg-cyan-400 animate-pulse"></div>
+                        <p className={`text-[7px] text-slate-500 font-medium tracking-wide ${language === 'ar' ? 'font-arabic' : ''}`}>{language === 'ar' ? "المقاس القياسي: 32x32 بكسل أو 64x64 بكسل." : "Global standard: 32x32px or 64x64px Resource."}</p>
                       </div>
                     </div>
 
-                    <div className="lg:col-span-2 bg-white/[0.02] p-6 rounded-xl border border-white/[0.03] flex flex-col md:flex-row gap-6">
-                      <div className="flex-1 space-y-4">
-                        <div className="flex justify-between items-center px-2">
-                          <h4 className={`text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] ${language === 'ar' ? 'font-arabic' : ''}`}>{language === 'ar' ? "حجم شعار الترويسة" : "Header Logo Scale"}</h4>
-                          <span className="text-[9px] font-black text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">{settings.headerSettings?.logoHeight || 40}PX</span>
+                    <div className="lg:col-span-2 bg-white/[0.02] p-4 rounded-xl border border-white/[0.03] flex flex-col md:flex-row gap-4">
+                      <div className="flex-1 space-y-3">
+                        <div className="flex justify-between items-center px-1">
+                          <h4 className={`text-[8px] font-black text-slate-400 uppercase tracking-[0.08em] ${language === 'ar' ? 'font-arabic' : ''}`}>{language === 'ar' ? "حجم شعار الترويسة" : "Header Logo Scale"}</h4>
+                          <span className="text-[8px] font-black text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/20">{settings.headerSettings?.logoHeight || 40}PX</span>
                         </div>
                         <input 
                           type="range" 
@@ -241,16 +241,16 @@ export default function SettingsManager({
                           step="4"
                           value={settings.headerSettings?.logoHeight || 40} 
                           onChange={(e) => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), logoHeight: Number(e.target.value)}})} 
-                          className="w-full h-1.5 bg-white/5 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                          className="w-full h-1 bg-white/5 rounded-lg appearance-none cursor-pointer accent-cyan-500"
                         />
                       </div>
 
                       <div className="w-[1px] bg-white/5 hidden md:block"></div>
 
-                      <div className="flex-1 flex items-center justify-between">
-                        <div className={`${language === 'ar' ? 'text-right' : ''}`}>
-                          <h4 className={`text-[10px] font-black text-white uppercase tracking-[0.2em] ${language === 'ar' ? 'font-arabic' : ''}`}>{language === 'ar' ? "دمج الشفافية (Alpha)" : "Alpha Synthesis"}</h4>
-                          <p className={`text-[9px] text-slate-500 mt-2 font-medium tracking-wide ${language === 'ar' ? 'font-arabic' : ''}`}>{language === 'ar' ? "إزالة الخلفية من ملف الشعار في الترويسة." : "Remove background from header logo resource."}</p>
+                      <div className="flex-1 flex items-center gap-3">
+                        <div className={`flex-1 ${language === 'ar' ? 'text-right' : ''}`}>
+                          <h4 className={`text-[9px] font-black text-white uppercase tracking-[0.08em] ${language === 'ar' ? 'font-arabic' : ''}`}>{language === 'ar' ? "دمج الشفافية (Alpha)" : "Alpha Synthesis"}</h4>
+                          <p className={`text-[8px] text-slate-500 mt-1 font-medium ${language === 'ar' ? 'font-arabic' : ''}`}>{language === 'ar' ? "إزالة الخلفية من ملف الشعار في الترويسة." : "Remove background from header logo resource."}</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input 
@@ -280,7 +280,7 @@ export default function SettingsManager({
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div className="space-y-3">
-                      <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{language === 'ar' ? "البريد الإلكتروني للاتصال" : "Uplink Email"}</label>
+                      <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{language === 'ar' ? "البريد الإلكتروني للاتصال" : "Uplink Email"}</label>
                       <input 
                         type="email" 
                         value={settings.contactInfo?.email || ''} 
@@ -290,22 +290,22 @@ export default function SettingsManager({
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{language === 'ar' ? "رقم الهاتف المباشر" : "Voice Direct"}</label>
+                      <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{language === 'ar' ? "رقم الهاتف المباشر" : "Voice Direct"}</label>
                       <input 
                         type="text" 
                         value={settings.contactInfo?.phone || ''} 
                         onChange={e => updateSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), phone: e.target.value}})} 
-                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black tracking-widest ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
+                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black tracking-[0.08em] ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
                         placeholder="+1 (000) 000-0000"
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{language === 'ar' ? "رقم الواتساب الآمن" : "Secure WhatsApp"}</label>
+                      <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{language === 'ar' ? "رقم الواتساب الآمن" : "Secure WhatsApp"}</label>
                       <input 
                         type="text" 
                         value={settings.contactInfo?.whatsapp || ''} 
                         onChange={e => updateSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), whatsapp: e.target.value}})} 
-                        className="w-full bg-white/[0.03] border border-green-500/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all font-black tracking-widest border-l-4 border-l-green-500" 
+                        className="w-full bg-white/[0.03] border border-green-500/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all font-black tracking-[0.08em] border-l-4 border-l-green-500" 
                         placeholder="+1 (000) 000-0000"
                       />
                     </div>
@@ -333,19 +333,19 @@ export default function SettingsManager({
                     ].map((layout) => (
                       <label 
                         key={layout.id} 
-                        className={`group relative cursor-pointer p-8 rounded-3xl border transition-all duration-500 ${
+                        className={`group relative cursor-pointer p-5 rounded-xl border transition-all duration-500 ${
                           (settings.headerSettings?.layout || 'default') === layout.id 
                             ? 'border-cyan-500/50 bg-cyan-500/5 shadow-[0_0_30px_rgba(6,182,212,0.1)]' 
                             : 'border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/[0.04]'
                         }`}
                       >
-                        <div className="flex justify-between items-start mb-6">
-                           <div className={`w-10 h-10 rounded-2xl border flex items-center justify-center transition-all duration-500 ${
+                        <div className="flex justify-between items-start mb-3">
+                           <div className={`w-8 h-8 rounded-xl border flex items-center justify-center transition-all duration-500 ${
                              (settings.headerSettings?.layout || 'default') === layout.id 
                                ? 'bg-cyan-500 border-cyan-400 text-white shadow-lg shadow-cyan-500/30' 
                                : 'bg-white/5 border-white/5 text-slate-700 group-hover:text-cyan-400'
                            }`}>
-                             <div className="w-2 h-2 rounded-full bg-current"></div>
+                             <div className="w-1.5 h-1.5 rounded-full bg-current"></div>
                            </div>
                            <input 
                              type="radio" 
@@ -356,8 +356,8 @@ export default function SettingsManager({
                              className="sr-only"
                            />
                         </div>
-                        <p className={`font-black text-base mb-2 transition-colors uppercase italic ${language === 'ar' ? 'font-arabic' : ''} ${(settings.headerSettings?.layout || 'default') === layout.id ? 'text-cyan-400' : 'text-white'}`}>{layout.name}</p>
-                        <p className={`text-[10px] text-slate-500 leading-relaxed font-medium uppercase tracking-widest ${language === 'ar' ? 'font-arabic' : ''}`}>{layout.desc}</p>
+                        <p className={`font-black text-sm mb-1 transition-colors uppercase italic ${language === 'ar' ? 'font-arabic' : ''} ${(settings.headerSettings?.layout || 'default') === layout.id ? 'text-cyan-400' : 'text-white'}`}>{layout.name}</p>
+                        <p className={`text-[9px] text-slate-500 leading-relaxed font-medium uppercase tracking-[0.08em] ${language === 'ar' ? 'font-arabic' : ''}`}>{layout.desc}</p>
                       </label>
                     ))}
                   </div>
@@ -372,7 +372,7 @@ export default function SettingsManager({
                     <button 
                       type="button"
                       onClick={() => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), links: [...(settings.headerSettings?.links || [{id: '1', label: 'Home', url: `/store/${slug}`}, {id: '2', label: 'Shop', url: `/store/${slug}/categories`}]), {id: Math.random().toString(36).substr(2, 9), label: 'New Link', url: '#'}]}})}
-                      className={`px-5 py-3 bg-cyan-500 text-white rounded-xl font-black text-[9px] uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_5px_15px_rgba(6,182,212,0.3)] ${language === 'ar' ? 'font-arabic' : ''}`}
+                      className={`px-5 py-3 bg-cyan-500 text-white rounded-xl font-black text-[9px] uppercase tracking-[0.08em] hover:scale-105 active:scale-95 transition-all shadow-[0_5px_15px_rgba(6,182,212,0.3)] ${language === 'ar' ? 'font-arabic' : ''}`}
                     >
                       {t('injectLink')}
                     </button>
@@ -386,7 +386,7 @@ export default function SettingsManager({
                       <div key={link.id} className="flex gap-4 items-center p-6 bg-white/[0.02] border border-white/[0.05] rounded-xl hover:border-white/10 transition-all group/node relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl -z-10 group-hover/node:bg-cyan-500/5 transition-all"></div>
                         <div className="flex-1 space-y-3">
-                           <label className={`block text-[8px] font-black text-slate-600 uppercase tracking-[0.25em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('label')}</label>
+                           <label className={`block text-[8px] font-black text-slate-600 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('label')}</label>
                            <input 
                              type="text"
                              value={link.label}
@@ -403,7 +403,7 @@ export default function SettingsManager({
                            />
                         </div>
                         <div className="flex-[2] space-y-3">
-                           <label className={`block text-[8px] font-black text-slate-600 uppercase tracking-[0.25em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('uplinkPath')}</label>
+                           <label className={`block text-[8px] font-black text-slate-600 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('uplinkPath')}</label>
                            <input 
                              type="text"
                              value={link.url}
@@ -455,7 +455,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                       <div className="w-1 h-6 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
                       <div className={`${language === 'ar' ? 'text-right' : ''}`}>
                         <h2 className={`text-xl font-black text-white italic uppercase tracking-tighter ${language === 'ar' ? 'font-arabic' : ''}`}>{t('colorArchitecture')}</h2>
-                        <p className={`text-slate-500 text-[9px] font-medium tracking-[0.2em] uppercase mt-0.5 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('colorArchitectureDesc')}</p>
+                        <p className={`text-slate-500 text-[9px] font-medium tracking-[0.08em] uppercase mt-0.5 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('colorArchitectureDesc')}</p>
                       </div>
                     </div>
                   </div>
@@ -469,15 +469,15 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                            <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.8)]"></div>
                            <div className={`${language === 'ar' ? 'text-right' : ''}`}>
                               <h3 className={`text-base font-black text-white uppercase italic tracking-tighter ${language === 'ar' ? 'font-arabic' : ''}`}>{t('aestheticSynthesis')}</h3>
-                              <p className={`text-[8px] font-black text-slate-500 uppercase tracking-widest mt-1 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('globalColorControl')}</p>
+                              <p className={`text-[8px] font-black text-slate-500 tracking-[0.08em] mt-1 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('globalColorControl')}</p>
                            </div>
                         </div>
-                        <div className="px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[9px] font-black text-cyan-400 uppercase tracking-[0.2em] shadow-xl">{t('versionActive')}</div>
+                        <div className="px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[9px] font-black text-cyan-400 uppercase tracking-[0.08em] shadow-xl">{t('versionActive')}</div>
                      </div>
 
                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 relative z-10">
                          <div className="space-y-3">
-                            <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('phaseA')}</label>
+                            <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('phaseA')}</label>
                             <div className="relative group/synthesis h-14 bg-black/60 rounded-xl border border-white/[0.1] hover:border-cyan-400/50 transition-all overflow-hidden flex items-center justify-center">
                                <input 
                                  type="color" 
@@ -493,7 +493,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                          </div>
 
                           <div className="space-y-3">
-                             <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('phaseB')}</label>
+                             <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('phaseB')}</label>
                              <div className="relative group/synthesis h-14 bg-black/60 rounded-xl border border-white/[0.1] hover:border-pink-400/50 transition-all overflow-hidden flex items-center justify-center">
                                <input 
                                  type="color" 
@@ -509,7 +509,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                          </div>
 
                           <div className="space-y-3">
-                             <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('flowPattern')}</label>
+                             <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('flowPattern')}</label>
                              <div className="h-14 bg-black/60 rounded-xl border border-white/[0.1] flex items-center px-2">
                                 <select 
                                   value={gradDir} 
@@ -525,7 +525,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                          </div>
 
                         <div className="space-y-3">
-                           <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('injectionNode')}</label>
+                           <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('injectionNode')}</label>
                            <div className="h-14 bg-black/60 rounded-xl border border-white/[0.1] flex items-center px-2">
                               <select 
                                 value={synthTarget.page}
@@ -555,7 +555,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                         </div>
 
                           <div className="space-y-3">
-                             <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('targetStream')}</label>
+                             <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('targetStream')}</label>
                              <div className="h-14 bg-black/60 rounded-xl border border-white/[0.1] flex items-center px-2">
                                 <select 
                                   value={synthTarget.type}
@@ -569,19 +569,19 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                          </div>
 
                           <div className={`space-y-3 ${synthTarget.type !== 'backgrounds' ? 'opacity-50 pointer-events-none' : ''}`}>
-                             <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('kineticMotion')}</label>
+                             <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('kineticMotion')}</label>
                              <div className="flex bg-black/60 rounded-xl border border-white/[0.1] p-1.5 h-14">
                                <button 
                                  type="button" 
                                  onClick={() => setIsAnimated(false)}
-                                 className={`flex-1 rounded-[1rem] text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${!isAnimated ? 'bg-white text-black shadow-lg scale-100' : 'text-slate-500 hover:text-white scale-95'} ${language === 'ar' ? 'font-arabic text-[9px]' : ''}`}
+                                 className={`flex-1 rounded-[1rem] text-[11px] font-black uppercase tracking-[0.08em] transition-all duration-300 ${!isAnimated ? 'bg-white text-black shadow-lg scale-100' : 'text-slate-500 hover:text-white scale-95'} ${language === 'ar' ? 'font-arabic text-[9px]' : ''}`}
                                >
                                   {t('static')}
                                </button>
                                <button 
                                  type="button" 
                                  onClick={() => setIsAnimated(true)}
-                                 className={`flex-1 rounded-[1rem] text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${isAnimated ? 'bg-cyan-500 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-100' : 'text-slate-500 hover:text-white scale-95'} ${language === 'ar' ? 'font-arabic text-[9px]' : ''}`}
+                                 className={`flex-1 rounded-[1rem] text-[11px] font-black uppercase tracking-[0.08em] transition-all duration-300 ${isAnimated ? 'bg-cyan-500 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-100' : 'text-slate-500 hover:text-white scale-95'} ${language === 'ar' ? 'font-arabic text-[9px]' : ''}`}
                                >
                                   {t('animated')}
                                </button>
@@ -658,7 +658,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                   colorSystem: newColorSystem
                                 });
                              }}
-                              className="w-full h-14 bg-white text-black rounded-xl font-black uppercase tracking-[0.2em] text-[10px] hover:bg-cyan-400 hover:text-white transition-all shadow-[0_10px_30px_rgba(255,255,255,0.1)] active:scale-95 flex flex-col items-center justify-center gap-0.5 group/btn"
+                              className="w-full h-14 bg-white text-black rounded-xl font-black uppercase tracking-[0.08em] text-[10px] hover:bg-cyan-400 hover:text-white transition-all shadow-[0_10px_30px_rgba(255,255,255,0.1)] active:scale-95 flex flex-col items-center justify-center gap-0.5 group/btn"
                            >
                               <span className={`group-hover/btn:scale-110 transition-transform ${language === 'ar' ? 'font-arabic' : ''}`}>{t('applySynthesis')}</span>
                               <span className={`text-[7px] opacity-40 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('syncToCloud')}</span>
@@ -686,7 +686,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           {/* Background Color */}
                           <div className="space-y-3">
-                            <label className={`block text-[8px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('atmosphereBg')}</label>
+                            <label className={`block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('atmosphereBg')}</label>
                             <div className="flex gap-3 items-center bg-black/40 p-2.5 rounded-2xl border border-white/[0.05]">
                               <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0" style={{ background: (colorSystem.backgrounds as any)[page.id] || '#ffffff' }}>
                                 <input 
@@ -719,7 +719,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
 
                           {/* Text Color */}
                           <div className="space-y-3">
-                            <label className={`block text-[8px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('frequencyText')}</label>
+                            <label className={`block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('frequencyText')}</label>
                             <div className="flex gap-3 items-center bg-black/40 p-2 rounded-xl border border-white/[0.05]">
                               <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-white/10 shrink-0" style={{ backgroundColor: (colorSystem.text as any)[page.id] || '#000000' }}>
                                 <input 
@@ -779,12 +779,12 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                   <div className="mt-6 space-y-6">
                     <div className="bg-white/[0.02] p-6 rounded-2xl border border-white/[0.05] relative overflow-hidden">
                         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-500/[0.02] to-transparent pointer-events-none"></div>
-                        <h3 className={`text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 mb-6 border-b border-white/5 pb-3 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('globalSignalFooter')}</h3>
+                        <h3 className={`text-[9px] font-black uppercase tracking-[0.08em] text-slate-500 mb-6 border-b border-white/5 pb-3 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('globalSignalFooter')}</h3>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                            {/* Brand Color */}
                            <div className="space-y-3">
-                             <label className={`block text-[8px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('primaryBrandIdentity')}</label>
+                             <label className={`block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('primaryBrandIdentity')}</label>
                              <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
                                <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: colorSystem.brand.primary }}>
                                  <input 
@@ -811,7 +811,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
 
                            {/* Footer Background */}
                            <div className="space-y-3">
-                             <label className={`block text-[8px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('footerAtmosphereBg')}</label>
+                             <label className={`block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('footerAtmosphereBg')}</label>
                              <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
                                <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ background: colorSystem.footer.background }}>
                                  <input 
@@ -838,7 +838,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
 
                            {/* Footer Text */}
                            <div className="space-y-3">
-                             <label className={`block text-[8px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('footerSignalText')}</label>
+                             <label className={`block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('footerSignalText')}</label>
                              <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
                                <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: colorSystem.footer.text }}>
                                  <input 
@@ -876,15 +876,15 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                            <div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.8)]"></div>
                            <div className={`${language === 'ar' ? 'text-right' : ''}`}>
                               <h3 className={`text-base font-black text-white uppercase italic tracking-tighter ${language === 'ar' ? 'font-arabic' : ''}`}>{t('financialSignalMatrix')}</h3>
-                              <p className={`text-[8px] font-black text-slate-500 uppercase tracking-widest mt-1 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('priceDynamicsControl')}</p>
+                              <p className={`text-[8px] font-black text-slate-500 tracking-[0.08em] mt-1 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('priceDynamicsControl')}</p>
                            </div>
                         </div>
-                        <div className="px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-[9px] font-black text-red-400 uppercase tracking-[0.2em] shadow-xl">{t('economyModule')}</div>
+                        <div className="px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-[9px] font-black text-red-400 uppercase tracking-[0.08em] shadow-xl">{t('economyModule')}</div>
                      </div>
 
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
                         <div className="space-y-3">
-                           <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('corePriceSignal')}</label>
+                           <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('corePriceSignal')}</label>
                            <div className="relative group/price h-16 bg-black/60 rounded-xl border border-white/[0.1] hover:border-slate-400 transition-all overflow-hidden flex items-center justify-center">
                               <input 
                                 type="color" 
@@ -902,14 +902,14 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                               />
                               <div className="absolute inset-0 z-10 opacity-20 group-hover/price:opacity-40 transition-opacity" style={{backgroundColor: colorSystem.product?.price || '#0f172a'}}></div>
                               <div className="relative z-20 flex flex-col items-center">
-                                 <span className="text-white font-mono text-lg uppercase font-black tracking-widest">{colorSystem.product?.price || '#0F172A'}</span>
+                                 <span className="text-white font-mono text-lg uppercase font-black tracking-[0.08em]">{colorSystem.product?.price || '#0F172A'}</span>
                                  <span className={`text-[8px] text-slate-500 uppercase font-black mt-2 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('standardRateColor')}</span>
                               </div>
                            </div>
                         </div>
 
                         <div className="space-y-3">
-                           <label className={`block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('pulseSignalSale')}</label>
+                           <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('pulseSignalSale')}</label>
                            <div className="relative group/price h-16 bg-black/60 rounded-xl border border-white/[0.1] hover:border-red-500/50 transition-all overflow-hidden flex items-center justify-center">
                               <input 
                                 type="color" 
@@ -927,7 +927,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                               />
                               <div className="absolute inset-0 z-10 opacity-20 group-hover/price:opacity-40 transition-opacity" style={{backgroundColor: colorSystem.product?.salePrice || '#ef4444'}}></div>
                               <div className="relative z-20 flex flex-col items-center">
-                                 <span className="text-red-500 font-mono text-lg uppercase font-black tracking-widest">{colorSystem.product?.salePrice || '#EF4444'}</span>
+                                 <span className="text-red-500 font-mono text-lg uppercase font-black tracking-[0.08em]">{colorSystem.product?.salePrice || '#EF4444'}</span>
                                  <span className={`text-[8px] text-slate-500 uppercase font-black mt-2 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('discountPulseColor')}</span>
                               </div>
                            </div>
@@ -964,7 +964,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                             <h3 className={`text-sm font-black text-white uppercase italic tracking-tight ${language === 'ar' ? 'font-arabic' : ''}`}>{pixel.name}</h3>
                          </div>
                          <div className="space-y-2">
-                            <label className={`block text-[8px] font-black text-slate-600 uppercase tracking-[0.25em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('secretId')}</label>
+                            <label className={`block text-[8px] font-black text-slate-600 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('secretId')}</label>
                             <input 
                               type="text"
                               value={(settings as any)[pixel.id] || ''}
@@ -995,7 +995,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                        <div className="flex items-center justify-between mb-6">
                           <div>
                              <h3 className="text-base font-black text-white uppercase italic tracking-tight">{t('livePulse')}</h3>
-                             <p className="text-[9px] text-slate-500 mt-1 font-medium uppercase tracking-widest">{language === 'ar' ? "إشعار فوري بحركات الشراء للمتصفحين" : "Real-time social proof stream for visitors."}</p>
+                             <p className="text-[9px] text-slate-500 mt-1 font-medium uppercase tracking-[0.08em]">{language === 'ar' ? "إشعار فوري بحركات الشراء للمتصفحين" : "Real-time social proof stream for visitors."}</p>
                           </div>
                           <label className="relative inline-flex items-center cursor-pointer">
                              <input 
@@ -1019,7 +1019,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                        {settings.signatureSettings?.liveSales?.enabled && (
                          <div className="bg-white/[0.03] p-4 rounded-xl border border-white/[0.05] flex items-center gap-6 animate-in slide-in-from-top-4 duration-500">
                             <div className="flex-1 space-y-2">
-                               <label className="block text-[8px] font-black text-slate-500 uppercase tracking-[0.25em] ml-2">{t('pulseInterval')}</label>
+                               <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{t('pulseInterval')}</label>
                                 <input 
                                    type="number"
                                    value={(settings.signatureSettings?.liveSales?.interval || 15000) / 1000}
@@ -1049,7 +1049,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                         <button 
                           type="button"
                           onClick={() => updateSettings({...settings, signatureSettings: {...(settings.signatureSettings || {}), testimonials: [...(settings.signatureSettings?.testimonials || []), {name: '', role: '', content: ''}]}})}
-                          className={`px-4 py-2.5 bg-white text-black rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-cyan-400 hover:text-white transition-all shadow-2xl ${language === 'ar' ? 'font-arabic' : ''}`}
+                          className={`px-4 py-2.5 bg-white text-black rounded-xl font-black text-[9px] uppercase tracking-[0.08em] hover:bg-cyan-400 hover:text-white transition-all shadow-2xl ${language === 'ar' ? 'font-arabic' : ''}`}
                         >
                           {t('injectReview')}
                         </button>
@@ -1060,7 +1060,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                            <div key={idx} className="bg-white/[0.03] p-6 rounded-2xl border border-white/[0.05] shadow-2xl relative group/card transition-all hover:bg-white/[0.05]">
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                  <div className="space-y-2">
-                                    <label className="text-[8px] font-black text-slate-600 uppercase tracking-[0.25em] ml-2">{t('identity')}</label>
+                                    <label className="text-[8px] font-black text-slate-600 tracking-[0.08em] ml-2">{t('identity')}</label>
                                     <input 
                                        type="text" 
                                        value={t.name}
@@ -1074,7 +1074,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                     />
                                  </div>
                                  <div className="space-y-2">
-                                    <label className="text-[8px] font-black text-slate-600 uppercase tracking-[0.25em] ml-2">{t('coordinates')}</label>
+                                    <label className="text-[8px] font-black text-slate-600 tracking-[0.08em] ml-2">{t('coordinates')}</label>
                                     <input 
                                        type="text" 
                                        value={t.role}
@@ -1089,7 +1089,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                  </div>
                               </div>
                               <div className="space-y-2">
-                                 <label className="text-[8px] font-black text-slate-600 uppercase tracking-[0.25em] ml-2">{t('reviewContent')}</label>
+                                 <label className="text-[8px] font-black text-slate-600 tracking-[0.08em] ml-2">{t('reviewContent')}</label>
                                  <textarea 
                                     value={t.content}
                                     placeholder={language === 'ar' ? "اكتب نص المراجعة هنا..." : "Input signal content..."}
@@ -1109,7 +1109,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                     newList.splice(idx, 1);
                                     updateSettings({...settings, signatureSettings: {...settings.signatureSettings, testimonials: newList}});
                                   }}
-                                 className={`mt-6 text-[8px] font-black text-rose-500 uppercase tracking-[0.4em] hover:text-rose-400 transition-colors ${language === 'ar' ? 'font-arabic' : ''}`}
+                                 className={`mt-6 text-[8px] font-black text-rose-500 uppercase tracking-[0.1em] hover:text-rose-400 transition-colors ${language === 'ar' ? 'font-arabic' : ''}`}
                               >
                                  {language === 'ar' ? "حذف المراجعة" : "Delete Review"}
                               </button>
@@ -1135,7 +1135,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                         <button 
                           type="button"
                           onClick={() => updateSettings({...settings, businessSettings: {...(settings.businessSettings || {}), shippingRates: [...(settings.businessSettings?.shippingRates || []), {zone: '', rate: 0}]}})}
-                          className={`px-6 py-3 bg-cyan-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-2xl ${language === 'ar' ? 'font-arabic' : ''}`}
+                          className={`px-6 py-3 bg-cyan-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.08em] hover:scale-105 active:scale-95 transition-all shadow-2xl ${language === 'ar' ? 'font-arabic' : ''}`}
                         >
                           {t('defineGrid')}
                         </button>
@@ -1145,7 +1145,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                          {(settings.businessSettings?.shippingRates || []).map((r: any, idx: number) => (
                             <div key={idx} className="flex gap-4 items-center bg-white/[0.03] p-4 rounded-xl border border-white/[0.05] group transition-all hover:bg-white/[0.05]">
                                <div className="flex-1 space-y-2">
-                                  <label className="text-[8px] font-black text-slate-600 uppercase tracking-[0.25em] ml-2">{t('zoneIdentifier')}</label>
+                                  <label className="text-[8px] font-black text-slate-600 tracking-[0.08em] ml-2">{t('zoneIdentifier')}</label>
                                   <input 
                                      type="text" 
                                      value={r.zone}
@@ -1159,7 +1159,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                   />
                                </div>
                                <div className="w-32 space-y-2">
-                                  <label className="text-[8px] font-black text-slate-600 uppercase tracking-[0.25em] ml-2">{t('rateValue')}</label>
+                                  <label className="text-[8px] font-black text-slate-600 tracking-[0.08em] ml-2">{t('rateValue')}</label>
                                   <input 
                                      type="number" 
                                      value={r.rate}
@@ -1199,19 +1199,19 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                 {saveMessage ? (
                   <div className="flex items-center gap-3 animate-in slide-in-from-left-6 duration-700">
                      <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.5)]"></div>
-                     <span className="text-[9px] font-black text-white uppercase tracking-[0.2em]">Protocol Secured</span>
+                     <span className="text-[9px] font-black text-white uppercase tracking-[0.08em]">Protocol Secured</span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-3 text-slate-500">
                      <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_15px_rgba(6,182,212,0.5)]"></div>
-                     <span className="text-[9px] font-black uppercase tracking-[0.2em]">Uplink Pending</span>
+                     <span className="text-[9px] font-black uppercase tracking-[0.08em]">Uplink Pending</span>
                   </div>
                 )}
               </div>
               <button 
                 type="submit"
                 disabled={isPending}
-                className={`px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-black text-[10px] uppercase tracking-[0.3em] hover:scale-105 active:scale-95 transition-all flex items-center gap-3 shadow-2xl shadow-cyan-500/20 disabled:opacity-50 ${language === 'ar' ? 'font-arabic' : ''}`}
+                className={`px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-black text-[10px] uppercase tracking-[0.08em] hover:scale-105 active:scale-95 transition-all flex items-center gap-3 shadow-2xl shadow-cyan-500/20 disabled:opacity-50 ${language === 'ar' ? 'font-arabic' : ''}`}
               >
                 {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                 {isPending ? t('saving') : t('saveChanges')}
