@@ -93,6 +93,11 @@ export default function CustomerLoginPage({ params }: { params: Promise<{ slug: 
                   placeholder="••••••••"
                 />
               </div>
+              <div className="text-right -mt-4">
+                <Link href={`/auth/forgot-password`} className="text-blue-600 text-sm font-bold hover:underline">
+                  Forgot Password?
+                </Link>
+              </div>
             </div>
 
             <div>

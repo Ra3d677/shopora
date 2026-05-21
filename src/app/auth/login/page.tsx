@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Lock, Mail, Loader2, ArrowRight } from "lucide-react";
 import { loginUser } from "../actions";
 
@@ -64,6 +65,11 @@ export default function LoginPage() {
                 placeholder="••••••••"
                 className="w-full pl-14 pr-6 py-4 bg-gradient-to-r from-red-50 via-blue-50 to-red-50 border-2 border-red-200 focus:border-blue-600 focus:bg-white rounded-2xl outline-none transition-all font-medium"
               />
+            </div>
+            <div className="text-right">
+              <Link href="/auth/forgot-password" className="text-blue-600 text-sm font-bold hover:underline">
+                Forgot Password?
+              </Link>
             </div>
           </div>
 

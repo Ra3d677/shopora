@@ -5,7 +5,11 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
-import { sendWelcomeEmail } from "@/lib/email";
+import { sendWelcomeEmail, sendVerificationOtp } from "@/lib/email";
+
+function generateOtp(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
 
 export async function loginCustomer(slug: string, formData: FormData) {
   const email = formData.get("email") as string;
@@ -72,9 +76,39 @@ export async function registerCustomer(slug: string, formData: FormData) {
     maxAge: 60 * 60 * 24 * 30
   });
 
+  const otp = generateOtp();
+  const expiry = new Date(Date.now() + 10 * 60 * 1000);
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { verificationOtp: otp, verificationOtpExpiry: expiry }
+  });
+
+  sendVerificationOtp(user.email, user.name || "Customer", otp);
   sendWelcomeEmail(user.email, user.name || "Customer");
 
-  redirect(`/store/${slug}`);
+  redirect(`/store/${slug}/verify`);
+}
+
+export async function verifyCustomerOtp(slug: string, email: string, otp: string) {
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) return { error: "User not found." };
+    if (user.emailVerified) return { success: true, message: "Email already verified." };
+    if (!user.verificationOtp || !user.verificationOtpExpiry) return { error: "No verification code sent." };
+    if (user.verificationOtp !== otp) return { error: "Invalid verification code." };
+    if (new Date() > user.verificationOtpExpiry) return { error: "Code expired. Request a new one." };
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { emailVerified: true, verificationOtp: null, verificationOtpExpiry: null }
+    });
+
+    return { success: true };
+  } catch (e: any) {
+    console.error("Verify Customer OTP Error:", e);
+    return { error: "Something went wrong." };
+  }
 }
 
 export async function logoutCustomer(slug: string) {

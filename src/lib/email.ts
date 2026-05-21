@@ -158,3 +158,46 @@ export async function sendStatusUpdate(email: string, customerName: string, orde
     console.log(`[Email] Status update sent to ${email}`);
   } catch (e) { console.error("[Email] Failed send status update:", e); }
 }
+
+// ─── OTP Verification ──────────────────────────────────────────────
+
+function otpEmail(name: string, otp: string) {
+  return wrapTemplate("Verify Your Email 🔐",
+    `<h2>Hi ${name},</h2>
+<p>Your verification code is:</p>
+<div style="background:#f8fafc;border-radius:16px;padding:24px;text-align:center;margin:24px 0;border:2px dashed #e2e8f0">
+  <span style="font-size:42px;font-weight:800;letter-spacing:12px;color:#06b6d4;font-family:monospace">${otp}</span>
+</div>
+<p>Enter this code to verify your email address. It expires in <strong>10 minutes</strong>.</p>
+<p style="color:#94a3b8;font-size:13px">If you didn't request this, please ignore this email.</p>
+<p style="margin-top:24px;font-weight:600">The Shopora Team</p>`);
+}
+
+export async function sendVerificationOtp(email: string, name: string, otp: string) {
+  if (!resend) { console.log(`[Email] Would send OTP to ${email}`); return; }
+  try {
+    await resend.emails.send({ from: FROM_EMAIL, to: email, subject: `Your verification code: ${otp}`, html: otpEmail(name, otp) });
+    console.log(`[Email] OTP sent to ${email}`);
+  } catch (e) { console.error("[Email] Failed send OTP:", e); }
+}
+
+// ─── Password Reset ──────────────────────────────────────────────────
+
+function passwordResetEmail(name: string, link: string) {
+  return wrapTemplate("Reset Your Password 🔑",
+    `<h2>Hi ${name},</h2>
+<p>We received a request to reset your password. Click the button below to set a new one.</p>
+<a href="${link}" class="btn">Reset Password</a>
+<p style="margin-top:16px;color:#94a3b8;font-size:13px">This link expires in <strong>1 hour</strong>. If you didn't request this, please ignore this email.</p>
+<p style="margin-top:24px;font-weight:600">The Shopora Team</p>`);
+}
+
+export async function sendPasswordReset(email: string, name: string, token: string) {
+  if (!resend) { console.log(`[Email] Would send password reset to ${email}`); return; }
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://shopora.store";
+  const link = `${baseUrl}/auth/reset-password?token=${token}`;
+  try {
+    await resend.emails.send({ from: FROM_EMAIL, to: email, subject: "Reset your password", html: passwordResetEmail(name, link) });
+    console.log(`[Email] Password reset sent to ${email}`);
+  } catch (e) { console.error("[Email] Failed send password reset:", e); }
+}

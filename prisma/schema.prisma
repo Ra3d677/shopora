@@ -9,13 +9,18 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(cuid())
-  email    String  @unique
-  name     String?
-  password String? // Optional because they might use Google Auth later
-  role     String  @default("user") // "user" or "superadmin"
-  stores   Store[]
-  orders   Order[] @relation("CustomerOrders")
+  id                    String    @id @default(cuid())
+  email                 String    @unique
+  name                  String?
+  password              String?   // Optional because they might use Google Auth later
+  role                  String    @default("user") // "user" or "superadmin"
+  emailVerified         Boolean   @default(false)
+  verificationOtp       String?
+  verificationOtpExpiry DateTime?
+  resetToken            String?
+  resetTokenExpiry      DateTime?
+  stores                Store[]
+  orders                Order[]   @relation("CustomerOrders")
 }
 
 model Store {
