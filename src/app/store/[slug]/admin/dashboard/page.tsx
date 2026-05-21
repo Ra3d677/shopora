@@ -254,7 +254,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const isWebsite = store.type === 'WEBSITE';
 
   return (
-    <div dir={isRTL ? "rtl" : "ltr"} className={`min-h-screen bg-[#0a0c14] text-slate-100 p-8 pb-24 font-sans selection:bg-cyan-500/30 ${isRTL ? 'text-right' : 'text-left'}`}>
+    <div dir={isRTL ? "rtl" : "ltr"} className={`min-h-screen p-8 pb-24 font-sans selection:bg-cyan-500/30 ${isRTL ? 'text-right' : 'text-left'}`} style={{ color: 'var(--admin-text-primary)' }}>
       {/* Header Section */}
       <div className={`flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
         <div>
@@ -265,7 +265,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
              {isWebsite ? t('websiteAnalyticsDesc') : t('analyticsDashboardDesc')}
            </p>
         </div>
-        <div className="flex items-center gap-4 bg-[#1a1d2d] p-2 rounded-2xl border border-white/5 shadow-2xl">
+        <div className="flex items-center gap-4 bg-[#171c2a] p-2 rounded-2xl border border-white/5 shadow-2xl">
            <DateFilter />
            <ExportButton
              storeName={store.name}
@@ -294,7 +294,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       {/* KPI Blocks - Row 1 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
          {/* Revenue / Inquiries Card */}
-         <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-cyan-500/50 transition-all duration-500">
+         <div className="bg-[#171c2a] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-cyan-500/50 transition-all duration-500">
             <div className={`absolute -right-8 -top-8 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all ${isRTL ? 'right-auto -left-8' : ''}`}></div>
             <h4 className={`text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2 ${isRTL ? 'justify-start' : ''}`}>
                {isWebsite ? <Users className="w-3 h-3 text-cyan-400" /> : <DollarSign className="w-3 h-3 text-cyan-400" />} 
@@ -324,7 +324,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
          </div>
 
          {/* Orders / Visits Card */}
-         <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-pink-500/50 transition-all duration-500">
+         <div className="bg-[#171c2a] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-pink-500/50 transition-all duration-500">
             <div className={`absolute -right-8 -top-8 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl group-hover:bg-pink-500/20 transition-all ${isRTL ? 'right-auto -left-8' : ''}`}></div>
             <h4 className={`text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2 ${isRTL ? 'justify-start' : ''}`}>
                {isWebsite ? <Eye className="w-3 h-3 text-pink-400" /> : <ShoppingBag className="w-3 h-3 text-pink-400" />} 
@@ -344,7 +344,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
          </div>
 
          {/* Inventory / Packages Card */}
-         <div className="bg-[#1a1d2d] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-amber-500/50 transition-all duration-500">
+         <div className="bg-[#171c2a] p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group hover:border-amber-500/50 transition-all duration-500">
             <div className={`absolute -right-8 -top-8 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl group-hover:bg-amber-500/20 transition-all ${isRTL ? 'right-auto -left-8' : ''}`}></div>
             <h4 className={`text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 flex items-center gap-2 ${isRTL ? 'justify-start' : ''}`}>
                {isWebsite ? <Compass className="w-3 h-3 text-amber-400" /> : <Package className="w-3 h-3 text-amber-400" />} 
@@ -365,7 +365,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       </div>
 
       {/* Revenue Trend Chart */}
-      <div className="mb-8 bg-[#1a1d2d] p-8 rounded-[2.5rem] border border-white/5">
+      <div className="mb-8 bg-[#171c2a] p-8 rounded-[2.5rem] border border-white/5">
         <div className="flex items-center gap-3 mb-8">
           <BarChart3 className="w-5 h-5 text-cyan-400" />
           <h3 className="text-xl font-black italic text-white tracking-tight">
@@ -382,13 +382,13 @@ export default async function AdminDashboard({ params, searchParams }: { params:
           {/* Left Column: Funnel + Recent Activity */}
           <div className="lg:col-span-1 space-y-8">
              {/* Sales / Leads Funnel */}
-             <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 shadow-2xl">
+             <div className="bg-[#171c2a] p-10 rounded-[2.5rem] border border-white/5 shadow-2xl">
                <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">
                  {isWebsite ? t('leadsFunnel') : t('salesFunnel')}
                </h3>
                <div className="space-y-6">
                   {/* Step 1: Add to Cart / Visits */}
-                  <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-purple-500/30 transition-all">
+                  <div className="bg-[#10131e] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-purple-500/30 transition-all">
                      <div className="flex items-center gap-4">
                         <div className="w-10 h-10 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400 shadow-lg shadow-purple-500/5">
                            {isWebsite ? <Eye className="w-5 h-5" /> : <ShoppingBag className="w-5 h-5" />}
@@ -402,7 +402,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                      </div>
                   </div>
                   {/* Step 2: Clicks / Checkout */}
-                  <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-amber-500/30 transition-all">
+                  <div className="bg-[#10131e] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-amber-500/30 transition-all">
                      <div className="flex items-center gap-4">
                         <div className="w-10 h-10 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-400 shadow-lg shadow-amber-500/5">
                            {isWebsite ? <Compass className="w-5 h-5" /> : <DollarSign className="w-5 h-5" />}
@@ -416,7 +416,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                      </div>
                   </div>
                   {/* Step 3: Purchased / Inquiries */}
-                  <div className="bg-[#0f111a] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-green-500/30 transition-all">
+                  <div className="bg-[#10131e] p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-green-500/30 transition-all">
                      <div className="flex items-center gap-4">
                         <div className="w-10 h-10 bg-green-500/10 rounded-2xl flex items-center justify-center text-green-400 shadow-lg shadow-green-500/5">
                            <CheckCircle2 className="w-5 h-5" />
@@ -448,7 +448,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
           {/* Right Column: Top Products and Heatmap */}
          <div className="lg:col-span-2 space-y-8">
             {/* Best Sellers / Popular Packages Ranked List */}
-            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5">
+            <div className="bg-[#171c2a] p-10 rounded-[2.5rem] border border-white/5">
                <div className="flex justify-between items-center mb-10">
                   <h3 className="text-2xl font-black italic text-white tracking-tight">
                     {isWebsite ? t('popularPackages') : t('bestSellers')}
@@ -460,7 +460,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                      <div key={p.id} className="flex items-center justify-between group">
                         <div className="flex items-center gap-6">
                            <span className="text-2xl font-black italic text-slate-800 group-hover:text-cyan-500/50 transition-colors">#{idx + 1}</span>
-                           <div className="w-16 h-16 bg-[#0f111a] rounded-2xl overflow-hidden border border-white/5 group-hover:border-cyan-500/30 transition-all shadow-xl">
+                           <div className="w-16 h-16 bg-[#10131e] rounded-2xl overflow-hidden border border-white/5 group-hover:border-cyan-500/30 transition-all shadow-xl">
                               {p.image && <img src={p.image} className="w-full h-full object-cover" alt={p.name} />}
                            </div>
                            <div>
@@ -481,7 +481,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
             </div>
 
             {/* Activity Heatmap */}
-            <div className="bg-[#1a1d2d] p-10 rounded-[2.5rem] border border-white/5 overflow-x-auto">
+            <div className="bg-[#171c2a] p-10 rounded-[2.5rem] border border-white/5 overflow-x-auto">
                <h3 className="text-2xl font-black italic text-white mb-10 tracking-tight">
                  {isWebsite ? t('inquiryActivity') : t('activityHeatmap')}
                </h3>

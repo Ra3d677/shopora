@@ -71,6 +71,10 @@ export default function AdminShell({
             className="absolute bottom-0 left-0 w-[600px] h-[600px] blur-[150px] -z-10 rounded-full pointer-events-none"
             style={{ background: "var(--admin-glow-pink)" }}
           />
+          <div
+            className="absolute top-1/3 left-1/3 w-[400px] h-[400px] blur-[120px] -z-10 rounded-full pointer-events-none"
+            style={{ background: "var(--admin-glow-purple)" }}
+          />
 
           <div className="p-4 md:p-12">{children}</div>
         </div>
