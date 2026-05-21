@@ -467,7 +467,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
                         <div key={i} className="flex-1 text-center text-[8px] font-black admin-text-muted">{i}h</div>
                      ))}
                   </div>
-                  {t('daysOfWeek').split(',').map((day, dIdx) => (
+                  {t('daysOfWeek').split(',').map((day: string, dIdx: number) => (
                      <div key={day} className="flex items-center mb-1">
                         <div className="w-14 shrink-0 text-[9px] font-black admin-text-muted tracking-[0.08em]">{day}</div>
                         {heatmap[dIdx].map((val, hIdx) => {
