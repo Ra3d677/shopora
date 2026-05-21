@@ -1,4 +1,4 @@
-import { DollarSign, ShoppingBag, Package, CheckCircle2, Clock, Eye, Compass, BarChart3 } from "lucide-react";
+import { DollarSign, ShoppingBag, Package, CheckCircle2, Clock, Eye, Compass, BarChart3, Users } from "lucide-react";
 import prisma from "@/lib/prisma";
 export const dynamic = 'force-dynamic';
 import ExportButton from "./ExportButton";
