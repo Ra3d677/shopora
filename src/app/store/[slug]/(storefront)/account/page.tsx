@@ -5,6 +5,7 @@ import { ShoppingBag, Package, Truck, CheckCircle2, Clock, XCircle, LogOut, Chev
 import Image from "next/image";
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
+import { getTranslation } from "@/lib/i18n";
 
 export default async function CustomerAccountPage({ 
   params,
@@ -14,6 +15,7 @@ export default async function CustomerAccountPage({
   searchParams: Promise<{ page?: string }>
 }) {
   const { slug } = await params;
+  const t = await getTranslation();
   const user = await getSession();
   const sp = (await searchParams) || {};
   const page = Math.max(1, parseInt(sp.page || "1", 10));
@@ -89,9 +91,9 @@ export default async function CustomerAccountPage({
         <div className="container mx-auto px-4 max-w-5xl">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tighter uppercase mb-2">My Account</h1>
+                    <h1 className="text-4xl font-black text-slate-900 tracking-tighter uppercase mb-2">{t('myAccount')}</h1>
                     <p className="text-slate-500 font-bold uppercase tracking-widest text-xs flex items-center gap-2">
-                        Logged in as <span className="text-slate-900">{user.email}</span>
+                        {t('loggedInAs')} <span className="text-slate-900">{user.email}</span>
                     </p>
                 </div>
                 <LogoutButton slug={slug} />
@@ -102,7 +104,7 @@ export default async function CustomerAccountPage({
       <div className="container mx-auto px-4 max-w-5xl mt-12">
         <div className="flex items-center gap-3 mb-8">
             <ShoppingBag className="w-6 h-6 text-slate-900" />
-            <h2 className="text-xl font-black uppercase tracking-tight">Order History</h2>
+            <h2 className="text-xl font-black uppercase tracking-tight">{t('orderHistory')}</h2>
             <span className="bg-slate-900 text-white text-[10px] font-black px-2 py-0.5 rounded-full">{totalCount}</span>
         </div>
 
@@ -111,10 +113,10 @@ export default async function CustomerAccountPage({
             <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Package className="w-10 h-10 text-slate-300" />
             </div>
-            <h3 className="text-xl font-black text-slate-900 mb-2">No orders yet</h3>
-            <p className="text-slate-500 font-medium mb-8">Looks like you haven't placed any orders in this store yet.</p>
+            <h3 className="text-xl font-black text-slate-900 mb-2">{t('noOrdersYet')}</h3>
+            <p className="text-slate-500 font-medium mb-8">{t('yourCartIsEmpty')}</p>
             <Link href={`/store/${slug}/products`} className="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-full font-black uppercase tracking-widest text-xs hover:bg-black transition-all">
-                Start Shopping <ArrowRight className="w-4 h-4" />
+                {t('startShopping')} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         ) : (
@@ -127,16 +129,16 @@ export default async function CustomerAccountPage({
                             {getStatusIcon(order.status)}
                         </div>
                         <div>
-                            <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">Order #{order.id.slice(-6).toUpperCase()}</p>
-                            <h4 className="text-lg font-black text-slate-900 uppercase tracking-tight">Status: {order.status}</h4>
+                            <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">{t('orderNum')}{order.id.slice(-6).toUpperCase()}</p>
+                            <h4 className="text-lg font-black text-slate-900 uppercase tracking-tight">{t('statusColon')} {order.status}</h4>
                         </div>
                     </div>
                     <div className="flex flex-col md:items-end">
-                        <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">Ordered on</p>
+                        <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">{t('orderedOn')}</p>
                         <p className="font-bold text-slate-900">{new Date(order.createdAt).toLocaleDateString(undefined, { dateStyle: 'long' })}</p>
                     </div>
                     <div className="flex flex-col md:items-end">
-                        <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">Total Amount</p>
+                        <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">{t('totalAmountColon')}</p>
                         <p className="text-2xl font-black text-slate-900 tracking-tighter">${order.totalAmount.toFixed(2)}</p>
                     </div>
                 </div>
@@ -174,14 +176,14 @@ export default async function CustomerAccountPage({
                     href={`/store/${slug}/account?page=${page - 1}`}
                     className="w-full sm:w-auto text-center bg-white border border-slate-200 px-6 py-3 rounded-full font-bold uppercase tracking-widest text-[10px] text-slate-700 hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
                   >
-                    ← Previous Page
+                    {t('previousPage')}
                   </Link>
                 ) : (
                   <div className="hidden sm:block w-32" />
                 )}
                 
                 <span className="text-slate-500 font-bold tracking-widest text-[10px] uppercase text-center">
-                  Page {page} of {Math.ceil(totalCount / limit) || 1}
+                  {t('pageOf').replace('{page}', page.toString()).replace('{total}', Math.ceil(totalCount / limit).toString() || '1')}
                 </span>
                 
                 {hasMore ? (
@@ -189,7 +191,7 @@ export default async function CustomerAccountPage({
                     href={`/store/${slug}/account?page=${page + 1}`}
                     className="w-full sm:w-auto text-center bg-slate-900 text-white px-8 py-3 rounded-full font-black uppercase tracking-widest text-[10px] hover:bg-black transition-all flex items-center justify-center gap-2"
                   >
-                    Next Page →
+                    {t('nextPage')}
                   </Link>
                 ) : (
                   <div className="hidden sm:block w-32" />

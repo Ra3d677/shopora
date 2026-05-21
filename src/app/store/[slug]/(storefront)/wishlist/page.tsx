@@ -5,8 +5,10 @@ import Link from "next/link";
 import { Heart, Trash2, ShoppingBag, ArrowLeft } from "lucide-react";
 import { useWishlistStore } from "@/store/wishlist";
 import { useStore } from "@/components/providers/StoreProvider";
+import { useLanguageStore } from "@/store/language";
 
 export default function WishlistPage() {
+  const { t } = useLanguageStore();
   const [mounted, setMounted] = useState(false);
   const { items, removeItem } = useWishlistStore();
   const { store } = useStore();
@@ -20,16 +22,16 @@ export default function WishlistPage() {
       <div className="max-w-5xl mx-auto">
         <div className="flex items-center gap-4 mb-12">
           <Heart className="w-8 h-8" />
-          <h1 className="text-4xl font-black tracking-tighter uppercase">Wishlist</h1>
+          <h1 className="text-4xl font-black tracking-tighter uppercase">{t('wishlist')}</h1>
           <span className="bg-slate-900 text-white text-[10px] font-black px-2 py-0.5 rounded-full">{storeItems.length}</span>
         </div>
 
         {storeItems.length === 0 ? (
           <div className="border border-dashed border-slate-200 rounded-[2rem] p-20 text-center">
             <Heart size={48} className="mx-auto mb-6 text-slate-200" />
-            <p className="text-slate-400 font-bold uppercase tracking-widest text-xs mb-6">Your wishlist is empty.</p>
+            <p className="text-slate-400 font-bold uppercase tracking-widest text-xs mb-6">{t('wishlistEmpty')}</p>
             <Link href={`/store/${store.slug}/products`} className="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-full font-black uppercase tracking-widest text-xs hover:bg-black transition-all">
-              <ShoppingBag size={16} /> Browse Products
+              <ShoppingBag size={16} /> {t('browseProducts')}
             </Link>
           </div>
         ) : (
@@ -48,9 +50,9 @@ export default function WishlistPage() {
                   <p className="text-lg font-black tracking-tighter mb-4">${item.price.toFixed(2)}</p>
                   <div className="flex items-center gap-3">
                     <Link href={`/store/${store.slug}/product/${item.productId}`} className="flex-1 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest px-5 py-3 rounded-full text-center hover:bg-black transition-all">
-                      <ShoppingBag size={14} className="inline mr-1" /> View Product
+                      <ShoppingBag size={14} className="inline mr-1" /> {t('viewProduct')}
                     </Link>
-                    <button onClick={() => removeItem(item.productId)} className="p-3 rounded-full border border-slate-200 hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-all">
+                    <button onClick={() => removeItem(item.productId)} className="p-3 rounded-full border border-slate-200 hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-all" title={t('deleteLabel')}>
                       <Trash2 size={16} />
                     </button>
                   </div>

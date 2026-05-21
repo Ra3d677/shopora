@@ -8,8 +8,10 @@ import { CheckCircle2, Loader2, Lock, ShieldCheck, CreditCard, ChevronRight, Mai
 import { useStore } from "@/components/providers/StoreProvider";
 import { createOrder } from "../../admin/orders/actions";
 import { motion } from "framer-motion";
+import { useLanguageStore } from "@/store/language";
 
 export default function CheckoutPage() {
+  const { t } = useLanguageStore();
   const [mounted, setMounted] = useState(false);
   const { items: allItems, getCartTotal, clearCart } = useCartStore();
   const { store, user } = useStore();
@@ -129,9 +131,9 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="container mx-auto px-4 py-24 text-center">
-        <h1 className="text-2xl font-bold mb-4">Your cart is empty</h1>
+        <h1 className="text-2xl font-bold mb-4">{t('yourCartIsEmpty')}</h1>
         <button onClick={() => router.push(`/store/${store.slug}/products`)} className="text-slate-900 hover:underline">
-          Go back to shopping
+          {t('startShopping')}
         </button>
       </div>
     );
@@ -145,7 +147,7 @@ export default function CheckoutPage() {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-12">
-          <span>Cart</span> <ChevronRight size={14} /> <span className="opacity-100">Checkout</span>
+          <span>{t('shoppingCart')}</span> <ChevronRight size={14} /> <span className="opacity-100">{t('deliveryDetails')}</span>
         </div>
 
         {error && (
@@ -161,13 +163,13 @@ export default function CheckoutPage() {
               <div>
                 <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 flex items-center gap-4">
                   <span className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center text-sm">1</span>
-                  <span className="gradient-text-support">Delivery Details</span>
+                  <span className="gradient-text-support">{t('deliveryDetails')}</span>
                 </h2>
             
               <div className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
-                    <label htmlFor="name" className="block text-[10px] font-black uppercase tracking-[0.2em] opacity-50 mb-3 ml-1">Full Name</label>
+                    <label htmlFor="name" className="block text-[10px] font-black uppercase tracking-[0.2em] opacity-50 mb-3 ml-1">{t('fullName')}</label>
                     <div className="relative">
                         <UserIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 opacity-40" />
                         <input 
@@ -180,7 +182,7 @@ export default function CheckoutPage() {
                   </div>
                   
                   <div>
-                    <label htmlFor="email" className="block text-[10px] font-black uppercase tracking-[0.2em] opacity-50 mb-3 ml-1">Email Address</label>
+                    <label htmlFor="email" className="block text-[10px] font-black uppercase tracking-[0.2em] opacity-50 mb-3 ml-1">{t('emailAddress')}</label>
                     <div className="relative">
                         <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 opacity-40" />
                         <input 
@@ -194,7 +196,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div>
-                    <label htmlFor="phone" className="block text-[10px] font-black uppercase tracking-[0.2em] opacity-50 mb-3 ml-1">Phone Number</label>
+                    <label htmlFor="phone" className="block text-[10px] font-black uppercase tracking-[0.2em] opacity-50 mb-3 ml-1">{t('phoneNumber')}</label>
                     <div className="relative">
                         <Phone className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 opacity-40" />
                         <input 
@@ -207,7 +209,7 @@ export default function CheckoutPage() {
                 </div>
                 
                 <div>
-                  <label htmlFor="address" className="block text-[10px] font-black uppercase tracking-[0.2em] opacity-50 mb-3 ml-1">Shipping Address</label>
+                    <label htmlFor="address" className="block text-[10px] font-black uppercase tracking-[0.2em] opacity-50 mb-3 ml-1">{t('shippingAddress')}</label>
                   <div className="relative">
                       <MapPin className="absolute left-5 top-6 w-5 h-5 opacity-40" />
                       <textarea 
@@ -220,7 +222,7 @@ export default function CheckoutPage() {
                 </div>
                 
                 <div>
-                  <label htmlFor="notes" className="block text-[10px] font-black uppercase tracking-[0.2em] opacity-50 mb-3 ml-1">Order Notes (Optional)</label>
+                    <label htmlFor="notes" className="block text-[10px] font-black uppercase tracking-[0.2em] opacity-50 mb-3 ml-1">{t('orderNotes')}</label>
                   <textarea 
                     id="notes" name="notes" rows={2}
                     value={formData.notes} onChange={handleChange}
@@ -234,7 +236,7 @@ export default function CheckoutPage() {
               <div className="pt-12 border-t border-white/10">
                 <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 flex items-center gap-4">
                   <span className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center text-sm">2</span>
-                  Payment Method
+                  {t('paymentMethod')}
                 </h2>
                 <div className="bg-white/5 p-8 rounded-[2rem] border-2 border-white shadow-2xl flex items-start gap-6 relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700" />
@@ -242,8 +244,8 @@ export default function CheckoutPage() {
                     <CreditCard className="h-8 w-8" />
                   </div>
                   <div className="relative z-10">
-                    <h3 className="font-black uppercase tracking-widest text-sm mb-2">Cash on Delivery</h3>
-                    <p className="opacity-50 text-sm leading-relaxed max-w-xs">Pay securely with cash once your package arrives at your doorstep.</p>
+                    <h3 className="font-black uppercase tracking-widest text-sm mb-2">{t('paymentMethod')}</h3>
+                    <p className="opacity-50 text-sm leading-relaxed max-w-xs">{t('encryptedSecure')}</p>
                   </div>
                   <div className="ml-auto w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0 shadow-xl">
                     <div className="w-2.5 h-2.5 rounded-full bg-black" />
@@ -257,13 +259,13 @@ export default function CheckoutPage() {
                   className="w-full bg-white text-black hover:opacity-80 h-20 rounded-[2rem] font-black uppercase tracking-[0.2em] text-sm flex items-center justify-center gap-4 transition-all active:scale-[0.98] disabled:opacity-70 shadow-2xl"
                 >
                   {isSubmitting ? (
-                    <><Loader2 className="h-6 w-6 animate-spin" /> Processing...</>
+                    <><Loader2 className="h-6 w-6 animate-spin" /> {t('processing')}</>
                   ) : (
-                    <>Complete Purchase &mdash; ${totalAfterDiscount.toFixed(2)} <Lock className="h-4 w-4" /></>
+                    <>{t('completePurchase')} &mdash; ${totalAfterDiscount.toFixed(2)} <Lock className="h-4 w-4" /></>
                   )}
                 </button>
                 <div className="mt-8 flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] opacity-40">
-                  <ShieldCheck size={18} className="text-green-500" /> Encrypted & Secure
+                  <ShieldCheck size={18} className="text-green-500" /> {t('encryptedSecure')}
                 </div>
               </div>
             </form>
@@ -272,7 +274,7 @@ export default function CheckoutPage() {
           <div className="lg:col-span-5">
             <div className="bg-white/5 p-10 rounded-[3rem] border border-white/10 shadow-2xl lg:sticky lg:top-32 overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-2 bg-white" />
-              <h2 className="text-2xl font-black uppercase tracking-tighter mb-10 pb-6 border-b border-white/10">Summary</h2>
+              <h2 className="text-2xl font-black uppercase tracking-tighter mb-10 pb-6 border-b border-white/10">{t('orderSummary')}</h2>
             
               <div className="flex flex-col gap-8 mb-10 max-h-[450px] overflow-y-auto pr-4 scrollbar-hide">
                 {items.map((item) => {
@@ -303,7 +305,7 @@ export default function CheckoutPage() {
 
               <div className="space-y-5 border-t border-white/10 pt-8">
                 <div className="flex justify-between text-xs font-black opacity-50 uppercase tracking-widest">
-                  <span>Subtotal</span>
+                  <span>{t('subtotal')}</span>
                   <span className="opacity-100">${getCartTotal(store.id).toFixed(2)}</span>
                 </div>
 
@@ -311,12 +313,12 @@ export default function CheckoutPage() {
                 <div className="border-t border-white/5 pt-5">
                   <div className="flex gap-3 mb-3">
                     <input
-                      type="text" placeholder="Coupon Code"
+                      type="text" placeholder={t('couponPlaceholder')}
                       value={couponCode} onChange={e => setCouponCode(e.target.value.toUpperCase())}
                       className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 outline-none focus:border-white/40 transition-all text-xs font-bold tracking-widest uppercase"
                     />
                     <button onClick={applyCoupon} disabled={couponLoading || !couponCode} className="px-5 py-3 bg-white text-black rounded-xl font-black uppercase tracking-widest text-[10px] hover:opacity-80 transition-all disabled:opacity-30">
-                      {couponLoading ? "..." : "Apply"}
+                      {couponLoading ? "..." : t('applyCode')}
                     </button>
                   </div>
                   {couponMsg && (
@@ -327,17 +329,17 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="flex justify-between text-xs font-black opacity-50 uppercase tracking-widest">
-                  <span>Delivery</span>
-                  <span className="text-green-500">Complimentary</span>
+                  <span>{t('deliveryLabel')}</span>
+                  <span className="text-green-500">{t('complimentary')}</span>
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between text-xs font-black uppercase tracking-widest text-green-500">
-                    <span>Discount</span>
+                    <span>{t('discountLabel')}</span>
                     <span>-${discount.toFixed(2)}</span>
                   </div>
                 )}
                 <div className="pt-6 mt-4 flex justify-between items-end border-t-2 border-white">
-                  <span className="text-xs font-black uppercase tracking-[0.3em]">Total</span>
+                  <span className="text-xs font-black uppercase tracking-[0.3em]">{t('totalLabel')}</span>
                   <span className="text-5xl font-black tracking-tighter">${totalAfterDiscount.toFixed(2)}</span>
                 </div>
               </div>

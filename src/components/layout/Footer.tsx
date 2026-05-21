@@ -4,8 +4,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { useStore } from "@/components/providers/StoreProvider";
 import EditableText from "@/components/editor/EditableText";
+import { useLanguageStore } from "@/store/language";
 
 export default function Footer() {
+  const { t } = useLanguageStore();
   const { store } = useStore();
   const slug = store.slug;
   const activeTemplate = store.template || 'signature';
@@ -205,7 +207,7 @@ export default function Footer() {
         
          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-[10px] font-black uppercase tracking-[0.4em] mb-16 border-y border-white/5 py-10">
             <div className="space-y-6">
-               <p className="text-white mb-8">Contact Us</p>
+               <p className="text-white mb-8">{t('contactUs')}</p>
                {store.settings?.contactInfo?.address && <p>{store.settings.contactInfo.address}</p>}
                {store.settings?.contactInfo?.phone && <p>{store.settings.contactInfo.phone}</p>}
                {store.settings?.contactInfo?.email && <p>{store.settings.contactInfo.email}</p>}
@@ -229,25 +231,25 @@ export default function Footer() {
                )}
             </div>
             <div className="space-y-6">
-               <p className="text-white mb-8">Client Service</p>
-               <Link href={`/store/${slug}/shipping`} className="block hover:text-white">Shipping & Returns</Link>
-               <Link href={`/store/${slug}/account`} className="block hover:text-white">Track Order</Link>
-               <Link href={`/store/${slug}/contact`} className="block hover:text-white">Appointments</Link>
-               <Link href={`/store/${slug}/wishlist`} className="block hover:text-white">Wishlist</Link>
-               <Link href={`/store/${slug}/blog`} className="block hover:text-white">Blog</Link>
+               <p className="text-white mb-8">{t('clientService')}</p>
+               <Link href={`/store/${slug}/shipping`} className="block hover:text-white">{t('shippingReturns')}</Link>
+               <Link href={`/store/${slug}/account`} className="block hover:text-white">{t('trackOrder')}</Link>
+               <Link href={`/store/${slug}/contact`} className="block hover:text-white">{t('appointments')}</Link>
+               <Link href={`/store/${slug}/wishlist`} className="block hover:text-white">{t('wishlist')}</Link>
+               <Link href={`/store/${slug}/blog`} className="block hover:text-white">{t('blog')}</Link>
             </div>
             <div className="space-y-6">
-               <p className="text-white mb-8">House Matters</p>
-               <Link href={`/store/${slug}/about`} className="block hover:text-white">Sustainability</Link>
-               <Link href={`/store/${slug}/about`} className="block hover:text-white">Heritage</Link>
-               <Link href={`/store/${slug}/about`} className="block hover:text-white">Careers</Link>
+               <p className="text-white mb-8">{t('houseMatters')}</p>
+               <Link href={`/store/${slug}/about`} className="block hover:text-white">{t('sustainability')}</Link>
+               <Link href={`/store/${slug}/about`} className="block hover:text-white">{t('heritage')}</Link>
+               <Link href={`/store/${slug}/about`} className="block hover:text-white">{t('careers')}</Link>
                <div className="pt-4 mt-4 border-t border-white/5 space-y-4">
-                 <Link href={`/store/${slug}/terms`} className="block hover:text-white">Terms of Service</Link>
-                 <Link href={`/store/${slug}/privacy`} className="block hover:text-white">Privacy Policy</Link>
+                 <Link href={`/store/${slug}/terms`} className="block hover:text-white">{t('termsOfService')}</Link>
+                 <Link href={`/store/${slug}/privacy`} className="block hover:text-white">{t('privacyPolicy')}</Link>
                </div>
             </div>
             <div className="space-y-6">
-               <p className="text-white mb-8">Newsletter</p>
+               <p className="text-white mb-8">{t('newsletter')}</p>
                <NewsletterForm slug={slug} />
             </div>
          </div>
@@ -278,6 +280,7 @@ export default function Footer() {
  }
 
 function NewsletterForm({ slug }: { slug: string }) {
+  const { t } = useLanguageStore();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
@@ -297,19 +300,19 @@ function NewsletterForm({ slug }: { slug: string }) {
   };
 
   if (status === "success") {
-    return <p className="text-green-400 text-[10px] font-black uppercase tracking-widest">Thanks for subscribing!</p>;
+    return <p className="text-green-400 text-[10px] font-black uppercase tracking-widest">{t('thanksSubscribing')}</p>;
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <p className="text-[8px] uppercase tracking-widest text-white/40">Subscribe for exclusive drops and offers.</p>
+      <p className="text-[8px] uppercase tracking-widest text-white/40">{t('subscribeText')}</p>
       <input
-        type="email" required placeholder="your@email.com"
+        type="email" required placeholder={t('emailAddress')}
         value={email} onChange={e => setEmail(e.target.value)}
         className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-white/40 transition-all text-xs text-white placeholder:text-white/20"
       />
       <button type="submit" disabled={status === "loading"} className="w-full bg-white text-black py-3 rounded-xl font-black uppercase tracking-widest text-[10px] hover:opacity-80 transition-all disabled:opacity-50">
-        {status === "loading" ? "Subscribing..." : "Subscribe"}
+        {status === "loading" ? t('subscribing') : t('subscribeBtn')}
       </button>
     </form>
   );

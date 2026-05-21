@@ -2,10 +2,12 @@ import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, User } from "lucide-react";
+import { getTranslation } from "@/lib/i18n";
 
 export const dynamic = 'force-dynamic';
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string; postSlug: string }> }) {
+  const t = await getTranslation();
   const { slug, postSlug } = await params;
   const store = await prisma.store.findUnique({ where: { slug }, select: { id: true } });
   if (!store) notFound();
@@ -19,7 +21,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     <div className="min-h-screen py-24 px-6">
       <div className="max-w-3xl mx-auto">
         <Link href={`/store/${slug}/blog`} className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 mb-12 transition-colors">
-          <ArrowLeft size={16} /> Back to Blog
+          <ArrowLeft size={16} /> {t('backToBlog')}
         </Link>
 
         <article>
