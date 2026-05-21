@@ -222,8 +222,6 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
           </div>
 
           <button
-
-          <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-xl bg-white/5 border border-white/10 text-slate-300 hover:text-white"
             aria-label="Toggle Menu"
