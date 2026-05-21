@@ -143,7 +143,12 @@ export async function resendOtp(email: string) {
       data: { verificationOtp: otp, verificationOtpExpiry: expiry }
     });
 
-    try { await sendVerificationOtp(user.email, user.name || "User", otp); } catch (e) { console.error("[Email] Failed send OTP:", e); }
+    try { 
+      await sendVerificationOtp(user.email, user.name || "User", otp); 
+    } catch (e: any) { 
+      console.error("[Email] Failed send OTP:", e); 
+      return { error: `Email Error: ${e.message}` };
+    }
     return { success: true, message: "New code sent!" };
   } catch (e: any) {
     console.error("Resend OTP Error:", e);
@@ -166,7 +171,12 @@ export async function forgotPassword(email: string) {
       data: { resetToken: token, resetTokenExpiry: expiry }
     });
 
-    try { await sendPasswordReset(user.email, user.name || "User", token); } catch (e) { console.error("[Email] Failed send password reset:", e); }
+    try { 
+      await sendPasswordReset(user.email, user.name || "User", token); 
+    } catch (e: any) { 
+      console.error("[Email] Failed send password reset:", e); 
+      return { error: `Email Error: ${e.message}` };
+    }
     return { success: true, message: "If that email exists, a reset link has been sent." };
   } catch (e: any) {
     console.error("Forgot Password Error:", e);
