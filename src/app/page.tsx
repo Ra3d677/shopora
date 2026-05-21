@@ -65,7 +65,7 @@ export default function IndexPage() {
 
           {/* Card 3: Demo Store */}
           <Link 
-            href="/store/mikel"
+            href="/store/shopaora"
             className="group relative flex flex-col items-center p-10 bg-white/[0.02] border border-white/5 rounded-[2.5rem] overflow-hidden hover:bg-white/[0.04] transition-all duration-500"
           >
             <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
