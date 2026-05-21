@@ -13,6 +13,7 @@ import MagneticButton from "@/components/ui/premium/MagneticButton";
 import EditableText from "@/components/editor/EditableText";
 import EditableImage from "@/components/editor/EditableImage";
 import EditableButton from "@/components/editor/EditableButton";
+import { useLanguageStore } from "@/store/language";
 import SaleSection from "@/components/ui/SaleSection";
 import VideoSection from "@/components/ui/VideoSection";
 import { useEditorStore } from "@/store/editor";
@@ -28,6 +29,7 @@ interface TemplateProps {
 
 export default function SignatureTemplate({ banners, settings, products, slug, categories }: TemplateProps) {
   const { isEditMode } = useEditorStore();
+  const { t } = useLanguageStore();
   const { scrollYProgress } = useScroll();
   
   const topBanners = banners.filter((b: any) => b.position === 'top' || !b.position);
@@ -106,7 +108,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
             </div>
             <div>
               <p className="text-sm font-bold">{currentSale.name} from {currentSale.location}</p>
-              <p className="text-xs text-slate-500">just purchased a premium item</p>
+              <p className="text-xs text-slate-500">{t('premiumItem')}</p>
             </div>
           </motion.div>
         )}
@@ -183,7 +185,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
             content = (
               <section key={section.id} className="relative min-h-[60vh] w-full bg-transparent flex items-center justify-center px-6">
                 <div className="text-center max-w-4xl">
-                  <span className="text-[10px] uppercase font-black tracking-[0.3em] text-slate-300 mb-8 block">THE SIGNATURE COLLECTION</span>
+                    <span className="text-[10px] uppercase font-black tracking-[0.3em] text-slate-300 mb-8 block">{t('theSignatureCollection')}</span>
                   <h1 className="text-6xl md:text-[8rem] font-black text-black leading-none tracking-tighter mb-12 uppercase italic">
                     <span className="gradient-text-support">
                       <EditableText content={settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
@@ -191,7 +193,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                   </h1>
                   <div className="flex justify-center gap-8">
                     <Link href={`/store/${slug}/products`} className="text-xs font-black uppercase tracking-[0.4em] border-b-2 border-black pb-2 hover:opacity-50 transition-opacity">
-                      VIEW ARCHIVE
+                      {t('viewArchive')}
                     </Link>
                     <BannerButton banner={topBanners[0]} slug={slug} />
                   </div>

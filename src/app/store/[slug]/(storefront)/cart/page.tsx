@@ -7,11 +7,13 @@ import { Minus, Plus, Trash2, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useStore } from "@/components/providers/StoreProvider";
 import { trackInitiateCheckout } from "@/lib/tracking";
+import { useLanguageStore } from "@/store/language";
 
 export default function CartPage() {
   const [mounted, setMounted] = useState(false);
   const { items: allItems, removeItem, updateQuantity, getCartTotal, clearCart } = useCartStore();
   const { store } = useStore();
+  const { t } = useLanguageStore();
 
   const items = allItems.filter(item => item.storeId === store.id);
 
@@ -29,17 +31,17 @@ export default function CartPage() {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         <h1 className="text-4xl font-bold tracking-tight mb-12">
-          <span className="gradient-text-support">Shopping Cart</span>
+          <span className="gradient-text-support">{t('shoppingCart')}</span>
         </h1>
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <div className="h-24 w-24 bg-black/10 rounded-full flex items-center justify-center mb-6">
               <Trash2 className="h-10 w-10 opacity-50" />
             </div>
-            <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
-            <p className="opacity-50 mb-8">Looks like you haven't added anything to your cart yet.</p>
+            <h2 className="text-2xl font-semibold mb-4">{t('yourCartIsEmpty')}</h2>
+            <p className="opacity-50 mb-8">{t('cartEmptyDesc')}</p>
             <Link href={`/store/${store.slug}/products`} className="bg-white text-black px-8 py-4 rounded-full font-medium hover:opacity-80 transition-all">
-              Continue Shopping
+              {t('continueShopping')}
             </Link>
           </div>
         ) : (
@@ -59,9 +61,9 @@ export default function CartPage() {
                           <Link href={`/store/${store.slug}/product/${latestProduct.id}`} className="text-lg font-medium hover:underline">
                             {latestProduct.name}
                           </Link>
-                          <p className="text-sm opacity-50 mt-1">Size: {item.selectedSize}</p>
+                          <p className="text-sm opacity-50 mt-1">{t('sizeLabel')}: {item.selectedSize}</p>
                           <div className="flex items-center gap-2 mt-1">
-                            <span className="text-sm opacity-50">Color:</span>
+                            <span className="text-sm opacity-50">{t('colorSelection')}:</span>
                             <span className="h-3 w-3 rounded-full border" style={{ backgroundColor: item.selectedColor }} />
                           </div>
                         </div>
@@ -95,11 +97,11 @@ export default function CartPage() {
                             const colorObj = colors.find((c: any) => (c.name === item.selectedColor || c.value === item.selectedColor));
                             const stock = colorObj?.stock ?? latestProduct.stock_quantity;
                             return item.quantity >= stock && (
-                              <p className="text-[10px] text-amber-500 font-bold uppercase tracking-widest">Max stock reached</p>
+                              <p className="text-[10px] text-amber-500 font-bold uppercase tracking-widest">{t('maxStockReached')}</p>
                             );
                           })()}
                         </div>
-                        <button onClick={() => removeItem(item.id)} className="text-sm opacity-50 hover:text-red-500 transition-colors flex items-center gap-1"><Trash2 className="h-4 w-4" /> Remove</button>
+                        <button onClick={() => removeItem(item.id)} className="text-sm opacity-50 hover:text-red-500 transition-colors flex items-center gap-1"><Trash2 className="h-4 w-4" /> {t('removeItemBtn')}</button>
                       </div>
                     </div>
                   </div>
@@ -108,11 +110,11 @@ export default function CartPage() {
             </div>
             <div className="lg:col-span-1">
               <div className="bg-white/5 rounded-2xl p-8 border border-white/10 lg:sticky lg:top-24">
-                <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
-                <div className="flex justify-between mb-4 opacity-50"><span>Subtotal</span><span>${getCartTotal(store.id).toFixed(2)}</span></div>
-                <div className="flex justify-between mb-6 opacity-50"><span>Shipping</span><span>Calculated at checkout</span></div>
-                <div className="border-t border-white/10 pt-6 mb-8 flex justify-between items-end"><span className="font-medium text-lg">Total</span><span className="text-3xl font-bold">${getCartTotal(store.id).toFixed(2)}</span></div>
-                <Link href={`/store/${store.slug}/checkout`} onClick={() => trackInitiateCheckout(items, getCartTotal(store.id), store)} className="w-full bg-white text-black hover:opacity-80 h-14 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 transition-all active:scale-[0.98]">Proceed to Checkout <ArrowRight className="h-5 w-5" /></Link>
+                <h2 className="text-2xl font-bold mb-6">{t('orderSummary')}</h2>
+                <div className="flex justify-between mb-4 opacity-50"><span>{t('subtotal')}</span><span>${getCartTotal(store.id).toFixed(2)}</span></div>
+                <div className="flex justify-between mb-6 opacity-50"><span>{t('deliveryLabel')}</span><span>{t('shippingCalc')}</span></div>
+                <div className="border-t border-white/10 pt-6 mb-8 flex justify-between items-end"><span className="font-medium text-lg">{t('totalLabel')}</span><span className="text-3xl font-bold">${getCartTotal(store.id).toFixed(2)}</span></div>
+                <Link href={`/store/${store.slug}/checkout`} onClick={() => trackInitiateCheckout(items, getCartTotal(store.id), store)} className="w-full bg-white text-black hover:opacity-80 h-14 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 transition-all active:scale-[0.98]">{t('proceedToCheckout')} <ArrowRight className="h-5 w-5" /></Link>
               </div>
             </div>
           </div>
