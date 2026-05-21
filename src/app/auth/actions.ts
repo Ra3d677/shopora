@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export async function loginUser(formData: FormData) {
   const email = formData.get("email") as string;
@@ -74,6 +75,8 @@ export async function registerUser(formData: FormData) {
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 30
     });
+
+    sendWelcomeEmail(user.email, user.name || "User");
   } catch (error: any) {
     console.error("Registration Error:", error);
     return { error: "Database connection error. Please check your Vercel Environment Variables for DATABASE_URL." };

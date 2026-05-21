@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { CartItem } from "@/lib/types";
 import { revalidatePath } from "next/cache";
+import { sendOrderConfirmation, sendNewOrderNotification, sendStatusUpdate } from "@/lib/email";
 
 export async function createOrder(data: {
   storeId: string;
@@ -123,6 +124,31 @@ export async function createOrder(data: {
     } catch (stockError) {
       console.error('Failed to update stock:', stockError);
       // We don't fail the order if stock update fails, but we log it
+    }
+
+    // Send email notifications (fire-and-forget, non-blocking)
+    try {
+      const storeInfo = await prisma.store.findUnique({
+        where: { id: data.storeId },
+        select: { name: true, owner: { select: { email: true } } }
+      });
+
+      const emailItems = data.items.map(item => ({
+        name: item.product.name,
+        quantity: item.quantity,
+        price: item.product.discount_price || item.product.price,
+        image: item.selectedImage,
+        color: item.selectedColor,
+        size: item.selectedSize,
+      }));
+
+      await sendOrderConfirmation(data.customerEmail, data.customerName, order.id, emailItems, data.totalAmount);
+
+      if (storeInfo?.owner?.email) {
+        await sendNewOrderNotification(storeInfo.owner.email, data.customerName, order.id, data.totalAmount, data.customerEmail, data.customerPhone);
+      }
+    } catch (e) {
+      console.error("[Email] Failed to send order emails:", e);
     }
 
     return { success: true, orderId: order.id };
@@ -252,6 +278,19 @@ export async function updateOrderStatus(orderId: string, status: string) {
       data: { status }
     });
     revalidatePath(`/store/[slug]/admin/orders`, 'page');
+
+    try {
+      const orderInfo = await prisma.order.findUnique({
+        where: { id: orderId },
+        select: { customerEmail: true, customerName: true }
+      });
+      if (orderInfo) {
+        await sendStatusUpdate(orderInfo.customerEmail, orderInfo.customerName, orderId, status);
+      }
+    } catch (e) {
+      console.error("[Email] Failed to send status update:", e);
+    }
+
     return { success: true };
   } catch (error) {
     console.error('Error updating order status:', error);

@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export async function loginCustomer(slug: string, formData: FormData) {
   const email = formData.get("email") as string;
@@ -70,6 +71,8 @@ export async function registerCustomer(slug: string, formData: FormData) {
     secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 60 * 24 * 30
   });
+
+  sendWelcomeEmail(user.email, user.name || "Customer");
 
   redirect(`/store/${slug}`);
 }
