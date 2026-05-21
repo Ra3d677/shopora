@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Globe, Menu, X, ArrowRight, ShieldCheck, Zap } from "lucide-react";
 import { setMarketingLanguageCookie } from "@/app/actions";
@@ -17,6 +17,7 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
+  const [isPending, startTransition] = useTransition();
 
   const { setLanguage } = useLanguageStore();
 
@@ -51,6 +52,7 @@ export default function ShoporaHeader({ lang }: ShoporaHeaderProps) {
     
     setIsOpen(false);
     setMobileMenuOpen(false);
+    
     window.location.reload();
   };
 

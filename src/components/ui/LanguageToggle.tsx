@@ -21,9 +21,7 @@ export default function LanguageToggle({ className = "" }: { className?: string 
     await setLanguageCookie(nextLang);
     
     // Refresh page to apply server-side RTL/LTR direction
-    startTransition(() => {
-      router.refresh();
-    });
+    window.location.reload();
   };
 
   return (

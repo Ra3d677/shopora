@@ -312,14 +312,14 @@ export default function Navbar({
         {isOpen && mounted && (
           <div className={`absolute ${lang === 'ar' ? 'left-0 origin-top-left' : 'right-0 origin-top-right'} mt-3 w-32 bg-white border border-slate-200 rounded-xl shadow-2xl py-2 z-50 transform transition-all text-slate-900`}>
             <button
-              onClick={async () => { await setLanguageCookie('en'); setIsOpen(false); router.refresh(); }}
+              onClick={async () => { await setLanguageCookie('en'); setIsOpen(false); window.location.reload(); }}
               className={`w-full text-left px-4 py-2.5 text-sm font-medium hover:bg-slate-50 transition-colors ${lang === 'en' ? 'text-blue-600' : ''}`}
               dir="ltr"
             >
               English
             </button>
             <button
-              onClick={async () => { await setLanguageCookie('ar'); setIsOpen(false); router.refresh(); }}
+              onClick={async () => { await setLanguageCookie('ar'); setIsOpen(false); window.location.reload(); }}
               className={`w-full text-right px-4 py-2.5 text-sm font-medium hover:bg-slate-50 transition-colors font-arabic ${lang === 'ar' ? 'text-blue-600' : ''}`}
               dir="rtl"
             >
