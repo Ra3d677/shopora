@@ -3,6 +3,8 @@ import { Check, Sparkles, ShieldCheck, Zap } from "lucide-react";
 import { getLang } from "@/lib/i18n";
 import ShoporaHeader from "@/components/layout/ShoporaHeader";
 
+export const dynamic = 'force-dynamic';
+
 const t = {
   en: {
     title: "Simple, Transparent Pricing",

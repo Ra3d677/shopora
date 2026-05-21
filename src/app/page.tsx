@@ -3,6 +3,8 @@ import { ShieldCheck, ArrowRight, Zap, Sparkles, Check } from "lucide-react";
 import { getLang } from "@/lib/i18n";
 import ShoporaHeader from "@/components/layout/ShoporaHeader";
 
+export const dynamic = 'force-dynamic';
+
 const homeT = {
   en: {
     badge: "Next Generation Commerce",
