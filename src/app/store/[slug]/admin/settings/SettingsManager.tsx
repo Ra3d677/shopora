@@ -140,13 +140,13 @@ export default function SettingsManager({
   ];
 
   return (
-    <div dir={language === 'ar' ? "rtl" : "ltr"} className={`space-y-10 animate-in fade-in duration-700 pb-32 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
+    <div dir={language === 'ar' ? "rtl" : "ltr"} className={`animate-in fade-in duration-700 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
         <div>
-          <h1 className="text-5xl font-black italic tracking-tighter text-white uppercase">
+          <h1 className="text-3xl lg:text-4xl font-black italic tracking-tighter text-white uppercase">
             {t('storeCore')}
           </h1>
-          <p className="text-slate-500 mt-2 font-medium tracking-widest text-[10px] uppercase">{t('masterControl')}</p>
+          <p className="text-slate-500 mt-1 font-medium tracking-widest text-[10px] uppercase">{t('masterControl')}</p>
         </div>
         
         <div className="flex bg-white/5 backdrop-blur-3xl p-2 rounded-[2rem] border border-white/5 shadow-2xl overflow-x-auto max-w-full no-scrollbar">

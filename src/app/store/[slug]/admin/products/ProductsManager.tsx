@@ -162,13 +162,13 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
   };
 
   return (
-    <div dir={isRTL ? "rtl" : "ltr"} className={`p-10 space-y-10 animate-in fade-in duration-700 ${isRTL ? 'text-right' : 'text-left'}`}>
+    <div dir={isRTL ? "rtl" : "ltr"} className={`animate-in fade-in duration-700 ${isRTL ? 'text-right' : 'text-left'}`}>
       <div className={`flex justify-between items-end ${isRTL ? 'flex-row-reverse' : ''}`}>
         <div className={isRTL ? 'text-right' : 'text-left'}>
-          <h1 className="text-5xl font-black tracking-tighter bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent italic uppercase">
+          <h1 className="text-3xl lg:text-4xl font-black tracking-tighter bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent italic uppercase">
             {t('inventoryVault')}
           </h1>
-          <p className="text-slate-500 mt-3 font-medium tracking-widest text-[10px] uppercase">{t('controlProductEco')}</p>
+          <p className="text-slate-500 mt-2 font-medium tracking-widest text-[10px] uppercase">{t('controlProductEco')}</p>
         </div>
         {!isAdding && !isEditing && (
           <button 
@@ -182,7 +182,7 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
       </div>
 
       {(isAdding || isEditing) && (
-        <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] border border-white/[0.05] shadow-2xl p-10 relative overflow-hidden group">
+        <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] border border-white/[0.05] shadow-2xl p-6 lg:p-8 relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-cyan-500/10 blur-[100px] -z-10 group-hover:bg-cyan-500/20 transition-all"></div>
           
           <div className={`flex justify-between items-center mb-10 ${isRTL ? 'flex-row-reverse' : ''}`}>
@@ -553,80 +553,80 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
           <table className="w-full text-left">
             <thead className="bg-white/[0.01] border-b border-white/[0.05]">
               <tr>
-                <th className={`px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('assetIdentity')}</th>
-                <th className={`px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('sector')}</th>
-                <th className={`px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('valuation')}</th>
-                <th className={`px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('variants')}</th>
-                <th className={`px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('inventory')}</th>
-                <th className={`px-8 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('status')}</th>
-                <th className={`px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-left' : 'text-right'}`}>{t('operations')}</th>
+                <th className={`px-6 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('assetIdentity')}</th>
+                <th className={`px-4 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('sector')}</th>
+                <th className={`px-4 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('valuation')}</th>
+                <th className={`px-4 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('variants')}</th>
+                <th className={`px-4 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('inventory')}</th>
+                <th className={`px-4 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>{t('status')}</th>
+                <th className={`px-6 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ${isRTL ? 'text-left' : 'text-right'}`}>{t('operations')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.03]">
               {products.map(product => (
                 <tr key={product.id} className="group hover:bg-white/[0.02] transition-all duration-500">
-                  <td className="px-10 py-8">
-                    <div className="flex items-center gap-6">
-                      <div className="w-16 h-16 rounded-2xl bg-white/[0.03] border border-white/[0.05] overflow-hidden relative flex-shrink-0 shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                  <td className="px-6 py-5">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-white/[0.03] border border-white/[0.05] overflow-hidden relative flex-shrink-0 shadow-lg">
                         <Image src={product.images[0]} alt={product.name} fill className="object-cover" />
                       </div>
                       <div>
-                        <div className="font-black text-white uppercase tracking-tighter text-lg mb-1">{product.name}</div>
-                        <div className="text-slate-500 text-[10px] font-medium tracking-wide truncate max-w-[200px] italic">#{product.id.slice(-8)}</div>
+                        <div className="font-black text-white uppercase tracking-tighter text-sm">{product.name}</div>
+                        <div className="text-slate-500 text-[9px] font-medium tracking-wide truncate max-w-[160px] italic">#{product.id.slice(-8)}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-8 py-8">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-white/[0.03] px-4 py-2 rounded-full border border-white/[0.05]">
+                  <td className="px-4 py-5">
+                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-white/[0.03] px-3 py-1.5 rounded-full border border-white/[0.05]">
                       {categories.find(c => c.id === product.category_id)?.name || 'Unknown Sector'}
                     </span>
                   </td>
-                  <td className="px-8 py-8">
+                  <td className="px-4 py-5">
                     {product.discount_price ? (
                       <div className="flex flex-col">
-                        <span className="font-black text-rose-500 text-xl">${product.discount_price}</span>
-                        <span className="text-slate-600 line-through text-[10px] font-black tracking-widest mt-1">${product.price}</span>
+                        <span className="font-black text-rose-500 text-base">${product.discount_price}</span>
+                        <span className="text-slate-600 line-through text-[9px] font-black tracking-widest">${product.price}</span>
                       </div>
                     ) : (
-                      <span className="font-black text-cyan-400 text-xl">${product.price}</span>
+                      <span className="font-black text-cyan-400 text-base">${product.price}</span>
                     )}
                   </td>
-                  <td className="px-8 py-8">
-                    <div className="flex flex-col gap-3">
+                  <td className="px-4 py-5">
+                    <div className="flex flex-col gap-2">
                       <div className="flex items-center gap-1.5">
                         {product.sizes?.length > 0 ? product.sizes.slice(0, 3).map((s: string, i: number) => (
-                          <span key={i} className="text-[8px] font-black bg-white/[0.05] text-slate-400 border border-white/[0.05] px-2 py-1 rounded-md uppercase tracking-tighter">
+                          <span key={i} className="text-[7px] font-black bg-white/[0.05] text-slate-400 border border-white/[0.05] px-1.5 py-0.5 rounded-md uppercase tracking-tighter">
                             {s}
                           </span>
-                        )) : <span className="text-[10px] text-slate-700">-</span>}
+                        )) : <span className="text-[9px] text-slate-700">-</span>}
                       </div>
                       <div className="flex items-center gap-1.5">
                         {product.colors?.length > 0 ? product.colors.slice(0, 3).map((c: any, i: number) => {
                           const color = typeof c === 'string' ? { value: c } : c;
-                          return <span key={i} className="w-3.5 h-3.5 rounded-full border border-white/20 shadow-lg" style={{ backgroundColor: color.value }} />;
+                          return <span key={i} className="w-3 h-3 rounded-full border border-white/20 shadow-lg" style={{ backgroundColor: color.value }} />;
                         }) : null}
                       </div>
                     </div>
                   </td>
-                  <td className="px-8 py-8">
-                    <div className="flex flex-col gap-2">
-                       <span className={`text-[10px] font-black uppercase tracking-widest ${product.stock_quantity > 0 ? 'text-green-500' : 'text-rose-500'}`}>
+                  <td className="px-4 py-5">
+                    <div className="flex flex-col gap-1.5">
+                       <span className={`text-[9px] font-black uppercase tracking-widest ${product.stock_quantity > 0 ? 'text-green-500' : 'text-rose-500'}`}>
                          {product.stock_quantity} {t('units')}
                        </span>
-                       <div className="w-20 h-1 bg-white/[0.05] rounded-full overflow-hidden">
+                       <div className="w-16 h-1 bg-white/[0.05] rounded-full overflow-hidden">
                           <div className={`h-full ${product.stock_quantity > 5 ? 'bg-green-500' : 'bg-rose-500'} transition-all`} style={{ width: `${Math.min(product.stock_quantity * 5, 100)}%` }}></div>
                        </div>
                     </div>
                   </td>
-                  <td className="px-8 py-8">
-                    <div className="flex items-center gap-3">
-                       <div className={`w-2 h-2 rounded-full animate-pulse ${product.status === 'active' ? 'bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]' : 'bg-slate-700'}`}></div>
-                       <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${product.status === 'active' ? 'text-white' : 'text-slate-600'}`}>
+                  <td className="px-4 py-5">
+                    <div className="flex items-center gap-2">
+                       <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${product.status === 'active' ? 'bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]' : 'bg-slate-700'}`}></div>
+                       <span className={`text-[9px] font-black uppercase tracking-[0.2em] ${product.status === 'active' ? 'text-white' : 'text-slate-600'}`}>
                          {product.status === 'active' ? t('activeStatus') : t('draftStatus')}
                        </span>
                     </div>
                   </td>
-                  <td className={`px-10 py-8 ${isRTL ? 'text-left' : 'text-right'}`}>
+                  <td className={`px-6 py-5 ${isRTL ? 'text-left' : 'text-right'}`}>
                     <div className={`flex gap-3 ${isRTL ? 'justify-start' : 'justify-end'}`}>
                       <button 
                         onClick={() => startEdit(product)} 
@@ -647,12 +647,12 @@ export default function ProductsManager({ initialProducts, slug, categories }: {
             </tbody>
           </table>
           {products.length === 0 && (
-            <div className="p-32 text-center">
-               <div className="w-20 h-20 bg-white/[0.02] border border-white/[0.05] rounded-full flex items-center justify-center mx-auto mb-6">
-                 <Package className="w-10 h-10 text-slate-700" />
-               </div>
-               <h3 className="text-xl font-black text-white uppercase tracking-tighter italic mb-2">{t('vaultEmpty')}</h3>
-               <p className="text-slate-600 text-sm font-medium">{t('noAssetsDeployed')}</p>
+              <div className="p-20 text-center">
+                 <div className="w-16 h-16 bg-white/[0.02] border border-white/[0.05] rounded-full flex items-center justify-center mx-auto mb-4">
+                   <Package className="w-8 h-8 text-slate-700" />
+                 </div>
+                 <h3 className="text-lg font-black text-white uppercase tracking-tighter italic mb-2">{t('vaultEmpty')}</h3>
+                 <p className="text-slate-600 text-sm font-medium">{t('noAssetsDeployed')}</p>
             </div>
           )}
         </div>

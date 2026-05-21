@@ -76,7 +76,7 @@ export default function AdminShell({
             style={{ background: "var(--admin-glow-purple)" }}
           />
 
-          <div className="p-4 md:p-12">{children}</div>
+          <div className="p-4 md:p-8 xl:p-10">{children}</div>
         </div>
       </div>
     </div>
