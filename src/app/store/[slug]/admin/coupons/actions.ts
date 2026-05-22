@@ -9,7 +9,7 @@ export async function createCoupon(data: {
   discountValue: number;
   minOrder?: number;
   expiresAt?: Date | null;
-  usageLimit?: number;
+  usageLimit?: number | null;
 }) {
   return await prisma.coupon.create({
     data: {
