@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     const isSuperAdmin = session?.role === "superadmin" || session?.email === "ksh128395@gmail.com";
     if (!isSuperAdmin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const { requestId, action } = await req.json();
+    const { requestId, action, durationDays } = await req.json();
     if (!requestId || !["approve", "reject"].includes(action)) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
@@ -21,7 +21,11 @@ export async function POST(req: NextRequest) {
 
     if (action === "approve") {
       const now = new Date();
-      const durationMs = (request.durationDays || 30) * 24 * 60 * 60 * 1000;
+      const days = durationDays && !isNaN(parseFloat(durationDays))
+        ? Math.max(0.001, Math.min(365, parseFloat(durationDays)))
+        : (request.durationDays || 30);
+      // days is in days; 0.001 day ≈ 1 minute
+      const durationMs = days * 24 * 60 * 60 * 1000;
       const subscriptionEndsAt = new Date(now.getTime() + durationMs);
 
       await prisma.store.update({
