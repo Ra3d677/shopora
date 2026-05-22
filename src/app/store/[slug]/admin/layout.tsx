@@ -29,7 +29,7 @@ import LanguageToggle from "@/components/ui/LanguageToggle";
 import { getTranslation, getLang } from "@/lib/i18n";
 import AdminShell from "./AdminShell";
 import NotificationsBell from "./NotificationsBell";
-import { checkAndSuspendExpiredTrial } from "@/lib/data";
+import { checkAndSuspendExpiredTrial, checkAndSuspendExpiredSubscription } from "@/lib/data";
 export default async function AdminLayout({
   children,
   params
@@ -51,6 +51,7 @@ export default async function AdminLayout({
   }
 
   await checkAndSuspendExpiredTrial(store.id);
+  await checkAndSuspendExpiredSubscription(store.id);
 
   if (store.status === "suspended" && !isSuperAdmin) {
     redirect(`/store/${slug}/admin/reactivate`);

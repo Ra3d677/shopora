@@ -110,11 +110,43 @@ export async function checkAndSuspendExpiredTrial(storeId: string) {
   }
 }
 
+export async function checkAndSuspendExpiredSubscription(storeId: string) {
+  const store = await prisma.store.findUnique({
+    where: { id: storeId },
+    select: { status: true, subscriptionEndsAt: true, id: true },
+  });
+  if (!store) return;
+  if (store.status !== "active") return;
+  if (!store.subscriptionEndsAt) return;
+  if (new Date() > store.subscriptionEndsAt) {
+    await prisma.store.update({
+      where: { id: store.id },
+      data: { status: "suspended" },
+    });
+  }
+}
+
 export async function suspendExpiredStores() {
   const expired = await prisma.store.findMany({
     where: {
       status: "trial",
       trialEndsAt: { lte: new Date() },
+    },
+  });
+  for (const store of expired) {
+    await prisma.store.update({
+      where: { id: store.id },
+      data: { status: "suspended" },
+    });
+  }
+  return expired.length;
+}
+
+export async function suspendExpiredSubscriptions() {
+  const expired = await prisma.store.findMany({
+    where: {
+      status: "active",
+      subscriptionEndsAt: { lte: new Date() },
     },
   });
   for (const store of expired) {

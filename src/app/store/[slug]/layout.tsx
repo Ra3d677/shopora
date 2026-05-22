@@ -4,7 +4,7 @@ import { StoreProvider } from "@/components/providers/StoreProvider";
 import { getSession } from "@/lib/auth";
 import { getLang } from "@/lib/i18n";
 import { Metadata } from "next";
-import { checkAndSuspendExpiredTrial } from "@/lib/data";
+import { checkAndSuspendExpiredTrial, checkAndSuspendExpiredSubscription } from "@/lib/data";
 
 export async function generateMetadata({ 
   params 
@@ -63,6 +63,7 @@ export default async function TenantStoreLayout({
   
   const user = await getSession();
   await checkAndSuspendExpiredTrial(store.id);
+  await checkAndSuspendExpiredSubscription(store.id);
   const isOwner = user?.id === store.ownerId;
 
   if (store.status === "suspended" && !isOwner) {
