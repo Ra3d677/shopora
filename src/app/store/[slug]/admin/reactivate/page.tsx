@@ -4,11 +4,13 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Loader2, CreditCard, CheckCircle2, AlertTriangle, Phone, Upload, Send, Sparkles } from "lucide-react";
 
+const USD_TO_EGP = 48; // سعر الصرف التقريبي
+
 const CYCLES = [
-  { id: "monthly", label: "Monthly", price: 9, total: "$9", billing: "billed monthly", savings: null, color: "blue", popular: false },
-  { id: "3-months", label: "3 Months", price: 7, total: "$21", billing: "billed every 3 months", savings: "Save $6", color: "emerald", popular: false },
-  { id: "6-months", label: "6 Months", price: 5.5, total: "$33", billing: "billed every 6 months", savings: "Save $21", color: "cyan", popular: true },
-  { id: "annual", label: "Annual", price: 4.5, total: "$54", billing: "billed annually", savings: "Save $54", color: "purple", popular: false },
+  { id: "monthly", label: "شهري", labelEn: "Monthly", price: 9, total: "$9", totalEGP: 9 * USD_TO_EGP, billing: "تدفع شهرياً", billingEn: "billed monthly", savings: null, color: "blue", popular: false },
+  { id: "3-months", label: "3 شهور", labelEn: "3 Months", price: 7, total: "$21", totalEGP: 21 * USD_TO_EGP, billing: "تدفع كل 3 شهور", billingEn: "billed every 3 months", savings: "وفر $6", color: "emerald", popular: false },
+  { id: "6-months", label: "6 شهور", labelEn: "6 Months", price: 5.5, total: "$33", totalEGP: 33 * USD_TO_EGP, billing: "تدفع كل 6 شهور", billingEn: "billed every 6 months", savings: "وفر $21", color: "cyan", popular: true },
+  { id: "annual", label: "سنوي", labelEn: "Annual", price: 4.5, total: "$54", totalEGP: 54 * USD_TO_EGP, billing: "تدفع سنوياً", billingEn: "billed annually", savings: "وفر $54", color: "purple", popular: false },
 ];
 
 const CYCLE_DURATION: Record<string, number> = {
@@ -121,14 +123,14 @@ export default function ReactivatePage() {
               <Phone className="w-8 h-8 text-green-400" />
             </div>
             <h1 className="text-2xl font-black text-white uppercase tracking-tight">الدفع عبر فودافون كاش</h1>
-            <p className="text-slate-400 text-sm">{cycle.label} — {cycle.total}</p>
+            <p className="text-slate-400 text-sm">{cycle.label} — {cycle.total} ≈ {cycle.totalEGP.toLocaleString()} ج.م</p>
           </div>
 
           <div className="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-6 space-y-3">
             <h3 className="text-amber-400 font-black text-sm uppercase tracking-wider">📋 خطوات الدفع</h3>
             <ol className="text-slate-400 text-xs space-y-2 leading-relaxed">
               <li>1. افتح محفظة فودافون كاش على هاتفك</li>
-              <li>2. حول المبلغ <span className="text-white font-black">{cycle.total}</span> على الرقم: <span className="text-white font-black text-sm">{VODAFONE_CASH_NUMBER}</span></li>
+              <li>2. حول المبلغ <span className="text-white font-black">{cycle.total} ≈ {cycle.totalEGP.toLocaleString()} ج.م</span> على الرقم: <span className="text-white font-black text-sm">{VODAFONE_CASH_NUMBER}</span></li>
               <li>3. بعد التحويل، أدخل البيانات في الخانات أدناه</li>
               <li>4. هنتأكد من التحويل ونفعل المتجر</li>
             </ol>
@@ -242,11 +244,11 @@ export default function ReactivatePage() {
               <p className="text-slate-500 text-[9px] font-bold">
                 {c.total} — {c.billing}
               </p>
-              {c.savings && (
-                <p className={`text-xs font-black mt-2 text-${c.color}-400`}>
-                  {c.savings}
-                </p>
-              )}
+              <p className="text-[10px] text-yellow-400 font-black mt-1">
+                ≈ {c.totalEGP.toLocaleString()} ج.م
+              </p>
+              {c.savings && <p className="text-xs font-black mt-2 text-yellow-400">{c.savings}</p>}
+              {c.popular && <p className="text-[9px] text-cyan-400 font-black mt-1 tracking-widest">الأكثر طلباً</p>}
             </button>
           ))}
         </div>
@@ -262,7 +264,7 @@ export default function ReactivatePage() {
             onClick={() => setStep("payment")}
             className="bg-cyan-500 text-black h-16 px-12 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all hover:bg-cyan-400 shadow-2xl"
           >
-            <Phone className="w-5 h-5" /> دفع عبر فودافون كاش — {cycle.total}
+            <Phone className="w-5 h-5" /> دفع عبر فودافون كاش — {cycle.total} ≈ {cycle.totalEGP.toLocaleString()} ج.م
           </button>
 
           <p className="text-slate-600 text-xs text-center font-medium">
