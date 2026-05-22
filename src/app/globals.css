@@ -94,6 +94,49 @@ body.font-arabic {
 .admin-card { background-color: var(--admin-card-bg-solid) !important; }
 .admin-subcard { background-color: var(--admin-card-bg-darker) !important; }
 .admin-border { border-color: var(--admin-border) !important; }
+.admin-border-hover { border-color: var(--admin-border-hover) !important; }
 .admin-text { color: var(--admin-text-primary) !important; }
 .admin-text-secondary { color: var(--admin-text-secondary) !important; }
 .admin-text-muted { color: var(--admin-text-muted) !important; }
+.admin-input-bg { background-color: var(--admin-input-bg) !important; }
+.admin-input-border { border-color: var(--admin-border) !important; }
+.admin-placeholder::placeholder { color: var(--admin-text-muted) !important; }
+.admin-divider { border-color: var(--admin-border) !important; }
+
+/* ── Admin theme overrides for common Tailwind utilities ── */
+.admin-content.text-white,
+.admin-content .text-white {
+  color: var(--admin-text-primary) !important;
+}
+.admin-content.text-slate-500,
+.admin-content .text-slate-500 {
+  color: var(--admin-text-secondary) !important;
+}
+.admin-content.text-slate-400,
+.admin-content .text-slate-400,
+.admin-content.text-slate-600,
+.admin-content .text-slate-600 {
+  color: var(--admin-text-muted) !important;
+}
+.admin-content.bg-white\/\[0\.03\],
+.admin-content .bg-white\/\[0\.03\],
+.admin-content.bg-white\/\[0\.02\],
+.admin-content .bg-white\/\[0\.02\],
+.admin-content.bg-white\/\[0\.05\],
+.admin-content .bg-white\/\[0\.05\],
+.admin-content.bg-white\/\[0\.1\],
+.admin-content .bg-white\/\[0\.1\] {
+  background-color: var(--admin-input-bg) !important;
+}
+.admin-content.border-white\/\[0\.05\],
+.admin-content .border-white\/\[0\.05\],
+.admin-content.border-white\/\[0\.06\],
+.admin-content .border-white\/\[0\.06\],
+.admin-content.border-white\/\[0\.1\],
+.admin-content .border-white\/\[0\.1\] {
+  border-color: var(--admin-border) !important;
+}
+.admin-content.hover\:text-white:hover,
+.admin-content .hover\:text-white:hover {
+  color: var(--admin-text-primary) !important;
+}
