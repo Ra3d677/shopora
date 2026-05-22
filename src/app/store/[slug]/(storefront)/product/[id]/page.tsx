@@ -22,6 +22,25 @@ export default async function ProductPage({ params }: { params: { slug: string, 
       data-page="product"
       style={{ background: 'var(--color-bg-product)', color: 'var(--color-text-product)' }}
     >
+      {/* Schema Markup for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": product.name,
+            "description": product.description || "",
+            "image": product.images?.[0] || "",
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "USD",
+              "price": product.discount_price || product.price,
+              "availability": product.stock_quantity > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+            },
+          }),
+        }}
+      />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <ProductDetailClient product={product} store={store} />
       </div>
