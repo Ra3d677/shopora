@@ -36,7 +36,7 @@ export default function BannerButton({ banner, slug }: BannerButtonProps) {
   );
 
   if (!banner.buttonPosition || banner.buttonPosition === 'center') {
-    return <div className="mt-6">{btnContent}</div>;
+    return <div className="mt-6 bg-white dark:bg-black">{btnContent}</div>;
   }
 
   const positionClasses = 
