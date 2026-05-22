@@ -55,6 +55,9 @@ export default function Footer() {
                 {store.settings?.socialLinks?.twitter && (
                   <Link href={store.settings.socialLinks.twitter} target="_blank" className="text-white hover:opacity-50">{t('twitter')}</Link>
                 )}
+                {store.settings?.socialLinks?.tiktok && (
+                  <Link href={store.settings.socialLinks.tiktok} target="_blank" className="text-white hover:opacity-50">TikTok</Link>
+                )}
                 {!store.settings?.socialLinks && (
                   <>
                     <Link href="#" className="text-white hover:opacity-50">{t('instagram')}</Link>
@@ -262,15 +265,32 @@ export default function Footer() {
                {store.settings?.socialLinks?.facebook && (
                  <Link href={store.settings.socialLinks.facebook} target="_blank" className="hover:text-white">Facebook</Link>
                )}
-               {store.settings?.socialLinks?.twitter && (
-                 <Link href={store.settings.socialLinks.twitter} target="_blank" className="hover:text-white">Twitter</Link>
-               )}
-               {!store.settings?.socialLinks && (
-                 <>
-                   <Link href="#" className="hover:text-white">Instagram</Link>
-                   <Link href="#" className="hover:text-white">{t('pinterest')}</Link>
-                 </>
-               )}
+                {Array.isArray(store.settings?.socialLinks) ? (
+                  (store.settings.socialLinks as any[]).map((link: any) => (
+                    <Link key={link.id} href={link.url} target="_blank" className="hover:text-white capitalize">{link.platform}</Link>
+                  ))
+                ) : (
+                  <>
+                    {store.settings?.socialLinks?.instagram && (
+                      <Link href={store.settings.socialLinks.instagram} target="_blank" className="hover:text-white">Instagram</Link>
+                    )}
+                    {store.settings?.socialLinks?.facebook && (
+                      <Link href={store.settings.socialLinks.facebook} target="_blank" className="hover:text-white">Facebook</Link>
+                    )}
+                    {store.settings?.socialLinks?.twitter && (
+                      <Link href={store.settings.socialLinks.twitter} target="_blank" className="hover:text-white">Twitter</Link>
+                    )}
+                    {store.settings?.socialLinks?.tiktok && (
+                      <Link href={store.settings.socialLinks.tiktok} target="_blank" className="hover:text-white">TikTok</Link>
+                    )}
+                  </>
+                )}
+                {!store.settings?.socialLinks && (
+                  <>
+                    <Link href="#" className="hover:text-white">Instagram</Link>
+                    <Link href="#" className="hover:text-white">{t('pinterest')}</Link>
+                  </>
+                )}
             </div>
             <span>© {new Date().getFullYear()} {store.name} — Handcrafted for Excellence</span>
           </div>

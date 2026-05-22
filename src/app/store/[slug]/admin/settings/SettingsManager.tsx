@@ -283,7 +283,7 @@ export default function SettingsManager({
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div className="space-y-3">
-                      <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{language === 'ar' ? "البريد الإلكتروني للاتصال" : "Uplink Email"}</label>
+                      <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('uplinkEmail')}</label>
                       <input 
                         type="email" 
                         value={settings.contactInfo?.email || ''} 
@@ -292,6 +292,78 @@ export default function SettingsManager({
                         placeholder="support@hq.com"
                       />
                     </div>
+                    <div className="space-y-3">
+                      <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('voiceDirect')}</label>
+                      <input 
+                        type="text" 
+                        value={settings.contactInfo?.phone || ''} 
+                        onChange={e => updateSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), phone: e.target.value}})} 
+                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black tracking-[0.08em] ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
+                        placeholder="+1 (000) 000-0000"
+                      />
+                    </div>
+                    <div className="space-y-3">
+                      <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('secureWhatsapp')}</label>
+                      <input 
+                        type="text" 
+                        value={settings.contactInfo?.whatsapp || ''} 
+                        onChange={e => updateSettings({...settings, contactInfo: {...(settings.contactInfo || {phone:'', email:'', address:''}), whatsapp: e.target.value}})} 
+                        className="w-full bg-white/[0.03] border border-green-500/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all font-black tracking-[0.08em] border-l-4 border-l-green-500" 
+                        placeholder="+1 (000) 000-0000"
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Social Links */}
+                  <div className="space-y-4 mt-6">
+                    <div className="flex justify-between items-center">
+                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Social Media Links</label>
+                      <button 
+                        type="button"
+                        onClick={() => updateSettings({...settings, socialLinks: [...(settings.socialLinks || []), { id: Math.random().toString(36).substr(2, 9), platform: '', url: '' }]})}
+                        className="flex items-center gap-2 px-3 py-1 bg-cyan-500/10 text-cyan-400 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-cyan-500 hover:text-white transition-all"
+                      >
+                        <Plus size={10} /> {t('add')}
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {(settings.socialLinks || []).map((link: any, idx: number) => (
+                        <div key={link.id} className="flex gap-2">
+                          <input
+                            value={link.platform}
+                            onChange={(e) => {
+                               const newLinks = [...(settings.socialLinks || [])];
+                               newLinks[idx].platform = e.target.value;
+                               updateSettings({...settings, socialLinks: newLinks});
+                            }}
+                            className={`w-1/3 bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-xs ${language === 'ar' ? 'text-right' : ''}`}
+                            placeholder="Platform (e.g. Instagram)"
+                          />
+                          <input
+                            value={link.url}
+                            onChange={(e) => {
+                               const newLinks = [...(settings.socialLinks || [])];
+                               newLinks[idx].url = e.target.value;
+                               updateSettings({...settings, socialLinks: newLinks});
+                            }}
+                            className={`flex-1 bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-xs ${language === 'ar' ? 'text-right' : ''}`}
+                            placeholder="https://..."
+                          />
+                          <button 
+                            type="button"
+                            onClick={() => {
+                               const newLinks = (settings.socialLinks || []).filter((_, i) => i !== idx);
+                               updateSettings({...settings, socialLinks: newLinks});
+                            }}
+                            className="p-3 bg-rose-500/5 text-rose-500 border border-rose-500/10 rounded-xl hover:bg-rose-500 hover:text-white transition-all"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
                     <div className="space-y-3">
                       <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{language === 'ar' ? "رقم الهاتف المباشر" : "Voice Direct"}</label>
                       <input 
