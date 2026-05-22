@@ -104,39 +104,50 @@ body.font-arabic {
 .admin-divider { border-color: var(--admin-border) !important; }
 
 /* ── Admin theme overrides for common Tailwind utilities ── */
-.admin-content.text-white,
-.admin-content .text-white {
+.admin-content,
+.admin-content .text-white,
+.admin-content .text-slate-100,
+.admin-content .text-slate-200,
+.admin-content .text-slate-300 {
   color: var(--admin-text-primary) !important;
 }
-.admin-content.text-slate-500,
 .admin-content .text-slate-500 {
   color: var(--admin-text-secondary) !important;
 }
-.admin-content.text-slate-400,
 .admin-content .text-slate-400,
-.admin-content.text-slate-600,
 .admin-content .text-slate-600 {
   color: var(--admin-text-muted) !important;
 }
-.admin-content.bg-white\/\[0\.03\],
 .admin-content .bg-white\/\[0\.03\],
-.admin-content.bg-white\/\[0\.02\],
 .admin-content .bg-white\/\[0\.02\],
-.admin-content.bg-white\/\[0\.05\],
+.admin-content .bg-white\/\[0\.04\],
 .admin-content .bg-white\/\[0\.05\],
-.admin-content.bg-white\/\[0\.1\],
-.admin-content .bg-white\/\[0\.1\] {
+.admin-content .bg-white\/\[0\.08\],
+.admin-content .bg-white\/5 {
   background-color: var(--admin-input-bg) !important;
 }
-.admin-content.border-white\/\[0\.05\],
+.admin-content .border-white\/\[0\.03\],
 .admin-content .border-white\/\[0\.05\],
-.admin-content.border-white\/\[0\.06\],
 .admin-content .border-white\/\[0\.06\],
-.admin-content.border-white\/\[0\.1\],
-.admin-content .border-white\/\[0\.1\] {
+.admin-content .border-white\/\[0\.08\],
+.admin-content .border-white\/\[0\.1\],
+.admin-content .border-white\/5 {
   border-color: var(--admin-border) !important;
 }
-.admin-content.hover\:text-white:hover,
-.admin-content .hover\:text-white:hover {
-  color: var(--admin-text-primary) !important;
+.admin-content .hover\:bg-white\/\[0\.05\]:hover,
+.admin-content .hover\:bg-white\/5:hover {
+  background-color: var(--admin-input-bg) !important;
+}
+.admin-content .bg-\[#0f111a\] {
+  background-color: var(--admin-card-bg-solid) !important;
+}
+.admin-content .bg-black\/60,
+.admin-content .bg-black\/40 {
+  background-color: var(--admin-card-bg) !important;
+}
+.admin-content .bg-white {
+  background-color: var(--admin-card-bg-solid) !important;
+}
+.admin-content .text-slate-700 {
+  color: var(--admin-text-secondary) !important;
 }
