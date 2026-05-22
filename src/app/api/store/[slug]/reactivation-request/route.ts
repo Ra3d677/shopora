@@ -19,7 +19,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
     }
 
     // Create the reactivation request
-    await prisma.reactivationRequest.create({
+    const newRequest = await prisma.reactivationRequest.create({
       data: {
         storeId: store.id,
         plan: plan || "business",
@@ -30,21 +30,25 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
       },
     });
 
-    // Also notify super admins (create a notification record)
-    const superAdmins = await prisma.user.findMany({ where: { role: "superadmin" } });
-    for (const admin of superAdmins) {
-      await prisma.notification.create({
-        data: {
-          userId: admin.id,
-          title: "طلب تفعيل متجر جديد",
-          message: `${store.name} طلب تفعيل باقة ${plan || "business"} عبر فودافون كاش`,
-          link: `/admin/stores/requests`,
-          type: "reactivation_request",
-        },
-      });
+    // Notify super admins (non-blocking)
+    try {
+      const superAdmins = await prisma.user.findMany({ where: { role: "superadmin" } });
+      for (const admin of superAdmins) {
+        await prisma.notification.create({
+          data: {
+            userId: admin.id,
+            title: "طلب تفعيل متجر جديد",
+            message: `${store.name} طلب تفعيل باقة ${plan || "business"} عبر فودافون كاش`,
+            link: `/admin/stores/requests`,
+            type: "reactivation_request",
+          },
+        });
+      }
+    } catch (e) {
+      console.error("Notification creation failed (non-blocking):", e);
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, requestId: newRequest.id });
   } catch (error: any) {
     console.error("Reactivation request error:", error);
     return NextResponse.json({ error: error.message || "فشل إرسال الطلب" }, { status: 500 });

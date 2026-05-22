@@ -98,7 +98,8 @@ export default function SidebarNav({
             </span>
           </div>
           {systemItems.map((item) => {
-            const fullPath = `${adminPath}${item.path}`;
+            const isAbsolute = item.path.startsWith("http") || item.path.startsWith("/admin");
+            const fullPath = isAbsolute ? item.path : `${adminPath}${item.path}`;
             const isActive = pathname === fullPath;
             const Icon = iconMap[item.iconName] || Globe;
             return (

@@ -81,6 +81,7 @@ export default async function AdminLayout({
   const systemItems = isSuperAdmin ? [
     { label: t('platformStores'), iconName: 'Globe', path: '/platform-stores', color: 'text-indigo-500' },
     { label: t('templates'), iconName: 'LayoutTemplate', path: '/templates', color: 'text-fuchsia-500' },
+    { label: isRTL ? 'طلبات التفعيل' : 'Activation Requests', iconName: 'Users', path: '/admin/stores/requests', color: 'text-amber-500' },
   ] : [];
 
   const customItems = [
