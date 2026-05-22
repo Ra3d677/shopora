@@ -141,13 +141,3 @@ body.font-arabic {
 .admin-content .bg-\[#0f111a\] {
   background-color: var(--admin-card-bg-solid) !important;
 }
-.admin-content .bg-black\/60,
-.admin-content .bg-black\/40 {
-  background-color: var(--admin-card-bg) !important;
-}
-.admin-content .bg-white {
-  background-color: var(--admin-card-bg-solid) !important;
-}
-.admin-content .text-slate-700 {
-  color: var(--admin-text-secondary) !important;
-}

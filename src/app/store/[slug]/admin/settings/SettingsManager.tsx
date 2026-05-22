@@ -53,6 +53,27 @@ export default function SettingsManager({
     }
   }, []);
 
+  useEffect(() => {
+    const id = 'admin-theme-overrides';
+    if (document.getElementById(id)) return;
+    const style = document.createElement('style');
+    style.id = id;
+    style.textContent = `
+      .admin-content .bg-white\\/\\[0\\.03\\] { background-color: var(--admin-input-bg) !important; }
+      .admin-content .bg-white\\/\\[0\\.02\\] { background-color: var(--admin-input-bg) !important; }
+      .admin-content .bg-white\\/5 { background-color: var(--admin-input-bg) !important; }
+      .admin-content .border-white\\/\\[0\\.05\\] { border-color: var(--admin-border) !important; }
+      .admin-content .border-white\\/\\[0\\.1\\] { border-color: var(--admin-border) !important; }
+      .admin-content .text-slate-500 { color: var(--admin-text-secondary) !important; }
+      .admin-content .text-slate-400 { color: var(--admin-text-muted) !important; }
+      .admin-content .text-slate-600 { color: var(--admin-text-muted) !important; }
+      .admin-content .text-white { color: var(--admin-text-primary) !important; }
+      .admin-content .text-slate-700 { color: var(--admin-text-secondary) !important; }
+      .admin-content .bg-\\[#0f111a\\] { background-color: var(--admin-card-bg-solid) !important; }
+    `;
+    document.head.appendChild(style);
+  }, []);
+
   const [activeTab, setActiveTab] = useState("general");
   const [linkInput, setLinkInput] = useState<{ [key: string]: string }>({});
   const [synthTarget, setSynthTarget] = useState<{page: string, type: 'backgrounds' | 'text' | 'salePrice' | 'price'}>({ page: 'home', type: 'backgrounds' });
