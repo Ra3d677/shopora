@@ -25,8 +25,18 @@ export default function CouponManager({ slug, storeId, initialCoupons }: { slug:
     });
   };
 
-  // ...
+  const removeCoupon = async (id: string) => {
+    startTransition(async () => {
+      await deleteCoupon(id, storeId);
+      setCoupons(coupons.filter(c => c.id !== id));
+      toast.success(t('deleteLabel'));
+    });
+  };
 
+  return (
+    <div className="p-6 space-y-6">
+      <h1 className="text-2xl font-black text-white">{t('coupons')}</h1>
+      
       <form action={addCoupon} className="grid grid-cols-2 gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
         <input name="code" placeholder="Code" className="bg-transparent border border-white/10 p-2 rounded col-span-2" />
         <select name="type" className="bg-transparent border border-white/10 p-2 rounded text-black">
