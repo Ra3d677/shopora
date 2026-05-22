@@ -9,6 +9,8 @@ interface RequestItem {
   id: string;
   storeId: string;
   plan: string;
+  planLabel: string;
+  durationDays: number;
   customerPhone: string;
   receiptImage: string | null;
   notes: string | null;
@@ -67,7 +69,10 @@ export default function RequestsList({ requests }: { requests: RequestItem[] }) 
                 <div className="flex items-center gap-3">
                   <h3 className="text-white font-black text-lg">{req.store.name}</h3>
                   <span className="text-[10px] bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-lg font-black uppercase">
-                    {req.plan}
+                    {req.planLabel}
+                  </span>
+                  <span className="text-[9px] bg-white/5 text-slate-400 px-2 py-1 rounded-lg font-medium">
+                    {req.durationDays} يوم
                   </span>
                 </div>
                 <p className="text-slate-500 text-xs font-medium mt-1">

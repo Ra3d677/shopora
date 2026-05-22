@@ -293,7 +293,9 @@ model ReactivationRequest {
   id             String   @id @default(cuid())
   storeId        String
   store          Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  plan           String   @default("business")
+  plan           String   @default("6-months") // monthly, 3-months, 6-months, annual
+  planLabel      String   @default("6 Months") // Monthly, 3 Months, 6 Months, Annual
+  durationDays   Int      @default(180) // 30, 90, 180, 365
   customerPhone  String   // رقم العميل اللي دفع منه
   receiptImage   String?  // صورة الإيصال (base64 data URL)
   notes          String?  // ملاحظات من العميل

@@ -21,7 +21,7 @@ export default async function RequestsPage() {
   const approvedRequests = await prisma.reactivationRequest.findMany({
     where: { status: "approved" },
     include: {
-      store: { select: { name: true, slug: true } },
+      store: { select: { name: true, slug: true, subscriptionEndsAt: true } },
     },
     orderBy: { reviewedAt: "desc" },
     take: 20,
@@ -55,9 +55,14 @@ export default async function RequestsPage() {
                   <p className="text-white font-black">{r.store.name}</p>
                   <p className="text-slate-500 text-xs">تم القبول في {new Date(r.reviewedAt!).toLocaleDateString("ar-EG")}</p>
                 </div>
-                <span className="text-green-400 text-[10px] font-black uppercase tracking-widest bg-green-500/10 px-3 py-1 rounded-lg">
-                  ✓ مقبول
-                </span>
+                <div className="text-right">
+                  <span className="text-green-400 text-[10px] font-black uppercase tracking-widest bg-green-500/10 px-3 py-1 rounded-lg">
+                    ✓ مقبول
+                  </span>
+                  {r.store.subscriptionEndsAt && (
+                    <p className="text-slate-600 text-[9px] font-medium mt-1">ينتهي: {new Date(r.store.subscriptionEndsAt).toLocaleDateString("ar-EG")}</p>
+                  )}
+                </div>
               </div>
             ))}
           </div>

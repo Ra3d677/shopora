@@ -2,20 +2,28 @@
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Loader2, CreditCard, CheckCircle2, AlertTriangle, Phone, Upload, Send } from "lucide-react";
+import { Loader2, CreditCard, CheckCircle2, AlertTriangle, Phone, Upload, Send, Sparkles } from "lucide-react";
 
-const PLANS = [
-  { id: "starter", name: "Starter", price: 9, popular: false },
-  { id: "business", name: "Business", price: 25, popular: true },
-  { id: "plus", name: "Plus", price: 39, popular: false },
+const CYCLES = [
+  { id: "monthly", label: "Monthly", price: 9, total: "$9", billing: "billed monthly", savings: null, color: "blue", popular: false },
+  { id: "3-months", label: "3 Months", price: 7, total: "$21", billing: "billed every 3 months", savings: "Save $6", color: "emerald", popular: false },
+  { id: "6-months", label: "6 Months", price: 5.5, total: "$33", billing: "billed every 6 months", savings: "Save $21", color: "cyan", popular: true },
+  { id: "annual", label: "Annual", price: 4.5, total: "$54", billing: "billed annually", savings: "Save $54", color: "purple", popular: false },
 ];
 
-const VODAFONE_CASH_NUMBER = "01000000000"; // رقم المنصة - غيّره لرقمك الفعلي
+const CYCLE_DURATION: Record<string, number> = {
+  "monthly": 30,
+  "3-months": 90,
+  "6-months": 180,
+  "annual": 365,
+};
+
+const VODAFONE_CASH_NUMBER = "01000000000";
 
 export default function ReactivatePage() {
   const { slug } = useParams<{ slug: string }>();
   const router = useRouter();
-  const [selectedPlan, setSelectedPlan] = useState("business");
+  const [selectedCycle, setSelectedCycle] = useState("6-months");
   const [step, setStep] = useState<"plan" | "payment" | "submitted">("plan");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -34,12 +42,14 @@ export default function ReactivatePage() {
       const res = await fetch(`/api/store/${slug}/reactivation-request`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          plan: selectedPlan,
-          customerPhone,
-          receiptImage: receiptImage || undefined,
-          notes: notes || undefined,
-        }),
+          body: JSON.stringify({
+            plan: selectedCycle,
+            planLabel: cycle.label,
+            customerPhone,
+            receiptImage: receiptImage || undefined,
+            notes: notes || undefined,
+            durationDays: CYCLE_DURATION[selectedCycle] || 30,
+          }),
       });
       const data = await res.json();
       if (data.success) {
@@ -65,6 +75,21 @@ export default function ReactivatePage() {
     reader.readAsDataURL(file);
   };
 
+  const cycle = CYCLES.find(c => c.id === selectedCycle)!;
+
+  const colorMap: Record<string, string> = {
+    blue: "from-blue-500 to-blue-600",
+    emerald: "from-emerald-500 to-emerald-600",
+    cyan: "from-cyan-500 to-cyan-400",
+    purple: "from-purple-500 to-purple-600",
+  };
+  const borderMap: Record<string, string> = {
+    blue: "border-blue-500/50",
+    emerald: "border-emerald-500/50",
+    cyan: "border-cyan-400/40",
+    purple: "border-purple-500/50",
+  };
+
   if (step === "submitted") {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
@@ -88,7 +113,6 @@ export default function ReactivatePage() {
   }
 
   if (step === "payment") {
-    const plan = PLANS.find(p => p.id === selectedPlan)!;
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
         <div className="max-w-lg w-full space-y-8">
@@ -97,16 +121,16 @@ export default function ReactivatePage() {
               <Phone className="w-8 h-8 text-green-400" />
             </div>
             <h1 className="text-2xl font-black text-white uppercase tracking-tight">الدفع عبر فودافون كاش</h1>
-            <p className="text-slate-400 text-sm">{plan.name} — ${plan.price}/شهر</p>
+            <p className="text-slate-400 text-sm">{cycle.label} — {cycle.total}</p>
           </div>
 
           <div className="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-6 space-y-3">
             <h3 className="text-amber-400 font-black text-sm uppercase tracking-wider">📋 خطوات الدفع</h3>
             <ol className="text-slate-400 text-xs space-y-2 leading-relaxed">
               <li>1. افتح محفظة فودافون كاش على هاتفك</li>
-              <li>2. حول المبلغ <span className="text-white font-black">${plan.price}</span> على الرقم: <span className="text-white font-black text-sm">{VODAFONE_CASH_NUMBER}</span></li>
+              <li>2. حول المبلغ <span className="text-white font-black">{cycle.total}</span> على الرقم: <span className="text-white font-black text-sm">{VODAFONE_CASH_NUMBER}</span></li>
               <li>3. بعد التحويل، أدخل البيانات في الخانات أدناه</li>
-              <li>4. هنتأكد من التحويل ونفعل المتجر خلال 24 ساعة</li>
+              <li>4. هنتأكد من التحويل ونفعل المتجر</li>
             </ol>
           </div>
 
@@ -179,46 +203,50 @@ export default function ReactivatePage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
-      <div className="max-w-lg w-full space-y-8">
+      <div className="max-w-4xl w-full space-y-8">
         <div className="text-center space-y-4">
-          <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto border border-amber-500/20">
-            <AlertTriangle className="w-8 h-8 text-amber-400" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-slate-300 text-xs font-bold uppercase tracking-widest">
+            <Sparkles className="w-4 h-4 text-cyan-400" />
+            <span>اختر دورة الاشتراك</span>
           </div>
           <h1 className="text-3xl font-black text-white uppercase tracking-tight">انتهت الفترة التجريبية</h1>
           <p className="text-slate-400 text-sm max-w-sm mx-auto leading-relaxed">
-            متجرك معلق حالياً. اختار باقة عشان تفعله وتكمل بيع.
+            متجرك معلق حالياً. اختر دورة الدفع عشان تفعله وتكمل بيع.
           </p>
         </div>
 
-        <div className="space-y-4">
-          {PLANS.map((plan) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {CYCLES.map((c) => (
             <button
-              key={plan.id}
-              onClick={() => setSelectedPlan(plan.id)}
-              className={`w-full text-left p-6 rounded-2xl border-2 transition-all ${
-                selectedPlan === plan.id
-                  ? "bg-cyan-500/10 border-cyan-500"
-                  : "bg-white/[0.02] border-white/10 hover:border-white/20"
+              key={c.id}
+              onClick={() => setSelectedCycle(c.id)}
+              className={`relative flex flex-col p-6 rounded-[2rem] border-2 transition-all duration-300 text-left ${
+                selectedCycle === c.id
+                  ? `${borderMap[c.color]} bg-white/[0.04] scale-[1.02]`
+                  : "border-white/5 bg-white/[0.02] hover:border-white/20"
               }`}
             >
-              <div className="flex justify-between items-center">
-                <div>
-                  <h3 className="text-white font-black text-lg uppercase">
-                    {plan.name}
-                    {plan.popular && (
-                      <span className="mr-3 text-[9px] bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded-full uppercase tracking-widest">
-                        الأكثر طلباً
-                      </span>
-                    )}
-                  </h3>
-                  <p className="text-slate-500 text-xs font-medium mt-1">${plan.price}/شهر</p>
-                </div>
-                <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                  selectedPlan === plan.id ? "border-cyan-500 bg-cyan-500" : "border-slate-600"
-                }`}>
-                  {selectedPlan === plan.id && <div className="w-2 h-2 rounded-full bg-white" />}
-                </div>
+              {c.popular && (
+                <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                  الأكثر طلباً
+                </span>
+              )}
+              <p className={`text-[9px] font-black uppercase tracking-[0.3em] mb-1 text-${c.color}-400`}>
+                {c.label}
+              </p>
+              <div className="h-4" />
+              <div className="mb-1 flex items-end gap-1.5">
+                <span className="text-4xl font-black text-white italic leading-none">${c.price}</span>
+                <span className="text-slate-500 text-xs font-bold mb-1">/ شهرياً</span>
               </div>
+              <p className="text-slate-500 text-[9px] font-bold">
+                {c.total} — {c.billing}
+              </p>
+              {c.savings && (
+                <p className={`text-xs font-black mt-2 text-${c.color}-400`}>
+                  {c.savings}
+                </p>
+              )}
             </button>
           ))}
         </div>
@@ -229,16 +257,18 @@ export default function ReactivatePage() {
           </div>
         )}
 
-        <button
-          onClick={() => setStep("payment")}
-          className="w-full bg-cyan-500 text-black h-16 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all hover:bg-cyan-400 shadow-2xl"
-        >
-          <Phone className="w-5 h-5" /> دفع عبر فودافون كاش
-        </button>
+        <div className="flex flex-col items-center gap-4">
+          <button
+            onClick={() => setStep("payment")}
+            className="bg-cyan-500 text-black h-16 px-12 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all hover:bg-cyan-400 shadow-2xl"
+          >
+            <Phone className="w-5 h-5" /> دفع عبر فودافون كاش — {cycle.total}
+          </button>
 
-        <p className="text-slate-600 text-xs text-center font-medium">
-          الدفع مرة واحدة - تفعيل فوري بعد التأكيد
-        </p>
+          <p className="text-slate-600 text-xs text-center font-medium">
+            {CYCLE_DURATION[selectedCycle]} يوم اشتراك بعد التفعيل
+          </p>
+        </div>
       </div>
     </div>
   );

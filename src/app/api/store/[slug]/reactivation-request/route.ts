@@ -5,7 +5,7 @@ import { getSession } from "@/lib/auth";
 export async function POST(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   try {
     const { slug } = await params;
-    const { plan, customerPhone, receiptImage, notes } = await req.json();
+    const { plan, planLabel, customerPhone, receiptImage, notes, durationDays } = await req.json();
     const user = await getSession();
 
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -22,7 +22,9 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
     const newRequest = await prisma.reactivationRequest.create({
       data: {
         storeId: store.id,
-        plan: plan || "business",
+        plan: plan || "6-months",
+        planLabel: planLabel || "6 Months",
+        durationDays: durationDays || 180,
         customerPhone,
         receiptImage: receiptImage || null,
         notes: notes || null,
@@ -38,7 +40,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
           data: {
             userId: admin.id,
             title: "طلب تفعيل متجر جديد",
-            message: `${store.name} طلب تفعيل باقة ${plan || "business"} عبر فودافون كاش`,
+            message: `${store.name} طلب تفعيل باقة ${planLabel || plan || "6 Months"} عبر فودافون كاش`,
             link: `/admin/stores/requests`,
             type: "reactivation_request",
           },

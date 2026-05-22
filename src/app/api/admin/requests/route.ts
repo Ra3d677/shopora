@@ -21,7 +21,8 @@ export async function POST(req: NextRequest) {
 
     if (action === "approve") {
       const now = new Date();
-      const subscriptionEndsAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+      const durationMs = (request.durationDays || 30) * 24 * 60 * 60 * 1000;
+      const subscriptionEndsAt = new Date(now.getTime() + durationMs);
 
       await prisma.store.update({
         where: { id: request.storeId },
