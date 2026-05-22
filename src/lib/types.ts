@@ -97,9 +97,30 @@ export interface StoreSettings {
       rate: number;
     }[];
     paymentKeys?: {
-      stripePublicKey?: string;
-      paypalClientId?: string;
+      stripe?: {
+        publishableKey: string;
+        secretKey: string;
+        webhookSecret: string;
+      };
+      paypal?: {
+        clientId: string;
+        clientSecret: string;
+      };
+      paymob?: {
+        apiKey: string;
+        hmacSecret: string;
+        merchantId: string;
+        integrationIdCard: string;
+        integrationIdWallet: string;
+      };
     };
+    paymentMethods?: {
+      id: string;
+      name: string;
+      type: 'stripe' | 'paypal' | 'paymob' | 'bank_transfer' | 'cash' | 'wallet' | 'other';
+      details: string; // Bank account details or instructions (for manual methods)
+      enabled: boolean;
+    }[];
   };
   facebookPixelId?: string;
   tiktokPixelId?: string;

@@ -139,7 +139,11 @@ model Order {
   shippingAddress String
   notes           String?
   totalAmount     Float
-  status          String      @default("pending") // pending, processing, shipped, delivered, cancelled
+  status          String      @default("pending") // pending, paid, processing, shipped, delivered, cancelled
+  paymentMethod   String?     // stripe, paymob, paypal, bank_transfer, cash, etc.
+  paymentStatus   String      @default("unpaid") // unpaid, paid, refunded, failed
+  transactionId   String?     // Stripe PaymentIntent ID, Paymob transaction ID, etc.
+  paymentDetails  String?     // JSON string with provider-specific details (receipt URL, etc.)
   items           OrderItem[]
   userId          String?     // The customer's user ID (optional for guest checkout)
   user            User?       @relation("CustomerOrders", fields: [userId], references: [id])
@@ -149,6 +153,7 @@ model Order {
   @@index([storeId])
   @@index([userId])
   @@index([status])
+  @@index([paymentStatus])
   @@index([createdAt])
 }
 
