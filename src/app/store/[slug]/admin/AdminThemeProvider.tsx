@@ -18,6 +18,50 @@ export function useAdminTheme() {
   return useContext(AdminThemeContext);
 }
 
+const darkVars = {
+  "--admin-bg": "#000000",
+  "--admin-sidebar-bg": "rgba(10,10,14,0.97)",
+  "--admin-card-bg": "rgba(15,15,22,0.85)",
+  "--admin-card-bg-solid": "#0f0f16",
+  "--admin-card-bg-darker": "#0a0a10",
+  "--admin-header-bg": "rgba(0,0,0,0.75)",
+  "--admin-border": "rgba(255,255,255,0.07)",
+  "--admin-border-hover": "rgba(255,255,255,0.15)",
+  "--admin-text-primary": "#ffffff",
+  "--admin-text-secondary": "#a0a8b8",
+  "--admin-text-muted": "#5a6270",
+  "--admin-input-bg": "rgba(255,255,255,0.04)",
+  "--admin-glow-cyan": "rgba(0,210,255,0.20)",
+  "--admin-glow-pink": "rgba(255,50,126,0.12)",
+  "--admin-glow-purple": "rgba(130,80,255,0.12)",
+  "--admin-nav-active-bg": "rgba(0,210,255,0.10)",
+  "--admin-nav-hover-bg": "rgba(255,255,255,0.03)",
+  "--admin-section-header": "#0f0f16",
+  "--admin-scrollbar-bg": "rgba(255,255,255,0.03)",
+};
+
+const lightVars = {
+  "--admin-bg": "#ffffff",
+  "--admin-sidebar-bg": "rgba(255,255,255,0.97)",
+  "--admin-card-bg": "rgba(255,255,255,0.7)",
+  "--admin-card-bg-solid": "#ffffff",
+  "--admin-card-bg-darker": "#f5f6f8",
+  "--admin-header-bg": "rgba(255,255,255,0.85)",
+  "--admin-border": "rgba(0,0,0,0.06)",
+  "--admin-border-hover": "rgba(0,0,0,0.12)",
+  "--admin-text-primary": "#000000",
+  "--admin-text-secondary": "#4a5260",
+  "--admin-text-muted": "#9aa2b0",
+  "--admin-input-bg": "rgba(0,0,0,0.02)",
+  "--admin-glow-cyan": "rgba(0,210,255,0.06)",
+  "--admin-glow-pink": "rgba(255,50,126,0.04)",
+  "--admin-glow-purple": "rgba(130,80,255,0.04)",
+  "--admin-nav-active-bg": "rgba(0,210,255,0.06)",
+  "--admin-nav-hover-bg": "rgba(0,0,0,0.02)",
+  "--admin-section-header": "rgba(255,255,255,1)",
+  "--admin-scrollbar-bg": "rgba(0,0,0,0.02)",
+};
+
 export function AdminThemeProvider({
   children,
   slug,
@@ -45,73 +89,20 @@ export function AdminThemeProvider({
     });
   }, [storageKey]);
 
-  // Inject CSS variables based on theme
-  const darkVars = {
-    "--admin-bg": "#000000",
-    "--admin-sidebar-bg": "rgba(10,10,14,0.97)",
-    "--admin-card-bg": "rgba(15,15,22,0.85)",
-    "--admin-card-bg-solid": "#0f0f16",
-    "--admin-card-bg-darker": "#0a0a10",
-    "--admin-header-bg": "rgba(0,0,0,0.75)",
-    "--admin-border": "rgba(255,255,255,0.07)",
-    "--admin-border-hover": "rgba(255,255,255,0.15)",
-    "--admin-text-primary": "#ffffff",
-    "--admin-text-secondary": "#a0a8b8",
-    "--admin-text-muted": "#5a6270",
-    "--admin-input-bg": "rgba(255,255,255,0.04)",
-    "--admin-glow-cyan": "rgba(0,210,255,0.20)",
-    "--admin-glow-pink": "rgba(255,50,126,0.12)",
-    "--admin-glow-purple": "rgba(130,80,255,0.12)",
-    "--admin-nav-active-bg": "rgba(0,210,255,0.10)",
-    "--admin-nav-hover-bg": "rgba(255,255,255,0.03)",
-    "--admin-section-header": "#0f0f16",
-    "--admin-scrollbar-bg": "rgba(255,255,255,0.03)",
-  };
+  const vars = useMemo(() => (theme === "dark" ? darkVars : lightVars), [theme]);
 
-  const lightVars = {
-    "--admin-bg": "#ffffff",
-    "--admin-sidebar-bg": "rgba(255,255,255,0.97)",
-    "--admin-card-bg": "rgba(255,255,255,0.7)",
-    "--admin-card-bg-solid": "#ffffff",
-    "--admin-card-bg-darker": "#f5f6f8",
-    "--admin-header-bg": "rgba(255,255,255,0.85)",
-    "--admin-border": "rgba(0,0,0,0.06)",
-    "--admin-border-hover": "rgba(0,0,0,0.12)",
-    "--admin-text-primary": "#000000",
-    "--admin-text-secondary": "#4a5260",
-    "--admin-text-muted": "#9aa2b0",
-    "--admin-input-bg": "rgba(0,0,0,0.02)",
-    "--admin-glow-cyan": "rgba(0,210,255,0.06)",
-    "--admin-glow-pink": "rgba(255,50,126,0.04)",
-    "--admin-glow-purple": "rgba(130,80,255,0.04)",
-    "--admin-nav-active-bg": "rgba(0,210,255,0.06)",
-    "--admin-nav-hover-bg": "rgba(0,0,0,0.02)",
-    "--admin-section-header": "rgba(255,255,255,1)",
-    "--admin-scrollbar-bg": "rgba(0,0,0,0.02)",
-  };
-
-  const vars = theme === "dark" ? darkVars : lightVars;
-
-  if (!mounted) {
-    // Render with dark defaults to avoid flash
-    return (
-      <AdminThemeContext.Provider value={{ theme: "dark", toggleTheme }}>
-        <div style={darkVars as React.CSSProperties} className="admin-theme-dark contents">
-          {children}
-        </div>
-      </AdminThemeContext.Provider>
-    );
-  }
+  useEffect(() => {
+    if (!mounted) return;
+    const root = document.documentElement;
+    Object.entries(vars).forEach(([key, value]) => {
+      root.style.setProperty(key, value);
+    });
+    root.setAttribute('data-admin-theme', theme);
+  }, [theme, vars, mounted]);
 
   return (
     <AdminThemeContext.Provider value={{ theme, toggleTheme }}>
-      <div
-        style={vars as React.CSSProperties}
-        className={`admin-theme-${theme} contents`}
-        data-admin-theme={theme}
-      >
-        {children}
-      </div>
+      {children}
     </AdminThemeContext.Provider>
   );
 }
