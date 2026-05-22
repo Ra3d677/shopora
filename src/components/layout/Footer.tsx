@@ -46,22 +46,30 @@ export default function Footer() {
              </div>
              <div className="flex flex-col gap-4">
                 <span className="text-zinc-600">{t('social')}</span>
-                {store.settings?.socialLinks?.instagram && (
-                  <Link href={store.settings.socialLinks.instagram} target="_blank" className="text-white hover:opacity-50">{t('instagram')}</Link>
-                )}
-                {store.settings?.socialLinks?.facebook && (
-                  <Link href={store.settings.socialLinks.facebook} target="_blank" className="text-white hover:opacity-50">{t('facebook')}</Link>
-                )}
-                {store.settings?.socialLinks?.twitter && (
-                  <Link href={store.settings.socialLinks.twitter} target="_blank" className="text-white hover:opacity-50">{t('twitter')}</Link>
-                )}
-                {store.settings?.socialLinks?.tiktok && (
-                  <Link href={store.settings.socialLinks.tiktok} target="_blank" className="text-white hover:opacity-50">TikTok</Link>
-                )}
-                {!store.settings?.socialLinks && (
+                {Array.isArray(store.settings?.socialLinks) ? (
+                  (store.settings.socialLinks as any[]).map((link: any) => (
+                    <Link key={link.id} href={link.url} target="_blank" className="text-white hover:opacity-50 capitalize">{link.platform}</Link>
+                  ))
+                ) : (
                   <>
-                    <Link href="#" className="text-white hover:opacity-50">{t('instagram')}</Link>
-                    <Link href="#" className="text-white hover:opacity-50">{t('twitter')}</Link>
+                    {store.settings?.socialLinks?.instagram && (
+                      <Link href={store.settings.socialLinks.instagram} target="_blank" className="text-white hover:opacity-50">{t('instagram')}</Link>
+                    )}
+                    {store.settings?.socialLinks?.facebook && (
+                      <Link href={store.settings.socialLinks.facebook} target="_blank" className="text-white hover:opacity-50">{t('facebook')}</Link>
+                    )}
+                    {store.settings?.socialLinks?.twitter && (
+                      <Link href={store.settings.socialLinks.twitter} target="_blank" className="text-white hover:opacity-50">{t('twitter')}</Link>
+                    )}
+                    {store.settings?.socialLinks?.tiktok && (
+                      <Link href={store.settings.socialLinks.tiktok} target="_blank" className="text-white hover:opacity-50">TikTok</Link>
+                    )}
+                    {!store.settings?.socialLinks && (
+                      <>
+                        <Link href="#" className="text-white hover:opacity-50">{t('instagram')}</Link>
+                        <Link href="#" className="text-white hover:opacity-50">{t('twitter')}</Link>
+                      </>
+                    )}
                   </>
                 )}
              </div>
@@ -259,32 +267,26 @@ export default function Footer() {
         
          <div className="flex flex-col md:flex-row justify-between items-center gap-12 text-[9px] uppercase tracking-[0.3em]">
             <div className="flex gap-12">
-               {store.settings?.socialLinks?.instagram && (
-                 <Link href={store.settings.socialLinks.instagram} target="_blank" className="hover:text-white">Instagram</Link>
-               )}
-               {store.settings?.socialLinks?.facebook && (
-                 <Link href={store.settings.socialLinks.facebook} target="_blank" className="hover:text-white">Facebook</Link>
-               )}
-                {Array.isArray(store.settings?.socialLinks) ? (
-                  (store.settings.socialLinks as any[]).map((link: any) => (
-                    <Link key={link.id} href={link.url} target="_blank" className="hover:text-white capitalize">{link.platform}</Link>
-                  ))
-                ) : (
-                  <>
-                    {store.settings?.socialLinks?.instagram && (
-                      <Link href={store.settings.socialLinks.instagram} target="_blank" className="hover:text-white">Instagram</Link>
-                    )}
-                    {store.settings?.socialLinks?.facebook && (
-                      <Link href={store.settings.socialLinks.facebook} target="_blank" className="hover:text-white">Facebook</Link>
-                    )}
-                    {store.settings?.socialLinks?.twitter && (
-                      <Link href={store.settings.socialLinks.twitter} target="_blank" className="hover:text-white">Twitter</Link>
-                    )}
-                    {store.settings?.socialLinks?.tiktok && (
-                      <Link href={store.settings.socialLinks.tiktok} target="_blank" className="hover:text-white">TikTok</Link>
-                    )}
-                  </>
-                )}
+                 {Array.isArray(store.settings?.socialLinks) ? (
+                   (store.settings.socialLinks as any[]).map((link: any) => (
+                     <Link key={link.id} href={link.url} target="_blank" className="hover:text-white capitalize">{link.platform}</Link>
+                   ))
+                 ) : (
+                   <>
+                     {store.settings?.socialLinks?.instagram && (
+                       <Link href={store.settings.socialLinks.instagram} target="_blank" className="hover:text-white">Instagram</Link>
+                     )}
+                     {store.settings?.socialLinks?.facebook && (
+                       <Link href={store.settings.socialLinks.facebook} target="_blank" className="hover:text-white">Facebook</Link>
+                     )}
+                     {store.settings?.socialLinks?.twitter && (
+                       <Link href={store.settings.socialLinks.twitter} target="_blank" className="hover:text-white">Twitter</Link>
+                     )}
+                     {store.settings?.socialLinks?.tiktok && (
+                       <Link href={store.settings.socialLinks.tiktok} target="_blank" className="hover:text-white">TikTok</Link>
+                     )}
+                   </>
+                 )}
                 {!store.settings?.socialLinks && (
                   <>
                     <Link href="#" className="hover:text-white">Instagram</Link>

@@ -75,7 +75,7 @@ export interface StoreSettings {
     facebook?: string;
     twitter?: string;
     tiktok?: string;
-  };
+  } | { id: string; platform: string; url: string }[];
   signatureSettings?: {
     testimonials?: {
       id?: string;
