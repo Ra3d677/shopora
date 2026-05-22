@@ -116,10 +116,10 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
     <div dir={isRTL ? "rtl" : "ltr"} className={`p-10 space-y-12 animate-in fade-in duration-700 ${isRTL ? 'text-right' : 'text-left'}`}>
       <div className={`flex justify-between items-end ${isRTL ? 'flex-row-reverse' : ''}`}>
         <div className={isRTL ? 'text-right' : 'text-left'}>
-          <h1 className="text-5xl font-black tracking-tighter bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent italic uppercase">
+          <h1 className="text-5xl font-black tracking-tighter bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent italic uppercase admin-text">
             {t('collectionHub')}
           </h1>
-          <p className="text-slate-500 mt-3 font-medium tracking-widest text-[10px] uppercase">{t('architectNavStructure')}</p>
+          <p className="admin-text-muted mt-3 font-medium tracking-widest text-[10px] uppercase">{t('architectNavStructure')}</p>
         </div>
         <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
           {showSuccess && (
@@ -168,16 +168,16 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
         </div>
 
         {/* Tab Selector - Minimalist & Sleek */}
-        <div className={`flex gap-3 mb-10 bg-black/20 p-2 rounded-2xl w-fit border border-white/[0.03] ${isRTL ? 'ml-auto flex-row-reverse' : ''}`}>
+        <div className={`flex gap-3 mb-10 bg-black/20 p-2 rounded-2xl w-fit border admin-border ${isRTL ? 'ml-auto flex-row-reverse' : ''}`}>
            <button 
              onClick={() => setActiveTab('home')}
-             className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'home' ? 'bg-white text-black shadow-xl' : 'text-slate-500 hover:text-white'}`}
+             className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'home' ? 'bg-white text-black shadow-xl' : 'admin-text-muted hover:admin-text'}`}
            >
              {t('landingPage')}
            </button>
            <button 
              onClick={() => setActiveTab('collections')}
-             className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'collections' ? 'bg-white text-black shadow-xl' : 'text-slate-500 hover:text-white'}`}
+             className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'collections' ? 'bg-white text-black shadow-xl' : 'admin-text-muted hover:admin-text'}`}
            >
              {t('allCollections')}
            </button>
@@ -190,15 +190,15 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
               <button
                 key={l.id}
                 onClick={() => handleLayoutSelect(l.id)}
-                className={`flex flex-col items-center gap-6 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden group/layout ${isCurrent ? 'border-green-400/50 bg-green-400/5 shadow-[0_0_40px_rgba(74,222,128,0.1)]' : 'border-white/[0.03] bg-white/[0.01] hover:border-white/[0.1] hover:bg-white/[0.02]'}`}
+                className={`flex flex-col items-center gap-6 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden group/layout ${isCurrent ? 'border-green-400/50 bg-green-400/5 shadow-[0_0_40px_rgba(74,222,128,0.1)]' : 'admin-border admin-card hover:border-white/[0.1]'}`}
               >
                 {isCurrent && <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-green-400 shadow-[0_0_10px_rgba(74,222,128,1)]"></div>}
-                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 ${isCurrent ? 'bg-green-400 text-black scale-110 rotate-3' : 'bg-white/[0.03] text-slate-500 group-hover/layout:text-white group-hover/layout:scale-110'}`}>
+                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 ${isCurrent ? 'bg-green-400 text-black scale-110 rotate-3' : 'admin-subcard admin-text-muted group-hover/layout:admin-text group-hover/layout:scale-110'}`}>
                   <l.icon size={32} strokeWidth={2.5} />
                 </div>
                 <div className="text-center">
-                  <div className={`text-[11px] font-black uppercase tracking-widest mb-2 ${isCurrent ? 'text-green-400' : 'text-slate-300'}`}>{l.name}</div>
-                  <div className="text-[9px] font-medium text-slate-600 tracking-wide line-clamp-1">{l.desc}</div>
+                  <div className={`text-[11px] font-black uppercase tracking-widest mb-2 ${isCurrent ? 'text-green-400' : 'admin-text'}`}>{l.name}</div>
+                  <div className="text-[9px] font-medium admin-text-muted tracking-wide line-clamp-1">{l.desc}</div>
                 </div>
               </button>
             );
@@ -207,17 +207,17 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
       </div>
 
       {(isAdding || isEditing) && (
-        <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] border border-white/[0.05] shadow-2xl p-10 relative overflow-hidden">
+        <div className="admin-card backdrop-blur-3xl rounded-[2.5rem] border admin-border shadow-2xl p-10 relative overflow-hidden">
           <div className={`flex justify-between items-center mb-10 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
             <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
                <div className="w-1.5 h-10 bg-green-400 rounded-full"></div>
-               <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic">
+               <h2 className="text-2xl font-black admin-text uppercase tracking-tighter italic">
                  {isEditing ? t('modifySector') : t('registerNewSector')}
                </h2>
             </div>
             <button 
                onClick={() => { setIsEditing(null); setIsAdding(false); }} 
-               className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white transition-all"
+               className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center admin-text-muted hover:admin-text transition-all"
             >
               <X className="w-6 h-6" />
             </button>
@@ -226,13 +226,13 @@ export default function CategoriesManager({ initialCategories, slug, settings }:
           <form onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             <div className={`space-y-8 ${isRTL ? 'text-right' : 'text-left'}`}>
               <div>
-                <label className={`block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ${isRTL ? 'mr-1' : 'ml-1'}`}>{t('sectorDesignation')}</label>
+                <label className={`block text-[10px] font-black admin-text-muted uppercase tracking-widest mb-3 ${isRTL ? 'mr-1' : 'ml-1'}`}>{t('sectorDesignation')}</label>
                 <input 
                   required 
                   type="text" 
                   value={formData.name || ''} 
                   onChange={e => setFormData({...formData, name: e.target.value})} 
-                  className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all font-bold ${isRTL ? 'text-right' : 'text-left'}`} 
+                  className={`w-full bg-white/[0.03] border admin-border rounded-2xl px-6 py-4 admin-text focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all font-bold ${isRTL ? 'text-right' : 'text-left'}`} 
                   placeholder={isRTL ? 'مثال: مستلزمات الصيف' : 'e.g. Summer Essentials'}
                 />
               </div>
