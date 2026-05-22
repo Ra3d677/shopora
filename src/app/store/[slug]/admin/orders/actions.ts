@@ -15,38 +15,12 @@ export async function createOrder(data: {
   totalAmount: number;
   items: CartItem[];
   userId?: string;
+  couponCode?: string;
 }) {
   try {
     // 0. Preliminary Stock Check
     for (const item of data.items) {
-      const product = await prisma.product.findUnique({ 
-        where: { id: item.product.id },
-        select: { name: true, colors: true, stock_quantity: true }
-      });
-      if (!product) throw new Error(`Product ${item.product?.name || 'Unknown'} no longer exists.`);
-      
-      const colors = typeof product.colors === 'string' ? JSON.parse(product.colors || '[]') : (product.colors || []);
-      const colorObj = colors.find((c: any) => (c.name === item.selectedColor || c.value === item.selectedColor));
-      const currentStock = colorObj?.stock ?? product.stock_quantity;
-      
-      if (currentStock < item.quantity) {
-        return { 
-          success: false, 
-          error: `Sorry, only ${currentStock} units of ${product.name} (${item.selectedColor}) are left in stock.` 
-        };
-      }
-    }
-
-    const order = await prisma.order.create({
-      data: {
-        storeId: data.storeId,
-        customerName: data.customerName,
-        customerEmail: data.customerEmail,
-        customerPhone: data.customerPhone,
-        shippingAddress: data.shippingAddress,
-        notes: data.notes,
-        totalAmount: data.totalAmount,
-        status: 'pending',
+// ...
         items: {
           create: data.items.map(item => ({
             productId: item.product.id,
@@ -64,7 +38,15 @@ export async function createOrder(data: {
       }
     });
 
+    if (data.couponCode) {
+      await prisma.coupon.update({
+        where: { storeId_code: { storeId: data.storeId, code: data.couponCode.toUpperCase() } },
+        data: { usedCount: { increment: 1 } }
+      });
+    }
+
     revalidatePath(`/store/[slug]/admin/orders`, 'page');
+
 
     // Record order metric in DailyMetric table (egress optimized)
     try {

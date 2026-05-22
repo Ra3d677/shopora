@@ -92,7 +92,8 @@ export default function CheckoutPage() {
         notes: formData.notes + (discount > 0 ? `\nCoupon discount: -$${discount.toFixed(2)}` : ""),
         totalAmount: totalAfterDiscount,
         items: validItems,
-        userId: user?.id // Link to user if logged in
+        userId: user?.id,
+        couponCode: discount > 0 ? couponCode : undefined
       });
 
       if (!result.success) {
