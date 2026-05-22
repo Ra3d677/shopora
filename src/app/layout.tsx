@@ -56,6 +56,10 @@ export default async function RootLayout({
                       break;
                     }
                   }
+                  // Sync Zustand persist store with server cookie
+                  try {
+                    localStorage.setItem('language-storage', JSON.stringify({ state: { language: lang }, version: 0 }));
+                  } catch (e) {}
                   document.documentElement.lang = lang;
                   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
                   if (lang === 'ar') {

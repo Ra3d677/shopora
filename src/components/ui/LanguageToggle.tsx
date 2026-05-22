@@ -20,8 +20,10 @@ export default function LanguageToggle({ className = "" }: { className?: string 
     // Set server cookie
     await setLanguageCookie(nextLang);
     
-    // Refresh page to apply server-side RTL/LTR direction
-    window.location.reload();
+    // Refresh server components to apply RTL/LTR direction
+    startTransition(() => {
+      router.refresh();
+    });
   };
 
   return (
