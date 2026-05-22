@@ -2,6 +2,7 @@ import { getStoreBySlug } from "@/lib/data";
 import { notFound } from "next/navigation";
 import { StoreProvider } from "@/components/providers/StoreProvider";
 import { getSession } from "@/lib/auth";
+import { getLang } from "@/lib/i18n";
 import { Metadata } from "next";
 
 export async function generateMetadata({ 
@@ -11,22 +12,25 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const store = await getStoreBySlug(slug);
+  const lang = await getLang();
   if (!store) return {};
 
   const storeSettings = (store.settings as any) || {};
   const version = store.updatedAt ? new Date(store.updatedAt).getTime() : Date.now();
   const faviconUrl = storeSettings.faviconUrl || '/favicon.ico';
-  // Root Cause Fix: Don't add versioning to base64 strings as it corrupts them
   const faviconWithVersion = faviconUrl.startsWith('data:') 
     ? faviconUrl 
     : `${faviconUrl}${faviconUrl.includes('?') ? '&' : '?'}v=${version}`;
   
+  const separator = lang === 'ar' ? ' | ' : ' | ';
+  const defaultTitle = lang === 'ar' ? `مرحباً بكم في ${store.name}` : `Welcome to ${store.name}`;
+  
   return {
     title: {
-      template: `%s | ${store.name}`,
+      template: `%s${separator}${store.name}`,
       default: store.name,
     },
-    description: storeSettings.description || `Welcome to ${store.name}`,
+    description: storeSettings.description || defaultTitle,
     icons: {
       icon: [
         { url: faviconWithVersion, type: 'image/x-icon' },

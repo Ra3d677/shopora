@@ -61,12 +61,12 @@ export default async function StorefrontLayout({
           <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-red-500/20">
             <ShieldAlert className="w-10 h-10 text-red-500" />
           </div>
-          <h1 className="text-4xl font-black text-white tracking-tighter mb-4 italic uppercase">Store Suspended</h1>
+          <h1 className="text-4xl font-black text-white tracking-tighter mb-4 italic uppercase">{lang === 'ar' ? 'المتجر متوقف' : 'Store Suspended'}</h1>
           <p className="text-slate-400 mb-8 leading-relaxed">
-            This store is currently undergoing maintenance or has been temporarily deactivated by the platform administrator. Please check back later.
+            {lang === 'ar' ? 'هذا المتجر قيد الصيانة حالياً أو تم إيقافه مؤقتاً من قبل مسؤول المنصة. يرجى المحاولة لاحقاً.' : 'This store is currently undergoing maintenance or has been temporarily deactivated by the platform administrator. Please check back later.'}
           </p>
           <Link href="/" className="inline-block px-8 py-4 bg-white text-black font-black uppercase tracking-widest text-xs rounded-full hover:bg-slate-200 transition-all">
-            Back to Home
+            {lang === 'ar' ? 'العودة إلى الرئيسية' : 'Back to Home'}
           </Link>
         </div>
       </div>
