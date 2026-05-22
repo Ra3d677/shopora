@@ -119,7 +119,7 @@ export default async function AdminLayout({
 
       <div
         className="p-5"
-        style={{ borderTop: '1px solid var(--admin-border)', background: 'rgba(0,0,0,0.1)' }}
+        style={{ borderTop: '1px solid var(--admin-border)', background: 'var(--admin-card-bg-darker)' }}
       >
         <div
           className="flex items-center gap-3 p-2 rounded-xl mb-2.5"

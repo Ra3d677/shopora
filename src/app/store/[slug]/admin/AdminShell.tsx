@@ -28,7 +28,7 @@ export default function AdminShell({
 
       {/* Sidebar */}
       <div
-        className={`w-80 backdrop-blur-3xl flex flex-col fixed inset-y-0 z-40 overflow-hidden transition-all duration-300 ease-in-out ${
+        className={`w-80 backdrop-blur-3xl flex flex-col fixed inset-y-0 z-40 overflow-hidden transition-all duration-500 ease-in-out ${
           isRTL ? "right-0" : "left-0"
         } ${
           open
@@ -37,6 +37,11 @@ export default function AdminShell({
             ? "translate-x-full"
             : "-translate-x-full"
         } md:translate-x-0`}
+        style={{
+          backgroundColor: "var(--admin-sidebar-bg)",
+          borderRight: isRTL ? "none" : "1px solid var(--admin-border)",
+          borderLeft: isRTL ? "1px solid var(--admin-border)" : "none",
+        }}
       >
         {sidebar}
       </div>
