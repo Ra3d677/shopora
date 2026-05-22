@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import Stripe from "stripe";
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   try {
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
       return NextResponse.json({ error: "Stripe not configured" }, { status: 400 });
     }
 
-    const stripe = new (require("stripe"))(stripeSecretKey);
+    const stripe = new Stripe(stripeSecretKey);
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100),
