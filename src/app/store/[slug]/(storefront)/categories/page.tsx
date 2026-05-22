@@ -84,7 +84,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
                   <div className="flex items-end justify-between mb-2">
                     <h2 className="text-3xl font-bold text-white tracking-wide">{collection.name}</h2>
                     <span className="text-accent bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-sm font-semibold border border-white/20">
-                      {t('itemsCount').replace('{count}', collection.itemCount)}
+                      {t('itemsCount').replace('{count}', String(collection.itemCount))}
                     </span>
                   </div>
                   <p className="text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 line-clamp-2">
@@ -108,7 +108,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                   <div className="absolute bottom-8 left-8 text-white">
                     <h3 className="text-3xl font-black uppercase tracking-tighter">{cat.name}</h3>
-                    <p className="text-white/60 text-[10px] tracking-widest uppercase mt-2">{t('itemsCount').replace('{count}', cat.itemCount)}</p>
+                    <p className="text-white/60 text-[10px] tracking-widest uppercase mt-2">{t('itemsCount').replace('{count}', String(cat.itemCount))}</p>
                   </div>
                </Link>
              ))}
@@ -127,7 +127,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-8 left-8 text-white">
                   <h3 className="text-2xl font-black uppercase tracking-tighter">{cat.name}</h3>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">{t('itemsCount').replace('{count}', cat.itemCount)}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">{t('itemsCount').replace('{count}', String(cat.itemCount))}</span>
                 </div>
               </Link>
             ))}
@@ -144,7 +144,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
               >
                 <div>
                   <h3 className="text-6xl font-black uppercase tracking-tighter group-hover:text-blue-600 transition-colors">{cat.name}</h3>
-                  <p className="text-slate-400 mt-2 font-bold uppercase tracking-widest text-xs">{t('itemsCount').replace('{count}', cat.itemCount)}</p>
+                  <p className="text-slate-400 mt-2 font-bold uppercase tracking-widest text-xs">{t('itemsCount').replace('{count}', String(cat.itemCount))}</p>
                 </div>
                 <div className="w-32 h-32 rounded-full overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-0 group-hover:scale-100">
                   <SmartImage src={cat.image} className="w-full h-full object-cover" alt={cat.name} />
@@ -169,7 +169,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
                   </div>
                 </div>
                 <h3 className="text-xl font-black uppercase tracking-widest text-slate-900">{cat.name}</h3>
-                <span className="text-[10px] font-bold text-slate-400 uppercase mt-2">{t('itemsCount').replace('{count}', cat.itemCount)}</span>
+                <span className="text-[10px] font-bold text-slate-400 uppercase mt-2">{t('itemsCount').replace('{count}', String(cat.itemCount))}</span>
               </Link>
             ))}
           </div>
@@ -223,7 +223,7 @@ function SennoCategories({ slug, collections, banners, settings, t }: any) {
                  <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900 group-hover:text-[#f06292] transition-colors">{cat.name}</h3>
                  <div className="flex items-center gap-2 mt-3">
                     <div className="w-8 h-[1px] bg-slate-200" />
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('productsCount').replace('{count}', cat.itemCount)}</span>
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('productsCount').replace('{count}', String(cat.itemCount))}</span>
                     <div className="w-8 h-[1px] bg-slate-200" />
                  </div>
                </Link>

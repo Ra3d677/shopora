@@ -48,7 +48,7 @@ const SHADOW_PRESETS = [
   { name: 'glow', value: '0 0 20px rgba(59, 130, 246, 0.5)' },
   { name: 'neon', value: '0 0 10px #3b82f6, 0 0 20px #3b82f6' },
   { name: 'deep', value: '0 20px 40px rgba(0,0,0,0.4)' },
-];
+] as const;
 
 export default function EditableText({ 
   content, 

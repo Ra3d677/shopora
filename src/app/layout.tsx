@@ -5,6 +5,7 @@ import "./globals.css";
 import { Cairo } from "next/font/google";
 import { getLang, getMarketingLang } from "@/lib/i18n";
 import { headers } from "next/headers";
+import LanguageProvider from "@/components/providers/LanguageProvider";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -72,7 +73,7 @@ export default async function RootLayout({
             `
           }}
         />
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );

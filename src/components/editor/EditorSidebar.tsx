@@ -87,7 +87,7 @@ export default function EditorSidebar() {
                       value={formData.label || ''}
                       onChange={(e) => setFormData({ ...formData, label: e.target.value })}
                       className="w-full bg-white border-2 border-slate-300 rounded-lg px-4 py-3 text-base text-slate-900 focus:border-blue-600 focus:outline-none"
-                      placeholder={t('e.gShopNow')}
+                      placeholder={t('egShopNow')}
                     />
                   </div>
                   

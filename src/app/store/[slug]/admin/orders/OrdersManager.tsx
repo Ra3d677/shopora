@@ -392,13 +392,13 @@ export default function OrdersManager({
                   <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
                     <h4 className={`text-[10px] font-black text-slate-600 uppercase tracking-[0.3em] ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('protocolExecution')}</h4>
                     <div className="grid grid-cols-2 gap-3 pb-10">
-                       {[
-                          { id: 'pending', icon: Clock },
-                          { id: 'processing', icon: Package },
-                          { id: 'shipped', icon: Truck },
-                          { id: 'delivered', icon: CheckCircle2 },
-                          { id: 'cancelled', icon: XCircle }
-                        ].map((status) => (
+                        {([
+                           { id: 'pending' as const, icon: Clock },
+                           { id: 'processing' as const, icon: Package },
+                           { id: 'shipped' as const, icon: Truck },
+                           { id: 'delivered' as const, icon: CheckCircle2 },
+                           { id: 'cancelled' as const, icon: XCircle }
+                         ] as const).map((status) => (
                          <button
                            key={status.id}
                            disabled={isPending}

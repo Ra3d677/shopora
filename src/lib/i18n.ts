@@ -16,6 +16,6 @@ export async function getMarketingLang() {
 export async function getTranslation() {
   const lang = await getLang();
   return (key: TranslationKey) => {
-    return (translations[lang] as any)[key] || key;
+    return (translations[lang] as Record<string, string>)[key] || key;
   };
 }

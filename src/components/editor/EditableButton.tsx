@@ -268,13 +268,13 @@ export default function EditableButton({ label, link, slug, settingsKey, classNa
               <div className="space-y-1">
                 <label className="text-[10px] font-black text-slate-400 uppercase">{t('fontStyle')}</label>
                 <div className="flex bg-slate-100 p-1 rounded-lg">
-                  {['sans', 'serif', 'mono'].map((font) => (
+                  {(['sans', 'serif', 'mono'] as const).map((font) => (
                     <button
                       key={font}
                       onClick={() => setFontFamily(font)}
                       className={`flex-1 py-1.5 text-[10px] font-bold uppercase rounded-md transition-all ${fontFamily === font ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                     >
-                      {t(font)}
+                       {font}
                     </button>
                   ))}
                 </div>
