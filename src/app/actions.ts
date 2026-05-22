@@ -19,7 +19,7 @@ export async function setMarketingLanguageCookie(lang: 'en' | 'ar') {
   revalidatePath("/", "layout");
 }
 
-export async function createStoreAction(data: { name: string; slug: string; template: string; type: string }) {
+export async function createStoreAction(data: { name: string; slug: string; template: string; type: string; plan?: string }) {
   const user = await getSession();
   
   if (!user) {
@@ -31,6 +31,7 @@ export async function createStoreAction(data: { name: string; slug: string; temp
   try {
     const newStore = await createStore({
       ...data,
+      plan: data.plan,
       ownerId: ownerId
     });
 

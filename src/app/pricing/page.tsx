@@ -221,7 +221,7 @@ export default async function PricingPage() {
 
               {/* CTA Button */}
               <Link
-                href="/auth/register"
+                href={`/auth/register?cycle=${plan.label.toLowerCase().replace(/\s/g, '-')}&plan=starter`}
                 className={`block w-full py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-center transition-all duration-300 border ${
                   plan.popular
                     ? "bg-cyan-500 text-black border-cyan-400 hover:bg-cyan-400 shadow-[0_0_25px_rgba(6,182,212,0.35)]"

@@ -94,6 +94,38 @@ export const getStoreBySlug = async (slug: string) => {
   )();
 };
 
+export async function checkAndSuspendExpiredTrial(storeId: string) {
+  const store = await prisma.store.findUnique({
+    where: { id: storeId },
+    select: { status: true, trialEndsAt: true, id: true },
+  });
+  if (!store) return;
+  if (store.status !== "trial") return;
+  if (!store.trialEndsAt) return;
+  if (new Date() > store.trialEndsAt) {
+    await prisma.store.update({
+      where: { id: store.id },
+      data: { status: "suspended" },
+    });
+  }
+}
+
+export async function suspendExpiredStores() {
+  const expired = await prisma.store.findMany({
+    where: {
+      status: "trial",
+      trialEndsAt: { lte: new Date() },
+    },
+  });
+  for (const store of expired) {
+    await prisma.store.update({
+      where: { id: store.id },
+      data: { status: "suspended" },
+    });
+  }
+  return expired.length;
+}
+
 export const getStoreById = async (id: string) => {
   return unstable_cache(
     async () => {
@@ -234,11 +266,13 @@ export const getStoreTemplate = async (slug: string) => {
   )();
 };
 
-export const createStore = async (storeData: { name: string; slug: string; ownerId: string; template: string; type?: string }) => {
+export const createStore = async (storeData: { name: string; slug: string; ownerId: string; template: string; type?: string; plan?: string }) => {
   const user = await prisma.user.findUnique({ where: { id: storeData.ownerId } });
   if (!user) {
     throw new Error("User not found.");
   }
+
+  const trialEndsAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
   const newStore = await prisma.store.create({
     data: {
@@ -247,6 +281,9 @@ export const createStore = async (storeData: { name: string; slug: string; owner
       ownerId: user.id,
       template: storeData.template,
       type: storeData.type || "STORE",
+      status: "trial",
+      plan: storeData.plan || "free",
+      trialEndsAt,
       settings: JSON.stringify({
         categoriesLayout: 'grid',
         productsLayout: 'static',

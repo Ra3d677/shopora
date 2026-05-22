@@ -1,12 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ShoppingBag, ArrowRight, ArrowLeft, Loader2, Store as StoreIcon, Compass } from "lucide-react";
 import { createStoreAction } from "@/app/actions";
 
 export default function CreateStorePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-950 flex items-center justify-center">
+        <Loader2 className="animate-spin text-white" size={32} />
+      </div>
+    }>
+      <CreateStoreForm />
+    </Suspense>
+  );
+}
+
+function CreateStoreForm() {
+  const searchParams = useSearchParams();
+  const plan = searchParams.get("plan") || "free";
   const [step, setStep] = useState(1);
   const [type, setType] = useState<"STORE" | "WEBSITE">("STORE");
   const [name, setName] = useState("");
@@ -44,7 +58,7 @@ export default function CreateStorePage() {
     setError(null);
     
     try {
-      const result = await createStoreAction({ name, slug, template, type });
+      const result = await createStoreAction({ name, slug, template, type, plan });
       if (result.success) {
         router.push(`/store/${slug}/admin/dashboard`);
       } else {

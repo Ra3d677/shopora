@@ -4,6 +4,7 @@ import { StoreProvider } from "@/components/providers/StoreProvider";
 import { getSession } from "@/lib/auth";
 import { getLang } from "@/lib/i18n";
 import { Metadata } from "next";
+import { checkAndSuspendExpiredTrial } from "@/lib/data";
 
 export async function generateMetadata({ 
   params 
@@ -61,10 +62,39 @@ export default async function TenantStoreLayout({
   }
   
   const user = await getSession();
+  await checkAndSuspendExpiredTrial(store.id);
+  const isOwner = user?.id === store.ownerId;
+
+  if (store.status === "suspended" && !isOwner) {
+    return (
+      <StoreProvider store={store} user={user}>
+        <SuspendedStore slug={slug} />
+      </StoreProvider>
+    );
+  }
 
   return (
     <StoreProvider store={store} user={user}>
       {children}
     </StoreProvider>
+  );
+}
+
+function SuspendedStore({ slug }: { slug: string }) {
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
+      <div className="max-w-md text-center space-y-8">
+        <div className="w-20 h-20 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto border border-amber-500/20">
+          <span className="text-4xl">⏸️</span>
+        </div>
+        <h1 className="text-3xl font-black text-white uppercase tracking-tight">Store Unavailable</h1>
+        <p className="text-slate-400 text-sm leading-relaxed">
+          This store is currently unavailable. The owner may have an expired subscription.
+        </p>
+        <p className="text-slate-600 text-xs font-medium">
+          Please check back later.
+        </p>
+      </div>
+    </div>
   );
 }

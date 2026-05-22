@@ -7,6 +7,7 @@ import TourismDemoSeedButton from "./TourismDemoSeedButton";
 import LowStockAlerts from "./LowStockAlerts";
 import RevenueChart from "./RevenueChart";
 import RecentActivity from "./RecentActivity";
+import TrialBanner from "@/components/store/TrialBanner";
 import { getTranslation, getLang } from "@/lib/i18n";
 
 export default async function AdminDashboard({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ range?: string }> }) {
@@ -51,6 +52,8 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       name: true,
       slug: true,
       type: true,
+      status: true,
+      trialEndsAt: true,
       orders: {
         where: baseWhereCondition,
         orderBy: { createdAt: 'desc' },
@@ -265,6 +268,12 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       </div>
 
       {isWebsite && <TourismDemoSeedButton storeId={store.id} />}
+
+      {(store as any).trialEndsAt && (
+        <div className="mb-6">
+          <TrialBanner slug={slug} trialEndsAt={(store as any).trialEndsAt.toISOString()} />
+        </div>
+      )}
 
       {/* KPI Blocks - Row 1 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">

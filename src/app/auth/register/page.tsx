@@ -1,14 +1,29 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useTransition, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ShoppingBag, Mail, User, Lock, Loader2, ArrowRight } from "lucide-react";
 import { registerUser } from "../actions";
 
 export default function RegisterPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <Loader2 className="animate-spin text-blue-600" size={32} />
+      </div>
+    }>
+      <RegisterForm />
+    </Suspense>
+  );
+}
+
+function RegisterForm() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const plan = searchParams.get("plan") || "free";
+  const cycle = searchParams.get("cycle") || "monthly";
 
   const handleRegister = async (formData: FormData) => {
     setError(null);
@@ -16,6 +31,8 @@ export default function RegisterPage() {
       const result = await registerUser(formData);
       if (result?.error) {
         setError(result.error);
+      } else {
+        router.push(`/create-store?plan=${plan}&cycle=${cycle}`);
       }
     });
   };

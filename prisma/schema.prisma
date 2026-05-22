@@ -32,8 +32,12 @@ model Store {
   primaryColor String     @default("#3b82f6")
   settings     String     @default("{}") // JSON string
   ownerId      String
-  isActive     Boolean    @default(true)
-  owner        User       @relation(fields: [ownerId], references: [id])
+  isActive         Boolean    @default(true)
+  status           String     @default("trial") // trial, active, suspended, deleted
+  plan             String     @default("free") // free, starter, business, plus, enterprise
+  trialEndsAt      DateTime?
+  subscriptionEndsAt DateTime?
+  owner            User       @relation(fields: [ownerId], references: [id])
   products     Product[]
   categories   Category[]
   banners      Banner[]
