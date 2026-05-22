@@ -39,6 +39,20 @@ export default function SettingsManager({
     setSettings(newSettings);
     setIsDirty(true);
   };
+
+  const DEFAULT_PLATFORMS = [
+    { id: 'facebook', platform: 'Facebook', url: '' },
+    { id: 'instagram', platform: 'Instagram', url: '' },
+    { id: 'tiktok', platform: 'TikTok', url: '' },
+    { id: 'youtube', platform: 'YouTube', url: '' },
+  ];
+
+  useEffect(() => {
+    if (!settings.socialLinks || !Array.isArray(settings.socialLinks) || settings.socialLinks.length === 0) {
+      setSettings(prev => ({ ...prev, socialLinks: DEFAULT_PLATFORMS }));
+    }
+  }, []);
+
   const [activeTab, setActiveTab] = useState("general");
   const [linkInput, setLinkInput] = useState<{ [key: string]: string }>({});
   const [synthTarget, setSynthTarget] = useState<{page: string, type: 'backgrounds' | 'text' | 'salePrice' | 'price'}>({ page: 'home', type: 'backgrounds' });
@@ -168,6 +182,31 @@ export default function SettingsManager({
 
       <div className="relative">
         <form onSubmit={handleSave}>
+          <div className={`sticky top-0 z-[100] mb-6 transition-all duration-700 ${isDirty ? 'translate-y-0 opacity-100' : 'translate-y-0 opacity-70'}`}>
+            <div className="bg-[#0f111a]/90 backdrop-blur-3xl border border-cyan-500/30 p-3 rounded-2xl flex items-center justify-between shadow-[0_20px_50px_rgba(6,182,212,0.2)]">
+              <div className="pl-4">
+                {saveMessage ? (
+                  <div className="flex items-center gap-3 animate-in slide-in-from-left-6 duration-700">
+                     <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.5)]"></div>
+                     <span className="text-[9px] font-black text-white uppercase tracking-[0.08em]">Protocol Secured</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3 text-slate-500">
+                     <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_15px_rgba(6,182,212,0.5)]"></div>
+                     <span className="text-[9px] font-black uppercase tracking-[0.08em]">Uplink Pending</span>
+                  </div>
+                )}
+              </div>
+              <button 
+                type="submit"
+                disabled={isPending}
+                className={`px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-black text-[10px] uppercase tracking-[0.08em] hover:scale-105 active:scale-95 transition-all flex items-center gap-3 shadow-2xl shadow-cyan-500/20 disabled:opacity-50 ${language === 'ar' ? 'font-arabic' : ''}`}
+              >
+                {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                {isPending ? t('saving') : t('saveChanges')}
+              </button>
+            </div>
+          </div>
               <div className="space-y-5">
             {activeTab === 'general' && (
               <div className="space-y-5 animate-in fade-in zoom-in-95 duration-500">
@@ -317,7 +356,7 @@ export default function SettingsManager({
 
                   <div className="space-y-4 mt-6">
                     <div className="flex justify-between items-center">
-                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Social Media Links</label>
+                      <label className="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-2">{language === 'ar' ? "روابط السوشيال ميديا" : "Social Media Links"}</label>
                       <button 
                         type="button"
                         onClick={() => updateSettings({...settings, socialLinks: [...((settings.socialLinks || []) as any[]), { id: Math.random().toString(36).substr(2, 9), platform: '', url: '' }]})}
@@ -1247,31 +1286,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
             ))}
           </div>
 
-          <div className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-full max-w-xl px-4 transition-all duration-700 ${isDirty ? 'translate-y-0 opacity-100' : 'translate-y-32 opacity-0'}`}>
-            <div className="bg-[#0f111a]/90 backdrop-blur-3xl border border-cyan-500/30 p-3 rounded-2xl flex items-center justify-between shadow-[0_20px_50px_rgba(6,182,212,0.2)]">
-              <div className="pl-4">
-                {saveMessage ? (
-                  <div className="flex items-center gap-3 animate-in slide-in-from-left-6 duration-700">
-                     <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.5)]"></div>
-                     <span className="text-[9px] font-black text-white uppercase tracking-[0.08em]">Protocol Secured</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-3 text-slate-500">
-                     <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_15px_rgba(6,182,212,0.5)]"></div>
-                     <span className="text-[9px] font-black uppercase tracking-[0.08em]">Uplink Pending</span>
-                  </div>
-                )}
-              </div>
-              <button 
-                type="submit"
-                disabled={isPending}
-                className={`px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-black text-[10px] uppercase tracking-[0.08em] hover:scale-105 active:scale-95 transition-all flex items-center gap-3 shadow-2xl shadow-cyan-500/20 disabled:opacity-50 ${language === 'ar' ? 'font-arabic' : ''}`}
-              >
-                {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                {isPending ? t('saving') : t('saveChanges')}
-              </button>
-            </div>
-          </div>
+
         </form>
       </div>
     </div>
