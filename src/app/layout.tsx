@@ -6,6 +6,7 @@ import { Cairo } from "next/font/google";
 import { getLang, getMarketingLang } from "@/lib/i18n";
 import { headers } from "next/headers";
 import LanguageProvider from "@/components/providers/LanguageProvider";
+import { Toaster } from "sonner";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -40,6 +41,7 @@ export default async function RootLayout({
   return (
     <html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       <body className={`${inter.variable} ${cairo.variable} antialiased min-h-screen flex flex-col ${lang === 'ar' ? 'font-arabic' : ''}`}>
+        <Toaster position="top-right" richColors />
         <script
           dangerouslySetInnerHTML={{
             __html: `

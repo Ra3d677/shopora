@@ -7,6 +7,7 @@ import { Settings, Loader2, Save, X, Trash2, CheckCircle2, Globe } from "lucide-
 import { StoreSettings } from "@/lib/types";
 import MediaPicker from "../media/MediaPicker";
 import { useLanguageStore } from '@/store/language';
+import { toast } from 'sonner';
 
 const PRESET_GRADIENTS = [
   'radial-gradient(ellipse at top, #0f172a, #0a0c14, #000000)', // Abyss
@@ -119,12 +120,14 @@ export default function SettingsManager({
     setSaveMessage("");
     
     startTransition(async () => {
-      await saveStoreSettings(slug, settings);
-      setSaveMessage(t('settingsSaved'));
-      setIsDirty(false);
-      router.refresh();
-      
-      setTimeout(() => setSaveMessage(""), 3000);
+      try {
+        await saveStoreSettings(slug, settings);
+        toast.success(t('settingsSaved'));
+        setIsDirty(false);
+        router.refresh();
+      } catch (e) {
+        toast.error(t('failedToSaveColors'));
+      }
     });
   };
 
