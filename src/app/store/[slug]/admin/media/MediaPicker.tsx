@@ -146,37 +146,37 @@ export default function MediaPicker({ value, onChange, slug, className }: MediaP
   const filteredMedia = media.filter(m => m.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div className={cn("space-y-4", className)}>
+    <div className={cn("space-y-2", className)}>
       {/* Current Preview or Empty State */}
       {value ? (
-        <div className="group relative w-full aspect-video md:aspect-square max-w-[300px] rounded-3xl border-4 border-slate-100 overflow-hidden bg-slate-50 shadow-inner transition-all hover:border-blue-100">
+        <div className="group relative w-full aspect-[4/3] max-w-[160px] rounded-xl border-2 border-slate-100 overflow-hidden bg-slate-50 shadow-inner transition-all hover:border-blue-100">
           {value.includes("video") || value.includes(".mp4") || value.includes(".webm") ? (
             <video src={value} className="w-full h-full object-cover" muted />
           ) : (
             <img src={value} alt="Preview" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
           )}
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1">
             <button 
               type="button"
               onClick={() => onChange("")}
-              className="bg-white/90 backdrop-blur-md text-red-600 p-2 rounded-full hover:bg-red-600 hover:text-white transition-all shadow-xl"
+              className="bg-white/90 backdrop-blur-md text-red-600 p-1.5 rounded-full hover:bg-red-600 hover:text-white transition-all shadow-xl"
               title="Remove Image"
             >
-              <X size={20} />
+              <X size={14} />
             </button>
-            <p className="text-white text-[10px] font-black uppercase tracking-widest">Remove Asset</p>
+            <p className="text-white text-[8px] font-black uppercase tracking-widest">Remove</p>
           </div>
         </div>
       ) : (
         <div 
           onClick={() => fileInputRef.current?.click()}
-          className="w-full aspect-video md:aspect-square max-w-[300px] rounded-[2.5rem] border-4 border-dashed border-slate-200 bg-slate-50 flex flex-col items-center justify-center p-8 text-center cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-all group"
+          className="w-full aspect-[4/3] max-w-[160px] rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 flex flex-col items-center justify-center p-4 text-center cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-all group"
         >
-          <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg mb-4 group-hover:scale-110 group-hover:rotate-6 transition-transform">
-            <UploadCloud className="w-8 h-8 text-blue-600" />
+          <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-md mb-2 group-hover:scale-110 group-hover:rotate-6 transition-transform">
+            <UploadCloud className="w-5 h-5 text-blue-600" />
           </div>
-          <h4 className="text-slate-900 font-black text-lg">Upload Asset</h4>
-          <p className="text-slate-500 text-sm mt-1">Select a photo from your device</p>
+          <h4 className="text-slate-900 font-black text-xs">Upload</h4>
+          <p className="text-slate-500 text-[10px] mt-0.5">Select from device</p>
         </div>
       )}
 
@@ -193,18 +193,18 @@ export default function MediaPicker({ value, onChange, slug, className }: MediaP
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
-          className="bg-slate-900 text-white px-5 py-2.5 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10 disabled:opacity-50"
+          className="bg-slate-900 text-white px-3.5 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center gap-1.5 hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10 disabled:opacity-50"
         >
-          {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
-          {uploading ? "Uploading..." : "Upload from Device"}
+          {uploading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <UploadCloud className="w-3.5 h-3.5" />}
+          {uploading ? "Uploading..." : "Upload"}
         </button>
         
         <button 
           type="button"
           onClick={() => setIsOpen(true)}
-          className="bg-white text-slate-700 px-5 py-2.5 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-slate-50 transition-all border border-slate-200 shadow-sm"
+          className="bg-white text-slate-700 px-3.5 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center gap-1.5 hover:bg-slate-50 transition-all border border-slate-200 shadow-sm"
         >
-          <Library className="w-4 h-4 text-blue-600" /> Library
+          <Library className="w-3.5 h-3.5 text-blue-600" /> Library
         </button>
 
         <div className="relative">
@@ -212,11 +212,11 @@ export default function MediaPicker({ value, onChange, slug, className }: MediaP
             type="button"
             onClick={() => setActiveTab(activeTab === 'url' ? 'upload' : 'url')}
             className={cn(
-              "px-5 py-2.5 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-2 transition-all border shadow-sm",
+              "px-3.5 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center gap-1.5 transition-all border shadow-sm",
               activeTab === 'url' ? "bg-purple-600 text-white border-purple-600 shadow-purple-600/20" : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
             )}
           >
-            <LinkIcon className={cn("w-4 h-4", activeTab === 'url' ? "text-white" : "text-purple-600")} /> Image URL
+            <LinkIcon className={cn("w-3.5 h-3.5", activeTab === 'url' ? "text-white" : "text-purple-600")} /> URL
           </button>
           
           {/* URL Popover */}
