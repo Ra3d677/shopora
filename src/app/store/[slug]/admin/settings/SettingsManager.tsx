@@ -35,6 +35,7 @@ export default function SettingsManager({
   const [saveMessage, setSaveMessage] = useState("");
   const [isDirty, setIsDirty] = useState(false);
 
+  const [sectionTheme, setSectionTheme] = useState<"dark" | "light">("dark");
   const updateSettings = (newSettings: any) => {
     setSettings(newSettings);
     setIsDirty(true);
@@ -53,26 +54,23 @@ export default function SettingsManager({
     }
   }, []);
 
-  useEffect(() => {
-    const id = 'admin-theme-overrides';
-    if (document.getElementById(id)) return;
-    const style = document.createElement('style');
-    style.id = id;
-    style.textContent = `
-      .admin-content .bg-white\\/\\[0\\.03\\] { background-color: var(--admin-input-bg) !important; }
-      .admin-content .bg-white\\/\\[0\\.02\\] { background-color: var(--admin-input-bg) !important; }
-      .admin-content .bg-white\\/5 { background-color: var(--admin-input-bg) !important; }
-      .admin-content .border-white\\/\\[0\\.05\\] { border-color: var(--admin-border) !important; }
-      .admin-content .border-white\\/\\[0\\.1\\] { border-color: var(--admin-border) !important; }
-      .admin-content .text-slate-500 { color: var(--admin-text-secondary) !important; }
-      .admin-content .text-slate-400 { color: var(--admin-text-muted) !important; }
-      .admin-content .text-slate-600 { color: var(--admin-text-muted) !important; }
-      .admin-content .text-white { color: var(--admin-text-primary) !important; }
-      .admin-content .text-slate-700 { color: var(--admin-text-secondary) !important; }
-      .admin-content .bg-\\[#0f111a\\] { background-color: var(--admin-card-bg-solid) !important; }
-    `;
-    document.head.appendChild(style);
-  }, []);
+  const sectionVars = sectionTheme === "dark" ? {
+    '--s-bg': '#000000',
+    '--s-card': '#0f0f16',
+    '--s-input': 'rgba(255,255,255,0.04)',
+    '--s-border': 'rgba(255,255,255,0.07)',
+    '--s-text': '#ffffff',
+    '--s-text-sec': '#a0a8b8',
+    '--s-text-muted': '#5a6270',
+  } : {
+    '--s-bg': '#ffffff',
+    '--s-card': '#ffffff',
+    '--s-input': 'rgba(0,0,0,0.02)',
+    '--s-border': 'rgba(0,0,0,0.06)',
+    '--s-text': '#000000',
+    '--s-text-sec': '#4a5260',
+    '--s-text-muted': '#9aa2b0',
+  };
 
   const [activeTab, setActiveTab] = useState("general");
   const [linkInput, setLinkInput] = useState<{ [key: string]: string }>({});
@@ -178,7 +176,7 @@ export default function SettingsManager({
   ];
 
   return (
-    <div dir={language === 'ar' ? "rtl" : "ltr"} className={`admin-content animate-in fade-in duration-700 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+    <div dir={language === 'ar' ? "rtl" : "ltr"} className={`admin-content animate-in fade-in duration-700 ${language === 'ar' ? 'text-right' : 'text-left'}`} style={sectionVars as any}>
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
         <div>
           <h1 className="text-3xl lg:text-4xl font-black italic tracking-tighter text-white uppercase">
@@ -186,6 +184,18 @@ export default function SettingsManager({
           </h1>
           <p className="text-slate-500 mt-1 font-medium tracking-[0.08em] text-[10px] uppercase">{t('masterControl')}</p>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setSectionTheme(sectionTheme === "dark" ? "light" : "dark")}
+          className={`px-4 py-2.5 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all flex items-center gap-2 ${
+            sectionTheme === "dark"
+              ? 'bg-white text-black hover:bg-cyan-400 hover:text-white'
+              : 'bg-black text-white hover:bg-cyan-500 hover:text-white'
+          }`}
+        >
+          {sectionTheme === "dark" ? 'Light' : 'Dark'}
+        </button>
         
         <div className="flex bg-white/5 backdrop-blur-3xl p-1.5 rounded-xl border border-white/5 shadow-2xl overflow-x-auto max-w-full no-scrollbar">
           {tabs.map(tab => (
