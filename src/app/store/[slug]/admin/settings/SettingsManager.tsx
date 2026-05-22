@@ -179,18 +179,18 @@ export default function SettingsManager({
 
   return (
     <div dir={language === 'ar' ? "rtl" : "ltr"} className={`admin-content animate-in fade-in duration-700 ${language === 'ar' ? 'text-right' : 'text-left'}`} style={sectionVars as any}>
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4">
         <div>
-          <h1 className="text-3xl lg:text-4xl font-black italic tracking-tighter text-white uppercase">
+          <h1 className="text-xl lg:text-2xl font-black italic tracking-tighter text-white uppercase">
             {t('storeCore')}
           </h1>
-          <p className="text-slate-500 mt-1 font-medium tracking-[0.08em] text-[10px] uppercase">{t('masterControl')}</p>
+          <p className="text-slate-500 mt-0.5 font-medium tracking-[0.08em] text-[9px] uppercase">{t('masterControl')}</p>
         </div>
 
         <button
           type="button"
           onClick={() => setSectionTheme(sectionTheme === "dark" ? "light" : "dark")}
-          className={`px-4 py-2.5 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all flex items-center gap-2 ${
+          className={`px-3 py-1.5 rounded-lg font-black text-[8px] uppercase tracking-widest transition-all flex items-center gap-1.5 ${
             sectionTheme === "dark"
               ? 'bg-white text-black hover:bg-cyan-400 hover:text-white'
               : 'bg-black text-white hover:bg-cyan-500 hover:text-white'
@@ -199,13 +199,13 @@ export default function SettingsManager({
           {sectionTheme === "dark" ? 'Light' : 'Dark'}
         </button>
         
-        <div className="flex bg-white/5 backdrop-blur-3xl p-1.5 rounded-xl border border-white/5 shadow-2xl overflow-x-auto max-w-full no-scrollbar">
+        <div className="flex bg-white/5 backdrop-blur-3xl p-1 rounded-lg border border-white/5 shadow-2xl overflow-x-auto max-w-full no-scrollbar">
           {tabs.map(tab => (
             <button
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`px-5 py-3 rounded-xl text-[9px] font-black uppercase tracking-[0.08em] transition-all duration-500 whitespace-nowrap ${activeTab === tab.id ? 'bg-cyan-500 text-white shadow-[0_10px_20px_rgba(6,182,212,0.3)] scale-105' : 'text-slate-500 hover:text-white hover:bg-white/5'} ${language === 'ar' ? 'font-arabic' : ''}`}
+              className={`px-4 py-2 rounded-lg text-[8px] font-black uppercase tracking-[0.08em] transition-all duration-500 whitespace-nowrap ${activeTab === tab.id ? 'bg-cyan-500 text-white shadow-[0_5px_15px_rgba(6,182,212,0.3)] scale-105' : 'text-slate-500 hover:text-white hover:bg-white/5'} ${language === 'ar' ? 'font-arabic' : ''}`}
             >
               {tab.label}
             </button>
@@ -215,27 +215,27 @@ export default function SettingsManager({
 
       <div className="relative">
         <form onSubmit={handleSave}>
-          <div className={`sticky top-0 z-[100] mb-6 transition-all duration-700 ${isDirty ? 'translate-y-0 opacity-100' : 'translate-y-0 opacity-70'}`}>
-            <div className="bg-[#0f111a]/90 backdrop-blur-3xl border border-cyan-500/30 p-3 rounded-2xl flex items-center justify-between shadow-[0_20px_50px_rgba(6,182,212,0.2)]">
-              <div className="pl-4">
+          <div className={`sticky top-0 z-[100] mb-4 transition-all duration-700 ${isDirty ? 'translate-y-0 opacity-100' : 'translate-y-0 opacity-70'}`}>
+            <div className="bg-[#0f111a]/95 backdrop-blur-3xl border border-cyan-500/20 p-2 rounded-xl flex items-center justify-between shadow-[0_15px_30px_rgba(6,182,212,0.15)]">
+              <div className="pl-3">
                 {saveMessage ? (
-                  <div className="flex items-center gap-3 animate-in slide-in-from-left-6 duration-700">
-                     <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.5)]"></div>
-                     <span className="text-[9px] font-black text-white uppercase tracking-[0.08em]">Protocol Secured</span>
+                  <div className="flex items-center gap-2 animate-in slide-in-from-left-4 duration-700">
+                     <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+                     <span className="text-[8px] font-black text-white uppercase tracking-[0.08em]">Protocol Secured</span>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-3 text-slate-500">
-                     <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_15px_rgba(6,182,212,0.5)]"></div>
-                     <span className="text-[9px] font-black uppercase tracking-[0.08em]">Uplink Pending</span>
+                  <div className="flex items-center gap-2 text-slate-500">
+                     <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_10px_rgba(6,182,212,0.5)]"></div>
+                     <span className="text-[8px] font-black uppercase tracking-[0.08em]">Uplink Pending</span>
                   </div>
                 )}
               </div>
               <button 
                 type="submit"
                 disabled={isPending}
-                className={`px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-black text-[10px] uppercase tracking-[0.08em] hover:scale-105 active:scale-95 transition-all flex items-center gap-3 shadow-2xl shadow-cyan-500/20 disabled:opacity-50 ${language === 'ar' ? 'font-arabic' : ''}`}
+                className={`px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-black text-[9px] uppercase tracking-[0.08em] hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-xl shadow-cyan-500/10 disabled:opacity-50 ${language === 'ar' ? 'font-arabic' : ''}`}
               >
-                {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                {isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
                 {isPending ? t('saving') : t('saveChanges')}
               </button>
             </div>
@@ -244,40 +244,40 @@ export default function SettingsManager({
             {activeTab === 'general' && (
               <div className="space-y-5 animate-in fade-in zoom-in-95 duration-500">
                 {/* Identity Settings */}
-                <div className="admin-card backdrop-blur-3xl rounded-xl p-5 border admin-border shadow-xl relative overflow-hidden group">
+                <div className="admin-card backdrop-blur-3xl rounded-xl p-4 border admin-border shadow-xl relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/5 blur-[80px] -z-10"></div>
                   
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-0.5 h-4 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-                    <h2 className="text-base font-black text-white italic uppercase tracking-tight">{t('brandMatrix')}</h2>
+                  <div className="flex items-center gap-1.5 mb-3">
+                    <div className="w-0.5 h-3 bg-cyan-400 rounded-full shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
+                    <h2 className="text-xs font-black text-white italic uppercase tracking-tight">{t('brandMatrix')}</h2>
                   </div>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-1">{t('marketIdentity')}</label>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5">
+                    <div className="space-y-1.5">
+                      <label className="block text-[8px] font-bold text-slate-400 tracking-[0.08em] ml-1">{t('marketIdentity')}</label>
                       <input 
                         type="text" 
                         value={settings.storeName} 
                         onChange={e => updateSettings({...settings, storeName: e.target.value})} 
-                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-[0.75rem] px-3.5 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-black uppercase tracking-tight italic text-sm ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
+                        className={`w-full bg-white/[0.02] border border-white/[0.05] rounded-xl px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-semibold text-xs ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
                         placeholder={t('enterStoreName')}
                       />
                     </div>
                     
-                    <div className="space-y-2">
-                      <label className="block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-1">{t('seoSignal')}</label>
+                    <div className="space-y-1.5">
+                      <label className="block text-[8px] font-bold text-slate-400 tracking-[0.08em] ml-1">{t('seoSignal')}</label>
                       <input 
                         type="text" 
                         value={settings.description || ''} 
                         onChange={e => updateSettings({...settings, description: e.target.value})} 
-                        className={`w-full bg-white/[0.03] border border-white/[0.05] rounded-[0.75rem] px-3.5 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-bold text-xs ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
+                        className={`w-full bg-white/[0.02] border border-white/[0.05] rounded-xl px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all font-medium text-xs ${language === 'ar' ? 'font-arabic text-right' : ''}`} 
                         placeholder={t('premiumExperience')}
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-1">{t('signatureLogo')}</label>
-                      <div className="bg-white/[0.03] border border-white/[0.05] rounded-[0.75rem] p-3">
+                    <div className="space-y-1.5">
+                      <label className="block text-[8px] font-bold text-slate-400 tracking-[0.08em] ml-1">{t('signatureLogo')}</label>
+                      <div className="bg-white/[0.02] border border-white/[0.05] rounded-xl p-2">
                         <MediaPicker 
                           slug={slug}
                           value={settings.logoUrl || ''} 
@@ -287,9 +287,9 @@ export default function SettingsManager({
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-1">{t('browserNode')}</label>
-                      <div className="bg-white/[0.03] border border-white/[0.05] rounded-[0.75rem] p-3">
+                    <div className="space-y-1.5">
+                      <label className="block text-[8px] font-bold text-slate-400 tracking-[0.08em] ml-1">{t('browserNode')}</label>
+                      <div className="bg-white/[0.02] border border-white/[0.05] rounded-xl p-2">
                         <MediaPicker 
                           slug={slug}
                           value={settings.faviconUrl || ''} 
