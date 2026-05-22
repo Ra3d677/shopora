@@ -9,6 +9,7 @@ import { useStore } from "@/components/providers/StoreProvider";
 import { createOrder } from "../../admin/orders/actions";
 import { motion } from "framer-motion";
 import { useLanguageStore } from "@/store/language";
+import StripePaymentForm from "@/components/checkout/StripePaymentForm";
 
 export default function CheckoutPage() {
   const { t } = useLanguageStore();
@@ -32,6 +33,7 @@ export default function CheckoutPage() {
   const [discount, setDiscount] = useState(0);
   const [couponMsg, setCouponMsg] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -64,12 +66,15 @@ export default function CheckoutPage() {
     setCouponLoading(false);
   };
 
+  const paymentMethods = (store.settings?.businessSettings?.paymentMethods || []).filter((pm: any) => pm.enabled);
+  const paymentKeys = store.settings?.businessSettings?.paymentKeys;
+
   const totalAfterDiscount = Math.max(0, getCartTotal(store.id) - discount);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const [stripePaymentId, setStripePaymentId] = useState("");
+
+  const completeOrder = async (transactionId?: string) => {
     if (items.length === 0) return;
-    
     setIsSubmitting(true);
     setError("");
 
@@ -93,7 +98,9 @@ export default function CheckoutPage() {
         totalAmount: totalAfterDiscount,
         items: validItems,
         userId: user?.id,
-        couponCode: discount > 0 ? couponCode : undefined
+        couponCode: discount > 0 ? couponCode : undefined,
+        paymentMethod: selectedPaymentMethod || undefined,
+        transactionId
       });
 
       if (!result.success) {
@@ -124,6 +131,21 @@ export default function CheckoutPage() {
     } catch (err: any) {
       setError(err.message || "An error occurred during checkout.");
       setIsSubmitting(false);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (items.length === 0) return;
+    if (!selectedPaymentMethod) {
+      setError("Please select a payment method");
+      return;
+    }
+    const pm = paymentMethods.find((pm: any) => pm.id === selectedPaymentMethod);
+    if (pm?.type === "stripe") {
+      setStripePaymentId(selectedPaymentMethod);
+    } else {
+      completeOrder();
     }
   };
 
@@ -239,21 +261,72 @@ export default function CheckoutPage() {
                   <span className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center text-sm">2</span>
                   {t('paymentMethod')}
                 </h2>
-                <div className="bg-white/5 p-8 rounded-[2rem] border-2 border-white shadow-2xl flex items-start gap-6 relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700" />
-                  <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center shrink-0 border border-white/20">
-                    <CreditCard className="h-8 w-8" />
-                  </div>
-                  <div className="relative z-10">
-                    <h3 className="font-black uppercase tracking-widest text-sm mb-2">{t('paymentMethod')}</h3>
-                    <p className="opacity-50 text-sm leading-relaxed max-w-xs">{t('encryptedSecure')}</p>
-                  </div>
-                  <div className="ml-auto w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0 shadow-xl">
-                    <div className="w-2.5 h-2.5 rounded-full bg-black" />
-                  </div>
+                <div className="space-y-4">
+                  {paymentMethods.length === 0 ? (
+                    <div className="bg-white/5 p-8 rounded-[2rem] border border-white/10">
+                      <p className="opacity-50 text-sm font-bold">No payment methods available</p>
+                    </div>
+                  ) : (
+                    paymentMethods.map((pm: any) => {
+                      const isOnline = ['stripe', 'paypal', 'paymob'].includes(pm.type);
+                      const isSelected = selectedPaymentMethod === pm.id;
+                      return (
+                        <div key={pm.id}>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedPaymentMethod(pm.id)}
+                            className={`w-full text-left p-6 rounded-[2rem] border-2 transition-all flex items-start gap-5 group ${
+                              isSelected
+                                ? 'bg-white text-black border-white shadow-xl'
+                                : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/30'
+                            }`}
+                          >
+                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 border transition-all ${
+                              isSelected ? 'bg-black/5 border-black/20' : 'bg-white/10 border-white/20'
+                            }`}>
+                              <CreditCard className={`h-7 w-7 ${isSelected ? 'text-black' : ''}`} />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className={`font-black uppercase tracking-widest text-sm mb-1 ${isSelected ? '' : ''}`}>{pm.name}</h3>
+                              <p className={`text-xs font-bold tracking-wider ${isSelected ? 'opacity-60' : 'opacity-40'}`}>
+                                {isOnline ? 'Pay online' : pm.type === 'cash' ? 'Cash on delivery' : pm.type === 'bank_transfer' ? 'Bank transfer' : pm.type === 'wallet' ? 'Mobile wallet' : 'Other'}
+                              </p>
+                            </div>
+                            <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all ${
+                              isSelected ? 'bg-black' : 'bg-white/20'
+                            }`}>
+                              <div className={`w-2.5 h-2.5 rounded-full transition-all ${
+                                isSelected ? 'bg-white' : 'bg-white/0'
+                              }`} />
+                            </div>
+                          </button>
+                          {isSelected && !isOnline && pm.details && (
+                            <div className="mt-3 ml-20 p-5 rounded-2xl bg-white/5 border border-white/10">
+                              <p className="text-xs font-bold whitespace-pre-wrap opacity-70 leading-relaxed">{pm.details}</p>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })
+                  )}
+                  {selectedPaymentMethod && paymentMethods.find((pm: any) => pm.id === selectedPaymentMethod)?.type === "stripe" && paymentKeys?.stripe?.publishableKey && (
+                    <div className="mt-6 p-6 rounded-[2rem] bg-white/5 border border-white/10">
+                      <StripePaymentForm
+                        publishableKey={paymentKeys.stripe.publishableKey}
+                        slug={store.slug}
+                        amount={totalAfterDiscount}
+                        onSuccess={(paymentIntentId) => {
+                          setStripePaymentId("");
+                          completeOrder(paymentIntentId);
+                        }}
+                        onError={(msg) => setError(msg)}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
+              {paymentMethods.find((pm: any) => pm.id === selectedPaymentMethod)?.type !== "stripe" && (
               <div className="pt-12">
                 <button 
                   type="submit" disabled={isSubmitting}
@@ -269,6 +342,7 @@ export default function CheckoutPage() {
                   <ShieldCheck size={18} className="text-green-500" /> {t('encryptedSecure')}
                 </div>
               </div>
+              )}
             </form>
           </div>
 

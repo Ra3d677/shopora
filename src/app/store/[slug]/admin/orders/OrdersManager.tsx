@@ -230,8 +230,22 @@ export default function OrdersManager({
                       </p>
                     </div>
                     <div className="space-y-2">
-                      <p className="text-[9px] font-black text-slate-600 uppercase tracking-widest">{t('statusLabel')}</p>
-                      <p className="text-[10px] font-black text-green-400 uppercase tracking-widest">{t('verified')}</p>
+                      <p className="text-[9px] font-black text-slate-600 uppercase tracking-widest">Payment</p>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {order.paymentMethod && (
+                          <span className="text-[9px] font-black bg-white/5 px-2 py-1 rounded-lg uppercase tracking-wider text-slate-300">
+                            {order.paymentMethod}
+                          </span>
+                        )}
+                        <span className={`text-[9px] font-black px-2 py-1 rounded-lg uppercase tracking-wider ${
+                          order.paymentStatus === 'paid' ? 'bg-green-500/10 text-green-400' :
+                          order.paymentStatus === 'unpaid' ? 'bg-amber-500/10 text-amber-400' :
+                          order.paymentStatus === 'refunded' ? 'bg-blue-500/10 text-blue-400' :
+                          'bg-red-500/10 text-red-400'
+                        }`}>
+                          {order.paymentStatus || 'unpaid'}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -385,6 +399,48 @@ export default function OrdersManager({
                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent)] pointer-events-none"></div>
                        <span className="text-[11px] font-black uppercase tracking-[0.4em] opacity-70">{t('accumulatedTotal')}</span>
                        <span className="text-3xl font-black italic tracking-tighter">${selectedOrder.totalAmount?.toFixed(2)}</span>
+                    </div>
+                  </div>
+
+                  {/* Payment Info */}
+                  <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <h4 className={`text-[10px] font-black text-slate-600 uppercase tracking-[0.3em] ${isRTL ? 'mr-2' : 'ml-2'}`}>Payment Status</h4>
+                    <div className="bg-white/[0.02] p-6 rounded-3xl border border-white/[0.05] space-y-4">
+                      <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">Method</span>
+                        <span className="text-xs font-black text-white uppercase tracking-wider">{selectedOrder.paymentMethod || 'N/A'}</span>
+                      </div>
+                      <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">Status</span>
+                        <span className={`text-xs font-black px-3 py-1 rounded-lg uppercase tracking-wider ${
+                          selectedOrder.paymentStatus === 'paid' ? 'bg-green-500/10 text-green-400' :
+                          selectedOrder.paymentStatus === 'unpaid' ? 'bg-amber-500/10 text-amber-400' :
+                          selectedOrder.paymentStatus === 'refunded' ? 'bg-blue-500/10 text-blue-400' :
+                          'bg-red-500/10 text-red-400'
+                        }`}>
+                          {selectedOrder.paymentStatus || 'unpaid'}
+                        </span>
+                      </div>
+                      {selectedOrder.transactionId && (
+                        <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">Transaction ID</span>
+                          <span className="text-[10px] font-black text-cyan-400 uppercase tracking-wider">{selectedOrder.transactionId}</span>
+                        </div>
+                      )}
+                      {selectedOrder.paymentMethod && !['stripe', 'paypal', 'paymob'].includes(selectedOrder.paymentMethod) && selectedOrder.paymentStatus !== 'paid' && (
+                        <button
+                          onClick={async () => {
+                            const { updateOrderPaymentStatus } = await import("../../admin/orders/actions");
+                            await updateOrderPaymentStatus(selectedOrder.id, "paid");
+                            router.refresh();
+                          }}
+                          disabled={isPending}
+                          className="w-full mt-2 py-3 px-5 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded-2xl text-[10px] font-black uppercase tracking-widest border border-green-500/20 transition-all flex items-center justify-center gap-2"
+                        >
+                          <CheckCircle2 className="w-4 h-4" />
+                          Mark as Paid
+                        </button>
+                      )}
                     </div>
                   </div>
 

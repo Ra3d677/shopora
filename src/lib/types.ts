@@ -220,6 +220,9 @@ export interface Order {
   shippingAddress: string;
   totalAmount: number;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  paymentMethod?: string;
+  paymentStatus?: string;
+  transactionId?: string;
   items: OrderItem[];
   createdAt: string;
   updatedAt: string;

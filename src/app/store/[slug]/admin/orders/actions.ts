@@ -16,6 +16,8 @@ export async function createOrder(data: {
   items: CartItem[];
   userId?: string;
   couponCode?: string;
+  paymentMethod?: string;
+  transactionId?: string;
 }) {
   let order: { id: string } = { id: "" };
   try {
@@ -59,7 +61,9 @@ export async function createOrder(data: {
             image: item.selectedImage
           }))
         },
-        userId: data.userId
+        userId: data.userId,
+        paymentMethod: data.paymentMethod,
+        transactionId: data.transactionId
       },
       select: {
         id: true
@@ -306,5 +310,22 @@ export async function updateOrderStatus(orderId: string, status: string) {
   } catch (error) {
     console.error('Error updating order status:', error);
     return { success: false, error: 'Failed to update status' };
+  }
+}
+
+export async function updateOrderPaymentStatus(orderId: string, paymentStatus: string, transactionId?: string) {
+  try {
+    await prisma.order.update({
+      where: { id: orderId },
+      data: { 
+        paymentStatus,
+        ...(transactionId ? { transactionId } : {})
+      }
+    });
+    revalidatePath(`/store/[slug]/admin/orders`, 'page');
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating payment status:', error);
+    return { success: false, error: 'Failed to update payment status' };
   }
 }
