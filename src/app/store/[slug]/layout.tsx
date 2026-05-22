@@ -64,9 +64,14 @@ export default async function TenantStoreLayout({
   const user = await getSession();
   await checkAndSuspendExpiredTrial(store.id);
   await checkAndSuspendExpiredSubscription(store.id);
+
+  // Re-fetch to get updated status after suspension checks
+  const updatedStore = await getStoreBySlug(slug);
+  const currentStatus = updatedStore?.status || store.status;
+  const currentTrialEndsAt = updatedStore?.trialEndsAt || store.trialEndsAt;
   const isOwner = user?.id === store.ownerId;
 
-  if (store.status === "suspended" && !isOwner) {
+  if (currentStatus === "suspended" && !isOwner) {
     return (
       <StoreProvider store={store} user={user}>
         <SuspendedStore slug={slug} />

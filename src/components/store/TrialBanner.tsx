@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Clock, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 
-export default function TrialBanner({ slug, trialEndsAt }: { slug: string; trialEndsAt: string | null }) {
+export default function TrialBanner({ slug, trialEndsAt, isSubscription }: { slug: string; trialEndsAt: string | null; isSubscription?: boolean }) {
   const [timeLeft, setTimeLeft] = useState("");
 
   useEffect(() => {
@@ -41,10 +41,12 @@ export default function TrialBanner({ slug, trialEndsAt }: { slug: string; trial
         {isLow ? <AlertTriangle className="w-5 h-5 text-amber-400" /> : <Clock className="w-5 h-5 text-cyan-400" />}
         <div>
           <p className={`text-sm font-black uppercase tracking-wider ${isLow ? "text-amber-400" : "text-cyan-400"}`}>
-            Trial Mode
+            {isSubscription ? "Subscription Active" : "Trial Mode"}
           </p>
           <p className="text-xs text-slate-500 font-medium">
-            {isLow ? "Your trial is ending soon. Reactivate to keep your store live." : "Experience all features during your 24-hour trial."}
+            {isSubscription
+              ? (isLow ? "Your subscription is ending soon. Renew to keep your store live." : "Subscription active — renew before it expires.")
+              : (isLow ? "Your trial is ending soon. Reactivate to keep your store live." : "Experience all features during your 24-hour trial.")}
           </p>
         </div>
       </div>

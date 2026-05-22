@@ -53,7 +53,11 @@ export default async function AdminLayout({
   await checkAndSuspendExpiredTrial(store.id);
   await checkAndSuspendExpiredSubscription(store.id);
 
-  if (store.status === "suspended" && !isSuperAdmin) {
+  // Re-fetch to get updated status after suspension checks
+  const updatedStore = await getStoreBySlug(slug);
+  const currentStatus = updatedStore?.status || store.status;
+
+  if (currentStatus === "suspended" && !isSuperAdmin) {
     redirect(`/store/${slug}/admin/reactivate`);
   }
 

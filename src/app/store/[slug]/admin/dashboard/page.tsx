@@ -54,6 +54,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       type: true,
       status: true,
       trialEndsAt: true,
+      subscriptionEndsAt: true,
       orders: {
         where: baseWhereCondition,
         orderBy: { createdAt: 'desc' },
@@ -272,6 +273,12 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       {(store as any).trialEndsAt && (
         <div className="mb-6">
           <TrialBanner slug={slug} trialEndsAt={(store as any).trialEndsAt.toISOString()} />
+        </div>
+      )}
+
+      {(store as any).subscriptionEndsAt && !(store as any).trialEndsAt && (
+        <div className="mb-6">
+          <TrialBanner slug={slug} trialEndsAt={(store as any).subscriptionEndsAt.toISOString()} isSubscription />
         </div>
       )}
 
