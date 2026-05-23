@@ -2,19 +2,19 @@
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Loader2, Phone, Upload, Send, Sparkles, CheckCircle2, AlertTriangle } from "lucide-react";
+import { Loader2, Phone, Upload, Send, Sparkles, CheckCircle2 } from "lucide-react";
 
 const USD_TO_EGP = 48;
 const CYCLES = [
-  { id: "monthly", label: "شهري", price: 9, total: "$9", totalEGP: 9 * USD_TO_EGP, billing: "تدفع شهرياً", savings: null, color: "blue", popular: false },
-  { id: "3-months", label: "3 شهور", price: 7, total: "$21", totalEGP: 21 * USD_TO_EGP, billing: "تدفع كل 3 شهور", savings: "وفر $6", color: "emerald", popular: false },
-  { id: "6-months", label: "6 شهور", price: 5.5, total: "$33", totalEGP: 33 * USD_TO_EGP, billing: "تدفع كل 6 شهور", savings: "وفر $21", color: "cyan", popular: true },
-  { id: "annual", label: "سنوي", price: 4.5, total: "$54", totalEGP: 54 * USD_TO_EGP, billing: "تدفع سنوياً", savings: "وفر $54", color: "purple", popular: false },
+  { id: "monthly", label: "شهري", price: 9, total: "$9", totalEGP: 9 * USD_TO_EGP, billing: "تدفع شهرياً", savings: null, popular: false },
+  { id: "3-months", label: "3 شهور", price: 7, total: "$21", totalEGP: 21 * USD_TO_EGP, billing: "تدفع كل 3 شهور", savings: "وفر $6", popular: false },
+  { id: "6-months", label: "6 شهور", price: 5.5, total: "$33", totalEGP: 33 * USD_TO_EGP, billing: "تدفع كل 6 شهور", savings: "وفر $21", popular: true },
+  { id: "annual", label: "سنوي", price: 4.5, total: "$54", totalEGP: 54 * USD_TO_EGP, billing: "تدفع سنوياً", savings: "وفر $54", popular: false },
 ];
-const CYCLE_DURATION: Record<string, number> = { "monthly": 30, "3-months": 90, "6-months": 180, "annual": 365 };
+const CYCLE_DURATION: Record<string, number> = { monthly: 30, "3-months": 90, "6-months": 180, annual: 365 };
 const VODAFONE_CASH_NUMBER = "01000000000";
 
-export default function ReactivateStandalonePage() {
+export default function ReactivatePage() {
   const { slug } = useParams<{ slug: string }>();
   const router = useRouter();
   const [selectedCycle, setSelectedCycle] = useState("6-months");
@@ -56,12 +56,10 @@ export default function ReactivateStandalonePage() {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
         <div className="text-center space-y-6 max-w-md">
-          <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto border border-green-500/20">
-            <CheckCircle2 className="w-10 h-10 text-green-400" />
-          </div>
-          <h1 className="text-3xl font-black text-white uppercase tracking-tight">تم إرسال الطلب!</h1>
+          <CheckCircle2 className="w-16 h-16 text-green-400 mx-auto" />
+          <h1 className="text-3xl font-black text-white">تم إرسال الطلب!</h1>
           <p className="text-slate-400 text-sm">سيتم مراجعة طلبك وتفعيل المتجر خلال 24 ساعة.</p>
-          <button onClick={() => router.push(`/store/${slug}`)} className="bg-white/10 text-white h-14 px-8 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/20 transition-all">الرجوع للمتجر</button>
+          <button onClick={() => router.push(`/store/${slug}`)} className="bg-white/10 text-white h-14 px-8 rounded-2xl font-black text-sm hover:bg-white/20">الرجوع للمتجر</button>
         </div>
       </div>
     );
@@ -72,10 +70,8 @@ export default function ReactivateStandalonePage() {
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
         <div className="max-w-lg w-full space-y-8">
           <div className="text-center space-y-4">
-            <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto border border-green-500/20">
-              <Phone className="w-8 h-8 text-green-400" />
-            </div>
-            <h1 className="text-2xl font-black text-white uppercase tracking-tight">الدفع عبر فودافون كاش</h1>
+            <Phone className="w-10 h-10 text-green-400 mx-auto" />
+            <h1 className="text-2xl font-black text-white">الدفع عبر فودافون كاش</h1>
             <p className="text-slate-400 text-sm">{cycle.label} — {cycle.total} ≈ {cycle.totalEGP.toLocaleString()} ج.م</p>
           </div>
           <div className="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-6 space-y-3">
@@ -88,22 +84,13 @@ export default function ReactivateStandalonePage() {
           </div>
           {error && <div className="bg-red-500/10 text-red-400 p-4 rounded-xl text-sm font-bold">{error}</div>}
           <div className="space-y-5">
-            <div>
-              <label className="text-slate-400 text-[10px] font-black block mb-2">رقم الهاتف *</label>
-              <input type="tel" value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} placeholder="01012345678" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white text-sm focus:outline-none focus:border-cyan-500" />
-            </div>
-            <div>
-              <label className="text-slate-400 text-[10px] font-black block mb-2">صورة الإيصال</label>
-              <label className="flex items-center gap-3 w-full bg-white/5 border border-dashed border-white/10 rounded-xl px-5 py-4 cursor-pointer hover:border-cyan-500/50">
-                <Upload className="w-5 h-5 text-slate-500" />
-                <span className="text-slate-500 text-sm">{receiptImage ? "✅ تم" : "اضغط للرفع"}</span>
-                <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
-              </label>
-            </div>
-            <div>
-              <label className="text-slate-400 text-[10px] font-black block mb-2">ملاحظات</label>
-              <textarea value={notes} onChange={e => setNotes(e.target.value)} rows={2} placeholder="أي ملاحظات..." className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white text-sm focus:outline-none focus:border-cyan-500 resize-none" />
-            </div>
+            <input type="tel" value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} placeholder="رقم الهاتف اللي دفعت منه *" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white text-sm focus:outline-none focus:border-cyan-500" />
+            <label className="flex items-center gap-3 w-full bg-white/5 border border-dashed border-white/10 rounded-xl px-5 py-4 cursor-pointer hover:border-cyan-500/50">
+              <Upload className="w-5 h-5 text-slate-500" />
+              <span className="text-slate-500 text-sm">{receiptImage ? "✅ تم اختيار الصورة" : "صورة الإيصال (اختياري)"}</span>
+              <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+            </label>
+            <textarea value={notes} onChange={e => setNotes(e.target.value)} rows={2} placeholder="ملاحظات (اختياري)" className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white text-sm focus:outline-none focus:border-cyan-500 resize-none" />
           </div>
           <button onClick={handleSubmit} disabled={loading} className="w-full bg-green-500 text-black h-16 rounded-2xl font-black text-sm flex items-center justify-center gap-3 hover:bg-green-400 disabled:opacity-50">
             {loading ? <><Loader2 className="w-5 h-5 animate-spin" /> جاري الإرسال...</> : <><Send className="w-5 h-5" /> إرسال طلب التفعيل</>}
@@ -121,7 +108,7 @@ export default function ReactivateStandalonePage() {
             <Sparkles className="w-4 h-4 text-cyan-400" />
             <span>اختر دورة الاشتراك</span>
           </div>
-          <h1 className="text-3xl font-black text-white uppercase tracking-tight">انتهت الفترة التجريبية</h1>
+          <h1 className="text-3xl font-black text-white">انتهت الفترة التجريبية</h1>
           <p className="text-slate-400 text-sm">اختر دورة الدفع عشان تفعّل متجرك وتكمل بيع.</p>
         </div>
 
@@ -131,7 +118,7 @@ export default function ReactivateStandalonePage() {
               {c.popular && <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-[8px] font-black bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">الأكثر طلباً</span>}
               <p className="text-[9px] font-black text-cyan-400">{c.label}</p>
               <div className="h-4" />
-              <div className="mb-1 flex items-end gap-1.5">
+              <div className="flex items-end gap-1.5 mb-1">
                 <span className="text-4xl font-black text-white italic leading-none">${c.price}</span>
                 <span className="text-slate-500 text-xs font-bold mb-1">/ شهرياً</span>
               </div>
