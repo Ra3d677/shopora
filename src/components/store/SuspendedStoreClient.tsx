@@ -14,12 +14,12 @@ export default function SuspendedStoreClient({ slug, isOwner }: { slug: string; 
             : "هذا المتجر غير متاح حالياً. صاحب المتجر قد يكون لديه اشتراك منتهي."}
         </p>
         {isOwner ? (
-          <button
-            onClick={() => window.location.href = `/store/${slug}/admin/reactivate`}
-            className="inline-flex items-center justify-center gap-3 bg-cyan-500 text-black h-14 px-10 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-cyan-400 transition-all shadow-2xl"
+          <a
+            href={`/store/${slug}/admin/dashboard`}
+            className="inline-flex items-center justify-center gap-3 bg-cyan-500 text-black h-14 px-10 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-cyan-400 transition-all shadow-2xl no-underline"
           >
             إعادة التفعيل
-          </button>
+          </a>
         ) : (
           <p className="text-slate-600 text-xs font-medium">
             يرجى المحاولة لاحقاً
