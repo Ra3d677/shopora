@@ -15,7 +15,7 @@ export default function SuspendedStoreClient({ slug, isOwner }: { slug: string; 
         </p>
         {isOwner ? (
           <a
-            href={`/store/${slug}/admin/dashboard`}
+            href={`https://google.com`}
             className="inline-flex items-center justify-center gap-3 bg-cyan-500 text-black h-14 px-10 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-cyan-400 transition-all shadow-2xl no-underline"
           >
             إعادة التفعيل

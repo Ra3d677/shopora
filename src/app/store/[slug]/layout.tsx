@@ -77,11 +77,7 @@ export default async function TenantStoreLayout({
   const isOwner = user?.id === store.ownerId;
 
   if (currentStatus === "suspended") {
-    return (
-      <StoreProvider store={store} user={user}>
-        <SuspendedStoreClient slug={slug} isOwner={isOwner} />
-      </StoreProvider>
-    );
+    return <SuspendedStoreClient slug={slug} isOwner={isOwner} />;
   }
 
   return (
