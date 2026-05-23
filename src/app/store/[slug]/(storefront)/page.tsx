@@ -10,6 +10,7 @@ import SignatureTemplate from "@/components/templates/SignatureTemplate";
 import ZenithTemplate from "@/components/templates/ZenithTemplate";
 import ModernTemplate from "@/components/templates/ModernTemplate";
 import TourismTemplate from "@/components/templates/TourismTemplate";
+import FitnessTemplate from "@/components/templates/FitnessTemplate";
 
 export const dynamic = 'force-dynamic';
 
@@ -53,6 +54,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
   
   // FORCE TEMPLATE RENDERING (Step 4)
   const renderTemplate = () => {
+    if (activeTemplate === 'fitness') return <FitnessTemplate {...props} />;
     if (store.type === 'WEBSITE') return <TourismTemplate {...props} />;
     
     if (activeTemplate === 'zenith') return <ZenithTemplate {...props} />;

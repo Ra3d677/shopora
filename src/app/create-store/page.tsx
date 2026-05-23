@@ -38,6 +38,7 @@ function CreateStoreForm() {
   ];
 
   const websiteTemplates = [
+    { id: 'fitness', name: 'Fitness Coach', desc: 'High-energy landing page for coaches, trainers, and gym programs. Hero, stats, programs, testimonials, FAQ.', img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80' },
     { id: 'tourism', name: 'Tourism & Travel Showcase', desc: 'High-definition destination banners, detailed itineraries, and a seamless booking inquiry system.', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80' }
   ];
 
