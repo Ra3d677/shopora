@@ -121,6 +121,14 @@ export default function FitnessDashboard({
 
   const cs = settings.colorSystem || {};
 
+  // Gradient Synthesis State
+  const [gradA, setGradA] = useState("#0F172A");
+  const [gradB, setGradB] = useState("#0A0C14");
+  const [gradDir, setGradDir] = useState("to bottom");
+  const [synthPage, setSynthPage] = useState("home");
+  const [synthType, setSynthType] = useState<"backgrounds" | "text">("backgrounds");
+  const [isAnimated, setIsAnimated] = useState(false);
+
   const tabs = [
     { id: "hero", label: isAr ? "الهيرو" : "Hero", icon: "🏠" },
     { id: "colors", label: isAr ? "الألوان" : "Colors", icon: "🎨" },
@@ -165,50 +173,47 @@ export default function FitnessDashboard({
 
       {/* Header */}
       <div className="sticky top-0 z-50 bg-[#0a0c14]/95 backdrop-blur-xl border-b border-white/5">
-        <div className="flex items-center justify-between px-6 py-4">
+        <div className="flex items-center justify-between px-4 py-2.5">
           <div>
-            <h1 className="text-xl font-black italic tracking-tighter uppercase">
-              <span className="text-emerald-400">{isAr ? "لوحة تحكم" : "Fitness"} </span>
-              <span className="text-white">برعي</span>
+            <h1 className="text-base font-black italic tracking-tighter uppercase flex items-center gap-2">
+              <span className="text-emerald-400">{isAr ? "برعي" : "Fitness"} </span>
+              <span className="text-white text-[9px] font-bold text-slate-400">— {isAr ? "تحكم كامل" : "Full Control"}</span>
             </h1>
-            <p className="text-[8px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">
-              {storeName} — {isAr ? "تحكم كامل بالموقع" : "Full Site Control"}
-            </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button onClick={syncToDb} disabled={syncing}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[9px] font-black uppercase tracking-widest hover:bg-amber-500/20 transition-all disabled:opacity-50">
-              {syncing ? <Loader2 size={12} className="animate-spin" /> : null}
-              {syncing ? (isAr ? "..." : "Syncing...") : (isAr ? "مزامنة DB" : "Sync DB")}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[8px] font-black uppercase tracking-widest hover:bg-amber-500/20 transition-all disabled:opacity-50">
+              {syncing ? <Loader2 size={10} className="animate-spin" /> : null}
+              {syncing ? (isAr ? "..." : "...") : (isAr ? "مزامنة" : "Sync DB")}
             </button>
             <Link href={`/store/${slug}`} target="_blank"
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all">
-              <ExternalLink size={14} /> {isAr ? "عرض الموقع" : "View Site"}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[8px] font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all">
+              <ExternalLink size={10} /> {isAr ? "عرض" : "View"}
             </Link>
             <button onClick={save} disabled={isPending}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-black uppercase tracking-widest hover:bg-emerald-500 transition-all disabled:opacity-50 shadow-lg shadow-emerald-600/20">
-              {isPending ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
-              {isPending ? (isAr ? "جارٍ الحفظ" : "Saving...") : (isAr ? "حفظ" : "Save")}
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-emerald-600 text-white text-[8px] font-black uppercase tracking-widest hover:bg-emerald-500 transition-all disabled:opacity-50 shadow-lg shadow-emerald-600/20">
+              {isPending ? <Loader2 size={10} className="animate-spin" /> : <Save size={10} />}
+              {isPending ? (isAr ? "..." : "...") : (isAr ? "حفظ" : "Save")}
             </button>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 px-6 overflow-x-auto no-scrollbar">
+        <div className="flex gap-0.5 px-4 overflow-x-auto no-scrollbar">
           {tabs.map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-5 py-3 rounded-t-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap border-b-2 ${
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-t-lg text-[9px] font-bold uppercase tracking-wider transition-all whitespace-nowrap border-b-2 ${
                 activeTab === tab.id
                   ? "text-emerald-400 border-emerald-400 bg-emerald-400/5"
                   : "text-slate-500 border-transparent hover:text-slate-300 hover:border-slate-600"
               }`}>
-              <span>{tab.icon}</span> {tab.label}
+              <span className="text-[11px]">{tab.icon}</span> {tab.label}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="p-6 max-w-6xl mx-auto space-y-6">
+      <div className="p-4 max-w-6xl mx-auto space-y-4">
         {/* ===== HERO TAB ===== */}
         {activeTab === "hero" && (
           <div className="space-y-6">
@@ -252,128 +257,179 @@ export default function FitnessDashboard({
 
         {/* ===== COLORS TAB ===== */}
         {activeTab === "colors" && (
-          <Section title={isAr ? "نظام الألوان" : "Color System"}>
-            <p className="text-[9px] text-slate-500 font-medium uppercase tracking-wider mb-6">
-              {isAr ? "نفس نظام الألوان الموجود في الإعدادات العامة" : "Same color system as General Settings"}
-            </p>
+          <div className="space-y-3">
+            <Section title={isAr ? "نظام الألوان" : "Color System"}>
+              {/* Aesthetic Synthesis Engine - Gradient Matrix */}
+              <div className="mb-4 bg-white/[0.02] p-4 rounded-xl border border-white/[0.08]">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
+                  <h3 className="text-xs font-black text-white uppercase italic tracking-tighter">{isAr ? "محرك التركيب الجمالي" : "Aesthetic Synthesis Engine"}</h3>
+                </div>
 
-            {/* Brand Primary (مثل الإعدادات العامة) */}
-            <div className="mb-6 bg-white/[0.02] p-6 rounded-2xl border border-white/[0.08]">
-              <h3 className="text-[9px] font-black uppercase tracking-[0.08em] text-slate-500 mb-6 border-b border-white/5 pb-3">
-                {isAr ? "العلامة التجارية والتذييل" : "Brand & Footer"}
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* Brand Primary */}
-                <div className="space-y-3">
-                  <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">
-                    {isAr ? "اللون الأساسي" : "Brand Primary"}
-                  </label>
-                  <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                    <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: cs.brand?.primary || "#000000" }}>
-                      <input type="color" value={cs.brand?.primary || "#000000"} onChange={e => setColor("brand.primary", e.target.value)}
-                        className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+                  <div className="space-y-1.5">
+                    <label className="text-[7px] font-black text-slate-500 tracking-[0.08em]">{isAr ? "المرحلة أ" : "Phase A"}</label>
+                    <div className="relative h-10 bg-black/60 rounded-lg border border-white/[0.1] hover:border-cyan-400/50 transition-all overflow-hidden flex items-center justify-center">
+                      <input type="color" value={gradA} className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" onChange={e => setGradA(e.target.value.toUpperCase())} />
+                      <div className="absolute inset-0 z-10 opacity-30" style={{backgroundColor: gradA}}></div>
+                      <span className="relative z-20 text-white font-mono text-[10px] uppercase font-black pointer-events-none">{gradA}</span>
                     </div>
-                    <input type="text" value={cs.brand?.primary || "#000000"} onChange={e => setColor("brand.primary", e.target.value)}
-                      className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[7px] font-black text-slate-500 tracking-[0.08em]">{isAr ? "المرحلة ب" : "Phase B"}</label>
+                    <div className="relative h-10 bg-black/60 rounded-lg border border-white/[0.1] hover:border-pink-400/50 transition-all overflow-hidden flex items-center justify-center">
+                      <input type="color" value={gradB} className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" onChange={e => setGradB(e.target.value.toUpperCase())} />
+                      <div className="absolute inset-0 z-10 opacity-30" style={{backgroundColor: gradB}}></div>
+                      <span className="relative z-20 text-white font-mono text-[10px] uppercase font-black pointer-events-none">{gradB}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[7px] font-black text-slate-500 tracking-[0.08em]">{isAr ? "الاتجاه" : "Direction"}</label>
+                    <select value={gradDir} onChange={e => setGradDir(e.target.value)}
+                      className="w-full h-10 bg-black/60 rounded-lg border border-white/[0.1] px-2 text-white text-[9px] uppercase font-black outline-none cursor-pointer">
+                      <option value="to bottom" className="bg-slate-900">{isAr ? "رأسي" : "Vertical"}</option>
+                      <option value="to right" className="bg-slate-900">{isAr ? "أفقي" : "Horizontal"}</option>
+                      <option value="to bottom right" className="bg-slate-900">{isAr ? "قطري" : "Diagonal"}</option>
+                      <option value="radial-gradient(circle at center" className="bg-slate-900">{isAr ? "شعاعي" : "Radial"}</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[7px] font-black text-slate-500 tracking-[0.08em]">{isAr ? "الصفحة" : "Page"}</label>
+                    <select value={synthPage} onChange={e => setSynthPage(e.target.value)}
+                      className="w-full h-10 bg-black/60 rounded-lg border border-white/[0.1] px-2 text-white text-[9px] uppercase font-black outline-none cursor-pointer">
+                      <option value="all" className="bg-slate-900">{isAr ? "الكل" : "All"}</option>
+                      <option value="home" className="bg-slate-900">{isAr ? "الرئيسية" : "Home"}</option>
+                      <option value="footer" className="bg-slate-900">{isAr ? "التذييل" : "Footer"}</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[7px] font-black text-slate-500 tracking-[0.08em]">{isAr ? "النوع" : "Type"}</label>
+                    <select value={synthType} onChange={e => setSynthType(e.target.value as any)}
+                      className="w-full h-10 bg-black/60 rounded-lg border border-white/[0.1] px-2 text-white text-[9px] uppercase font-black outline-none cursor-pointer">
+                      <option value="backgrounds" className="bg-slate-900">{isAr ? "خلفية" : "Background"}</option>
+                      <option value="text" className="bg-slate-900">{isAr ? "نص" : "Text"}</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[7px] font-black text-slate-500 tracking-[0.08em]">{isAr ? "حركة" : "Animate"}</label>
+                    <div className="flex bg-black/60 rounded-lg border border-white/[0.1] p-0.5 h-10">
+                      <button type="button" onClick={() => setIsAnimated(false)}
+                        className={`flex-1 rounded-md text-[8px] font-black uppercase tracking-[0.08em] transition-all ${!isAnimated ? 'bg-white text-black shadow-lg' : 'text-slate-500 hover:text-white'}`}>
+                        {isAr ? "ثابت" : "Static"}
+                      </button>
+                      <button type="button" onClick={() => setIsAnimated(true)}
+                        className={`flex-1 rounded-md text-[8px] font-black uppercase tracking-[0.08em] transition-all ${isAnimated ? 'bg-cyan-500 text-white shadow-lg' : 'text-slate-500 hover:text-white'}`}>
+                        {isAr ? "متحرك" : "Animated"}
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-                {/* Footer Background */}
-                <div className="space-y-3">
-                  <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">
-                    {isAr ? "خلفية التذييل" : "Footer BG"}
-                  </label>
-                  <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                    <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ background: cs.footer?.background || "#0f172a" }}>
-                      <input type="color" value={cs.footer?.background?.includes('gradient') ? '#000000' : (cs.footer?.background || "#0f172a")} onChange={e => setColor("footer.background", e.target.value)}
-                        className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                    </div>
-                    <input type="text" value={cs.footer?.background || "#0f172a"} onChange={e => setColor("footer.background", e.target.value)}
-                      className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                  </div>
-                </div>
+                <button type="button" onClick={() => {
+                  const dir = gradDir;
+                  const grad = dir.includes('radial') ? `${dir}, ${gradA}, ${gradB})` : `linear-gradient(${dir}, ${gradA}, ${gradB})`;
+                  let newCs = JSON.parse(JSON.stringify(cs));
+                  if (!(newCs as any).synthesisStates) (newCs as any).synthesisStates = {};
+                  if (!(newCs as any).animatedBackgrounds) (newCs as any).animatedBackgrounds = {};
+                  if (synthPage === 'all') {
+                    ['home'].forEach(p => {
+                      (newCs as any).synthesisStates[`${p}-${synthType}`] = { a: gradA, b: gradB, dir: gradDir };
+                      if (synthType === 'backgrounds') (newCs as any).animatedBackgrounds[p] = isAnimated;
+                    });
+                    (newCs as any).synthesisStates[`footer-${synthType}`] = { a: gradA, b: gradB, dir: gradDir };
+                  } else if (synthPage === 'footer') {
+                    (newCs as any).footer = { ...(newCs as any).footer, [synthType === 'backgrounds' ? 'background' : 'text']: grad };
+                  } else {
+                    if (synthType === 'backgrounds') {
+                      (newCs as any).backgrounds = { ...(newCs as any).backgrounds, home: grad };
+                    } else {
+                      (newCs as any).text = { ...(newCs as any).text, home: grad };
+                    }
+                  }
+                  setSettings({ ...settings, colorSystem: newCs });
+                }}
+                  className="mt-3 w-full h-9 bg-white text-black rounded-lg font-black uppercase tracking-[0.08em] text-[9px] hover:bg-cyan-400 hover:text-white transition-all active:scale-95">
+                  {isAr ? "تطبيق التدرج" : "Apply Gradient"} ▸
+                </button>
+              </div>
 
-                {/* Footer Text */}
-                <div className="space-y-3">
-                  <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">
-                    {isAr ? "لون نص التذييل" : "Footer Text"}
-                  </label>
-                  <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                    <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: cs.footer?.text || "#ffffff" }}>
-                      <input type="color" value={cs.footer?.text || "#ffffff"} onChange={e => setColor("footer.text", e.target.value)}
-                        className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+              {/* Brand & Footer Colors */}
+              <div className="mb-4 bg-white/[0.02] p-4 rounded-xl border border-white/[0.08]">
+                <h3 className="text-[8px] font-black uppercase tracking-[0.08em] text-slate-500 mb-4 border-b border-white/5 pb-2">
+                  {isAr ? "العلامة التجارية والتذييل" : "Brand & Footer"}
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {[
+                    { key: "brand.primary", label: isAr ? "اللون الأساسي" : "Brand Primary", value: cs.brand?.primary || "#000000", isGradient: false },
+                    { key: "footer.background", label: isAr ? "خلفية التذييل" : "Footer BG", value: cs.footer?.background || "#0f172a", isGradient: true },
+                    { key: "footer.text", label: isAr ? "نص التذييل" : "Footer Text", value: cs.footer?.text || "#ffffff", isGradient: false },
+                    { key: "text.primary", label: isAr ? "النص الأساسي" : "Primary Text", value: cs.text?.primary || "#0f172a", isGradient: false },
+                  ].map(f => (
+                    <div key={f.key} className="space-y-1.5">
+                      <label className="text-[7px] font-black text-slate-500 tracking-[0.08em]">{f.label}</label>
+                      <div className="flex gap-2 items-center bg-black/40 p-2 rounded-xl border border-white/[0.05]">
+                        <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-white/10 shrink-0" style={{ backgroundColor: f.isGradient && f.value.includes('gradient') ? '#000' : f.value }}>
+                          <input type="color" value={f.isGradient && f.value.includes('gradient') ? '#000000' : f.value} onChange={e => setColor(f.key, e.target.value)}
+                            className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                        </div>
+                        <input type="text" value={f.value} onChange={e => setColor(f.key, e.target.value)}
+                          className="flex-1 bg-transparent text-white focus:outline-none font-mono text-[9px] uppercase font-black" />
+                      </div>
                     </div>
-                    <input type="text" value={cs.footer?.text || "#ffffff"} onChange={e => setColor("footer.text", e.target.value)}
-                      className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                  </div>
-                </div>
-
-                {/* Text Primary */}
-                <div className="space-y-3">
-                  <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">
-                    {isAr ? "النص الأساسي" : "Primary Text"}
-                  </label>
-                  <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                    <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: cs.text?.primary || "#0f172a" }}>
-                      <input type="color" value={cs.text?.primary || "#0f172a"} onChange={e => setColor("text.primary", e.target.value)}
-                        className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                    </div>
-                    <input type="text" value={cs.text?.primary || "#0f172a"} onChange={e => setColor("text.primary", e.target.value)}
-                      className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                  </div>
+                  ))}
                 </div>
               </div>
-            </div>
 
-            {/* Page Colors (مثل الإعدادات العامة) */}
-            <div className="mb-6 bg-white/[0.02] p-6 rounded-2xl border border-white/[0.08]">
-              <h3 className="text-[9px] font-black uppercase tracking-[0.08em] text-slate-500 mb-6 border-b border-white/5 pb-3">
-                {isAr ? "ألوان الصفحات" : "Page Colors"}
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {(["home"] as const).map((page) => (
-                  <div key={page} className="bg-white/[0.02] p-6 rounded-xl border border-white/[0.05]">
-                    <div className="flex items-center gap-2 mb-6">
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      <h3 className="text-xs font-black text-white uppercase italic tracking-wider">
-                        {isAr ? (page === "home" ? "الرئيسية" : page) : page.charAt(0).toUpperCase() + page.slice(1)}
-                      </h3>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {/* Background Color */}
-                      <div className="space-y-3">
-                        <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">
-                          {isAr ? "الخلفية" : "Background"}
-                        </label>
-                        <div className="flex gap-3 items-center bg-black/40 p-2.5 rounded-2xl border border-white/[0.05]">
-                          <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0" style={{ background: (cs.backgrounds as any)?.[page] || "#ffffff" }}>
-                            <input type="color" value={((cs.backgrounds as any)?.[page] || "").includes('gradient') ? '#000000' : ((cs.backgrounds as any)?.[page] || "#ffffff")} onChange={e => setColor(`backgrounds.${page}`, e.target.value)}
-                              className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                          </div>
-                          <input type="text" value={(cs.backgrounds as any)?.[page] || "#ffffff"} onChange={e => setColor(`backgrounds.${page}`, e.target.value)}
-                            className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                        </div>
+              {/* Page Colors */}
+              <div className="bg-white/[0.02] p-4 rounded-xl border border-white/[0.08]">
+                <h3 className="text-[8px] font-black uppercase tracking-[0.08em] text-slate-500 mb-4 border-b border-white/5 pb-2">
+                  {isAr ? "ألوان الصفحات" : "Page Colors"}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {(["home"] as const).map((page) => (
+                    <div key={page} className="bg-white/[0.02] p-4 rounded-lg border border-white/[0.05]">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-1 h-1 rounded-full bg-emerald-500" />
+                        <h3 className="text-[10px] font-black text-white uppercase italic tracking-wider">
+                          {isAr ? (page === "home" ? "الرئيسية" : page) : page.charAt(0).toUpperCase() + page.slice(1)}
+                        </h3>
                       </div>
-                      {/* Text Color */}
-                      <div className="space-y-3">
-                        <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">
-                          {isAr ? "لون النص" : "Text Color"}
-                        </label>
-                        <div className="flex gap-3 items-center bg-black/40 p-2.5 rounded-2xl border border-white/[0.05]">
-                          <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0" style={{ backgroundColor: (cs.text as any)?.[page] || "#0f172a" }}>
-                            <input type="color" value={(cs.text as any)?.[page] || "#0f172a"} onChange={e => setColor(`text.${page}`, e.target.value)}
-                              className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-1.5">
+                          <label className="text-[7px] font-black text-slate-500 tracking-[0.08em]">{isAr ? "الخلفية" : "Background"}</label>
+                          <div className="flex gap-2 items-center bg-black/40 p-2 rounded-xl border border-white/[0.05]">
+                            <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-white/10 shrink-0" style={{ background: (cs.backgrounds as any)?.[page] || "#ffffff" }}>
+                              <input type="color" value={((cs.backgrounds as any)?.[page] || "").includes('gradient') ? '#000000' : ((cs.backgrounds as any)?.[page] || "#ffffff")}
+                                onChange={e => setColor(`backgrounds.${page}`, e.target.value)}
+                                className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                            </div>
+                            <input type="text" value={(cs.backgrounds as any)?.[page] || "#ffffff"} onChange={e => setColor(`backgrounds.${page}`, e.target.value)}
+                              className="flex-1 bg-transparent text-white focus:outline-none font-mono text-[9px] uppercase font-black" />
                           </div>
-                          <input type="text" value={(cs.text as any)?.[page] || "#0f172a"} onChange={e => setColor(`text.${page}`, e.target.value)}
-                            className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
+                        </div>
+                        <div className="space-y-1.5">
+                          <label className="text-[7px] font-black text-slate-500 tracking-[0.08em]">{isAr ? "النص" : "Text"}</label>
+                          <div className="flex gap-2 items-center bg-black/40 p-2 rounded-xl border border-white/[0.05]">
+                            <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-white/10 shrink-0" style={{ backgroundColor: (cs.text as any)?.[page] || "#0f172a" }}>
+                              <input type="color" value={(cs.text as any)?.[page] || "#0f172a"} onChange={e => setColor(`text.${page}`, e.target.value)}
+                                className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                            </div>
+                            <input type="text" value={(cs.text as any)?.[page] || "#0f172a"} onChange={e => setColor(`text.${page}`, e.target.value)}
+                              className="flex-1 bg-transparent text-white focus:outline-none font-mono text-[9px] uppercase font-black" />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          </Section>
+            </Section>
+          </div>
         )}
 
         {/* ===== MARQUEE TAB ===== */}
@@ -747,10 +803,10 @@ export default function FitnessDashboard({
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-[#0f111a] rounded-2xl border border-white/[0.05] p-6 shadow-2xl">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-1 h-6 bg-emerald-400 rounded-full shadow-[0_0_15px_rgba(52,211,153,0.5)]" />
-        <h2 className="text-lg font-black italic uppercase tracking-tighter text-white">{title}</h2>
+    <div className="bg-[#0f111a] rounded-xl border border-white/[0.05] p-4 shadow-2xl">
+      <div className="flex items-center gap-2 mb-4">
+        <div className="w-0.5 h-4 bg-emerald-400 rounded-full shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
+        <h2 className="text-sm font-black italic uppercase tracking-tighter text-white">{title}</h2>
       </div>
       {children}
     </div>
