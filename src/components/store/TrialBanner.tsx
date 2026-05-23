@@ -46,7 +46,7 @@ export default function TrialBanner({ slug, trialEndsAt, isSubscription }: { slu
           <p className="text-xs text-slate-500 font-medium">
             {isSubscription
               ? (isLow ? "Your subscription is ending soon. Renew to keep your store live." : "Subscription active — renew before it expires.")
-              : (isLow ? "Your trial is ending soon. Reactivate to keep your store live." : "Experience all features during your 24-hour trial.")}
+              : (isLow ? "Your trial is ending soon. Reactivate to keep your store live." : "Experience all features during your trial.")}
           </p>
         </div>
       </div>

@@ -304,7 +304,7 @@ export const createStore = async (storeData: { name: string; slug: string; owner
     throw new Error("User not found.");
   }
 
-  const trialEndsAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  const trialEndsAt = new Date(Date.now() + 1 * 60 * 1000); // دقيقة واحدة تجربة
 
   const newStore = await prisma.store.create({
     data: {

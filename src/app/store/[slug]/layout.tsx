@@ -5,6 +5,7 @@ import { getSession } from "@/lib/auth";
 import { getLang } from "@/lib/i18n";
 import { Metadata } from "next";
 import { checkAndSuspendExpiredTrial, checkAndSuspendExpiredSubscription } from "@/lib/data";
+import { prisma } from "@/lib/prisma";
 
 export async function generateMetadata({ 
   params 
@@ -65,10 +66,13 @@ export default async function TenantStoreLayout({
   await checkAndSuspendExpiredTrial(store.id);
   await checkAndSuspendExpiredSubscription(store.id);
 
-  // Re-fetch to get updated status after suspension checks
-  const updatedStore = await getStoreBySlug(slug);
-  const currentStatus = updatedStore?.status || store.status;
-  const currentTrialEndsAt = updatedStore?.trialEndsAt || store.trialEndsAt;
+  // Direct DB query to bypass cache after suspension check
+  const freshStore = await prisma.store.findUnique({
+    where: { slug },
+    select: { status: true, trialEndsAt: true },
+  });
+  const currentStatus = freshStore?.status || store.status;
+  const currentTrialEndsAt = freshStore?.trialEndsAt || store.trialEndsAt;
   const isOwner = user?.id === store.ownerId;
 
   if (currentStatus === "suspended" && !isOwner) {
