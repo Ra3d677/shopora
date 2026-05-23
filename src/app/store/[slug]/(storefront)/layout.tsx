@@ -295,28 +295,30 @@ export default async function StorefrontLayout({
         <AdminEditorBar slug={slug} isOwner={isOwner} store={store} />
       </Suspense>
       <PreviewWrapper isOwner={isOwner}>
-        <Navbar 
-          activeTemplate={store.template as any} 
-          storeSettings={{
-              ...store.settings,
-              type: store.type,
-              storeName: store.settings.storeName || store.name,
-              primaryColor: store.settings.colorSystem?.brand?.primary || store.primaryColor,
-          }} 
-          storeId={store.id}
-          categories={store.categories}
-          products={store.products}
-          lang={lang} 
-          slug={slug}
-          session={session}
-        />
+        {store.template !== 'fitness' && (
+          <Navbar 
+            activeTemplate={store.template as any} 
+            storeSettings={{
+                ...store.settings,
+                type: store.type,
+                storeName: store.settings.storeName || store.name,
+                primaryColor: store.settings.colorSystem?.brand?.primary || store.primaryColor,
+            }} 
+            storeId={store.id}
+            categories={store.categories}
+            products={store.products}
+            lang={lang} 
+            slug={slug}
+            session={session}
+          />
+        )}
         <main className="flex-grow flex flex-col store-container">
           {children}
         </main>
         <div data-page="footer">
-          {store.type !== 'WEBSITE' && <Footer />}
+          {store.type !== 'WEBSITE' && store.template !== 'fitness' && <Footer />}
         </div>
-        <WhatsAppButton />
+        {store.template !== 'fitness' && <WhatsAppButton />}
       </PreviewWrapper>
     </div>
   );
