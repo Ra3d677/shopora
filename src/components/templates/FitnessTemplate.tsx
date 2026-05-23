@@ -44,11 +44,11 @@ function AnimatedCounter({ target, suffix = "", inView }: { target: number; suff
   return <>{count}{suffix}</>;
 }
 
-function MarqueeBar({ items = [], separator = "✦" }: { items: string[]; separator?: string }) {
+function MarqueeBar({ items = [], separator = "✦", speed = 40 }: { items: string[]; separator?: string; speed?: number }) {
   const repeated = Array(6).fill(items).flat().map((i, idx) => ({ text: i, key: idx }));
   return (
     <div className="w-full overflow-hidden bg-black text-white py-3 md:py-4 border-y border-white/5">
-      <div className="flex whitespace-nowrap animate-[marquee_40s_linear_infinite] gap-0" style={{ display: "flex" }}>
+      <div className="flex whitespace-nowrap gap-0" style={{ display: "flex", animation: `marquee ${speed}s linear infinite` }}>
         {repeated.map((item) => (
           <span key={item.key} className="text-xs md:text-sm font-bold uppercase tracking-[0.3em] mx-4 md:mx-6 flex items-center gap-4 md:gap-6">
             {item.text}
@@ -56,7 +56,6 @@ function MarqueeBar({ items = [], separator = "✦" }: { items: string[]; separa
           </span>
         ))}
       </div>
-
     </div>
   );
 }
@@ -371,6 +370,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
       <MarqueeBar
         items={marquee.items?.length ? marquee.items : ["FITNESS", "NUTRITION", "LIFESTYLE", "HEALTH COACHING"]}
         separator={marquee.separator || "✦"}
+        speed={marquee.speed || 40}
       />
 
       {/* ===== SERVICES ===== */}
@@ -447,7 +447,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
 
       {/* ===== PROMO MARQUEE (TOP) ===== */}
       <div className="w-full overflow-hidden bg-emerald-600 text-white py-3 md:py-3.5 border-y border-emerald-500/30">
-        <div className="flex whitespace-nowrap animate-[promoMarquee_30s_linear_infinite]">
+        <div className="flex whitespace-nowrap" style={{ animation: `promoMarquee ${pricing.topMarqueeSpeed || 30}s linear infinite` }}>
           {[...Array(10)].flatMap(() => (pricing.promoTopItems?.length ? pricing.promoTopItems : [
             isRtl ? "🔥 عرض خاص   احجز الآن واحصل على شهر مجاني" : "🔥 SPECIAL OFFER   Book now and get 1 month free",
             isRtl ? "💪 ابدأ رحلة تحولك اليوم   خصم 50% على الباقة الأولى" : "💪 Start your transformation today   50% off first package",
@@ -578,7 +578,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
 
       {/* ===== PROMO MARQUEE (BOTTOM) ===== */}
       <div className="w-full overflow-hidden bg-emerald-600 text-white py-3 md:py-3.5 border-y border-emerald-500/30">
-        <div className="flex whitespace-nowrap animate-[promoMarquee2_35s_linear_infinite]">
+        <div className="flex whitespace-nowrap" style={{ animation: `promoMarquee2 ${pricing.bottomMarqueeSpeed || 35}s linear infinite` }}>
           {[...Array(10)].flatMap(() => (pricing.promoBottomItems?.length ? pricing.promoBottomItems : [
             isRtl ? "🎯 نتائج مضمونة   أكثر من 20 ألف عميل حولوا حياتهم" : "🎯 Guaranteed Results   Over 20,000 clients transformed",
             isRtl ? "⭐ تقييم 5 نجوم   انضم لألاف العملاء السعداء" : "⭐ 5-Star Rating   Join thousands of happy clients",

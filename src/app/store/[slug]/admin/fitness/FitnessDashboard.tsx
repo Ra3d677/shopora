@@ -243,8 +243,9 @@ export default function FitnessDashboard({
                 className="w-4 h-4 rounded accent-emerald-500" />
               <span className="text-sm font-bold text-slate-300">{isAr ? "تفعيل الشريط" : "Enable Marquee"}</span>
             </label>
-            <div className="mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <Field label={isAr ? "رمز الفاصل" : "Separator"} value={marquee.separator} onChange={v => set("marquee.separator", v)} placeholder="✦" />
+              <Field label={isAr ? "السرعة (بالثواني)" : "Speed (seconds)"} value={String(marquee.speed || 40)} onChange={v => set("marquee.speed", Number(v) || 40)} />
             </div>
             <ArrayEdit label={isAr ? "عناصر الشريط" : "Marquee Items"} items={marquee.items || []} onChange={v => set("marquee.items", v)} />
             {marquee.items?.length > 0 && (
@@ -356,10 +357,16 @@ export default function FitnessDashboard({
             {/* Promo Marquee Strips */}
             <div className="bg-white/[0.02] rounded-xl border border-white/5 p-4 mb-6">
               <h4 className="text-[9px] font-black text-slate-500 uppercase tracking-wider mb-3">{isAr ? "الشريط الإعلاني (فوق)" : "Top Promo Marquee"}</h4>
+              <div className="mb-3">
+                <Field label={isAr ? "السرعة (بالثواني)" : "Speed (seconds)"} value={String(pricing.topMarqueeSpeed || 30)} onChange={v => set("pricing.topMarqueeSpeed", Number(v) || 30)} />
+              </div>
               <ArrayEdit label={isAr ? "النصوص" : "Text Items"} items={pricing.promoTopItems || []} onChange={v => set("pricing.promoTopItems", v)} />
             </div>
             <div className="bg-white/[0.02] rounded-xl border border-white/5 p-4 mb-6">
               <h4 className="text-[9px] font-black text-slate-500 uppercase tracking-wider mb-3">{isAr ? "الشريط الإعلاني (تحت)" : "Bottom Promo Marquee"}</h4>
+              <div className="mb-3">
+                <Field label={isAr ? "السرعة (بالثواني)" : "Speed (seconds)"} value={String(pricing.bottomMarqueeSpeed || 35)} onChange={v => set("pricing.bottomMarqueeSpeed", Number(v) || 35)} />
+              </div>
               <ArrayEdit label={isAr ? "النصوص" : "Text Items"} items={pricing.promoBottomItems || []} onChange={v => set("pricing.promoBottomItems", v)} />
             </div>
 
