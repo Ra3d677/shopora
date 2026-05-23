@@ -75,6 +75,18 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
   const isRtl = language === "ar";
   const dir = isRtl ? "rtl" : "ltr";
   const fs = settings.fitnessSettings || {};
+  const cs = settings.colorSystem || {};
+  const brand = cs.brand?.primary || "#059669";
+  const textPrimary = cs.text?.primary || "#0f172a";
+  const pageBg = (cs.backgrounds as any)?.home || "#ffffff";
+  const pageText = (cs.text as any)?.home || "#0f172a";
+  const footerBg = cs.footer?.background || "#0f172a";
+  const footerText = cs.footer?.text || "#ffffff";
+
+  const rootVars = {
+    "--brand": brand, "--page-bg": pageBg, "--page-text": pageText,
+    "--text-primary": textPrimary, "--footer-bg": footerBg, "--footer-text": footerText,
+  } as React.CSSProperties;
 
   const statsRef = useRef<HTMLDivElement>(null);
   const statsInView = useIntersection(statsRef);
@@ -220,28 +232,47 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
   const avatarImages = hero.avatars?.filter(Boolean) || [];
 
   return (
-    <div dir={dir} className="min-h-screen font-sans antialiased overflow-x-hidden bg-white text-slate-900">
+    <div dir={dir} className="fitness-colors min-h-screen font-sans antialiased overflow-x-hidden" style={rootVars}>
       <style jsx global>{`
         @font-face { font-family: 'Cairo'; src: url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap'); }
         body { font-family: ${isRtl ? "'Cairo', sans-serif" : "'Inter', sans-serif"}; }
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes promoMarquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes promoMarquee2 {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes promoMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes promoMarquee2 { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
         .animate-marquee { animation: marquee 40s linear infinite; }
         .animate-float { animation: float 6s ease-in-out infinite; }
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
+
+        /* Dynamic color overrides */
+        .fitness-colors { background: var(--page-bg); color: var(--page-text); }
+        .fitness-colors .bg-emerald-600 { background-color: var(--brand); }
+        .fitness-colors .bg-emerald-700 { background-color: color-mix(in srgb, var(--brand) 85%, black); }
+        .fitness-colors .text-emerald-600 { color: var(--brand); }
+        .fitness-colors .text-emerald-700 { color: color-mix(in srgb, var(--brand) 85%, black); }
+        .fitness-colors .text-emerald-800 { color: color-mix(in srgb, var(--brand) 70%, black); }
+        .fitness-colors .border-emerald-600 { border-color: var(--brand); }
+        .fitness-colors .border-emerald-200 { border-color: color-mix(in srgb, var(--brand) 30%, transparent); }
+        .fitness-colors .border-emerald-500\/30 { border-color: color-mix(in srgb, var(--brand) 30%, transparent); }
+        .fitness-colors .from-emerald-600 { --tw-gradient-from: var(--brand); }
+        .fitness-colors .to-emerald-700 { --tw-gradient-to: color-mix(in srgb, var(--brand) 85%, black); }
+        .fitness-colors .ring-emerald-500 { --tw-ring-color: var(--brand); }
+        .fitness-colors .divide-emerald-800\/30 > * + * { border-color: color-mix(in srgb, var(--brand) 30%, transparent); }
+        .fitness-colors .hover\:text-emerald-600:hover { color: var(--brand); }
+        .fitness-colors .hover\:bg-emerald-50:hover { background-color: color-mix(in srgb, var(--brand) 10%, transparent); }
+        .fitness-colors .hover\:bg-emerald-100:hover { background-color: color-mix(in srgb, var(--brand) 20%, transparent); }
+        .fitness-colors .hover\:bg-emerald-500:hover { background-color: var(--brand); }
+        .fitness-colors .bg-emerald-50 { background-color: color-mix(in srgb, var(--brand) 10%, transparent); }
+        /* Footer */
+        .fitness-colors .bg-slate-900 { background-color: var(--footer-bg); }
+        .fitness-colors .text-slate-300 { color: var(--footer-text); }
+        .fitness-colors .text-slate-400 { color: color-mix(in srgb, var(--footer-text) 70%, transparent); }
+        .fitness-colors .hover\:text-white:hover { color: var(--footer-text); }
+        .fitness-colors .border-slate-700\/30 { border-color: color-mix(in srgb, var(--footer-text) 20%, transparent); }
+        .fitness-colors .border-slate-700 { border-color: color-mix(in srgb, var(--footer-text) 30%, transparent); }
+        .fitness-colors .text-slate-500 { color: var(--text-primary); opacity: 0.5; }
+        .fitness-colors .text-slate-600 { color: var(--text-primary); opacity: 0.6; }
+        .fitness-colors .border-slate-200 { border-color: color-mix(in srgb, var(--text-primary) 15%, transparent); }
+        .fitness-colors .border-slate-100 { border-color: color-mix(in srgb, var(--text-primary) 10%, transparent); }
       `}</style>
 
       {/* ===== HEADER ===== */}
