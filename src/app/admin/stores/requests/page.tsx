@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import RequestsList from "./RequestsList";
+import RateSetting from "./RateSetting";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +28,10 @@ export default async function RequestsPage() {
     take: 20,
   });
 
+  let currentRate = 48;
+  const setting = await prisma.appSetting.findUnique({ where: { key: "usd_rate" } });
+  if (setting) currentRate = parseFloat(setting.value) || 48;
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
@@ -38,6 +43,8 @@ export default async function RequestsPage() {
           {requests.length} طلب pending
         </div>
       </div>
+
+      <RateSetting currentRate={currentRate} />
 
       <RequestsList requests={requests.map(r => ({
         ...r,

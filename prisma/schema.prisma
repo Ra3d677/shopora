@@ -325,3 +325,9 @@ model Notification {
   @@index([read])
   @@index([createdAt])
 }
+
+model AppSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}

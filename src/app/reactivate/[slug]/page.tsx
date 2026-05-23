@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Loader2, Phone, Upload, Send, Sparkles, CheckCircle2 } from "lucide-react";
 
-const USD_TO_EGP = 48;
 const CYCLES = [
-  { id: "monthly", label: "شهري", price: 9, total: "$9", totalEGP: 9 * USD_TO_EGP, billing: "تدفع شهرياً", savings: null, popular: false },
-  { id: "3-months", label: "3 شهور", price: 7, total: "$21", totalEGP: 21 * USD_TO_EGP, billing: "تدفع كل 3 شهور", savings: "وفر $6", popular: false },
-  { id: "6-months", label: "6 شهور", price: 5.5, total: "$33", totalEGP: 33 * USD_TO_EGP, billing: "تدفع كل 6 شهور", savings: "وفر $21", popular: true },
-  { id: "annual", label: "سنوي", price: 4.5, total: "$54", totalEGP: 54 * USD_TO_EGP, billing: "تدفع سنوياً", savings: "وفر $54", popular: false },
+  { id: "monthly", label: "شهري", price: 9, total: "$9", billing: "تدفع شهرياً", savings: null, popular: false },
+  { id: "3-months", label: "3 شهور", price: 7, total: "$21", billing: "تدفع كل 3 شهور", savings: "وفر $6", popular: false },
+  { id: "6-months", label: "6 شهور", price: 5.5, total: "$33", billing: "تدفع كل 6 شهور", savings: "وفر $21", popular: true },
+  { id: "annual", label: "سنوي", price: 4.5, total: "$54", billing: "تدفع سنوياً", savings: "وفر $54", popular: false },
 ];
 const CYCLE_DURATION: Record<string, number> = { monthly: 30, "3-months": 90, "6-months": 180, annual: 365 };
 const VODAFONE_CASH_NUMBER = "01000000000";
@@ -24,8 +23,17 @@ export default function ReactivatePage() {
   const [customerPhone, setCustomerPhone] = useState("");
   const [receiptImage, setReceiptImage] = useState("");
   const [notes, setNotes] = useState("");
+  const [usdRate, setUsdRate] = useState(48);
+
+  useEffect(() => {
+    fetch("/api/admin/settings")
+      .then(r => r.json())
+      .then(d => { if (d.rate) setUsdRate(d.rate); })
+      .catch(() => {});
+  }, []);
 
   const cycle = CYCLES.find(c => c.id === selectedCycle)!;
+  const totalEGP = (price: number) => Math.round(price * usdRate);
 
   const handleSubmit = async () => {
     if (!customerPhone || customerPhone.length < 10) { setError("من فضلك أدخل رقم الهاتف"); return; }
@@ -72,13 +80,13 @@ export default function ReactivatePage() {
           <div className="text-center space-y-4">
             <Phone className="w-10 h-10 text-green-400 mx-auto" />
             <h1 className="text-2xl font-black text-white">الدفع عبر فودافون كاش</h1>
-            <p className="text-slate-400 text-sm">{cycle.label} — {cycle.total} ≈ {cycle.totalEGP.toLocaleString()} ج.م</p>
+            <p className="text-slate-400 text-sm">{cycle.label} — {cycle.total} ≈ {totalEGP(cycle.price).toLocaleString()} ج.م</p>
           </div>
           <div className="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-6 space-y-3">
             <h3 className="text-amber-400 font-black text-sm">📋 خطوات الدفع</h3>
             <ol className="text-slate-400 text-xs space-y-2">
               <li>1. افتح محفظة فودافون كاش</li>
-              <li>2. حول <span className="text-white font-black">{cycle.total} ≈ {cycle.totalEGP.toLocaleString()} ج.م</span> على: <span className="text-white font-black">{VODAFONE_CASH_NUMBER}</span></li>
+              <li>2. حول <span className="text-white font-black">{cycle.total} ≈ {totalEGP(cycle.price).toLocaleString()} ج.م</span> على: <span className="text-white font-black">{VODAFONE_CASH_NUMBER}</span></li>
               <li>3. أدخل البيانات أدناه</li>
             </ol>
           </div>
@@ -123,7 +131,7 @@ export default function ReactivatePage() {
                 <span className="text-slate-500 text-xs font-bold mb-1">/ شهرياً</span>
               </div>
               <p className="text-slate-500 text-[9px] font-bold">{c.total} — {c.billing}</p>
-              <p className="text-[10px] text-yellow-400 font-black mt-1">≈ {c.totalEGP.toLocaleString()} ج.م</p>
+              <p className="text-[10px] text-yellow-400 font-black mt-1">≈ {totalEGP(c.price).toLocaleString()} ج.م</p>
               {c.savings && <p className="text-xs font-black mt-2 text-yellow-400">{c.savings}</p>}
             </button>
           ))}
@@ -133,7 +141,7 @@ export default function ReactivatePage() {
 
         <div className="flex flex-col items-center gap-4">
           <button onClick={() => setStep("payment")} className="bg-cyan-500 text-black h-16 px-12 rounded-2xl font-black text-sm flex items-center justify-center gap-3 hover:bg-cyan-400 shadow-2xl">
-            <Phone className="w-5 h-5" /> دفع عبر فودافون كاش — {cycle.total} ≈ {cycle.totalEGP.toLocaleString()} ج.م
+            <Phone className="w-5 h-5" /> دفع عبر فودافون كاش — {cycle.total} ≈ {totalEGP(cycle.price).toLocaleString()} ج.م
           </button>
           <p className="text-slate-600 text-xs">{CYCLE_DURATION[selectedCycle]} يوم اشتراك بعد التفعيل</p>
         </div>
