@@ -430,16 +430,17 @@ export default function FitnessTemplate({ banners, settings, products, slug }: F
             <h2 className="text-4xl md:text-6xl font-black text-white uppercase leading-[0.9] tracking-tight mb-4">Choose Your Weapon</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">Every program is fully customized to your body, goals, and lifestyle.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="flex flex-col md:flex-row items-start justify-center gap-6 md:gap-8 max-w-5xl mx-auto">
             {(products.length > 0 ? products : [
               { id: "p1", name: "Starter", price: 29, specs: [{ label: "Custom Workout Plan" }, { label: "Nutrition Guide" }, { label: "Email Support" }] },
               { id: "p2", name: "Pro", price: 59, specs: [{ label: "Everything in Starter" }, { label: "1-on-1 Video Coaching" }, { label: "Custom Meal Plans" }, { label: "24/7 WhatsApp Support" }] },
               { id: "p3", name: "Elite", price: 99, specs: [{ label: "Everything in Pro" }, { label: "Daily Check-ins" }, { label: "Video Form Analysis" }, { label: "Supplement Protocol" }] },
             ]).map((plan, idx) => {
               const isPopular = idx === 1 || (products.length > 0 && idx === Math.floor((products.length - 1) / 2));
+              const step = products.length > 3 ? (idx - Math.floor(products.length / 2)) * 24 : (idx - 1) * 20;
               return (
-                <div key={plan.id} className="group perspective-[1000px]">
-                  <div className={`relative rounded-[2.5rem] p-8 transition-all duration-500 hover:[transform:rotateY(-3deg)_rotateX(3deg)] cursor-default ${isPopular ? "border-2 scale-[1.02] z-10 shadow-2xl" : "bg-white/[0.02] border border-white/10 hover:border-cyan-500/30"}`} style={isPopular ? { background: "linear-gradient(145deg, rgba(6,182,212,0.08), #0a0c14)", borderColor: "#06b6d4" } : {}}>
+                <div key={plan.id} className="group perspective-[1000px] flex-1" style={{ transform: `translateY(${step}px)` }}>
+                  <div className={`relative rounded-[2.5rem] p-8 transition-all duration-500 hover:[transform:rotateY(-3deg)_rotateX(3deg)] cursor-default ${isPopular ? "border-2 z-10 shadow-2xl" : "bg-white/[0.02] border border-white/10 hover:border-cyan-500/30"}`} style={isPopular ? { background: "linear-gradient(145deg, rgba(6,182,212,0.08), #0a0c14)", borderColor: "#06b6d4" } : {}}>
                     {isPopular && <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-6 py-1.5 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-[9px] font-black uppercase tracking-widest shadow-lg shadow-cyan-500/30">Most Popular</div>}
                     <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest mb-6 ${isPopular ? "bg-cyan-500/20 text-cyan-400" : "bg-white/5 text-slate-400"}`}>
                       {isPopular ? <Zap className="w-3 h-3" /> : <Dumbbell className="w-3 h-3" />}
