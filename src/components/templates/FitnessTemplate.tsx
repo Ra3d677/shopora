@@ -291,9 +291,9 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
 
             <nav className={`hidden lg:flex items-center gap-1 ${isRtl ? "mr-auto ml-6" : "ml-auto mr-6"}`}>
               {(footer.links?.length ? footer.links : [
-                { label: "Home", url: `/${slug}` },
-                { label: "Packages", url: `/${slug}#pricing` },
-                { label: "About Us", url: `/${slug}#about` },
+                { label: "Home", url: `/store/${slug}` },
+                { label: "Packages", url: `/store/${slug}#pricing` },
+                { label: "About Us", url: `/store/${slug}#about` },
               ]).slice(0, 6).map((link: any, i: number) => (
                 <Link key={i} href={link.url || "#"} className="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-emerald-600 transition-colors rounded-lg hover:bg-emerald-50">
                   {link.label}
@@ -305,7 +305,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
               <a href={`tel:${footer.contact?.phone || ""}`} className="hidden md:flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 px-4 py-2 rounded-full hover:bg-emerald-100 transition-colors">
                 <span>{footer.contact?.phone || ""}</span>
               </a>
-              <Link href={`/${slug}#pricing`} className="bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200">
+              <Link href={`/store/${slug}#pricing`} className="bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200">
                 {isRtl ? "ابدأ الآن" : "Subscribe"}
               </Link>
             </div>
@@ -340,11 +340,11 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
                 </p>
 
                 <div className="flex flex-wrap gap-4">
-                  <Link href={hero.primaryCta?.link || `/${slug}#about`} className="inline-flex items-center gap-2 bg-emerald-600 text-white px-8 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-200/50">
+                  <Link href={hero.primaryCta?.link || `/store/${slug}#about`} className="inline-flex items-center gap-2 bg-emerald-600 text-white px-8 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-200/50">
                     {hero.primaryCta?.text || (isRtl ? "عن ساما فيت" : "About Us")}
                     <ArrowRight className="w-4 h-4" />
                   </Link>
-                  <Link href={hero.secondaryCta?.link || `/${slug}#pricing`} className="inline-flex items-center gap-2 bg-white border-2 border-slate-200 text-slate-700 px-8 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider hover:border-emerald-300 hover:text-emerald-600 transition-all">
+                  <Link href={hero.secondaryCta?.link || `/store/${slug}#pricing`} className="inline-flex items-center gap-2 bg-white border-2 border-slate-200 text-slate-700 px-8 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider hover:border-emerald-300 hover:text-emerald-600 transition-all">
                     {hero.secondaryCta?.text || (isRtl ? "اشترك الآن" : "Subscribe Now")}
                   </Link>
                 </div>
@@ -671,7 +671,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
           <p className="text-emerald-100 text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
             {about.text || (isRtl ? "تجارب حقيقية لأشخاص حولوا أهدافهم الرياضية إلى واقع باستخدام تطبيقنا." : "Real experiences from people who turned their fitness goals into reality.")}
           </p>
-          <Link href={about.ctaLink || `/${slug}#pricing`} className="inline-flex items-center gap-2 bg-white text-emerald-700 px-8 py-4 rounded-full font-bold text-sm uppercase tracking-wider hover:bg-emerald-50 transition-all shadow-2xl">
+          <Link href={about.ctaLink || `/store/${slug}#pricing`} className="inline-flex items-center gap-2 bg-white text-emerald-700 px-8 py-4 rounded-full font-bold text-sm uppercase tracking-wider hover:bg-emerald-50 transition-all shadow-2xl">
             {about.ctaText || (isRtl ? "انضم اليوم" : "Join Today")}
             <ArrowRight className="w-4 h-4" />
           </Link>
@@ -704,8 +704,8 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
               <h4 className="text-white font-bold text-sm uppercase tracking-widest mb-5">Links</h4>
               <div className="flex flex-col gap-3">
                 {(footer.links?.length ? footer.links : [
-                  { label: "Home", url: `/${slug}` },
-                  { label: "Packages", url: `/${slug}#pricing` },
+                  { label: "Home", url: `/store/${slug}` },
+                  { label: "Packages", url: `/store/${slug}#pricing` },
                 ]).map((link: any, i: number) => (
                   <Link key={i} href={link.url || "#"} className="text-slate-400 text-sm hover:text-emerald-400 transition-colors">
                     {link.label}
