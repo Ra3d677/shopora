@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(new URL("/auth/login?error=oauth_not_configured", req.url));
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const baseUrl = req.nextUrl.origin;
     const redirectUri = `${baseUrl}/api/auth/google/callback`;
 
     // Exchange code for tokens
