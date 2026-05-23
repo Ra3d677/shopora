@@ -1,6 +1,12 @@
 "use client";
 
+import { useCallback } from "react";
+
 export default function SuspendedStoreClient({ slug, isOwner }: { slug: string; isOwner: boolean }) {
+  const goToReactivate = useCallback(() => {
+    window.location.href = `/store/${slug}/admin/reactivate`;
+  }, [slug]);
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
       <div className="max-w-md text-center space-y-8">
@@ -14,12 +20,12 @@ export default function SuspendedStoreClient({ slug, isOwner }: { slug: string; 
             : "هذا المتجر غير متاح حالياً. صاحب المتجر قد يكون لديه اشتراك منتهي."}
         </p>
         {isOwner ? (
-          <a
-            href={`https://google.com`}
-            className="inline-flex items-center justify-center gap-3 bg-cyan-500 text-black h-14 px-10 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-cyan-400 transition-all shadow-2xl no-underline"
+          <button
+            onClick={goToReactivate}
+            className="inline-flex items-center justify-center gap-3 bg-cyan-500 text-black h-14 px-10 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-cyan-400 transition-all shadow-2xl"
           >
             إعادة التفعيل
-          </a>
+          </button>
         ) : (
           <p className="text-slate-600 text-xs font-medium">
             يرجى المحاولة لاحقاً
