@@ -7,7 +7,6 @@ export async function GET(req: NextRequest) {
   const baseUrl = req.nextUrl.origin;
   const redirectUri = `${baseUrl}/api/auth/google/callback`;
 
-  // Temporarily show the redirect URI to diagnose
   const params = new URLSearchParams({
     client_id: clientId,
     redirect_uri: redirectUri,
@@ -17,8 +16,5 @@ export async function GET(req: NextRequest) {
     prompt: "select_account",
   });
 
-  // Return the URL for debugging
-  return NextResponse.json({
-    redirectUri,
-    googleUrl: `https://accounts.google.com/o/oauth2/v2/auth?${params}`,
-  });
+  return NextResponse.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params}`);
+}

@@ -87,7 +87,7 @@ export async function GET(req: NextRequest) {
       ? `/store/${userStore.slug}/admin/dashboard`
       : user.email === "ksh128395@gmail.com"
       ? "/admin/stores/requests"
-      : "/auth/login?error=no_store";
+      : `/auth/login?error=no_store&email=${encodeURIComponent(googleUser.email)}`;
 
     return NextResponse.redirect(new URL(redirect, req.url));
   } catch (err: any) {

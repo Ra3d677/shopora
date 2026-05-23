@@ -15,12 +15,14 @@ export default function LoginPage() {
 
   useEffect(() => {
     const err = searchParams.get("error");
+    const email = searchParams.get("email");
     if (err === "no_code") setError("لم نستلم رمز التحقق من Google");
     else if (err === "oauth_not_configured") setError("تسجيل الدخول عبر Google غير مفعل حالياً");
     else if (err === "token_exchange_failed") setError("فشل الاتصال بـ Google، حاول مرة أخرى");
     else if (err === "no_email") setError("لم نتمكن من الحصول على بريدك الإلكتروني من Google");
-    else if (err === "no_store") setError("ليس لديك متجر بعد. سجل حساب جديد أولاً.");
     else if (err === "unknown") setError("حدث خطأ غير متوقع");
+    else if (err === "no_store") setError(`(${email}) ليس لديه متجر. سجل دخول بالبريد المرتبط بمتجرك`);
+    else if (err) setError(err);
   }, [searchParams]);
 
   const handleGoogleLogin = () => {
