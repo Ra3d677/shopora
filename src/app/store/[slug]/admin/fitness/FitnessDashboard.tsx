@@ -329,6 +329,55 @@ export default function FitnessDashboard({
               </div>
             </div>
 
+            {/* Promo Marquee Strips */}
+            <div className="bg-white/[0.02] rounded-xl border border-white/5 p-4 mb-6">
+              <h4 className="text-[9px] font-black text-slate-500 uppercase tracking-wider mb-3">{isAr ? "الشريط الإعلاني (فوق)" : "Top Promo Marquee"}</h4>
+              <ArrayEdit label={isAr ? "النصوص" : "Text Items"} items={pricing.promoTopItems || []} onChange={v => set("pricing.promoTopItems", v)} />
+            </div>
+            <div className="bg-white/[0.02] rounded-xl border border-white/5 p-4 mb-6">
+              <h4 className="text-[9px] font-black text-slate-500 uppercase tracking-wider mb-3">{isAr ? "الشريط الإعلاني (تحت)" : "Bottom Promo Marquee"}</h4>
+              <ArrayEdit label={isAr ? "النصوص" : "Text Items"} items={pricing.promoBottomItems || []} onChange={v => set("pricing.promoBottomItems", v)} />
+            </div>
+
+            {/* Duration Periods */}
+            <div className="bg-white/[0.02] rounded-xl border border-white/5 p-4 mb-6">
+              <h4 className="text-[9px] font-black text-slate-500 uppercase tracking-wider mb-3">{isAr ? "فترات المدة (الأزرار فوق الباقات)" : "Duration Periods"}</h4>
+              <div className="space-y-2">
+                {(pricing.periods || []).map((p: any, i: number) => (
+                  <div key={i} className="flex gap-2 items-center">
+                    <input value={p.label} onChange={e => {
+                      const arr = [...(pricing.periods || [])];
+                      arr[i] = { ...arr[i], label: e.target.value };
+                      set("pricing.periods", arr);
+                    }}
+                      className="flex-1 bg-black/40 border border-white/5 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500/50" />
+                    <label className="flex items-center gap-1 text-[8px] text-slate-500 font-bold uppercase tracking-wider cursor-pointer whitespace-nowrap">
+                      <input type="checkbox" checked={p.active || false}
+                        onChange={e => {
+                          const arr = [...(pricing.periods || [])];
+                          arr[i] = { ...arr[i], active: e.target.checked };
+                          set("pricing.periods", arr);
+                        }}
+                        className="accent-emerald-500" />
+                      {isAr ? "نشط" : "Active"}
+                    </label>
+                    <button onClick={() => {
+                      const arr = pricing.periods.filter((_: any, j: number) => j !== i);
+                      set("pricing.periods", arr);
+                    }}
+                      className="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white"><X size={14} /></button>
+                  </div>
+                ))}
+              </div>
+              <button onClick={() => {
+                const arr = [...(pricing.periods || []), { label: "", active: false }];
+                set("pricing.periods", arr);
+              }}
+                className="mt-2 text-[9px] font-black text-emerald-400 uppercase tracking-widest hover:text-emerald-300 transition-colors">
+                + {isAr ? "إضافة فترة" : "Add Period"}
+              </button>
+            </div>
+
             {/* Plans */}
             <div className="bg-white/[0.02] rounded-2xl border border-white/5 p-5">
               <div className="flex items-center justify-between mb-4">

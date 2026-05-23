@@ -56,12 +56,7 @@ function MarqueeBar({ items = [], separator = "✦" }: { items: string[]; separa
           </span>
         ))}
       </div>
-      <style jsx>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
+
     </div>
   );
 }
@@ -234,12 +229,20 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
+        @keyframes promoMarquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes promoMarquee2 {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
         .animate-marquee { animation: marquee 40s linear infinite; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-20px); }
         }
-        .animate-float { animation: float 6s ease-in-out infinite; }
       `}</style>
 
       {/* ===== HEADER ===== */}
@@ -442,8 +445,23 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
         </section>
       )}
 
+      {/* ===== PROMO MARQUEE (TOP) ===== */}
+      <div className="w-full overflow-hidden bg-emerald-600 text-white py-3 md:py-3.5 border-y border-emerald-500/30">
+        <div className="flex whitespace-nowrap animate-[promoMarquee_30s_linear_infinite]">
+          {[...Array(10)].flatMap(() => (pricing.promoTopItems?.length ? pricing.promoTopItems : [
+            isRtl ? "🔥 عرض خاص   احجز الآن واحصل على شهر مجاني" : "🔥 SPECIAL OFFER   Book now and get 1 month free",
+            isRtl ? "💪 ابدأ رحلة تحولك اليوم   خصم 50% على الباقة الأولى" : "💪 Start your transformation today   50% off first package",
+          ])).map((text: string, i: number) => (
+            <span key={i} className="text-xs md:text-sm font-bold uppercase tracking-[0.15em] mx-6 md:mx-10 flex items-center gap-6 md:gap-10">
+              {text}
+              <span className="text-emerald-200/50 text-lg">✦</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* ===== PRICING ===== */}
-      <section id="pricing" className="py-20 md:py-28 bg-white">
+      <section id="pricing" className="py-20 md:py-28 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-14">
             <span className="inline-block text-emerald-600 text-xs font-bold uppercase tracking-[0.25em] mb-3">
@@ -457,48 +475,97 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
             )}
           </div>
 
-          <div className={`flex flex-wrap justify-center gap-6 lg:gap-8 ${plans.length > 4 ? "max-w-6xl mx-auto" : ""}`}>
-            {plans.map((plan: any, idx: number) => {
+          {/* Duration Period Tabs */}
+          <div className="flex justify-center gap-2 md:gap-3 mb-12">
+            {(pricing.periods?.length ? pricing.periods : [
+              { label: isRtl ? "شهر واحد" : "1 Month", active: false },
+              { label: isRtl ? "3 أشهر" : "3 Months", active: true },
+              { label: isRtl ? "6 أشهر" : "6 Months", active: false },
+              { label: isRtl ? "12 شهر" : "12 Months", active: false },
+            ]).map((period: any, i: number) => (
+              <button key={i}
+                className={`px-5 md:px-8 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all ${
+                  period.active
+                    ? "bg-emerald-600 text-white shadow-lg shadow-emerald-200"
+                    : "bg-white text-slate-500 border border-slate-200 hover:border-emerald-300 hover:text-emerald-600"
+                }`}>
+                {period.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Pricing Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 justify-items-center max-w-7xl mx-auto">
+            {plans.slice(0, 8).map((plan: any, idx: number) => {
               const isPopular = plan.popular;
+              const isLastInOddRow = plans.length > 4 && idx === plans.length - 1 && plans.length % 4 !== 0;
               return (
-                <div key={plan.id || idx} className={`w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] xl:w-[calc(20%-1.5rem)] min-w-[260px] ${isPopular ? "scale-105 z-10" : ""}`}>
-                  <div className={`relative h-full rounded-2xl p-6 md:p-7 border transition-all duration-300 hover:shadow-2xl ${isPopular ? "bg-emerald-600 text-white border-emerald-600 shadow-2xl shadow-emerald-200" : "bg-white border-slate-200 text-slate-900 hover:border-emerald-300 hover:shadow-lg"} flex flex-col`}>
-                    {plan.badge && (
-                      <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-lg ${isPopular ? "bg-white text-emerald-700" : "bg-emerald-600 text-white"}`}>
-                        {plan.badge}
+                <div key={plan.id || idx}
+                  className={`w-full ${isLastInOddRow ? "xl:col-span-full xl:max-w-sm xl:justify-self-center" : ""} ${isPopular ? "xl:scale-105 z-10" : ""}`}>
+                  <div className={`relative h-full rounded-[1.75rem] p-7 md:p-8 border-2 transition-all duration-300 hover:shadow-2xl flex flex-col ${
+                    isPopular
+                      ? "bg-emerald-600 text-white border-emerald-600 shadow-2xl shadow-emerald-200/60"
+                      : "bg-white text-slate-900 border-slate-100 hover:border-emerald-200 hover:shadow-xl hover:-translate-y-1"
+                  }`}>
+                    {/* Badge Ribbon */}
+                    {(plan.badge || isPopular) && (
+                      <div className={`absolute -top-3 ${isRtl ? "right-6" : "left-6"} px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-lg ${
+                        isPopular ? "bg-white text-emerald-700" : "bg-emerald-600 text-white"
+                      }`}>
+                        {plan.badge || (isPopular ? (isRtl ? "الأفضل" : "BEST VALUE") : "")}
                       </div>
                     )}
 
-                    <div className="mb-6">
-                      <h3 className={`text-lg font-black mb-1 ${isPopular ? "text-white" : "text-slate-900"}`}>{plan.name}</h3>
+                    {/* Plan Header */}
+                    <div className="mb-5">
+                      <div className={`inline-block px-3 py-1 rounded-full text-[8px] font-bold uppercase tracking-widest mb-3 ${
+                        isPopular ? "bg-emerald-500/40 text-emerald-100" : "bg-emerald-50 text-emerald-600"
+                      }`}>
+                        {plan.id || (isRtl ? "باقة" : "Plan")}
+                      </div>
+                      <h3 className={`text-xl md:text-2xl font-black leading-tight ${isPopular ? "text-white" : "text-slate-900"}`}>{plan.name}</h3>
                       {plan.subtitle && (
-                        <p className={`text-xs leading-relaxed ${isPopular ? "text-emerald-100" : "text-slate-500"}`}>{plan.subtitle}</p>
+                        <p className={`text-[11px] leading-relaxed mt-1 ${isPopular ? "text-emerald-100/80" : "text-slate-400"}`}>{plan.subtitle}</p>
                       )}
                     </div>
 
-                    <div className="mb-2">
-                      <span className={`text-3xl md:text-4xl font-black ${isPopular ? "text-white" : "text-slate-900"}`}>
-                        {plan.currency || "£"} {plan.price}
-                      </span>
+                    {/* Price */}
+                    <div className="mb-5 pb-5" style={{ borderBottom: isPopular ? "1px solid rgba(255,255,255,0.15)" : "1px solid rgba(0,0,0,0.06)" }}>
+                      <div className="flex items-baseline gap-1">
+                        <span className={`text-sm font-bold uppercase tracking-wider ${isPopular ? "text-emerald-100" : "text-slate-400"}`}>{plan.currency || "£"}</span>
+                        <span className={`text-4xl md:text-5xl font-black tracking-tight ${isPopular ? "text-white" : "text-slate-900"}`}>{plan.price}</span>
+                      </div>
                       {plan.duration && (
-                        <span className={`block text-xs font-bold mt-1 ${isPopular ? "text-emerald-200" : "text-emerald-600"}`}>
+                        <span className={`inline-block mt-1.5 text-xs font-bold px-3 py-1 rounded-full ${
+                          isPopular ? "bg-emerald-500/40 text-emerald-100" : "bg-emerald-50 text-emerald-600"
+                        }`}>
                           {plan.duration}
                         </span>
                       )}
                     </div>
 
+                    {/* Features */}
                     <div className="flex-1">
-                      <ul className="mt-6 space-y-3">
-                        {(plan.features || []).map((feature: string, fi: number) => (
-                          <li key={fi} className={`flex items-start gap-2.5 text-xs leading-relaxed ${isPopular ? "text-emerald-100" : "text-slate-600"}`}>
-                            <Check className={`w-3.5 h-3.5 mt-0.5 shrink-0 ${isPopular ? "text-emerald-200" : "text-emerald-500"}`} />
-                            <span>{feature}</span>
+                      <ul className="space-y-3.5">
+                        {(plan.features || []).slice(0, 8).map((feature: string, fi: number) => (
+                          <li key={fi} className="flex items-start gap-3">
+                            <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
+                              isPopular ? "bg-emerald-500/40" : "bg-emerald-100"
+                            }`}>
+                              <Check className={`w-3 h-3 ${isPopular ? "text-white" : "text-emerald-600"}`} strokeWidth={3} />
+                            </div>
+                            <span className={`text-[12px] leading-relaxed ${isPopular ? "text-emerald-50" : "text-slate-600"}`}>{feature}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <button className={`mt-6 w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all active:scale-[0.98] ${isPopular ? "bg-white text-emerald-700 hover:bg-emerald-50 shadow-lg" : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-md"}`}>
+                    {/* CTA */}
+                    <button className={`mt-7 w-full py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-[0.97] ${
+                      isPopular
+                        ? "bg-white text-emerald-700 hover:bg-emerald-50 shadow-xl shadow-emerald-500/20"
+                        : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg"
+                    }`}>
                       {plan.ctaText || (isRtl ? "ابدأ الآن" : "Get Started")}
                     </button>
                   </div>
@@ -508,6 +575,21 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
           </div>
         </div>
       </section>
+
+      {/* ===== PROMO MARQUEE (BOTTOM) ===== */}
+      <div className="w-full overflow-hidden bg-emerald-600 text-white py-3 md:py-3.5 border-y border-emerald-500/30">
+        <div className="flex whitespace-nowrap animate-[promoMarquee2_35s_linear_infinite]">
+          {[...Array(10)].flatMap(() => (pricing.promoBottomItems?.length ? pricing.promoBottomItems : [
+            isRtl ? "🎯 نتائج مضمونة   أكثر من 20 ألف عميل حولوا حياتهم" : "🎯 Guaranteed Results   Over 20,000 clients transformed",
+            isRtl ? "⭐ تقييم 5 نجوم   انضم لألاف العملاء السعداء" : "⭐ 5-Star Rating   Join thousands of happy clients",
+          ])).map((text: string, i: number) => (
+            <span key={i} className="text-xs md:text-sm font-bold uppercase tracking-[0.15em] mx-6 md:mx-10 flex items-center gap-6 md:gap-10">
+              {text}
+              <span className="text-emerald-200/50 text-lg">✦</span>
+            </span>
+          ))}
+        </div>
+      </div>
 
       {/* ===== TESTIMONIALS ===== */}
       {testimonialItems.length > 0 && (
