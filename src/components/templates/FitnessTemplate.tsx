@@ -243,36 +243,90 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
         .animate-marquee { animation: marquee 40s linear infinite; }
         .animate-float { animation: float 6s ease-in-out infinite; }
 
-        /* Dynamic color overrides */
+        /* Dynamic color overrides — all color classes map to colorSystem variables */
         .fitness-colors { background: var(--page-bg); color: var(--page-text); }
-        .fitness-colors .bg-emerald-600 { background-color: var(--brand); }
-        .fitness-colors .bg-emerald-700 { background-color: color-mix(in srgb, var(--brand) 85%, black); }
+
+        /* === Brand primary (--brand) → overrides all emerald classes === */
+        .fitness-colors .bg-emerald-50    { background-color: color-mix(in srgb, var(--brand) 10%, white); }
+        .fitness-colors .bg-emerald-100   { background-color: color-mix(in srgb, var(--brand) 20%, white); }
+        .fitness-colors .bg-emerald-200   { background-color: color-mix(in srgb, var(--brand) 30%, white); }
+        .fitness-colors .bg-emerald-300   { background-color: color-mix(in srgb, var(--brand) 50%, white); }
+        .fitness-colors .bg-emerald-500   { background-color: var(--brand); }
+        .fitness-colors .bg-emerald-500\/40 { background-color: color-mix(in srgb, var(--brand) 40%, transparent); }
+        .fitness-colors .bg-emerald-600   { background-color: var(--brand); }
+        .fitness-colors .bg-emerald-700   { background-color: color-mix(in srgb, var(--brand) 85%, black); }
+        .fitness-colors .text-emerald-50  { color: color-mix(in srgb, var(--brand) 10%, white); }
+        .fitness-colors .text-emerald-100 { color: color-mix(in srgb, var(--brand) 30%, white); }
+        .fitness-colors .text-emerald-100\/80 { color: color-mix(in srgb, var(--brand) 30%, white); opacity: 0.8; }
+        .fitness-colors .text-emerald-200\/50 { color: color-mix(in srgb, var(--brand) 50%, white); opacity: 0.5; }
+        .fitness-colors .text-emerald-400 { color: color-mix(in srgb, var(--brand) 70%, white); }
         .fitness-colors .text-emerald-600 { color: var(--brand); }
         .fitness-colors .text-emerald-700 { color: color-mix(in srgb, var(--brand) 85%, black); }
         .fitness-colors .text-emerald-800 { color: color-mix(in srgb, var(--brand) 70%, black); }
-        .fitness-colors .border-emerald-600 { border-color: var(--brand); }
-        .fitness-colors .border-emerald-200 { border-color: color-mix(in srgb, var(--brand) 30%, transparent); }
+        .fitness-colors .border-emerald-100 { border-color: color-mix(in srgb, var(--brand) 20%, white); }
+        .fitness-colors .border-emerald-200 { border-color: color-mix(in srgb, var(--brand) 30%, white); }
+        .fitness-colors .border-emerald-300 { border-color: color-mix(in srgb, var(--brand) 50%, white); }
+        .fitness-colors .border-emerald-500 { border-color: var(--brand); }
         .fitness-colors .border-emerald-500\/30 { border-color: color-mix(in srgb, var(--brand) 30%, transparent); }
-        .fitness-colors .from-emerald-600 { --tw-gradient-from: var(--brand); }
-        .fitness-colors .to-emerald-700 { --tw-gradient-to: color-mix(in srgb, var(--brand) 85%, black); }
-        .fitness-colors .ring-emerald-500 { --tw-ring-color: var(--brand); }
+        .fitness-colors .border-emerald-600 { border-color: var(--brand); }
         .fitness-colors .divide-emerald-800\/30 > * + * { border-color: color-mix(in srgb, var(--brand) 30%, transparent); }
+        .fitness-colors .ring-emerald-500   { --tw-ring-color: var(--brand); }
+
+        /* Brand gradients — teal is treated as brand variant */
+        .fitness-colors .from-emerald-50  { --tw-gradient-from: color-mix(in srgb, var(--brand) 10%, white); }
+        .fitness-colors .from-emerald-100 { --tw-gradient-from: color-mix(in srgb, var(--brand) 20%, white); }
+        .fitness-colors .from-emerald-600 { --tw-gradient-from: var(--brand); }
+        .fitness-colors .from-emerald-700 { --tw-gradient-from: color-mix(in srgb, var(--brand) 85%, black); }
+        .fitness-colors .to-emerald-700   { --tw-gradient-to: color-mix(in srgb, var(--brand) 85%, black); }
+        .fitness-colors .to-teal-50       { --tw-gradient-to: color-mix(in srgb, var(--brand) 10%, white); }
+        .fitness-colors .to-teal-800      { --tw-gradient-to: color-mix(in srgb, var(--brand) 75%, black); }
+
+        /* Brand hover states */
+        .fitness-colors .hover\:bg-emerald-50:hover   { background-color: color-mix(in srgb, var(--brand) 10%, white); }
+        .fitness-colors .hover\:bg-emerald-100:hover  { background-color: color-mix(in srgb, var(--brand) 20%, white); }
+        .fitness-colors .hover\:bg-emerald-200:hover  { background-color: color-mix(in srgb, var(--brand) 30%, white); }
+        .fitness-colors .hover\:bg-emerald-500:hover  { background-color: var(--brand); }
+        .fitness-colors .hover\:bg-emerald-600:hover  { background-color: var(--brand); }
+        .fitness-colors .hover\:bg-emerald-700:hover  { background-color: color-mix(in srgb, var(--brand) 85%, black); }
+        .fitness-colors .hover\:text-emerald-400:hover { color: color-mix(in srgb, var(--brand) 70%, white); }
         .fitness-colors .hover\:text-emerald-600:hover { color: var(--brand); }
-        .fitness-colors .hover\:bg-emerald-50:hover { background-color: color-mix(in srgb, var(--brand) 10%, transparent); }
-        .fitness-colors .hover\:bg-emerald-100:hover { background-color: color-mix(in srgb, var(--brand) 20%, transparent); }
-        .fitness-colors .hover\:bg-emerald-500:hover { background-color: var(--brand); }
-        .fitness-colors .bg-emerald-50 { background-color: color-mix(in srgb, var(--brand) 10%, transparent); }
-        /* Footer */
-        .fitness-colors .bg-slate-900 { background-color: var(--footer-bg); }
-        .fitness-colors .text-slate-300 { color: var(--footer-text); }
-        .fitness-colors .text-slate-400 { color: color-mix(in srgb, var(--footer-text) 70%, transparent); }
-        .fitness-colors .hover\:text-white:hover { color: var(--footer-text); }
-        .fitness-colors .border-slate-700\/30 { border-color: color-mix(in srgb, var(--footer-text) 20%, transparent); }
-        .fitness-colors .border-slate-700 { border-color: color-mix(in srgb, var(--footer-text) 30%, transparent); }
-        .fitness-colors .text-slate-500 { color: var(--text-primary); opacity: 0.5; }
-        .fitness-colors .text-slate-600 { color: var(--text-primary); opacity: 0.6; }
-        .fitness-colors .border-slate-200 { border-color: color-mix(in srgb, var(--text-primary) 15%, transparent); }
+        .fitness-colors .hover\:border-emerald-100:hover { border-color: color-mix(in srgb, var(--brand) 20%, white); }
+        .fitness-colors .hover\:border-emerald-200:hover { border-color: color-mix(in srgb, var(--brand) 30%, white); }
+        .fitness-colors .hover\:border-emerald-300:hover { border-color: color-mix(in srgb, var(--brand) 50%, white); }
+
+        /* Brand shadow colors */
+        .fitness-colors .shadow-emerald-100\/50 { --tw-shadow-color: color-mix(in srgb, var(--brand) 15%, transparent); }
+        .fitness-colors .shadow-emerald-200     { --tw-shadow-color: color-mix(in srgb, var(--brand) 30%, transparent); }
+        .fitness-colors .shadow-emerald-200\/50 { --tw-shadow-color: color-mix(in srgb, var(--brand) 50%, transparent); }
+        .fitness-colors .shadow-emerald-200\/60 { --tw-shadow-color: color-mix(in srgb, var(--brand) 60%, transparent); }
+        .fitness-colors .shadow-emerald-500\/20 { --tw-shadow-color: color-mix(in srgb, var(--brand) 20%, transparent); }
+
+        /* === Layout / page surface (--page-bg) === */
+        .fitness-colors .bg-white   { background-color: var(--page-bg); }
+        .fitness-colors .bg-white\/95 { background-color: color-mix(in srgb, var(--page-bg) 95%, transparent); }
+        .fitness-colors .bg-slate-50 { background-color: color-mix(in srgb, var(--page-bg) 97%, black); }
+        .fitness-colors .from-slate-50 { --tw-gradient-from: color-mix(in srgb, var(--page-bg) 97%, black); }
+        .fitness-colors .to-white    { --tw-gradient-to: var(--page-bg); }
+
+        /* === Text (--text-primary) === */
+        .fitness-colors .text-black    { color: var(--text-primary); }
+        .fitness-colors .text-slate-900 { color: var(--text-primary); }
+        .fitness-colors .text-slate-700 { color: color-mix(in srgb, var(--text-primary) 80%, transparent); }
+        .fitness-colors .text-slate-600 { color: color-mix(in srgb, var(--text-primary) 60%, transparent); }
+        .fitness-colors .text-slate-500 { color: color-mix(in srgb, var(--text-primary) 50%, transparent); }
         .fitness-colors .border-slate-100 { border-color: color-mix(in srgb, var(--text-primary) 10%, transparent); }
+        .fitness-colors .border-slate-200 { border-color: color-mix(in srgb, var(--text-primary) 15%, transparent); }
+
+        /* === Footer (--footer-bg / --footer-text) === */
+        .fitness-colors .bg-slate-900 { background-color: var(--footer-bg); }
+        .fitness-colors .bg-slate-800 { background-color: color-mix(in srgb, var(--footer-bg) 80%, white); }
+        .fitness-colors .bg-slate-700 { background-color: color-mix(in srgb, var(--footer-bg) 70%, white); }
+        .fitness-colors .text-slate-300 { color: var(--footer-text); }
+        .fitness-colors .text-slate-400 { color: color-mix(in srgb, var(--footer-text) 65%, transparent); }
+        .fitness-colors .border-slate-700 { border-color: color-mix(in srgb, var(--footer-text) 30%, transparent); }
+        .fitness-colors .border-slate-700\/30 { border-color: color-mix(in srgb, var(--footer-text) 20%, transparent); }
+        .fitness-colors .border-slate-800 { border-color: color-mix(in srgb, var(--footer-text) 15%, transparent); }
+        .fitness-colors .hover\:bg-slate-700:hover { background-color: color-mix(in srgb, var(--footer-bg) 70%, white); }
       `}</style>
 
       {/* ===== HEADER ===== */}
