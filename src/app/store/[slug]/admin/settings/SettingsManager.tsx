@@ -9,6 +9,7 @@ import MediaPicker from "../media/MediaPicker";
 import { useLanguageStore } from '@/store/language';
 import { toast } from 'sonner';
 import PaymentSettings from "@/components/settings/PaymentSettings";
+import FitnessSettings from "@/components/settings/FitnessSettings";
 
 const PRESET_GRADIENTS = [
   'radial-gradient(ellipse at top, #0f172a, #0a0c14, #000000)', // Abyss
@@ -169,6 +170,7 @@ export default function SettingsManager({
     { id: "general", label: t('general') },
     { id: "theme", label: t('theme') },
     { id: "header", label: t('header') },
+    ...(activeTemplate === 'fitness' ? [{ id: "fitness", label: language === 'ar' ? "اللياقة" : "Fitness" }] : []),
     { id: "signature", label: t('signature') },
     { id: "tracking", label: t('tracking') },
     { id: "payment", label: "Payment" },
@@ -1247,6 +1249,10 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                   </div>
                 </div>
               </div>
+            )}
+
+            {activeTab === 'fitness' && (
+              <FitnessSettings settings={settings} updateSettings={updateSettings} language={language} />
             )}
 
             {activeTab === 'business' && storeType !== 'WEBSITE' && (activeTab === 'business' && (

@@ -1,50 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import {
-  Dumbbell,
-  Heart,
-  Zap,
-  ArrowRight,
-  Flame,
-  Target,
-  Activity,
-  Scale,
-  Ruler,
-  Timer,
-  RefreshCw,
-  TrendingUp,
-  CheckCircle2,
-  Play,
-  Pause,
-} from "lucide-react";
-
-const EXERCISES = [
-  { name: "Explosive Push-ups", emoji: "💥", muscle: "Chest", difficulty: "Intermediate", calories: "8-12/min" },
-  { name: "Pistol Squats", emoji: "🦵", muscle: "Legs", difficulty: "Advanced", calories: "10-15/min" },
-  { name: "Dragon Flag", emoji: "🐉", muscle: "Core", difficulty: "Expert", calories: "5-8/min" },
-  { name: "Archer Pull-ups", emoji: "🏋️", muscle: "Back", difficulty: "Advanced", calories: "7-10/min" },
-  { name: "Bulgarian Split Squats", emoji: "🔥", muscle: "Legs", difficulty: "Intermediate", calories: "9-13/min" },
-  { name: "Handstand Push-ups", emoji: "🙃", muscle: "Shoulders", difficulty: "Expert", calories: "6-9/min" },
-  { name: "Plyometric Lunges", emoji: "⚡", muscle: "Legs", difficulty: "Intermediate", calories: "11-16/min" },
-  { name: "Muscle-ups", emoji: "💪", muscle: "Full Body", difficulty: "Expert", calories: "8-12/min" },
-  { name: "Hollow Body Hold", emoji: "🧘", muscle: "Core", difficulty: "Beginner", calories: "4-6/min" },
-  { name: "Glute Bridges", emoji: "🦵", muscle: "Glutes", difficulty: "Beginner", calories: "5-7/min" },
-  { name: "Dips", emoji: "⬇️", muscle: "Triceps", difficulty: "Intermediate", calories: "7-10/min" },
-  { name: "Burpees", emoji: "💨", muscle: "Full Body", difficulty: "Intermediate", calories: "12-18/min" },
-];
-
-const WORKOUT_NAMES = [
-  "The Inferno", "Iron Will", "Beast Mode", "Turbo Charge",
-  "Nightmare", "Grind Time", "Warrior's Path", "No Mercy",
-  "Maximum Overdrive", "The Gauntlet",
-];
-
-const TRANSFORMATIONS = [
-  { before: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=600&q=80", after: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80", name: "Alex R.", result: "-32 lbs in 12 weeks" },
-  { before: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80", after: "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=600&q=80", name: "Maria K.", result: "-28 lbs in 10 weeks" },
-];
+import { ArrowRight, Star, ChevronDown, Check, ExternalLink } from "lucide-react";
+import { useLanguageStore } from "@/store/language";
 
 interface FitnessProps {
   banners: any[];
@@ -54,15 +13,17 @@ interface FitnessProps {
   categories: any[];
 }
 
-function useInView(ref: React.RefObject<HTMLElement | null>) {
+function useIntersection(ref: React.RefObject<HTMLDivElement | null>, options?: IntersectionObserverInit) {
   const [inView, setInView] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const obs = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { setInView(true); obs.unobserve(el); } }, { threshold: 0.3 });
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setInView(true); obs.unobserve(el); }
+    }, { threshold: 0.2, ...options });
     obs.observe(el);
     return () => obs.disconnect();
-  }, [ref]);
+  }, [ref, options]);
   return inView;
 }
 
@@ -71,7 +32,7 @@ function AnimatedCounter({ target, suffix = "", inView }: { target: number; suff
   useEffect(() => {
     if (!inView) return;
     let start = 0;
-    const duration = 1500;
+    const duration = 2000;
     const step = Math.ceil(target / (duration / 16));
     const timer = setInterval(() => {
       start += step;
@@ -83,320 +44,318 @@ function AnimatedCounter({ target, suffix = "", inView }: { target: number; suff
   return <>{count}{suffix}</>;
 }
 
-function BeforeAfterSlider({ before, after }: { before: string; after: string }) {
-  const [position, setPosition] = useState(50);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const handleMove = useCallback((clientX: number) => {
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    setPosition((x / rect.width) * 100);
-  }, []);
-
+function MarqueeBar({ items = [], separator = "✦" }: { items: string[]; separator?: string }) {
+  const repeated = Array(6).fill(items).flat().map((i, idx) => ({ text: i, key: idx }));
   return (
-    <div ref={containerRef} className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden select-none cursor-ew-resize border border-white/10 shadow-2xl" onMouseMove={e => handleMove(e.clientX)} onTouchMove={e => handleMove(e.touches[0].clientX)}>
-      <img src={after} alt="After" className="absolute inset-0 w-full h-full object-cover" />
-      <div className="absolute inset-0 overflow-hidden" style={{ width: `${position}%` }}>
-        <img src={before} alt="Before" className="absolute inset-0 w-full h-full object-cover" />
+    <div className="w-full overflow-hidden bg-black text-white py-3 md:py-4 border-y border-white/5">
+      <div className="flex whitespace-nowrap animate-[marquee_40s_linear_infinite] gap-0" style={{ display: "flex" }}>
+        {repeated.map((item) => (
+          <span key={item.key} className="text-xs md:text-sm font-bold uppercase tracking-[0.3em] mx-4 md:mx-6 flex items-center gap-4 md:gap-6">
+            {item.text}
+            <span className="text-emerald-400 opacity-60">{separator}</span>
+          </span>
+        ))}
       </div>
-      <div className="absolute inset-y-0" style={{ left: `${position}%`, transform: "translateX(-50%)" }}>
-        <div className="h-full w-0.5 bg-white shadow-[0_0_8px_rgba(255,255,255,0.5)]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center text-black text-[10px] font-black">
-          ↔
-        </div>
-      </div>
+      <style jsx>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
     </div>
   );
 }
 
-function BodyFocusSelector({ onSelect }: { onSelect: (part: string) => void }) {
-  const parts = [
-    { id: "chest", label: "Chest", x: 50, y: 28, color: "from-red-500 to-rose-600" },
-    { id: "shoulders", label: "Shoulders", x: 50, y: 18, color: "from-orange-500 to-amber-600" },
-    { id: "biceps", label: "Arms", x: 25, y: 32, color: "from-cyan-500 to-blue-600" },
-    { id: "abs", label: "Abs", x: 50, y: 42, color: "from-amber-500 to-yellow-600" },
-    { id: "legs", label: "Legs", x: 50, y: 70, color: "from-emerald-500 to-green-600" },
-    { id: "back", label: "Back", x: 75, y: 28, color: "from-purple-500 to-violet-600" },
+function StarRating({ rating = 5 }: { rating?: number }) {
+  return (
+    <div className="flex gap-0.5">
+      {[...Array(5)].map((_, i) => (
+        <Star key={i} className={`w-3.5 h-3.5 ${i < rating ? "text-amber-400 fill-amber-400" : "text-slate-600"}`} />
+      ))}
+    </div>
+  );
+}
+
+export default function FitnessTemplate({ banners, settings, slug }: FitnessProps) {
+  const { language } = useLanguageStore();
+  const isRtl = language === "ar";
+  const dir = isRtl ? "rtl" : "ltr";
+  const fs = settings.fitnessSettings || {};
+
+  const statsRef = useRef<HTMLDivElement>(null);
+  const statsInView = useIntersection(statsRef);
+
+  const hero = fs.hero || {};
+  const marquee = fs.marquee || {};
+  const services = fs.services || {};
+  const transformations = fs.transformations || {};
+  const pricing = fs.pricing || {};
+  const testimonials = fs.testimonials || {};
+  const about = fs.about || {};
+  const footer = fs.footer || {};
+
+  const DEFAULT_PLANS = [
+    {
+      id: "economy", name: isRtl ? "الباقة الاقتصادية" : "Economy Package",
+      subtitle: "Follow-up with Sama Fit Team",
+      price: "1500", currency: "£", duration: isRtl ? "+ شهر مجاني" : "+ 1 month free",
+      popular: false, badge: "",
+      features: [
+        isRtl ? "متابعة أسبوعية لمراجعة الأداء وتقييم النتائج" : "Weekly follow-up to review performance",
+        isRtl ? "برنامج تدريبي مخصص للمنزل أو الجيم" : "Customized training program for home or gym",
+        isRtl ? "خطة تغذية شخصية شاملة" : "Comprehensive personalized nutrition plan",
+        isRtl ? "الرد على الاستفسارات يومياً خلال ساعات العمل الرسمية" : "Daily response during working hours",
+        isRtl ? "مراجعة التحاليل الطبية قبل البدء" : "Medical test review before starting",
+        isRtl ? "استشارة علاج طبيعي" : "Physical therapy consultation",
+        isRtl ? "ساعات المتابعة الرسمية من 9 ص إلى 5 م" : "Official follow-up hours 9 AM to 5 PM",
+      ],
+      ctaText: isRtl ? "ابدأ الباقة الاقتصادية" : "Start Economy Now"
+    },
+    {
+      id: "pro", name: isRtl ? "الباقة الاحترافية" : "Pro Package",
+      subtitle: "Follow-up with Sama Fit Team",
+      price: "2500", currency: "£", duration: isRtl ? "+ 3 أشهر مجاناً" : "+ 3 months free",
+      popular: true, badge: isRtl ? "الأكثر طلباً" : "Most Popular",
+      features: [
+        isRtl ? "متابعة يومية لتقييم الأداء" : "Daily follow-up to assess performance",
+        isRtl ? "برنامج تدريبي مخصص للمنزل أو الجيم" : "Customized training program",
+        isRtl ? "خطة تغذية شخصية شاملة" : "Comprehensive personalized nutrition plan",
+        isRtl ? "خدمة تنظيم الوقت بين الوجبات والتمارين" : "Time management service",
+        isRtl ? "مراجعة التحاليل الطبية قبل البدء" : "Medical test review",
+        isRtl ? "استشارة علاج طبيعي" : "Physical therapy consultation",
+        isRtl ? "ساعات المتابعة الرسمية من 9 ص إلى 5 م" : "Official follow-up hours 9 AM to 5 PM",
+      ],
+      ctaText: isRtl ? "ابدأ الباقة الاحترافية" : "Start Pro Now"
+    },
+    {
+      id: "premium", name: isRtl ? "الباقة الممتازة" : "Premium Package",
+      subtitle: isRtl ? '"مصممة لأصحاب الجداول المزدحمة"' : '"Designed for very busy schedules"',
+      price: "3500", currency: "£", duration: isRtl ? "+ 3 أشهر مجاناً" : "+ 3 months free",
+      popular: false, badge: "",
+      features: [
+        isRtl ? "توصيل يومي لجدول الوجبات والتمارين" : "Daily delivery of meal/workout schedules",
+        isRtl ? "متابعة يومية لتقييم الأداء" : "Daily follow-up for performance evaluation",
+        isRtl ? "خدمة تنظيم الوقت" : "Time management service",
+        isRtl ? "برنامج تدريبي مخصص" : "Customized training program",
+        isRtl ? "خطة تغذية شخصية" : "Personalized nutrition plan",
+        isRtl ? "مراجعة التحاليل الطبية" : "Medical test review",
+        isRtl ? "ساعات المتابعة الرسمية من 9 ص إلى 5 م" : "Official follow-up hours 9 AM to 5 PM",
+      ],
+      ctaText: isRtl ? "ابدأ الباقة الممتازة" : "Start Premium Now"
+    },
+    {
+      id: "diamond", name: isRtl ? "الباقة الماسية" : "Diamond Package",
+      subtitle: isRtl ? '"للباحثين عن أعلى مستوى من الرعاية"' : '"Highest level of care"',
+      price: "6500", currency: "£", duration: isRtl ? "+ 3 أشهر مجاناً" : "+ 3 months free",
+      popular: false, badge: "",
+      features: [
+        isRtl ? "3 مكالمات فيديو شهرياً مع الفريق المتخصص" : "Three monthly video calls with specialist team",
+        isRtl ? "متابعة يومية مكثفة من 9 ص إلى 9 م" : "Intensive daily follow-up 9 AM to 9 PM",
+        isRtl ? "خطط تغذية وتمارين يومية مخصصة" : "Daily customized nutrition/workout plans",
+        isRtl ? "دعم خاص لحالات الإصابات بعد التأهيل" : "Special support for post-rehabilitation",
+        isRtl ? "متابعة علاج طبيعي يومية" : "Daily physical therapy follow-up",
+        isRtl ? "برنامج متخصص لتصحيح الانحرافات القوامية" : "Specialized postural correction program",
+      ],
+      ctaText: isRtl ? "ابدأ الباقة الماسية" : "Start Diamond Now"
+    },
+    {
+      id: "health-coaching", name: isRtl ? "باقة Health Coaching" : "Health Coaching Package",
+      subtitle: "",
+      price: "7000", currency: "£", duration: isRtl ? "+ 3 أشهر مجاناً" : "+ 3 months free",
+      popular: false, badge: "",
+      features: [
+        isRtl ? "متابعة مباشرة مع فريق ساما فيت" : "Intensive direct follow-up with Sama Fit team",
+        isRtl ? "جلسات فيديو أسبوعية مع مدرب صحي" : "Weekly video calls with health coach",
+        isRtl ? "مكالمات شهرية مع أخصائي التغذية والمدرب" : "Monthly calls with nutritionist and trainer",
+        isRtl ? "متابعة يومية من 9 ص إلى 5 م" : "Daily follow-up 9 AM to 5 PM",
+        isRtl ? "دعم نفسي يومي" : "Daily psychological support",
+        isRtl ? "برنامج تمارين مخصص بالكامل" : "Fully customized workout program",
+        isRtl ? "خطة وجبات وتمارين يومية" : "Daily meal plan and workout program",
+        isRtl ? "مجموعة تليجرام خاصة لكل عميل" : "Private Telegram group for each client",
+      ],
+      ctaText: isRtl ? "ابدأ الباقة الصحية" : "Start Health Coaching Now"
+    }
   ];
-  const [active, setActive] = useState<string | null>(null);
 
-  return (
-    <div className="relative w-64 h-80 mx-auto">
-      <div className="absolute inset-0 bg-white/[0.02] rounded-[3rem] border border-white/5" />
-      <svg viewBox="0 0 200 300" className="w-full h-full">
-        <defs>
-          <radialGradient id="glow"><stop offset="0%" stopColor="rgba(6,182,212,0.3)" /><stop offset="100%" stopColor="rgba(6,182,212,0)" /></radialGradient>
-        </defs>
-        <ellipse cx="100" cy="60" rx="35" ry="30" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2" />
-        <rect x="70" y="85" width="60" height="60" rx="10" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2" />
-        <line x1="70" y1="115" x2="30" y2="180" stroke="rgba(255,255,255,0.08)" strokeWidth="2" />
-        <line x1="130" y1="115" x2="170" y2="180" stroke="rgba(255,255,255,0.08)" strokeWidth="2" />
-        <rect x="65" y="160" width="70" height="80" rx="8" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2" />
-        <line x1="100" y1="240" x2="100" y2="280" stroke="rgba(255,255,255,0.08)" strokeWidth="2" />
-        {parts.map(p => (
-          <g key={p.id} className="cursor-pointer" onClick={() => { setActive(p.id); onSelect(p.id); }}>
-            <circle cx={p.x * 2} cy={p.y * 3.75} r="12" fill={active === p.id ? "rgba(6,182,212,0.2)" : "transparent"} stroke={active === p.id ? "#06b6d4" : "rgba(255,255,255,0.15)"} strokeWidth="2" />
-            <text x={p.x * 2} y={p.y * 3.75 + 0.5} textAnchor="middle" dominantBaseline="middle" fill={active === p.id ? "#06b6d4" : "rgba(255,255,255,0.3)"} fontSize="7" fontWeight="800" className="pointer-events-none">{p.label}</text>
-          </g>
-        ))}
-      </svg>
-      {active && (
-        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-cyan-400 text-[10px] font-black uppercase tracking-widest animate-pulse">
-          ✓ {active.toUpperCase()} SELECTED
-        </div>
-      )}
-    </div>
-  );
-}
-
-function WorkoutGenerator() {
-  const [workout, setWorkout] = useState<typeof EXERCISES>([]);
-  const [name, setName] = useState("");
-
-  const generate = () => {
-    const shuffled = [...EXERCISES].sort(() => Math.random() - 0.5);
-    setWorkout(shuffled.slice(0, 4));
-    setName(WORKOUT_NAMES[Math.floor(Math.random() * WORKOUT_NAMES.length)]);
+  const SERVICE_ICONS: Record<string, string> = {
+    nutrition: "🥗", therapy: "🦴", followup: "💬", medical: "📋", workout: "🏋️", coaching: "🎯"
   };
 
-  useEffect(() => { generate(); }, []);
+  const DEFAULT_SERVICES = [
+    { icon: "nutrition", title: isRtl ? "برنامج تغذية" : "Nutrition Program", description: isRtl ? "برنامج تغذية مخصص لأهدافك واحتياجات جسمك، مصمم علمياً ليتناسب مع أنواع الطعام المتاحة وتفضيلاتك وتطور جسمك." : "A nutrition program tailored to your goals and body needs." },
+    { icon: "therapy", title: isRtl ? "علاج طبيعي" : "Physical Therapy", description: isRtl ? "يهدف برنامج العلاج الطبيعي إلى تحقيق تعافي آمن وأداء طويل المدى من خلال تمارين تأهيل مخصصة." : "The physical therapy program aims for safe recovery." },
+    { icon: "followup", title: isRtl ? "متابعة" : "Follow-up", description: isRtl ? "فريق دعم متخصص من المدربين وأخصائيي التغذية متاح للرد على جميع الاستفسارات." : "A specialized support team available for all inquiries." },
+    { icon: "medical", title: isRtl ? "تاريخ مرضى" : "Medical History", description: isRtl ? "متابعة شاملة للتاريخ المرضي والعائلي للعميل لتحديد التعارضات الصحية المحتملة." : "Comprehensive follow-up of medical and family history." },
+    { icon: "workout", title: isRtl ? "برامج تمارين" : "Workout Programs", description: isRtl ? "برامج تدريبية يمكن أداؤها في أي مكان باستخدام أدوات بسيطة." : "Training programs that can be performed anywhere." },
+    { icon: "coaching", title: isRtl ? "تثقيف صحي" : "Health Coaching", description: isRtl ? "يساعدك برنامج التثقيف الصحي على بناء عادات صحية مستدامة." : "Health coaching helps build sustainable healthy habits." },
+  ];
+
+  const DEFAULT_TRANSFORMATIONS = [
+    { id: "t1", name: "Ahmed", before: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=600&q=80", after: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80" },
+    { id: "t2", name: "Amr", before: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80", after: "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=600&q=80" },
+    { id: "t3", name: "Kamel", before: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80", after: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" },
+    { id: "t4", name: "Moaz", before: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600&q=80", after: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=600&q=80" },
+    { id: "t5", name: "Mohamed", before: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80", after: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80" },
+    { id: "t6", name: "Mostafa", before: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&q=80", after: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80" },
+    { id: "t7", name: "Tamer", before: "https://images.unsplash.com/photo-1553882809-a4f57e595701?w=600&q=80", after: "https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=600&q=80" },
+    { id: "t8", name: "Yousef", before: "https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=600&q=80", after: "https://images.unsplash.com/photo-1581009137042-c552e485697a?w=600&q=80" },
+  ];
+
+  const DEFAULT_TESTIMONIALS = [
+    { name: "أحمد", role: "خسر 15 كجم", content: "الحمد لله كل شيء تمام! برنامج كامل ومتكامل ومتناسق مع بعضه. أحجام الأكل مناسبة. ربنا يوفقكم يا رب 🌹", rating: 5 },
+    { name: "مريم", role: "متخصصة تغذية", content: "صراحة البرنامج رهيب ومتكامل. خلصت المطلوب من البرنامج بالكامل!", rating: 5 },
+    { name: "خالد", role: "رب أسرة", content: "مريح جداً وأسهل في الالتزام. رغم أنه من البيت إلا أنه نتائجه خيالية! مع توجيهاتك أصبحت على بعد خطوة من هدفي 😂", rating: 5 },
+    { name: "سارة", role: "موظفة", content: "خدمة ممتازة واهتمام بالتفاصيل. البرنامج منظم جداً وفريق الدعم متعاون. أنا متحمسة جداً للاستمرار وواثقة إني راح أوصل لنتائجي", rating: 5 },
+    { name: "محمد", role: "مدرب", content: "أكثر شخص مبسوط إني مشتركت معاكم. صراحة أول مرة أشوف أحد يسلم برنامج بهالشكل المنظم. جزاكم الله خير ❤️", rating: 5 },
+    { name: "نور", role: "ربة منزل", content: "البرنامج مرررة حلو ومريح ولاحظت تغير إيجابي كبير في وزني وشكلي. قلت لكل اللي أعرفهم عنكم وبجدد معاكوا تاني أكيد ❤️😍", rating: 5 },
+  ];
+
+  const statsItems = hero.stats?.length ? hero.stats : [
+    { value: 20, suffix: "k+", label: isRtl ? "أكثر من 20 ألف شخص غيروا حياتهم معنا" : "Over 20,000 people transformed" },
+  ];
+
+  const serviceItems = services.items?.length ? services.items : DEFAULT_SERVICES;
+  const transformItems = transformations.items?.length ? transformations.items : DEFAULT_TRANSFORMATIONS;
+  const plans = pricing.plans?.length ? pricing.plans : DEFAULT_PLANS;
+  const testimonialItems = testimonials.items?.length ? testimonials.items : DEFAULT_TESTIMONIALS;
+
+  const heroBg = banners[0]?.imageUrl || hero.backgroundImage || "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=85";
+  const runnerImage = hero.runnerImage || "";
+  const lightningImage = hero.lightningImage || "";
+  const logoUrl = settings.logoUrl || "";
+  const avatarImages = hero.avatars?.filter(Boolean) || [];
 
   return (
-    <div className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-6 md:p-8 shadow-2xl">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <div className="text-[10px] font-black uppercase tracking-widest text-cyan-400 mb-1 flex items-center gap-2">
-            <Zap className="w-3 h-3" /> DAILY CHALLENGE
-          </div>
-          <h3 className="text-xl font-black text-white uppercase tracking-tight">{name || "Custom Workout"}</h3>
-        </div>
-        <button onClick={generate} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-black uppercase tracking-widest hover:bg-cyan-500/20 transition-all">
-          <RefreshCw className="w-3.5 h-3.5" /> Generate
-        </button>
-      </div>
-      <div className="space-y-3">
-        {workout.map((ex, i) => (
-          <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-white/10 flex items-center justify-center text-lg shrink-0">
-              {ex.emoji}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-white font-bold text-sm truncate">{ex.name}</div>
-              <div className="flex items-center gap-3 text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">
-                <span>{ex.muscle}</span>
-                <span>•</span>
-                <span>{ex.difficulty}</span>
-                <span>•</span>
-                <span>{ex.calories}</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-1">
-              {[1, 2, 3].map(s => (
-                <div key={s} className={`w-1.5 h-6 rounded-full ${s <= (i + 1) % 3 + 1 ? "bg-cyan-400" : "bg-white/10"}`} />
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-export default function FitnessTemplate({ banners, settings, products, slug }: FitnessProps) {
-  const [selectedBodyPart, setSelectedBodyPart] = useState<string | null>(null);
-  const [bmi, setBmi] = useState<{ value: number; category: string } | null>(null);
-  const [bmiHeight, setBmiHeight] = useState("175");
-  const [bmiWeight, setBmiWeight] = useState("75");
-  const statsRef = useRef<HTMLElement>(null);
-  const statsInView = useInView(statsRef);
-
-  const heroBg = banners[0]?.imageUrl || "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=85";
-
-  const calcBMI = () => {
-    const h = parseFloat(bmiHeight) / 100;
-    const w = parseFloat(bmiWeight);
-    if (!h || !w) return;
-    const value = Math.round((w / (h * h)) * 10) / 10;
-    let category = "Normal";
-    if (value < 18.5) category = "Underweight";
-    else if (value < 25) category = "Normal";
-    else if (value < 30) category = "Overweight";
-    else category = "Obese";
-    setBmi({ value, category });
-  };
-
-  const bodyParts: Record<string, { exercises: string[]; tip: string }> = {
-    chest: { exercises: ["Push-ups", "Bench Press", "Dumbbell Flyes"], tip: "Progressive overload is key for chest growth. Aim for 8-12 reps." },
-    shoulders: { exercises: ["Overhead Press", "Lateral Raises", "Face Pulls"], tip: "Don't neglect rear delts — they're crucial for posture." },
-    biceps: { exercises: ["Barbell Curls", "Hammer Curls", "Chin-ups"], tip: "Slow negatives build more muscle than swinging the weight." },
-    abs: { exercises: ["Planks", "Hanging Leg Raises", "Cable Crunches"], tip: "Abs are made in the kitchen. Training just sculpts them." },
-    legs: { exercises: ["Squats", "Romanian Deadlifts", "Walking Lunges"], tip: "Leg day boosts your entire metabolism. Don't skip it." },
-    back: { exercises: ["Pull-ups", "Barbell Rows", "Deadlifts"], tip: "A strong back prevents injury and improves posture dramatically." },
-  };
-
-  const heroData = settings.fitnessSettings?.hero || {};
-  const aboutData = settings.fitnessSettings?.about || {};
-  const testimonialData = settings.fitnessSettings?.testimonials || [];
-
-  return (
-    <div className="min-h-screen font-sans antialiased overflow-x-hidden" style={{ background: "#030507", color: "#f1f5f9" }}>
+    <div dir={dir} className="min-h-screen font-sans antialiased overflow-x-hidden bg-white text-slate-900">
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background: #030507; }
-        @keyframes morph {
-          0% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; }
-          50% { border-radius: 30% 60% 70% 40%/50% 60% 30% 60%; }
-          100% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; }
+        @font-face { font-family: 'Cairo'; src: url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap'); }
+        body { font-family: ${isRtl ? "'Cairo', sans-serif" : "'Inter', sans-serif"}; }
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
-        @keyframes gradientShift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+        .animate-marquee { animation: marquee 40s linear infinite; }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
         }
-        .morph-bg { animation: morph 8s ease-in-out infinite; }
-        .gradient-shift { background-size: 200% 200%; animation: gradientShift 6s ease infinite; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
       `}</style>
 
-      {/* === HERO with morphing gradient === */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={heroBg} alt="" className="w-full h-full object-cover opacity-40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#030507] via-[#030507]/80 to-transparent" />
-        </div>
-        <div className="absolute top-20 -right-20 w-96 h-96 bg-gradient-to-br from-cyan-500/20 to-blue-600/5 rounded-full morph-bg blur-[80px]" />
-        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-gradient-to-tr from-amber-500/15 to-orange-600/5 rounded-full morph-bg blur-[80px]" style={{ animationDelay: "-4s" }} />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 w-full">
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-8">
-              <Flame className="w-4 h-4 text-cyan-400" />
-              <span className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.2em]">{heroData.badge || "ELITE ONLINE COACHING"}</span>
-            </div>
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-white uppercase leading-[0.85] tracking-[-0.04em] mb-6">
-              {heroData.tagline?.split(" ").map((w: string, i: number) => (
-                <span key={i} className={i % 2 === 1 ? "gradient-shift bg-clip-text text-transparent" : ""} style={i % 2 === 1 ? { backgroundImage: "linear-gradient(135deg, #06b6d4, #f59e0b, #06b6d4)" } : {}}>
-                  {w}{i < heroData.tagline?.split(" ").length - 1 ? " " : ""}
-                </span>
-              )) || (
-                <>
-                  <span>BUILD</span>{" "}
-                  <span className="gradient-shift bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #06b6d4, #f59e0b, #06b6d4)" }}>YOUR</span>{" "}
-                  <span>BEST</span>{" "}
-                  <span className="gradient-shift bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #f59e0b, #06b6d4, #f59e0b)" }}>SELF</span>
-                </>
-              )}
-            </h1>
-            <p className="text-slate-400 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed">{heroData.subtitle || "Science-backed coaching, personalized nutrition, and relentless accountability. Transform your body and your life."}</p>
-            <div className="flex flex-wrap gap-4">
-              <Link href={`/store/${slug}#programs`} className="group relative inline-flex items-center gap-3 bg-cyan-500 text-[#030507] h-16 px-10 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-cyan-400 transition-all shadow-2xl shadow-cyan-500/25 active:scale-[0.97] overflow-hidden">
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                Start Your Journey <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link href={`/store/${slug}#calculator`} className="inline-flex items-center gap-3 bg-white/5 border border-white/10 text-white h-16 px-10 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all active:scale-[0.97] backdrop-blur-sm">
-                <Activity className="w-4 h-4" /> Check Your BMI
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
-          <div className="w-6 h-10 rounded-full border-2 border-white/10 flex items-start justify-center p-1.5">
-            <div className="w-1.5 h-3 rounded-full bg-cyan-400 animate-pulse" />
-          </div>
-        </div>
-      </section>
-
-      {/* === ANIMATED STATS === */}
-      <section ref={statsRef} className="py-16 relative border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
-            {[
-              { value: 500, suffix: "+", label: "Clients Transformed", icon: TrendingUp },
-              { value: 8, suffix: "+", label: "Years Coaching", icon: Timer },
-              { value: 97, suffix: "%", label: "Success Rate", icon: Target },
-              { value: 50, suffix: "+", label: "Programs Designed", icon: Dumbbell },
-            ].map((s, i) => (
-              <div key={i} className="text-center group">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-600/10 border border-white/5 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                  <s.icon className="w-6 h-6 text-cyan-400" />
-                </div>
-                <div className="text-4xl md:text-5xl font-black text-white mb-1 font-mono">
-                  {statsInView ? <AnimatedCounter target={s.value} suffix={s.suffix} inView={statsInView} /> : `0${s.suffix}`}
-                </div>
-                <div className="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em]">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* === BODY FOCUS + BMI CALCULATOR === */}
-      <section id="calculator" className="py-24 relative overflow-hidden">
-        <div className="absolute top-1/2 left-0 w-80 h-80 bg-cyan-500/5 rounded-full blur-[120px]" />
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-black uppercase tracking-widest mb-6">
-              <Activity className="w-3.5 h-3.5" /> INTERACTIVE TOOLS
-            </div>
-            <h2 className="text-4xl md:text-6xl font-black text-white uppercase leading-[0.9] tracking-tight mb-4">Know Your Body</h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">Click a muscle group to see targeted exercises, or calculate your BMI below.</p>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <BodyFocusSelector onSelect={setSelectedBodyPart} />
-            <div className="space-y-6">
-              {selectedBodyPart && bodyParts[selectedBodyPart] ? (
-                <div className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-8">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-cyan-400 mb-2">TARGET: {selectedBodyPart.toUpperCase()}</div>
-                  <h3 className="text-2xl font-black text-white mb-4 uppercase tracking-tight">Recommended Exercises</h3>
-                  <div className="space-y-3 mb-6">
-                    {bodyParts[selectedBodyPart].exercises.map((ex, i) => (
-                      <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5">
-                        <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 font-black text-xs">{i + 1}</div>
-                        <span className="text-white font-bold text-sm">{ex}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10">
-                    <div className="text-amber-400 text-[10px] font-black uppercase tracking-widest mb-1">💡 Coach Tip</div>
-                    <p className="text-slate-300 text-sm">{bodyParts[selectedBodyPart].tip}</p>
-                  </div>
-                </div>
+      {/* ===== HEADER ===== */}
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="flex items-center justify-between h-16 md:h-20">
+            <div className="flex items-center gap-2">
+              {logoUrl ? (
+                <img src={logoUrl} alt={settings.storeName || "Sama Fit"} className="h-8 md:h-10 w-auto object-contain" />
               ) : (
-                <div className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-8 text-center">
-                  <Target className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-                  <p className="text-slate-500 text-sm">Click a body part on the diagram to see targeted exercises and expert tips.</p>
-                </div>
+                <span className="text-xl md:text-2xl font-black italic tracking-tight text-black">
+                  {settings.storeName || "Sama Fit"}
+                </span>
               )}
-              {/* BMI Calculator */}
-              <div className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <Scale className="w-5 h-5 text-cyan-400" />
-                  <h3 className="text-lg font-black text-white uppercase tracking-tight">BMI Calculator</h3>
+            </div>
+
+            <nav className={`hidden lg:flex items-center gap-1 ${isRtl ? "mr-auto ml-6" : "ml-auto mr-6"}`}>
+              {(footer.links?.length ? footer.links : [
+                { label: "Home", url: `/${slug}` },
+                { label: "Packages", url: `/${slug}#pricing` },
+                { label: "About Us", url: `/${slug}#about` },
+              ]).slice(0, 6).map((link: any, i: number) => (
+                <Link key={i} href={link.url || "#"} className="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-emerald-600 transition-colors rounded-lg hover:bg-emerald-50">
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="flex items-center gap-3">
+              <a href={`tel:${footer.contact?.phone || ""}`} className="hidden md:flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 px-4 py-2 rounded-full hover:bg-emerald-100 transition-colors">
+                <span>{footer.contact?.phone || ""}</span>
+              </a>
+              <Link href={`/${slug}#pricing`} className="bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200">
+                {isRtl ? "ابدأ الآن" : "Subscribe"}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* ===== HERO ===== */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-teal-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 min-h-[80vh] items-center ${isRtl ? "lg:direction-rtl" : ""}`}>
+            {/* Left: Text */}
+            <div className={`py-16 md:py-24 lg:py-32 ${isRtl ? "order-2 lg:order-1" : ""}`}>
+              <div className="max-w-xl">
+                <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  {hero.badge || "ELITE ONLINE COACHING"}
                 </div>
-                <div className="grid grid-cols-2 gap-4 mb-4">
+
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-6 text-slate-900">
+                  {hero.title || (
+                    <>
+                      Advance Like
+                      <br />
+                      <span className="text-emerald-600">Lightning</span>
+                    </>
+                  )}
+                </h1>
+
+                <p className="text-slate-600 text-base md:text-lg leading-relaxed mb-8 max-w-lg">
+                  {hero.subtitle || "Training and nutrition plans scientifically designed to help you reach peak performance."}
+                </p>
+
+                <div className="flex flex-wrap gap-4">
+                  <Link href={hero.primaryCta?.link || `/${slug}#about`} className="inline-flex items-center gap-2 bg-emerald-600 text-white px-8 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-200/50">
+                    {hero.primaryCta?.text || (isRtl ? "عن ساما فيت" : "About Us")}
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <Link href={hero.secondaryCta?.link || `/${slug}#pricing`} className="inline-flex items-center gap-2 bg-white border-2 border-slate-200 text-slate-700 px-8 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider hover:border-emerald-300 hover:text-emerald-600 transition-all">
+                    {hero.secondaryCta?.text || (isRtl ? "اشترك الآن" : "Subscribe Now")}
+                  </Link>
+                </div>
+
+                {/* Stats + Avatars */}
+                <div className="flex items-center gap-6 mt-10 pt-8 border-t border-slate-100" ref={statsRef}>
+                  {avatarImages.length > 0 && (
+                    <div className="flex -space-x-2">
+                      {avatarImages.map((url: string, i: number) => (
+                        <div key={i} className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-md">
+                          <img src={url} alt="" className="w-full h-full object-cover" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   <div>
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 block">Height (cm)</label>
-                    <input type="number" value={bmiHeight} onChange={e => setBmiHeight(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-bold focus:outline-none focus:border-cyan-500" />
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 block">Weight (kg)</label>
-                    <input type="number" value={bmiWeight} onChange={e => setBmiWeight(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-bold focus:outline-none focus:border-cyan-500" />
+                    <div className="text-2xl md:text-3xl font-black text-slate-900">
+                      {statsInView ? <AnimatedCounter target={parseInt(String(statsItems[0]?.value)) || 20} suffix={statsItems[0]?.suffix || "k+"} inView={statsInView} /> : `0${statsItems[0]?.suffix || "k+"}`}
+                    </div>
+                    <div className="text-xs text-slate-500 font-medium">{statsItems[0]?.label || ""}</div>
                   </div>
                 </div>
-                <button onClick={calcBMI} className="w-full py-3.5 rounded-xl bg-cyan-500 text-[#030507] font-black text-xs uppercase tracking-widest hover:bg-cyan-400 transition-all">Calculate BMI</button>
-                {bmi && (
-                  <div className="mt-4 p-4 rounded-xl bg-white/[0.02] border border-white/10">
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400 text-sm">Your BMI</span>
-                      <span className="text-3xl font-black text-white">{bmi.value}</span>
-                    </div>
-                    <div className="flex items-center justify-between mt-2">
-                      <span className="text-slate-400 text-sm">Category</span>
-                      <span className={`font-black text-sm uppercase tracking-wider ${bmi.category === "Normal" ? "text-green-400" : bmi.category === "Overweight" || bmi.category === "Obese" ? "text-amber-400" : "text-cyan-400"}`}>{bmi.category}</span>
-                    </div>
-                    {/* BMI bar */}
-                    <div className="mt-4 h-1.5 rounded-full bg-white/5 overflow-hidden">
-                      <div className="h-full rounded-full gradient-shift" style={{ width: `${Math.min((bmi.value / 40) * 100, 100)}%`, backgroundImage: "linear-gradient(90deg, #06b6d4, #f59e0b, #ef4444)" }} />
-                    </div>
+              </div>
+            </div>
+
+            {/* Right: Image */}
+            <div className={`relative ${isRtl ? "order-1 lg:order-2" : ""}`}>
+              <div className="relative lg:min-h-[600px] flex items-center justify-center">
+                {runnerImage ? (
+                  <div className="relative animate-float">
+                    <img src={runnerImage} alt="Runner" className="w-full max-w-md lg:max-w-lg h-auto object-contain drop-shadow-2xl" />
+                  </div>
+                ) : (
+                  <div className="w-full max-w-md aspect-[4/5] rounded-[3rem] bg-gradient-to-br from-emerald-100 to-teal-50 overflow-hidden shadow-2xl">
+                    <img
+                      src={heroBg}
+                      alt="Hero"
+                      className="w-full h-full object-cover mix-blend-multiply opacity-80"
+                    />
+                  </div>
+                )}
+                {lightningImage && (
+                  <div className="absolute -top-6 -right-6 w-20 h-20 animate-bounce">
+                    <img src={lightningImage} alt="" className="w-full h-full object-contain" />
                   </div>
                 )}
               </div>
@@ -405,62 +364,142 @@ export default function FitnessTemplate({ banners, settings, products, slug }: F
         </div>
       </section>
 
-      {/* === WORKOUT GENERATOR === */}
-      <section className="py-24 bg-white/[0.01] border-y border-white/5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-amber-500/5 rounded-full blur-[120px]" />
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-black uppercase tracking-widest mb-6">
-              <Zap className="w-3.5 h-3.5" /> TRAINING LAB
-            </div>
-            <h2 className="text-4xl md:text-6xl font-black text-white uppercase leading-[0.9] tracking-tight mb-4">Generate Your Workout</h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">Click generate for a new random workout routine. Every visit is different.</p>
+      {/* ===== MARQUEE ===== */}
+      <MarqueeBar
+        items={marquee.items?.length ? marquee.items : ["FITNESS", "NUTRITION", "LIFESTYLE", "HEALTH COACHING"]}
+        separator={marquee.separator || "✦"}
+      />
+
+      {/* ===== SERVICES ===== */}
+      <section id="services" className="py-20 md:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="text-center mb-14">
+            <span className="inline-block text-emerald-600 text-xs font-bold uppercase tracking-[0.25em] mb-3">
+              {services.badge || (isRtl ? "خدماتنا" : "Our Services")}
+            </span>
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-4">
+              {services.title || (isRtl ? "خدمات ساما فيت" : "Explore Our Services")}
+            </h2>
+            {services.subtitle && (
+              <p className="text-slate-500 max-w-2xl mx-auto">{services.subtitle}</p>
+            )}
           </div>
-          <WorkoutGenerator />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {serviceItems.slice(0, 6).map((svc: any, i: number) => (
+              <div key={i} className="group bg-slate-50 rounded-2xl p-6 md:p-8 hover:bg-emerald-50 hover:shadow-xl hover:shadow-emerald-100/50 transition-all duration-300 border border-slate-100 hover:border-emerald-200">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-100 flex items-center justify-center text-2xl mb-5 group-hover:bg-emerald-200 transition-colors">
+                  {SERVICE_ICONS[svc.icon] || svc.icon || "💪"}
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-3">{svc.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{svc.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* === PROGRAMS / PRICING with 3D tilt === */}
-      <section id="programs" className="py-24 md:py-32 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-black uppercase tracking-widest mb-6">
-              <Dumbbell className="w-3.5 h-3.5" /> PROGRAMS
+      {/* ===== TRANSFORMATIONS ===== */}
+      {transformItems.length > 0 && (
+        <section id="transformations" className="py-20 md:py-28 bg-slate-50">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="text-center mb-14">
+              <span className="inline-block text-emerald-600 text-xs font-bold uppercase tracking-[0.25em] mb-3">
+                {transformations.badge || (isRtl ? "تحولات حقيقية" : "Real Transformations")}
+              </span>
+              <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-4">
+                {transformations.title || (isRtl ? "جدار العظمة" : "Wall of Greatness")}
+              </h2>
+              {transformations.subtitle && (
+                <p className="text-slate-500 max-w-2xl mx-auto text-sm">{transformations.subtitle}</p>
+              )}
             </div>
-            <h2 className="text-4xl md:text-6xl font-black text-white uppercase leading-[0.9] tracking-tight mb-4">Choose Your Weapon</h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">Every program is fully customized to your body, goals, and lifestyle.</p>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+              {transformItems.slice(0, 24).map((t: any, i: number) => (
+                <div key={t.id || i} className="group relative aspect-square rounded-xl overflow-hidden bg-slate-200 shadow-md hover:shadow-xl transition-all duration-300">
+                  <div className="absolute inset-0 flex">
+                    <div className="w-1/2 h-full overflow-hidden">
+                      <img src={t.before} alt="Before" className="w-full h-full object-cover" />
+                      <div className="absolute top-2 left-2 bg-black/60 text-white text-[8px] font-bold uppercase px-2 py-0.5 rounded">
+                        {isRtl ? "قبل" : "Before"}
+                      </div>
+                    </div>
+                    <div className="w-1/2 h-full overflow-hidden">
+                      <img src={t.after} alt="After" className="w-full h-full object-cover" />
+                      <div className="absolute top-2 right-2 bg-emerald-600 text-white text-[8px] font-bold uppercase px-2 py-0.5 rounded">
+                        {isRtl ? "بعد" : "After"}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-3 pt-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-white text-xs font-bold">{t.name}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-col md:flex-row items-start justify-center gap-6 md:gap-8 max-w-5xl mx-auto">
-            {(products.length > 0 ? products : [
-              { id: "p1", name: "Starter", price: 29, specs: [{ label: "Custom Workout Plan" }, { label: "Nutrition Guide" }, { label: "Email Support" }] },
-              { id: "p2", name: "Pro", price: 59, specs: [{ label: "Everything in Starter" }, { label: "1-on-1 Video Coaching" }, { label: "Custom Meal Plans" }, { label: "24/7 WhatsApp Support" }] },
-              { id: "p3", name: "Elite", price: 99, specs: [{ label: "Everything in Pro" }, { label: "Daily Check-ins" }, { label: "Video Form Analysis" }, { label: "Supplement Protocol" }] },
-            ]).map((plan, idx) => {
-              const isPopular = idx === 1 || (products.length > 0 && idx === Math.floor((products.length - 1) / 2));
-              const step = products.length > 3 ? (idx - Math.floor(products.length / 2)) * 24 : (idx - 1) * 20;
+        </section>
+      )}
+
+      {/* ===== PRICING ===== */}
+      <section id="pricing" className="py-20 md:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="text-center mb-14">
+            <span className="inline-block text-emerald-600 text-xs font-bold uppercase tracking-[0.25em] mb-3">
+              {pricing.badge || (isRtl ? "خطط الأسعار" : "Plans & Pricing")}
+            </span>
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-4">
+              {pricing.title || (isRtl ? "اختر باقتك" : "Choose Your Plan")}
+            </h2>
+            {pricing.subtitle && (
+              <p className="text-slate-500 max-w-2xl mx-auto">{pricing.subtitle}</p>
+            )}
+          </div>
+
+          <div className={`flex flex-wrap justify-center gap-6 lg:gap-8 ${plans.length > 4 ? "max-w-6xl mx-auto" : ""}`}>
+            {plans.map((plan: any, idx: number) => {
+              const isPopular = plan.popular;
               return (
-                <div key={plan.id} className="group perspective-[1000px] flex-1" style={{ transform: `translateY(${step}px)` }}>
-                  <div className={`relative rounded-[2.5rem] p-8 transition-all duration-500 hover:[transform:rotateY(-3deg)_rotateX(3deg)] cursor-default ${isPopular ? "border-2 z-10 shadow-2xl" : "bg-white/[0.02] border border-white/10 hover:border-cyan-500/30"}`} style={isPopular ? { background: "linear-gradient(145deg, rgba(6,182,212,0.08), #0a0c14)", borderColor: "#06b6d4" } : {}}>
-                    {isPopular && <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-6 py-1.5 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-[9px] font-black uppercase tracking-widest shadow-lg shadow-cyan-500/30">Most Popular</div>}
-                    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest mb-6 ${isPopular ? "bg-cyan-500/20 text-cyan-400" : "bg-white/5 text-slate-400"}`}>
-                      {isPopular ? <Zap className="w-3 h-3" /> : <Dumbbell className="w-3 h-3" />}
-                      {plan.name}
+                <div key={plan.id || idx} className={`w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] xl:w-[calc(20%-1.5rem)] min-w-[260px] ${isPopular ? "scale-105 z-10" : ""}`}>
+                  <div className={`relative h-full rounded-2xl p-6 md:p-7 border transition-all duration-300 hover:shadow-2xl ${isPopular ? "bg-emerald-600 text-white border-emerald-600 shadow-2xl shadow-emerald-200" : "bg-white border-slate-200 text-slate-900 hover:border-emerald-300 hover:shadow-lg"} flex flex-col`}>
+                    {plan.badge && (
+                      <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-lg ${isPopular ? "bg-white text-emerald-700" : "bg-emerald-600 text-white"}`}>
+                        {plan.badge}
+                      </div>
+                    )}
+
+                    <div className="mb-6">
+                      <h3 className={`text-lg font-black mb-1 ${isPopular ? "text-white" : "text-slate-900"}`}>{plan.name}</h3>
+                      {plan.subtitle && (
+                        <p className={`text-xs leading-relaxed ${isPopular ? "text-emerald-100" : "text-slate-500"}`}>{plan.subtitle}</p>
+                      )}
                     </div>
-                    <div className="flex items-baseline gap-1.5 mb-2">
-                      <span className="text-5xl font-black text-white">${plan.price}</span>
-                      <span className="text-slate-500 text-xs font-bold uppercase">/month</span>
+
+                    <div className="mb-2">
+                      <span className={`text-3xl md:text-4xl font-black ${isPopular ? "text-white" : "text-slate-900"}`}>
+                        {plan.currency || "£"} {plan.price}
+                      </span>
+                      {plan.duration && (
+                        <span className={`block text-xs font-bold mt-1 ${isPopular ? "text-emerald-200" : "text-emerald-600"}`}>
+                          {plan.duration}
+                        </span>
+                      )}
                     </div>
-                    <div className="w-full h-px bg-white/5 my-6" />
-                    <ul className="space-y-4 mb-8">
-                      {(plan.specs || []).map((spec: any, si: number) => (
-                        <li key={si} className="flex items-center gap-3">
-                          <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" strokeWidth={2.5} />
-                          <span className="text-slate-300 text-sm">{spec.label}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <button className={`w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all active:scale-[0.97] ${isPopular ? "bg-cyan-500 text-[#030507] hover:bg-cyan-400 shadow-xl shadow-cyan-500/20" : "bg-white/5 border border-white/10 text-white hover:bg-white/10"}`}>
-                      Get Started
+
+                    <div className="flex-1">
+                      <ul className="mt-6 space-y-3">
+                        {(plan.features || []).map((feature: string, fi: number) => (
+                          <li key={fi} className={`flex items-start gap-2.5 text-xs leading-relaxed ${isPopular ? "text-emerald-100" : "text-slate-600"}`}>
+                            <Check className={`w-3.5 h-3.5 mt-0.5 shrink-0 ${isPopular ? "text-emerald-200" : "text-emerald-500"}`} />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <button className={`mt-6 w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all active:scale-[0.98] ${isPopular ? "bg-white text-emerald-700 hover:bg-emerald-50 shadow-lg" : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-md"}`}>
+                      {plan.ctaText || (isRtl ? "ابدأ الآن" : "Get Started")}
                     </button>
                   </div>
                 </div>
@@ -470,110 +509,132 @@ export default function FitnessTemplate({ banners, settings, products, slug }: F
         </div>
       </section>
 
-      {/* === TRANSFORMATIONS (Before/After) === */}
-      <section className="py-24 bg-white/[0.01] border-y border-white/5 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-black uppercase tracking-widest mb-6">
-              <TrendingUp className="w-3.5 h-3.5" /> REAL TRANSFORMATIONS
+      {/* ===== TESTIMONIALS ===== */}
+      {testimonialItems.length > 0 && (
+        <section id="testimonials" className="py-20 md:py-28 bg-slate-50">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="text-center mb-14">
+              <span className="inline-block text-emerald-600 text-xs font-bold uppercase tracking-[0.25em] mb-3">
+                {testimonials.badge || (isRtl ? "ماذا يقول عملاؤنا" : "Testimonials")}
+              </span>
+              <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-4">
+                {testimonials.title || (isRtl ? "ماذا يقول عملاؤنا عنا" : "What Our Clients Say About Us")}
+              </h2>
             </div>
-            <h2 className="text-4xl md:text-6xl font-black text-white uppercase leading-[0.9] tracking-tight mb-4">Drag to Reveal</h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">Slide the handle left and right to see the transformation.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {TRANSFORMATIONS.map((t, i) => (
-              <div key={i} className="space-y-4">
-                <BeforeAfterSlider before={t.before} after={t.after} />
-                <div className="flex items-center justify-between px-2">
-                  <span className="text-white font-bold text-sm">{t.name}</span>
-                  <span className="text-cyan-400 font-black text-sm">{t.result}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* === TESTIMONIALS === */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-black uppercase tracking-widest mb-6">
-              <span>SUCCESS STORIES</span>
-            </div>
-            <h2 className="text-4xl md:text-6xl font-black text-white uppercase leading-[0.9] tracking-tight">What Clients Say</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {(testimonialData.length > 0 ? testimonialData : [
-              { name: "James M.", role: "-32 lbs", content: "I've tried every program. Nothing compares. This is a complete lifestyle overhaul, not just a workout plan.", rating: 5 },
-              { name: "Sophia C.", role: "Strength Athlete", content: "Went from plateauing for months to hitting PRs every week. The nutrition guidance was a game-changer.", rating: 5 },
-              { name: "Marcus J.", role: "-28 lbs", content: "Custom scheduling made it possible with a 60-hour work week. Down 28 lbs and stronger than ever.", rating: 5 },
-            ]).map((r: any, i: number) => (
-              <div key={i} className="group bg-white/[0.02] border border-white/5 rounded-[2rem] p-8 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-500 hover:[transform:translateY(-4px)]">
-                <div className="flex gap-1 mb-5 text-amber-400">{[...Array(5)].map((_, s) => <div key={s} className="w-3 h-3 rounded-full bg-amber-400" />)}</div>
-                <p className="text-slate-300 text-sm leading-relaxed mb-6">&ldquo;{r.content}&rdquo;</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-black text-sm">{r.name.charAt(0)}</div>
-                  <div>
-                    <div className="text-white font-bold text-sm">{r.name}</div>
-                    <div className="text-slate-500 text-xs">{r.role}</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {testimonialItems.slice(0, 12).map((r: any, i: number) => (
+                <div key={i} className="bg-white rounded-2xl p-6 md:p-7 border border-slate-100 shadow-sm hover:shadow-lg hover:border-emerald-100 transition-all duration-300">
+                  <StarRating rating={r.rating || 5} />
+                  <p className="text-slate-600 text-sm leading-relaxed mt-4 mb-5">
+                    &ldquo;{r.content}&rdquo;
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-black text-sm">
+                      {(r.name || "?").charAt(0)}
+                    </div>
+                    <div>
+                      <div className="text-slate-900 font-bold text-sm">{r.name}</div>
+                      {r.role && <div className="text-slate-400 text-xs">{r.role}</div>}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* === FINAL CTA === */}
-      <section className="py-24 md:py-32 relative overflow-hidden border-t border-white/5">
-        <div className="absolute inset-0 gradient-shift opacity-5" style={{ backgroundImage: "linear-gradient(135deg, #06b6d4, #f59e0b, #06b6d4)" }} />
-        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-8">
-            <Flame className="w-4 h-4 text-cyan-400" />
-            <span className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.2em]">READY?</span>
-          </div>
-          <h2 className="text-5xl md:text-7xl font-black text-white uppercase leading-[0.9] tracking-tight mb-6">One Decision Changes Everything</h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto mb-10">500+ people have already taken the first step. Your future self is waiting.</p>
-          <Link href={`/store/${slug}#programs`} className="group relative inline-flex items-center gap-3 bg-cyan-500 text-[#030507] h-16 px-12 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-cyan-400 transition-all shadow-2xl shadow-cyan-500/25 active:scale-[0.97] overflow-hidden">
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-            Start Now <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+      {/* ===== ABOUT / CTA ===== */}
+      <section id="about" className="py-20 md:py-28 bg-gradient-to-br from-emerald-700 to-teal-800 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-40 h-40 rounded-full bg-white blur-[80px]" />
+          <div className="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-emerald-300 blur-[100px]" />
+        </div>
+        <div className="max-w-4xl mx-auto px-4 md:px-6 text-center relative z-10">
+          <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">
+            {about.title || (isRtl ? "قصص حقيقية، أناس حقيقيون، تحولات حقيقية" : "Real Stories, Real People, Real Transformations.")}
+          </h2>
+          <p className="text-emerald-100 text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+            {about.text || (isRtl ? "تجارب حقيقية لأشخاص حولوا أهدافهم الرياضية إلى واقع باستخدام تطبيقنا." : "Real experiences from people who turned their fitness goals into reality.")}
+          </p>
+          <Link href={about.ctaLink || `/${slug}#pricing`} className="inline-flex items-center gap-2 bg-white text-emerald-700 px-8 py-4 rounded-full font-bold text-sm uppercase tracking-wider hover:bg-emerald-50 transition-all shadow-2xl">
+            {about.ctaText || (isRtl ? "انضم اليوم" : "Join Today")}
+            <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </section>
 
-      {/* === FOOTER === */}
-      <footer className="py-16 border-t border-white/5" style={{ background: "#020306" }}>
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-            <div className="space-y-4">
-              <h3 className="text-white font-black text-xl uppercase tracking-tight italic">{settings.storeName || "FITNESS COACH"}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">Science-backed training, personalized nutrition, and accountability that transforms lives.</p>
+      {/* ===== FOOTER ===== */}
+      <footer className="bg-slate-900 text-slate-300 py-16">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            {/* Logo + Social */}
+            <div className="space-y-5">
+              {footer.logo ? (
+                <img src={footer.logo} alt={settings.storeName} className="h-10 w-auto" />
+              ) : (
+                <div className="text-xl font-black italic tracking-tight text-white">{settings.storeName || "Sama Fit"}</div>
+              )}
+              <p className="text-slate-400 text-sm leading-relaxed">{footer.description || ""}</p>
               <div className="flex gap-3">
-                {["📸", "🎥", "🔗"].map((icon, i) => (
-                  <a key={i} href="#" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-lg hover:bg-white/10 hover:border-cyan-500/30 transition-all">{icon}</a>
+                {(footer.socialLinks || []).map((s: any, i: number) => (
+                  <a key={i} href={s.url} className="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center hover:bg-emerald-600 transition-colors text-slate-400 hover:text-white">
+                    <span className="text-xs">{s.icon || "🔗"}</span>
+                  </a>
                 ))}
               </div>
             </div>
-            <div className="space-y-4">
-              <h4 className="text-white font-bold text-sm uppercase tracking-widest">Quick Links</h4>
+
+            {/* Links */}
+            <div>
+              <h4 className="text-white font-bold text-sm uppercase tracking-widest mb-5">Links</h4>
               <div className="flex flex-col gap-3">
-                <Link href={`/store/${slug}`} className="text-slate-500 text-sm hover:text-cyan-400 transition-colors">Home</Link>
-                <Link href={`/store/${slug}#programs`} className="text-slate-500 text-sm hover:text-cyan-400 transition-colors">Programs</Link>
-                <Link href={`/store/${slug}#calculator`} className="text-slate-500 text-sm hover:text-cyan-400 transition-colors">BMI Calculator</Link>
+                {(footer.links?.length ? footer.links : [
+                  { label: "Home", url: `/${slug}` },
+                  { label: "Packages", url: `/${slug}#pricing` },
+                ]).map((link: any, i: number) => (
+                  <Link key={i} href={link.url || "#"} className="text-slate-400 text-sm hover:text-emerald-400 transition-colors">
+                    {link.label}
+                  </Link>
+                ))}
               </div>
             </div>
-            <div className="space-y-4">
-              <h4 className="text-white font-bold text-sm uppercase tracking-widest">Contact</h4>
-              <div className="flex flex-col gap-3 text-slate-500 text-sm">
-                <span>✉️ coach@{slug}.com</span>
-                <span>📞 +1 (555) 000-0000</span>
-                <span>🌍 Online Worldwide</span>
+
+            {/* Contact */}
+            <div>
+              <h4 className="text-white font-bold text-sm uppercase tracking-widest mb-5">{isRtl ? "تواصل معنا" : "Get in Touch"}</h4>
+              <div className="flex flex-col gap-3 text-sm text-slate-400">
+                {footer.contact?.address && <span>{footer.contact.address}</span>}
+                {footer.contact?.email && (
+                  <a href={`mailto:${footer.contact.email}`} className="hover:text-emerald-400 transition-colors">{footer.contact.email}</a>
+                )}
+                {footer.contact?.phone && (
+                  <a href={`tel:${footer.contact.phone}`} className="hover:text-emerald-400 transition-colors">{footer.contact.phone}</a>
+                )}
+              </div>
+            </div>
+
+            {/* App Store */}
+            <div>
+              <h4 className="text-white font-bold text-sm uppercase tracking-widest mb-5">{isRtl ? "حمل التطبيق" : "Download App"}</h4>
+              <div className="flex flex-col gap-3">
+                {footer.appStore?.ios && (
+                  <a href={footer.appStore.ios} className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 transition-colors px-4 py-3 rounded-xl text-sm font-bold text-white">
+                    <ExternalLink className="w-4 h-4" /> App Store
+                  </a>
+                )}
+                {footer.appStore?.android && (
+                  <a href={footer.appStore.android} className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 transition-colors px-4 py-3 rounded-xl text-sm font-bold text-white">
+                    <ExternalLink className="w-4 h-4" /> Play Store
+                  </a>
+                )}
               </div>
             </div>
           </div>
-          <div className="border-t border-white/5 pt-8 text-center">
-            <p className="text-slate-600 text-xs uppercase tracking-widest font-bold">&copy; 2026 {settings.storeName || "FITNESS COACH"}. All rights reserved.</p>
+
+          <div className="border-t border-slate-800 mt-12 pt-8 text-center">
+            <p className="text-slate-500 text-xs uppercase tracking-wider">&copy; {new Date().getFullYear()} {settings.storeName || "Fitness Coach"}. {isRtl ? "جميع الحقوق محفوظة." : "All rights reserved."}</p>
           </div>
         </div>
       </footer>
