@@ -120,7 +120,6 @@ export default function FitnessDashboard({
   };
 
   const cs = settings.colorSystem || {};
-  const fc = cs.fitness || {};
 
   const tabs = [
     { id: "hero", label: isAr ? "الهيرو" : "Hero", icon: "🏠" },
@@ -255,252 +254,123 @@ export default function FitnessDashboard({
         {activeTab === "colors" && (
           <Section title={isAr ? "نظام الألوان" : "Color System"}>
             <p className="text-[9px] text-slate-500 font-medium uppercase tracking-wider mb-6">
-              {isAr ? "تحكم في ألوان القالب بالكامل" : "Full control over template colors"}
+              {isAr ? "نفس نظام الألوان الموجود في الإعدادات العامة" : "Same color system as General Settings"}
             </p>
 
-            {/* Brand Primary */}
-            <div className="space-y-3 mb-6">
-              <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">
-                {isAr ? "اللون الأساسي" : "Brand Primary"}
-              </label>
-              <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: cs.brand?.primary || "#059669" }}>
-                  <input type="color" value={cs.brand?.primary || "#059669"} onChange={e => setColor("brand.primary", e.target.value)}
-                    className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+            {/* Brand Primary (مثل الإعدادات العامة) */}
+            <div className="mb-6 bg-white/[0.02] p-6 rounded-2xl border border-white/[0.08]">
+              <h3 className="text-[9px] font-black uppercase tracking-[0.08em] text-slate-500 mb-6 border-b border-white/5 pb-3">
+                {isAr ? "العلامة التجارية والتذييل" : "Brand & Footer"}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* Brand Primary */}
+                <div className="space-y-3">
+                  <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">
+                    {isAr ? "اللون الأساسي" : "Brand Primary"}
+                  </label>
+                  <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
+                    <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: cs.brand?.primary || "#000000" }}>
+                      <input type="color" value={cs.brand?.primary || "#000000"} onChange={e => setColor("brand.primary", e.target.value)}
+                        className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                    </div>
+                    <input type="text" value={cs.brand?.primary || "#000000"} onChange={e => setColor("brand.primary", e.target.value)}
+                      className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
+                  </div>
                 </div>
-                <input type="text" value={cs.brand?.primary || "#059669"} onChange={e => setColor("brand.primary", e.target.value)}
-                  className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-              </div>
-            </div>
 
-            {/* Hero Colors */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "خلفية الهيرو" : "Hero Background"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.heroBg || "#f0fdf4" }}>
-                    <input type="color" value={fc.heroBg || "#f0fdf4"} onChange={e => setColor("fitness.heroBg", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                {/* Footer Background */}
+                <div className="space-y-3">
+                  <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">
+                    {isAr ? "خلفية التذييل" : "Footer BG"}
+                  </label>
+                  <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
+                    <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ background: cs.footer?.background || "#0f172a" }}>
+                      <input type="color" value={cs.footer?.background?.includes('gradient') ? '#000000' : (cs.footer?.background || "#0f172a")} onChange={e => setColor("footer.background", e.target.value)}
+                        className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                    </div>
+                    <input type="text" value={cs.footer?.background || "#0f172a"} onChange={e => setColor("footer.background", e.target.value)}
+                      className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
                   </div>
-                  <input type="text" value={fc.heroBg || "#f0fdf4"} onChange={e => setColor("fitness.heroBg", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
                 </div>
-              </div>
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "لون نص الهيرو" : "Hero Text"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.heroText || "#0f172a" }}>
-                    <input type="color" value={fc.heroText || "#0f172a"} onChange={e => setColor("fitness.heroText", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                  </div>
-                  <input type="text" value={fc.heroText || "#0f172a"} onChange={e => setColor("fitness.heroText", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-            </div>
 
-            {/* Services & Transfos */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "خلفية الخدمات" : "Services BG"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.servicesBg || "#ffffff" }}>
-                    <input type="color" value={fc.servicesBg || "#ffffff"} onChange={e => setColor("fitness.servicesBg", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                {/* Footer Text */}
+                <div className="space-y-3">
+                  <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">
+                    {isAr ? "لون نص التذييل" : "Footer Text"}
+                  </label>
+                  <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
+                    <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: cs.footer?.text || "#ffffff" }}>
+                      <input type="color" value={cs.footer?.text || "#ffffff"} onChange={e => setColor("footer.text", e.target.value)}
+                        className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                    </div>
+                    <input type="text" value={cs.footer?.text || "#ffffff"} onChange={e => setColor("footer.text", e.target.value)}
+                      className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
                   </div>
-                  <input type="text" value={fc.servicesBg || "#ffffff"} onChange={e => setColor("fitness.servicesBg", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
                 </div>
-              </div>
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "خلفية بطاقة الخدمة" : "Service Card BG"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.serviceCardBg || "#f8fafc" }}>
-                    <input type="color" value={fc.serviceCardBg || "#f8fafc"} onChange={e => setColor("fitness.serviceCardBg", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                  </div>
-                  <input type="text" value={fc.serviceCardBg || "#f8fafc"} onChange={e => setColor("fitness.serviceCardBg", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "خلفية التحولات" : "Transformations BG"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.transformationsBg || "#f8fafc" }}>
-                    <input type="color" value={fc.transformationsBg || "#f8fafc"} onChange={e => setColor("fitness.transformationsBg", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                {/* Text Primary */}
+                <div className="space-y-3">
+                  <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">
+                    {isAr ? "النص الأساسي" : "Primary Text"}
+                  </label>
+                  <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
+                    <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: cs.text?.primary || "#0f172a" }}>
+                      <input type="color" value={cs.text?.primary || "#0f172a"} onChange={e => setColor("text.primary", e.target.value)}
+                        className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                    </div>
+                    <input type="text" value={cs.text?.primary || "#0f172a"} onChange={e => setColor("text.primary", e.target.value)}
+                      className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
                   </div>
-                  <input type="text" value={fc.transformationsBg || "#f8fafc"} onChange={e => setColor("fitness.transformationsBg", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "خلفية الباقات" : "Pricing BG"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.pricingBg || "#ffffff" }}>
-                    <input type="color" value={fc.pricingBg || "#ffffff"} onChange={e => setColor("fitness.pricingBg", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                  </div>
-                  <input type="text" value={fc.pricingBg || "#ffffff"} onChange={e => setColor("fitness.pricingBg", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
                 </div>
               </div>
             </div>
 
-            {/* Card Colors */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "حدود البطاقة" : "Card Border"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.cardBorder || "#e2e8f0" }}>
-                    <input type="color" value={fc.cardBorder || "#e2e8f0"} onChange={e => setColor("fitness.cardBorder", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+            {/* Page Colors (مثل الإعدادات العامة) */}
+            <div className="mb-6 bg-white/[0.02] p-6 rounded-2xl border border-white/[0.08]">
+              <h3 className="text-[9px] font-black uppercase tracking-[0.08em] text-slate-500 mb-6 border-b border-white/5 pb-3">
+                {isAr ? "ألوان الصفحات" : "Page Colors"}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {(["home"] as const).map((page) => (
+                  <div key={page} className="bg-white/[0.02] p-6 rounded-xl border border-white/[0.05]">
+                    <div className="flex items-center gap-2 mb-6">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                      <h3 className="text-xs font-black text-white uppercase italic tracking-wider">
+                        {isAr ? (page === "home" ? "الرئيسية" : page) : page.charAt(0).toUpperCase() + page.slice(1)}
+                      </h3>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {/* Background Color */}
+                      <div className="space-y-3">
+                        <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">
+                          {isAr ? "الخلفية" : "Background"}
+                        </label>
+                        <div className="flex gap-3 items-center bg-black/40 p-2.5 rounded-2xl border border-white/[0.05]">
+                          <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0" style={{ background: (cs.backgrounds as any)?.[page] || "#ffffff" }}>
+                            <input type="color" value={((cs.backgrounds as any)?.[page] || "").includes('gradient') ? '#000000' : ((cs.backgrounds as any)?.[page] || "#ffffff")} onChange={e => setColor(`backgrounds.${page}`, e.target.value)}
+                              className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                          </div>
+                          <input type="text" value={(cs.backgrounds as any)?.[page] || "#ffffff"} onChange={e => setColor(`backgrounds.${page}`, e.target.value)}
+                            className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
+                        </div>
+                      </div>
+                      {/* Text Color */}
+                      <div className="space-y-3">
+                        <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">
+                          {isAr ? "لون النص" : "Text Color"}
+                        </label>
+                        <div className="flex gap-3 items-center bg-black/40 p-2.5 rounded-2xl border border-white/[0.05]">
+                          <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0" style={{ backgroundColor: (cs.text as any)?.[page] || "#0f172a" }}>
+                            <input type="color" value={(cs.text as any)?.[page] || "#0f172a"} onChange={e => setColor(`text.${page}`, e.target.value)}
+                              className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
+                          </div>
+                          <input type="text" value={(cs.text as any)?.[page] || "#0f172a"} onChange={e => setColor(`text.${page}`, e.target.value)}
+                            className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <input type="text" value={fc.cardBorder || "#e2e8f0"} onChange={e => setColor("fitness.cardBorder", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "خلفية البطاقة المميزة" : "Popular Card BG"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.popularCardBg || "#059669" }}>
-                    <input type="color" value={fc.popularCardBg || "#059669"} onChange={e => setColor("fitness.popularCardBg", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                  </div>
-                  <input type="text" value={fc.popularCardBg || "#059669"} onChange={e => setColor("fitness.popularCardBg", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "نص البطاقة المميزة" : "Popular Card Text"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.popularCardText || "#ffffff" }}>
-                    <input type="color" value={fc.popularCardText || "#ffffff"} onChange={e => setColor("fitness.popularCardText", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                  </div>
-                  <input type="text" value={fc.popularCardText || "#ffffff"} onChange={e => setColor("fitness.popularCardText", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-            </div>
-
-            {/* Accent Colors */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "لون العلامة" : "Accent Color"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.accent || "#059669" }}>
-                    <input type="color" value={fc.accent || "#059669"} onChange={e => setColor("fitness.accent", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                  </div>
-                  <input type="text" value={fc.accent || "#059669"} onChange={e => setColor("fitness.accent", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "خلفية العلامة" : "Accent BG"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.accentBg || "#ecfdf5" }}>
-                    <input type="color" value={fc.accentBg || "#ecfdf5"} onChange={e => setColor("fitness.accentBg", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                  </div>
-                  <input type="text" value={fc.accentBg || "#ecfdf5"} onChange={e => setColor("fitness.accentBg", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-            </div>
-
-            {/* Text Colors */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "اللون الأساسي للنص" : "Primary Text"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: cs.text?.primary || "#0f172a" }}>
-                    <input type="color" value={cs.text?.primary || "#0f172a"} onChange={e => setColor("text.primary", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                  </div>
-                  <input type="text" value={cs.text?.primary || "#0f172a"} onChange={e => setColor("text.primary", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "اللون الثانوي للنص" : "Secondary Text"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: cs.text?.secondary || "#64748b" }}>
-                    <input type="color" value={cs.text?.secondary || "#64748b"} onChange={e => setColor("text.secondary", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                  </div>
-                  <input type="text" value={cs.text?.secondary || "#64748b"} onChange={e => setColor("text.secondary", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-            </div>
-
-            {/* Footer Colors */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "خلفية التذييل" : "Footer BG"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: cs.footer?.background || "#0f172a" }}>
-                    <input type="color" value={cs.footer?.background || "#0f172a"} onChange={e => setColor("footer.background", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                  </div>
-                  <input type="text" value={cs.footer?.background || "#0f172a"} onChange={e => setColor("footer.background", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "لون نص التذييل" : "Footer Text"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: cs.footer?.text || "#ffffff" }}>
-                    <input type="color" value={cs.footer?.text || "#ffffff"} onChange={e => setColor("footer.text", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                  </div>
-                  <input type="text" value={cs.footer?.text || "#ffffff"} onChange={e => setColor("footer.text", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-            </div>
-
-            {/* Promo Colors */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "خلفية شريط الترويج" : "Promo Bar BG"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.promoBg || "#059669" }}>
-                    <input type="color" value={fc.promoBg || "#059669"} onChange={e => setColor("fitness.promoBg", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                  </div>
-                  <input type="text" value={fc.promoBg || "#059669"} onChange={e => setColor("fitness.promoBg", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-              <div className="space-y-3">
-                <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "نص شريط الترويج" : "Promo Bar Text"}</label>
-                <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.promoText || "#ffffff" }}>
-                    <input type="color" value={fc.promoText || "#ffffff"} onChange={e => setColor("fitness.promoText", e.target.value)}
-                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                  </div>
-                  <input type="text" value={fc.promoText || "#ffffff"} onChange={e => setColor("fitness.promoText", e.target.value)}
-                    className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
-                </div>
-              </div>
-            </div>
-
-            {/* Testimonials BG */}
-            <div className="space-y-3">
-              <label className="block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2">{isAr ? "خلفية المراجعات" : "Testimonials BG"}</label>
-              <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: fc.testimonialsBg || "#f8fafc" }}>
-                  <input type="color" value={fc.testimonialsBg || "#f8fafc"} onChange={e => setColor("fitness.testimonialsBg", e.target.value)}
-                    className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0" />
-                </div>
-                <input type="text" value={fc.testimonialsBg || "#f8fafc"} onChange={e => setColor("fitness.testimonialsBg", e.target.value)}
-                  className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" />
+                ))}
               </div>
             </div>
           </Section>
