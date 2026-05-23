@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useTransition, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Lock, Mail, Loader2, ArrowRight, Sparkles } from "lucide-react";
 import { loginUser } from "../actions";
@@ -9,7 +9,24 @@ import { loginUser } from "../actions";
 export default function LoginPage() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const err = searchParams.get("error");
+    if (err === "no_code") setError("لم نستلم رمز التحقق من Google");
+    else if (err === "oauth_not_configured") setError("تسجيل الدخول عبر Google غير مفعل حالياً");
+    else if (err === "token_exchange_failed") setError("فشل الاتصال بـ Google، حاول مرة أخرى");
+    else if (err === "no_email") setError("لم نتمكن من الحصول على بريدك الإلكتروني من Google");
+    else if (err === "no_store") setError("ليس لديك متجر بعد. سجل حساب جديد أولاً.");
+    else if (err === "unknown") setError("حدث خطأ غير متوقع");
+  }, [searchParams]);
+
+  const handleGoogleLogin = () => {
+    setGoogleLoading(true);
+    window.location.href = "/api/auth/google";
+  };
 
   const handleLogin = async (formData: FormData) => {
     setError(null);
@@ -96,10 +113,16 @@ export default function LoginPage() {
 
           <button
             type="button"
-            className="w-full bg-white/[0.02] border border-white/5 text-slate-300 py-4 rounded-2xl font-bold text-lg hover:bg-white/[0.04] hover:border-white/10 transition-all flex items-center justify-center gap-3 active:scale-[0.98]"
+            onClick={handleGoogleLogin}
+            disabled={googleLoading}
+            className="w-full bg-white/[0.02] border border-white/5 text-slate-300 py-4 rounded-2xl font-bold text-lg hover:bg-white/[0.04] hover:border-white/10 transition-all flex items-center justify-center gap-3 active:scale-[0.98] disabled:opacity-50"
           >
-            <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)"><path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/><path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/><path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/><path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/></g></svg>
-            Google
+            {googleLoading ? (
+              <Loader2 className="animate-spin w-5 h-5" />
+            ) : (
+              <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)"><path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/><path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/><path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/><path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/></g></svg>
+            )}
+            {googleLoading ? "جاري الاتصال بـ Google..." : "Google"}
           </button>
 
           <div className="text-center pt-2">
