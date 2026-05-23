@@ -4,9 +4,10 @@ export async function GET(req: NextRequest) {
   const clientId = process.env.GOOGLE_CLIENT_ID;
   if (!clientId) return NextResponse.json({ error: "Google OAuth not configured" }, { status: 500 });
 
-  const baseUrl = req.nextUrl.origin; // uses the actual domain automatically
+  const baseUrl = req.nextUrl.origin;
   const redirectUri = `${baseUrl}/api/auth/google/callback`;
 
+  // Temporarily show the redirect URI to diagnose
   const params = new URLSearchParams({
     client_id: clientId,
     redirect_uri: redirectUri,
@@ -16,5 +17,8 @@ export async function GET(req: NextRequest) {
     prompt: "select_account",
   });
 
-  return NextResponse.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params}`);
-}
+  // Return the URL for debugging
+  return NextResponse.json({
+    redirectUri,
+    googleUrl: `https://accounts.google.com/o/oauth2/v2/auth?${params}`,
+  });
