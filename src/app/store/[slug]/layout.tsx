@@ -1,5 +1,5 @@
 import { getStoreBySlug } from "@/lib/data";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { StoreProvider } from "@/components/providers/StoreProvider";
 import { getSession } from "@/lib/auth";
 import { getLang } from "@/lib/i18n";
@@ -75,10 +75,14 @@ export default async function TenantStoreLayout({
   const currentTrialEndsAt = freshStore?.trialEndsAt || store.trialEndsAt;
   const isOwner = user?.id === store.ownerId;
 
-  if (currentStatus === "suspended" && !isOwner) {
+  if (currentStatus === "suspended") {
+    if (isOwner) {
+      // Owner: redirect to reactivation page
+      redirect(`/store/${slug}/admin/reactivate`);
+    }
     return (
       <StoreProvider store={store} user={user}>
-        <SuspendedStore slug={slug} />
+        <SuspendedStore />
       </StoreProvider>
     );
   }
@@ -90,7 +94,7 @@ export default async function TenantStoreLayout({
   );
 }
 
-function SuspendedStore({ slug }: { slug: string }) {
+function SuspendedStore() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
       <div className="max-w-md text-center space-y-8">
