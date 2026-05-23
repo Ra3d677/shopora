@@ -60,6 +60,12 @@ model Store {
   coupons      Coupon[]
   subscribers  NewsletterSubscriber[]
   reactivationRequests ReactivationRequest[]
+  heroSection          HeroSection?
+  services             Service[]
+  transformations      Transformation[]
+  pricingPlans         PricingPlan[]
+  testimonials         Testimonial[]
+  footerConfig         FooterConfig?
 }
 
 model Template {
@@ -332,4 +338,114 @@ model AppSetting {
   id    String @id @default(cuid())
   key   String @unique
   value String
+}
+
+// ===== Fitness Template (برعي) Models =====
+
+model HeroSection {
+  id             String   @id @default(cuid())
+  storeId        String
+  store          Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  badge          String   @default("ELITE ONLINE COACHING")
+  title          String   @default("Advance Like Lightning")
+  subtitle       String   @default("Training and nutrition plans scientifically designed to help you reach peak performance.")
+  backgroundImage String?
+  runnerImage    String?
+  lightningImage String?
+  avatars        Json     @default("[]") // string[]
+  primaryCtaText  String  @default("About Us")
+  primaryCtaLink  String  @default("#about")
+  secondaryCtaText String @default("Subscribe Now")
+  secondaryCtaLink String @default("#pricing")
+  statValue      String   @default("20")
+  statSuffix     String   @default("k+")
+  statLabel      String   @default("Over 20,000 people transformed")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([storeId])
+  @@index([storeId])
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  storeId     String
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  icon        String   @default("💪")
+  title       String
+  description String
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([storeId, sortOrder])
+}
+
+model Transformation {
+  id        String   @id @default(cuid())
+  storeId   String
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  name      String   @default("")
+  beforeImage String
+  afterImage  String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId, sortOrder])
+}
+
+model PricingPlan {
+  id        String   @id @default(cuid())
+  storeId   String
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  name      String
+  subtitle  String   @default("")
+  price     String
+  currency  String   @default("£")
+  duration  String   @default("")
+  popular   Boolean  @default(false)
+  badge     String   @default("")
+  features  Json     @default("[]") // string[]
+  ctaText   String   @default("Get Started")
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId, sortOrder])
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  storeId   String
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  name      String
+  role      String   @default("")
+  content   String
+  rating    Int      @default(5)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId, sortOrder])
+}
+
+model FooterConfig {
+  id          String   @id @default(cuid())
+  storeId     String
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  logo        String?
+  description String   @default("")
+  address     String   @default("")
+  email       String   @default("")
+  phone       String   @default("")
+  socialLinks Json     @default("[]") // [{ platform, url, icon }]
+  footerLinks Json     @default("[]") // [{ label, url }]
+  iosAppUrl   String?
+  androidAppUrl String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([storeId])
+  @@index([storeId])
 }

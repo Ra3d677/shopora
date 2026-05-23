@@ -51,6 +51,8 @@ export default function FitnessDashboard({
     setSettings({ ...settings, fitnessSettings: newFs });
   };
 
+  const [syncing, setSyncing] = useState(false);
+
   const save = () => {
     startTransition(async () => {
       try {
@@ -61,6 +63,23 @@ export default function FitnessDashboard({
         toast.error(isAr ? "فشل الحفظ" : "Failed to save");
       }
     });
+  };
+
+  const syncToDb = async () => {
+    setSyncing(true);
+    try {
+      await saveStoreSettings(slug, settings);
+      const res = await fetch(`/api/fitness/${slug}/sync`, { method: "POST" });
+      const json = await res.json();
+      if (json.success) {
+        toast.success(isAr ? "تمت المزامنة مع قاعدة البيانات" : "Synced to DB");
+      } else {
+        toast.error(json.error || "Sync failed");
+      }
+    } catch {
+      toast.error(isAr ? "فشلت المزامنة" : "Sync failed");
+    }
+    setSyncing(false);
   };
 
   const addItem = (path: string, item: any) => {
@@ -142,6 +161,11 @@ export default function FitnessDashboard({
             </p>
           </div>
           <div className="flex items-center gap-3">
+            <button onClick={syncToDb} disabled={syncing}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[9px] font-black uppercase tracking-widest hover:bg-amber-500/20 transition-all disabled:opacity-50">
+              {syncing ? <Loader2 size={12} className="animate-spin" /> : null}
+              {syncing ? (isAr ? "..." : "Syncing...") : (isAr ? "مزامنة DB" : "Sync DB")}
+            </button>
             <Link href={`/store/${slug}`} target="_blank"
               className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all">
               <ExternalLink size={14} /> {isAr ? "عرض الموقع" : "View Site"}
