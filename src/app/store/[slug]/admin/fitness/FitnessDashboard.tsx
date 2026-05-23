@@ -195,6 +195,7 @@ export default function FitnessDashboard({
         {activeTab === "hero" && (
           <div className="space-y-6">
             <Section title={isAr ? "قسم الهيرو" : "Hero Section"}>
+              <ActiveToggle checked={hero.enabled !== false} onChange={v => set("hero.enabled", v)} isAr={isAr} />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Field label={isAr ? "الشارة" : "Badge"} value={hero.badge} onChange={v => set("hero.badge", v)} placeholder="ELITE ONLINE COACHING" />
                 <Field label={isAr ? "العنوان" : "Title"} value={hero.title} onChange={v => set("hero.title", v)} placeholder="Advance Like Lightning" />
@@ -265,6 +266,7 @@ export default function FitnessDashboard({
         {/* ===== SERVICES TAB ===== */}
         {activeTab === "services" && (
           <Section title={isAr ? "الخدمات" : "Services"}>
+            <ActiveToggle checked={services.enabled !== false} onChange={v => set("services.enabled", v)} isAr={isAr} />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <Field label={isAr ? "عنوان القسم" : "Section Title"} value={services.title} onChange={v => set("services.title", v)}
                 placeholder={isAr ? "خدمات ساما فيت" : "Our Services"} />
@@ -295,6 +297,7 @@ export default function FitnessDashboard({
         {/* ===== TRANSFORMATIONS TAB ===== */}
         {activeTab === "transformations" && (
           <Section title={isAr ? "التحولات (قبل/بعد)" : "Transformations"}>
+            <ActiveToggle checked={transformations.enabled !== false} onChange={v => set("transformations.enabled", v)} isAr={isAr} />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <Field label={isAr ? "عنوان القسم" : "Section Title"} value={transformations.title} onChange={v => set("transformations.title", v)}
                 placeholder={isAr ? "جدار العظمة" : "Wall of Greatness"} />
@@ -341,6 +344,7 @@ export default function FitnessDashboard({
         {/* ===== PRICING TAB ===== */}
         {activeTab === "pricing" && (
           <Section title={isAr ? "خطط الأسعار" : "Pricing Plans"}>
+            <ActiveToggle checked={pricing.enabled !== false} onChange={v => set("pricing.enabled", v)} isAr={isAr} />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <Field label={isAr ? "عنوان القسم" : "Section Title"} value={pricing.title} onChange={v => set("pricing.title", v)}
                 placeholder={isAr ? "اختر باقتك" : "Choose Your Plan"} />
@@ -506,6 +510,7 @@ export default function FitnessDashboard({
         {/* ===== TESTIMONIALS TAB ===== */}
         {activeTab === "testimonials" && (
           <Section title={isAr ? "آراء العملاء" : "Testimonials"}>
+            <ActiveToggle checked={testimonials.enabled !== false} onChange={v => set("testimonials.enabled", v)} isAr={isAr} />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <Field label={isAr ? "عنوان القسم" : "Section Title"} value={testimonials.title} onChange={v => set("testimonials.title", v)}
                 placeholder={isAr ? "ماذا يقول عملاؤنا عنا" : "What Our Clients Say"} />
@@ -535,6 +540,7 @@ export default function FitnessDashboard({
         {/* ===== FOOTER TAB ===== */}
         {activeTab === "footer" && (
           <Section title={isAr ? "التذييل" : "Footer"}>
+            <ActiveToggle checked={footer.enabled !== false} onChange={v => set("footer.enabled", v)} isAr={isAr} />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div className="md:col-span-2">
                 <Field label={isAr ? "رابط الشعار" : "Logo URL"} value={footer.logo} onChange={v => set("footer.logo", v)} />
@@ -670,6 +676,20 @@ function ArrayEdit({ label, items, onChange }: {
         + {label}
       </button>
     </div>
+  );
+}
+
+function ActiveToggle({ checked, onChange, isAr }: { checked: boolean; onChange: (v: boolean) => void; isAr: boolean }) {
+  return (
+    <label className="flex items-center gap-2 mb-4 pb-4 border-b border-white/5 cursor-pointer">
+      <div className={`relative w-9 h-5 rounded-full transition-all ${checked ? 'bg-emerald-500' : 'bg-white/10'}`}>
+        <input type="checkbox" checked={checked} onChange={e => onChange(e.target.checked)} className="sr-only" />
+        <div className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow-md transition-all ${checked ? 'translate-x-4' : ''}`} />
+      </div>
+      <span className={`text-[9px] font-black uppercase tracking-widest ${checked ? 'text-emerald-400' : 'text-slate-600'}`}>
+        {checked ? (isAr ? "نشط" : "Active") : (isAr ? "غير نشط" : "Inactive")}
+      </span>
+    </label>
   );
 }
 

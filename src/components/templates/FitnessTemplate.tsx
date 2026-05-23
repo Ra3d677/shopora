@@ -314,6 +314,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
       </header>
 
       {/* ===== HERO ===== */}
+      {hero.enabled !== false && (
       <section className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-teal-50">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 min-h-[80vh] items-center ${isRtl ? "lg:direction-rtl" : ""}`}>
@@ -396,6 +397,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
           </div>
         </div>
       </section>
+      )}
 
       {/* ===== MARQUEE ===== */}
       <MarqueeBar
@@ -405,6 +407,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
       />
 
       {/* ===== SERVICES ===== */}
+      {services.enabled !== false && (
       <section id="services" className="py-20 md:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-14">
@@ -432,9 +435,10 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
           </div>
         </div>
       </section>
+      )}
 
       {/* ===== TRANSFORMATIONS ===== */}
-      {transformItems.length > 0 && (
+      {transformations.enabled !== false && transformItems.length > 0 && (
         <section id="transformations" className="py-20 md:py-28 bg-slate-50">
           <div className="max-w-7xl mx-auto px-4 md:px-6">
             <div className="text-center mb-14">
@@ -477,6 +481,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
       )}
 
       {/* ===== PROMO MARQUEE (TOP) ===== */}
+      {pricing.enabled !== false && (
       <div className="w-full overflow-hidden bg-emerald-600 text-white py-3 md:py-3.5 border-y border-emerald-500/30">
         <div className="flex whitespace-nowrap" style={{ animation: `promoMarquee ${pricing.topMarqueeSpeed || 30}s linear infinite` }}>
           {[...Array(10)].flatMap(() => (pricing.promoTopItems?.length ? pricing.promoTopItems : [
@@ -490,8 +495,10 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
           ))}
         </div>
       </div>
+      )}
 
       {/* ===== PRICING ===== */}
+      {pricing.enabled !== false && (
       <section id="pricing" className="py-20 md:py-28 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-14">
@@ -606,8 +613,10 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
           </div>
         </div>
       </section>
+      )}
 
       {/* ===== PROMO MARQUEE (BOTTOM) ===== */}
+      {pricing.enabled !== false && (
       <div className="w-full overflow-hidden bg-emerald-600 text-white py-3 md:py-3.5 border-y border-emerald-500/30">
         <div className="flex whitespace-nowrap" style={{ animation: `promoMarquee2 ${pricing.bottomMarqueeSpeed || 35}s linear infinite` }}>
           {[...Array(10)].flatMap(() => (pricing.promoBottomItems?.length ? pricing.promoBottomItems : [
@@ -621,9 +630,10 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
           ))}
         </div>
       </div>
+      )}
 
       {/* ===== TESTIMONIALS ===== */}
-      {testimonialItems.length > 0 && (
+      {testimonials.enabled !== false && testimonialItems.length > 0 && (
         <section id="testimonials" className="py-20 md:py-28 bg-slate-50">
           <div className="max-w-7xl mx-auto px-4 md:px-6">
             <div className="text-center mb-14">
@@ -659,6 +669,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
       )}
 
       {/* ===== ABOUT / CTA ===== */}
+      {about.enabled !== false && (
       <section id="about" className="py-20 md:py-28 bg-gradient-to-br from-emerald-700 to-teal-800 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-40 h-40 rounded-full bg-white blur-[80px]" />
@@ -677,8 +688,10 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
           </Link>
         </div>
       </section>
+      )}
 
       {/* ===== FOOTER ===== */}
+      {footer.enabled !== false && (
       <footer className="bg-slate-900 text-slate-300 py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -751,6 +764,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
           </div>
         </div>
       </footer>
+      )}
     </div>
   );
 }
