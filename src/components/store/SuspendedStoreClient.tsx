@@ -4,7 +4,7 @@ import { useCallback } from "react";
 
 export default function SuspendedStoreClient({ slug, isOwner }: { slug: string; isOwner: boolean }) {
   const goToReactivate = useCallback(() => {
-    window.location.href = `/store/${slug}/admin/reactivate`;
+    window.location.href = `/reactivate/${slug}`;
   }, [slug]);
 
   return (
