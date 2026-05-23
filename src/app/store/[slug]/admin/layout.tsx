@@ -30,7 +30,6 @@ import { getTranslation, getLang } from "@/lib/i18n";
 import AdminShell from "./AdminShell";
 import NotificationsBell from "./NotificationsBell";
 import { checkAndSuspendExpiredTrial, checkAndSuspendExpiredSubscription } from "@/lib/data";
-import { prisma } from "@/lib/prisma";
 export default async function AdminLayout({
   children,
   params
@@ -53,17 +52,7 @@ export default async function AdminLayout({
 
   await checkAndSuspendExpiredTrial(store.id);
   await checkAndSuspendExpiredSubscription(store.id);
-
-  // Direct DB query to bypass cache after suspension check
-  const freshStore = await prisma.store.findUnique({
-    where: { slug },
-    select: { status: true },
-  });
-  const currentStatus = freshStore?.status || store.status;
-
-  if (currentStatus === "suspended" && !isSuperAdmin) {
-    redirect(`/store/${slug}/admin/reactivate`);
-  }
+  // No redirect to reactivate here — the frontend layout handles suspended display
 
   const adminPath = `/store/${slug}/admin`;
 
