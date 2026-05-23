@@ -17,6 +17,7 @@ import {
   ChevronDown,
   Bell,
   Users,
+  AlertTriangle,
 } from "lucide-react";
 import { getSession } from "@/lib/auth";
 import { getStoreBySlug } from "@/lib/data";
@@ -30,6 +31,8 @@ import { getTranslation, getLang } from "@/lib/i18n";
 import AdminShell from "./AdminShell";
 import NotificationsBell from "./NotificationsBell";
 import { checkAndSuspendExpiredTrial, checkAndSuspendExpiredSubscription } from "@/lib/data";
+import { prisma } from "@/lib/prisma";
+
 export default async function AdminLayout({
   children,
   params
@@ -52,7 +55,14 @@ export default async function AdminLayout({
 
   await checkAndSuspendExpiredTrial(store.id);
   await checkAndSuspendExpiredSubscription(store.id);
-  // No redirect to reactivate here — the frontend layout handles suspended display
+
+  // Get fresh status after suspension check
+  const freshStore = await prisma.store.findUnique({
+    where: { slug },
+    select: { status: true },
+  });
+  const currentStatus = freshStore?.status || store.status;
+  const isSuspended = currentStatus === "suspended";
 
   const adminPath = `/store/${slug}/admin`;
 
@@ -176,13 +186,30 @@ export default async function AdminLayout({
   );
 
   const header = (
-    <header
-      className="h-24 flex items-center justify-between px-4 md:px-12 backdrop-blur-md z-30 sticky top-0 transition-colors duration-500"
-      style={{
-        background: 'var(--admin-header-bg)',
-        borderBottom: '1px solid var(--admin-border)',
-      }}
-    >
+    <>
+      {isSuspended && (
+        <div className="bg-amber-500/10 border-b border-amber-500/20 px-4 md:px-12 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+            <p className="text-amber-400 text-[10px] font-black uppercase tracking-wider">
+              {isRTL ? "المتجر معلق — الاشتراك منتهي" : "STORE SUSPENDED — SUBSCRIPTION EXPIRED"}
+            </p>
+          </div>
+          <Link
+            href={`/reactivate/${slug}`}
+            className="bg-amber-500 text-black px-5 py-2 rounded-xl text-[9px] font-black uppercase tracking-wider hover:bg-amber-400 transition-all"
+          >
+            {isRTL ? "إعادة التفعيل" : "REACTIVATE"}
+          </Link>
+        </div>
+      )}
+      <header
+        className="h-24 flex items-center justify-between px-4 md:px-12 backdrop-blur-md z-30 sticky top-0 transition-colors duration-500"
+        style={{
+          background: 'var(--admin-header-bg)',
+          borderBottom: '1px solid var(--admin-border)',
+        }}
+      >
       <div className="flex items-center gap-6">
         <div
           className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em]"
@@ -219,6 +246,7 @@ export default async function AdminLayout({
         <AdminThemeToggle />
       </div>
     </header>
+    </>
   );
 
   return (

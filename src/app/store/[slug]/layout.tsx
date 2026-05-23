@@ -6,7 +6,7 @@ import { getLang } from "@/lib/i18n";
 import { Metadata } from "next";
 import { checkAndSuspendExpiredTrial, checkAndSuspendExpiredSubscription } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
-import SuspendedStoreClient from "@/components/store/SuspendedStoreClient";
+import SuspendedWrapper from "@/components/store/SuspendedWrapper";
 
 export async function generateMetadata({ 
   params 
@@ -75,14 +75,13 @@ export default async function TenantStoreLayout({
   const currentStatus = freshStore?.status || store.status;
   const currentTrialEndsAt = freshStore?.trialEndsAt || store.trialEndsAt;
   const isOwner = user?.id === store.ownerId;
-
-  if (currentStatus === "suspended") {
-    return <SuspendedStoreClient slug={slug} isOwner={isOwner} />;
-  }
+  const isSuspended = currentStatus === "suspended";
 
   return (
-    <StoreProvider store={store} user={user}>
-      {children}
-    </StoreProvider>
+    <SuspendedWrapper slug={slug} isOwner={isOwner} isSuspended={isSuspended}>
+      <StoreProvider store={store} user={user}>
+        {children}
+      </StoreProvider>
+    </SuspendedWrapper>
   );
 }
