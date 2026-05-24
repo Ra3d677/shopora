@@ -378,10 +378,6 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                           <button key={style} onClick={() => updateSection(activeSection.id, { style })}
                             className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
                         ))}
-                        {activeSection.type === 'video' && ['default', 'fullscreen', 'side', 'gallery'].map(style => (
-                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
-                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
-                        ))}
                       </div>
                     </div>
 
@@ -577,31 +573,93 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
 
                       {/* Video */}
                       {activeSection.type === 'video' && (
-                        <>
-                          <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase">Video URL</label>
-                            <input type="text" value={activeSection.config.videoUrl || ''}
-                              onChange={(e) => updateSectionConfig(activeSection.id, 'videoUrl', e.target.value)}
-                              className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-mono text-xs"
-                              placeholder="https://youtube.com/watch?v=... or https://tiktok.com/@..." />
+                        <div className="space-y-6">
+                          <div className="flex justify-between items-center">
+                            <label className="text-xs font-bold text-slate-500 uppercase">Videos</label>
+                            <button type="button"
+                              onClick={() => {
+                                const items = [...(activeSection.config.items || [])];
+                                items.push({ id: Math.random().toString(36).substr(2, 9), url: '', title: '', poster: '' });
+                                updateSectionConfig(activeSection.id, 'items', items);
+                              }}
+                              className="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-all">+ Add Video</button>
                           </div>
-                          <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase">Cover Image</label>
-                            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                              <MediaPicker slug={slug} value={activeSection.config.posterImage || ''}
-                                onChange={url => updateSectionConfig(activeSection.id, 'posterImage', url)}
-                                className="bg-white" />
-                            </div>
+                          <div className="grid grid-cols-1 gap-6">
+                            {(activeSection.config.items || []).length === 0 && (
+                              <div className="text-center py-12 text-slate-400 text-sm border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
+                                No videos yet. Click "+ Add Video" to add one.
+                              </div>
+                            )}
+                            {(activeSection.config.items || []).map((item: any, idx: number) => (
+                              <div key={item.id} className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-4 relative group">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Video #{idx + 1}</span>
+                                  <button type="button" onClick={() => {
+                                    const items = [...(activeSection.config.items || [])];
+                                    items.splice(idx, 1);
+                                    updateSectionConfig(activeSection.id, 'items', items);
+                                  }} className="text-slate-300 hover:text-red-500 transition-colors p-1">
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  <div className="space-y-2">
+                                    <label className="text-xs font-bold text-slate-500 uppercase">Video URL</label>
+                                    <input type="text" value={item.url || ''} placeholder="https://youtube.com/watch?v=..."
+                                      onChange={e => {
+                                        const items = [...(activeSection.config.items || [])];
+                                        items[idx].url = e.target.value;
+                                        updateSectionConfig(activeSection.id, 'items', items);
+                                      }}
+                                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 transition-all font-mono text-xs" />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <label className="text-xs font-bold text-slate-500 uppercase">Video Title</label>
+                                    <input type="text" value={item.title || ''} placeholder="My Video"
+                                      onChange={e => {
+                                        const items = [...(activeSection.config.items || [])];
+                                        items[idx].title = e.target.value;
+                                        updateSectionConfig(activeSection.id, 'items', items);
+                                      }}
+                                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+                                  </div>
+                                </div>
+                                <div className="space-y-2">
+                                  <label className="text-xs font-bold text-slate-500 uppercase">Cover Image</label>
+                                  <div className="bg-white border border-slate-200 rounded-2xl p-4">
+                                    <MediaPicker slug={slug} value={item.poster || ''}
+                                      onChange={url => {
+                                        const items = [...(activeSection.config.items || [])];
+                                        items[idx].poster = url;
+                                        updateSectionConfig(activeSection.id, 'items', items);
+                                      }}
+                                      className="bg-white" />
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                          {['default', 'gallery'].includes(activeSection.style) && (
+                          <div className="grid grid-cols-2 gap-4 p-5 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-200">
                             <div className="space-y-2">
-                              <label className="text-xs font-bold text-slate-500 uppercase">Gallery Images (comma-separated URLs)</label>
-                              <textarea value={(activeSection.config.galleryImages || []).join('\n')} rows={3}
-                                onChange={e => updateSectionConfig(activeSection.id, 'galleryImages', e.target.value.split('\n').filter(Boolean))}
-                                className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all text-xs font-mono resize-none" />
+                              <label className="text-xs font-bold text-slate-500 uppercase">Columns</label>
+                              <select value={activeSection.config.columns || 2}
+                                onChange={e => updateSectionConfig(activeSection.id, 'columns', parseInt(e.target.value))}
+                                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold">
+                                {[1, 2, 3, 4].map(n => <option key={n} value={n}>{n} cols</option>)}
+                              </select>
                             </div>
-                          )}
-                        </>
+                            <div className="space-y-2">
+                              <label className="text-xs font-bold text-slate-500 uppercase">Display Style</label>
+                              <select value={activeSection.config.displayStyle || 'grid'}
+                                onChange={e => updateSectionConfig(activeSection.id, 'displayStyle', e.target.value)}
+                                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold">
+                                <option value="grid">Grid</option>
+                                <option value="carousel">Carousel</option>
+                                <option value="stacked">Stacked Rows</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
                       )}
 
                       {/* Marquee */}
