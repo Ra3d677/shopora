@@ -76,11 +76,14 @@ export async function cachedFetch<T>(
  */
 export async function revalidateTags(tags: string[]): Promise<void> {
   try {
-    const { revalidateTag } = await import('next/cache');
-    tags.forEach(tag => revalidateTag(tag));
+    const { revalidatePath } = await import('next/cache');
+    // Revalidate each tag by using revalidatePath on the store root
+    // This is a simplified approach that clears the cache for the related paths
+    for (const tag of tags) {
+      revalidatePath('/', 'layout');
+    }
   } catch {
-    // In-memory cache doesn't support tag-based invalidation
-    // Clear all cache as fallback
+    // In-memory cache fallback: clear all entries
     memoryCache.clear();
   }
 }
