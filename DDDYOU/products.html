@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DDDYOU - منتجات العطور الفاخرة">
+  <title>DDDYOU | منتجاتنا الفاخرة</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header / Navbar -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon"><i class="fas fa-gem"></i></span>
+        <div class="logo-text">
+          <h1>DDDYOU</h1>
+          <p>Parfumerie de Luxe</p>
+        </div>
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link">الرئيسية</a></li>
+          <li><a href="index.html#about" class="nav-link">عن العلامة</a></li>
+          <li><a href="products.html" class="nav-link active">منتجاتنا</a></li>
+          <li><a href="index.html#testimonials" class="nav-link">آراء العملاء</a></li>
+          <li><a href="index.html#contact" class="nav-link">اتصل بنا</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="#" class="cart-btn" id="cartBtn">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="القائمة">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Hero Banner -->
+  <section class="page-hero">
+    <div class="container page-hero-content">
+      <div class="page-breadcrumb">
+        <a href="index.html">الرئيسية</a>
+        <i class="fas fa-chevron-left"></i>
+        <span id="pageTitle">منتجاتنا الفاخرة</span>
+      </div>
+      <h1 class="page-title" id="pageTitleMain">منتجاتنا <span class="gold">الفاخرة</span></h1>
+      <p class="page-desc" id="pageDesc">مجموعة مختارة من أرقى العطور العالمية</p>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section class="products section" id="products">
+    <div class="container">
+      <div class="product-filter">
+        <a href="products.html" class="filter-btn active" data-filter="all">الجميع</a>
+        <a href="products.html?category=oriental" class="filter-btn" data-filter="oriental">شرقية</a>
+        <a href="products.html?category=woody" class="filter-btn" data-filter="woody">خشبية</a>
+        <a href="products.html?category=floral" class="filter-btn" data-filter="floral">زهرية</a>
+        <a href="products.html?category=fresh" class="filter-btn" data-filter="fresh">منعشة</a>
+      </div>
+
+      <div class="products-grid" id="productsGrid">
+        <!-- Products will be dynamically inserted -->
+      </div>
+
+      <div class="products-more">
+        <a href="products.html" class="btn btn-primary">عرض جميع العطور</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features section">
+    <div class="container">
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-truck"></i></div>
+          <h3>شحن عالمي مجاني</h3>
+          <p>للطلبات فوق ٥٠٠ ر.س مع تغليف هدايا فاخر</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+          <h3>منتج أصلي ١٠٠٪</h3>
+          <p>ضمان استعادة الأموال لمدة ٣٠ يوماً</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-gem"></i></div>
+          <h3>تغليف فاخر</h3>
+          <p>كل زجاجة تُقدم في صندوق هدية فاخر</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-headset"></i></div>
+          <h3>دعم على مدار الساعة</h3>
+          <p>فريق متخصص لخدمتك في أي وقت</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>سلة التسوق</h3>
+      <button class="cart-close" id="cartClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">
+        <i class="fas fa-shopping-bag"></i>
+        <p>سلتك فارغة</p>
+        <span>تصفح مجموعتنا وأضف ما يعجبك</span>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>المجموع:</span>
+        <span id="cartTotal">٠ ر.س</span>
+      </div>
+      <button class="btn btn-primary checkout-btn">إتمام الشراء</button>
+    </div>
+  </div>
+
+  <!-- Quick View Modal -->
+  <div class="modal" id="quickViewModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+      <div class="modal-body" id="modalBody">
+        <!-- Dynamic content -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon"><i class="fas fa-gem"></i></span>
+          <div class="logo-text">
+            <h2>DDDYOU</h2>
+            <p>Parfumerie de Luxe</p>
+          </div>
+        </a>
+        <p>عطور تجمع بين الرقي والأصالة، تُصنع بشغف منذ ١٨٩٢</p>
+      </div>
+      <div class="footer-links">
+        <h4>روابط سريعة</h4>
+        <ul>
+          <li><a href="index.html">الرئيسية</a></li>
+          <li><a href="index.html#about">عن العلامة</a></li>
+          <li><a href="products.html">المنتجات</a></li>
+          <li><a href="index.html#contact">اتصل بنا</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>المجموعات</h4>
+        <ul>
+          <li><a href="products.html?category=oriental">الشرقية</a></li>
+          <li><a href="products.html?category=woody">الخشبية</a></li>
+          <li><a href="products.html?category=floral">الزهرية</a></li>
+          <li><a href="products.html?category=fresh">المنعشة</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>معلومات الاتصال</h4>
+        <p><i class="fas fa-map-marker-alt"></i> الرياض، المملكة العربية السعودية</p>
+        <p><i class="fas fa-phone"></i> +٩٦٦ ٥٥٥ ٢٢٢ ٣٣٣</p>
+        <p><i class="fas fa-envelope"></i> info@dddyou.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; ٢٠٢٦ DDDYOU. جميع الحقوق محفوظة.</p>
+        <div class="footer-payments">
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-cc-amex"></i>
+          <i class="fab fa-cc-paypal"></i>
+          <i class="fab fa-cc-apple-pay"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

@@ -672,6 +672,47 @@ if ('loading' in HTMLImageElement.prototype) {
   lazyImages.forEach(img => imageObserver.observe(img));
 }
 
+// ---------- URL Query Params for Products Page ----------
+function getCategoryFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('category');
+}
+
+function updatePageForCategory(category) {
+  const categoryNames = {
+    oriental: { name: 'الشرقية', desc: 'عطور غامضة من العود والعنبر والمسك' },
+    woody: { name: 'الخشبية', desc: 'روائح دافئة من أخشاب الأرز والعود والصندل' },
+    floral: { name: 'الزهرية', desc: 'باقات زهور ياسمين وورود بلغاريا الفاخرة' },
+    fresh: { name: 'المنعشة', desc: 'انتعاش الحمضيات ونسيم البحر المنعش' },
+    all: { name: 'الفاخرة', desc: 'مجموعة مختارة من أرقى العطور العالمية' }
+  };
+
+  const pageTitleEl = document.getElementById('pageTitle');
+  const pageTitleMainEl = document.getElementById('pageTitleMain');
+  const pageDescEl = document.getElementById('pageDesc');
+
+  if (pageTitleEl || pageTitleMainEl) {
+    const info = categoryNames[category] || categoryNames.all;
+    if (pageTitleEl) pageTitleEl.textContent = `منتجاتنا ${info.name}`;
+    if (pageTitleMainEl) pageTitleMainEl.innerHTML = `منتجاتنا <span class="gold">${info.name}</span>`;
+    if (pageDescEl) pageDescEl.textContent = info.desc;
+  }
+
+  // Highlight active filter button
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.dataset.filter === category) {
+      btn.classList.add('active');
+    }
+  });
+}
+
 // ---------- Initialize ----------
-renderProducts('all');
+const urlCategory = getCategoryFromURL();
+if (urlCategory) {
+  updatePageForCategory(urlCategory);
+  renderProducts(urlCategory);
+} else {
+  renderProducts('all');
+}
 updateCartUI();

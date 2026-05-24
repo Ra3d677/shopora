@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="DDDYOU - متجر عطور فاخرة تجمع بين الرقي والأصالة">
-  <title>DDDYOU | عطور الرقي والأصالة</title>
+  <title>DDDYOU | مجموعات العطور الفاخرة</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -13,20 +13,20 @@
   <!-- Header / Navbar -->
   <header class="header" id="header">
     <div class="container header-inner">
-      <div class="logo">
+      <a href="index.html" class="logo">
         <span class="logo-icon"><i class="fas fa-gem"></i></span>
         <div class="logo-text">
           <h1>DDDYOU</h1>
           <p>Parfumerie de Luxe</p>
         </div>
-      </div>
+      </a>
       <nav class="nav" id="nav">
         <ul class="nav-list">
-          <li><a href="#hero" class="nav-link active">الرئيسية</a></li>
-          <li><a href="#about" class="nav-link">عن العلامة</a></li>
-          <li><a href="#products" class="nav-link">مجموعتنا</a></li>
-          <li><a href="#testimonials" class="nav-link">آراء العملاء</a></li>
-          <li><a href="#contact" class="nav-link">اتصل بنا</a></li>
+          <li><a href="index.html" class="nav-link active">الرئيسية</a></li>
+          <li><a href="index.html#about" class="nav-link">عن العلامة</a></li>
+          <li><a href="products.html" class="nav-link">منتجاتنا</a></li>
+          <li><a href="index.html#testimonials" class="nav-link">آراء العملاء</a></li>
+          <li><a href="index.html#contact" class="nav-link">اتصل بنا</a></li>
         </ul>
       </nav>
       <div class="header-actions">
@@ -52,8 +52,8 @@
       </h2>
       <p class="hero-desc">عطور تجمع بين أصالة الشرق ورقي الغرب، crafted لكل لحظة لا تُنسى</p>
       <div class="hero-actions">
-        <a href="#products" class="btn btn-primary">اكتشف المجموعة</a>
-        <a href="#about" class="btn btn-outline">اقرأ قصتنا</a>
+        <a href="products.html" class="btn btn-primary">اكتشف المجموعة</a>
+        <a href="index.html#about" class="btn btn-outline">اقرأ قصتنا</a>
       </div>
       <div class="hero-stats">
         <div class="stat-item">
@@ -105,28 +105,72 @@
     </div>
   </section>
 
-  <!-- Products Section -->
-  <section class="products section" id="products">
+  <!-- Collections Section -->
+  <section class="collections section" id="collections">
     <div class="container">
       <div class="section-header">
-        <span class="section-subtitle">Notre Collection</span>
-        <h2 class="section-title">مجموعتنا <span class="gold">الفاخرة</span></h2>
+        <span class="section-subtitle">Nos Collections</span>
+        <h2 class="section-title">تصفح <span class="gold">مجموعاتنا</span></h2>
         <div class="section-divider"><i class="fas fa-spa"></i></div>
-        <div class="product-filter">
-          <button class="filter-btn active" data-filter="all">الجميع</button>
-          <button class="filter-btn" data-filter="oriental">شرقية</button>
-          <button class="filter-btn" data-filter="woody">خشبية</button>
-          <button class="filter-btn" data-filter="floral">زهرية</button>
-          <button class="filter-btn" data-filter="fresh">منعشة</button>
-        </div>
+        <p class="collections-desc">اكتشف مجموعاتنا الفاخرة من العطور، كل مجموعة تحكي قصة فريدة تجمع بين أرقى المكونات وأجود الصناعات</p>
       </div>
 
-      <div class="products-grid" id="productsGrid">
-        <!-- Products will be dynamically inserted -->
-      </div>
+      <div class="collections-grid">
+        <a href="products.html?category=oriental" class="collection-card">
+          <div class="collection-image">
+            <img src="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=500&q=80" alt="مجموعة شرقية">
+            <div class="collection-overlay"></div>
+            <div class="collection-icon"><i class="fas fa-moon"></i></div>
+          </div>
+          <div class="collection-info">
+            <span class="collection-sub">Orientale</span>
+            <h3 class="collection-name">مجموعة شرقية</h3>
+            <p class="collection-desc">عطور غامضة تجمع بين العود والعنبر والمسك بروح شرقية أصيلة</p>
+            <span class="collection-link">تصفح المجموعة <i class="fas fa-arrow-left"></i></span>
+          </div>
+        </a>
 
-      <div class="products-more">
-        <a href="#" class="btn btn-primary">عرض جميع العطور</a>
+        <a href="products.html?category=woody" class="collection-card">
+          <div class="collection-image">
+            <img src="https://images.unsplash.com/photo-1590736969955-71cc949011c0?w=500&q=80" alt="مجموعة خشبية">
+            <div class="collection-overlay"></div>
+            <div class="collection-icon"><i class="fas fa-tree"></i></div>
+          </div>
+          <div class="collection-info">
+            <span class="collection-sub">Boisée</span>
+            <h3 class="collection-name">مجموعة خشبية</h3>
+            <p class="collection-desc">روائح دافئة من أخشاب الأرز والعود والصندل بتوليفات استثنائية</p>
+            <span class="collection-link">تصفح المجموعة <i class="fas fa-arrow-left"></i></span>
+          </div>
+        </a>
+
+        <a href="products.html?category=floral" class="collection-card">
+          <div class="collection-image">
+            <img src="https://images.unsplash.com/photo-1563170351-be82bc888aa4?w=500&q=80" alt="مجموعة زهرية">
+            <div class="collection-overlay"></div>
+            <div class="collection-icon"><i class="fas fa-rose"></i></div>
+          </div>
+          <div class="collection-info">
+            <span class="collection-sub">Fleurie</span>
+            <h3 class="collection-name">مجموعة زهرية</h3>
+            <p class="collection-desc">باقات زهور مختارة بعناية من ياسمين غراس وورود بلغاريا</p>
+            <span class="collection-link">تصفح المجموعة <i class="fas fa-arrow-left"></i></span>
+          </div>
+        </a>
+
+        <a href="products.html?category=fresh" class="collection-card">
+          <div class="collection-image">
+            <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=500&q=80" alt="مجموعة منعشة">
+            <div class="collection-overlay"></div>
+            <div class="collection-icon"><i class="fas fa-water"></i></div>
+          </div>
+          <div class="collection-info">
+            <span class="collection-sub">Fraîche</span>
+            <h3 class="collection-name">مجموعة منعشة</h3>
+            <p class="collection-desc">انتعاش الحمضيات ونسيم البحر مع لمسات عطرية خفيفة ومنعشة</p>
+            <span class="collection-link">تصفح المجموعة <i class="fas fa-arrow-left"></i></span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -268,7 +312,7 @@
       <div class="cart-empty">
         <i class="fas fa-shopping-bag"></i>
         <p>سلتك فارغة</p>
-        <span>تصفح مجموعتنا وأضف ما يعجبك</span>
+        <span>تصفح مجموعاتنا وأضف ما يعجبك</span>
       </div>
     </div>
     <div class="cart-footer">
@@ -294,33 +338,31 @@
   <footer class="footer">
     <div class="container footer-content">
       <div class="footer-brand">
-        <div class="logo">
+        <a href="index.html" class="logo">
           <span class="logo-icon"><i class="fas fa-gem"></i></span>
           <div class="logo-text">
             <h2>DDDYOU</h2>
             <p>Parfumerie de Luxe</p>
           </div>
-        </div>
+        </a>
         <p>عطور تجمع بين الرقي والأصالة، تُصنع بشغف منذ ١٨٩٢</p>
       </div>
       <div class="footer-links">
         <h4>روابط سريعة</h4>
         <ul>
-          <li><a href="#">الرئيسية</a></li>
-          <li><a href="#">عن العلامة</a></li>
-          <li><a href="#">المجموعة</a></li>
-          <li><a href="#">المدونة</a></li>
-          <li><a href="#">اتصل بنا</a></li>
+          <li><a href="index.html">الرئيسية</a></li>
+          <li><a href="index.html#about">عن العلامة</a></li>
+          <li><a href="products.html">المنتجات</a></li>
+          <li><a href="index.html#contact">اتصل بنا</a></li>
         </ul>
       </div>
       <div class="footer-links">
-        <h4>خدمة العملاء</h4>
+        <h4>المجموعات</h4>
         <ul>
-          <li><a href="#">الشحن والتوصيل</a></li>
-          <li><a href="#">سياسة الإرجاع</a></li>
-          <li><a href="#">الأسئلة الشائعة</a></li>
-          <li><a href="#">حجم العطر</a></li>
-          <li><a href="#">خريطة الموقع</a></li>
+          <li><a href="products.html?category=oriental">الشرقية</a></li>
+          <li><a href="products.html?category=woody">الخشبية</a></li>
+          <li><a href="products.html?category=floral">الزهرية</a></li>
+          <li><a href="products.html?category=fresh">المنعشة</a></li>
         </ul>
       </div>
       <div class="footer-contact">
