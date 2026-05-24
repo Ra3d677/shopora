@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { 
   Blocks, GripVertical, Image as ImageIcon, ShoppingBag, Tag, MessageSquare, Type, Plus, Trash2, Save, Loader2,
   ChevronDown, ChevronUp, Settings, Video, PlayCircle, Link2, Info, Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight,
-  Palette, Eye, EyeOff, Layers, Move, Copy, Undo2, Redo2, PaintBucket, Text, Heading, Square, PanelTop, PanelBottom,
+  Palette, Eye, EyeOff, Move, Copy, Undo2, Redo2, PaintBucket, Text, Heading, Square, PanelTop, PanelBottom,
   ChevronLeft, ChevronRight, Star, Heart, Globe, BarChart3, Camera, Music, Quote, Clock, Sparkles, Split,
 } from "lucide-react";
 import MediaPicker from "../media/MediaPicker";
@@ -344,43 +344,6 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                   <SectionStyleEditor section={activeSection} onUpdate={(updates) => updateSection(activeSection.id, updates)} />
                 ) : (
                   <>
-                    {/* Style Selector */}
-                    <div className="space-y-4">
-                      <label className="text-sm font-bold text-slate-700 flex items-center gap-2">
-                        <Layers className="w-4 h-4 text-blue-500" /> Layout Style
-                      </label>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {activeSection.type === 'hero' && ['slider', 'luxury', 'split', 'centered', 'minimal', 'campaign', 'abstract', 'immersive'].map(style => (
-                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
-                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
-                        ))}
-                        {activeSection.type === 'categories' && ['grid', 'carousel', 'circles'].map(style => (
-                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
-                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
-                        ))}
-                        {activeSection.type === 'packages' && ['grid', 'list', 'cards', 'compact', 'featured'].map(style => (
-                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
-                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
-                        ))}
-                        {activeSection.type === 'about_us' && ['split', 'centered', 'minimal'].map(style => (
-                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
-                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
-                        ))}
-                        {activeSection.type === 'featured_products' && ['grid', 'carousel', 'masonry'].map(style => (
-                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
-                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
-                        ))}
-                        {activeSection.type === 'testimonials' && ['cards', 'slider', 'minimal'].map(style => (
-                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
-                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
-                        ))}
-                        {activeSection.type === 'text_block' && ['centered', 'left', 'right', 'bordered', 'highlight'].map(style => (
-                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
-                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
-                        ))}
-                      </div>
-                    </div>
-
                     {activeSection.type === 'sale' && (
                       <div className="space-y-4 p-5 bg-blue-50/50 rounded-2xl border border-blue-100">
                         <label className="text-sm font-bold text-blue-800 flex items-center gap-2">
@@ -624,18 +587,6 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                                       className="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
                                   </div>
                                 </div>
-                                <div className="space-y-2">
-                                  <label className="text-xs font-bold text-slate-500 uppercase">Cover Image</label>
-                                  <div className="bg-white border border-slate-200 rounded-2xl p-4">
-                                    <MediaPicker slug={slug} value={item.poster || ''}
-                                      onChange={url => {
-                                        const items = [...(activeSection.config.items || [])];
-                                        items[idx].poster = url;
-                                        updateSectionConfig(activeSection.id, 'items', items);
-                                      }}
-                                      className="bg-white" />
-                                  </div>
-                                </div>
                               </div>
                             ))}
                           </div>
@@ -656,6 +607,10 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                                 <option value="grid">Grid</option>
                                 <option value="carousel">Carousel</option>
                                 <option value="stacked">Stacked Rows</option>
+                                <option value="masonry">Masonry</option>
+                                <option value="hero">Hero (Large Featured)</option>
+                                <option value="split">Split View</option>
+                                <option value="fullwidth">Full-Width Single</option>
                               </select>
                             </div>
                           </div>

@@ -38,18 +38,70 @@ export default function VideoSection({ section, slug }: VideoSectionProps) {
         </div>
       )}
 
-      {displayStyle === 'carousel' ? (
+      {displayStyle === 'hero' && items.length > 0 && (
+        <div className="space-y-6">
+          <div className="max-w-5xl mx-auto">
+            <VideoCard video={items[0]} hero />
+          </div>
+          {items.length > 1 && (
+            <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${Math.min(columns, 4)}, 1fr)` }}>
+              {items.slice(1).map((video: any, idx: number) => (
+                <VideoCard key={idx} video={video} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {displayStyle === 'split' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          {items.slice(0, 2).map((video: any, idx: number) => (
+            <VideoCard key={idx} video={video} />
+          ))}
+          {items.length > 2 && (
+            <div className="col-span-full grid gap-4" style={{ gridTemplateColumns: `repeat(${Math.min(columns, 3)}, 1fr)` }}>
+              {items.slice(2).map((video: any, idx: number) => (
+                <VideoCard key={idx} video={video} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {displayStyle === 'fullwidth' && (
+        <div className="space-y-8">
+          {items.map((video: any, idx: number) => (
+            <div key={idx} className="max-w-6xl mx-auto">
+              <VideoCard video={video} hero />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {displayStyle === 'masonry' && (
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+          {items.map((video: any, idx: number) => (
+            <div key={idx} className="break-inside-avoid">
+              <VideoCard video={video} />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {(displayStyle === 'grid' || displayStyle === 'stacked') && (
+        <div className="grid gap-8" style={{ gridTemplateColumns: `repeat(${displayStyle === 'stacked' ? 1 : columns}, 1fr)` }}>
+          {items.map((video: any, idx: number) => (
+            <VideoCard key={idx} video={video} />
+          ))}
+        </div>
+      )}
+
+      {displayStyle === 'carousel' && (
         <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
           {items.map((video: any, idx: number) => (
             <div key={idx} className="min-w-[320px] md:min-w-[400px] snap-start shrink-0">
               <VideoCard video={video} />
             </div>
-          ))}
-        </div>
-      ) : (
-        <div className="grid gap-8" style={{ gridTemplateColumns: `repeat(${displayStyle === 'stacked' ? 1 : columns}, 1fr)` }}>
-          {items.map((video: any, idx: number) => (
-            <VideoCard key={idx} video={video} />
           ))}
         </div>
       )}
@@ -64,7 +116,7 @@ export default function VideoSection({ section, slug }: VideoSectionProps) {
   );
 }
 
-function VideoCard({ video }: { video: any }) {
+function VideoCard({ video, hero }: { video: any; hero?: boolean }) {
   const { t } = useLanguageStore();
   const [isMuted, setIsMuted] = useState(true);
 
@@ -87,7 +139,7 @@ function VideoCard({ video }: { video: any }) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
-      className="relative group overflow-hidden bg-slate-900 shadow-2xl rounded-[2.5rem] aspect-[9/16] md:aspect-video"
+      className={`relative group overflow-hidden bg-slate-900 shadow-2xl rounded-[2.5rem] ${hero ? 'aspect-video md:aspect-[21/9]' : 'aspect-[9/16] md:aspect-video'}`}
     >
       {info?.type === 'tiktok' || info?.type === 'youtube' ? (
         <iframe
