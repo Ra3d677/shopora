@@ -5,9 +5,9 @@
 
 /* ---------- CSS Variables ---------- */
 :root {
-  --color-primary: #c9a96e;
-  --color-primary-dark: #b8923e;
-  --color-primary-light: #e8d5a3;
+  --color-gold: #c9a96e;
+  --color-gold-dark: #b8923e;
+  --color-gold-light: #f5e6c8;
   --color-dark: #0f0f1a;
   --color-dark-2: #1a1a2e;
   --color-dark-3: #25253e;
@@ -18,8 +18,7 @@
   --color-text: #1a1a2e;
   --color-text-light: #7a7a8a;
   --color-white: #ffffff;
-  --color-gold: #c9a96e;
-  --color-gold-light: #f5e6c8;
+  --color-gold-light-tint: #f5e6c8;
   --color-rose: #d4a0a0;
   --color-amber: #c87a36;
 
@@ -84,10 +83,10 @@ img {
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--color-dark-2); }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
+  background: var(--color-gold);
   border-radius: 10px;
 }
-::-webkit-scrollbar-thumb:hover { background: var(--color-primary-dark); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-gold-dark); }
 
 /* ---------- Container ---------- */
 .container {
@@ -169,7 +168,7 @@ img {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-gold), var(--color-primary-dark));
+  background: linear-gradient(135deg, var(--color-gold), var(--color-gold-dark));
   color: var(--color-dark);
   box-shadow: var(--shadow-gold);
 }
@@ -1255,6 +1254,106 @@ img {
   color: rgba(255,255,255,0.3);
 }
 
+/* ---------- Cart Item Styles (replacing inline styles) ---------- */
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--color-dark-3);
+  border-radius: var(--radius-sm);
+}
+
+.cart-item-img {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.cart-item-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-name {
+  color: var(--color-white);
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-item-price {
+  color: var(--color-gold);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.cart-item-qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.qty-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: transparent;
+  color: var(--color-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+  font-size: 1rem;
+}
+
+.qty-btn:hover {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-dark);
+}
+
+.qty-value {
+  color: var(--color-white);
+  font-weight: 600;
+  min-width: 16px;
+  text-align: center;
+}
+
+.cart-item-remove {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.3);
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.cart-item-remove:hover {
+  color: #ff4444;
+}
+
+.currency {
+  font-size: 0.9rem;
+}
+
+/* ---------- Focus visible for accessibility ---------- */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
 /* ---------- Animations ---------- */
 @keyframes fadeInDown {
   from {
@@ -1290,8 +1389,128 @@ img {
   }
 }
 
+/* Elements observed by IntersectionObserver should start hidden to prevent FOUC */
+.hero-stats,
+.about-content,
+.products-grid,
+.features-grid,
+.testimonials-slider,
+.contact-content {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.hero-stats.animate,
+.about-content.animate,
+.products-grid.animate,
+.features-grid.animate,
+.testimonials-slider.animate,
+.contact-content.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .animate {
   animation: fadeInUp 0.8s ease forwards;
+}
+
+/* ---------- Reduced Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero-stats,
+  .about-content,
+  .products-grid,
+  .features-grid,
+  .testimonials-slider,
+  .contact-content {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-badge {
+    animation: none;
+  }
+
+  .hero-scroll {
+    animation: none;
+  }
+}
+
+/* ---------- Print Styles ---------- */
+@media print {
+  .header,
+  .hero-scroll,
+  .product-actions,
+  .cart-overlay,
+  .cart-sidebar,
+  .modal,
+  .newsletter-form,
+  .social-links,
+  .menu-toggle,
+  .hero-actions,
+  .footer-payments {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .section {
+    padding: 30px 0;
+    page-break-inside: avoid;
+  }
+
+  .hero {
+    min-height: auto;
+    background: none !important;
+  }
+
+  .hero-title .title-line,
+  .section-title {
+    color: #000;
+  }
+
+  .hero-title .title-line.gold,
+  .section-title .gold {
+    color: #b8923e;
+  }
+
+  .hero-desc {
+    color: #333;
+  }
+
+  .product-card,
+  .feature-card,
+  .testimonial-card {
+    border: 1px solid #ddd;
+    box-shadow: none;
+  }
+
+  .product-image img {
+    filter: grayscale(100%);
+  }
+
+  .footer {
+    border-top: 1px solid #ddd;
+  }
+
+  .footer-bottom p,
+  .footer-contact p,
+  .footer-links ul li a,
+  .footer-brand > p {
+    color: #555;
+  }
 }
 
 /* ---------- Responsive ---------- */

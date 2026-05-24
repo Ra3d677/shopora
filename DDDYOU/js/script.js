@@ -118,7 +118,27 @@ const products = [
 ];
 
 // ---------- Cart ----------
-let cart = [];
+const CART_STORAGE_KEY = 'dddyou_cart';
+let cart = loadCart();
+
+function loadCart() {
+  try {
+    const stored = localStorage.getItem(CART_STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch (e) {
+    console.warn('Failed to load cart from localStorage:', e);
+    return [];
+  }
+}
+
+function saveCart() {
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  } catch (e) {
+    console.warn('Failed to save cart to localStorage:', e);
+  }
+}
+
 const cartBtn = document.getElementById('cartBtn');
 const cartOverlay = document.getElementById('cartOverlay');
 const cartSidebar = document.getElementById('cartSidebar');
@@ -148,38 +168,85 @@ cartBtn.addEventListener('click', (e) => {
 cartClose.addEventListener('click', closeCart);
 cartOverlay.addEventListener('click', closeCart);
 
+// Keyboard: Escape to close cart & modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (cartSidebar.classList.contains('open')) {
+      closeCart();
+    }
+    if (modal.classList.contains('open')) {
+      closeModal();
+    }
+  }
+});
+
 // Add to cart
 function addToCart(productId) {
-  const product = products.find(p => p.id === productId);
-  if (!product) return;
+  try {
+    const product = products.find(p => p.id === productId);
+    if (!product) {
+      console.warn(`Product with id ${productId} not found`);
+      return;
+    }
 
-  const existingItem = cart.find(item => item.id === productId);
-  if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    cart.push({ ...product, quantity: 1 });
-  }
+    const existingItem = cart.find(item => item.id === productId);
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
 
-  updateCartUI();
+    saveCart();
+    updateCartUI();
 
-  // Animation feedback
-  const btn = document.querySelector(`.add-to-cart[data-id="${productId}"]`);
-  if (btn) {
-    btn.innerHTML = '<i class="fas fa-check"></i> تمت الإضافة';
-    btn.style.background = 'var(--color-gold)';
-    btn.style.color = 'var(--color-dark)';
-    setTimeout(() => {
-      btn.innerHTML = '<i class="fas fa-shopping-bag"></i> أضف للسلة';
-      btn.style.background = '';
-      btn.style.color = '';
-    }, 2000);
+    // Animation feedback - find the visible add-to-cart button
+    const allBtns = document.querySelectorAll(`.add-to-cart[data-id="${productId}"]`);
+    const visibleBtn = Array.from(allBtns).find(
+      btn => btn.offsetParent !== null || btn.closest('.product-card')
+    );
+    
+    if (visibleBtn) {
+      const originalHtml = visibleBtn.innerHTML;
+      visibleBtn.innerHTML = '<i class="fas fa-check"></i> تمت الإضافة';
+      visibleBtn.style.background = 'var(--color-gold)';
+      visibleBtn.style.color = 'var(--color-dark)';
+      setTimeout(() => {
+        visibleBtn.innerHTML = originalHtml;
+        visibleBtn.style.background = '';
+        visibleBtn.style.color = '';
+      }, 2000);
+    }
+  } catch (e) {
+    console.error('Error adding to cart:', e);
   }
 }
 
 // Remove from cart
 function removeFromCart(productId) {
   cart = cart.filter(item => item.id !== productId);
+  saveCart();
   updateCartUI();
+}
+
+// Cart Item HTML template
+function createCartItemHTML(item) {
+  return `
+    <div class="cart-item">
+      <img src="${item.image}" alt="${item.name}" class="cart-item-img" loading="lazy">
+      <div class="cart-item-details">
+        <h4 class="cart-item-name">${item.name}</h4>
+        <p class="cart-item-price">${item.price.toLocaleString('ar-SA')} ر.س</p>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">−</button>
+          <span class="qty-value">${item.quantity}</span>
+          <button class="qty-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+        </div>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart(${item.id})">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+  `;
 }
 
 // Update UI
@@ -198,26 +265,10 @@ function updateCartUI() {
       </div>
     `;
   } else {
-    cartItemsContainer.innerHTML = cart.map(item => `
-      <div class="cart-item" style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding:16px;background:var(--color-dark-3);border-radius:var(--radius-sm);">
-        <img src="${item.image}" alt="${item.name}" style="width:70px;height:70px;border-radius:8px;object-fit:cover;">
-        <div style="flex:1;">
-          <h4 style="color:var(--color-white);font-size:0.95rem;margin-bottom:4px;">${item.name}</h4>
-          <p style="color:var(--color-gold);font-weight:700;">${item.price.toLocaleString('ar-SA')} ر.س</p>
-          <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
-            <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})" style="width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--color-white);cursor:pointer;">−</button>
-            <span style="color:var(--color-white);font-weight:600;">${item.quantity}</span>
-            <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})" style="width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--color-white);cursor:pointer;">+</button>
-          </div>
-        </div>
-        <button onclick="removeFromCart(${item.id})" style="background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:1.1rem;">
-          <i class="fas fa-trash"></i>
-        </button>
-      </div>
-    `).join('');
+    cartItemsContainer.innerHTML = cart.map(createCartItemHTML).join('');
   }
 
-  cartTotal.textContent = `${totalPrice.toLocaleString('ar-SA')} ر.س`;
+  cartTotal.innerHTML = `${totalPrice.toLocaleString('ar-SA')} <span class="currency">ر.س</span>`;
 }
 
 function updateQuantity(productId, newQuantity) {
@@ -228,6 +279,7 @@ function updateQuantity(productId, newQuantity) {
   const item = cart.find(i => i.id === productId);
   if (item) {
     item.quantity = newQuantity;
+    saveCart();
     updateCartUI();
   }
 }
@@ -236,43 +288,53 @@ function updateQuantity(productId, newQuantity) {
 const productsGrid = document.getElementById('productsGrid');
 
 function renderProducts(filter = 'all') {
-  const filtered = filter === 'all'
-    ? products
-    : products.filter(p => p.category === filter);
+  try {
+    const filtered = filter === 'all'
+      ? products
+      : products.filter(p => p.category === filter);
 
-  productsGrid.innerHTML = filtered.map(product => `
-    <div class="product-card" data-id="${product.id}">
-      <div class="product-image">
-        <img src="${product.image}" alt="${product.name}" loading="lazy">
-        ${product.badge ? `<span class="product-badge ${product.badgeClass}">${product.badge}</span>` : ''}
-        <div class="product-actions">
-          <button class="product-action-btn" onclick="quickView(${product.id})" title="معاينة سريعة">
-            <i class="fas fa-eye"></i>
-          </button>
-          <button class="product-action-btn" onclick="addToCart(${product.id})" title="أضف للسلة">
-            <i class="fas fa-shopping-bag"></i>
-          </button>
-          <button class="product-action-btn" title="أضف للمفضلة">
-            <i class="fas fa-heart"></i>
-          </button>
-        </div>
-      </div>
-      <div class="product-info">
-        <div class="product-category">${product.categoryAr}</div>
-        <h3 class="product-name">${product.name}</h3>
-        <p class="product-description">${product.description}</p>
-        <div class="product-footer">
-          <div class="product-price">
-            ${product.price.toLocaleString('ar-SA')} ر.س
-            ${product.oldPrice ? `<span class="old">${product.oldPrice.toLocaleString('ar-SA')} ر.س</span>` : ''}
+    productsGrid.innerHTML = filtered.map(product => `
+      <div class="product-card" data-id="${product.id}">
+        <div class="product-image">
+          <img 
+            src="${product.image}" 
+            alt="${product.name}" 
+            loading="lazy"
+            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 fill=%22%231a1a2e%22%3E%3Crect width=%22400%22 height=%22400%22/%3E%3Ctext x=%22200%22 y=%22200%22 text-anchor=%22middle%22 fill=%22%23c9a96e%22 font-size=%2220%22%3EDDDYOU%3C/text%3E%3C/svg%3E'"
+          >
+          ${product.badge ? `<span class="product-badge ${product.badgeClass}">${product.badge}</span>` : ''}
+          <div class="product-actions">
+            <button class="product-action-btn" onclick="quickView(${product.id})" title="معاينة سريعة" aria-label="معاينة سريعة">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="product-action-btn" onclick="addToCart(${product.id})" title="أضف للسلة" aria-label="أضف للسلة">
+              <i class="fas fa-shopping-bag"></i>
+            </button>
+            <button class="product-action-btn" title="أضف للمفضلة" aria-label="أضف للمفضلة">
+              <i class="fas fa-heart"></i>
+            </button>
           </div>
-          <button class="add-to-cart" data-id="${product.id}" onclick="addToCart(${product.id})">
-            <i class="fas fa-shopping-bag"></i> أضف للسلة
-          </button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">${product.categoryAr}</div>
+          <h3 class="product-name">${product.name}</h3>
+          <p class="product-description">${product.description}</p>
+          <div class="product-footer">
+            <div class="product-price">
+              ${product.price.toLocaleString('ar-SA')} ر.س
+              ${product.oldPrice ? `<span class="old">${product.oldPrice.toLocaleString('ar-SA')} ر.س</span>` : ''}
+            </div>
+            <button class="add-to-cart" data-id="${product.id}" onclick="addToCart(${product.id})">
+              <i class="fas fa-shopping-bag"></i> أضف للسلة
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  `).join('');
+    `).join('');
+  } catch (e) {
+    console.error('Error rendering products:', e);
+    productsGrid.innerHTML = '<p style="color:var(--color-gold);text-align:center;padding:40px;">عذراً، حدث خطأ في تحميل المنتجات</p>';
+  }
 }
 
 // ---------- Product Filter ----------
@@ -290,39 +352,51 @@ const modal = document.getElementById('quickViewModal');
 const modalClose = document.getElementById('modalClose');
 const modalBody = document.getElementById('modalBody');
 
-function quickView(productId) {
-  const product = products.find(p => p.id === productId);
-  if (!product) return;
-
-  modalBody.innerHTML = `
-    <img src="${product.image}" alt="${product.name}">
-    <div>
-      <div class="product-category" style="margin-bottom:8px;">${product.categoryAr}</div>
-      <h3 style="color:var(--color-white);font-size:1.5rem;margin-bottom:12px;">${product.name}</h3>
-      <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:16px;">${product.description}</p>
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
-        <span style="font-size:1.8rem;font-weight:800;color:var(--color-gold);">${product.price.toLocaleString('ar-SA')} ر.س</span>
-        ${product.oldPrice ? `<span style="font-size:1rem;color:rgba(255,255,255,0.3);text-decoration:line-through;">${product.oldPrice.toLocaleString('ar-SA')} ر.س</span>` : ''}
-      </div>
-      <button class="btn btn-primary" onclick="addToCart(${product.id}); modal.classList.remove('open');">
-        <i class="fas fa-shopping-bag"></i> أضف للسلة
-      </button>
-    </div>
-  `;
-
-  modal.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-modalClose.addEventListener('click', () => {
+function closeModal() {
   modal.classList.remove('open');
   document.body.style.overflow = '';
-});
+}
+
+function quickView(productId) {
+  try {
+    const product = products.find(p => p.id === productId);
+    if (!product) {
+      console.warn(`Product with id ${productId} not found for quick view`);
+      return;
+    }
+
+    modalBody.innerHTML = `
+      <img 
+        src="${product.image}" 
+        alt="${product.name}" 
+        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22500%22 height=%22500%22 fill=%22%231a1a2e%22%3E%3Crect width=%22500%22 height=%22500%22/%3E%3Ctext x=%22250%22 y=%22250%22 text-anchor=%22middle%22 fill=%22%23c9a96e%22 font-size=%2224%22%3EDDDYOU%3C/text%3E%3C/svg%3E'"
+      >
+      <div>
+        <div class="product-category" style="margin-bottom:8px;">${product.categoryAr}</div>
+        <h3 style="color:var(--color-white);font-size:1.5rem;margin-bottom:12px;">${product.name}</h3>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:16px;">${product.description}</p>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+          <span style="font-size:1.8rem;font-weight:800;color:var(--color-gold);">${product.price.toLocaleString('ar-SA')} ر.س</span>
+          ${product.oldPrice ? `<span style="font-size:1rem;color:rgba(255,255,255,0.3);text-decoration:line-through;">${product.oldPrice.toLocaleString('ar-SA')} ر.س</span>` : ''}
+        </div>
+        <button class="btn btn-primary" onclick="addToCart(${product.id}); closeModal();">
+          <i class="fas fa-shopping-bag"></i> أضف للسلة
+        </button>
+      </div>
+    `;
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  } catch (e) {
+    console.error('Error in quick view:', e);
+  }
+}
+
+modalClose.addEventListener('click', closeModal);
 
 modal.addEventListener('click', (e) => {
   if (e.target === modal) {
-    modal.classList.remove('open');
-    document.body.style.overflow = '';
+    closeModal();
   }
 });
 
@@ -338,6 +412,7 @@ let scrollLeft = 0;
 cards.forEach((_, index) => {
   const dot = document.createElement('button');
   dot.classList.add('slider-dot');
+  dot.setAttribute('aria-label', `الانتقال إلى الشهادة ${index + 1}`);
   if (index === 0) dot.classList.add('active');
   dot.addEventListener('click', () => {
     const card = cards[index];
@@ -402,25 +477,29 @@ slider.addEventListener('touchmove', (e) => {
   slider.scrollLeft = scrollLeft - walk;
 });
 
-// ---------- Stats Counter ----------
+// ---------- Stats Counter (timestamp-based) ----------
 function animateCounters() {
   const counters = document.querySelectorAll('.stat-num');
   counters.forEach(counter => {
     const target = parseInt(counter.dataset.target);
-    const increment = target / 60;
-    let current = 0;
+    const duration = 1500; // 1.5 seconds
+    const startTime = performance.now();
 
-    const updateCounter = () => {
-      current += increment;
-      if (current < target) {
-        counter.textContent = Math.ceil(current);
+    const updateCounter = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out quad
+      const eased = progress * (2 - progress);
+      const current = Math.ceil(eased * target);
+
+      counter.textContent = current.toLocaleString('ar-SA');
+      
+      if (progress < 1) {
         requestAnimationFrame(updateCounter);
-      } else {
-        counter.textContent = target.toLocaleString('ar-SA');
       }
     };
 
-    updateCounter();
+    requestAnimationFrame(updateCounter);
   });
 }
 
@@ -446,11 +525,14 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Observe elements
-document.querySelectorAll('.hero-stats, .about-content, .products-grid, .features-grid, .testimonials-slider, .contact-content')
-  .forEach(el => observer.observe(el));
+const elementsToObserve = document.querySelectorAll(
+  '.hero-stats, .about-content, .products-grid, .features-grid, .testimonials-slider, .contact-content'
+);
+elementsToObserve.forEach(el => observer.observe(el));
 
-// ---------- Sticky Header ----------
+// ---------- Sticky Header (throttled) ----------
 const header = document.getElementById('header');
+let ticking = false;
 
 function handleScroll() {
   if (window.scrollY > 50) {
@@ -460,7 +542,18 @@ function handleScroll() {
   }
 }
 
-window.addEventListener('scroll', handleScroll);
+function onScroll() {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      handleScroll();
+      updateActiveNav();
+      ticking = false;
+    });
+    ticking = true;
+  }
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
 
 // ---------- Mobile Menu ----------
 const menuToggle = document.getElementById('menuToggle');
@@ -503,26 +596,82 @@ function updateActiveNav() {
   });
 }
 
-window.addEventListener('scroll', updateActiveNav);
-
 // ---------- Newsletter Form ----------
 const newsletterForm = document.getElementById('newsletterForm');
-newsletterForm.addEventListener('submit', (e) => {
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+newsletterForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const input = newsletterForm.querySelector('input');
-  if (input.value.trim()) {
-    // Simulate subscription
-    const btn = newsletterForm.querySelector('.btn');
-    const originalText = btn.textContent;
-    btn.textContent = '✓ تم الاشتراك';
-    btn.style.background = '#28a745';
-    setTimeout(() => {
-      btn.textContent = originalText;
-      btn.style.background = '';
-    }, 3000);
+  const btn = newsletterForm.querySelector('.btn');
+  const email = input.value.trim();
+
+  if (!email) {
+    showNewsletterFeedback('يرجى إدخال بريد إلكتروني', 'error');
+    return;
+  }
+
+  if (!isValidEmail(email)) {
+    showNewsletterFeedback('يرجى إدخال بريد إلكتروني صحيح', 'error');
+    return;
+  }
+
+  // Show loading state
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الاشتراك...';
+
+  try {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    showNewsletterFeedback('✓ تم الاشتراك بنجاح!', 'success');
     input.value = '';
+  } catch (e) {
+    showNewsletterFeedback('حدث خطأ، حاول مرة أخرى', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
   }
 });
 
+function showNewsletterFeedback(message, type) {
+  const feedbackEl = document.getElementById('newsletterFeedback') || (() => {
+    const el = document.createElement('p');
+    el.id = 'newsletterFeedback';
+    el.style.cssText = 'margin-top:12px;font-size:0.9rem;font-weight:500;';
+    newsletterForm.appendChild(el);
+    return el;
+  })();
+
+  feedbackEl.textContent = message;
+  feedbackEl.style.color = type === 'success' ? '#28a745' : '#dc3545';
+  
+  setTimeout(() => {
+    feedbackEl.remove();
+  }, 4000);
+}
+
+// ---------- Lazy loading images with IntersectionObserver ----------
+if ('loading' in HTMLImageElement.prototype) {
+  // Browser supports native lazy loading - already using loading="lazy"
+} else {
+  // Fallback: use IntersectionObserver for older browsers
+  const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+  const imageObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src || img.src;
+        imageObserver.unobserve(img);
+      }
+    });
+  });
+  lazyImages.forEach(img => imageObserver.observe(img));
+}
+
 // ---------- Initialize ----------
-renderProducts();
+renderProducts('all');
+updateCartUI();
