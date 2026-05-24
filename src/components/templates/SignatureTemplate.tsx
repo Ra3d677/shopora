@@ -121,9 +121,19 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           </div>
         );
 
+        // Helper to get safe config
+        const getSafeConfig = (cfg: any) => ({
+          title: cfg?.title || "Welcome to our store",
+          subtitle: cfg?.subtitle || "Discover amazing products",
+          btnText: cfg?.btnText || "Shop Now",
+          btnLink: cfg?.btnLink || "#",
+          bgImage: cfg?.bgImage || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1600&q=80",
+          ...cfg
+        });
+
         if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
-          const cfg = section.config || {};
+          const cfg = getSafeConfig(section.config);
           let content;
 
           if (heroStyle === 'slider') {
@@ -142,17 +152,18 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                       </span>
                     </h1>
                     <div className="flex flex-wrap items-center justify-center md:justify-start gap-6">
-                       {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
+                       {Array.isArray(sigSettings.heroButtons) ? sigSettings.heroButtons.map((btn: any, index: number) => (
                          <MagneticButton key={btn.id || index} strength={0.2}>
                            <EditableButton label={btn.label || cfg.btnText || "Shop Now"} link={btn.link || cfg.btnLink || "#"} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="block px-10 py-5 uppercase font-bold tracking-widest hover:scale-105 transition-transform" />
                          </MagneticButton>
-                       ))}
+                       )) : (
+                          <EditableButton label={cfg.btnText} link={cfg.btnLink} slug={slug} settingsKey="heroDefaultBtn" className="block px-10 py-5 uppercase font-bold tracking-widest hover:scale-105 transition-transform" />
+                       )}
                     </div>
-                    <BannerButton banner={topBanners[0]} slug={slug} />
                   </motion.div>
                 </div>
                 <div className="w-full md:w-1/2 relative h-full">
-                  <SmartImage src={cfg.bgImage || topBanners[0]?.imageUrl || sigSettings.heroImage || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&q=80"} className="absolute inset-0 w-full h-full object-cover" alt="Hero" />
+                  <SmartImage src={cfg.bgImage} className="absolute inset-0 w-full h-full object-cover" alt="Hero" />
                 </div>
               </section>
             );
@@ -160,7 +171,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
             content = (
               <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex flex-col items-center justify-center bg-transparent overflow-hidden text-center px-6">
                 <div className="absolute inset-0 opacity-40">
-                  <SmartImage src={cfg.bgImage || topBanners[0]?.imageUrl || sigSettings.heroImage || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&q=80"} className="w-full h-full object-cover" alt="Hero Bg" />
+                  <SmartImage src={cfg.bgImage} className="w-full h-full object-cover" alt="Hero Bg" />
                 </div>
                 <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} className="max-w-5xl z-10">
                   <span className="text-[10px] uppercase font-black tracking-[1em] text-white/60 mb-12 block">
@@ -172,14 +183,30 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                     </span>
                   </h1>
                   <div className="flex flex-wrap items-center justify-center gap-10">
-                     {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
+                     {Array.isArray(sigSettings.heroButtons) ? sigSettings.heroButtons.map((btn: any, index: number) => (
                        <MagneticButton key={btn.id || index} strength={0.2}>
                          <EditableButton label={btn.label || cfg.btnText || "Shop Now"} link={btn.link || cfg.btnLink || "#"} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="block px-12 py-6 uppercase font-black tracking-widest text-sm hover:scale-110 transition-transform" />
                        </MagneticButton>
-                     ))}
+                     )) : (
+                        <EditableButton label={cfg.btnText} link={cfg.btnLink} slug={slug} settingsKey="heroDefaultBtn" className="block px-12 py-6 uppercase font-black tracking-widest text-sm hover:scale-110 transition-transform" />
+                     )}
                   </div>
-                  <BannerButton banner={topBanners[0]} slug={slug} />
                 </motion.div>
+              </section>
+            );
+          } else {
+            // Default Luxury
+            content = (
+              <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex items-center justify-center overflow-hidden bg-transparent">
+                <div className="absolute inset-0">
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60 z-10 pointer-events-none" />
+                  <SmartImage src={cfg.bgImage} className="w-full h-full object-cover" alt="Hero" />
+                </div>
+                <div className="relative z-20 text-white text-center px-4">
+                    <h1 className="text-6xl md:text-[10rem] font-black tracking-tighter leading-none mb-12 uppercase italic">
+                      <EditableText content={cfg.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                    </h1>
+                </div>
               </section>
             );
           } else if (heroStyle === 'minimal') {
