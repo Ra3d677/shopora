@@ -331,6 +331,43 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                       </div>
                     )}
 
+                    {/* Style Selector */}
+                    <div className="space-y-4">
+                      <label className="text-sm font-bold text-slate-700 flex items-center gap-2">
+                        Layout Style
+                      </label>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {activeSection.type === 'hero' && ['slider', 'luxury', 'split', 'centered', 'minimal', 'campaign', 'abstract', 'immersive'].map(style => (
+                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
+                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
+                        ))}
+                        {activeSection.type === 'categories' && ['grid', 'carousel', 'circles'].map(style => (
+                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
+                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
+                        ))}
+                        {activeSection.type === 'packages' && ['grid', 'list', 'cards', 'compact', 'featured'].map(style => (
+                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
+                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
+                        ))}
+                        {activeSection.type === 'about_us' && ['split', 'centered', 'minimal'].map(style => (
+                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
+                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
+                        ))}
+                        {activeSection.type === 'featured_products' && ['grid', 'carousel', 'masonry'].map(style => (
+                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
+                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
+                        ))}
+                        {activeSection.type === 'testimonials' && ['cards', 'slider', 'minimal'].map(style => (
+                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
+                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
+                        ))}
+                        {activeSection.type === 'text_block' && ['centered', 'left', 'right', 'bordered', 'highlight'].map(style => (
+                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
+                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
+                        ))}
+                      </div>
+                    </div>
+
                     {/* Section-specific Content Settings */}
                     <div className="space-y-6">
                       <h3 className="text-sm font-bold text-slate-800 border-b pb-2 flex items-center gap-2">
