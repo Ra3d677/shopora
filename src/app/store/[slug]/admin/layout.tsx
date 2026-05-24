@@ -69,6 +69,7 @@ export default async function AdminLayout({
   const isWebsite = store.type === 'WEBSITE';
 
   const isFitness = store.template === 'fitness';
+  const isDDDYOU = store.template === 'dddyou';
 
   const mainItems = isWebsite ? [
     { label: t('overview'), iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
@@ -87,6 +88,7 @@ export default async function AdminLayout({
     { label: t('coupons'), iconName: 'Tag', path: '/coupons', color: 'text-yellow-500' },
     { label: t('banners'), iconName: 'ImageIcon', path: '/banners', color: 'text-red-500' },
     { label: 'Blog', iconName: 'Library', path: '/blog', color: 'text-emerald-500' },
+    ...(isDDDYOU ? [{ label: isRTL ? 'لوحة تحكم DDDYOU' : 'DDDYOU Dashboard', iconName: 'LayoutDashboard' as const, path: '/dddyou', color: 'text-amber-500' }] : []),
   ];
 
   const systemItems = isSuperAdmin ? [
