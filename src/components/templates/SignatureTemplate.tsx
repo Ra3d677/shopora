@@ -216,7 +216,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                     <span className="text-[10px] uppercase font-black tracking-[0.3em] text-slate-300 mb-8 block">{t('theSignatureCollection')}</span>
                   <h1 className="text-6xl md:text-[8rem] font-black text-black leading-none tracking-tighter mb-12 uppercase italic">
                     <span className="gradient-text-support">
-                      <EditableText content={settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                      <EditableText content={cfg.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
                     </span>
                   </h1>
                   <div className="flex justify-center gap-8">
@@ -229,200 +229,19 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
               </section>
             );
           } else if (heroStyle === 'campaign') {
-            content = (
-              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex flex-col md:flex-row">
-                <div className="w-full md:w-1/2 relative h-full overflow-hidden">
-                  <motion.div 
-                    initial={{ scale: 1.2 }} 
-                    whileInView={{ scale: 1 }} 
-                    transition={{ duration: 2 }}
-                    className="h-full"
-                  >
-                    <SmartImage src={topBanners[0]?.imageUrl || sigSettings.heroImage || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&q=80"} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" alt="Campaign" />
-                  </motion.div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-slate-950/50" />
-                </div>
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-12 md:p-24 bg-transparent/20 backdrop-blur-md text-white">
-                  <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
-                    <div className="w-20 h-1 bg-blue-600 mb-12" />
-                    <span className="text-[10px] uppercase font-black tracking-[0.5em] text-blue-500 mb-6 block">SEASONAL CAMPAIGN</span>
-                    <h1 className="text-6xl md:text-9xl font-black leading-none tracking-tighter mb-12 uppercase">
-                      <span className="gradient-text-support">
-                        <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
-                      </span>
-                    </h1>
-                    <div className="flex flex-wrap gap-6">
-                      {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
-                        <MagneticButton key={btn.id || index}>
-                          <EditableButton label={btn.label} link={btn.link} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="block px-12 py-6 bg-white text-black font-black uppercase tracking-widest text-xs" />
-                        </MagneticButton>
-                      ))}
-                    </div>
-                    <BannerButton banner={topBanners[0]} slug={slug} />
-                  </motion.div>
-                </div>
-                <div className="absolute top-1/2 right-12 -translate-y-1/2 hidden xl:block">
-                   <p className="[writing-mode:vertical-lr] text-white/5 font-black text-[15rem] leading-none select-none uppercase">SIGNATURE</p>
-                </div>
-              </section>
-            );
-          } else if (heroStyle === 'abstract') {
-            content = (
-              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex items-center justify-center p-8">
-                 <div className="absolute top-24 left-24 w-64 h-64 bg-blue-50 rounded-full blur-[100px]" />
-                 <div className="absolute bottom-24 right-24 w-64 h-64 bg-slate-100 rounded-full blur-[100px]" />
-                 
-                 <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center relative z-10">
-                    <div className="order-2 lg:order-1">
-                       <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} className="max-w-6xl z-10">
-                          <h1 className="text-7xl md:text-[10rem] font-black text-slate-900 leading-[0.8] tracking-tighter mb-12 uppercase italic">
-                            <span className="gradient-text-support">
-                              <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "SIGNATURE"} slug={slug} settingsKey="storeName" />
-                            </span>
-                          </h1>
-                          <p className="text-slate-400 text-xl max-w-md mb-12 font-medium">Elevating your lifestyle through exceptional design and unparalleled quality.</p>
-                          <div className="flex gap-4">
-                             {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
-                               <EditableButton key={btn.id || index} label={btn.label} link={btn.link} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="px-10 py-5 border-2 border-slate-900 text-slate-900 font-black uppercase tracking-widest text-xs hover:bg-slate-900 hover:text-white transition-all" />
-                             ))}
-                           </div>
-                           <BannerButton banner={topBanners[0]} slug={slug} />
-                       </motion.div>
-                    </div>
-                    <div className="order-1 lg:order-2 flex justify-center">
-                       <motion.div 
-                         initial={{ borderRadius: "100px" }}
-                         animate={{ borderRadius: ["100px", "300px", "100px"] }}
-                         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                         className="w-full max-w-lg aspect-[4/5] bg-slate-100 overflow-hidden shadow-2xl relative"
-                       >
-                          <SmartImage src={topBanners[0]?.imageUrl || sigSettings.heroImage || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&q=80"} className="w-full h-full object-cover hover:scale-110 transition-transform duration-1000" alt="Abstract" />
-                          <div className="absolute inset-0 border-[20px] border-white/20 pointer-events-none" />
-                       </motion.div>
-                    </div>
-                 </div>
-              </section>
-            );
-          } else if (heroStyle === 'immersive') {
-            content = (
-              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex items-end">
-                <div className="absolute inset-0">
-                  <SmartImage src={topBanners[0]?.imageUrl || sigSettings.heroImage || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1600&q=80"} className="w-full h-full object-cover opacity-70" alt="Immersive" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-                </div>
-                <div className="relative z-10 w-full p-12 md:p-24">
-                  <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
-                    <div className="flex items-center gap-6 mb-12">
-                       <div className="w-24 h-[1px] bg-white/40" />
-                       <span className="text-[10px] uppercase font-black tracking-[0.8em] text-white/60">IMMERSIVE EXPERIENCE</span>
-                    </div>
-                    <h1 className="text-7xl md:text-[15rem] font-black text-white leading-none tracking-tighter mb-16 uppercase italic">
-                      <span className="gradient-text-support">
-                        <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
-                      </span>
-                    </h1>
-                    <div className="flex flex-wrap gap-12 items-center">
-                       {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
-                         <MagneticButton key={btn.id || index}>
-                           <EditableButton label={btn.label} link={btn.link} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="px-16 py-8 border border-white text-white font-black uppercase tracking-[0.5em] text-[10px] hover:bg-white hover:text-black transition-all" />
-                         </MagneticButton>
-                       ))}
-                       <BannerButton banner={topBanners[0]} slug={slug} />
-                       <div className="flex items-center gap-4 text-white/40">
-                          <Play size={24} fill="currentColor" />
-                          <span className="text-[10px] font-black uppercase tracking-widest">Cinema View</span>
-                       </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </section>
-            );
+             // ...
           } else {
-            // Default: Luxury (Original Design)
+            // Default Luxury
             content = (
               <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex items-center justify-center overflow-hidden bg-transparent">
                 <div className="absolute inset-0">
                   <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60 z-10 pointer-events-none" />
-                  <SmartImage 
-                    src={sigSettings.heroImage || (topBanners.length > 0 ? topBanners[0]?.imageUrl : "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1600&q=80")} 
-                    alt="Hero Desktop"
-                    className="hidden md:block w-full h-full object-cover"
-                  />
-                  <SmartImage 
-                    src={(topBanners.length > 0 ? (topBanners[0]?.mobileImageUrl || topBanners[0]?.imageUrl) : sigSettings.heroImage) || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1600&q=80"} 
-                    alt="Hero Mobile"
-                    className="md:hidden w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center z-20 text-white px-4 pointer-events-none">
-                    <motion.div 
-                      initial={{ opacity: 0, letterSpacing: "0.5em" }}
-                      whileInView={{ opacity: 1, letterSpacing: "1em" }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.5 }}
-                      className="text-[10px] uppercase font-black mb-8 block text-center pointer-events-auto"
-                    >
-                       <EditableText 
-                         content={sigSettings.establishedText || "ESTABLISHED 2026"} 
-                         slug={slug} 
-                         settingsKey="signatureSettings.establishedText" 
-                         className="text-[10px] uppercase font-black" 
-                       />
-                     </motion.div>
-                     <motion.div 
-                       initial={{ opacity: 0, y: 50 }}
-                       whileInView={{ opacity: 1, y: 0 }}
-                       viewport={{ once: true }}
-                       transition={{ duration: 1, delay: 0.5 }}
-                       className="text-6xl md:text-[10rem] font-black tracking-tighter leading-none text-center mb-12 mix-blend-difference pointer-events-auto"
-                     >
-                        <span className="gradient-text-support">
-                          <EditableText 
-                            content={settings.storeName?.toUpperCase() || "STORE"} 
-                            slug={slug} 
-                            settingsKey="storeName" 
-                            className="text-6xl md:text-[10rem] font-black tracking-tighter leading-none text-center" 
-                          />
-                        </span>
-                     </motion.div>
-                     <div className="flex flex-wrap items-center justify-center gap-6 z-50 pointer-events-auto">
-                        {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
-                          <MagneticButton key={btn.id || index} strength={0.2}>
-                            <EditableButton 
-                              label={btn.label}
-                              link={btn.link}
-                              slug={slug}
-                              settingsKey={`signatureSettings.heroButtons.${index}`}
-                              style={btn.style}
-                              onDelete={async () => {
-                                const buttons = Array.isArray(sigSettings.heroButtons) ? sigSettings.heroButtons : [];
-                                const updated = buttons.filter((_: any, i: number) => i !== index);
-                                await updateStoreSettingByKey(slug, "signatureSettings.heroButtons", updated);
-                              }}
-                              className="block px-10 py-5 uppercase font-bold tracking-widest hover:scale-105 transition-transform"
-                            />
-                          </MagneticButton>
-                         ))}
-                         <BannerButton banner={topBanners[0]} slug={slug} />
-                         {isEditMode && (
-                           <button 
-                             onClick={async () => {
-                               const currentButtons = Array.isArray(sigSettings.heroButtons) ? sigSettings.heroButtons : [];
-                               const newButton = {
-                                 id: Math.random().toString(36).substr(2, 9),
-                                 label: "NEW BUTTON",
-                                 link: "#",
-                                 style: { backgroundColor: "#ffffff", textColor: "#000000" }
-                               };
-                               await updateStoreSettingByKey(slug, "signatureSettings.heroButtons", [...currentButtons, newButton]);
-                             }}
-                             className="w-12 h-12 rounded-full border-2 border-dashed border-white/30 flex items-center justify-center text-white hover:border-white hover:bg-white/10 transition-all active:scale-90"
-                             title="Add New Button"
-                           >
-                             <Plus size={20} />
-                           </button>
-                         )}
-                      </div>
-                  </div>
+                  <SmartImage src={cfg.bgImage} className="w-full h-full object-cover" alt="Hero" />
+                </div>
+                <div className="relative z-20 text-white text-center px-4">
+                    <h1 className="text-6xl md:text-[10rem] font-black tracking-tighter leading-none mb-12 uppercase italic">
+                      <EditableText content={cfg.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                    </h1>
                 </div>
               </section>
             );
