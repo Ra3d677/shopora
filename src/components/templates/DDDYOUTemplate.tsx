@@ -130,10 +130,12 @@ export default function DDDYOUTemplate({ banners, settings, products: storeProdu
           </div>
           <nav className={`${menuOpen ? 'fixed inset-0 z-40 bg-[#1a1a2e] flex flex-col items-center justify-center' : 'hidden'} md:flex md:static md:bg-transparent`}>
             <ul className={`${menuOpen ? 'flex-col gap-8 text-2xl' : 'hidden md:flex'} flex md:flex-row gap-8 items-center`}>
-              {['الرئيسية', 'عن العلامة', 'مجموعتنا', 'آراء العملاء', 'اتصل بنا'].map((item, i) => (
-                <li key={item}><a href={`#${['hero', 'about', 'products', 'testimonials', 'contact'][i]}`} onClick={() => setMenuOpen(false)}
-                  className="text-white/70 hover:text-[#c9a96e] transition-colors font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-[#c9a96e] after:w-0 hover:after:w-full after:transition-all">{item}</a></li>
-              ))}
+              <li><a href="#hero" onClick={() => setMenuOpen(false)} className="text-white/70 hover:text-[#c9a96e] transition-colors font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-[#c9a96e] after:w-0 hover:after:w-full after:transition-all">الرئيسية</a></li>
+              <li><a href="#about" onClick={() => setMenuOpen(false)} className="text-white/70 hover:text-[#c9a96e] transition-colors font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-[#c9a96e] after:w-0 hover:after:w-full after:transition-all">عن العلامة</a></li>
+              <li><Link href={`/store/${slug}/products`} onClick={() => setMenuOpen(false)} className="text-white/70 hover:text-[#c9a96e] transition-colors font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-[#c9a96e] after:w-0 hover:after:w-full after:transition-all">منتجاتنا</Link></li>
+              <li><a href="#testimonials" onClick={() => setMenuOpen(false)} className="text-white/70 hover:text-[#c9a96e] transition-colors font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-[#c9a96e] after:w-0 hover:after:w-full after:transition-all">آراء العملاء</a></li>
+              <li><Link href={`/store/${slug}/products`} onClick={() => setMenuOpen(false)} className="text-white/70 hover:text-[#c9a96e] transition-colors font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-[#c9a96e] after:w-0 hover:after:w-full after:transition-all">NO</Link></li>
+              <li><a href="#contact" onClick={() => setMenuOpen(false)} className="text-white/70 hover:text-[#c9a96e] transition-colors font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-[#c9a96e] after:w-0 hover:after:w-full after:transition-all">اتصل بنا</a></li>
             </ul>
           </nav>
           <div className="flex items-center gap-4">
