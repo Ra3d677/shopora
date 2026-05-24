@@ -83,6 +83,19 @@ export default async function ProductsPage({
     );
   }
 
+  if (store.template === 'dddyou') {
+    return (
+      <DDDYOUProducts
+        products={displayedProducts}
+        slug={slug}
+        store={store}
+        category={category}
+        pageTitle={pageTitle}
+        pageDescription={pageDescription}
+      />
+    );
+  }
+
   const currentThemeId = getThemeByPath(storeSettings.pageThemes || [], `/store/${slug}/products`);
   const premiumStyle = getPremiumBackgroundStyle(currentThemeId);
   const isPremiumBg = currentThemeId !== 'default';
@@ -305,3 +318,4 @@ function Star({ className }: any) {
 }
 
 import { ShoppingBag, Search, Heart } from "lucide-react";
+import DDDYOUProducts from "@/components/templates/DDDYOUProducts";
