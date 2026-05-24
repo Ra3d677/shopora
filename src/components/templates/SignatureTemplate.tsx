@@ -14,6 +14,8 @@ class SectionErrorBoundary extends React.Component<{children: React.ReactNode}, 
 }
 
 export default function SignatureTemplate({ slug, settings, products }: any) {
+  const homepageLayout = settings?.homepageLayout || [];
+
   return (
     <div className="relative w-full font-sans overflow-hidden bg-white">
       {/* Header */}
@@ -21,23 +23,32 @@ export default function SignatureTemplate({ slug, settings, products }: any) {
         <h1 className="text-5xl font-black uppercase tracking-tighter">{settings.storeName || "Store"}</h1>
       </section>
 
-      {/* Products Section */}
-      <SectionErrorBoundary>
-        <section className="py-16 px-8 max-w-7xl mx-auto">
-          <h2 className="text-3xl font-black mb-12 uppercase">Products</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {products?.map((product: any) => (
-              <Link href={`/store/${slug}/product/${product.id}`} key={product.id} className="group">
-                <div className="aspect-[4/5] overflow-hidden rounded-2xl mb-4 bg-slate-100">
-                   <SmartImage src={product.images?.[0] || ""} className="w-full h-full object-cover group-hover:scale-105 transition-transform" alt={product.name} />
+      {/* Dynamic Sections */}
+      {homepageLayout.map((section: any) => (
+        <SectionErrorBoundary key={section.id}>
+           {section.type === 'featured_products' && (
+              <section className="py-16 px-8 max-w-7xl mx-auto">
+                <h2 className="text-3xl font-black mb-12 uppercase">{section.config?.title || "Products"}</h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                  {products?.map((product: any) => (
+                    <Link href={`/store/${slug}/product/${product.id}`} key={product.id} className="group">
+                      <div className="aspect-[4/5] overflow-hidden rounded-2xl mb-4 bg-slate-100">
+                         <SmartImage src={product.images?.[0] || ""} className="w-full h-full object-cover group-hover:scale-105 transition-transform" alt={product.name} />
+                      </div>
+                      <h3 className="font-bold text-lg">{product.name}</h3>
+                      <p className="text-slate-500">${product.price}</p>
+                    </Link>
+                  ))}
                 </div>
-                <h3 className="font-bold text-lg">{product.name}</h3>
-                <p className="text-slate-500">${product.price}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
-      </SectionErrorBoundary>
+              </section>
+           )}
+           {section.type === 'hero' && (
+              <section className="py-20 px-8 bg-slate-900 text-white text-center">
+                 <h1 className="text-6xl font-black uppercase">{section.config?.title || "Welcome"}</h1>
+              </section>
+           )}
+        </SectionErrorBoundary>
+      ))}
     </div>
   );
 }
