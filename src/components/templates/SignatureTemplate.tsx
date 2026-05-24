@@ -123,6 +123,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
         if (section.type === 'hero') {
           const heroStyle = section.style || 'luxury';
+          const cfg = section.config || {};
           let content;
 
           if (heroStyle === 'slider') {
@@ -133,17 +134,17 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                 <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-12 md:p-24 text-center md:text-left bg-transparent/10 backdrop-blur-sm">
                   <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} className="max-w-xl">
                     <span className="text-[10px] uppercase font-black tracking-[0.5em] text-white/40 mb-8 block">
-                      <EditableText content={sigSettings.establishedText || "ESTABLISHED 2026"} slug={slug} settingsKey="signatureSettings.establishedText" />
+                      <EditableText content={cfg.subtitle || sigSettings.establishedText || "ESTABLISHED 2026"} slug={slug} settingsKey="signatureSettings.establishedText" />
                     </span>
                     <h1 className="text-6xl md:text-8xl font-black text-white leading-none tracking-tighter mb-10 uppercase italic">
                       <span className="gradient-text-support">
-                        <EditableText content={topBanners[0]?.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                        <EditableText content={cfg.title || topBanners[0]?.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
                       </span>
                     </h1>
                     <div className="flex flex-wrap items-center justify-center md:justify-start gap-6">
                        {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
                          <MagneticButton key={btn.id || index} strength={0.2}>
-                           <EditableButton label={btn.label} link={btn.link} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="block px-10 py-5 uppercase font-bold tracking-widest hover:scale-105 transition-transform" />
+                           <EditableButton label={btn.label || cfg.btnText || "Shop Now"} link={btn.link || cfg.btnLink || "#"} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="block px-10 py-5 uppercase font-bold tracking-widest hover:scale-105 transition-transform" />
                          </MagneticButton>
                        ))}
                     </div>
@@ -151,7 +152,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                   </motion.div>
                 </div>
                 <div className="w-full md:w-1/2 relative h-full">
-                  <SmartImage src={topBanners[0]?.imageUrl || sigSettings.heroImage || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&q=80"} className="absolute inset-0 w-full h-full object-cover" alt="Hero" />
+                  <SmartImage src={cfg.bgImage || topBanners[0]?.imageUrl || sigSettings.heroImage || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&q=80"} className="absolute inset-0 w-full h-full object-cover" alt="Hero" />
                 </div>
               </section>
             );
@@ -159,21 +160,21 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
             content = (
               <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex flex-col items-center justify-center bg-transparent overflow-hidden text-center px-6">
                 <div className="absolute inset-0 opacity-40">
-                  <SmartImage src={topBanners[0]?.imageUrl || sigSettings.heroImage || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&q=80"} className="w-full h-full object-cover" alt="Hero Bg" />
+                  <SmartImage src={cfg.bgImage || topBanners[0]?.imageUrl || sigSettings.heroImage || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&q=80"} className="w-full h-full object-cover" alt="Hero Bg" />
                 </div>
                 <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} className="max-w-5xl z-10">
                   <span className="text-[10px] uppercase font-black tracking-[1em] text-white/60 mb-12 block">
-                    <EditableText content={sigSettings.establishedText || "ESTABLISHED 2026"} slug={slug} settingsKey="signatureSettings.establishedText" />
+                    <EditableText content={cfg.subtitle || sigSettings.establishedText || "ESTABLISHED 2026"} slug={slug} settingsKey="signatureSettings.establishedText" />
                   </span>
                   <h1 className="text-7xl md:text-[12rem] font-black text-white leading-none tracking-tighter mb-16 uppercase italic mix-blend-difference">
                     <span className="gradient-text-support">
-                      <EditableText content={settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                      <EditableText content={cfg.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
                     </span>
                   </h1>
                   <div className="flex flex-wrap items-center justify-center gap-10">
                      {Array.isArray(sigSettings.heroButtons) && sigSettings.heroButtons.map((btn: any, index: number) => (
                        <MagneticButton key={btn.id || index} strength={0.2}>
-                         <EditableButton label={btn.label} link={btn.link} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="block px-12 py-6 uppercase font-black tracking-widest text-sm hover:scale-110 transition-transform" />
+                         <EditableButton label={btn.label || cfg.btnText || "Shop Now"} link={btn.link || cfg.btnLink || "#"} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="block px-12 py-6 uppercase font-black tracking-widest text-sm hover:scale-110 transition-transform" />
                        </MagneticButton>
                      ))}
                   </div>

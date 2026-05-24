@@ -194,6 +194,8 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
       type, style: def.defaultStyle,
       config: type === 'marquee'
         ? { enabled: true, items: [{ id: '1', text: 'New Announcement' }], backgroundColor: '#000000', textColor: '#ffffff', speed: 20 }
+        : type === 'hero'
+        ? { title: `New ${def.name}`, subtitle: 'Add your description here', btnText: 'Shop Now', btnLink: '#', bgImage: '' }
         : { title: `New ${def.name}` },
       showDivider: type !== 'marquee'
     };
