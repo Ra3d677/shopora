@@ -3,6 +3,7 @@ import ZenithTemplate from '@/components/templates/ZenithTemplate';
 import ModernTemplate from '@/components/templates/ModernTemplate';
 import Modern1Template from '@/components/templates/Modern1Template';
 import FitnessTemplate from '@/components/templates/FitnessTemplate';
+import DDDYOUTemplate from '@/components/templates/DDDYOUTemplate';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Link from 'next/link';
@@ -81,6 +82,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
       case 'modern1': return <Modern1Template {...commonProps} />;
       case 'signature': return <SignatureTemplate {...commonProps} />;
       case 'zenith': return <ZenithTemplate {...commonProps} />;
+      case 'dddyou': return <DDDYOUTemplate {...commonProps} />;
       default: return <SignatureTemplate {...commonProps} />;
     }
   };

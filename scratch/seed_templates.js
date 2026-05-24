@@ -57,6 +57,12 @@ const TEMPLATES = [
     preview: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80"
   },
   {
+    id: "dddyou",
+    name: "DDDYOU Parfumerie",
+    description: "عطور فاخرة تجمع بين أصالة الشرق ورقي الغرب. قالب داكن فاخر مع لمسات ذهبية، مثالي لمتاجر العطور والمنتجات الفاخرة.",
+    preview: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&q=80"
+  },
+  {
     id: "senno",
     name: "Senno Multipurpose",
     description: "A high-end, minimalist ecommerce template with a peach-pink aesthetic, serif typography, and interactive hotspots. Perfect for beauty and boutique brands.",
