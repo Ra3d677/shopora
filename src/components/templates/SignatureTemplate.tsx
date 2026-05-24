@@ -160,6 +160,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                           <EditableButton label={cfg.btnText} link={cfg.btnLink} slug={slug} settingsKey="heroDefaultBtn" className="block px-10 py-5 uppercase font-bold tracking-widest hover:scale-105 transition-transform" />
                        )}
                     </div>
+                    <BannerButton banner={topBanners[0]} slug={slug} />
                   </motion.div>
                 </div>
                 <div className="w-full md:w-1/2 relative h-full">
@@ -194,45 +195,46 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                 </motion.div>
               </section>
             );
-          } else {
-            // Default Luxury
-            content = (
-              <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex items-center justify-center overflow-hidden bg-transparent">
-                <div className="absolute inset-0">
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60 z-10 pointer-events-none" />
-                  <SmartImage src={cfg.bgImage} className="w-full h-full object-cover" alt="Hero" />
-                </div>
-                <div className="relative z-20 text-white text-center px-4">
-                    <h1 className="text-6xl md:text-[10rem] font-black tracking-tighter leading-none mb-12 uppercase italic">
-                      <EditableText content={cfg.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
-                    </h1>
-                </div>
-              </section>
-            );
           } else if (heroStyle === 'minimal') {
             content = (
               <section key={section.id} className="relative min-h-[60vh] w-full bg-transparent flex items-center justify-center px-6">
                 <div className="text-center max-w-4xl">
-                    <span className="text-[10px] uppercase font-black tracking-[0.3em] text-slate-300 mb-8 block">{t('theSignatureCollection')}</span>
-                  <h1 className="text-6xl md:text-[8rem] font-black text-black leading-none tracking-tighter mb-12 uppercase italic">
+                  <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter mb-8 uppercase leading-none">
                     <span className="gradient-text-support">
                       <EditableText content={cfg.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
                     </span>
                   </h1>
-                  <div className="flex justify-center gap-8">
-                    <Link href={`/store/${slug}/products`} className="text-xs font-black uppercase tracking-[0.4em] border-b-2 border-black pb-2 hover:opacity-50 transition-opacity">
-                      {t('viewArchive')}
-                    </Link>
-                    <BannerButton banner={topBanners[0]} slug={slug} />
-                  </div>
+                  <p className="text-xl text-slate-500 font-medium mb-12 leading-relaxed">
+                    <EditableText content={cfg.subtitle || ""} slug={slug} settingsKey="modernSettings.heroSubtitle" />
+                  </p>
                 </div>
               </section>
             );
           } else if (heroStyle === 'campaign') {
-             // ...
-          } else {
-            // Default Luxury
             content = (
+              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex flex-col md:flex-row">
+                <div className="w-full md:w-1/2 relative h-full overflow-hidden">
+                  <motion.div initial={{ scale: 1.2 }} whileInView={{ scale: 1 }} transition={{ duration: 2 }} className="h-full">
+                    <SmartImage src={cfg.bgImage} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" alt="Campaign" />
+                  </motion.div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-slate-950/50" />
+                </div>
+                <div className="w-full md:w-1/2 flex flex-col justify-center p-12 md:p-24 bg-transparent/20 backdrop-blur-md text-white">
+                  <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
+                    <div className="w-20 h-1 bg-blue-600 mb-12" />
+                    <span className="text-[10px] uppercase font-black tracking-[0.5em] text-blue-500 mb-6 block">SEASONAL CAMPAIGN</span>
+                    <h1 className="text-6xl md:text-9xl font-black leading-none tracking-tighter mb-12 uppercase">
+                      <span className="gradient-text-support">
+                        <EditableText content={cfg.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                      </span>
+                    </h1>
+                  </motion.div>
+                </div>
+              </section>
+            );
+          } else {
+             // Default Luxury
+             content = (
               <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex items-center justify-center overflow-hidden bg-transparent">
                 <div className="absolute inset-0">
                   <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60 z-10 pointer-events-none" />
