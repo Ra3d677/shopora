@@ -7,8 +7,7 @@ import { useRouter } from "next/navigation";
 import { 
   Blocks, GripVertical, Image as ImageIcon, ShoppingBag, Tag, MessageSquare, Type, Plus, Trash2, Save, Loader2,
   ChevronDown, ChevronUp, Settings, Video, PlayCircle, Link2, Info, Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight,
-  Palette, Eye, EyeOff, Move, Copy, Undo2, Redo2, PaintBucket, Text, Heading, Square, PanelTop, PanelBottom,
-  ChevronLeft, ChevronRight, Star, Heart, Globe, BarChart3, Camera, Music, Quote, Clock, Sparkles, Split,
+  Copy, Text, Star,
 } from "lucide-react";
 import MediaPicker from "../media/MediaPicker";
 
@@ -133,19 +132,6 @@ function ColorPicker({ value, onChange, label }: { value: string; onChange: (v: 
   );
 }
 
-function SectionStyleEditor({ section, onUpdate }: { section: LayoutSection; onUpdate: (updates: any) => void }) {
-  return (
-    <div className="space-y-5 p-5 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-200">
-      <h4 className="text-xs font-black text-slate-600 uppercase tracking-wider flex items-center gap-2">
-        <Palette className="w-3.5 h-3.5 text-purple-500" /> Style Overrides
-      </h4>
-      <ColorPicker label="Background Color" value={section.config.bgColor || ''} onChange={v => onUpdate({ config: { ...section.config, bgColor: v } })} />
-      <ColorPicker label="Text Color" value={section.config.textColor || ''} onChange={v => onUpdate({ config: { ...section.config, textColor: v } })} />
-      <ColorPicker label="Accent Color" value={section.config.accentColor || ''} onChange={v => onUpdate({ config: { ...section.config, accentColor: v } })} />
-    </div>
-  );
-}
-
 export default function BuilderManager({ initialSettings, slug, storeType = 'ECOMMERCE' }: { initialSettings: StoreSettings, slug: string, storeType?: string }) {
   const SECTION_DEFINITIONS = storeType === 'WEBSITE' ? WEBSITE_SECTION_DEFINITIONS : ECOMMERCE_SECTION_DEFINITIONS;
 
@@ -165,7 +151,6 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
   const [isPending, startTransition] = useTransition();
   const [saveMessage, setSaveMessage] = useState("");
   const [activeEditor, setActiveEditor] = useState<string | null>(null);
-  const [editorTab, setEditorTab] = useState<'content' | 'style'>('content');
   const router = useRouter();
 
   const handleSave = async () => {
@@ -327,27 +312,15 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                   <h2 className="text-xl font-black text-slate-900">{getSectionName(activeSection.type)}</h2>
                   <p className="text-sm text-slate-500">Edit content and visual style</p>
                 </div>
-                <div className="flex gap-1 bg-slate-100 p-1 rounded-xl">
-                  <button onClick={() => setEditorTab('content')}
-                    className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${editorTab === 'content' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
-                    Content
-                  </button>
-                  <button onClick={() => setEditorTab('style')}
-                    className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${editorTab === 'style' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
-                    Style
-                  </button>
-                </div>
+                <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Content</div>
               </div>
 
               <div className="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
-                {editorTab === 'style' ? (
-                  <SectionStyleEditor section={activeSection} onUpdate={(updates) => updateSection(activeSection.id, updates)} />
-                ) : (
                   <>
                     {activeSection.type === 'sale' && (
                       <div className="space-y-4 p-5 bg-blue-50/50 rounded-2xl border border-blue-100">
                         <label className="text-sm font-bold text-blue-800 flex items-center gap-2">
-                          <Palette className="w-4 h-4 text-blue-600" /> Sale Style
+                          Sale Style
                         </label>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                           {['grid', 'bento', 'horizontal', 'scroll', 'list', 'bubbles'].map(style => (
@@ -756,7 +729,6 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                       )}
                     </div>
                   </>
-                )}
               </div>
             </div>
           )}
