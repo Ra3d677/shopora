@@ -18,6 +18,7 @@ export default function PlatformStoresManager({ stores }: { stores: any[] }) {
   const isRTL = language === 'ar';
 
   const templates = [
+    { id: 'modern1', name: 'Modern 1' },
     { id: 'modern', name: 'Modern' },
     { id: 'zenith', name: 'Zenith' },
     { id: 'signature', name: 'Signature' },

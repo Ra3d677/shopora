@@ -32,6 +32,7 @@ function CreateStoreForm() {
   const [error, setError] = useState<string | null>(null);
 
   const storeTemplates = [
+    { id: 'modern1', name: 'Modern 1', desc: 'Bold dark aesthetic, glass UI, and premium motion.', img: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80' },
     { id: 'modern', name: 'Modern Commerce', desc: 'Clean lines, premium materials, unparalleled comfort.', img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&q=80' },
     { id: 'zenith', name: 'Zenith Luxury', desc: 'Cinematic, minimalist, ultra high-end.', img: 'https://images.unsplash.com/photo-1505529848141-144c6747d765?w=400&q=80' },
     { id: 'signature', name: 'Signature Brand', desc: 'A high-end, typography-focused template.', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80' }

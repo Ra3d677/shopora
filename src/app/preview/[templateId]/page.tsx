@@ -1,6 +1,7 @@
 import SignatureTemplate from '@/components/templates/SignatureTemplate';
 import ZenithTemplate from '@/components/templates/ZenithTemplate';
 import ModernTemplate from '@/components/templates/ModernTemplate';
+import Modern1Template from '@/components/templates/Modern1Template';
 import FitnessTemplate from '@/components/templates/FitnessTemplate';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -77,6 +78,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
     switch (templateId) {
       case 'fitness': return <FitnessTemplate {...commonProps} />;
       case 'modern': return <ModernTemplate {...commonProps} />;
+      case 'modern1': return <Modern1Template {...commonProps} />;
       case 'signature': return <SignatureTemplate {...commonProps} />;
       case 'zenith': return <ZenithTemplate {...commonProps} />;
       default: return <SignatureTemplate {...commonProps} />;

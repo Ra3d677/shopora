@@ -9,6 +9,7 @@ import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
 import SignatureTemplate from "@/components/templates/SignatureTemplate";
 import ZenithTemplate from "@/components/templates/ZenithTemplate";
 import ModernTemplate from "@/components/templates/ModernTemplate";
+import Modern1Template from "@/components/templates/Modern1Template";
 import TourismTemplate from "@/components/templates/TourismTemplate";
 import FitnessTemplate from "@/components/templates/FitnessTemplate";
 
@@ -59,6 +60,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
     
     if (activeTemplate === 'zenith') return <ZenithTemplate {...props} />;
     if (activeTemplate === 'modern') return <ModernTemplate {...props} />;
+    if (activeTemplate === 'modern1') return <Modern1Template {...props} />;
     
     // Default fallback (Signature is now the default)
     return (

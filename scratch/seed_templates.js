@@ -45,6 +45,12 @@ const TEMPLATES = [
     preview: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80"
   },
   {
+    id: "modern1",
+    name: "Modern 1",
+    description: "Bold dark aesthetic, glass UI, and premium motion. Designed for modern brands that want a high-impact storefront.",
+    preview: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80"
+  },
+  {
     id: "amazon",
     name: "Amazon Marketplace",
     description: "High-efficiency, conversion-optimized layout inspired by major marketplaces.",
