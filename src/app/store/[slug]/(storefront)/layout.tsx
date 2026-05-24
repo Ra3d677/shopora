@@ -295,7 +295,7 @@ export default async function StorefrontLayout({
         <AdminEditorBar slug={slug} isOwner={isOwner} store={store} />
       </Suspense>
       <PreviewWrapper isOwner={isOwner}>
-        {store.template !== 'fitness' && (
+        {store.template !== 'fitness' && store.template !== 'dddyou' && (
           <Navbar 
             activeTemplate={store.template as any} 
             storeSettings={{
@@ -316,9 +316,9 @@ export default async function StorefrontLayout({
           {children}
         </main>
         <div data-page="footer">
-          {store.type !== 'WEBSITE' && store.template !== 'fitness' && <Footer />}
+          {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'dddyou' && <Footer />}
         </div>
-        {store.template !== 'fitness' && <WhatsAppButton />}
+        {store.template !== 'fitness' && store.template !== 'dddyou' && <WhatsAppButton />}
       </PreviewWrapper>
     </div>
   );
