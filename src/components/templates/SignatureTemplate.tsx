@@ -232,21 +232,39 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                 </div>
               </section>
             );
-          } else {
-             // Default Luxury
+          } else if (heroStyle === 'dddyou') {
+             const storeName = settings.storeName || 'STORE';
              content = (
-              <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex items-center justify-center overflow-hidden bg-transparent">
-                <div className="absolute inset-0">
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60 z-10 pointer-events-none" />
-                  <SmartImage src={cfg.bgImage} className="w-full h-full object-cover" alt="Hero" />
-                </div>
-                <div className="relative z-20 text-white text-center px-4">
-                    <h1 className="text-6xl md:text-[10rem] font-black tracking-tighter leading-none mb-12 uppercase italic">
-                      <EditableText content={cfg.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
-                    </h1>
-                </div>
-              </section>
-            );
+               <section key={section.id} className="relative min-h-screen w-full flex items-center bg-[#0f0f1a] overflow-hidden">
+                 <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23c9a96e\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")', backgroundSize: '60px 60px' }} />
+                 <div className="max-w-7xl mx-auto px-6 text-center relative z-10 pt-32">
+                   <span className="inline-block px-6 py-2 border border-[#c9a96e] rounded-full text-[#c9a96e] text-xs tracking-widest uppercase mb-8">{cfg.subtitle || 'Édition Limitée'}</span>
+                   <h2 className="mb-6">
+                     <span className="block text-6xl md:text-7xl font-black text-white leading-tight">{cfg.title || storeName}</span>
+                     <span className="block font-['Alex_Brush'] text-6xl md:text-7xl text-[#c9a96e] font-normal mt-2">{cfg.badge || 'Luxury'}</span>
+                   </h2>
+                   <p className="text-lg text-white/60 max-w-xl mx-auto mb-10 leading-relaxed">{cfg.subtitle || 'Discover the pinnacle of elegance'}</p>
+                   <div className="flex gap-4 justify-center flex-wrap mb-16">
+                     <a href={cfg.btnLink || '#products'} className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-gradient-to-r from-[#c9a96e] to-[#b8923e] text-[#0f0f1a] font-bold shadow-lg hover:shadow-xl transition-all">{cfg.btnText || 'Explore'}</a>
+                   </div>
+                 </div>
+               </section>
+             );
+          } else {
+              // Default Luxury
+              content = (
+               <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex items-center justify-center overflow-hidden bg-transparent">
+                 <div className="absolute inset-0">
+                   <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60 z-10 pointer-events-none" />
+                   <SmartImage src={cfg.bgImage} className="w-full h-full object-cover" alt="Hero" />
+                 </div>
+                 <div className="relative z-20 text-white text-center px-4">
+                     <h1 className="text-6xl md:text-[10rem] font-black tracking-tighter leading-none mb-12 uppercase italic">
+                       <EditableText content={cfg.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
+                     </h1>
+                 </div>
+               </section>
+             );
           }
 
           return <React.Fragment key={section.id}>{content}{divider}</React.Fragment>;

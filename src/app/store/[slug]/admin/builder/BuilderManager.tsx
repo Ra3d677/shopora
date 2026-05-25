@@ -339,7 +339,7 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                         Layout Style
                       </label>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {activeSection.type === 'hero' && ['slider', 'luxury', 'split', 'centered', 'minimal', 'campaign', 'abstract', 'immersive'].map(style => (
+                        {activeSection.type === 'hero' && ['slider', 'luxury', 'split', 'centered', 'minimal', 'campaign', 'abstract', 'immersive', 'dddyou'].map(style => (
                           <button key={style} onClick={() => updateSection(activeSection.id, { style })}
                             className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
                         ))}
