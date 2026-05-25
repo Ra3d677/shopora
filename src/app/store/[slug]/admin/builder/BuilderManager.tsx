@@ -198,7 +198,7 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
         : type === 'hero'
         ? { title: `New ${def.name}`, subtitle: 'Add your description here', btnText: 'Shop Now', btnLink: '#', bgImage: '' }
         : type === 'header'
-        ? { logoText: 'Store Name', showCart: true, showSearch: false, sticky: true, links: [{ label: 'Home', href: '#hero' }, { label: 'Products', href: '/products' }] }
+        ? { logoText: 'Store Name', showCart: true, showSearch: true, showLanguage: true, showAccount: true, showTracking: true, sticky: true, links: [{ label: 'Home', href: '#hero' }, { label: 'Products', href: '/products' }] }
         : { title: `New ${def.name}` },
       showDivider: type !== 'marquee'
     };
@@ -410,7 +410,7 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                             <input value={activeSection.config.logoText || ''} onChange={e => updateSectionConfig(activeSection.id, 'logoText', e.target.value)}
                               className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-bold" />
                           </div>
-                          <div className="grid grid-cols-3 gap-4">
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                             <label className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer">
                               <input type="checkbox" checked={activeSection.config.sticky !== false} onChange={e => updateSectionConfig(activeSection.id, 'sticky', e.target.checked)}
                                 className="w-4 h-4 accent-blue-600" />
@@ -425,6 +425,21 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                               <input type="checkbox" checked={!!activeSection.config.showSearch} onChange={e => updateSectionConfig(activeSection.id, 'showSearch', e.target.checked)}
                                 className="w-4 h-4 accent-blue-600" />
                               <span className="text-xs font-bold text-slate-600">Search</span>
+                            </label>
+                            <label className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer">
+                              <input type="checkbox" checked={activeSection.config.showLanguage !== false} onChange={e => updateSectionConfig(activeSection.id, 'showLanguage', e.target.checked)}
+                                className="w-4 h-4 accent-blue-600" />
+                              <span className="text-xs font-bold text-slate-600">Language</span>
+                            </label>
+                            <label className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer">
+                              <input type="checkbox" checked={activeSection.config.showAccount !== false} onChange={e => updateSectionConfig(activeSection.id, 'showAccount', e.target.checked)}
+                                className="w-4 h-4 accent-blue-600" />
+                              <span className="text-xs font-bold text-slate-600">Account</span>
+                            </label>
+                            <label className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer">
+                              <input type="checkbox" checked={!!activeSection.config.showTracking} onChange={e => updateSectionConfig(activeSection.id, 'showTracking', e.target.checked)}
+                                className="w-4 h-4 accent-blue-600" />
+                              <span className="text-xs font-bold text-slate-600">Tracking</span>
                             </label>
                           </div>
                           <div className="grid grid-cols-2 gap-4">

@@ -14,6 +14,8 @@ import EditableText from "@/components/editor/EditableText";
 import EditableImage from "@/components/editor/EditableImage";
 import EditableButton from "@/components/editor/EditableButton";
 import { useLanguageStore } from "@/store/language";
+import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
+import UserMenu from "@/components/layout/UserMenu";
 import SaleSection from "@/components/ui/SaleSection";
 import VideoSection from "@/components/ui/VideoSection";
 import { useEditorStore } from "@/store/editor";
@@ -29,7 +31,7 @@ interface TemplateProps {
 
 export default function SignatureTemplate({ banners, settings, products, slug, categories }: TemplateProps) {
   const { isEditMode } = useEditorStore();
-  const { t } = useLanguageStore();
+  const { t, language } = useLanguageStore();
   const { scrollYProgress } = useScroll();
   
   const topBanners = banners.filter((b: any) => b.position === 'top' || !b.position);
@@ -139,8 +141,12 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                       <a key={i} href={link.href} className="text-sm font-medium transition-colors hover:text-[#c9a96e]" style={{ color: h.textColor || '#ffffffcc' }}>{link.label}</a>
                     ))}
                   </nav>
-                  <div className="flex items-center gap-3">
-                    {h.showCart !== false && <button className="text-white/70 hover:text-[#c9a96e] text-lg"><i className="fas fa-shopping-bag"></i></button>}
+                  <div className="flex items-center gap-1">
+                    {h.showTracking && <Link href={`/store/${slug}/tracking`} className="p-2 text-sm text-white/70 hover:text-[#c9a96e]"><i className="fas fa-truck"></i></Link>}
+                    {h.showSearch && <button className="p-2 text-sm text-white/70 hover:text-[#c9a96e]"><i className="fas fa-search"></i></button>}
+                    {h.showCart !== false && <button className="p-2 text-sm text-white/70 hover:text-[#c9a96e]"><i className="fas fa-shopping-bag"></i></button>}
+                    {h.showLanguage !== false && <LanguageSwitcher dark lang={language} />}
+                    {h.showAccount !== false && <UserMenu slug={slug} lang={language} textColor={h.textColor || '#ffffffcc'} />}
                     <button className="md:hidden flex flex-col gap-1 p-2"><span className="block w-6 h-0.5" style={{ background: h.textColor || '#ffffff' }} /><span className="block w-6 h-0.5" style={{ background: h.textColor || '#ffffff' }} /><span className="block w-6 h-0.5" style={{ background: h.textColor || '#ffffff' }} /></button>
                   </div>
                 </div>
@@ -160,9 +166,16 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                     ))}
                   </nav>
                 )}
-                <div className="flex items-center gap-3">
-                  {h.showSearch && <button className="p-2 text-sm" style={{ color: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568') }}><i className="fas fa-search"></i></button>}
-                  {h.showCart !== false && <button className="p-2 text-sm relative" style={{ color: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568') }}><i className="fas fa-shopping-bag"></i></button>}
+                <div className="flex items-center gap-1">
+                  {h.showTracking && (
+                    <Link href={`/store/${slug}/tracking`} className="p-2 text-sm transition-all hover:opacity-60" style={{ color: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568') }}>
+                      <i className="fas fa-truck"></i>
+                    </Link>
+                  )}
+                  {h.showSearch && <button className="p-2 text-sm transition-all hover:opacity-60" style={{ color: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568') }}><i className="fas fa-search"></i></button>}
+                  {h.showCart !== false && <button className="p-2 text-sm relative transition-all hover:opacity-60" style={{ color: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568') }}><i className="fas fa-shopping-bag"></i></button>}
+                  {h.showLanguage !== false && <LanguageSwitcher dark={style === 'dark' || style === 'glass'} lang={language} />}
+                  {h.showAccount !== false && <UserMenu slug={slug} lang={language} textColor={h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568')} />}
                   <button className="md:hidden flex flex-col gap-1 p-2"><span className="block w-6 h-0.5" style={{ background: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffff' : '#000000') }} /><span className="block w-6 h-0.5" style={{ background: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffff' : '#000000') }} /><span className="block w-6 h-0.5" style={{ background: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffff' : '#000000') }} /></button>
                 </div>
               </div>
