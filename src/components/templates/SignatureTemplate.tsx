@@ -114,66 +114,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
         )}
       </AnimatePresence>
       
-      {/* Header Section — rendered first */}
-      {homepageLayout.filter((s: any) => s.type === 'header').slice(0, 1).map((section: any) => {
-        const h = section.config || {};
-        const style = section.style || 'classic';
-        const links = h.links || [];
-        const storeName = settings.storeName || 'STORE';
-        if (style === 'dddyou') {
-          return (
-            <header key={section.id} className={`fixed top-0 left-0 right-0 z-50 ${h.sticky !== false ? '' : 'relative'}`} style={{ background: h.bgColor || '#0f0f1a' }}>
-              <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16 md:h-20">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c9a96e] to-[#c87a36] flex items-center justify-center text-[#0f0f1a] text-sm font-black">D</div>
-                  <span className="font-['Alex_Brush'] text-xl text-[#c9a96e]" style={{ color: h.textColor || '#c9a96e' }}>{h.logoText || storeName}</span>
-                </div>
-                <nav className="hidden md:flex items-center gap-6">
-                  {links.map((link: any, i: number) => (
-                    <a key={i} href={link.href} className="text-sm font-medium transition-colors hover:text-[#c9a96e]" style={{ color: h.textColor || '#ffffffcc' }}>{link.label}</a>
-                  ))}
-                </nav>
-                <div className="flex items-center gap-3">
-                  {h.showCart !== false && <button className="text-white/70 hover:text-[#c9a96e] text-lg"><i className="fas fa-shopping-bag"></i></button>}
-                  <button className="md:hidden flex flex-col gap-1 p-2"><span className="block w-6 h-0.5" style={{ background: h.textColor || '#ffffff' }} /><span className="block w-6 h-0.5" style={{ background: h.textColor || '#ffffff' }} /><span className="block w-6 h-0.5" style={{ background: h.textColor || '#ffffff' }} /></button>
-                </div>
-              </div>
-            </header>
-          );
-        }
-        return (
-          <header key={section.id} className={`${h.sticky !== false ? 'fixed top-0 left-0 right-0 z-50' : 'relative'} transition-all duration-300`} style={{ background: h.bgColor || (style === 'dark' || style === 'glass' ? '#0f0f1a' : '#ffffff'), borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-            <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16 md:h-20">
-              <a href="/" className="font-black text-lg tracking-tight" style={{ color: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffff' : '#000000') }}>
-                {style === 'centered' ? '' : h.logoText || storeName}
-              </a>
-              {style !== 'minimal' && (
-                <nav className={`${style === 'centered' ? 'hidden md:flex' : 'hidden md:flex'} items-center gap-6`}>
-                  {links.map((link: any, i: number) => (
-                    <a key={i} href={link.href} className="text-sm font-medium transition-all hover:opacity-60" style={{ color: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568') }}>{link.label}</a>
-                  ))}
-                </nav>
-              )}
-              <div className="flex items-center gap-3">
-                {h.showSearch && <button className="p-2 text-sm" style={{ color: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568') }}><i className="fas fa-search"></i></button>}
-                {h.showCart !== false && <button className="p-2 text-sm relative" style={{ color: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568') }}><i className="fas fa-shopping-bag"></i></button>}
-                <button className="md:hidden flex flex-col gap-1 p-2"><span className="block w-6 h-0.5" style={{ background: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffff' : '#000000') }} /><span className="block w-6 h-0.5" style={{ background: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffff' : '#000000') }} /><span className="block w-6 h-0.5" style={{ background: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffff' : '#000000') }} /></button>
-              </div>
-            </div>
-            {style === 'centered' && (
-              <div className="max-w-7xl mx-auto px-6 pb-3 hidden md:block">
-                <nav className="flex justify-center gap-8">
-                  {links.map((link: any, i: number) => (
-                    <a key={i} href={link.href} className="text-sm font-medium transition-all hover:opacity-60" style={{ color: h.textColor || '#4a5568' }}>{link.label}</a>
-                  ))}
-                </nav>
-              </div>
-            )}
-          </header>
-        );
-      })}
-
-      {homepageLayout.map((section: any, index: number) => {
+      {homepageLayout.filter((s: any) => s.type !== 'header').map((section: any, index: number) => {
         const divider = section.showDivider !== false && (
           <div className="max-w-7xl mx-auto px-8">
             <div className="h-[1px] w-full bg-slate-100" />
