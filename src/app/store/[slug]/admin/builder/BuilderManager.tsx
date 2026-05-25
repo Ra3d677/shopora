@@ -20,6 +20,7 @@ export interface LayoutSection {
 }
 
 const ECOMMERCE_SECTION_DEFINITIONS = [
+  { id: 'header', name: 'Navbar Header', icon: Blocks, defaultStyle: 'classic' },
   { id: 'hero', name: 'Hero Section', icon: ImageIcon, defaultStyle: 'luxury' },
   { id: 'banners', name: 'Banners Slider', icon: ImageIcon, defaultStyle: 'default' },
   { id: 'categories', name: 'Categories', icon: Tag, defaultStyle: 'grid' },
@@ -196,6 +197,8 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
         ? { enabled: true, items: [{ id: '1', text: 'New Announcement' }], backgroundColor: '#000000', textColor: '#ffffff', speed: 20 }
         : type === 'hero'
         ? { title: `New ${def.name}`, subtitle: 'Add your description here', btnText: 'Shop Now', btnLink: '#', bgImage: '' }
+        : type === 'header'
+        ? { logoText: 'Store Name', showCart: true, showSearch: false, sticky: true, links: [{ label: 'Home', href: '#hero' }, { label: 'Products', href: '/products' }] }
         : { title: `New ${def.name}` },
       showDivider: type !== 'marquee'
     };
@@ -343,6 +346,10 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                           <button key={style} onClick={() => updateSection(activeSection.id, { style })}
                             className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
                         ))}
+                        {activeSection.type === 'header' && ['classic', 'centered', 'minimal', 'transparent', 'glass', 'dark', 'split', 'dddyou'].map(style => (
+                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
+                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
+                        ))}
                         {activeSection.type === 'categories' && ['grid', 'carousel', 'circles'].map(style => (
                           <button key={style} onClick={() => updateSection(activeSection.id, { style })}
                             className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
@@ -393,6 +400,75 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                             onChange={(e) => updateSectionConfig(activeSection.id, 'subtitle', e.target.value)}
                             className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
                         </div>
+                      )}
+
+                      {/* Header / Navbar */}
+                      {activeSection.type === 'header' && (
+                        <>
+                          <div className="space-y-3">
+                            <label className="text-xs font-bold text-slate-500 uppercase">Logo Text</label>
+                            <input value={activeSection.config.logoText || ''} onChange={e => updateSectionConfig(activeSection.id, 'logoText', e.target.value)}
+                              className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-bold" />
+                          </div>
+                          <div className="grid grid-cols-3 gap-4">
+                            <label className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer">
+                              <input type="checkbox" checked={activeSection.config.sticky !== false} onChange={e => updateSectionConfig(activeSection.id, 'sticky', e.target.checked)}
+                                className="w-4 h-4 accent-blue-600" />
+                              <span className="text-xs font-bold text-slate-600">Sticky</span>
+                            </label>
+                            <label className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer">
+                              <input type="checkbox" checked={activeSection.config.showCart !== false} onChange={e => updateSectionConfig(activeSection.id, 'showCart', e.target.checked)}
+                                className="w-4 h-4 accent-blue-600" />
+                              <span className="text-xs font-bold text-slate-600">Cart</span>
+                            </label>
+                            <label className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer">
+                              <input type="checkbox" checked={!!activeSection.config.showSearch} onChange={e => updateSectionConfig(activeSection.id, 'showSearch', e.target.checked)}
+                                className="w-4 h-4 accent-blue-600" />
+                              <span className="text-xs font-bold text-slate-600">Search</span>
+                            </label>
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <label className="text-xs font-bold text-slate-500 uppercase">Background</label>
+                              <input type="color" value={activeSection.config.bgColor || '#ffffff'} onChange={e => updateSectionConfig(activeSection.id, 'bgColor', e.target.value)}
+                                className="w-full h-12 rounded-xl border border-slate-200 cursor-pointer" />
+                            </div>
+                            <div className="space-y-2">
+                              <label className="text-xs font-bold text-slate-500 uppercase">Text Color</label>
+                              <input type="color" value={activeSection.config.textColor || '#000000'} onChange={e => updateSectionConfig(activeSection.id, 'textColor', e.target.value)}
+                                className="w-full h-12 rounded-xl border border-slate-200 cursor-pointer" />
+                            </div>
+                          </div>
+                          <div className="space-y-3 border-t border-slate-100 pt-4">
+                            <div className="flex items-center justify-between">
+                              <label className="text-xs font-bold text-slate-500 uppercase">Nav Links</label>
+                              <button type="button" onClick={() => {
+                                const links = [...(activeSection.config.links || [])];
+                                links.push({ label: 'New Link', href: '#' });
+                                updateSectionConfig(activeSection.id, 'links', links);
+                              }} className="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-all">+ Add Link</button>
+                            </div>
+                            {(activeSection.config.links || []).map((link: any, i: number) => (
+                              <div key={i} className="flex items-center gap-2">
+                                <input value={link.label} onChange={e => {
+                                  const links = [...(activeSection.config.links || [])];
+                                  links[i] = { ...links[i], label: e.target.value };
+                                  updateSectionConfig(activeSection.id, 'links', links);
+                                }} className="flex-1 px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-xs font-bold" placeholder="Label" />
+                                <input value={link.href} onChange={e => {
+                                  const links = [...(activeSection.config.links || [])];
+                                  links[i] = { ...links[i], href: e.target.value };
+                                  updateSectionConfig(activeSection.id, 'links', links);
+                                }} className="flex-1 px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-xs font-mono" placeholder="/path" />
+                                <button onClick={() => {
+                                  const links = [...(activeSection.config.links || [])];
+                                  links.splice(i, 1);
+                                  updateSectionConfig(activeSection.id, 'links', links);
+                                }} className="text-red-400 hover:text-red-600 p-2"><Trash2 className="w-4 h-4" /></button>
+                              </div>
+                            ))}
+                          </div>
+                        </>
                       )}
 
                       {/* Hero Section */}
