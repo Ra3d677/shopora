@@ -50,6 +50,16 @@ export default function Navbar({
   const { t } = useLanguageStore();
   
   const isWebsite = storeSettings?.type === 'WEBSITE';
+  const hs = storeSettings?.headerSettings || {};
+  const fontSizeMap: Record<string, string> = { xs: '12px', sm: '14px', base: '16px', lg: '18px', xl: '20px', '2xl': '24px' };
+  const headerStyle: React.CSSProperties = {};
+  if (hs.bgColor) headerStyle.backgroundColor = hs.bgColor;
+  if (hs.textColor) headerStyle.color = hs.textColor;
+  if (hs.fontFamily) headerStyle.fontFamily = hs.fontFamily;
+  if (hs.fontSize) headerStyle.fontSize = fontSizeMap[hs.fontSize as string] || '16px';
+  if (hs.fontStyle === 'bold') headerStyle.fontWeight = '700';
+  if (hs.fontStyle === 'italic') headerStyle.fontStyle = 'italic';
+  if (hs.fontStyle === 'uppercase') headerStyle.textTransform = 'uppercase';
   const headerLinks = storeSettings?.headerSettings?.links || (isWebsite ? [
     { id: 'home', label: t('homeLink'), url: `/store/${slug}` },
     { id: 'packages', label: t('packagesLink'), url: `/store/${slug}#packages` },
@@ -372,7 +382,7 @@ export default function Navbar({
     }, []);
 
     return (
-      <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 font-sans ${scrolled ? 'bg-slate-950/80 backdrop-blur-xl py-4 border-b border-white/5 shadow-2xl text-white' : 'bg-transparent py-7 text-white'}`}>
+      <nav style={{...headerStyle}} className={`fixed top-0 w-full z-[100] transition-all duration-500 font-sans ${scrolled ? 'bg-slate-950/80 backdrop-blur-xl py-4 border-b border-white/5 shadow-2xl text-white' : 'bg-transparent py-7 text-white'}`}>
         <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
           {/* Left: Navigation Links */}
           <div className="flex-1 hidden md:flex items-center gap-10 text-[10px] font-black uppercase tracking-[0.4em] text-white/70">
@@ -432,7 +442,7 @@ export default function Navbar({
       <>
         <nav 
         className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-zinc-100 font-light antialiased transition-colors"
-        style={{ backgroundColor: 'var(--color-header-bg, rgba(255,255,255,0.9))', color: 'var(--color-header-text, #18181b)' }}
+        style={{ ...headerStyle, backgroundColor: headerStyle.backgroundColor || 'var(--color-header-bg, rgba(255,255,255,0.9))', color: headerStyle.color || 'var(--color-header-text, #18181b)' }}
       >
         <div className="max-w-screen-2xl mx-auto px-6 md:px-12">
           <div className="flex h-24 items-center justify-between">
@@ -474,7 +484,7 @@ export default function Navbar({
       <>
         <nav 
         className="sticky top-0 z-50 w-full backdrop-blur-md font-sans text-xs antialiased border-b border-[#333336] transition-colors"
-        style={{ backgroundColor: 'var(--color-header-bg, rgba(29,29,31,0.8))', color: 'var(--color-header-text, #f5f5f7)' }}
+        style={{ ...headerStyle, backgroundColor: headerStyle.backgroundColor || 'var(--color-header-bg, rgba(29,29,31,0.8))', color: headerStyle.color || 'var(--color-header-text, #f5f5f7)' }}
       >
         <div className="max-w-[1000px] mx-auto px-4">
           <div className="flex h-[44px] items-center justify-between">
@@ -552,7 +562,7 @@ export default function Navbar({
     return (
       <>
         <LogoTransparencyFilter />
-        <nav className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
+        <nav style={{...headerStyle}} className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex h-20 items-center justify-between">
             <Link href={`/store/${slug}`} className="flex-shrink-0 text-2xl font-black tracking-tighter uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
@@ -587,7 +597,7 @@ export default function Navbar({
     return (
       <>
         <LogoTransparencyFilter />
-        <nav className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
+        <nav style={{...headerStyle}} className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex h-24 items-center justify-between">
             <div className="hidden lg:flex flex-1 items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-600">
@@ -636,7 +646,7 @@ export default function Navbar({
     return (
       <>
         <LogoTransparencyFilter />
-        <nav className="sticky top-0 z-50 w-full backdrop-blur-2xl border-b border-slate-100 bg-white/95 text-slate-900 transition-colors py-4">
+        <nav style={{...headerStyle}} className="sticky top-0 z-50 w-full backdrop-blur-2xl border-b border-slate-100 bg-white/95 text-slate-900 transition-colors py-4">
         <div className="container mx-auto px-6 lg:px-12 flex flex-col items-center gap-6">
           <div className="w-full flex justify-between items-center relative">
              <div className="w-32 flex items-center gap-4">
@@ -672,7 +682,7 @@ export default function Navbar({
     return (
       <>
         <LogoTransparencyFilter />
-        <nav className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
+        <nav style={{...headerStyle}} className="sticky top-0 z-50 w-full backdrop-blur-xl border-b border-slate-100 bg-white/90 text-slate-900 transition-colors">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex h-20 items-center justify-between">
             <div className="flex-1 flex items-center gap-6">
@@ -708,7 +718,7 @@ export default function Navbar({
       <LogoTransparencyFilter />
       <nav 
         className="sticky top-0 z-50 w-full backdrop-blur-2xl border-b border-[#1a1a1a]/5 font-serif transition-colors"
-        style={{ backgroundColor: 'var(--color-header-bg, rgba(250,249,246,0.8))', color: 'var(--color-header-text, #1a1a1a)' }}
+        style={{ ...headerStyle, backgroundColor: headerStyle.backgroundColor || 'var(--color-header-bg, rgba(250,249,246,0.8))', color: headerStyle.color || 'var(--color-header-text, #1a1a1a)' }}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <div className="flex h-28 items-center justify-between">
@@ -745,6 +755,16 @@ export default function Navbar({
 
 function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, onMenuClick, headerLinks }: any) {
   const [scrolled, setScrolled] = useState(false);
+  const hs = storeSettings?.headerSettings || {};
+  const fontSizeMap: Record<string, string> = { xs: '12px', sm: '14px', base: '16px', lg: '18px', xl: '20px', '2xl': '24px' };
+  const headerStyle: React.CSSProperties = {};
+  if (hs.bgColor) headerStyle.backgroundColor = hs.bgColor;
+  if (hs.textColor) headerStyle.color = hs.textColor;
+  if (hs.fontFamily) headerStyle.fontFamily = hs.fontFamily;
+  if (hs.fontSize) headerStyle.fontSize = fontSizeMap[hs.fontSize as string] || '16px';
+  if (hs.fontStyle === 'bold') headerStyle.fontWeight = '700';
+  if (hs.fontStyle === 'italic') headerStyle.fontStyle = 'italic';
+  if (hs.fontStyle === 'uppercase') headerStyle.textTransform = 'uppercase';
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -753,7 +773,7 @@ function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, 
   }, []);
 
   return (
-    <nav className={`fixed top-0 w-full z-[100] transition-all duration-700 ${scrolled ? 'bg-white/80 backdrop-blur-xl py-4 shadow-sm text-[#1c1c1b]' : 'bg-transparent py-8 text-white'}`}>
+    <nav style={{...headerStyle}} className={`fixed top-0 w-full z-[100] transition-all duration-700 ${scrolled ? 'bg-white/80 backdrop-blur-xl py-4 shadow-sm text-[#1c1c1b]' : 'bg-transparent py-8 text-white'}`}>
       <div className="container mx-auto px-8 md:px-16 flex justify-between items-center">
         <div className="flex-1 hidden md:flex gap-12 text-[10px] uppercase tracking-[0.4em] font-sans font-bold">
           {headerLinks.map((link: any) => (
@@ -795,8 +815,19 @@ function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, 
 }
 
 function ObsidianNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, onMenuClick, headerLinks }: any) {
+  const hs = storeSettings?.headerSettings || {};
+  const fontSizeMap: Record<string, string> = { xs: '12px', sm: '14px', base: '16px', lg: '18px', xl: '20px', '2xl': '24px' };
+  const headerStyle: React.CSSProperties = {};
+  if (hs.bgColor) headerStyle.backgroundColor = hs.bgColor;
+  if (hs.textColor) headerStyle.color = hs.textColor;
+  if (hs.fontFamily) headerStyle.fontFamily = hs.fontFamily;
+  if (hs.fontSize) headerStyle.fontSize = fontSizeMap[hs.fontSize as string] || '16px';
+  if (hs.fontStyle === 'bold') headerStyle.fontWeight = '700';
+  if (hs.fontStyle === 'italic') headerStyle.fontStyle = 'italic';
+  if (hs.fontStyle === 'uppercase') headerStyle.textTransform = 'uppercase';
+
   return (
-    <nav className="fixed top-0 w-full z-[100] bg-transparent py-8 text-white">
+    <nav style={{...headerStyle}} className="fixed top-0 w-full z-[100] bg-transparent py-8 text-white">
       <div className="container mx-auto px-8 md:px-16 flex justify-between items-center">
         <div className="flex-1 hidden md:flex gap-10 text-[10px] font-black uppercase tracking-[0.5em]">
           {headerLinks.map((link: any) => (
@@ -839,6 +870,16 @@ function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSe
   const { t } = useLanguageStore();
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const hs = storeSettings?.headerSettings || {};
+  const fontSizeMap: Record<string, string> = { xs: '12px', sm: '14px', base: '16px', lg: '18px', xl: '20px', '2xl': '24px' };
+  const headerStyle: React.CSSProperties = {};
+  if (hs.bgColor) headerStyle.backgroundColor = hs.bgColor;
+  if (hs.textColor) headerStyle.color = hs.textColor;
+  if (hs.fontFamily) headerStyle.fontFamily = hs.fontFamily;
+  if (hs.fontSize) headerStyle.fontSize = fontSizeMap[hs.fontSize as string] || '16px';
+  if (hs.fontStyle === 'bold') headerStyle.fontWeight = '700';
+  if (hs.fontStyle === 'italic') headerStyle.fontStyle = 'italic';
+  if (hs.fontStyle === 'uppercase') headerStyle.textTransform = 'uppercase';
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -868,7 +909,7 @@ function SennoNavbar({ storeName, logoUrl, slug, cartItemCount, session, storeSe
       </div>
 
       {/* 2. MAIN NAVBAR */}
-      <nav className={`w-full z-[100] transition-all duration-500 bg-white border-b border-slate-100 py-6 px-6 md:px-12 ${scrolled ? 'fixed top-0 shadow-sm' : 'relative'}`}>
+      <nav style={{...headerStyle}} className={`w-full z-[100] transition-all duration-500 bg-white border-b border-slate-100 py-6 px-6 md:px-12 ${scrolled ? 'fixed top-0 shadow-sm' : 'relative'}`}>
          <div className="container mx-auto flex justify-between items-center">
             {/* Logo */}
             <Link href={`/store/${slug}`} className="flex items-center gap-2 group">
