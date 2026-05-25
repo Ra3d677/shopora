@@ -93,7 +93,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
   ];
 
   return (
-    <div className="relative w-full font-sans selection:bg-slate-900 selection:text-white overflow-hidden">
+    <div className="relative w-full font-sans selection:bg-slate-900 selection:text-white">
       
       {/* Live Sale Toast */}
       <AnimatePresence>
@@ -386,7 +386,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
             <React.Fragment key={section.id}>
-              <section className="w-full bg-transparent">
+              <section className="w-screen max-w-none relative left-1/2 -translate-x-1/2 bg-transparent">
                 {bannersToShow.length > 0 ? bannersToShow.map((banner: any) => (
                   <div key={banner.id} className="relative group overflow-hidden min-h-[400px] md:h-[500px] shadow-2xl">
                     <SmartImage 
@@ -629,7 +629,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="w-full bg-transparent">
+        <section className="w-screen max-w-none relative left-1/2 -translate-x-1/2 bg-transparent">
             {bottomBanners.map((banner: any) => (
               <div key={banner.id} className="relative group overflow-hidden min-h-[400px] md:h-[500px] shadow-2xl">
                 <SmartImage 
