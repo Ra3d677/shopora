@@ -1,4 +1,5 @@
 import { DollarSign, ShoppingBag, Package, CheckCircle2, Clock, Eye, Compass, BarChart3, Users } from "lucide-react";
+import Link from "next/link";
 import prisma from "@/lib/prisma";
 export const dynamic = 'force-dynamic';
 import ExportButton from "./ExportButton";
@@ -9,11 +10,13 @@ import RevenueChart from "./RevenueChart";
 import RecentActivity from "./RecentActivity";
 import TrialBanner from "@/components/store/TrialBanner";
 import { getTranslation, getLang } from "@/lib/i18n";
+import DDDYOUDashboard from "@/components/templates/DDDYOUDashboard";
 
-export default async function AdminDashboard({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ range?: string }> }) {
+export default async function AdminDashboard({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ range?: string; section?: string }> }) {
   const { slug } = await params;
   const sp = (await searchParams) || {};
   const currentRange = sp.range || 'all_time';
+  const currentSection = sp.section || 'analytics';
 
   const t = await getTranslation();
   const lang = await getLang();
@@ -231,6 +234,11 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const dateRange = dateRangeLabels[currentRange] || "All Time";
 
   const isWebsite = store.type === 'WEBSITE';
+  const isDDDYOU = store.template === 'dddyou';
+
+  if (isDDDYOU && currentSection === 'dddyou') {
+    return <DDDYOUDashboard slug={slug} initialSettings={store.settings || {}} storeName={store.name} />;
+  }
 
   return (
     <div dir={isRTL ? "rtl" : "ltr"}             className={`min-h-screen p-4 md:p-8 pb-8 font-sans selection:bg-cyan-500/30 admin-bg admin-text ${isRTL ? 'text-right' : 'text-left'}`}>
@@ -245,6 +253,14 @@ export default async function AdminDashboard({ params, searchParams }: { params:
            </p>
         </div>
         <div className="flex items-center gap-4 admin-card p-2 rounded-2xl border admin-border shadow-2xl">
+           {isDDDYOU && (
+             <Link
+               href={currentSection === 'dddyou' ? `/store/${slug}/admin/dashboard` : `/store/${slug}/admin/dashboard?section=dddyou`}
+               className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${currentSection === 'dddyou' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30' : 'admin-text-muted hover:text-amber-400 border border-transparent hover:border-amber-500/20'}`}
+             >
+               {isRTL ? (currentSection === 'dddyou' ? 'التحليلات' : 'إعدادات DDDYOU') : currentSection === 'dddyou' ? 'Analytics' : 'DDDYOU Settings'}
+             </Link>
+           )}
            <DateFilter />
            <ExportButton
              storeName={store.name}
