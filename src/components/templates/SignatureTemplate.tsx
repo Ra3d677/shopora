@@ -115,6 +115,11 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
         )}
       </AnimatePresence>
       
+      {process.env.NODE_ENV !== 'production' && (
+        <div className="fixed top-20 left-0 z-[9999] bg-black/80 text-white text-xs p-2 rounded-r max-w-xs overflow-auto max-h-40 opacity-70 hover:opacity-100">
+          Sections ({homepageLayout.length}): {homepageLayout.map((s:any) => s.type).join(', ')}
+        </div>
+      )}
       {homepageLayout.filter((s: any) => s.type !== 'header').map((section: any, index: number) => {
         const divider = false;
 
