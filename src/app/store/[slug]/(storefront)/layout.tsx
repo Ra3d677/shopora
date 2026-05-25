@@ -13,6 +13,7 @@ import { getSession } from "@/lib/auth";
 import VisitorTracker from "@/components/layout/VisitorTracker";
 import PixelTracker from "@/components/layout/PixelTracker";
 import KineticBackground from "@/components/ui/premium/KineticBackground";
+import StoreHeader from "@/components/layout/StoreHeader";
 import { Suspense } from "react";
 import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
 function hexToRgb(hex: string) {
@@ -75,7 +76,7 @@ export default async function StorefrontLayout({
   const storeSettings = (store.settings as any) || {};
   const tpl = store.template;
   const homepageLayout = (storeSettings.homepageLayout || []) as any[];
-  const hasBuilderSections = homepageLayout.length > 0;
+  const headerSection = homepageLayout.find((s: any) => s.type === 'header');
   const defaultHomeBg = (tpl === 'obsidian' || tpl === 'hybrid' || tpl === 'zenith') ? '#0a0a0a' : (tpl === 'apple' ? '#f5f5f7' : '#ffffff');
 
   const currentThemeId = getThemeByPath(storeSettings.pageThemes || [], `/store/${slug}`);
@@ -297,34 +298,34 @@ export default async function StorefrontLayout({
         <AdminEditorBar slug={slug} isOwner={isOwner} store={store} />
       </Suspense>
       <PreviewWrapper isOwner={isOwner}>
-        {!hasBuilderSections && store.template !== 'fitness' && (
-          <Navbar 
-            activeTemplate={store.template as any} 
-            storeSettings={{
-                ...store.settings,
-                type: store.type,
-                storeName: store.settings.storeName || store.name,
-                primaryColor: store.settings.colorSystem?.brand?.primary || store.primaryColor,
-            }} 
-            storeId={store.id}
-            categories={store.categories}
-            products={store.products}
-            lang={lang} 
-            slug={slug}
-            session={session}
-          />
+        {headerSection ? (
+          <StoreHeader headerConfig={headerSection} slug={slug} storeName={store.name} session={session} />
+        ) : (
+          store.template !== 'fitness' && (
+            <Navbar 
+              activeTemplate={store.template as any} 
+              storeSettings={{
+                  ...store.settings,
+                  type: store.type,
+                  storeName: store.settings.storeName || store.name,
+                  primaryColor: store.settings.colorSystem?.brand?.primary || store.primaryColor,
+              }} 
+              storeId={store.id}
+              categories={store.categories}
+              products={store.products}
+              lang={lang} 
+              slug={slug}
+              session={session}
+            />
+          )
         )}
-        <main className="flex-grow flex flex-col store-container">
+        <main className={`flex-grow flex flex-col store-container ${headerSection ? 'pt-16 md:pt-20' : ''}`}>
           {children}
         </main>
-        {!hasBuilderSections && (
-          <>
-            <div data-page="footer">
-              {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'dddyou' && <Footer />}
-            </div>
-            {store.template !== 'fitness' && store.template !== 'dddyou' && <WhatsAppButton />}
-          </>
-        )}
+        <div data-page="footer">
+          {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'dddyou' && <Footer />}
+        </div>
+        {store.template !== 'fitness' && store.template !== 'dddyou' && <WhatsAppButton />}
       </PreviewWrapper>
     </div>
   );
