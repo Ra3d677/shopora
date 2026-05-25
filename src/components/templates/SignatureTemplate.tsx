@@ -569,15 +569,15 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           let aboutContent;
           if (style === 'centered') {
             aboutContent = (
-              <section className="py-32 bg-transparent text-center animate-in fade-in duration-500" id="about">
+              <section className="py-32 text-center" id="about" style={{ background: 'red', color: 'white !important' }}>
                 <div className="max-w-4xl mx-auto px-8">
-                  <span className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-6 block">{tagline}</span>
-                  <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight mb-8 italic">{title}</h2>
-                  <p className="text-slate-500 text-lg mb-6 leading-relaxed">{desc1}</p>
-                  {desc2 && <p className="text-slate-500 text-lg mb-10 leading-relaxed">{desc2}</p>}
+                  <span className="mb-6 block text-lg font-bold">{tagline}</span>
+                  <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight mb-8 italic" style={{ color: 'aqua' }}>{title}</h2>
+                  <p className="text-lg mb-6 leading-relaxed" style={{ color: 'yellow' }}>{desc1}</p>
+                  {desc2 && <p className="text-lg mb-10 leading-relaxed" style={{ color: 'lime' }}>{desc2}</p>}
                 </div>
                 <div className="max-w-6xl mx-auto px-8 mt-12">
-                  <div className="relative aspect-[21/9] rounded-[3rem] overflow-hidden border border-slate-100 shadow-2xl">
+                  <div className="relative aspect-[21/9] rounded-[3rem] overflow-hidden border border-white shadow-2xl">
                     <SmartImage src={image} alt="About Us" className="w-full h-full object-cover" />
                   </div>
                 </div>
@@ -585,32 +585,40 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
             );
           } else if (style === 'minimal') {
             aboutContent = (
-              <section className="py-32 bg-transparent animate-in fade-in duration-500" id="about">
-                <div className="max-w-3xl mx-auto px-8 border-l-4 border-slate-900 pl-8 md:pl-12">
-                  <span className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-6 block">{tagline}</span>
-                  <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-tight mb-8 italic">{title}</h2>
-                  <p className="text-slate-500 text-lg mb-6 leading-relaxed">{desc1}</p>
-                  {desc2 && <p className="text-slate-500 text-lg leading-relaxed">{desc2}</p>}
+              <section className="py-32" id="about" style={{ background: 'blue', color: 'white' }}>
+                <div className="max-w-3xl mx-auto px-8 border-l-4 border-white pl-8 md:pl-12">
+                  <span className="mb-6 block text-lg font-bold">{tagline}</span>
+                  <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-tight mb-8 italic" style={{ color: 'aqua' }}>{title}</h2>
+                  <p className="text-lg mb-6 leading-relaxed" style={{ color: 'yellow' }}>{desc1}</p>
+                  {desc2 && <p className="text-lg leading-relaxed" style={{ color: 'lime' }}>{desc2}</p>}
                 </div>
               </section>
             );
           } else {
             aboutContent = (
-              <section className="py-32 bg-transparent animate-in fade-in duration-500" id="about">
+              <section className="py-32" id="about" style={{ background: 'green', color: 'white' }}>
                 <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-                  <div className="relative aspect-square md:aspect-[4/5] rounded-[3rem] overflow-hidden border border-slate-100 shadow-2xl">
+                  <div className="relative aspect-square md:aspect-[4/5] rounded-[3rem] overflow-hidden border border-white shadow-2xl">
                     <SmartImage src={image} alt="About Us" className="w-full h-full object-cover" />
                   </div>
                   <div>
-                    <span className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-6 block">{tagline}</span>
-                    <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight mb-8 italic">{title}</h2>
-                    <p className="text-slate-500 text-lg mb-6 leading-relaxed">{desc1}</p>
-                    <p className="text-slate-500 text-lg leading-relaxed">{desc2}</p>
+                    <span className="mb-6 block text-lg font-bold">{tagline}</span>
+                    <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight mb-8 italic" style={{ color: 'aqua' }}>{title}</h2>
+                    <p className="text-lg mb-6 leading-relaxed" style={{ color: 'yellow' }}>{desc1}</p>
+                    {desc2 && <p className="text-lg leading-relaxed" style={{ color: 'lime' }}>{desc2}</p>}
                   </div>
                 </div>
               </section>
             );
           }
+
+          return (
+            <React.Fragment key={section.id}>
+              {aboutContent}
+              {divider}
+            </React.Fragment>
+          );
+        }
 
           return (
             <React.Fragment key={section.id}>
