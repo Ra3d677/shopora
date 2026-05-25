@@ -386,9 +386,9 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           const bannersToShow = middleBanners.length > 0 ? middleBanners : (topBanners.length > 1 ? [] : topBanners);
           return (
             <React.Fragment key={section.id}>
-              <section className="py-1  w-full bg-transparent">
+              <section className="w-full bg-transparent">
                 {bannersToShow.length > 0 ? bannersToShow.map((banner: any) => (
-                  <div key={banner.id} className="relative group overflow-hidden min-h-[400px] md:h-[500px] mb-12 last:mb-0 shadow-2xl">
+                  <div key={banner.id} className="relative group overflow-hidden min-h-[400px] md:h-[500px] shadow-2xl">
                     <SmartImage 
                       src={banner.imageUrl} 
                       alt={banner.title} 
@@ -629,8 +629,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
 
       {/* Bottom Banners Section */}
       {bottomBanners.length > 0 && (
-        <section className="py-1  w-full bg-transparent border-t border-slate-100">
-          <div className="space-y-12">
+        <section className="w-full bg-transparent">
             {bottomBanners.map((banner: any) => (
               <div key={banner.id} className="relative group overflow-hidden min-h-[400px] md:h-[500px] shadow-2xl">
                 <SmartImage 
@@ -656,7 +655,6 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                 </div>
               </div>
             ))}
-          </div>
         </section>
       )}
 
