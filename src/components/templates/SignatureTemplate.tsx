@@ -115,7 +115,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
         )}
       </AnimatePresence>
       
-      {process.env.NODE_ENV !== 'production' && (
+      {(
         <div className="fixed top-20 left-0 z-[9999] bg-black/80 text-white text-xs p-2 rounded-r max-w-xs overflow-auto max-h-40 opacity-70 hover:opacity-100">
           Sections ({homepageLayout.length}): {homepageLayout.map((s:any) => s.type).join(', ')}
         </div>
@@ -488,7 +488,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
             <React.Fragment key={section.id}>
               <section 
                 className="py-32 overflow-hidden relative"
-                style={{ backgroundColor: 'var(--color-testimonial-bg)', color: 'var(--color-testimonial-text)' }}
+                style={{ backgroundColor: 'purple !important', color: 'white !important' }}
               >
                 <div className="absolute top-0 left-0 w-full h-full opacity-10">
                    <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
@@ -611,14 +611,6 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
               </section>
             );
           }
-
-          return (
-            <React.Fragment key={section.id}>
-              {aboutContent}
-              {divider}
-            </React.Fragment>
-          );
-        }
 
           return (
             <React.Fragment key={section.id}>
