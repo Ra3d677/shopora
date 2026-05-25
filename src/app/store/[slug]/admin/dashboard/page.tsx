@@ -10,7 +10,7 @@ import RevenueChart from "./RevenueChart";
 import RecentActivity from "./RecentActivity";
 import TrialBanner from "@/components/store/TrialBanner";
 import { getTranslation, getLang } from "@/lib/i18n";
-import DDDYOUDashboard from "@/components/templates/DDDYOUDashboard";
+import DDDYOUDashboard from "./DDDYOUDashboard";
 
 export default async function AdminDashboard({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ range?: string; section?: string }> }) {
   const { slug } = await params;
@@ -55,6 +55,8 @@ export default async function AdminDashboard({ params, searchParams }: { params:
       name: true,
       slug: true,
       type: true,
+      template: true,
+      settings: true,
       status: true,
       trialEndsAt: true,
       subscriptionEndsAt: true,
@@ -237,7 +239,7 @@ export default async function AdminDashboard({ params, searchParams }: { params:
   const isDDDYOU = store.template === 'dddyou';
 
   if (isDDDYOU && currentSection === 'dddyou') {
-    return <DDDYOUDashboard slug={slug} initialSettings={store.settings || {}} storeName={store.name} />;
+    return <DDDYOUDashboard slug={slug} initialSettings={JSON.parse(JSON.stringify(store.settings || {}))} storeName={store.name} />;
   }
 
   return (
