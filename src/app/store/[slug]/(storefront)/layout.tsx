@@ -74,7 +74,8 @@ export default async function StorefrontLayout({
   }
   const storeSettings = (store.settings as any) || {};
   const tpl = store.template;
-  const headerSection = (storeSettings.homepageLayout || []).find((s: any) => s.type === 'header');
+  const homepageLayout = (storeSettings.homepageLayout || []) as any[];
+  const hasBuilderSections = homepageLayout.length > 0;
   const defaultHomeBg = (tpl === 'obsidian' || tpl === 'hybrid' || tpl === 'zenith') ? '#0a0a0a' : (tpl === 'apple' ? '#f5f5f7' : '#ffffff');
 
   const currentThemeId = getThemeByPath(storeSettings.pageThemes || [], `/store/${slug}`);
@@ -296,7 +297,7 @@ export default async function StorefrontLayout({
         <AdminEditorBar slug={slug} isOwner={isOwner} store={store} />
       </Suspense>
       <PreviewWrapper isOwner={isOwner}>
-        {!headerSection && store.template !== 'fitness' && (
+        {!hasBuilderSections && store.template !== 'fitness' && (
           <Navbar 
             activeTemplate={store.template as any} 
             storeSettings={{
@@ -316,10 +317,14 @@ export default async function StorefrontLayout({
         <main className="flex-grow flex flex-col store-container">
           {children}
         </main>
-        <div data-page="footer">
-          {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'dddyou' && <Footer />}
-        </div>
-        {store.template !== 'fitness' && store.template !== 'dddyou' && <WhatsAppButton />}
+        {!hasBuilderSections && (
+          <>
+            <div data-page="footer">
+              {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'dddyou' && <Footer />}
+            </div>
+            {store.template !== 'fitness' && store.template !== 'dddyou' && <WhatsAppButton />}
+          </>
+        )}
       </PreviewWrapper>
     </div>
   );
