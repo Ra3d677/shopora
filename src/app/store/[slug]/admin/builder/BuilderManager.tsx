@@ -198,7 +198,7 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
         : type === 'hero'
         ? { title: `New ${def.name}`, subtitle: 'Add your description here', btnText: 'Shop Now', btnLink: '#', bgImage: '' }
         : { title: `New ${def.name}` },
-      showDivider: type !== 'marquee'
+      showDivider: false
     };
     setLayout([...layout, newSection]);
     setActiveEditor(newSection.id);
