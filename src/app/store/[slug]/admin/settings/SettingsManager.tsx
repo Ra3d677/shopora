@@ -594,6 +594,15 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                             className="w-7 h-7 rounded-lg border border-white/10 transition-all hover:scale-110"
                             style={{ background: c }} />
                         ))}
+                        <button type="button"
+                          onClick={() => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), bgColor: 'transparent'}})}
+                          className={`w-7 h-7 rounded-lg border transition-all hover:scale-110 flex items-center justify-center text-[8px] font-black ${(settings.headerSettings as any)?.bgColor === 'transparent' ? 'border-cyan-400 text-cyan-400' : 'border-white/10 text-slate-500'}`}
+                          title={language === 'ar' ? 'شفاف' : 'Transparent'}>
+                          <svg viewBox="0 0 16 16" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5">
+                            <rect x="2" y="2" width="12" height="12" rx="1" />
+                            <line x1="3" y1="3" x2="13" y2="13" />
+                          </svg>
+                        </button>
                       </div>
                     </div>
                     <div className="space-y-2">
