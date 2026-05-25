@@ -41,6 +41,11 @@ export interface StoreSettings {
     layout?: 'default' | 'standard' | 'centered' | 'minimal' | 'luxury' | 'hamburger';
     logoHeight?: number;
     logoBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay';
+    bgColor?: string;
+    textColor?: string;
+    fontFamily?: string;
+    fontSize?: string;
+    fontStyle?: string;
     links?: {
       id: string;
       label: string;

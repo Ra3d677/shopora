@@ -568,6 +568,109 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                     ))}
                   </div>
                 </div>
+                
+                {/* Header Colors & Typography */}
+                <div className="admin-card backdrop-blur-3xl rounded-2xl p-6 border admin-border shadow-2xl relative">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-1 h-6 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                    <h2 className={`text-lg font-black text-white italic uppercase tracking-tighter ${language === 'ar' ? 'font-arabic' : ''}`}>
+                      {language === 'ar' ? 'الألوان والخطوط' : 'Colors & Typography'}
+                    </h2>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className={`text-xs font-black text-slate-500 uppercase tracking-wider ${language === 'ar' ? 'font-arabic' : ''}`}>
+                        {language === 'ar' ? 'لون الخلفية' : 'Header Background'}
+                      </label>
+                      <div className="flex items-center gap-3">
+                        <input type="color" value={(settings.headerSettings as any)?.bgColor || '#0f172a'}
+                          onChange={e => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), bgColor: e.target.value}})}
+                          className="w-12 h-12 rounded-xl border border-white/10 cursor-pointer bg-transparent" />
+                        <input type="text" value={(settings.headerSettings as any)?.bgColor || '#0f172a'}
+                          onChange={e => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), bgColor: e.target.value}})}
+                          className="flex-1 bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-2.5 text-white text-xs font-mono outline-none focus:ring-1 focus:ring-cyan-500/50" />
+                        {['#0f172a', '#ffffff', '#000000', '#1e1b4b', '#0f0f1a', '#f8fafc'].map(c => (
+                          <button key={c} type="button" onClick={() => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), bgColor: c}})}
+                            className="w-7 h-7 rounded-lg border border-white/10 transition-all hover:scale-110"
+                            style={{ background: c }} />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className={`text-xs font-black text-slate-500 uppercase tracking-wider ${language === 'ar' ? 'font-arabic' : ''}`}>
+                        {language === 'ar' ? 'لون النص' : 'Text Color'}
+                      </label>
+                      <div className="flex items-center gap-3">
+                        <input type="color" value={(settings.headerSettings as any)?.textColor || '#ffffff'}
+                          onChange={e => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), textColor: e.target.value}})}
+                          className="w-12 h-12 rounded-xl border border-white/10 cursor-pointer bg-transparent" />
+                        <input type="text" value={(settings.headerSettings as any)?.textColor || '#ffffff'}
+                          onChange={e => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), textColor: e.target.value}})}
+                          className="flex-1 bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-2.5 text-white text-xs font-mono outline-none focus:ring-1 focus:ring-cyan-500/50" />
+                        {['#ffffff', '#0f172a', '#c9a96e', '#94a3b8', '#06b6d4', '#f97316'].map(c => (
+                          <button key={c} type="button" onClick={() => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), textColor: c}})}
+                            className="w-7 h-7 rounded-lg border border-white/10 transition-all hover:scale-110"
+                            style={{ background: c }} />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className={`text-xs font-black text-slate-500 uppercase tracking-wider ${language === 'ar' ? 'font-arabic' : ''}`}>
+                        {language === 'ar' ? 'نوع الخط' : 'Font Family'}
+                      </label>
+                      <select value={(settings.headerSettings as any)?.fontFamily || 'Inter'}
+                        onChange={e => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), fontFamily: e.target.value}})}
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-2.5 text-white text-xs font-bold outline-none focus:ring-1 focus:ring-cyan-500/50"
+                        style={{ fontFamily: (settings.headerSettings as any)?.fontFamily || 'Inter' }}>
+                        {["Inter", "Roboto", "Playfair Display", "Montserrat", "Outfit", "Lexend", "Bebas Neue", "Dancing Script", "Pacifico", "Cormorant Garamond", "Space Grotesk", "Syne", "Cabinet Grotesk", "General Sans"].map(f => (
+                          <option key={f} value={f} className="bg-slate-900" style={{ fontFamily: f }}>{f}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className={`text-xs font-black text-slate-500 uppercase tracking-wider ${language === 'ar' ? 'font-arabic' : ''}`}>
+                        {language === 'ar' ? 'حجم الخط' : 'Font Size'}
+                      </label>
+                      <select value={(settings.headerSettings as any)?.fontSize || 'base'}
+                        onChange={e => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), fontSize: e.target.value}})}
+                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-2.5 text-white text-xs font-bold outline-none focus:ring-1 focus:ring-cyan-500/50">
+                        {[
+                          { value: 'xs', label: language === 'ar' ? 'صغير جداً (12px)' : 'Extra Small (12px)' },
+                          { value: 'sm', label: language === 'ar' ? 'صغير (14px)' : 'Small (14px)' },
+                          { value: 'base', label: language === 'ar' ? 'وسط (16px)' : 'Medium (16px)' },
+                          { value: 'lg', label: language === 'ar' ? 'كبير (18px)' : 'Large (18px)' },
+                          { value: 'xl', label: language === 'ar' ? 'كبير جداً (20px)' : 'Extra Large (20px)' },
+                          { value: '2xl', label: language === 'ar' ? 'ضخم (24px)' : '2X Large (24px)' },
+                        ].map(s => (
+                          <option key={s.value} value={s.value} className="bg-slate-900">{s.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className={`text-xs font-black text-slate-500 uppercase tracking-wider ${language === 'ar' ? 'font-arabic' : ''}`}>
+                        {language === 'ar' ? 'شكل النص' : 'Text Style'}
+                      </label>
+                      <div className="flex gap-2">
+                        {[
+                          { id: 'normal', label: language === 'ar' ? 'عادي' : 'Normal' },
+                          { id: 'bold', label: language === 'ar' ? 'عريض' : 'Bold' },
+                          { id: 'italic', label: language === 'ar' ? 'مائل' : 'Italic' },
+                          { id: 'uppercase', label: language === 'ar' ? 'كبير' : 'Uppercase' },
+                        ].map(st => (
+                          <button key={st.id} type="button"
+                            onClick={() => updateSettings({...settings, headerSettings: {...(settings.headerSettings || {}), fontStyle: (settings.headerSettings as any)?.fontStyle === st.id ? '' : st.id}})}
+                            className={`flex-1 py-2.5 px-3 text-[10px] font-black uppercase tracking-wider rounded-xl border transition-all ${
+                              ((settings.headerSettings as any)?.fontStyle || '') === st.id
+                                ? 'bg-cyan-500/10 border-cyan-500/40 text-cyan-400'
+                                : 'bg-white/[0.02] border-white/[0.05] text-slate-500 hover:border-white/10'
+                            }`}>
+                            {st.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
             
