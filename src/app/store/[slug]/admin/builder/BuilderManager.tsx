@@ -466,6 +466,18 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                               onChange={(e) => updateSectionConfig(activeSection.id, 'desc2', e.target.value)}
                               className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all resize-none text-sm" />
                           </div>
+                          <div className="space-y-2">
+                            <label className="text-xs font-bold text-slate-500 uppercase">Font Family</label>
+                            <select value={activeSection.config.fontFamily || 'inherit'}
+                              onChange={(e) => updateSectionConfig(activeSection.id, 'fontFamily', e.target.value)}
+                              className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all text-sm"
+                              style={{ fontFamily: activeSection.config.fontFamily || 'inherit' }}>
+                              <option value="inherit">Default</option>
+                              {["Inter", "Roboto", "Playfair Display", "Montserrat", "Outfit", "Lexend", "Bebas Neue", "Dancing Script", "Pacifico", "Cormorant Garamond", "Space Grotesk", "Syne", "Cabinet Grotesk", "General Sans", "Cairo"].map(f => (
+                                <option key={f} value={f} style={{ fontFamily: f }}>{f}</option>
+                              ))}
+                            </select>
+                          </div>
                           {['split', 'centered'].includes(activeSection.style) && (
                             <div className="grid grid-cols-2 gap-4">
                               <div className="space-y-2">
