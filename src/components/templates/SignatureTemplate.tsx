@@ -134,7 +134,35 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           let content;
 
           if (heroStyle === 'slider') {
-            content = <HeroSlider key={section.id} banners={topBanners} slug={slug} settings={settings.bannerSettings} />;
+            const heroSlides = [];
+            const heroTitle = section.config?.title || '';
+            const heroSubtitle = section.config?.subtitle || '';
+            const heroBg = section.config?.bgImage || '';
+            const heroBtnText = section.config?.btnText || '';
+            const heroBtnLink = section.config?.btnLink || '#';
+            const hasHeroContent = heroTitle || heroBg;
+            if (hasHeroContent) {
+              heroSlides.push({
+                id: `${section.id}-hero`,
+                title: heroTitle || '',
+                subtitle: heroSubtitle || '',
+                imageUrl: heroBg || '',
+                buttonText: heroBtnText || '',
+                buttonLink: heroBtnLink,
+                showButton: !!heroBtnText,
+                buttonPosition: 'center',
+              });
+            }
+            const sliderBanners = [...heroSlides, ...middleBanners];
+            if (sliderBanners.length === 0) {
+              content = (
+                <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex items-center justify-center bg-slate-900 text-white">
+                  <p className="text-lg font-bold opacity-50">Add hero content or banners to display</p>
+                </section>
+              );
+            } else {
+              content = <HeroSlider key={section.id} banners={sliderBanners} slug={slug} settings={settings.bannerSettings} />;
+            }
           } else if (heroStyle === 'split') {
             content = (
               <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex flex-col md:flex-row bg-transparent overflow-hidden">
