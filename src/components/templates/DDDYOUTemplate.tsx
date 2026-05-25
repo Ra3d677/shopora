@@ -164,7 +164,8 @@ export default function DDDYOUTemplate({ banners, settings, products: storeProdu
           <p className="text-lg text-white/60 max-w-xl mx-auto mb-10 leading-relaxed">عطور تجمع بين أصالة الشرق ورقي الغرب، crafted لكل لحظة لا تُنسى</p>
           <div className="flex gap-4 justify-center flex-wrap mb-16">
             <a href="#products" className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-gradient-to-r from-[#c9a96e] to-[#b8923e] text-[#0f0f1a] font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">اكتشف المجموعة</a>
-            <a href="#about" className="inline-flex items-center gap-2 px-10 py-4 rounded-full border-2 border-[#c9a96e] text-white font-bold hover:bg-[#c9a96e] hover:text-[#0f0f1a] transition-all">اقرأ قصتنا</a>
+              <a href="#about" className="inline-flex items-center gap-2 px-10 py-4 rounded-full border-2 border-[#c9a96e] text-white font-bold hover:bg-[#c9a96e] hover:text-[#0f0f1a] transition-all">اقرأ قصتنا</a>
+              <a href="#about" className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-gradient-to-r from-[#c9a96e] to-[#b8923e] text-[#0f0f1a] font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">هلا بالخميس</a>
           </div>
           <div className="flex justify-center gap-16 flex-wrap">
             {[
