@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
 import { getStoreBySlug } from "@/lib/data";
+import { getSession } from "@/lib/auth";
 import { getTranslation } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
@@ -34,6 +35,7 @@ function BaseHomePage({ storeName, slug }: { storeName: string, slug: string }) 
 export default async function HomePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const store = await getStoreBySlug(slug);
+  const session = await getSession();
   
   if (!store) {
     notFound();
@@ -72,6 +74,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
         products={products} 
         slug={slug} 
         categories={store.categories} 
+        session={session}
       />
     );
   };

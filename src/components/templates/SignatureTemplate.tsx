@@ -27,9 +27,10 @@ interface TemplateProps {
   products: any[];
   slug: string;
   categories: any[];
+  session?: any;
 }
 
-export default function SignatureTemplate({ banners, settings, products, slug, categories }: TemplateProps) {
+export default function SignatureTemplate({ banners, settings, products, slug, categories, session }: TemplateProps) {
   const { isEditMode } = useEditorStore();
   const { t, language } = useLanguageStore();
   const { scrollYProgress } = useScroll();
@@ -143,10 +144,10 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                   </nav>
                   <div className="flex items-center gap-1">
                     {h.showTracking && <Link href={`/store/${slug}/tracking`} className="p-2 text-sm text-white/70 hover:text-[#c9a96e]"><i className="fas fa-truck"></i></Link>}
-                    {h.showSearch && <button className="p-2 text-sm text-white/70 hover:text-[#c9a96e]"><i className="fas fa-search"></i></button>}
-                    {h.showCart !== false && <button className="p-2 text-sm text-white/70 hover:text-[#c9a96e]"><i className="fas fa-shopping-bag"></i></button>}
+                    {h.showSearch && <Link href={`/store/${slug}/search`} className="p-2 text-sm text-white/70 hover:text-[#c9a96e]"><i className="fas fa-search"></i></Link>}
+                    {h.showCart !== false && <Link href={`/store/${slug}/cart`} className="p-2 text-sm text-white/70 hover:text-[#c9a96e]"><i className="fas fa-shopping-bag"></i></Link>}
                     {h.showLanguage !== false && <LanguageSwitcher dark lang={language} />}
-                    {h.showAccount !== false && <UserMenu slug={slug} lang={language} textColor={h.textColor || '#ffffffcc'} />}
+                    {h.showAccount !== false && <UserMenu slug={slug} lang={language} session={session} textColor={h.textColor || '#ffffffcc'} />}
                     <button className="md:hidden flex flex-col gap-1 p-2"><span className="block w-6 h-0.5" style={{ background: h.textColor || '#ffffff' }} /><span className="block w-6 h-0.5" style={{ background: h.textColor || '#ffffff' }} /><span className="block w-6 h-0.5" style={{ background: h.textColor || '#ffffff' }} /></button>
                   </div>
                 </div>
@@ -172,10 +173,10 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                       <i className="fas fa-truck"></i>
                     </Link>
                   )}
-                  {h.showSearch && <button className="p-2 text-sm transition-all hover:opacity-60" style={{ color: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568') }}><i className="fas fa-search"></i></button>}
-                  {h.showCart !== false && <button className="p-2 text-sm relative transition-all hover:opacity-60" style={{ color: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568') }}><i className="fas fa-shopping-bag"></i></button>}
+                  {h.showSearch && <Link href={`/store/${slug}/search`} className="p-2 text-sm transition-all hover:opacity-60" style={{ color: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568') }}><i className="fas fa-search"></i></Link>}
+                  {h.showCart !== false && <Link href={`/store/${slug}/cart`} className="p-2 text-sm relative transition-all hover:opacity-60" style={{ color: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568') }}><i className="fas fa-shopping-bag"></i></Link>}
                   {h.showLanguage !== false && <LanguageSwitcher dark={style === 'dark' || style === 'glass'} lang={language} />}
-                  {h.showAccount !== false && <UserMenu slug={slug} lang={language} textColor={h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568')} />}
+                  {h.showAccount !== false && <UserMenu slug={slug} lang={language} session={session} textColor={h.textColor || (style === 'dark' || style === 'glass' ? '#ffffffcc' : '#4a5568')} />}
                   <button className="md:hidden flex flex-col gap-1 p-2"><span className="block w-6 h-0.5" style={{ background: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffff' : '#000000') }} /><span className="block w-6 h-0.5" style={{ background: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffff' : '#000000') }} /><span className="block w-6 h-0.5" style={{ background: h.textColor || (style === 'dark' || style === 'glass' ? '#ffffff' : '#000000') }} /></button>
                 </div>
               </div>
