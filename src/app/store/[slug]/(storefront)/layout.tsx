@@ -299,7 +299,7 @@ export default async function StorefrontLayout({
       </Suspense>
       <PreviewWrapper isOwner={isOwner}>
         {headerSection ? (
-          <StoreHeader headerConfig={headerSection} slug={slug} storeName={store.name} session={session} />
+          <StoreHeader headerConfig={headerSection} slug={slug} storeName={store.name} session={session} categories={store.categories} />
         ) : (
           store.template !== 'fitness' && (
             <Navbar 
