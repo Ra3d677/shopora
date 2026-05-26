@@ -92,7 +92,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
   ];
 
   return (
-    <div className="relative w-full font-sans selection:bg-slate-900 selection:text-white">
+    <div className="relative w-full font-sans selection:bg-slate-900 selection:text-white overflow-x-hidden">
       
       {/* Live Sale Toast */}
       <AnimatePresence>
@@ -148,7 +148,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                     No active sales at the moment.
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[800px]">
+                  <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 min-h-[800px]">
                      {saleProducts.slice(0, 4).map((product: any, idx: number) => (
                        <Link 
                          href={`/store/${slug}/product/${product.id}`} 
@@ -165,14 +165,14 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                             Sale
                           </div>
                           <div className="absolute bottom-8 left-8 text-white">
-                            <h3 className="text-3xl font-black uppercase tracking-tighter">{product.name}</h3>
+                            <h3 className="text-3xl font-black uppercase tracking-tighter truncate">{product.name}</h3>
                             <div className="flex items-center gap-3 mt-2">
                               <span className="text-white/60 line-through text-sm">${product.price}</span>
                               <span className="text-white font-bold text-xl">${product.discount_price}</span>
                             </div>
-                          </div>
-                       </Link>
-                     ))}
+                         </div>
+                      </Link>
+                   ))}
                   </div>
                 )}
               </section>
@@ -194,24 +194,24 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                           settingsKey="signatureSettings.spotlightBadge" 
                           className="text-blue-600 font-bold uppercase tracking-widest text-xs mb-4 block" 
                         />
-                        <h2 className="text-6xl font-black tracking-tighter leading-none mb-8">
+                        <h2 className="text-6xl font-black tracking-tighter leading-none mb-8 break-words">
                           {section.config?.title || "Crafted to Perfection."}
                         </h2>
                         <p className="text-slate-500 text-lg mb-12 max-w-md">
                           {section.config?.text || "Experience the blend of artisanal tradition and modern technology in every piece we create."}
                         </p>
                         <div className="space-y-6">
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-4 min-w-0">
                                <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center shadow-sm">
                                  <Check size={20} className="text-green-500" />
                                </div>
-                               <span className="font-bold">Premium Materials Only</span>
+                               <span className="font-bold break-words">Premium Materials Only</span>
                             </div>
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-4 min-w-0">
                                <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center shadow-sm">
                                  <Check size={20} className="text-green-500" />
                                </div>
-                               <span className="font-bold">Limited Edition Releases</span>
+                               <span className="font-bold break-words">Limited Edition Releases</span>
                             </div>
                         </div>
                       </Reveal>
@@ -251,8 +251,8 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                     />
                     <div className="absolute inset-0 p-8 md:p-16 flex flex-col justify-center">
                       <div>
-                        <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 uppercase italic text-white" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>{banner.title}</h2>
-                        <p className="text-lg md:text-xl max-w-xl mb-10 font-light leading-relaxed text-white/90" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>{banner.subtitle}</p>
+                        <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 uppercase italic text-white break-words" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>{banner.title}</h2>
+                        <p className="text-lg md:text-xl max-w-xl mb-10 font-light leading-relaxed text-white/90 break-words" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>{banner.subtitle}</p>
                         <BannerButton banner={banner} slug={slug} />
                       </div>
                     </div>
@@ -298,7 +298,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                             </div>
                          </div>
                       </div>
-                      <h3 className="font-bold text-xl group-hover:text-blue-600 transition-colors">{product.name}</h3>
+                      <h3 className="font-bold text-xl group-hover:text-blue-600 transition-colors truncate">{product.name}</h3>
                       <p className="text-sm mt-1 uppercase tracking-widest font-bold" style={{ color: 'var(--color-price)' }}>${product.price}</p>
                     </Link>
                   ))}
@@ -354,7 +354,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                     {sectionItems.map((item: any) => (
                       <div key={item.id} className="bg-white rounded-2xl p-8 shadow-md border border-slate-100 hover:shadow-xl transition-shadow duration-300 flex flex-col">
                         <div className="mb-4">{renderStars(item.rating)}</div>
-                        <p className="text-slate-600 leading-relaxed mb-8 flex-1 text-sm">"{item.content}"</p>
+                        <p className="text-slate-600 leading-relaxed mb-8 flex-1 text-smbreak-words">"{item.content}"</p>
                         <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
                           <div className="w-10 h-10 rounded-full bg-slate-100 overflow-hidden shrink-0">
                             <img src={item.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${item.name}`} alt={item.name} className="w-full h-full object-cover" />
@@ -369,7 +369,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                     {customerReviews.map((item: any) => (
                       <div key={item.id} className="bg-white/60 rounded-2xl p-8 shadow-sm border border-slate-100/60 flex flex-col">
                         <div className="mb-4">{renderStars(item.rating)}</div>
-                        <p className="text-slate-600 leading-relaxed mb-8 flex-1 text-sm">"{item.content}"</p>
+                        <p className="text-slate-600 leading-relaxed mb-8 flex-1 text-smbreak-words">"{item.content}"</p>
                         <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
                           {item.avatar ? (
                             <div className="w-10 h-10 rounded-full overflow-hidden shrink-0">
@@ -444,7 +444,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
               <section className="py-32 bg-transparent text-center" id="about">
                 <div className="max-w-4xl mx-auto px-8">
                   {tagline && <span className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-6 block" style={{ fontFamily }}>{tagline}</span>}
-                  {title && <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight mb-8 italic" style={{ fontFamily }}>{title}</h2>}
+                  {title && <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight mb-8 italic break-words" style={{ fontFamily }}>{title}</h2>}
                   {desc1 && <div className="text-slate-500 text-lg mb-6 leading-relaxed overflow-hidden break-words" style={{ fontFamily, textShadow: textShadowCss, whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowWrap: 'break-word' }} dangerouslySetInnerHTML={{ __html: desc1 }} />}
                   {desc2 && <div className="text-slate-500 text-lg mb-10 leading-relaxed overflow-hidden break-words" style={{ fontFamily, textShadow: textShadowCss, whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowWrap: 'break-word' }} dangerouslySetInnerHTML={{ __html: desc2 }} />}
                   {btnText && <a href={btnLink} className="inline-block bg-slate-900 text-white px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest hover:bg-slate-800 transition-all">{btnText}</a>}
@@ -481,7 +481,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                   )}
                   <div>
                     {tagline && <span className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-6 block" style={{ fontFamily }}>{tagline}</span>}
-                    {title && <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight mb-8 italic" style={{ fontFamily }}>{title}</h2>}
+                    {title && <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight mb-8 italic break-words" style={{ fontFamily }}>{title}</h2>}
                   {desc1 && <div className="text-slate-500 text-lg mb-6 leading-relaxed overflow-hidden break-words" style={{ fontFamily, textShadow: textShadowCss, whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowWrap: 'break-word' }} dangerouslySetInnerHTML={{ __html: desc1 }} />}
                   {desc2 && <div className="text-slate-500 text-lg leading-relaxed overflow-hidden break-words" style={{ fontFamily, textShadow: textShadowCss, whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowWrap: 'break-word' }} dangerouslySetInnerHTML={{ __html: desc2 }} />}
                     {btnText && <a href={btnLink} className="inline-block bg-slate-900 text-white px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest hover:bg-slate-800 transition-all">{btnText}</a>}
@@ -530,8 +530,8 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                 />
                 <div className="absolute inset-0 p-8 md:p-16 flex flex-col justify-center">
                   <div>
-                    <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 uppercase italic text-white" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>{banner.title}</h2>
-                    <p className="text-lg md:text-xl max-w-xl mb-10 font-light leading-relaxed text-white/90" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>{banner.subtitle}</p>
+                    <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 uppercase italic text-white break-words" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>{banner.title}</h2>
+                    <p className="text-lg md:text-xl max-w-xl mb-10 font-light leading-relaxed text-white/90 break-words" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>{banner.subtitle}</p>
                     <BannerButton banner={banner} slug={slug} />
                   </div>
                 </div>

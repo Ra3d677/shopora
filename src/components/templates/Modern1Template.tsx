@@ -90,7 +90,7 @@ linear-gradient(to bottom, #05070d, #070a13 55%, #05070d)`,
                   <EditableText content={mod1.heroBadge ?? "NEW SEASON DROP"} slug={slug} settingsKey="modern1Settings.heroBadge" />
                 </div>
 
-                <h1 className="mt-8 text-5xl md:text-7xl lg:text-[5.2rem] font-black leading-[0.9] tracking-[-0.06em] text-white">
+                <h1 className="mt-8 text-5xl md:text-7xl lg:text-[5.2rem] font-black leading-[0.9] tracking-[-0.06em] text-white break-words">
                   <span style={{ background: `linear-gradient(90deg, ${themeAccent}, #ffffff 55%, rgba(255,255,255,0.85))`, WebkitBackgroundClip: "text", color: "transparent" }}>
                     <EditableText content={String(title)} slug={slug} settingsKey="modern1Settings.heroTitle" />
                   </span>
@@ -410,7 +410,7 @@ linear-gradient(to bottom, #05070d, #070a13 55%, #05070d)`,
   };
 
   return (
-    <div className="theme-modern1 w-full min-h-screen" style={{ color: "#ffffff" }}>
+    <div className="theme-modern1 w-full min-h-screen overflow-x-hidden" style={{ color: "#ffffff" }}>
       <div className="absolute inset-0 -z-10" style={glowStyle} />
 
       {homepageLayout.map((section: any) => {

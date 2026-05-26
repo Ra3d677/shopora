@@ -380,7 +380,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
                   {hero.badge || "ELITE ONLINE COACHING"}
                 </div>
 
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-6 text-slate-900">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-6 text-slate-900 break-words">
                   {hero.title || (
                     <>
                       Advance Like
@@ -482,8 +482,8 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
                 <div className="w-14 h-14 rounded-2xl bg-emerald-100 flex items-center justify-center text-2xl mb-5 group-hover:bg-emerald-200 transition-colors">
                   {SERVICE_ICONS[svc.icon] || svc.icon || "💪"}
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-3">{svc.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{svc.description}</p>
+                <h3 className="text-lg font-bold text-slate-900 mb-3 break-words">{svc.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed break-words">{svc.description}</p>
               </div>
             ))}
           </div>
@@ -615,7 +615,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
                       }`}>
                         {plan.id || (isRtl ? "باقة" : "Plan")}
                       </div>
-                      <h3 className={`text-xl md:text-2xl font-black leading-tight ${isPopular ? "text-white" : "text-slate-900"}`}>{plan.name}</h3>
+                      <h3 className={`text-xl md:text-2xl font-black leading-tight truncate ${isPopular ? "text-white" : "text-slate-900"}`}>{plan.name}</h3>
                       {plan.subtitle && (
                         <p className={`text-[11px] leading-relaxed mt-1 ${isPopular ? "text-emerald-100/80" : "text-slate-400"}`}>{plan.subtitle}</p>
                       )}
@@ -703,7 +703,7 @@ export default function FitnessTemplate({ banners, settings, slug }: FitnessProp
               {testimonialItems.slice(0, 12).map((r: any, i: number) => (
                 <div key={i} className="bg-white rounded-2xl p-6 md:p-7 border border-slate-100 shadow-sm hover:shadow-lg hover:border-emerald-100 transition-all duration-300">
                   <StarRating rating={r.rating || 5} />
-                  <p className="text-slate-600 text-sm leading-relaxed mt-4 mb-5">
+                  <p className="text-slate-600 text-sm leading-relaxed mt-4 mb-5 break-words">
                     &ldquo;{r.content}&rdquo;
                   </p>
                   <div className="flex items-center gap-3">

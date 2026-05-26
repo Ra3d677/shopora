@@ -44,7 +44,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
   ];
 
   return (
-    <div className="flex flex-col w-full font-sans bg-transparent">
+    <div className="flex flex-col w-full font-sans bg-transparent overflow-x-hidden">
       {homepageLayout.map((section: any, index: number) => {
         const divider = section.showDivider !== false && (
           <SectionDivider 
@@ -74,7 +74,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                           <EditableText content={modSettings.heroBadge ?? ""} slug={slug} settingsKey="modernSettings.heroBadge" />
                         </span>
                       )}
-                      <h1 className="text-6xl md:text-8xl font-black text-slate-900 leading-[0.9] tracking-tighter mb-8 italic">
+                      <h1 className="text-6xl md:text-8xl font-black text-slate-900 leading-[0.9] tracking-tighter mb-8 italic break-words">
                         <span className="gradient-text-support">
                           <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
                         </span>
@@ -104,7 +104,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                     <SmartImage src={topBanners[0]?.imageUrl || modSettings.heroImage || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80"} className="w-full h-full object-cover" alt="Hero Bg" />
                   </div>
                   <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} className="max-w-5xl z-10">
-                    <h1 className="text-7xl md:text-[10rem] font-black text-white leading-none tracking-tighter mb-10 uppercase">
+                    <h1 className="text-7xl md:text-[10rem] font-black text-white leading-none tracking-tighter mb-10 uppercase break-words">
                       <span className="gradient-text-support">
                         <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
                       </span>
@@ -132,7 +132,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                         <div className="w-6 h-6 bg-blue-600" />
                       </div>
                     )}
-                    <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter mb-8 uppercase leading-none">
+                    <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter mb-8 uppercase leading-none break-words">
                       <span className="gradient-text-support">
                         <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
                       </span>
@@ -167,7 +167,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                             </span>
                          </div>
                        )}
-                       <h1 className="text-7xl md:text-[10rem] font-black text-slate-900 leading-[0.8] tracking-tighter mb-12 uppercase italic">
+                       <h1 className="text-7xl md:text-[10rem] font-black text-slate-900 leading-[0.8] tracking-tighter mb-12 uppercase italic break-words">
                           <span className="gradient-text-support">
                             <EditableText content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} slug={slug} settingsKey="modernSettings.heroTitle" />
                           </span>
@@ -205,7 +205,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                         />
                       </span>
                     )}
-                    <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter mb-8 italic">
+                    <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter mb-8 italic break-words">
                       <span className="gradient-text-support">
                         <EditableText 
                           content={topBanners[0]?.title ?? modSettings.heroTitle ?? ""} 
@@ -270,7 +270,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                 <div className="container mx-auto px-6">
                   <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
                      <div>
-                        <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-none mb-6 uppercase italic">
+                        <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-none mb-6 uppercase italic break-words">
                            <span className="gradient-text-support">
                              <EditableText content={modSettings.productsTitle ?? t('theDrop')} slug={slug} settingsKey="modernSettings.productsTitle" />
                            </span>
@@ -334,7 +334,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
             return (
               <section key={section.id} className="py-24 bg-transparent px-6">
                 <div className="container mx-auto max-w-4xl text-center">
-                  <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-none mb-10 italic">
+                  <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-none mb-10 italic break-words">
                     <EditableText content={section.config?.title ?? t('excellenceInDetail')} settingsKey={`section-${section.id}-title`} slug={slug} />
                   </h2>
                   <p className="text-xl text-slate-500 leading-relaxed italic">
@@ -364,7 +364,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                       />
                       <div className="absolute inset-0 bg-transparent transition-colors" />
                       <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 md:p-12 text-white">
-                        <h2 className="text-4xl md:text-8xl font-black tracking-tighter leading-none mb-6 italic">{banner.title}</h2>
+                        <h2 className="text-4xl md:text-8xl font-black tracking-tighter leading-none mb-6 italic break-words">{banner.title}</h2>
                         <p className="text-xl md:text-2xl font-medium opacity-90 max-w-2xl mb-10">{banner.subtitle}</p>
                         <BannerButton banner={banner} slug={slug} />
                       </div>
@@ -406,7 +406,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                              <div className="flex gap-1 mb-6 text-blue-600">
                                 {[1, 2, 3, 4, 5].map(s => <span key={s}>★</span>)}
                              </div>
-                             <p className="text-xl text-slate-600 italic leading-relaxed mb-8">
+                              <p className="text-xl text-slate-600 italic leading-relaxed mb-8 break-words">
                                 "{t.content}"
                              </p>
                              <div className="flex items-center gap-4">
@@ -444,7 +444,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                 <section className="py-24 bg-transparent text-center animate-in fade-in duration-500" id="about">
                   <div className="max-w-4xl mx-auto px-6">
                     <span className="text-blue-600 font-bold uppercase tracking-[0.3em] text-xs mb-4 block">{tagline}</span>
-                    <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight mb-8 uppercase italic">{title}</h2>
+                    <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight mb-8 uppercase italic break-words">{title}</h2>
                     <p className="text-slate-500 text-lg mb-6 leading-relaxed">{desc1}</p>
                     {desc2 && <p className="text-slate-500 text-lg mb-10 leading-relaxed">{desc2}</p>}
                   </div>
@@ -460,7 +460,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                 <section className="py-24 bg-transparent animate-in fade-in duration-500" id="about">
                   <div className="max-w-3xl mx-auto px-6 border-l-4 border-blue-600 pl-8 md:pl-12">
                     <span className="text-blue-600 font-bold uppercase tracking-[0.3em] text-xs mb-4 block">{tagline}</span>
-                    <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-tight mb-8 uppercase italic">{title}</h2>
+                    <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-tight mb-8 uppercase italic break-words">{title}</h2>
                     <p className="text-slate-500 text-lg mb-6 leading-relaxed">{desc1}</p>
                     {desc2 && <p className="text-slate-500 text-lg leading-relaxed">{desc2}</p>}
                   </div>
@@ -475,7 +475,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                     </div>
                     <div>
                       <span className="text-blue-600 font-bold uppercase tracking-[0.3em] text-xs mb-4 block">{tagline}</span>
-                      <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight mb-8 uppercase italic">{title}</h2>
+                      <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight mb-8 uppercase italic break-words">{title}</h2>
                       <p className="text-slate-500 text-lg mb-6 leading-relaxed">{desc1}</p>
                       <p className="text-slate-500 text-lg leading-relaxed">{desc2}</p>
                     </div>
@@ -524,7 +524,7 @@ export default function ModernTemplate({ banners, settings, products, slug, cate
                 />
                 <div className="absolute inset-0 bg-slate-900/40 group-hover:bg-slate-900/20 transition-colors" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 md:p-12 text-white">
-                  <h2 className="text-4xl md:text-8xl font-black tracking-tighter leading-none mb-6 italic">{banner.title}</h2>
+                  <h2 className="text-4xl md:text-8xl font-black tracking-tighter leading-none mb-6 italic break-words">{banner.title}</h2>
                   <p className="text-xl md:text-2xl font-medium opacity-90 max-w-2xl mb-10">{banner.subtitle}</p>
                   <BannerButton banner={banner} slug={slug} />
                 </div>

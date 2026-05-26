@@ -57,7 +57,7 @@ export default function TourismTemplate({
     return (
       <section key={section.id} className="py-24 max-w-7xl mx-auto px-6" id="packages">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4" style={{ color: 'var(--color-text-home, #ffffff)' }}>
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4 break-words" style={{ color: 'var(--color-text-home, #ffffff)' }}>
             {section.config?.title || settings.tourismSettings?.packagesTitle || t('ourPackagesOffers')}
           </h2>
           <EditableText 
@@ -77,8 +77,8 @@ export default function TourismTemplate({
                 <div className="absolute top-0 right-0 w-32 h-32 blur-[50px] -z-10 transition-all" style={{ background: 'rgba(var(--dynamic-primary-rgb, 6,182,212), 0.1)' }}></div>
                 
                 <div className="flex-1 space-y-4">
-                  <h3 className="text-2xl font-black text-white transition-colors" style={{ color: 'var(--color-text-home, #ffffff)' }}>{product.name}</h3>
-                  <p className="text-slate-400 text-sm whitespace-pre-wrap leading-relaxed max-w-xl">{product.description}</p>
+                  <h3 className="text-2xl font-black text-white transition-colors truncate" style={{ color: 'var(--color-text-home, #ffffff)' }}>{product.name}</h3>
+                  <p className="text-slate-400 text-sm whitespace-pre-wrap break-words leading-relaxed max-w-xl">{product.description}</p>
                   <div className="flex items-baseline gap-2">
                     <span className="text-4xl font-black text-white">${product.price}</span>
                     <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{settings.tourismSettings?.priceSuffix || t('perMonth')}</span>
@@ -235,7 +235,7 @@ export default function TourismTemplate({
                 
                 <div className="mb-6 border-b border-white/5 pb-6">
                   <h3 className="text-2xl font-black mb-2 transition-colors" style={{ color: 'var(--color-text-home, #ffffff)' }}>{product.name}</h3>
-                  <p className="text-slate-400 text-sm whitespace-pre-wrap leading-relaxed">{product.description}</p>
+                  <p className="text-slate-400 text-sm whitespace-pre-wrap break-words leading-relaxed">{product.description}</p>
                 </div>
 
                 <div className="mb-8">
@@ -368,7 +368,7 @@ export default function TourismTemplate({
     return (
       <section key={section.id} className="py-24 max-w-7xl mx-auto px-6" id="reviews">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4" style={{ color: 'var(--color-text-home, #ffffff)' }}>
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4 break-words" style={{ color: 'var(--color-text-home, #ffffff)' }}>
              {section.config?.title || settings.tourismSettings?.reviewsTitle || "What Our Clients Say"}
           </h2>
           <p className="text-slate-400 text-sm font-medium uppercase tracking-widest">{t('realExperiences')}</p>

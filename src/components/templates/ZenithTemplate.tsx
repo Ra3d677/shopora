@@ -43,12 +43,12 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
               <div className="w-full md:w-1/2 flex flex-col justify-center px-12 md:px-24">
                 <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}>
 <span className="text-[10px] uppercase tracking-[0.4em] text-[#c5a368] mb-8 block font-black">{t('theZenithCollection')}</span>
-                  <h1 className="text-6xl md:text-[8rem] font-light text-zinc-900 leading-[0.85] tracking-tighter mb-12 italic uppercase">
+                  <h1 className="text-6xl md:text-[8rem] font-light text-zinc-900 leading-[0.85] tracking-tighter mb-12 italic uppercase break-words">
                     <span className="gradient-text-support">
                       <EditableText content={topBanners[0]?.title || settings.storeName || "ZENITH"} slug={slug} settingsKey="storeName" />
                     </span>
                   </h1>
-                  <Link href={`/store/${slug}/products`} className="inline-block px-12 py-5 bg-[#c5a368] text-white text-[10px] font-black uppercase tracking-[0.4em] rounded shadow-xl">
+                  <Link href={`/store/${slug}/products`} className="inline-block px-6 md:px-12 py-5 bg-[#c5a368] text-white text-[10px] font-black uppercase tracking-[0.4em] rounded shadow-xl">
                     VIEW SERIES
                   </Link>
                 </motion.div>
@@ -68,12 +68,12 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
               </div>
               <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} className="max-w-5xl z-10">
                 <span className="text-[10px] uppercase tracking-[1em] text-white/40 mb-12 block font-black">{t('beyondLuxury')}</span>
-                <h1 className="text-7xl md:text-[12rem] font-light text-zinc-900 leading-none tracking-tighter mb-16 italic uppercase mix-blend-multiply">
+                <h1 className="text-7xl md:text-[12rem] font-light text-zinc-900 leading-none tracking-tighter mb-16 italic uppercase mix-blend-multiply break-words">
                   <span className="gradient-text-support">
                     <EditableText content={topBanners[0]?.title || settings.storeName || "ZENITH"} slug={slug} settingsKey="storeName" />
                   </span>
                 </h1>
-                <Link href={`/store/${slug}/products`} className="inline-block px-12 py-5 border border-zinc-900 text-zinc-900 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-zinc-900 hover:text-white transition-all">
+                <Link href={`/store/${slug}/products`} className="inline-block px-6 md:px-12 py-5 border border-zinc-900 text-zinc-900 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-zinc-900 hover:text-white transition-all">
                   {t('exploreArchive')}
                 </Link>
               </motion.div>
@@ -85,7 +85,7 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
           return (
             <section key={section.id} className="relative h-[60vh] w-full bg-transparent flex items-center justify-center px-6 -mt-24">
               <div className="text-center max-w-4xl border-y border-zinc-100 py-24">
-                <h1 className="text-6xl md:text-[10rem] font-light text-zinc-900 leading-none tracking-tighter mb-12 italic uppercase">
+                <h1 className="text-6xl md:text-[10rem] font-light text-zinc-900 leading-none tracking-tighter mb-12 italic uppercase break-words">
                   <span className="gradient-text-support">
                     <EditableText content={topBanners[0]?.title || settings.storeName || "ZENITH"} slug={slug} settingsKey="storeName" />
                   </span>
@@ -107,7 +107,7 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
                     <div className="w-12 h-[1px] bg-zinc-200" />
                     {t('campaignNo1')}
                   </div>
-                  <h1 className="text-7xl md:text-[7rem] font-light text-zinc-900 leading-[0.9] tracking-tighter mb-12 italic uppercase">
+                  <h1 className="text-7xl md:text-[7rem] font-light text-zinc-900 leading-[0.9] tracking-tighter mb-12 italic uppercase break-words">
                     <span className="gradient-text-support">
                       <EditableText content={topBanners[0]?.title || settings.storeName || "ZENITH"} slug={slug} settingsKey="heroTitle" />
                     </span>
@@ -115,7 +115,7 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
                   <p className="text-zinc-500 max-w-md text-lg mb-12 font-sans font-light">
                     <EditableText content={topBanners[0]?.subtitle || "Redefining the essence of modern luxury through curated pieces."} slug={slug} settingsKey="heroSubtitle" />
                   </p>
-                  <EditableButton label={t('exploreCollection')} link={`/store/${slug}/products`} slug={slug} settingsKey="heroBtn" className="px-12 py-5 bg-zinc-900 text-white text-[10px] font-black uppercase tracking-[0.4em] hover:bg-[#c5a368] transition-all rounded" />
+                  <EditableButton label={t('exploreCollection')} link={`/store/${slug}/products`} slug={slug} settingsKey="heroBtn" className="px-6 md:px-12 py-5 bg-zinc-900 text-white text-[10px] font-black uppercase tracking-[0.4em] hover:bg-[#c5a368] transition-all rounded" />
                   <BannerButton banner={topBanners[0]} slug={slug} />
                 </div>
               </div>
@@ -133,7 +133,7 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
               <div className="w-full md:w-1/2 flex items-center justify-center p-12 order-2 md:order-1">
                  <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 1 }}>
                     <span className="text-[#c5a368] text-[10px] uppercase tracking-[0.8em] font-black mb-6 block">{t('abstractEssence')}</span>
-                    <h1 className="text-6xl md:text-[9rem] font-light text-zinc-900 leading-[0.85] tracking-tighter mb-10 italic uppercase">
+                    <h1 className="text-6xl md:text-[9rem] font-light text-zinc-900 leading-[0.85] tracking-tighter mb-10 italic uppercase break-words">
                       <span className="gradient-text-support">
                         <EditableText content={topBanners[0]?.title || settings.storeName || "PURE"} slug={slug} settingsKey="heroTitle" />
                       </span>
@@ -172,7 +172,7 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
                   transition={{ duration: 1 }}
                   className="max-w-6xl"
                 >
-                  <h1 className="text-[5rem] md:text-[15rem] font-light text-white leading-none tracking-[-0.05em] uppercase mb-16 italic mix-blend-difference">
+                  <h1 className="text-[5rem] md:text-[15rem] font-light text-white leading-none tracking-[-0.05em] uppercase mb-16 italic mix-blend-difference break-words">
                     <span className="gradient-text-support">
                       <EditableText content={topBanners[0]?.title || settings.storeName || "CINEMATIC"} slug={slug} settingsKey="heroTitle" />
                     </span>
@@ -197,12 +197,12 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
             <div className="w-full md:w-1/2 flex flex-col justify-center px-12 md:px-24">
               <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}>
                 <span className="text-[10px] uppercase tracking-[0.4em] text-[#c5a368] mb-8 block font-black">{t('theZenithCollection')}</span>
-                <h1 className="text-6xl md:text-[8rem] font-light text-zinc-900 leading-[0.85] tracking-tighter mb-12 italic uppercase">
+                <h1 className="text-6xl md:text-[8rem] font-light text-zinc-900 leading-[0.85] tracking-tighter mb-12 italic uppercase break-words">
                   <span className="gradient-text-support">
                     <EditableText content={topBanners[0]?.title || settings.storeName || "ZENITH"} slug={slug} settingsKey="storeName" />
                   </span>
                 </h1>
-                <Link href={`/store/${slug}/products`} className="inline-block px-12 py-5 bg-[#c5a368] text-white text-[10px] font-black uppercase tracking-[0.4em] rounded shadow-xl">
+                <Link href={`/store/${slug}/products`} className="inline-block px-6 md:px-12 py-5 bg-[#c5a368] text-white text-[10px] font-black uppercase tracking-[0.4em] rounded shadow-xl">
                   {t('viewSeries')}
                 </Link>
               </motion.div>
@@ -221,7 +221,7 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
           <section key={section.id} className="py-40 container mx-auto px-8 bg-transparent">
              <div className="text-center mb-24">
                 <div className="text-[10px] font-black uppercase tracking-[0.8em] text-[#c5a368] mb-8 block">{t('theCollections')}</div>
-                <h2 className="text-5xl md:text-7xl font-light tracking-tighter uppercase italic">{t('curatedSeries')}</h2>
+                <h2 className="text-5xl md:text-7xl font-light tracking-tighter uppercase italic break-words">{t('curatedSeries')}</h2>
              </div>
              <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                 {categories.slice(0, 3).map((cat: any) => (
@@ -245,7 +245,7 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
             <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-12">
                <div>
                   <div className="text-[10px] font-black uppercase tracking-[0.8em] text-[#c5a368] mb-8 block">{t('curatedSeries')}</div>
-                  <h2 className="text-5xl md:text-7xl font-light tracking-tighter uppercase italic leading-none">
+                   <h2 className="text-5xl md:text-7xl font-light tracking-tighter uppercase italic leading-none break-words">
                      <EditableText content={section.config?.title || "Signature Objects"} settingsKey={`sec-${section.id}-title`} slug={slug} />
                   </h2>
                </div>
@@ -276,7 +276,7 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
                   <div className="grid gap-24">
                      {testimonials.map((t: any) => (
                         <div key={t.id} className="group">
-                           <p className="text-3xl md:text-5xl font-light italic tracking-tighter text-zinc-900 leading-tight mb-12">
+                           <p className="text-3xl md:text-5xl font-light italic tracking-tighter text-zinc-900 leading-tight mb-12 break-words">
                               "{t.content}"
                            </p>
                            <div className="flex flex-col items-center">
@@ -305,7 +305,7 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
             <section key={section.id} className="py-40 bg-transparent text-center animate-in fade-in duration-500" id="about">
               <div className="max-w-4xl mx-auto px-8">
                 <span className="text-[10px] font-black uppercase tracking-[0.8em] text-[#c5a368] mb-8 block">{tagline}</span>
-                <h2 className="text-5xl md:text-7xl font-light tracking-tighter uppercase italic leading-tight mb-8 text-zinc-900">{title}</h2>
+                <h2 className="text-5xl md:text-7xl font-light tracking-tighter uppercase italic leading-tight mb-8 text-zinc-900 break-words">{title}</h2>
                 <p className="text-zinc-500 font-sans font-light text-lg mb-6 leading-relaxed">{desc1}</p>
                 {desc2 && <p className="text-zinc-500 font-sans font-light text-lg mb-12 leading-relaxed">{desc2}</p>}
               </div>
@@ -340,7 +340,7 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
               </div>
               <div>
                 <span className="text-[10px] font-black uppercase tracking-[0.8em] text-[#c5a368] mb-8 block">{tagline}</span>
-                <h2 className="text-5xl md:text-7xl font-light tracking-tighter uppercase italic leading-tight mb-8 text-zinc-900">{title}</h2>
+                <h2 className="text-5xl md:text-7xl font-light tracking-tighter uppercase italic leading-tight mb-8 text-zinc-900 break-words">{title}</h2>
                 <p className="text-zinc-500 font-sans font-light text-lg mb-6 leading-relaxed">{desc1}</p>
                 <p className="text-zinc-500 font-sans font-light text-lg leading-relaxed">{desc2}</p>
               </div>
@@ -388,7 +388,7 @@ export default function ZenithTemplate({ banners, settings, products, slug, cate
   };
 
   return (
-    <div className="min-h-screen font-serif selection:bg-[#c5a368] selection:text-white transition-all duration-700 bg-transparent">
+    <div className="min-h-screen font-serif selection:bg-[#c5a368] selection:text-white transition-all duration-700 bg-transparent overflow-x-hidden">
       {homepageLayout.map((section: any) => {
         const divider = section.showDivider !== false && (
           <SectionDivider 

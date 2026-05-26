@@ -29,7 +29,7 @@ export default function MomoTemplate({ banners, settings, products, slug, catego
   ];
 
   return (
-    <div className="relative w-full font-sans selection:bg-slate-900 selection:text-white">
+    <div className="relative w-full font-sans selection:bg-slate-900 selection:text-white overflow-x-hidden">
       {homepageLayout.map((section: any) => {
         if (section.type === 'hero') {
           return (
@@ -58,7 +58,7 @@ export default function MomoTemplate({ banners, settings, products, slug, catego
                           alt={product.name}
                         />
                       </div>
-                      <h3 className="font-bold text-xl group-hover:text-blue-600 transition-colors">{product.name}</h3>
+                      <h3 className="font-bold text-xl group-hover:text-blue-600 transition-colors truncate">{product.name}</h3>
                       <p className="text-sm mt-1 uppercase tracking-widest font-bold" style={{ color: 'var(--color-price)' }}>${product.price}</p>
                     </Link>
                   ))}

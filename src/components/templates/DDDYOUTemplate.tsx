@@ -158,14 +158,14 @@ export default function DDDYOUTemplate({ banners, settings, products: storeProdu
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10 pt-32">
           <span className="inline-block px-6 py-2 border border-[#c9a96e] rounded-full text-[#c9a96e] text-xs tracking-widest uppercase mb-8 animate-fadeIn">Édition Limitée</span>
           <h2 className="mb-6">
-            <span className="block text-6xl md:text-7xl font-black text-white leading-tight">رَائِحَةٌ تَرْوِي</span>
-            <span className="block font-['Alex_Brush'] text-6xl md:text-7xl text-[#c9a96e] font-normal mt-2" style={{ textShadow: '0 0 60px rgba(201,169,110,0.3)' }}>حِكَايَتَكَ</span>
+            <span className="block text-6xl md:text-7xl font-black text-white leading-tight break-words">رَائِحَةٌ تَرْوِي</span>
+            <span className="block font-['Alex_Brush'] text-6xl md:text-7xl text-[#c9a96e] font-normal mt-2 break-words" style={{ textShadow: '0 0 60px rgba(201,169,110,0.3)' }}>حِكَايَتَكَ</span>
           </h2>
           <p className="text-lg text-white/60 max-w-xl mx-auto mb-10 leading-relaxed">عطور تجمع بين أصالة الشرق ورقي الغرب، crafted لكل لحظة لا تُنسى</p>
           <div className="flex gap-4 justify-center flex-wrap mb-16">
-            <a href="#products" className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-gradient-to-r from-[#c9a96e] to-[#b8923e] text-[#0f0f1a] font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">اكتشف المجموعة</a>
-              <a href="#about" className="inline-flex items-center gap-2 px-10 py-4 rounded-full border-2 border-[#c9a96e] text-white font-bold hover:bg-[#c9a96e] hover:text-[#0f0f1a] transition-all">اقرأ قصتنا</a>
-              <a href="#about" className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-gradient-to-r from-[#c9a96e] to-[#b8923e] text-[#0f0f1a] font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">هلا بالخميس</a>
+            <a href="#products" className="inline-flex items-center gap-2 px-6 md:px-10 py-4 rounded-full bg-gradient-to-r from-[#c9a96e] to-[#b8923e] text-[#0f0f1a] font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">اكتشف المجموعة</a>
+              <a href="#about" className="inline-flex items-center gap-2 px-6 md:px-10 py-4 rounded-full border-2 border-[#c9a96e] text-white font-bold hover:bg-[#c9a96e] hover:text-[#0f0f1a] transition-all">اقرأ قصتنا</a>
+              <a href="#about" className="inline-flex items-center gap-2 px-6 md:px-10 py-4 rounded-full bg-gradient-to-r from-[#c9a96e] to-[#b8923e] text-[#0f0f1a] font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">هلا بالخميس</a>
           </div>
           <div className="flex justify-center gap-16 flex-wrap">
             {[
@@ -221,8 +221,8 @@ export default function DDDYOUTemplate({ banners, settings, products: storeProdu
                 </div>
                 <div className="p-6">
                   <p className="text-[#c9a96e] text-xs uppercase tracking-widest mb-1">{p.categoryAr}</p>
-                  <h3 className="text-lg font-bold text-white mb-2">{p.name}</h3>
-                  <p className="text-white/50 text-sm mb-4 leading-relaxed">{p.description}</p>
+                  <h3 className="text-lg font-bold text-white mb-2 truncate">{p.name}</h3>
+                  <p className="text-white/50 text-sm mb-4 leading-relaxed break-words">{p.description}</p>
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-xl font-extrabold text-[#c9a96e]">{p.price.toLocaleString('ar-SA')} ر.س</span>
@@ -270,9 +270,9 @@ export default function DDDYOUTemplate({ banners, settings, products: storeProdu
               { name: 'لينا الفهد', role: 'جامعة عطور', img: 'https://randomuser.me/api/portraits/women/68.jpg', text: '"مجموعة العود عند DDDYOU لا تُضاهى. كل زجاجة قطعة فنية بحد ذاتها."' },
               { name: 'سامي الحربي', role: 'زبون مميز', img: 'https://randomuser.me/api/portraits/men/46.jpg', text: '"اشتريت هدية لزوجتي من DDDYOU، كانت سعيدة جداً. العطر فخم والخدمة ممتازة."' },
             ].map(t => (
-              <div key={t.name} className="min-w-[320px] md:min-w-[380px] shrink-0 snap-start bg-[#1a1a2e] rounded-2xl p-9 border border-white/5">
+              <div key={t.name} className="min-w-[280px] sm:min-w-[320px] md:min-w-[380px] shrink-0 snap-start bg-[#1a1a2e] rounded-2xl p-9 border border-white/5">
                 <div className="text-[#c9a96e] mb-4 tracking-widest">★★★★★</div>
-                <p className="text-white/70 italic leading-relaxed mb-6">{t.text}</p>
+                <p className="text-white/70 italic leading-relaxed mb-6 break-words">{t.text}</p>
                 <div className="flex items-center gap-3">
                   <img src={t.img} className="w-12 h-12 rounded-full object-cover border-2 border-[#c9a96e]/30" alt={t.name} />
                   <div>
