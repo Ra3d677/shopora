@@ -14,6 +14,7 @@ import Modern1Template from "@/components/templates/Modern1Template";
 import TourismTemplate from "@/components/templates/TourismTemplate";
 import FitnessTemplate from "@/components/templates/FitnessTemplate";
 import DDDYOUTemplate from "@/components/templates/DDDYOUTemplate";
+import MomoTemplate from "@/components/templates/MomoTemplate";
 
 export const dynamic = 'force-dynamic';
 
@@ -65,6 +66,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
     if (activeTemplate === 'modern') return <ModernTemplate {...props} />;
     if (activeTemplate === 'modern1') return <Modern1Template {...props} />;
     if (activeTemplate === 'dddyou') return <DDDYOUTemplate {...props} />;
+    if (activeTemplate === 'momo') return <MomoTemplate {...props} />;
     
     // Default fallback (Signature is now the default)
     return (

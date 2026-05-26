@@ -67,6 +67,12 @@ const TEMPLATES = [
     name: "Senno Multipurpose",
     description: "A high-end, minimalist ecommerce template with a peach-pink aesthetic, serif typography, and interactive hotspots. Perfect for beauty and boutique brands.",
     preview: "https://images.unsplash.com/photo-1596462502278-27bfac4033c8?w=800&q=80"
+  },
+  {
+    id: "momo",
+    name: "MOMO",
+    description: "A modern and minimalist template designed for small businesses selling handcrafted goods, artisanal food, or unique products with storytelling and visual appeal.",
+    preview: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80"
   }
 ];
 
