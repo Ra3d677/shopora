@@ -326,9 +326,9 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           const sectionTestimonials = [...sectionItems, ...customerReviews];
           const sectionTitle = section.config?.title || '';
 
-          if (sectionTestimonials.length === 0) return null;
-
           const testimonialStyle = section.style || 'cards';
+
+          if (sectionTestimonials.length === 0 && testimonialStyle !== 'cards') return null;
 
           function renderStars(rating: number) {
             return (
