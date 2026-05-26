@@ -24,6 +24,7 @@ import {
   Blocks,
   Settings,
   Users,
+  Info,
 } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -38,6 +39,7 @@ const iconMap: Record<string, LucideIcon> = {
   Blocks,
   Settings,
   Users,
+  Info,
 };
 
 export default function SidebarNav({ 

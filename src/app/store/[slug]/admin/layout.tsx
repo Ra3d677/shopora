@@ -78,6 +78,7 @@ export default async function AdminLayout({
     { label: t('bookingInquiries'), iconName: 'Package', path: '/orders', color: 'text-pink-500' },
     { label: t('mediaHub'), iconName: 'Library', path: '/media', color: 'text-amber-500' },
     { label: t('bannersSliders'), iconName: 'ImageIcon', path: '/banners', color: 'text-red-500' },
+    { label: isRTL ? 'من نحن' : 'About Us', iconName: 'Info', path: '/builder', color: 'text-blue-500' },
   ] : [
     { label: t('overview'), iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
     { label: t('products'), iconName: 'ShoppingBag', path: '/products', color: 'text-purple-500' },
@@ -87,6 +88,7 @@ export default async function AdminLayout({
     { label: t('categories'), iconName: 'Tag', path: '/categories', color: 'text-green-500' },
     { label: t('coupons'), iconName: 'Tag', path: '/coupons', color: 'text-yellow-500' },
     { label: t('banners'), iconName: 'ImageIcon', path: '/banners', color: 'text-red-500' },
+    { label: isRTL ? 'من نحن' : 'About Us', iconName: 'Info', path: '/builder', color: 'text-blue-500' },
   ];
 
   const systemItems = isSuperAdmin ? [
