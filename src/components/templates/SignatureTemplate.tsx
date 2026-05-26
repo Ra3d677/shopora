@@ -237,27 +237,23 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
             <React.Fragment key={section.id}>
               <section className="w-screen max-w-none relative left-1/2 -translate-x-1/2 bg-transparent">
                 {bannersToShow.length > 0 ? bannersToShow.map((banner: any) => (
-                  <div key={banner.id} className="relative group overflow-hidden min-h-[400px] md:h-[500px] shadow-2xl">
+                  <div key={banner.id} className="relative overflow-hidden min-h-[400px] md:h-[500px] shadow-2xl">
                     <SmartImage 
                       src={banner.imageUrl} 
                       alt={banner.title} 
-                      className="hidden md:block absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110" 
+                      className="hidden md:block absolute inset-0 w-full h-full object-cover" 
                     />
                     <SmartImage 
                       src={banner.mobileImageUrl || banner.imageUrl} 
                       alt={banner.title} 
-                      className="md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110" 
+                      className="md:hidden absolute inset-0 w-full h-full object-cover" 
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-transparent p-8 md:p-16 flex flex-col justify-center text-white">
-                      <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 1 }}
-                      >
-                        <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 uppercase italic">{banner.title}</h2>
-                        <p className="text-lg md:text-xl text-white/70 max-w-xl mb-10 font-light leading-relaxed">{banner.subtitle}</p>
+                    <div className="absolute inset-0 p-8 md:p-16 flex flex-col justify-center">
+                      <div>
+                        <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 uppercase italic text-white" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>{banner.title}</h2>
+                        <p className="text-lg md:text-xl max-w-xl mb-10 font-light leading-relaxed text-white/90" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>{banner.subtitle}</p>
                         <BannerButton banner={banner} slug={slug} />
-                      </motion.div>
+                      </div>
                     </div>
                   </div>
                 )) : (
@@ -498,27 +494,23 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
       {bottomBanners.length > 0 && (
         <section className="w-screen max-w-none relative left-1/2 -translate-x-1/2 bg-transparent">
             {bottomBanners.map((banner: any) => (
-              <div key={banner.id} className="relative group overflow-hidden min-h-[400px] md:h-[500px] shadow-2xl">
+              <div key={banner.id} className="relative overflow-hidden min-h-[400px] md:h-[500px] shadow-2xl">
                 <SmartImage 
                   src={banner.imageUrl} 
                   alt={banner.title} 
-                  className="hidden md:block absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110" 
+                  className="hidden md:block absolute inset-0 w-full h-full object-cover" 
                 />
                 <SmartImage 
                   src={banner.mobileImageUrl || banner.imageUrl} 
                   alt={banner.title} 
-                  className="md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110" 
+                  className="md:hidden absolute inset-0 w-full h-full object-cover" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-transparent p-8 md:p-16 flex flex-col justify-center text-white">
-                  <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 1 }}
-                  >
-                    <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 uppercase italic">{banner.title}</h2>
-                    <p className="text-lg md:text-xl text-white/70 max-w-xl mb-10 font-light leading-relaxed">{banner.subtitle}</p>
+                <div className="absolute inset-0 p-8 md:p-16 flex flex-col justify-center">
+                  <div>
+                    <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 uppercase italic text-white" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>{banner.title}</h2>
+                    <p className="text-lg md:text-xl max-w-xl mb-10 font-light leading-relaxed text-white/90" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>{banner.subtitle}</p>
                     <BannerButton banner={banner} slug={slug} />
-                  </motion.div>
+                  </div>
                 </div>
               </div>
             ))}
