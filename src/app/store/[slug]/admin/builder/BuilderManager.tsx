@@ -190,21 +190,29 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
     const clamped = Math.min(200, Math.max(8, parsed));
     setFontSize(String(clamped));
 
-    const range = savedRange.current;
-    if (!range || range.collapsed) return;
-    try {
-      if (!editorRef.current.contains(range.commonAncestorContainer)) return;
-    } catch { return; }
-
-    const span = document.createElement('span');
-    span.style.fontSize = `${clamped}px`;
-    try {
-      range.surroundContents(span);
-    } catch {
-      const frag = range.extractContents();
-      span.appendChild(frag);
-      range.insertNode(span);
+    // Restore selection in editor
+    editorRef.current.focus();
+    const sel = window.getSelection();
+    if (!sel) return;
+    if (savedRange.current) {
+      try {
+        sel.removeAllRanges();
+        sel.addRange(savedRange.current);
+      } catch { return; }
     }
+    if (sel.isCollapsed || !sel.rangeCount) return;
+
+    // Extract selected content and wrap in styled span
+    const range = sel.getRangeAt(0);
+    const fragment = range.extractContents();
+    const wrapper = document.createElement('span');
+    wrapper.style.fontSize = `${clamped}px`;
+    wrapper.appendChild(fragment);
+    range.insertNode(wrapper);
+
+    // Re-select the wrapped content
+    sel.removeAllRanges();
+    sel.addRange(range);
     savedRange.current = null;
     if (editorRef.current) onChange(editorRef.current.innerHTML);
   }
