@@ -205,7 +205,7 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
     // Extract selected content and wrap in styled span
     const range = sel.getRangeAt(0);
     const fragment = range.extractContents();
-    const wrapper = document.createElement('span');
+    const wrapper = document.createElement('div');
     wrapper.style.fontSize = `${clamped}px`;
     wrapper.appendChild(fragment);
     range.insertNode(wrapper);
@@ -254,7 +254,7 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
         ref={editorRef}
         contentEditable
         onInput={handleInput}
-        className="min-h-[180px] p-5 outline-none text-sm text-slate-700 leading-relaxed [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mb-3 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:mb-2 [&_p]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_mark]:bg-yellow-200"
+        className="min-h-[180px] p-5 outline-none text-sm text-slate-700 leading-relaxed [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mb-3 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:mb-2 [&_p]:mb-2 [&_div]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_mark]:bg-yellow-200"
       />
     </div>
   );
