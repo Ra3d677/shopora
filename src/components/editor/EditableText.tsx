@@ -20,7 +20,6 @@ interface TextStyle {
   x?: number;
   y?: number;
   textAlign?: 'left' | 'center' | 'right' | 'inherit';
-  textShadow?: string;
   lineHeight?: string;
   letterSpacing?: string;
   fontStyle?: 'normal' | 'italic';
@@ -40,15 +39,6 @@ const GOOGLE_FONTS = [
   "Bebas Neue", "Dancing Script", "Pacifico", "Cormorant Garamond", 
   "Space Grotesk", "Syne", "Cabinet Grotesk", "General Sans"
 ];
-
-const SHADOW_PRESETS = [
-  { name: 'none', value: 'none' },
-  { name: 'soft', value: '2px 2px 8px rgba(0,0,0,0.2)' },
-  { name: 'hard', value: '4px 4px 0px rgba(0,0,0,1)' },
-  { name: 'glow', value: '0 0 20px rgba(59, 130, 246, 0.5)' },
-  { name: 'neon', value: '0 0 10px #3b82f6, 0 0 20px #3b82f6' },
-  { name: 'deep', value: '0 20px 40px rgba(0,0,0,0.4)' },
-] as const;
 
 export default function EditableText({ 
   content, 
@@ -76,7 +66,6 @@ export default function EditableText({
     padding: initialStyles.padding || "0px",
     fontWeight: initialStyles.fontWeight || "inherit",
     textAlign: initialStyles.textAlign || 'inherit',
-    textShadow: initialStyles.textShadow || 'none',
     lineHeight: initialStyles.lineHeight || 'normal',
     letterSpacing: initialStyles.letterSpacing || 'normal',
     fontStyle: initialStyles.fontStyle || 'normal',
@@ -99,7 +88,6 @@ export default function EditableText({
       padding: initialStyles.padding || "0px",
       fontWeight: initialStyles.fontWeight || "inherit",
       textAlign: initialStyles.textAlign || 'inherit',
-      textShadow: initialStyles.textShadow || 'none',
       lineHeight: initialStyles.lineHeight || 'normal',
       letterSpacing: initialStyles.letterSpacing || 'normal',
       fontStyle: initialStyles.fontStyle || 'normal',
@@ -143,7 +131,6 @@ export default function EditableText({
     padding: styles.padding,
     fontWeight: styles.fontWeight,
     textAlign: styles.textAlign,
-    textShadow: styles.textShadow,
     lineHeight: styles.lineHeight,
     letterSpacing: styles.letterSpacing,
     fontStyle: styles.fontStyle,
@@ -343,22 +330,6 @@ export default function EditableText({
                       {a === 'left' && <AlignLeft size={16} />}
                       {a === 'center' && <AlignCenter size={16} />}
                       {a === 'right' && <AlignRight size={16} />}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Effects */}
-              <div>
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">{t('shadowEffects')}</label>
-                <div className="flex flex-wrap gap-2">
-                  {SHADOW_PRESETS.map(p => (
-                    <button
-                      key={p.name}
-                      onClick={() => updateStyle({ textShadow: p.value })}
-                      className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border transition-all ${styles.textShadow === p.value ? 'bg-white text-slate-900 border-white' : 'border-white/10 text-slate-400 hover:border-white/20'}`}
-                    >
-                      {t(p.name)}
                     </button>
                   ))}
                 </div>

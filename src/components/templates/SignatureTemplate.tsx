@@ -590,6 +590,10 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           const btnText = section.config?.btnText || '';
           const btnLink = section.config?.btnLink || '#';
           const fontFamily = section.config?.fontFamily || 'inherit';
+          const shadowConfig = section.config?.textShadow || null;
+          const textShadowCss = shadowConfig && shadowConfig.opacity > 0
+            ? `${shadowConfig.h}px ${shadowConfig.v}px ${shadowConfig.blur}px rgba(${parseInt(shadowConfig.color.slice(1,3),16)},${parseInt(shadowConfig.color.slice(3,5),16)},${parseInt(shadowConfig.color.slice(5,7),16)},${shadowConfig.opacity/100})`
+            : 'none';
           const style = section.style || 'split';
           const hasText = title || tagline || desc1 || desc2;
 
@@ -600,8 +604,8 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                 <div className="max-w-4xl mx-auto px-8">
                   {tagline && <span className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-6 block" style={{ fontFamily }}>{tagline}</span>}
                   {title && <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight mb-8 italic" style={{ fontFamily }}>{title}</h2>}
-                  {desc1 && <p className="text-slate-500 text-lg mb-6 leading-relaxed" style={{ fontFamily }} dangerouslySetInnerHTML={{ __html: desc1 }} />}
-                  {desc2 && <p className="text-slate-500 text-lg mb-10 leading-relaxed" style={{ fontFamily }} dangerouslySetInnerHTML={{ __html: desc2 }} />}
+                  {desc1 && <p className="text-slate-500 text-lg mb-6 leading-relaxed" style={{ fontFamily, textShadow: textShadowCss }} dangerouslySetInnerHTML={{ __html: desc1 }} />}
+                  {desc2 && <p className="text-slate-500 text-lg mb-10 leading-relaxed" style={{ fontFamily, textShadow: textShadowCss }} dangerouslySetInnerHTML={{ __html: desc2 }} />}
                   {btnText && <a href={btnLink} className="inline-block bg-slate-900 text-white px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest hover:bg-slate-800 transition-all">{btnText}</a>}
                 </div>
                 {image && (
@@ -619,8 +623,8 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                 <div className="max-w-3xl mx-auto px-8 border-l-4 border-slate-900 pl-8 md:pl-12">
                   {tagline && <span className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-6 block" style={{ fontFamily }}>{tagline}</span>}
                   {title && <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-tight mb-8 italic" style={{ fontFamily }}>{title}</h2>}
-                  {desc1 && <p className="text-slate-500 text-lg mb-6 leading-relaxed" style={{ fontFamily }} dangerouslySetInnerHTML={{ __html: desc1 }} />}
-                  {desc2 && <p className="text-slate-500 text-lg leading-relaxed" style={{ fontFamily }} dangerouslySetInnerHTML={{ __html: desc2 }} />}
+                  {desc1 && <p className="text-slate-500 text-lg mb-6 leading-relaxed" style={{ fontFamily, textShadow: textShadowCss }} dangerouslySetInnerHTML={{ __html: desc1 }} />}
+                  {desc2 && <p className="text-slate-500 text-lg leading-relaxed" style={{ fontFamily, textShadow: textShadowCss }} dangerouslySetInnerHTML={{ __html: desc2 }} />}
                   {btnText && <a href={btnLink} className="inline-block bg-slate-900 text-white px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-slate-800 transition-all mt-8">{btnText}</a>}
                 </div>
               </section>
@@ -637,8 +641,8 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                   <div>
                     {tagline && <span className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-6 block" style={{ fontFamily }}>{tagline}</span>}
                     {title && <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight mb-8 italic" style={{ fontFamily }}>{title}</h2>}
-                    {desc1 && <p className="text-slate-500 text-lg mb-6 leading-relaxed" style={{ fontFamily }} dangerouslySetInnerHTML={{ __html: desc1 }} />}
-                    {desc2 && <p className="text-slate-500 text-lg leading-relaxed" style={{ fontFamily }} dangerouslySetInnerHTML={{ __html: desc2 }} />}
+                  {desc1 && <p className="text-slate-500 text-lg mb-6 leading-relaxed" style={{ fontFamily, textShadow: textShadowCss }} dangerouslySetInnerHTML={{ __html: desc1 }} />}
+                  {desc2 && <p className="text-slate-500 text-lg leading-relaxed" style={{ fontFamily, textShadow: textShadowCss }} dangerouslySetInnerHTML={{ __html: desc2 }} />}
                     {btnText && <a href={btnLink} className="inline-block bg-slate-900 text-white px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest hover:bg-slate-800 transition-all">{btnText}</a>}
                   </div>
                 </div>

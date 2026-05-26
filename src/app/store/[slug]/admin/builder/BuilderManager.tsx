@@ -56,6 +56,104 @@ const COLOR_PRESETS = [
   { name: 'Dark', value: '#0f172a' },
 ];
 
+const SHADOW_PRESETS = [
+  { name: 'بدون', h: 0, v: 0, blur: 0, color: '#000', opacity: 0 },
+  { name: 'ناعم', h: 0, v: 4, blur: 12, color: '#000', opacity: 15 },
+  { name: 'ساقط', h: 2, v: 2, blur: 0, color: '#000', opacity: 30 },
+  { name: 'مموه', h: 0, v: 3, blur: 20, color: '#000', opacity: 18 },
+  { name: 'متوهج', h: 0, v: 0, blur: 25, color: '#3b82f6', opacity: 60 },
+  { name: 'نيون', h: 0, v: 0, blur: 12, color: '#06b6d4', opacity: 80 },
+  { name: 'بنفسجي', h: 3, v: 3, blur: 0, color: '#8b5cf6', opacity: 35 },
+  { name: 'بارز', h: 0, v: 0, blur: 8, color: '#fff', opacity: 60 },
+  { name: 'ذهبي', h: 0, v: 0, blur: 10, color: '#f59e0b', opacity: 50 },
+  { name: 'عميق', h: 0, v: 8, blur: 24, color: '#000', opacity: 30 },
+];
+
+function buildTextShadow(shadow: { h: number; v: number; blur: number; color: string; opacity: number } | null): string {
+  if (!shadow || shadow.opacity === 0) return 'none';
+  const r = parseInt(shadow.color.slice(1, 3), 16);
+  const g = parseInt(shadow.color.slice(3, 5), 16);
+  const b = parseInt(shadow.color.slice(5, 7), 16);
+  return `${shadow.h}px ${shadow.v}px ${shadow.blur}px rgba(${r},${g},${b},${shadow.opacity / 100})`;
+}
+
+function TextShadowEditor({ value, onChange }: { value: any; onChange: (v: any) => void }) {
+  const shadow = value || { h: 0, v: 0, blur: 0, color: '#000', opacity: 0 };
+  const active = shadow.opacity > 0;
+
+  function pickPreset(p: typeof SHADOW_PRESETS[number]) {
+    onChange({ h: p.h, v: p.v, blur: p.blur, color: p.color, opacity: p.opacity });
+  }
+
+  function updateField(field: string, val: number | string) {
+    onChange({ ...shadow, [field]: val });
+  }
+
+  return (
+    <div className="space-y-3">
+      <label className="text-xs font-bold text-slate-500 uppercase">ظل النص</label>
+      {/* Presets */}
+      <div className="grid grid-cols-5 gap-1.5">
+        {SHADOW_PRESETS.map(p => {
+          const isActive = shadow.h === p.h && shadow.v === p.v && shadow.blur === p.blur &&
+            shadow.color === p.color && shadow.opacity === p.opacity;
+          const previewCss = p.opacity > 0 ? buildTextShadow(p) : 'none';
+          return (
+            <button key={p.name} type="button" onClick={() => pickPreset(p)}
+              className={`p-2 rounded-xl text-[9px] font-bold transition-all border ${isActive ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
+              <span className="block text-center leading-tight" style={{ textShadow: previewCss }}>{p.name}</span>
+            </button>
+          );
+        })}
+      </div>
+      {/* Customization */}
+      {active && (
+        <div className="space-y-2.5 bg-slate-50 rounded-xl p-3 border border-slate-200">
+          <div className="flex items-center gap-3">
+            <label className="text-[10px] font-bold text-slate-400 w-12">اللون</label>
+            <input type="color" value={shadow.color}
+              onChange={e => updateField('color', e.target.value)}
+              className="w-8 h-8 rounded-lg cursor-pointer border border-slate-200" />
+            <div className="flex items-center gap-2">
+              <input type="range" min={0} max={100} value={shadow.opacity}
+                onChange={e => updateField('opacity', parseInt(e.target.value))}
+                className="w-20 h-1.5 accent-blue-500" />
+              <span className="text-[10px] font-mono text-slate-400 w-6">{shadow.opacity}%</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { label: 'أفقي', field: 'h', min: -20, max: 20 },
+              { label: 'رأسي', field: 'v', min: -20, max: 20 },
+              { label: 'ضباب', field: 'blur', min: 0, max: 40 },
+            ].map(({ label, field, min, max }) => (
+              <div key={field}>
+                <div className="flex justify-between mb-1">
+                  <span className="text-[9px] font-bold text-slate-400">{label}</span>
+                  <span className="text-[9px] font-mono text-slate-500">{shadow[field]}px</span>
+                </div>
+                <input type="range" min={min} max={max}
+                  value={shadow[field]}
+                  onChange={e => updateField(field, parseInt(e.target.value))}
+                  className="w-full h-1 accent-blue-500" />
+              </div>
+            ))}
+          </div>
+          <div className="pt-2 border-t border-slate-200">
+            <p className="text-[9px] text-slate-400 text-center font-mono truncate"
+              style={{ textShadow: buildTextShadow(shadow) }}>
+              {buildTextShadow(shadow)}
+            </p>
+            <p className="text-center text-sm font-bold mt-1" style={{ textShadow: buildTextShadow(shadow) }}>
+              معاينة الظل
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function RichTextEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = useState('16');
@@ -521,6 +619,11 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                                 <option key={f} value={f} style={{ fontFamily: f }}>{f}</option>
                               ))}
                             </select>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-xs font-bold text-slate-500 uppercase">ظل النص (للفقرات)</label>
+                            <TextShadowEditor value={activeSection.config.textShadow}
+                              onChange={v => updateSectionConfig(activeSection.id, 'textShadow', v)} />
                           </div>
                           {['split', 'centered'].includes(activeSection.style) && (
                             <div className="grid grid-cols-2 gap-4">
