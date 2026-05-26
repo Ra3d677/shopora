@@ -185,18 +185,19 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
 
   function applyFontSize(size: string) {
     if (!size || !editorRef.current) return;
-    editorRef.current.focus();
-    const sel = window.getSelection();
-    if (!sel) return;
-    // Restore saved range if it exists and is still valid
-    if (savedRange.current && editorRef.current.contains(savedRange.current.startContainer)) {
-      sel.removeAllRanges();
-      sel.addRange(savedRange.current);
-    }
-    if (sel.isCollapsed || !sel.rangeCount) return;
-    const range = sel.getRangeAt(0);
+    const parsed = parseInt(size, 10);
+    if (isNaN(parsed)) return;
+    const clamped = Math.min(200, Math.max(8, parsed));
+    setFontSize(String(clamped));
+
+    const range = savedRange.current;
+    if (!range || range.collapsed) return;
+    try {
+      if (!editorRef.current.contains(range.commonAncestorContainer)) return;
+    } catch { return; }
+
     const span = document.createElement('span');
-    span.style.fontSize = `${size}px`;
+    span.style.fontSize = `${clamped}px`;
     try {
       range.surroundContents(span);
     } catch {
@@ -204,9 +205,7 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
       span.appendChild(frag);
       range.insertNode(span);
     }
-    sel.removeAllRanges();
-    sel.addRange(range);
-    setFontSize(size);
+    savedRange.current = null;
     if (editorRef.current) onChange(editorRef.current.innerHTML);
   }
 
@@ -238,6 +237,7 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
         <span className="w-px bg-slate-200 mx-1" />
         <input type="number" value={fontSize} min={8} max={200}
           onChange={e => applyFontSize(e.target.value)}
+          onMouseDown={saveSelection}
           onFocus={saveSelection}
           className="w-16 px-2 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-center outline-none"
           title="Font Size (px)" />
