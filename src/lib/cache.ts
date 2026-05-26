@@ -101,7 +101,6 @@ export const CACHE_KEYS = {
   STORE_PRODUCTS: (storeId: string) => `store-products-${storeId}`,
   STORE_CATEGORIES: (storeId: string) => `store-categories-${storeId}`,
   STORE_BANNERS: (storeId: string) => `store-banners-${storeId}`,
-  STORE_BLOG: (storeId: string) => `store-blog-${storeId}`,
   HOMEPAGE: 'homepage-data',
   PRICING: 'pricing-data',
 } as const;

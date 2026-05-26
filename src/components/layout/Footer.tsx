@@ -247,7 +247,6 @@ export default function Footer() {
                <Link href={`/store/${slug}/account`} className="block hover:text-white">{t('trackOrder')}</Link>
                <Link href={`/store/${slug}/contact`} className="block hover:text-white">{t('appointments')}</Link>
                <Link href={`/store/${slug}/wishlist`} className="block hover:text-white">{t('wishlist')}</Link>
-               <Link href={`/store/${slug}/blog`} className="block hover:text-white">{t('blog')}</Link>
             </div>
             <div className="space-y-6">
                <p className="text-white mb-8">{t('houseMatters')}</p>

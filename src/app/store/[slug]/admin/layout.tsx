@@ -87,7 +87,6 @@ export default async function AdminLayout({
     { label: t('categories'), iconName: 'Tag', path: '/categories', color: 'text-green-500' },
     { label: t('coupons'), iconName: 'Tag', path: '/coupons', color: 'text-yellow-500' },
     { label: t('banners'), iconName: 'ImageIcon', path: '/banners', color: 'text-red-500' },
-    { label: 'Blog', iconName: 'Library', path: '/blog', color: 'text-emerald-500' },
   ];
 
   const systemItems = isSuperAdmin ? [

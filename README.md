@@ -13,7 +13,6 @@
 - **Product Management** - Unlimited products with variants (sizes, colors), categories, and inventory
 - **Order Management** - Full order lifecycle: pending → paid → shipped → delivered
 - **Coupon System** - Percentage/fixed discounts with usage limits and expiry
-- **Blog Engine** - SEO-friendly blog posts with categories
 - **Media Library** - Cloudinary integration for image management
 - **Customer Reviews** - Product reviews and ratings
 
