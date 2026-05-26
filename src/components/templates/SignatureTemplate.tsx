@@ -321,51 +321,110 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           const sectionTestimonials = (section.config?.items && section.config.items.length > 0) 
             ? section.config.items 
             : [];
+          const sectionTitle = section.config?.title || '';
 
           if (sectionTestimonials.length === 0) return null;
 
+          const testimonialStyle = section.style || 'cards';
+
+          function renderStars(rating: number) {
+            return (
+              <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map(r => (
+                  <Star key={r} className={`w-4 h-4 ${(rating || 5) >= r ? 'text-amber-400 fill-amber-400' : 'text-slate-200 fill-slate-200'}`} />
+                ))}
+              </div>
+            );
+          }
+
+          if (testimonialStyle === 'slider') {
+            return (
+              <React.Fragment key={section.id}>
+                <section className="py-32 overflow-hidden relative bg-gradient-to-br from-slate-50 to-white">
+                  <div className="max-w-4xl mx-auto px-8 text-center relative z-10">
+                    {sectionTitle && <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-16 uppercase">{sectionTitle}</h2>}
+                    <Quote size={48} className="mx-auto mb-10 text-slate-200" />
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={activeTestimonial}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <div className="flex justify-center mb-6">{renderStars(sectionTestimonials[activeTestimonial]?.rating)}</div>
+                        <h3 className="text-2xl md:text-4xl font-light italic leading-relaxed mb-10 text-slate-700">
+                          "{sectionTestimonials[activeTestimonial]?.content}"
+                        </h3>
+                        <div className="flex flex-col items-center">
+                          <div className="w-14 h-14 rounded-full bg-slate-200 mb-3 overflow-hidden shadow-lg">
+                            <img src={sectionTestimonials[activeTestimonial]?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${sectionTestimonials[activeTestimonial]?.name}`} alt="User" className="w-full h-full object-cover" />
+                          </div>
+                          <p className="font-bold text-sm text-slate-800">{sectionTestimonials[activeTestimonial]?.name}</p>
+                          <p className="text-slate-400 text-xs mt-0.5">{sectionTestimonials[activeTestimonial]?.role}</p>
+                        </div>
+                      </motion.div>
+                    </AnimatePresence>
+                    <div className="flex justify-center gap-2 mt-10">
+                      {sectionTestimonials.map((_: any, idx: number) => (
+                        <button key={idx} onClick={() => setActiveTestimonial(idx)}
+                          className={`h-2 rounded-full transition-all duration-500 ${idx === activeTestimonial ? 'bg-slate-800 w-8' : 'bg-slate-200 w-2 hover:bg-slate-300'}`} />
+                      ))}
+                    </div>
+                  </div>
+                </section>
+                {divider}
+              </React.Fragment>
+            );
+          }
+
+          if (testimonialStyle === 'minimal') {
+            return (
+              <React.Fragment key={section.id}>
+                <section className="py-20 bg-transparent">
+                  <div className="max-w-4xl mx-auto px-8 text-center">
+                    {sectionTitle && <h2 className="text-3xl font-black tracking-tighter mb-16 uppercase text-slate-800">{sectionTitle}</h2>}
+                    <div className="space-y-12">
+                      {sectionTestimonials.map((item: any) => (
+                        <div key={item.id}>
+                          <p className="text-xl md:text-2xl font-light italic text-slate-500 leading-relaxed">"{item.content}"</p>
+                          <p className="text-sm font-bold text-slate-800 mt-4">{item.name}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+                {divider}
+              </React.Fragment>
+            );
+          }
+
+          // Default: Cards Grid
           return (
             <React.Fragment key={section.id}>
-              <section 
-                className="py-32 overflow-hidden relative"
-                style={{ backgroundColor: 'var(--color-testimonial-bg)', color: 'var(--color-testimonial-text)' }}
-              >
-                <div className="absolute top-0 left-0 w-full h-full opacity-10">
-                   <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
-                   <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2" />
-                </div>
-                
-                <div className="max-w-4xl mx-auto px-8 text-center relative z-10">
-                   <Quote size={64} className="mx-auto mb-12 text-white/20" />
-                   <AnimatePresence mode="wait">
-                     <motion.div
-                       key={activeTestimonial}
-                       initial={{ opacity: 0, y: 20 }}
-                       animate={{ opacity: 1, y: 0 }}
-                       exit={{ opacity: 0, y: -20 }}
-                       transition={{ duration: 0.5 }}
-                     >
-                       <h3 className="text-3xl md:text-5xl font-light italic leading-tight mb-12 min-h-[150px] flex items-center justify-center">
-                         "{sectionTestimonials[activeTestimonial]?.content}"
-                       </h3>
-                       <div className="flex flex-col items-center">
-                          <div className="w-16 h-16 rounded-full bg-slate-800 mb-4 overflow-hidden shadow-2xl border-2 border-white/10">
-                             <img src={sectionTestimonials[activeTestimonial]?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${sectionTestimonials[activeTestimonial]?.name}`} alt="User" className="w-full h-full object-cover" />
+              <section className="py-24 bg-gradient-to-br from-slate-50 to-white">
+                <div className="max-w-7xl mx-auto px-8">
+                  {sectionTitle && (
+                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-center mb-4 uppercase text-slate-800">{sectionTitle}</h2>
+                  )}
+                  <p className="text-center text-slate-400 text-sm mb-16 max-w-xl mx-auto">What our customers say about us</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    {sectionTestimonials.map((item: any) => (
+                      <div key={item.id} className="bg-white rounded-2xl p-8 shadow-md border border-slate-100 hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                        <div className="mb-4">{renderStars(item.rating)}</div>
+                        <p className="text-slate-600 leading-relaxed mb-8 flex-1 text-sm">"{item.content}"</p>
+                        <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
+                          <div className="w-10 h-10 rounded-full bg-slate-100 overflow-hidden shrink-0">
+                            <img src={item.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${item.name}`} alt={item.name} className="w-full h-full object-cover" />
                           </div>
-                          <p className="font-black uppercase tracking-widest text-xs">{sectionTestimonials[activeTestimonial]?.name}</p>
-                          <p className="text-white/40 text-[10px] uppercase tracking-widest mt-1">{sectionTestimonials[activeTestimonial]?.role}</p>
-                       </div>
-                     </motion.div>
-                   </AnimatePresence>
-                   <div className="flex justify-center gap-2 mt-12">
-                     {sectionTestimonials.map((_: any, idx: number) => (
-                       <button
-                         key={idx}
-                         onClick={() => setActiveTestimonial(idx)}
-                         className={`w-2 h-2 rounded-full transition-all ${idx === activeTestimonial ? 'bg-white w-6' : 'bg-white/20 hover:bg-white/50'}`}
-                       />
-                     ))}
-                   </div>
+                          <div>
+                            <p className="font-bold text-sm text-slate-800">{item.name}</p>
+                            <p className="text-xs text-slate-400">{item.role}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </section>
               {divider}
