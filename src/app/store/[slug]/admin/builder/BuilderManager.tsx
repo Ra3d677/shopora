@@ -241,10 +241,6 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
           onFocus={saveSelection}
           className="w-16 px-2 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-center outline-none"
           title="Font Size (px)" />
-        <button type="button" onMouseDown={e => { e.preventDefault(); toggleHighlight(); }}
-          className="p-1.5 rounded-lg hover:bg-amber-100 text-amber-600 transition-colors" title="Highlight">
-          <span className="text-xs font-black" style={{ background: '#ffff00', padding: '0 2px' }}>M</span>
-        </button>
       </div>
       <div
         ref={editorRef}
