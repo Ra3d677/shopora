@@ -341,12 +341,14 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           }
 
           if (testimonialStyle === 'slider') {
+            const homeBg = settings.colorSystem?.backgrounds?.home || '';
+            const textPrimary = settings.colorSystem?.text?.primary || '';
             return (
               <React.Fragment key={section.id}>
-                <section className="py-32 overflow-hidden relative bg-gradient-to-br from-slate-50 to-white">
+                <section className="py-32 overflow-hidden relative" style={{ backgroundColor: homeBg || undefined, color: textPrimary || undefined }}>
                   <div className="max-w-4xl mx-auto px-8 text-center relative z-10">
-                    {sectionTitle && <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-16 uppercase">{sectionTitle}</h2>}
-                    <Quote size={48} className="mx-auto mb-10 text-slate-200" />
+                    {sectionTitle && <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-16 uppercase" style={{ color: textPrimary || undefined }}>{sectionTitle}</h2>}
+                    <Quote size={48} className="mx-auto mb-10" style={{ color: textPrimary ? `${textPrimary}33` : '#e2e8f0' }} />
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={activeTestimonial}
@@ -356,22 +358,22 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                         transition={{ duration: 0.5 }}
                       >
                         <div className="flex justify-center mb-6">{renderStars(sectionTestimonials[activeTestimonial]?.rating)}</div>
-                        <h3 className="text-2xl md:text-4xl font-light italic leading-relaxed mb-10 text-slate-700">
+                        <h3 className="text-2xl md:text-4xl font-light italic leading-relaxed mb-10" style={{ color: textPrimary ? `${textPrimary}cc` : '#334155' }}>
                           "{sectionTestimonials[activeTestimonial]?.content}"
                         </h3>
                         <div className="flex flex-col items-center">
                           <div className="w-14 h-14 rounded-full bg-slate-200 mb-3 overflow-hidden shadow-lg">
                             <img src={sectionTestimonials[activeTestimonial]?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${sectionTestimonials[activeTestimonial]?.name}`} alt="User" className="w-full h-full object-cover" />
                           </div>
-                          <p className="font-bold text-sm text-slate-800">{sectionTestimonials[activeTestimonial]?.name}</p>
-                          <p className="text-slate-400 text-xs mt-0.5">{sectionTestimonials[activeTestimonial]?.role}</p>
+                          <p className="font-bold text-sm" style={{ color: textPrimary || '#1e293b' }}>{sectionTestimonials[activeTestimonial]?.name}</p>
+                          <p className="text-xs mt-0.5" style={{ color: textPrimary ? `${textPrimary}99` : '#94a3b8' }}>{sectionTestimonials[activeTestimonial]?.role}</p>
                         </div>
                       </motion.div>
                     </AnimatePresence>
                     <div className="flex justify-center gap-2 mt-10">
                       {sectionTestimonials.map((_: any, idx: number) => (
                         <button key={idx} onClick={() => setActiveTestimonial(idx)}
-                          className={`h-2 rounded-full transition-all duration-500 ${idx === activeTestimonial ? 'bg-slate-800 w-8' : 'bg-slate-200 w-2 hover:bg-slate-300'}`} />
+                          className={`h-2 rounded-full transition-all duration-500 ${idx === activeTestimonial ? 'bg-slate-800 w-8' : 'bg-slate-200 w-2 hover:bg-slate-300'}`} style={idx === activeTestimonial && textPrimary ? { backgroundColor: textPrimary } : {}} />
                       ))}
                     </div>
                   </div>
@@ -382,16 +384,18 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           }
 
           if (testimonialStyle === 'minimal') {
+            const homeBg = settings.colorSystem?.backgrounds?.home || '';
+            const textPrimary = settings.colorSystem?.text?.primary || '';
             return (
               <React.Fragment key={section.id}>
-                <section className="py-20 bg-transparent">
+                <section className="py-20" style={{ backgroundColor: homeBg || undefined, color: textPrimary || undefined }}>
                   <div className="max-w-4xl mx-auto px-8 text-center">
-                    {sectionTitle && <h2 className="text-3xl font-black tracking-tighter mb-16 uppercase text-slate-800">{sectionTitle}</h2>}
+                    {sectionTitle && <h2 className="text-3xl font-black tracking-tighter mb-16 uppercase" style={{ color: textPrimary || '#1e293b' }}>{sectionTitle}</h2>}
                     <div className="space-y-12">
                       {sectionTestimonials.map((item: any) => (
                         <div key={item.id}>
-                          <p className="text-xl md:text-2xl font-light italic text-slate-500 leading-relaxed">"{item.content}"</p>
-                          <p className="text-sm font-bold text-slate-800 mt-4">{item.name}</p>
+                          <p className="text-xl md:text-2xl font-light italic leading-relaxed" style={{ color: textPrimary ? `${textPrimary}99` : '#64748b' }}>"{item.content}"</p>
+                          <p className="text-sm font-bold mt-4" style={{ color: textPrimary || '#1e293b' }}>{item.name}</p>
                         </div>
                       ))}
                     </div>
@@ -403,15 +407,18 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
           }
 
           // Default: Cards Grid
+          const homeBg = settings.colorSystem?.backgrounds?.home || '';
+          const textPrimary = settings.colorSystem?.text?.primary || '';
+          const sectionStyle = homeBg ? { backgroundColor: homeBg, color: textPrimary } : {};
           return (
             <React.Fragment key={section.id}>
-              <section className="py-24 bg-gradient-to-br from-slate-50 to-white">
+              <section className="py-24" style={sectionStyle}>
                 <div className="max-w-7xl mx-auto px-8">
                   {sectionTitle && (
-                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-center mb-4 uppercase text-slate-800">{sectionTitle}</h2>
+                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-center mb-4 uppercase" style={{ color: textPrimary || undefined }}>{sectionTitle}</h2>
                   )}
                   {sectionItems.length === 0 && customerReviews.length === 0 ? null : (
-                    <p className="text-center text-slate-400 text-sm mb-16 max-w-xl mx-auto">What our customers say about us</p>
+                    <p className="text-center text-sm mb-16 max-w-xl mx-auto" style={{ color: textPrimary ? `${textPrimary}99` : '#94a3b8' }}>What our customers say about us</p>
                   )}
                   {sectionItems.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
@@ -434,16 +441,22 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                   )}
                   {customerReviews.length > 0 && (
                     <div className="border-t border-slate-100 pt-16 mb-12">
-                      <h3 className="text-lg font-bold text-slate-500 text-center mb-8 uppercase tracking-wider">تقييمات العملاء</h3>
+                      <h3 className="text-lg font-bold text-center mb-8 uppercase tracking-wider" style={{ color: textPrimary ? `${textPrimary}99` : '#64748b' }}>تقييمات العملاء</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                         {customerReviews.map((item: any) => (
                           <div key={item.id} className="bg-white/60 rounded-2xl p-8 shadow-sm border border-slate-100/60 flex flex-col">
                             <div className="mb-4">{renderStars(item.rating)}</div>
                             <p className="text-slate-600 leading-relaxed mb-8 flex-1 text-sm">"{item.content}"</p>
                             <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
-                              <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden shrink-0 flex items-center justify-center text-slate-500 text-xs font-bold">
-                                {(item.name || 'C')[0]}
-                              </div>
+                              {item.avatar ? (
+                                <div className="w-10 h-10 rounded-full overflow-hidden shrink-0">
+                                  <img src={item.avatar} alt={item.name} className="w-full h-full object-cover" />
+                                </div>
+                              ) : (
+                                <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden shrink-0 flex items-center justify-center text-slate-500 text-xs font-bold">
+                                  {(item.name || 'C')[0]}
+                                </div>
+                              )}
                               <div>
                                 <p className="font-bold text-sm text-slate-800">{item.name}</p>
                                 <p className="text-xs text-slate-400">{item.role || 'عميل'}</p>
@@ -633,17 +646,39 @@ function ReviewFormSection({ slug }: { slug: string }) {
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
   const [rating, setRating] = useState(5);
+  const [imageBase64, setImageBase64] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const base64 = ev.target?.result as string;
+      setImageBase64(base64);
+      setImagePreview(base64);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function clearImage() {
+    setImageBase64(null);
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim() || !content.trim()) return;
     setStatus("loading");
-    await submitClientReview(slug, name.trim(), "", content.trim(), rating);
+    await submitClientReview(slug, name.trim(), "", content.trim(), rating, imageBase64 || undefined);
     setStatus("success");
     setName("");
     setContent("");
     setRating(5);
+    clearImage();
     setTimeout(() => { setOpen(false); setStatus("idle"); }, 2000);
   }
 
@@ -675,6 +710,25 @@ function ReviewFormSection({ slug }: { slug: string }) {
               className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all text-right" />
             <textarea value={content} onChange={e => setContent(e.target.value)} required placeholder="اكتب تقييمك *" rows={4}
               className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all resize-none text-right leading-relaxed" />
+            <div className="flex items-center gap-3">
+              {imagePreview ? (
+                <div className="relative w-16 h-16 rounded-xl overflow-hidden border border-slate-200 shrink-0">
+                  <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                  <button type="button" onClick={clearImage}
+                    className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-md hover:bg-red-600 transition-colors">
+                    &times;
+                  </button>
+                </div>
+              ) : null}
+              <button type="button" onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-2 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-500 hover:bg-slate-100 transition-all">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                إضافة صورة
+              </button>
+              <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageSelect} />
+            </div>
           </div>
           <div className="flex gap-3 mt-6">
             <button type="submit" disabled={status === "loading" || !name.trim() || !content.trim()}

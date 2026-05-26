@@ -117,7 +117,7 @@ export async function logoutCustomer(slug: string) {
   redirect(`/store/${slug}`);
 }
 
-export async function submitClientReview(slug: string, name: string, role: string, content: string, rating: number = 5) {
+export async function submitClientReview(slug: string, name: string, role: string, content: string, rating: number = 5, imageUrl?: string) {
   if (!name || !content) {
     return { error: "Please enter your name and review message." };
   }
@@ -126,6 +126,24 @@ export async function submitClientReview(slug: string, name: string, role: strin
     const store = await prisma.store.findUnique({ where: { slug } });
     if (!store) {
       return { error: "Store not found." };
+    }
+
+    // Upload image if provided
+    let avatarUrl = '';
+    if (imageUrl) {
+      try {
+        const media = await prisma.media.create({
+          data: {
+            url: imageUrl,
+            name: `review-${Date.now()}`,
+            type: "image",
+            storeId: store.id,
+          },
+        });
+        avatarUrl = media.url;
+      } catch {
+        // Silently fail image upload
+      }
     }
 
     const settings = store.settings ? JSON.parse(store.settings) : {};
@@ -141,7 +159,8 @@ export async function submitClientReview(slug: string, name: string, role: strin
       name,
       role: role || "",
       content,
-      rating
+      rating,
+      avatar: avatarUrl || undefined
     });
 
     await prisma.store.update({

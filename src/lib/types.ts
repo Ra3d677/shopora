@@ -87,6 +87,7 @@ export interface StoreSettings {
       name: string;
       role: string;
       content: string;
+      rating?: number;
       avatar?: string;
     }[];
     brandLogos?: string[];
