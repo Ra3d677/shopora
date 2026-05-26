@@ -87,7 +87,7 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
     { id: 'default-sale', type: 'sale_products' },
     { id: 'default-showcase', type: 'text_block' },
     { id: 'default-products', type: 'featured_products' },
-    { id: 'default-testimonials', type: 'testimonials' }
+    { id: 'default-testimonials', type: 'testimonials', style: 'cards', config: { items: [{ id: '1', name: 'Sarah Ahmed', role: 'عميل', content: 'خدمة ممتازة وتجربة رائعة!', rating: 5 }, { id: '2', name: 'Khaled Omar', role: 'عميل', content: 'جودة المنتجات مذهلة والتوصيل سريع جداً', rating: 5 }, { id: '3', name: 'Nora Salim', role: 'عميل', content: 'أفضل متجر تعاملت معه، أنصح الجميع', rating: 5 }] } }
   ];
 
   return (

@@ -275,11 +275,11 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
   const defaultLayout: LayoutSection[] = storeType === 'WEBSITE' ? [
     { id: 'sec-2', type: 'packages', style: 'grid', config: { title: 'Our Packages' } },
     { id: 'sec-3', type: 'about_us', style: 'split', config: { title: 'About Us', tagline: 'WHO WE ARE' } },
-    { id: 'sec-4', type: 'testimonials', style: 'cards', config: { title: 'What our clients say' } }
+    { id: 'sec-4', type: 'testimonials', style: 'cards', config: { title: 'What our clients say', items: [{ id: '1', name: 'Sarah Ahmed', role: 'عميل', content: 'خدمة ممتازة وتجربة رائعة!', rating: 5 }, { id: '2', name: 'Khaled Omar', role: 'عميل', content: 'جودة المنتجات مذهلة والتوصيل سريع جداً', rating: 5 }, { id: '3', name: 'Nora Salim', role: 'عميل', content: 'أفضل متجر تعاملت معه، أنصح الجميع', rating: 5 }] } }
   ] : [
     { id: 'sec-3', type: 'categories', style: 'grid', config: { title: 'Shop by Category' } },
     { id: 'sec-4', type: 'featured_products', style: 'grid', config: { title: 'Trending Now', subtitle: 'Most popular items' } },
-    { id: 'sec-5', type: 'testimonials', style: 'cards', config: { title: 'What our customers say' } }
+    { id: 'sec-5', type: 'testimonials', style: 'cards', config: { title: 'What our customers say', items: [{ id: '1', name: 'Sarah Ahmed', role: 'عميل', content: 'خدمة ممتازة وتجربة رائعة!', rating: 5 }, { id: '2', name: 'Khaled Omar', role: 'عميل', content: 'جودة المنتجات مذهلة والتوصيل سريع جداً', rating: 5 }, { id: '3', name: 'Nora Salim', role: 'عميل', content: 'أفضل متجر تعاملت معه، أنصح الجميع', rating: 5 }] } }
   ];
 
   const [layout, setLayout] = useState<LayoutSection[]>(initialSettings.homepageLayout || defaultLayout);
