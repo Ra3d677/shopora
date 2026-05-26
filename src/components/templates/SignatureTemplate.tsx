@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, CSSProperties } from "react";
 import BannerButton from "@/components/ui/BannerButton";
 import Link from "next/link";
 import { submitClientReview } from "@/app/store/actions";
@@ -319,16 +319,16 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
         }
 
         if (section.type === 'testimonials') {
-          const sectionItems = (section.config?.items && section.config.items.length > 0) 
-            ? section.config.items 
+          const sectionItems = (section.config?.items && section.config.items.length > 0)
+            ? section.config.items
             : [];
           const customerReviews = settings.signatureSettings?.testimonials || [];
           const sectionTestimonials = [...sectionItems, ...customerReviews];
           const sectionTitle = section.config?.title || '';
 
-          const testimonialStyle = section.style || 'cards';
-
-          if (sectionTestimonials.length === 0 && testimonialStyle !== 'cards') return null;
+          const homeBg = settings.colorSystem?.backgrounds?.home || '';
+          const textPrimary = settings.colorSystem?.text?.primary || '';
+          const sectionStyle: CSSProperties = homeBg ? { backgroundColor: homeBg, color: textPrimary, direction: 'rtl' } : {direction: 'rtl'};
 
           function renderStars(rating: number) {
             return (
@@ -340,76 +340,6 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
             );
           }
 
-          if (testimonialStyle === 'slider') {
-            const homeBg = settings.colorSystem?.backgrounds?.home || '';
-            const textPrimary = settings.colorSystem?.text?.primary || '';
-            return (
-              <React.Fragment key={section.id}>
-                <section className="py-32 overflow-hidden relative" style={{ backgroundColor: homeBg || undefined, color: textPrimary || undefined }}>
-                  <div className="max-w-4xl mx-auto px-8 text-center relative z-10">
-                    {sectionTitle && <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-16 uppercase" style={{ color: textPrimary || undefined }}>{sectionTitle}</h2>}
-                    <Quote size={48} className="mx-auto mb-10" style={{ color: textPrimary ? `${textPrimary}33` : '#e2e8f0' }} />
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={activeTestimonial}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        <div className="flex justify-center mb-6">{renderStars(sectionTestimonials[activeTestimonial]?.rating)}</div>
-                        <h3 className="text-2xl md:text-4xl font-light italic leading-relaxed mb-10" style={{ color: textPrimary ? `${textPrimary}cc` : '#334155' }}>
-                          "{sectionTestimonials[activeTestimonial]?.content}"
-                        </h3>
-                        <div className="flex flex-col items-center">
-                          <div className="w-14 h-14 rounded-full bg-slate-200 mb-3 overflow-hidden shadow-lg">
-                            <img src={sectionTestimonials[activeTestimonial]?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${sectionTestimonials[activeTestimonial]?.name}`} alt="User" className="w-full h-full object-cover" />
-                          </div>
-                          <p className="font-bold text-sm" style={{ color: textPrimary || '#1e293b' }}>{sectionTestimonials[activeTestimonial]?.name}</p>
-                          <p className="text-xs mt-0.5" style={{ color: textPrimary ? `${textPrimary}99` : '#94a3b8' }}>{sectionTestimonials[activeTestimonial]?.role}</p>
-                        </div>
-                      </motion.div>
-                    </AnimatePresence>
-                    <div className="flex justify-center gap-2 mt-10">
-                      {sectionTestimonials.map((_: any, idx: number) => (
-                        <button key={idx} onClick={() => setActiveTestimonial(idx)}
-                          className={`h-2 rounded-full transition-all duration-500 ${idx === activeTestimonial ? 'bg-slate-800 w-8' : 'bg-slate-200 w-2 hover:bg-slate-300'}`} style={idx === activeTestimonial && textPrimary ? { backgroundColor: textPrimary } : {}} />
-                      ))}
-                    </div>
-                  </div>
-                </section>
-                {divider}
-              </React.Fragment>
-            );
-          }
-
-          if (testimonialStyle === 'minimal') {
-            const homeBg = settings.colorSystem?.backgrounds?.home || '';
-            const textPrimary = settings.colorSystem?.text?.primary || '';
-            return (
-              <React.Fragment key={section.id}>
-                <section className="py-20" style={{ backgroundColor: homeBg || undefined, color: textPrimary || undefined }}>
-                  <div className="max-w-4xl mx-auto px-8 text-center">
-                    {sectionTitle && <h2 className="text-3xl font-black tracking-tighter mb-16 uppercase" style={{ color: textPrimary || '#1e293b' }}>{sectionTitle}</h2>}
-                    <div className="space-y-12">
-                      {sectionTestimonials.map((item: any) => (
-                        <div key={item.id}>
-                          <p className="text-xl md:text-2xl font-light italic leading-relaxed" style={{ color: textPrimary ? `${textPrimary}99` : '#64748b' }}>"{item.content}"</p>
-                          <p className="text-sm font-bold mt-4" style={{ color: textPrimary || '#1e293b' }}>{item.name}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </section>
-                {divider}
-              </React.Fragment>
-            );
-          }
-
-          // Default: Cards Grid
-          const homeBg = settings.colorSystem?.backgrounds?.home || '';
-          const textPrimary = settings.colorSystem?.text?.primary || '';
-          const sectionStyle = homeBg ? { backgroundColor: homeBg, color: textPrimary } : {};
           return (
             <React.Fragment key={section.id}>
               <section className="py-24" style={sectionStyle}>
@@ -420,53 +350,44 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                   {sectionItems.length === 0 && customerReviews.length === 0 ? null : (
                     <p className="text-center text-sm mb-16 max-w-xl mx-auto" style={{ color: textPrimary ? `${textPrimary}99` : '#94a3b8' }}>What our customers say about us</p>
                   )}
-                  {sectionItems.length > 0 && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
-                      {sectionItems.map((item: any) => (
-                        <div key={item.id} className="bg-white rounded-2xl p-8 shadow-md border border-slate-100 hover:shadow-xl transition-shadow duration-300 flex flex-col">
-                          <div className="mb-4">{renderStars(item.rating)}</div>
-                          <p className="text-slate-600 leading-relaxed mb-8 flex-1 text-sm">"{item.content}"</p>
-                          <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
-                            <div className="w-10 h-10 rounded-full bg-slate-100 overflow-hidden shrink-0">
-                              <img src={item.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${item.name}`} alt={item.name} className="w-full h-full object-cover" />
-                            </div>
-                            <div>
-                              <p className="font-bold text-sm text-slate-800">{item.name}</p>
-                              <p className="text-xs text-slate-400">{item.role}</p>
-                            </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
+                    {sectionItems.map((item: any) => (
+                      <div key={item.id} className="bg-white rounded-2xl p-8 shadow-md border border-slate-100 hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                        <div className="mb-4">{renderStars(item.rating)}</div>
+                        <p className="text-slate-600 leading-relaxed mb-8 flex-1 text-sm">"{item.content}"</p>
+                        <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
+                          <div className="w-10 h-10 rounded-full bg-slate-100 overflow-hidden shrink-0">
+                            <img src={item.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${item.name}`} alt={item.name} className="w-full h-full object-cover" />
+                          </div>
+                          <div>
+                            <p className="font-bold text-sm text-slate-800">{item.name}</p>
+                            <p className="text-xs text-slate-400">{item.role}</p>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  )}
-                  {customerReviews.length > 0 && (
-                    <div className="border-t border-slate-100 pt-16 mb-12">
-                      <h3 className="text-lg font-bold text-center mb-8 uppercase tracking-wider" style={{ color: textPrimary ? `${textPrimary}99` : '#64748b' }}>تقييمات العملاء</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                        {customerReviews.map((item: any) => (
-                          <div key={item.id} className="bg-white/60 rounded-2xl p-8 shadow-sm border border-slate-100/60 flex flex-col">
-                            <div className="mb-4">{renderStars(item.rating)}</div>
-                            <p className="text-slate-600 leading-relaxed mb-8 flex-1 text-sm">"{item.content}"</p>
-                            <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
-                              {item.avatar ? (
-                                <div className="w-10 h-10 rounded-full overflow-hidden shrink-0">
-                                  <img src={item.avatar} alt={item.name} className="w-full h-full object-cover" />
-                                </div>
-                              ) : (
-                                <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden shrink-0 flex items-center justify-center text-slate-500 text-xs font-bold">
-                                  {(item.name || 'C')[0]}
-                                </div>
-                              )}
-                              <div>
-                                <p className="font-bold text-sm text-slate-800">{item.name}</p>
-                                <p className="text-xs text-slate-400">{item.role || 'عميل'}</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
                       </div>
-                    </div>
-                  )}
+                    ))}
+                    {customerReviews.map((item: any) => (
+                      <div key={item.id} className="bg-white/60 rounded-2xl p-8 shadow-sm border border-slate-100/60 flex flex-col">
+                        <div className="mb-4">{renderStars(item.rating)}</div>
+                        <p className="text-slate-600 leading-relaxed mb-8 flex-1 text-sm">"{item.content}"</p>
+                        <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
+                          {item.avatar ? (
+                            <div className="w-10 h-10 rounded-full overflow-hidden shrink-0">
+                              <img src={item.avatar} alt={item.name} className="w-full h-full object-cover" />
+                            </div>
+                          ) : (
+                            <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden shrink-0 flex items-center justify-center text-slate-500 text-xs font-bold">
+                              {(item.name || 'C')[0]}
+                            </div>
+                          )}
+                          <div>
+                            <p className="font-bold text-sm text-slate-800">{item.name}</p>
+                            <p className="text-xs text-slate-400">{item.role || 'عميل'}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                   <ReviewFormSection slug={slug} />
                 </div>
               </section>
