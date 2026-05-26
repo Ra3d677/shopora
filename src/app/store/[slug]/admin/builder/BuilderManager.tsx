@@ -59,6 +59,7 @@ const COLOR_PRESETS = [
 function RichTextEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = useState('16');
+  const savedSelection = useRef<Range | null>(null);
 
   useEffect(() => {
     if (editorRef.current && editorRef.current.innerHTML !== value) {
@@ -66,7 +67,23 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
     }
   }, []);
 
+  function saveSelection() {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0) {
+      savedSelection.current = sel.getRangeAt(0);
+    }
+  }
+
+  function restoreSelection() {
+    const sel = window.getSelection();
+    if (sel && savedSelection.current) {
+      sel.removeAllRanges();
+      sel.addRange(savedSelection.current);
+    }
+  }
+
   function execCmd(cmd: string, val?: string) {
+    restoreSelection();
     document.execCommand('styleWithCSS', false, 'true');
     document.execCommand(cmd, false, val);
     if (editorRef.current) onChange(editorRef.current.innerHTML);
@@ -78,8 +95,11 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
 
   function applyFontSize(size: string) {
     if (!size) return;
-    execCmd('fontSize', size);
+    const parsed = parseInt(size, 10);
+    if (parsed < 8) { setFontSize('8'); execCmd('fontSize', '1'); return; }
+    if (parsed > 200) { setFontSize('200'); execCmd('fontSize', '7'); return; }
     setFontSize(size);
+    execCmd('fontSize', size);
   }
 
   function toggleHighlight() {
@@ -109,7 +129,7 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
         <span className="w-px bg-slate-200 mx-1" />
         <input type="number" value={fontSize} min={8} max={200}
           onChange={e => applyFontSize(e.target.value)}
-          onMouseDown={e => e.preventDefault()}
+          onFocus={saveSelection}
           className="w-16 px-2 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-center outline-none"
           title="Font Size" />
         <button type="button" onMouseDown={e => { e.preventDefault(); toggleHighlight(); }}
