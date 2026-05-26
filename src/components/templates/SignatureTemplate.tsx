@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from "react";
 import BannerButton from "@/components/ui/BannerButton";
 import Link from "next/link";
+import { submitClientReview } from "@/app/store/actions";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { ShoppingBag, ArrowRight, Star, Quote, ChevronRight, Play, Globe, Shield, Plus } from "lucide-react";
+import { ShoppingBag, ArrowRight, Star, Quote, ChevronRight, Play, Globe, Shield, Plus, CheckCircle2, Loader2 } from "lucide-react";
 import SmartImage from "@/components/ui/SmartImage";
 import StoreMarquee from "@/components/ui/StoreMarquee";
 import Reveal from "@/components/ui/premium/Reveal";
@@ -318,9 +319,11 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
         }
 
         if (section.type === 'testimonials') {
-          const sectionTestimonials = (section.config?.items && section.config.items.length > 0) 
+          const sectionItems = (section.config?.items && section.config.items.length > 0) 
             ? section.config.items 
             : [];
+          const customerReviews = settings.signatureSettings?.testimonials || [];
+          const sectionTestimonials = [...sectionItems, ...customerReviews];
           const sectionTitle = section.config?.title || '';
 
           if (sectionTestimonials.length === 0) return null;
@@ -407,24 +410,51 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
                   {sectionTitle && (
                     <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-center mb-4 uppercase text-slate-800">{sectionTitle}</h2>
                   )}
-                  <p className="text-center text-slate-400 text-sm mb-16 max-w-xl mx-auto">What our customers say about us</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                    {sectionTestimonials.map((item: any) => (
-                      <div key={item.id} className="bg-white rounded-2xl p-8 shadow-md border border-slate-100 hover:shadow-xl transition-shadow duration-300 flex flex-col">
-                        <div className="mb-4">{renderStars(item.rating)}</div>
-                        <p className="text-slate-600 leading-relaxed mb-8 flex-1 text-sm">"{item.content}"</p>
-                        <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
-                          <div className="w-10 h-10 rounded-full bg-slate-100 overflow-hidden shrink-0">
-                            <img src={item.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${item.name}`} alt={item.name} className="w-full h-full object-cover" />
-                          </div>
-                          <div>
-                            <p className="font-bold text-sm text-slate-800">{item.name}</p>
-                            <p className="text-xs text-slate-400">{item.role}</p>
+                  {sectionItems.length === 0 && customerReviews.length === 0 ? null : (
+                    <p className="text-center text-slate-400 text-sm mb-16 max-w-xl mx-auto">What our customers say about us</p>
+                  )}
+                  {sectionItems.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
+                      {sectionItems.map((item: any) => (
+                        <div key={item.id} className="bg-white rounded-2xl p-8 shadow-md border border-slate-100 hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                          <div className="mb-4">{renderStars(item.rating)}</div>
+                          <p className="text-slate-600 leading-relaxed mb-8 flex-1 text-sm">"{item.content}"</p>
+                          <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
+                            <div className="w-10 h-10 rounded-full bg-slate-100 overflow-hidden shrink-0">
+                              <img src={item.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${item.name}`} alt={item.name} className="w-full h-full object-cover" />
+                            </div>
+                            <div>
+                              <p className="font-bold text-sm text-slate-800">{item.name}</p>
+                              <p className="text-xs text-slate-400">{item.role}</p>
+                            </div>
                           </div>
                         </div>
+                      ))}
+                    </div>
+                  )}
+                  {customerReviews.length > 0 && (
+                    <div className="border-t border-slate-100 pt-16 mb-12">
+                      <h3 className="text-lg font-bold text-slate-500 text-center mb-8 uppercase tracking-wider">تقييمات العملاء</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                        {customerReviews.map((item: any) => (
+                          <div key={item.id} className="bg-white/60 rounded-2xl p-8 shadow-sm border border-slate-100/60 flex flex-col">
+                            <div className="mb-4">{renderStars(item.rating)}</div>
+                            <p className="text-slate-600 leading-relaxed mb-8 flex-1 text-sm">"{item.content}"</p>
+                            <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
+                              <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden shrink-0 flex items-center justify-center text-slate-500 text-xs font-bold">
+                                {(item.name || 'C')[0]}
+                              </div>
+                              <div>
+                                <p className="font-bold text-sm text-slate-800">{item.name}</p>
+                                <p className="text-xs text-slate-400">{item.role || 'عميل'}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  )}
+                  <ReviewFormSection slug={slug} />
                 </div>
               </section>
               {divider}
@@ -595,5 +625,69 @@ function Check({ className, size }: { className?: string, size?: number }) {
     >
       <polyline points="20 6 9 17 4 12" />
     </svg>
+  );
+}
+
+function ReviewFormSection({ slug }: { slug: string }) {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [content, setContent] = useState("");
+  const [rating, setRating] = useState(5);
+  const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name.trim() || !content.trim()) return;
+    setStatus("loading");
+    await submitClientReview(slug, name.trim(), "", content.trim(), rating);
+    setStatus("success");
+    setName("");
+    setContent("");
+    setRating(5);
+    setTimeout(() => { setOpen(false); setStatus("idle"); }, 2000);
+  }
+
+  return (
+    <div className="text-center mt-16">
+      {!open ? (
+        <button onClick={() => setOpen(true)}
+          className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl border-2 border-slate-200 text-slate-600 font-bold text-sm uppercase tracking-widest hover:bg-slate-50 hover:border-slate-300 transition-all">
+          <Star className="w-4 h-4" /> اكتب تقييمك
+        </button>
+      ) : status === "success" ? (
+        <div className="max-w-lg mx-auto p-8 bg-green-50 border border-green-200 rounded-2xl">
+          <CheckCircle2 className="w-10 h-10 mx-auto mb-3 text-green-500" />
+          <p className="text-green-700 font-bold text-sm">شكراً لك! تم إرسال تقييمك</p>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white border border-slate-200 rounded-2xl p-8 shadow-lg text-right">
+          <h3 className="text-lg font-bold text-slate-800 mb-6 text-center">اكتب تقييمك</h3>
+          <div className="flex justify-center gap-1 mb-6" dir="ltr">
+            {[1, 2, 3, 4, 5].map(s => (
+              <button key={s} type="button" onClick={() => setRating(s)}
+                className={`transition-transform hover:scale-125 ${rating >= s ? 'text-amber-400' : 'text-slate-200'}`}>
+                <Star className="w-7 h-7 fill-current" />
+              </button>
+            ))}
+          </div>
+          <div className="space-y-4">
+            <input type="text" value={name} onChange={e => setName(e.target.value)} required placeholder="الاسم *"
+              className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all text-right" />
+            <textarea value={content} onChange={e => setContent(e.target.value)} required placeholder="اكتب تقييمك *" rows={4}
+              className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all resize-none text-right leading-relaxed" />
+          </div>
+          <div className="flex gap-3 mt-6">
+            <button type="submit" disabled={status === "loading" || !name.trim() || !content.trim()}
+              className="flex-1 py-3.5 bg-slate-800 text-white rounded-xl font-bold text-sm uppercase tracking-wider hover:bg-slate-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+              {status === "loading" ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : "إرسال التقييم"}
+            </button>
+            <button type="button" onClick={() => setOpen(false)}
+              className="px-6 py-3.5 border border-slate-200 text-slate-500 rounded-xl text-sm font-bold hover:bg-slate-50 transition-all">
+              إلغاء
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
   );
 }

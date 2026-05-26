@@ -117,7 +117,7 @@ export async function logoutCustomer(slug: string) {
   redirect(`/store/${slug}`);
 }
 
-export async function submitClientReview(slug: string, name: string, role: string, content: string) {
+export async function submitClientReview(slug: string, name: string, role: string, content: string, rating: number = 5) {
   if (!name || !content) {
     return { error: "Please enter your name and review message." };
   }
@@ -137,9 +137,11 @@ export async function submitClientReview(slug: string, name: string, role: strin
     }
 
     settings.signatureSettings.testimonials.push({
+      id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
       name,
       role: role || "",
-      content
+      content,
+      rating
     });
 
     await prisma.store.update({
