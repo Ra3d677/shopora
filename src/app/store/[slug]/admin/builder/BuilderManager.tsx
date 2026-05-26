@@ -59,6 +59,7 @@ const COLOR_PRESETS = [
 function RichTextEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = useState('16');
+  const savedRange = useRef<Range | null>(null);
 
   useEffect(() => {
     if (editorRef.current && editorRef.current.innerHTML !== value) {
@@ -66,12 +67,15 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
     }
   }, []);
 
-  function focusEditor() {
-    if (editorRef.current) editorRef.current.focus();
+  function saveSelection() {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0 && editorRef.current?.contains(sel.anchorNode)) {
+      savedRange.current = sel.getRangeAt(0);
+    }
   }
 
   function execCmd(cmd: string, val?: string) {
-    focusEditor();
+    if (editorRef.current) editorRef.current.focus();
     document.execCommand('styleWithCSS', false, 'true');
     document.execCommand(cmd, false, val);
     if (editorRef.current) onChange(editorRef.current.innerHTML);
@@ -82,10 +86,16 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
   }
 
   function applyFontSize(size: string) {
-    if (!size) return;
-    focusEditor();
+    if (!size || !editorRef.current) return;
+    editorRef.current.focus();
     const sel = window.getSelection();
-    if (!sel || !sel.rangeCount || sel.isCollapsed) return;
+    if (!sel) return;
+    // Restore saved range if it exists and is still valid
+    if (savedRange.current && editorRef.current.contains(savedRange.current.startContainer)) {
+      sel.removeAllRanges();
+      sel.addRange(savedRange.current);
+    }
+    if (sel.isCollapsed || !sel.rangeCount) return;
     const range = sel.getRangeAt(0);
     const span = document.createElement('span');
     span.style.fontSize = `${size}px`;
@@ -103,7 +113,7 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
   }
 
   function toggleHighlight() {
-    focusEditor();
+    if (editorRef.current) editorRef.current.focus();
     execCmd('hiliteColor', '#ffff00');
   }
 
@@ -130,6 +140,7 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
         <span className="w-px bg-slate-200 mx-1" />
         <input type="number" value={fontSize} min={8} max={200}
           onChange={e => applyFontSize(e.target.value)}
+          onFocus={saveSelection}
           className="w-16 px-2 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-center outline-none"
           title="Font Size (px)" />
         <button type="button" onMouseDown={e => { e.preventDefault(); toggleHighlight(); }}
