@@ -189,30 +189,20 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
     if (isNaN(parsed)) return;
     const clamped = Math.min(200, Math.max(8, parsed));
     setFontSize(String(clamped));
-
-    // Restore selection in editor
     editorRef.current.focus();
     const sel = window.getSelection();
     if (!sel) return;
     if (savedRange.current) {
-      try {
-        sel.removeAllRanges();
-        sel.addRange(savedRange.current);
-      } catch { return; }
+      try { sel.removeAllRanges(); sel.addRange(savedRange.current); } catch { return; }
     }
     if (sel.isCollapsed || !sel.rangeCount) return;
-
-    // Extract selected content and wrap in styled span
     const range = sel.getRangeAt(0);
-    const fragment = range.extractContents();
-    const wrapper = document.createElement('div');
-    wrapper.style.fontSize = `${clamped}px`;
-    wrapper.appendChild(fragment);
-    range.insertNode(wrapper);
-
-    // Re-select the wrapped content
-    sel.removeAllRanges();
-    sel.addRange(range);
+    // Clone, delete, then re-insert with styled wrapper
+    const fragment = range.cloneContents();
+    const temp = document.createElement('div');
+    temp.appendChild(fragment);
+    range.deleteContents();
+    document.execCommand('insertHTML', false, `<div style="font-size: ${clamped}px">${temp.innerHTML}</div>`);
     savedRange.current = null;
     if (editorRef.current) onChange(editorRef.current.innerHTML);
   }

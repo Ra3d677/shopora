@@ -65,20 +65,15 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
     const sel = window.getSelection();
     if (!sel) return;
     if (savedRange.current) {
-      try {
-        sel.removeAllRanges();
-        sel.addRange(savedRange.current);
-      } catch { return; }
+      try { sel.removeAllRanges(); sel.addRange(savedRange.current); } catch { return; }
     }
     if (sel.isCollapsed || !sel.rangeCount) return;
     const range = sel.getRangeAt(0);
-    const fragment = range.extractContents();
-    const wrapper = document.createElement('div');
-    wrapper.style.fontSize = `${clamped}px`;
-    wrapper.appendChild(fragment);
-    range.insertNode(wrapper);
-    sel.removeAllRanges();
-    sel.addRange(range);
+    const fragment = range.cloneContents();
+    const temp = document.createElement('div');
+    temp.appendChild(fragment);
+    range.deleteContents();
+    document.execCommand('insertHTML', false, `<div style="font-size: ${clamped}px">${temp.innerHTML}</div>`);
     savedRange.current = null;
     if (editorRef.current) onChange(editorRef.current.innerHTML);
   }
