@@ -6,7 +6,6 @@ import Link from "next/link";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ShoppingBag, ArrowRight, Star, Quote, ChevronRight, Play, Globe, Shield, Plus } from "lucide-react";
 import SmartImage from "@/components/ui/SmartImage";
-import HeroSlider from "@/components/ui/HeroSlider";
 import StoreMarquee from "@/components/ui/StoreMarquee";
 import Reveal from "@/components/ui/premium/Reveal";
 import MagneticButton from "@/components/ui/premium/MagneticButton";
@@ -84,7 +83,6 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
   }, [liveSales.enabled, liveSales.interval]);
 
   const homepageLayout = settings.homepageLayout || [
-    { id: 'default-hero', type: 'hero' },
     { id: 'default-marquee', type: 'marquee' },
     { id: 'default-sale', type: 'sale_products' },
     { id: 'default-showcase', type: 'text_block' },
@@ -117,183 +115,6 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
       
       {homepageLayout.filter((s: any) => s.type !== 'header').map((section: any, index: number) => {
         const divider = false;
-
-        // Helper to get safe config
-        const getSafeConfig = (cfg: any) => ({
-          title: cfg?.title || "Welcome to our store",
-          subtitle: cfg?.subtitle || "Discover amazing products",
-          btnText: cfg?.btnText || "Shop Now",
-          btnLink: cfg?.btnLink || "#",
-          bgImage: cfg?.bgImage || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1600&q=80",
-          ...cfg
-        });
-
-        if (section.type === 'hero') {
-          const heroStyle = section.style || 'luxury';
-          const cfg = getSafeConfig(section.config);
-          let content;
-
-          if (heroStyle === 'slider') {
-            const heroSlides = [];
-            const heroTitle = section.config?.title || '';
-            const heroSubtitle = section.config?.subtitle || '';
-            const heroBg = section.config?.bgImage || '';
-            const heroBtnText = section.config?.btnText || '';
-            const heroBtnLink = section.config?.btnLink || '#';
-            const hasHeroContent = heroTitle || heroBg;
-            if (hasHeroContent) {
-              heroSlides.push({
-                id: `${section.id}-hero`,
-                title: heroTitle || '',
-                subtitle: heroSubtitle || '',
-                imageUrl: heroBg || '',
-                buttonText: heroBtnText || '',
-                buttonLink: heroBtnLink,
-                showButton: !!heroBtnText,
-                buttonPosition: 'center',
-              });
-            }
-            const sliderBanners = [...heroSlides, ...middleBanners];
-            if (sliderBanners.length === 0) {
-              content = (
-                <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex items-center justify-center bg-slate-900 text-white">
-                  <p className="text-lg font-bold opacity-50">Add hero content or banners to display</p>
-                </section>
-              );
-            } else {
-              content = <HeroSlider key={section.id} banners={sliderBanners} slug={slug} settings={settings.bannerSettings} />;
-            }
-          } else if (heroStyle === 'split') {
-            content = (
-              <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex flex-col md:flex-row bg-transparent overflow-hidden">
-                <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-12 md:p-24 text-center md:text-left bg-transparent/10 backdrop-blur-sm">
-                  <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} className="max-w-xl">
-                    <span className="text-[10px] uppercase font-black tracking-[0.5em] text-white/40 mb-8 block">
-                      <EditableText content={cfg.subtitle || sigSettings.establishedText || "ESTABLISHED 2026"} slug={slug} settingsKey="signatureSettings.establishedText" />
-                    </span>
-                    <h1 className="text-6xl md:text-8xl font-black text-white leading-none tracking-tighter mb-10 uppercase italic">
-                      <span className="gradient-text-support">
-                        <EditableText content={cfg.title || topBanners[0]?.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
-                      </span>
-                    </h1>
-                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-6">
-                       {Array.isArray(sigSettings.heroButtons) ? sigSettings.heroButtons.map((btn: any, index: number) => (
-                         <MagneticButton key={btn.id || index} strength={0.2}>
-                           <EditableButton label={btn.label || cfg.btnText || "Shop Now"} link={btn.link || cfg.btnLink || "#"} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="block px-10 py-5 uppercase font-bold tracking-widest hover:scale-105 transition-transform" />
-                         </MagneticButton>
-                       )) : (
-                          <EditableButton label={cfg.btnText} link={cfg.btnLink} slug={slug} settingsKey="heroDefaultBtn" className="block px-10 py-5 uppercase font-bold tracking-widest hover:scale-105 transition-transform" />
-                       )}
-                    </div>
-                    <BannerButton banner={topBanners[0]} slug={slug} />
-                  </motion.div>
-                </div>
-                <div className="w-full md:w-1/2 relative h-full">
-                  <SmartImage src={cfg.bgImage} className="absolute inset-0 w-full h-full object-cover" alt="Hero" />
-                </div>
-              </section>
-            );
-          } else if (heroStyle === 'centered') {
-            content = (
-              <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex flex-col items-center justify-center bg-transparent overflow-hidden text-center px-6">
-                <div className="absolute inset-0 opacity-40">
-                  <SmartImage src={cfg.bgImage} className="w-full h-full object-cover" alt="Hero Bg" />
-                </div>
-                <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} className="max-w-5xl z-10">
-                  <span className="text-[10px] uppercase font-black tracking-[1em] text-white/60 mb-12 block">
-                    <EditableText content={cfg.subtitle || sigSettings.establishedText || "ESTABLISHED 2026"} slug={slug} settingsKey="signatureSettings.establishedText" />
-                  </span>
-                  <h1 className="text-7xl md:text-[12rem] font-black text-white leading-none tracking-tighter mb-16 uppercase italic mix-blend-difference">
-                    <span className="gradient-text-support">
-                      <EditableText content={cfg.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
-                    </span>
-                  </h1>
-                  <div className="flex flex-wrap items-center justify-center gap-10">
-                     {Array.isArray(sigSettings.heroButtons) ? sigSettings.heroButtons.map((btn: any, index: number) => (
-                       <MagneticButton key={btn.id || index} strength={0.2}>
-                         <EditableButton label={btn.label || cfg.btnText || "Shop Now"} link={btn.link || cfg.btnLink || "#"} slug={slug} settingsKey={`signatureSettings.heroButtons.${index}`} style={btn.style} className="block px-12 py-6 uppercase font-black tracking-widest text-sm hover:scale-110 transition-transform" />
-                       </MagneticButton>
-                     )) : (
-                        <EditableButton label={cfg.btnText} link={cfg.btnLink} slug={slug} settingsKey="heroDefaultBtn" className="block px-12 py-6 uppercase font-black tracking-widest text-sm hover:scale-110 transition-transform" />
-                     )}
-                  </div>
-                </motion.div>
-              </section>
-            );
-          } else if (heroStyle === 'minimal') {
-            content = (
-              <section key={section.id} className="relative min-h-[60vh] w-full bg-transparent flex items-center justify-center px-6">
-                <div className="text-center max-w-4xl">
-                  <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter mb-8 uppercase leading-none">
-                    <span className="gradient-text-support">
-                      <EditableText content={cfg.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
-                    </span>
-                  </h1>
-                  <p className="text-xl text-slate-500 font-medium mb-12 leading-relaxed">
-                    <EditableText content={cfg.subtitle || ""} slug={slug} settingsKey="modernSettings.heroSubtitle" />
-                  </p>
-                </div>
-              </section>
-            );
-          } else if (heroStyle === 'campaign') {
-            content = (
-              <section key={section.id} className="relative h-screen w-full bg-transparent overflow-hidden flex flex-col md:flex-row">
-                <div className="w-full md:w-1/2 relative h-full overflow-hidden">
-                  <motion.div initial={{ scale: 1.2 }} whileInView={{ scale: 1 }} transition={{ duration: 2 }} className="h-full">
-                    <SmartImage src={cfg.bgImage} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" alt="Campaign" />
-                  </motion.div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-slate-950/50" />
-                </div>
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-12 md:p-24 bg-transparent/20 backdrop-blur-md text-white">
-                  <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
-                    <div className="w-20 h-1 bg-blue-600 mb-12" />
-                    <span className="text-[10px] uppercase font-black tracking-[0.5em] text-blue-500 mb-6 block">SEASONAL CAMPAIGN</span>
-                    <h1 className="text-6xl md:text-9xl font-black leading-none tracking-tighter mb-12 uppercase">
-                      <span className="gradient-text-support">
-                        <EditableText content={cfg.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
-                      </span>
-                    </h1>
-                  </motion.div>
-                </div>
-              </section>
-            );
-          } else if (heroStyle === 'dddyou') {
-             const storeName = settings.storeName || 'STORE';
-             content = (
-               <section key={section.id} className="relative min-h-screen w-full flex items-center bg-[#0f0f1a] overflow-hidden">
-                 <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23c9a96e\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")', backgroundSize: '60px 60px' }} />
-                 <div className="max-w-7xl mx-auto px-6 text-center relative z-10 pt-32">
-                   <span className="inline-block px-6 py-2 border border-[#c9a96e] rounded-full text-[#c9a96e] text-xs tracking-widest uppercase mb-8">{cfg.subtitle || 'Édition Limitée'}</span>
-                   <h2 className="mb-6">
-                     <span className="block text-6xl md:text-7xl font-black text-white leading-tight">{cfg.title || storeName}</span>
-                     <span className="block font-['Alex_Brush'] text-6xl md:text-7xl text-[#c9a96e] font-normal mt-2">{cfg.badge || 'Luxury'}</span>
-                   </h2>
-                   <p className="text-lg text-white/60 max-w-xl mx-auto mb-10 leading-relaxed">{cfg.subtitle || 'Discover the pinnacle of elegance'}</p>
-                   <div className="flex gap-4 justify-center flex-wrap mb-16">
-                     <a href={cfg.btnLink || '#products'} className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-gradient-to-r from-[#c9a96e] to-[#b8923e] text-[#0f0f1a] font-bold shadow-lg hover:shadow-xl transition-all">{cfg.btnText || 'Explore'}</a>
-                   </div>
-                 </div>
-               </section>
-             );
-          } else {
-              // Default Luxury
-              content = (
-               <section key={section.id} className="relative min-h-[80vh] md:h-screen w-full flex items-center justify-center overflow-hidden bg-transparent">
-                 <div className="absolute inset-0">
-                   <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60 z-10 pointer-events-none" />
-                   <SmartImage src={cfg.bgImage} className="w-full h-full object-cover" alt="Hero" />
-                 </div>
-                 <div className="relative z-20 text-white text-center px-4">
-                     <h1 className="text-6xl md:text-[10rem] font-black tracking-tighter leading-none mb-12 uppercase italic">
-                       <EditableText content={cfg.title || settings.storeName?.toUpperCase() || "STORE"} slug={slug} settingsKey="storeName" />
-                     </h1>
-                 </div>
-               </section>
-             );
-          }
-
-          return <React.Fragment key={section.id}>{content}{divider}</React.Fragment>;
-        }
 
         if (section.type === 'marquee') {
           return section.config?.enabled !== false && (

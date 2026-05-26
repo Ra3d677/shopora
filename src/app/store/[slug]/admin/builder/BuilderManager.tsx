@@ -21,7 +21,6 @@ export interface LayoutSection {
 
 const ECOMMERCE_SECTION_DEFINITIONS = [
 
-  { id: 'hero', name: 'Hero Section', icon: ImageIcon, defaultStyle: 'luxury' },
   { id: 'banners', name: 'Banners Slider', icon: ImageIcon, defaultStyle: 'default' },
   { id: 'categories', name: 'Categories', icon: Tag, defaultStyle: 'grid' },
   { id: 'featured_products', name: 'Featured Products', icon: ShoppingBag, defaultStyle: 'grid' },
@@ -34,7 +33,6 @@ const ECOMMERCE_SECTION_DEFINITIONS = [
 ];
 
 const WEBSITE_SECTION_DEFINITIONS = [
-  { id: 'hero', name: 'Hero Section', icon: ImageIcon, defaultStyle: 'default' },
   { id: 'packages', name: 'Packages & Services', icon: ShoppingBag, defaultStyle: 'grid' },
   { id: 'about_us', name: 'About Us', icon: Info, defaultStyle: 'split' },
   { id: 'testimonials', name: 'Testimonials', icon: MessageSquare, defaultStyle: 'cards' },
@@ -275,12 +273,10 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
   const SECTION_DEFINITIONS = storeType === 'WEBSITE' ? WEBSITE_SECTION_DEFINITIONS : ECOMMERCE_SECTION_DEFINITIONS;
 
   const defaultLayout: LayoutSection[] = storeType === 'WEBSITE' ? [
-    { id: 'sec-1', type: 'hero', style: 'default', config: { title: 'Welcome to our platform', subtitle: 'Discover amazing services', btnText: 'Get Started', btnLink: '#', badge: 'FEATURED' } },
     { id: 'sec-2', type: 'packages', style: 'grid', config: { title: 'Our Packages' } },
     { id: 'sec-3', type: 'about_us', style: 'split', config: { title: 'About Us', tagline: 'WHO WE ARE' } },
     { id: 'sec-4', type: 'testimonials', style: 'cards', config: { title: 'What our clients say' } }
   ] : [
-    { id: 'sec-1', type: 'hero', style: 'luxury', config: { title: 'Welcome to our store', subtitle: 'Discover amazing products', btnText: 'Shop Now', btnLink: '#', badge: 'NEW ARRIVALS' } },
     { id: 'sec-3', type: 'categories', style: 'grid', config: { title: 'Shop by Category' } },
     { id: 'sec-4', type: 'featured_products', style: 'grid', config: { title: 'Trending Now', subtitle: 'Most popular items' } },
     { id: 'sec-5', type: 'testimonials', style: 'cards', config: { title: 'What our customers say' } }
@@ -333,8 +329,6 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
       type, style: def.defaultStyle,
       config: type === 'marquee'
         ? { enabled: true, items: [{ id: '1', text: 'New Announcement' }], backgroundColor: '#000000', textColor: '#ffffff', speed: 20 }
-        : type === 'hero'
-        ? { title: `New ${def.name}`, subtitle: 'Add your description here', btnText: 'Shop Now', btnLink: '#', bgImage: '' }
         : { title: `New ${def.name}` },
       showDivider: false
     };
@@ -478,10 +472,6 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                         Layout Style
                       </label>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {activeSection.type === 'hero' && ['slider', 'luxury', 'split', 'centered', 'minimal', 'campaign', 'abstract', 'immersive', 'dddyou'].map(style => (
-                          <button key={style} onClick={() => updateSection(activeSection.id, { style })}
-                            className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
-                        ))}
                         {activeSection.type === 'categories' && ['grid', 'carousel', 'circles'].map(style => (
                           <button key={style} onClick={() => updateSection(activeSection.id, { style })}
                             className={`p-3 rounded-xl border text-xs font-bold capitalize transition-all ${activeSection.style === style ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-slate-100 text-slate-500 hover:border-slate-200'}`}>{style}</button>
@@ -532,46 +522,6 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                             onChange={(e) => updateSectionConfig(activeSection.id, 'subtitle', e.target.value)}
                             className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
                         </div>
-                      )}
-
-                      {/* Hero Section */}
-                      {activeSection.type === 'hero' && (
-                        <>
-                          <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase">Subtitle</label>
-                            <textarea value={activeSection.config.subtitle || ''} rows={2}
-                              onChange={(e) => updateSectionConfig(activeSection.id, 'subtitle', e.target.value)}
-                              className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all resize-none" />
-                          </div>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <label className="text-xs font-bold text-slate-500 uppercase">Button Text</label>
-                              <input type="text" value={activeSection.config.btnText || ''}
-                                onChange={(e) => updateSectionConfig(activeSection.id, 'btnText', e.target.value)}
-                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
-                            </div>
-                            <div className="space-y-2">
-                              <label className="text-xs font-bold text-slate-500 uppercase">Button Link</label>
-                              <input type="text" value={activeSection.config.btnLink || ''}
-                                onChange={(e) => updateSectionConfig(activeSection.id, 'btnLink', e.target.value)}
-                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-mono text-xs" />
-                            </div>
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase">Badge Text</label>
-                            <input type="text" value={activeSection.config.badge || ''}
-                              onChange={(e) => updateSectionConfig(activeSection.id, 'badge', e.target.value)}
-                              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase">Background Image</label>
-                            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                              <MediaPicker slug={slug} value={activeSection.config.bgImage || ''}
-                                onChange={url => updateSectionConfig(activeSection.id, 'bgImage', url)}
-                                className="bg-white" />
-                            </div>
-                          </div>
-                        </>
                       )}
 
                       {/* About Us */}
