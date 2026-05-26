@@ -582,19 +582,20 @@ export default function SignatureTemplate({ banners, settings, products, slug, c
         }
 
         if (section.type === 'about_us') {
-          const title = section.config?.title || '';
-          const tagline = section.config?.tagline || '';
-          const desc1 = section.config?.desc1 || '';
-          const desc2 = section.config?.desc2 || '';
-          const image = section.config?.image || '';
-          const btnText = section.config?.btnText || '';
-          const btnLink = section.config?.btnLink || '#';
-          const fontFamily = section.config?.fontFamily || 'inherit';
-          const shadowConfig = section.config?.textShadow || null;
+          const aboutData = settings.aboutUsContent || section.config || {};
+          const title = aboutData.title || '';
+          const tagline = aboutData.tagline || '';
+          const desc1 = aboutData.desc1 || '';
+          const desc2 = aboutData.desc2 || '';
+          const image = aboutData.image || '';
+          const btnText = aboutData.btnText || '';
+          const btnLink = aboutData.btnLink || '#';
+          const fontFamily = aboutData.fontFamily || 'inherit';
+          const shadowConfig = aboutData.textShadow || null;
           const textShadowCss = shadowConfig && shadowConfig.opacity > 0
             ? `${shadowConfig.h}px ${shadowConfig.v}px ${shadowConfig.blur}px rgba(${parseInt(shadowConfig.color.slice(1,3),16)},${parseInt(shadowConfig.color.slice(3,5),16)},${parseInt(shadowConfig.color.slice(5,7),16)},${shadowConfig.opacity/100})`
             : 'none';
-          const style = section.style || 'split';
+          const style = aboutData.style || section.style || 'split';
           const hasText = title || tagline || desc1 || desc2;
 
           let aboutContent;
