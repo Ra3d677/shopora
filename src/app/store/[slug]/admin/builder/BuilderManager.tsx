@@ -329,6 +329,8 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
       type, style: def.defaultStyle,
       config: type === 'marquee'
         ? { enabled: true, items: [{ id: '1', text: 'New Announcement' }], backgroundColor: '#000000', textColor: '#ffffff', speed: 20 }
+        : type === 'testimonials'
+        ? { title: `New ${def.name}`, items: [{ id: Math.random().toString(36).substr(2, 9), name: 'Customer Name', role: 'Verified Buyer', content: 'Excellent service!', rating: 5 }] }
         : { title: `New ${def.name}` },
       showDivider: false
     };
