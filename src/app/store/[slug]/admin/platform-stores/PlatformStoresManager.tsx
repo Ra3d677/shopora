@@ -18,10 +18,18 @@ export default function PlatformStoresManager({ stores }: { stores: any[] }) {
   const isRTL = language === 'ar';
 
   const templates = [
+    { id: 'signature', name: 'Signature Brand' },
+    { id: 'minimal', name: 'Pure Minimal' },
+    { id: 'apple', name: 'Premium Tech' },
+    { id: 'hybrid', name: 'Hybrid Dark' },
+    { id: 'zenith', name: 'Zenith Luxury' },
+    { id: 'obsidian', name: 'Obsidian Brutalist' },
+    { id: 'modern', name: 'Modern Commerce' },
     { id: 'modern1', name: 'Modern 1' },
-    { id: 'modern', name: 'Modern' },
-    { id: 'zenith', name: 'Zenith' },
-    { id: 'signature', name: 'Signature' },
+    { id: 'amazon', name: 'Amazon Marketplace' },
+    { id: 'dddyou', name: 'DDDYOU Parfumerie' },
+    { id: 'senno', name: 'Senno Multipurpose' },
+    { id: 'momo', name: 'MOMO' },
   ];
 
   const filteredStores = stores.filter(s => 
