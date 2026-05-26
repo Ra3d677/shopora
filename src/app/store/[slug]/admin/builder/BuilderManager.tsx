@@ -58,6 +58,7 @@ const COLOR_PRESETS = [
 
 function RichTextEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const editorRef = useRef<HTMLDivElement>(null);
+  const [fontSize, setFontSize] = useState('16');
 
   useEffect(() => {
     if (editorRef.current && editorRef.current.innerHTML !== value) {
@@ -66,12 +67,23 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
   }, []);
 
   function execCmd(cmd: string, val?: string) {
+    document.execCommand('styleWithCSS', false, 'true');
     document.execCommand(cmd, false, val);
     if (editorRef.current) onChange(editorRef.current.innerHTML);
   }
 
   function handleInput() {
     if (editorRef.current) onChange(editorRef.current.innerHTML);
+  }
+
+  function applyFontSize(size: string) {
+    if (!size) return;
+    execCmd('fontSize', size);
+    setFontSize(size);
+  }
+
+  function toggleHighlight() {
+    execCmd('hiliteColor', '#ffff00');
   }
 
   return (
@@ -95,18 +107,21 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
           </button>
         ))}
         <span className="w-px bg-slate-200 mx-1" />
-        {['Heading', 'Heading'].map((_, i) => (
-          <button key={i} type="button" onMouseDown={e => { e.preventDefault(); execCmd('formatBlock', i === 0 ? 'h2' : 'h3'); }}
-            className="p-1.5 rounded-lg hover:bg-slate-200 text-slate-600 transition-colors text-xs font-bold">
-            H{i + 2}
-          </button>
-        ))}
+        <input type="number" value={fontSize} min={8} max={200}
+          onChange={e => applyFontSize(e.target.value)}
+          onMouseDown={e => e.preventDefault()}
+          className="w-16 px-2 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-center outline-none"
+          title="Font Size" />
+        <button type="button" onMouseDown={e => { e.preventDefault(); toggleHighlight(); }}
+          className="p-1.5 rounded-lg hover:bg-amber-100 text-amber-600 transition-colors" title="Highlight">
+          <span className="text-xs font-black" style={{ background: '#ffff00', padding: '0 2px' }}>H</span>
+        </button>
       </div>
       <div
         ref={editorRef}
         contentEditable
         onInput={handleInput}
-        className="min-h-[180px] p-5 outline-none text-sm text-slate-700 leading-relaxed [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mb-3 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:mb-2 [&_p]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+        className="min-h-[180px] p-5 outline-none text-sm text-slate-700 leading-relaxed [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mb-3 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:mb-2 [&_p]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_mark]:bg-yellow-200"
       />
     </div>
   );
@@ -456,15 +471,13 @@ export default function BuilderManager({ initialSettings, slug, storeType = 'ECO
                           </div>
                           <div className="space-y-2">
                             <label className="text-xs font-bold text-slate-500 uppercase">Primary Description</label>
-                            <textarea value={activeSection.config.desc1 || ''} rows={4}
-                              onChange={(e) => updateSectionConfig(activeSection.id, 'desc1', e.target.value)}
-                              className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all resize-none text-sm" />
+                            <RichTextEditor value={activeSection.config.desc1 || ''}
+                              onChange={v => updateSectionConfig(activeSection.id, 'desc1', v)} />
                           </div>
                           <div className="space-y-2">
                             <label className="text-xs font-bold text-slate-500 uppercase">Secondary Description</label>
-                            <textarea value={activeSection.config.desc2 || ''} rows={4}
-                              onChange={(e) => updateSectionConfig(activeSection.id, 'desc2', e.target.value)}
-                              className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all resize-none text-sm" />
+                            <RichTextEditor value={activeSection.config.desc2 || ''}
+                              onChange={v => updateSectionConfig(activeSection.id, 'desc2', v)} />
                           </div>
                           <div className="space-y-2">
                             <label className="text-xs font-bold text-slate-500 uppercase">Font Family</label>
