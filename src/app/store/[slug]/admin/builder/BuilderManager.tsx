@@ -59,7 +59,6 @@ const COLOR_PRESETS = [
 function RichTextEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = useState('16');
-  const savedSelection = useRef<Range | null>(null);
 
   useEffect(() => {
     if (editorRef.current && editorRef.current.innerHTML !== value) {
@@ -67,23 +66,12 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
     }
   }, []);
 
-  function saveSelection() {
-    const sel = window.getSelection();
-    if (sel && sel.rangeCount > 0) {
-      savedSelection.current = sel.getRangeAt(0);
-    }
-  }
-
-  function restoreSelection() {
-    const sel = window.getSelection();
-    if (sel && savedSelection.current) {
-      sel.removeAllRanges();
-      sel.addRange(savedSelection.current);
-    }
+  function focusEditor() {
+    if (editorRef.current) editorRef.current.focus();
   }
 
   function execCmd(cmd: string, val?: string) {
-    restoreSelection();
+    focusEditor();
     document.execCommand('styleWithCSS', false, 'true');
     document.execCommand(cmd, false, val);
     if (editorRef.current) onChange(editorRef.current.innerHTML);
@@ -95,14 +83,27 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
 
   function applyFontSize(size: string) {
     if (!size) return;
-    const parsed = parseInt(size, 10);
-    if (parsed < 8) { setFontSize('8'); execCmd('fontSize', '1'); return; }
-    if (parsed > 200) { setFontSize('200'); execCmd('fontSize', '7'); return; }
+    focusEditor();
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount || sel.isCollapsed) return;
+    const range = sel.getRangeAt(0);
+    const span = document.createElement('span');
+    span.style.fontSize = `${size}px`;
+    try {
+      range.surroundContents(span);
+    } catch {
+      const frag = range.extractContents();
+      span.appendChild(frag);
+      range.insertNode(span);
+    }
+    sel.removeAllRanges();
+    sel.addRange(range);
     setFontSize(size);
-    execCmd('fontSize', size);
+    if (editorRef.current) onChange(editorRef.current.innerHTML);
   }
 
   function toggleHighlight() {
+    focusEditor();
     execCmd('hiliteColor', '#ffff00');
   }
 
@@ -129,12 +130,11 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (v: stri
         <span className="w-px bg-slate-200 mx-1" />
         <input type="number" value={fontSize} min={8} max={200}
           onChange={e => applyFontSize(e.target.value)}
-          onFocus={saveSelection}
           className="w-16 px-2 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-center outline-none"
-          title="Font Size" />
+          title="Font Size (px)" />
         <button type="button" onMouseDown={e => { e.preventDefault(); toggleHighlight(); }}
           className="p-1.5 rounded-lg hover:bg-amber-100 text-amber-600 transition-colors" title="Highlight">
-          <span className="text-xs font-black" style={{ background: '#ffff00', padding: '0 2px' }}>H</span>
+          <span className="text-xs font-black" style={{ background: '#ffff00', padding: '0 2px' }}>M</span>
         </button>
       </div>
       <div
