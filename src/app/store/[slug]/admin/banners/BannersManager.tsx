@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { saveBanners } from "../actions";
 import { Banner, BannerSettings } from "@/lib/types";
 import { Loader2, Plus, Save, Trash2, ArrowUp, ArrowDown, Image as ImageIcon, Settings2, Clock, Play, Zap } from "lucide-react";
@@ -10,10 +9,9 @@ import SmartImage from "@/components/ui/SmartImage";
 import { useLanguageStore } from "@/store/language";
 
 export default function BannersManager({ initialBanners, slug, initialSettings }: { initialBanners: Banner[], slug: string, initialSettings: BannerSettings }) {
-  const router = useRouter();
   const [banners, setBanners] = useState<Banner[]>(initialBanners.sort((a, b) => a.order - b.order));
   const [sliderSettings, setSliderSettings] = useState<BannerSettings>(initialSettings);
-  const [isPending, startTransition] = useTransition();
+  const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
 
   const { t, language } = useLanguageStore();
@@ -65,23 +63,15 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
   };
 
   const handleSave = async () => {
-    setSaveMessage("");
-    startTransition(async () => {
-      try {
-        const result = await saveBanners(slug, banners, sliderSettings);
-        if (result && !result.success) {
-          setSaveMessage("Error: " + (result.error || "Unknown error"));
-          setTimeout(() => setSaveMessage(""), 5000);
-        } else {
-          setSaveMessage("saved");
-          router.refresh();
-          setTimeout(() => setSaveMessage(""), 4000);
-        }
-      } catch (e: any) {
-        setSaveMessage("Error: " + (e.message || "An unexpected error occurred"));
-        setTimeout(() => setSaveMessage(""), 5000);
-      }
-    });
+    setSaving(true);
+    setSaveMessage("Saving...");
+    const result = await saveBanners(slug, banners, sliderSettings);
+    if (result && !result.success) {
+      setSaveMessage("Error: " + (result.error || "Unknown error"));
+      setSaving(false);
+    } else {
+      window.location.href = `/store/${slug}/admin/banners`;
+    }
   };
 
   return (
@@ -480,10 +470,10 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
           </div>
           <button 
             onClick={handleSave}
-            disabled={isPending} 
+            disabled={saving} 
             className={`px-12 py-5 bg-white text-black rounded-[2rem] font-black text-[12px] uppercase tracking-[0.4em] hover:bg-yellow-400 transition-all flex items-center gap-4 shadow-2xl disabled:opacity-50 ${isRTL ? 'flex-row-reverse' : ''}`}
           >
-            {isPending ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
+            {saving ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
             {t('commitToRegistry')}
           </button>
         </div>

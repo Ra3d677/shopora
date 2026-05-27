@@ -1,14 +1,14 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-
-async function checkBanners() {
-  const s = await prisma.store.findUnique({ 
-    where: { slug: 'mikel' }, 
-    include: { banners: true } 
+async function main() {
+  const stores = await prisma.store.findMany({
+    include: {
+      banners: true,
+    }
   });
-  console.log(JSON.stringify(s.banners, null, 2));
+  console.log("STORES COUNT:", stores.length);
+  for (const s of stores) {
+    console.log(`Store: ${s.name} (slug: ${s.slug}), Banners: ${s.banners.length}`);
+  }
 }
-
-checkBanners()
-  .catch(e => console.error(e))
-  .finally(() => prisma.$disconnect());
+main().catch(console.error).finally(() => prisma.$disconnect());
