@@ -5,6 +5,7 @@ import Modern1Template from '@/components/templates/Modern1Template';
 import FitnessTemplate from '@/components/templates/FitnessTemplate';
 import DDDYOUTemplate from '@/components/templates/DDDYOUTemplate';
 import MomoTemplate from '@/components/templates/MomoTemplate';
+import OneMTemplate from '@/components/templates/1MTemplate';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Link from 'next/link';
@@ -85,6 +86,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
       case 'zenith': return <ZenithTemplate {...commonProps} />;
       case 'dddyou': return <DDDYOUTemplate {...commonProps} />;
       case 'momo': return <MomoTemplate {...commonProps} />;
+      case '1m': return <OneMTemplate {...commonProps} />;
       default: return <SignatureTemplate {...commonProps} />;
     }
   };

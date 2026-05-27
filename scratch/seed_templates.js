@@ -73,6 +73,12 @@ const TEMPLATES = [
     name: "MOMO",
     description: "A modern and minimalist template designed for small businesses selling handcrafted goods, artisanal food, or unique products with storytelling and visual appeal.",
     preview: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80"
+  },
+  {
+    id: "1m",
+    name: "1M",
+    description: "أنيق وعصري مستوحى من تصاميم الأناقة العصرية - مثالي لمتاجر الأزياء والمنتجات الفاخرة.",
+    preview: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80"
   }
 ];
 
