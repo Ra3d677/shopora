@@ -74,7 +74,7 @@ export default function Navbar({
   const cartItemCount = items.reduce((acc, item) => acc + item.quantity, 0);
 
   const rawLayout = storeSettings?.headerSettings?.layout;
-  const effectiveLayout = (rawLayout && rawLayout !== 'default') ? rawLayout : activeTemplate;
+  const effectiveLayout = activeTemplate === '1m' ? '1m' : (rawLayout && rawLayout !== 'default') ? rawLayout : activeTemplate;
   const originalTemplate = activeTemplate;
 
   const categoryTree = buildCategoryTree(categories);

@@ -48,7 +48,7 @@ export default function OneMTemplate({ banners, settings, products, slug, catego
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
 
-  const homepageLayout = settings.homepageLayout || [
+  const homepageLayout = [
     { id: '1m-hero', type: 'hero' },
     { id: '1m-categories', type: 'categories' },
     { id: '1m-products', type: 'products' },
