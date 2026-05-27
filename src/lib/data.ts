@@ -47,51 +47,42 @@ export const getAllStores = async () => {
 };
 
 export const getStoreBySlug = async (slug: string) => {
-  return unstable_cache(
-    async () => {
-      const store = await prisma.store.findUnique({
-        where: { slug },
-        include: {
-          products: true,
-          categories: true,
-          banners: true,
-        },
-      });
-      
-      if (store) {
-        let settings = {};
-        try {
-          settings = typeof store.settings === 'string' ? JSON.parse(store.settings) : (store.settings || {});
-        } catch (e) {
-          console.error("Settings Parse Error:", e);
-        }
-
-        const products = store.products.map(p => {
-          let images = [], colors = [], sizes = [];
-          try {
-            images = typeof p.images === 'string' ? JSON.parse(p.images || '[]') : p.images || [];
-            colors = typeof p.colors === 'string' ? JSON.parse(p.colors || '[]') : p.colors || [];
-            sizes = typeof p.sizes === 'string' ? JSON.parse(p.sizes || '[]') : p.sizes || [];
-          } catch (e) {
-            console.error("Product Data Parse Error:", e);
-          }
-          return { ...p, images, colors, sizes };
-        });
-
-        return {
-          ...store,
-          settings,
-          products: products as Product[]
-        } as unknown as Store;
-      }
-      return null;
+  const store = await prisma.store.findUnique({
+    where: { slug },
+    include: {
+      products: true,
+      categories: true,
+      banners: true,
     },
-    [`store-slug-${slug}`],
-    {
-      tags: [`store-${slug}`],
-      revalidate: false
+  });
+  
+  if (store) {
+    let settings = {};
+    try {
+      settings = typeof store.settings === 'string' ? JSON.parse(store.settings) : (store.settings || {});
+    } catch (e) {
+      console.error("Settings Parse Error:", e);
     }
-  )();
+
+    const products = store.products.map(p => {
+      let images = [], colors = [], sizes = [];
+      try {
+        images = typeof p.images === 'string' ? JSON.parse(p.images || '[]') : p.images || [];
+        colors = typeof p.colors === 'string' ? JSON.parse(p.colors || '[]') : p.colors || [];
+        sizes = typeof p.sizes === 'string' ? JSON.parse(p.sizes || '[]') : p.sizes || [];
+      } catch (e) {
+        console.error("Product Data Parse Error:", e);
+      }
+      return { ...p, images, colors, sizes };
+    });
+
+    return {
+      ...store,
+      settings,
+      products: products as Product[]
+    } as unknown as Store;
+  }
+  return null;
 };
 
 export async function checkAndSuspendExpiredTrial(storeId: string) {

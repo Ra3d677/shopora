@@ -1,17 +1,17 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { revalidatePath, updateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 
 function revalidateStoreCache(slug: string) {
   try {
-    updateTag(`store-${slug}`);
-    updateTag(`products-${slug}`);
-    updateTag(`categories-${slug}`);
-    updateTag(`banners-${slug}`);
-    updateTag(`settings-${slug}`);
-    updateTag(`template-${slug}`);
+    revalidateTag(`store-${slug}`, 'max');
+    revalidateTag(`products-${slug}`, 'max');
+    revalidateTag(`categories-${slug}`, 'max');
+    revalidateTag(`banners-${slug}`, 'max');
+    revalidateTag(`settings-${slug}`, 'max');
+    revalidateTag(`template-${slug}`, 'max');
   } catch (e) {
     console.error("Cache Revalidation Error:", e);
   }
