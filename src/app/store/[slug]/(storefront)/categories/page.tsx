@@ -43,6 +43,12 @@ export default async function CollectionsPage({ params }: { params: Promise<{ sl
     );
   }
 
+  if (store.template === '1m') {
+    return (
+      <OneMCategories slug={slug} collections={COLLECTIONS} banners={collectionsBanners} settings={store.settings} t={t} />
+    );
+  }
+
   const currentThemeId = getThemeByPath(store.settings?.pageThemes || [], `/store/${slug}/categories`);
   const premiumStyle = getPremiumBackgroundStyle(currentThemeId);
   const isPremiumBg = currentThemeId !== 'default';
@@ -230,6 +236,40 @@ function SennoCategories({ slug, collections, banners, settings, t }: any) {
              ))}
           </div>
        </div>
+    </div>
+  );
+}
+
+function OneMCategories({ slug, collections, banners, settings, t }: any) {
+  const accent = "#e1205e";
+  return (
+    <div data-page="categories" className="min-h-screen pb-32" style={{ backgroundColor: "#ffffff", color: "#333333" }}>
+      <div className="max-w-[1240px] mx-auto px-6 md:px-8 py-16">
+        <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-widest mb-6" style={{ color: "#999999" }}>
+          <Link href={`/store/${slug}`} className="hover:opacity-60 transition-opacity">{t('homeBreadcrumb')}</Link>
+          <span>/</span>
+          <span style={{ color: "#333333" }}>{t('collections')}</span>
+        </div>
+        <h1 className="text-[32px] md:text-[40px] font-bold mb-4" style={{ color: "#333333" }}>{t('ourCollections')}</h1>
+        <p className="text-sm italic max-w-xl" style={{ color: "#999999" }}>{t('exploreCollections')}</p>
+      </div>
+
+      <div className="max-w-[1240px] mx-auto px-6 md:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {collections.map((cat: any) => (
+            <Link href={`/store/${slug}/products?category=${cat.id}`} key={cat.id} className="group">
+              <div className="relative aspect-[4/3] overflow-hidden mb-5" style={{ backgroundColor: "#f7f7f7" }}>
+                <SmartImage src={cat.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={cat.name} />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
+              </div>
+              <h3 className="text-lg font-semibold mb-1 group-hover:opacity-60 transition-opacity" style={{ color: "#333333" }}>{cat.name}</h3>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: accent }}>{cat.itemCount} {t('productsCount').replace('{count}', '')}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

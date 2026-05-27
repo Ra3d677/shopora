@@ -712,6 +712,51 @@ export default function Navbar({
 
   // === END NEW LAYOUTS ===
 
+  // 1M NAVBAR
+  if (effectiveLayout === '1m') {
+    return (
+      <>
+        <nav className="w-full border-b border-gray-200" style={{ backgroundColor: "#ffffff", color: "#333333" }}>
+          <div className="hidden md:flex border-b border-gray-100 py-2 px-6 md:px-12">
+            <div className="max-w-[1240px] mx-auto w-full flex items-center justify-between text-xs">
+              <span style={{ color: "#999999" }}>(563) 474-8953</span>
+              <div className="flex items-center gap-4">
+                {['facebook', 'twitter', 'instagram', 'pinterest', 'youtube'].map((social) => (
+                  <a key={social} href={`https://${social}.com`} target="_blank" rel="noopener noreferrer" className="hover:opacity-60 transition-opacity uppercase tracking-wider text-[10px] font-semibold" style={{ color: "#333333" }}>{social}</a>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="px-6 md:px-12">
+            <div className="max-w-[1240px] mx-auto flex h-20 items-center justify-between">
+              <Link href={`/store/${slug}`} className="text-xl font-bold tracking-tight uppercase flex-shrink-0" style={{ color: "#333333" }}>
+                {storeSettings?.logoUrl ? (
+                  <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: 40 }} />
+                ) : (
+                  storeSettings?.storeName || '1M'
+                )}
+              </Link>
+              <div className="hidden lg:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider">
+                {headerLinks.map((link: any) => (
+                  <Link key={link.id} href={link.url} className="hover:opacity-50 transition-opacity">{link.label}</Link>
+                ))}
+              </div>
+              <div className="flex items-center gap-4">
+                <SearchBar />
+                <UserMenuDropdown />
+                <CartButton />
+                <button className="lg:hidden p-2 hover:bg-gray-100 rounded-full transition-colors" onClick={() => setIsMobileMenuOpen(true)}>
+                  <Menu className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <MobileMenuDrawer />
+      </>
+    );
+  }
+
   // DEFAULT (LUXURY)
   return (
     <>

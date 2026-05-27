@@ -96,6 +96,20 @@ export default async function ProductsPage({
     );
   }
 
+  if (store.template === '1m') {
+    return (
+      <OneMProducts
+        slug={slug}
+        store={store}
+        products={displayedProducts}
+        category={category}
+        pageTitle={pageTitle}
+        pageDescription={pageDescription}
+        t={t}
+      />
+    );
+  }
+
   const currentThemeId = getThemeByPath(storeSettings.pageThemes || [], `/store/${slug}/products`);
   const premiumStyle = getPremiumBackgroundStyle(currentThemeId);
   const isPremiumBg = currentThemeId !== 'default';
@@ -319,3 +333,74 @@ function Star({ className }: any) {
 
 import { ShoppingBag, Search, Heart } from "lucide-react";
 import DDDYOUProducts from "@/components/templates/DDDYOUProducts";
+
+function OneMProducts({ slug, store, products, category, pageTitle, pageDescription, t }: any) {
+  const accent = "#e1205e";
+  return (
+    <div className="min-h-screen pb-32" style={{ backgroundColor: "#ffffff", color: "#333333" }}>
+      <div className="max-w-[1240px] mx-auto px-6 md:px-8">
+        <div className="py-16">
+          <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-widest mb-6" style={{ color: "#999999" }}>
+            <Link href={`/store/${slug}`} className="hover:opacity-60 transition-opacity">{t('homeBreadcrumb')}</Link>
+            <span>/</span>
+            <span style={{ color: "#333333" }}>{pageTitle}</span>
+          </div>
+          <h1 className="text-[32px] md:text-[40px] font-bold mb-4 capitalize" style={{ color: "#333333" }}>{pageTitle}</h1>
+          <p className="text-sm italic max-w-xl" style={{ color: "#999999" }}>{pageDescription}</p>
+        </div>
+
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 pb-6 border-b" style={{ borderColor: "#f6bcce" }}>
+          <div className="flex gap-3 overflow-x-auto w-full md:w-auto pb-2 hide-scrollbar">
+            <Link href={`/store/${slug}/products`} className={`px-6 py-2.5 text-xs font-semibold uppercase tracking-wider rounded-full whitespace-nowrap transition-all ${!category ? 'text-white' : 'border hover:opacity-60'}`} style={{ backgroundColor: !category ? accent : "transparent", color: !category ? "#ffffff" : "#333333", borderColor: !category ? "transparent" : "#e5e5e5" }}>
+              {t('allItems')}
+            </Link>
+            {store.categories.filter((c: any) => !c.parentId).map((cat: any) => (
+              <Link key={cat.id} href={`/store/${slug}/products?category=${cat.id}`} className={`px-6 py-2.5 text-xs font-semibold uppercase tracking-wider rounded-full whitespace-nowrap transition-all ${category === cat.id ? 'text-white' : 'border hover:opacity-60'}`} style={{ backgroundColor: category === cat.id ? accent : "transparent", color: category === cat.id ? "#ffffff" : "#333333", borderColor: category === cat.id ? "transparent" : "#e5e5e5" }}>
+                {cat.name}
+              </Link>
+            ))}
+            <Link href={`/store/${slug}/products?category=sale`} className={`px-6 py-2.5 text-xs font-semibold uppercase tracking-wider rounded-full whitespace-nowrap transition-all ${category === 'sale' ? 'text-white' : 'border hover:opacity-60'}`} style={{ backgroundColor: category === 'sale' ? accent : "transparent", color: category === 'sale' ? "#ffffff" : accent, borderColor: category === 'sale' ? "transparent" : accent }}>
+              {t('saleBadge')}
+            </Link>
+          </div>
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#999999" }}>{t('sortBy')}</span>
+            <SortDropdown />
+          </div>
+        </div>
+
+        {products.length === 0 ? (
+          <div className="text-center py-32">
+            <h3 className="text-2xl font-bold mb-4" style={{ color: "#333333" }}>{t('noProductsFound')}</h3>
+            <p className="text-sm italic mb-8" style={{ color: "#999999" }}>{t('noProductsDesc')}</p>
+            <Link href={`/store/${slug}/products`} className="inline-block px-10 py-3 text-xs font-semibold uppercase tracking-wider text-white transition-all" style={{ backgroundColor: accent }}>{t('clearFilters')}</Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-14">
+            {products.map((product: any) => (
+              <Link href={`/store/${slug}/product/${product.id}`} key={product.id} className="group flex flex-col">
+                <div className="relative aspect-[3/4] overflow-hidden mb-5" style={{ backgroundColor: "#f7f7f7" }}>
+                  <SmartImage src={product.images[0]} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={product.name} />
+                  {product.discount_price && (
+                    <div className="absolute top-3 left-3 text-[9px] font-bold px-2.5 py-1 text-white" style={{ backgroundColor: accent }}>{t('saleBadge')}</div>
+                  )}
+                </div>
+                <h3 className="text-base font-semibold mb-1 truncate" style={{ color: "#333333" }}>{product.name}</h3>
+                <div className="flex items-center gap-3">
+                  {product.discount_price ? (
+                    <>
+                      <span className="text-sm font-bold" style={{ color: accent }}>${product.discount_price}</span>
+                      <span className="text-xs text-[#999999] line-through">${product.price}</span>
+                    </>
+                  ) : (
+                    <span className="text-sm font-bold" style={{ color: accent }}>${product.price}</span>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
