@@ -14,7 +14,7 @@ interface TemplateProps {
   session?: any;
 }
 
-const HERO_SLIDES = [
+const DEFAULT_HERO_SLIDES = [
   { subheading: "WOMEN BESTSELLER LIST", heading: "New collection", description: "New design - New design", buttonText: "SHOP NOW", image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600&q=80" },
   { subheading: "SUMMER SALE", heading: "50% Off Women's Clothes", description: "Limited time offer", buttonText: "SHOP NOW", image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&q=80" },
   { subheading: "MEN COLLECTION", heading: "New arrivals", description: "Explore the latest trends", buttonText: "DISCOVER", image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600&q=80" },
@@ -37,15 +37,19 @@ const SectionHeading = ({ title, subtitle, subtitle2 }: { title: string; subtitl
 
 export default function OneMTemplate({ banners, settings, products, slug, categories, session }: TemplateProps) {
   const accent = settings?.colorSystem?.brand?.primary || "#e1205e";
+  const topBanners = banners.filter((b: any) => b.isActive && (b.position === 'top' || !b.position));
+  const heroSlides = topBanners.length > 0
+    ? topBanners.map((b: any) => ({ subheading: b.subtitle || '', heading: b.title || '', description: '', buttonText: b.buttonText || 'SHOP NOW', image: b.imageUrl }))
+    : DEFAULT_HERO_SLIDES;
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length), 5000);
+    const timer = setInterval(() => setCurrentSlide((prev) => (prev + 1) % heroSlides.length), 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [heroSlides.length]);
 
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
 
   const homepageLayout = [
     { id: '1m-hero', type: 'hero' },
@@ -68,7 +72,7 @@ export default function OneMTemplate({ banners, settings, products, slug, catego
           return (
             <section key={section.id} className="relative w-full overflow-hidden" style={{ marginTop: "-40px", marginBottom: "75px" }}>
               <div style={{ height: "655px" }}>
-                {HERO_SLIDES.map((s, i) => (
+                {heroSlides.map((s, i) => (
                   <div key={i} className="absolute inset-0 transition-opacity duration-700" style={{ opacity: i === currentSlide ? 1 : 0, backgroundColor: "var(--color-bg-home, #ffffff)" }}>
                     <SmartImage src={s.image} className="w-full h-full object-cover" alt={s.heading} />
                   </div>
@@ -76,7 +80,7 @@ export default function OneMTemplate({ banners, settings, products, slug, catego
                 <div className="absolute inset-0" />
                 <div className="absolute inset-0 flex items-center" style={{ padding: "50px" }}>
                   <div className="w-full max-w-[1240px] mx-auto text-center">
-                    {HERO_SLIDES.map((s, i) => (
+                    {heroSlides.map((s, i) => (
                       <div key={i} className="transition-all duration-700 text-left" style={{ opacity: i === currentSlide ? 1 : 0, display: i === currentSlide ? 'block' : 'none' }}>
                         <p className="mb-5" style={{ fontSize: "16px", fontWeight: 400, textTransform: "uppercase", letterSpacing: "3px", lineHeight: "16px", color: "var(--color-text-home, #333333)" }}>{s.subheading}</p>
                         <h1 className="capitalize break-words" style={{ fontSize: "clamp(26px, 5vw, 56px)", fontWeight: 700, lineHeight: "clamp(36px, 5vw, 66px)", color: "var(--color-text-home, #333333)", marginBottom: "19px" }}>{s.heading}</h1>
