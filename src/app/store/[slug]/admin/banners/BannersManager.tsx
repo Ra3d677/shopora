@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { saveBanners, updateStoreSettings } from "../actions";
+import { saveBanners } from "../actions";
 import { Banner, BannerSettings } from "@/lib/types";
 import { Loader2, Plus, Save, Trash2, ArrowUp, ArrowDown, Image as ImageIcon, Settings2, Clock, Play, Zap } from "lucide-react";
-import { useRouter } from "next/navigation";
 import MediaPicker from "../media/MediaPicker";
 import SmartImage from "@/components/ui/SmartImage";
 import { useLanguageStore } from "@/store/language";
@@ -14,7 +13,6 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
   const [sliderSettings, setSliderSettings] = useState<BannerSettings>(initialSettings);
   const [isPending, startTransition] = useTransition();
   const [saveMessage, setSaveMessage] = useState("");
-  const router = useRouter();
 
   const { t, language } = useLanguageStore();
   const isRTL = language === 'ar';
@@ -67,18 +65,11 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
   const handleSave = async () => {
     setSaveMessage("");
     startTransition(async () => {
-      const bannerResult = await saveBanners(slug, banners);
-      if (!bannerResult.success) {
-        setSaveMessage("Error: " + bannerResult.error);
-        return;
+      const result = await saveBanners(slug, banners, sliderSettings);
+      if (result && !result.success) {
+        setSaveMessage("Error: " + (result.error || "Unknown error"));
+        setTimeout(() => setSaveMessage(""), 5000);
       }
-      const settingsResult = await updateStoreSettings(slug, { bannerSettings: sliderSettings });
-      if (!settingsResult.success) {
-        setSaveMessage("Error: " + settingsResult.error);
-        return;
-      }
-      setSaveMessage("Banners and settings saved successfully!");
-      setTimeout(() => setSaveMessage(""), 3000);
     });
   };
 
