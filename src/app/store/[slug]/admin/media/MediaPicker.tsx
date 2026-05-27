@@ -113,7 +113,7 @@ export default function MediaPicker({ value, onChange, slug, className }: MediaP
           const ctx = canvas.getContext("2d");
           ctx?.drawImage(img, 0, 0, width, height);
           
-          const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+          const compressedBase64 = canvas.toDataURL("image/png");
 
           const res = await fetch(`/api/store/${slug}/media`, {
             method: "POST",
