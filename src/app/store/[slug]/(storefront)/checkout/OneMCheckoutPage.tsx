@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { useStore } from "@/components/providers/StoreProvider";
 import { createOrder } from "../../admin/orders/actions";
 import Link from "next/link";
-import { Minus, Plus, Trash2, Shield, RefreshCcw, Truck } from "lucide-react";
+import { Minus, Plus, Trash2, Shield, RefreshCcw, Truck, CreditCard } from "lucide-react";
+import StripePaymentForm from "@/components/checkout/StripePaymentForm";
 
 const accent = "#e1205e";
 
@@ -27,6 +28,10 @@ export default function OneMCheckoutPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+
+  const paymentMethods = (store.settings?.businessSettings?.paymentMethods || []).filter((pm: any) => pm.enabled);
+  const paymentKeys = store.settings?.businessSettings?.paymentKeys;
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -37,8 +42,9 @@ export default function OneMCheckoutPage() {
 
   const total = getCartTotal(store.id);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const [stripePaymentId, setStripePaymentId] = useState("");
+
+  const completeOrder = async (transactionId?: string) => {
     if (items.length === 0) return;
     setIsSubmitting(true);
     setError("");
@@ -57,6 +63,8 @@ export default function OneMCheckoutPage() {
         totalAmount: total,
         items: validItems,
         userId: user?.id,
+        paymentMethod: selectedPaymentMethod || undefined,
+        transactionId
       });
 
       if (!result.success) throw new Error(result.error || "Order failed");
@@ -74,6 +82,21 @@ export default function OneMCheckoutPage() {
     } catch (err: any) {
       setError(err.message);
       setIsSubmitting(false);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (items.length === 0) return;
+    if (!selectedPaymentMethod) {
+      setError("Please select a payment method");
+      return;
+    }
+    const pm = paymentMethods.find((pm: any) => pm.id === selectedPaymentMethod);
+    if (pm?.type === "stripe") {
+      setStripePaymentId(selectedPaymentMethod);
+    } else {
+      completeOrder();
     }
   };
 
@@ -163,9 +186,9 @@ export default function OneMCheckoutPage() {
               </div>
 
               {/* Checkout Form */}
-              <form onSubmit={handleSubmit} className="max-w-lg">
+              <form onSubmit={handleSubmit}>
                 <h3 className="text-base font-semibold mb-6" style={{ color: "#333333" }}>Shipping Information</h3>
-                <div className="space-y-5">
+                <div className="space-y-5 max-w-lg">
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#999999" }}>Full Name</label>
                     <input type="text" name="name" required value={formData.name} onChange={handleChange}
@@ -201,6 +224,61 @@ export default function OneMCheckoutPage() {
                       style={{ border: "1px solid #e5e5e5", color: "#333333", backgroundColor: "#ffffff" }}
                       placeholder="Special instructions" />
                   </div>
+                </div>
+
+                {/* Payment Methods */}
+                <h3 className="text-base font-semibold mt-10 mb-6" style={{ color: "#333333" }}>Payment Method</h3>
+                <div className="space-y-3 max-w-lg">
+                  {paymentMethods.length === 0 ? (
+                    <div className="p-4 text-sm" style={{ backgroundColor: "#f7f7f7", color: "#999999" }}>
+                      No payment methods available. Please contact the store owner.
+                    </div>
+                  ) : (
+                    paymentMethods.map((pm: any) => {
+                      const isSelected = selectedPaymentMethod === pm.id;
+                      return (
+                        <button key={pm.id} type="button" onClick={() => setSelectedPaymentMethod(pm.id)}
+                          className="w-full flex items-center gap-4 p-4 text-left transition-all"
+                          style={{
+                            border: isSelected ? `2px solid ${accent}` : "1px solid #e5e5e5",
+                            backgroundColor: isSelected ? "#fff" : "#ffffff"
+                          }}
+                        >
+                          <div className="w-10 h-10 flex items-center justify-center shrink-0" style={{ backgroundColor: "#f7f7f7" }}>
+                            <CreditCard size={18} style={{ color: isSelected ? accent : "#999999" }} />
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-semibold" style={{ color: "#333333" }}>{pm.name}</p>
+                            <p className="text-xs" style={{ color: "#999999" }}>
+                              {pm.type === "stripe" ? "Credit / Debit Card" :
+                               pm.type === "cash" ? "Cash on delivery" :
+                               pm.type === "bank_transfer" ? "Bank transfer" :
+                               pm.type === "wallet" ? "Mobile wallet" : "Other"}
+                            </p>
+                          </div>
+                          <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{
+                            border: `2px solid ${isSelected ? accent : "#cccccc"}`
+                          }}>
+                            {isSelected && <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: accent }} />}
+                          </div>
+                        </button>
+                      );
+                    })
+                  )}
+                  {selectedPaymentMethod && paymentMethods.find((pm: any) => pm.id === selectedPaymentMethod)?.type === "stripe" && paymentKeys?.stripe?.publishableKey && (
+                    <div className="mt-4 p-6" style={{ backgroundColor: "#f7f7f7" }}>
+                      <StripePaymentForm
+                        publishableKey={paymentKeys.stripe.publishableKey}
+                        slug={store.slug}
+                        amount={total}
+                        onSuccess={(paymentIntentId: string) => {
+                          setStripePaymentId("");
+                          completeOrder(paymentIntentId);
+                        }}
+                        onError={(msg: string) => setError(msg)}
+                      />
+                    </div>
+                  )}
                 </div>
               </form>
             </div>
