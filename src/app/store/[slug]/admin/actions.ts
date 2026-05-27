@@ -273,7 +273,6 @@ export async function saveBanners(slug: string, banners: any[], sliderSettings?:
   revalidateStoreCache(slug);
   revalidatePath(`/store/${slug}`, 'layout');
   revalidatePath(`/store/${slug}/admin/banners`);
-  revalidatePath(`/store/${slug}/(storefront)`, 'layout');
   revalidatePath(`/`, 'layout');
   redirect(`/store/${slug}/admin/banners`);
 }
