@@ -10,6 +10,7 @@ import { createOrder } from "../../admin/orders/actions";
 import { motion } from "framer-motion";
 import { useLanguageStore } from "@/store/language";
 import StripePaymentForm from "@/components/checkout/StripePaymentForm";
+import OneMCheckoutPage from "./OneMCheckoutPage";
 
 export default function CheckoutPage() {
   const { t } = useLanguageStore();
@@ -17,6 +18,10 @@ export default function CheckoutPage() {
   const { items: allItems, getCartTotal, clearCart } = useCartStore();
   const { store, user } = useStore();
   const router = useRouter();
+
+  if (store.template === '1m') {
+    return <OneMCheckoutPage />;
+  }
 
   const items = allItems.filter(item => item.storeId === store.id);
 
