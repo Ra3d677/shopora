@@ -716,6 +716,7 @@ export default function Navbar({
   if (effectiveLayout === '1m') {
     return (
       <>
+        <LogoTransparencyFilter />
         <nav className="w-full border-b border-gray-200" style={{ backgroundColor: "#ffffff", color: "#333333" }}>
           <div className="hidden md:flex border-b border-gray-100 py-2 px-6 md:px-12">
             <div className="max-w-[1240px] mx-auto w-full flex items-center justify-between text-xs">
@@ -729,9 +730,11 @@ export default function Navbar({
           </div>
           <div className="px-6 md:px-12">
             <div className="max-w-[1240px] mx-auto flex h-20 items-center justify-between">
-              <Link href={`/store/${slug}`} className="text-xl font-bold tracking-tight uppercase flex-shrink-0" style={{ color: "#333333" }}>
+              <Link href={`/store/${slug}`} className="text-xl font-bold tracking-tight uppercase flex-shrink-0 flex items-center" style={{ color: "#333333" }}>
                 {storeSettings?.logoUrl ? (
-                  <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: 40 }} />
+                  <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
+                    <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 40 }} />
+                  </div>
                 ) : (
                   storeSettings?.storeName || '1M'
                 )}
