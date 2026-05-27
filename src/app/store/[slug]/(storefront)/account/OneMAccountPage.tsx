@@ -458,9 +458,12 @@ export default function OneMAccountPage({ slug, user, store, initialOrders }: On
                               <p className="text-sm font-semibold" style={{ color: "#333333" }}>Order #{order.id.slice(-6).toUpperCase()}</p>
                               <p className="text-xs" style={{ color: "#999999" }}>{new Date(order.createdAt).toLocaleDateString()}</p>
                             </div>
-                            <span className="text-xs font-semibold px-3 py-1" style={{ backgroundColor: `${statusColor(order.status)}15`, color: statusColor(order.status) }}>
-                              {statusLabel(order.status)}
-                            </span>
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm font-semibold" style={{ color: "#333333" }}>${order.totalAmount.toFixed(2)}</span>
+                              <span className="text-xs font-semibold px-3 py-1" style={{ backgroundColor: `${statusColor(order.status)}15`, color: statusColor(order.status) }}>
+                                {statusLabel(order.status)}
+                              </span>
+                            </div>
                           </div>
                           <div className="flex items-center gap-3 text-xs" style={{ color: "#666666" }}>
                             <MapPin size={14} />
