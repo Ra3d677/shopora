@@ -452,45 +452,65 @@ export default function OneMAccountPage({ slug, user, store, initialOrders }: On
                     <div className="space-y-4">
                       {activeOrders.map((order: any) => (
                       <div key={order.id} style={{ border: "1px solid #e5e5e5" }}>
-                        <div className="p-4">
-                          <div className="flex items-center justify-between mb-3">
+                        <button
+                          onClick={() => setExpandedOrder(expandedOrder === order.id ? null : order.id)}
+                          className="w-full flex items-center justify-between p-4 text-left hover:bg-[#fafafa] transition-colors"
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 flex items-center justify-center" style={{ backgroundColor: "#f7f7f7" }}>
+                              <Truck size={18} style={{ color: statusColor(order.status) }} />
+                            </div>
                             <div>
-                              <p className="text-sm font-semibold" style={{ color: "#333333" }}>Order #{order.id.slice(-6).toUpperCase()}</p>
-                              <p className="text-xs" style={{ color: "#999999" }}>{new Date(order.createdAt).toLocaleDateString()}</p>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <span className="text-sm font-semibold" style={{ color: "#333333" }}>${order.totalAmount.toFixed(2)}</span>
-                              <span className="text-xs font-semibold px-3 py-1" style={{ backgroundColor: `${statusColor(order.status)}15`, color: statusColor(order.status) }}>
-                                {statusLabel(order.status)}
-                              </span>
+                              <p className="text-sm font-semibold" style={{ color: "#333333" }}>
+                                Order #{order.id.slice(-6).toUpperCase()}
+                              </p>
+                              <p className="text-xs" style={{ color: "#999999" }}>
+                                {new Date(order.createdAt).toLocaleDateString()}
+                              </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-3 text-xs" style={{ color: "#666666" }}>
-                            <MapPin size={14} />
-                            <span>{order.shippingAddress || "No address provided"}</span>
+                          <div className="flex items-center gap-4">
+                            <span className="text-sm font-semibold" style={{ color: "#333333" }}>${order.totalAmount.toFixed(2)}</span>
+                            <span className="text-xs font-semibold px-3 py-1" style={{ backgroundColor: `${statusColor(order.status)}15`, color: statusColor(order.status) }}>
+                              {statusLabel(order.status)}
+                            </span>
+                            {expandedOrder === order.id ? <ChevronUp size={16} style={{ color: "#999999" }} /> : <ChevronDown size={16} style={{ color: "#999999" }} />}
                           </div>
-                          {order.items && (
-                            <div className="mt-3 flex flex-wrap gap-2">
-                              {order.items.slice(0, 3).map((item: any) => {
+                        </button>
+                        {expandedOrder === order.id && (
+                          <div style={{ borderTop: "1px solid #e5e5e5", backgroundColor: "#fafafa" }}>
+                            <div className="p-4 space-y-3">
+                              {order.items.map((item: any) => {
                                 const images = typeof item.product?.images === "string" ? JSON.parse(item.product.images) : item.product?.images || [];
                                 return (
-                                  <div key={item.id} className="w-10 h-10 overflow-hidden" style={{ backgroundColor: "#f7f7f7" }}>
-                                    {images[0] ? (
-                                      <img src={images[0]} alt="" className="w-full h-full object-cover" />
-                                    ) : (
-                                      <div className="w-full h-full" />
-                                    )}
+                                  <div key={item.id} className="flex items-center gap-4">
+                                    <div className="w-16 h-16 shrink-0 overflow-hidden" style={{ backgroundColor: "#f0f0f0" }}>
+                                      {images[0] ? (
+                                        <img src={images[0]} alt={item.product?.name || ""} className="w-full h-full object-cover" />
+                                      ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-xs" style={{ color: "#cccccc" }}>No img</div>
+                                      )}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-sm font-medium" style={{ color: "#333333" }}>{item.product?.name || "Product"}</p>
+                                      <p className="text-xs" style={{ color: "#999999" }}>
+                                        Qty: {item.quantity} {item.size ? `· Size: ${item.size}` : ""} {item.color ? `· Color: ${item.color}` : ""}
+                                      </p>
+                                    </div>
+                                    <p className="text-sm font-semibold" style={{ color: "#333333" }}>${(item.price * item.quantity).toFixed(2)}</p>
                                   </div>
                                 );
                               })}
-                              {order.items.length > 3 && (
-                                <div className="w-10 h-10 flex items-center justify-center text-xs font-medium" style={{ backgroundColor: "#f0f0f0", color: "#999999" }}>
-                                  +{order.items.length - 3}
+                              <div className="pt-3 flex justify-between text-xs" style={{ borderTop: "1px solid #e5e5e5", color: "#666666" }}>
+                                <div className="flex items-center gap-2">
+                                  <MapPin size={14} />
+                                  <span>{order.shippingAddress || "N/A"}</span>
                                 </div>
-                              )}
+                                <span>{order.paymentMethod ? `Payment: ${order.paymentMethod}` : ""}</span>
+                              </div>
                             </div>
-                          )}
-                        </div>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
