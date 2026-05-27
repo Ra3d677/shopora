@@ -314,20 +314,22 @@ export default function OneMAccountPage({ slug, user, store, initialOrders }: On
             {activeSection === "orders" && (
               <div>
                 <h3 className="text-lg font-semibold mb-6" style={{ color: "#333333" }}>Order History</h3>
-                {orders.length === 0 ? (
-                  <div className="text-center py-16">
-                    <Package size={40} className="mx-auto mb-4" style={{ color: "#cccccc" }} />
-                    <p className="text-sm mb-4" style={{ color: "#999999" }}>No orders yet.</p>
-                    <Link href={`/store/${slug}/products`} className="inline-block px-6 py-3 text-sm font-semibold uppercase tracking-wider transition-colors duration-300" style={{ backgroundColor: accent, color: "#ffffff" }}
-                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#ef3444"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = accent; }}
-                    >
-                      Start Shopping
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {orders.map((order: any) => (
+                {(() => {
+                  const completedOrders = orders.filter((o: any) => o.status === "delivered" || o.status === "cancelled");
+                  return completedOrders.length === 0 ? (
+                    <div className="text-center py-16">
+                      <Package size={40} className="mx-auto mb-4" style={{ color: "#cccccc" }} />
+                      <p className="text-sm mb-4" style={{ color: "#999999" }}>No completed orders yet.</p>
+                      <Link href={`/store/${slug}/products`} className="inline-block px-6 py-3 text-sm font-semibold uppercase tracking-wider transition-colors duration-300" style={{ backgroundColor: accent, color: "#ffffff" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#ef3444"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = accent; }}
+                      >
+                        Start Shopping
+                      </Link>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {completedOrders.map((order: any) => (
                       <div key={order.id} style={{ border: "1px solid #e5e5e5" }}>
                         <button
                           onClick={() => setExpandedOrder(expandedOrder === order.id ? null : order.id)}
@@ -388,7 +390,8 @@ export default function OneMAccountPage({ slug, user, store, initialOrders }: On
                       </div>
                     ))}
                   </div>
-                )}
+                  )
+                })()}
               </div>
             )}
 
@@ -437,15 +440,17 @@ export default function OneMAccountPage({ slug, user, store, initialOrders }: On
             {activeSection === "tracking" && (
               <div>
                 <h3 className="text-lg font-semibold mb-6" style={{ color: "#333333" }}>Tracking</h3>
-                {orders.filter((o: any) => o.status === "shipped" || o.status === "delivered" || o.status === "processing").length === 0 ? (
-                  <div className="text-center py-16">
-                    <Truck size={40} className="mx-auto mb-4" style={{ color: "#cccccc" }} />
-                    <p className="text-sm" style={{ color: "#999999" }}>No shipments to track yet.</p>
-                    <p className="text-xs mt-2" style={{ color: "#cccccc" }}>Once your order is shipped, tracking information will appear here.</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {orders.filter((o: any) => o.status === "shipped" || o.status === "delivered" || o.status === "processing").map((order: any) => (
+                {(() => {
+                  const activeOrders = orders.filter((o: any) => o.status !== "delivered" && o.status !== "cancelled");
+                  return activeOrders.length === 0 ? (
+                    <div className="text-center py-16">
+                      <Truck size={40} className="mx-auto mb-4" style={{ color: "#cccccc" }} />
+                      <p className="text-sm" style={{ color: "#999999" }}>No active orders to track.</p>
+                      <p className="text-xs mt-2" style={{ color: "#cccccc" }}>Orders that are pending, paid, processing, or shipped will appear here.</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {activeOrders.map((order: any) => (
                       <div key={order.id} style={{ border: "1px solid #e5e5e5" }}>
                         <div className="p-4">
                           <div className="flex items-center justify-between mb-3">
@@ -486,7 +491,8 @@ export default function OneMAccountPage({ slug, user, store, initialOrders }: On
                       </div>
                     ))}
                   </div>
-                )}
+                  )
+                })()}
               </div>
             )}
           </div>
