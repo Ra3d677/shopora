@@ -20,8 +20,6 @@ const HERO_SLIDES = [
   { subheading: "MEN COLLECTION", heading: "New arrivals", description: "Explore the latest trends", buttonText: "DISCOVER", image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600&q=80" },
 ];
 
-const accent = "#e1205e";
-
 const SectionHeading = ({ title, subtitle, subtitle2 }: { title: string; subtitle?: string; subtitle2?: string }) => (
   <div className="flex flex-col items-center" style={{ padding: "15px" }}>
     <h2 className="text-[28px] md:text-[32px] font-bold text-center" style={{ lineHeight: "1.4", color: "#333333" }}>{title}</h2>
@@ -38,6 +36,7 @@ const SectionHeading = ({ title, subtitle, subtitle2 }: { title: string; subtitl
 );
 
 export default function OneMTemplate({ banners, settings, products, slug, categories, session }: TemplateProps) {
+  const accent = settings?.colorSystem?.brand?.primary || "#e1205e";
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {

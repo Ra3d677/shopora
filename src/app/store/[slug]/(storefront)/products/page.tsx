@@ -335,7 +335,7 @@ import { ShoppingBag, Search, Heart } from "lucide-react";
 import DDDYOUProducts from "@/components/templates/DDDYOUProducts";
 
 function OneMProducts({ slug, store, products, category, pageTitle, pageDescription, t }: any) {
-  const accent = "#e1205e";
+  const accent = store.settings?.colorSystem?.brand?.primary || store.primaryColor || "#e1205e";
   return (
     <div className="min-h-screen pb-32" style={{ backgroundColor: "#ffffff", color: "#333333" }}>
       <div className="max-w-[1240px] mx-auto px-6 md:px-8">

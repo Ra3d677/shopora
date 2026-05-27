@@ -37,6 +37,61 @@ export default function SettingsManager({
   const [saveMessage, setSaveMessage] = useState("");
   const [isDirty, setIsDirty] = useState(false);
 
+  const TEMPLATE_DEFAULTS: Record<string, any> = {
+    '1m': {
+      brand: '#e1205e',
+      backgrounds: { home: '#ffffff', shop: '#ffffff', categories: '#ffffff', product: '#ffffff', cart: '#ffffff', checkout: '#ffffff' },
+      text: { home: '#333333', shop: '#333333', categories: '#333333', product: '#333333', cart: '#333333', checkout: '#333333' },
+      footer: { background: '#f5f5f5', text: '#666666' },
+      product: { price: '#333333', salePrice: '#e1205e' }
+    },
+    'fitness': {
+      brand: '#059669',
+      backgrounds: { home: '#ffffff', shop: '#ffffff', categories: '#ffffff', product: '#ffffff', cart: '#ffffff', checkout: '#ffffff' },
+      text: { home: '#1f2937', shop: '#1f2937', categories: '#1f2937', product: '#1f2937', cart: '#1f2937', checkout: '#1f2937' },
+      footer: { background: '#1f2937', text: '#ffffff' },
+      product: { price: '#1f2937', salePrice: '#dc2626' }
+    },
+    'dddyou': {
+      brand: '#c9a96e',
+      backgrounds: { home: '#0f0f1a', shop: '#0f0f1a', categories: '#0f0f1a', product: '#0f0f1a', cart: '#0f0f1a', checkout: '#0f0f1a' },
+      text: { home: '#ffffff', shop: '#ffffff', categories: '#ffffff', product: '#ffffff', cart: '#ffffff', checkout: '#ffffff' },
+      footer: { background: '#0f0f1a', text: '#ffffff' },
+      product: { price: '#c9a96e', salePrice: '#ef4444' }
+    }
+  };
+  const templateDefaults = TEMPLATE_DEFAULTS[activeTemplate] || TEMPLATE_DEFAULTS['1m'];
+
+  const resetColor = (path: string) => {
+    const parts = path.split('.');
+    let val: any = templateDefaults;
+    for (const p of parts) {
+      val = val?.[p];
+    }
+    if (!val) return;
+    const newSettings = { ...settings };
+    let target: any = newSettings;
+    for (let i = 0; i < parts.length - 1; i++) {
+      if (!target.colorSystem?.[parts[i]]) {
+        if (!target.colorSystem) target.colorSystem = {};
+        target.colorSystem[parts[i]] = { ...templateDefaults[parts[i]] };
+      }
+      target = target.colorSystem[parts[i]];
+    }
+    const lastKey = parts[parts.length - 1];
+    if (!target.colorSystem) target.colorSystem = {};
+    target.colorSystem[lastKey] = val;
+    updateSettings(newSettings);
+  };
+
+  const ResetBtn = ({ path }: { path: string }) => (
+    <button type="button" onClick={() => resetColor(path)}
+      className="w-5 h-5 shrink-0 flex items-center justify-center rounded-full text-[10px] font-bold transition-all hover:scale-110"
+      style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: '#94a3b8', border: '1px solid rgba(255,255,255,0.15)' }}
+      title="Reset to template default"
+    >↺</button>
+  );
+
   const [sectionTheme, setSectionTheme] = useState<"dark" | "light">("dark");
   const updateSettings = (newSettings: any) => {
     setSettings(newSettings);
@@ -954,6 +1009,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                 })} 
                                 className="flex-1 bg-transparent text-white focus:outline-none font-mono text-[10px] uppercase font-black" 
                               />
+                              <ResetBtn path={`backgrounds.${page.id}`} />
                             </div>
                           </div>
 
@@ -987,6 +1043,7 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                 })} 
                                 className="flex-1 bg-transparent text-white focus:outline-none font-mono text-[9px] uppercase font-black" 
                               />
+                              <ResetBtn path={`text.${page.id}`} />
                             </div>
                           </div>
 
@@ -1024,86 +1081,89 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                         <h3 className={`text-[9px] font-black uppercase tracking-[0.08em] text-slate-500 mb-6 border-b border-white/5 pb-3 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('globalSignalFooter')}</h3>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                           {/* Brand Color */}
-                           <div className="space-y-3">
-                             <label className={`block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('primaryBrandIdentity')}</label>
-                             <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                               <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: colorSystem.brand.primary }}>
-                                 <input 
-                                   type="color" 
-                                   value={colorSystem.brand.primary} 
-                                   onChange={e => updateSettings({
-                                     ...settings, 
-                                     colorSystem: { ...colorSystem, brand: { ...colorSystem.brand, primary: e.target.value } }
-                                   })} 
-                                   className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
-                                 />
-                               </div>
-                               <input 
-                                 type="text" 
-                                 value={colorSystem.brand.primary} 
-                                 onChange={e => updateSettings({
-                                   ...settings, 
-                                   colorSystem: { ...colorSystem, brand: { ...colorSystem.brand, primary: e.target.value } }
-                                 })} 
-                                 className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
-                               />
-                             </div>
-                           </div>
+                            {/* Brand Color */}
+                            <div className="space-y-3">
+                              <label className={`block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('primaryBrandIdentity')}</label>
+                              <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
+                                <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: colorSystem.brand.primary }}>
+                                  <input 
+                                    type="color" 
+                                    value={colorSystem.brand.primary} 
+                                    onChange={e => updateSettings({
+                                      ...settings, 
+                                      colorSystem: { ...colorSystem, brand: { ...colorSystem.brand, primary: e.target.value } }
+                                    })} 
+                                    className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
+                                  />
+                                </div>
+                                <input 
+                                  type="text" 
+                                  value={colorSystem.brand.primary} 
+                                  onChange={e => updateSettings({
+                                    ...settings, 
+                                    colorSystem: { ...colorSystem, brand: { ...colorSystem.brand, primary: e.target.value } }
+                                  })} 
+                                  className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
+                                />
+                                <ResetBtn path="brand.primary" />
+                              </div>
+                            </div>
 
-                           {/* Footer Background */}
-                           <div className="space-y-3">
-                             <label className={`block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('footerAtmosphereBg')}</label>
-                             <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                               <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ background: colorSystem.footer.background }}>
-                                 <input 
-                                   type="color" 
-                                   value={colorSystem.footer.background.includes('gradient') ? '#000000' : colorSystem.footer.background} 
-                                   onChange={e => updateSettings({
-                                     ...settings, 
-                                     colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, background: e.target.value } }
-                                   })} 
-                                   className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
-                                 />
-                               </div>
-                               <input 
-                                 type="text" 
-                                 value={colorSystem.footer.background} 
-                                 onChange={e => updateSettings({
-                                   ...settings, 
-                                   colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, background: e.target.value } }
-                                 })} 
-                                 className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
-                               />
-                             </div>
-                           </div>
+                            {/* Footer Background */}
+                            <div className="space-y-3">
+                              <label className={`block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('footerAtmosphereBg')}</label>
+                              <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
+                                <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ background: colorSystem.footer.background }}>
+                                  <input 
+                                    type="color" 
+                                    value={colorSystem.footer.background.includes('gradient') ? '#000000' : colorSystem.footer.background} 
+                                    onChange={e => updateSettings({
+                                      ...settings, 
+                                      colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, background: e.target.value } }
+                                    })} 
+                                    className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
+                                  />
+                                </div>
+                                <input 
+                                  type="text" 
+                                  value={colorSystem.footer.background} 
+                                  onChange={e => updateSettings({
+                                    ...settings, 
+                                    colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, background: e.target.value } }
+                                  })} 
+                                  className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
+                                />
+                                <ResetBtn path="footer.background" />
+                              </div>
+                            </div>
 
-                           {/* Footer Text */}
-                           <div className="space-y-3">
-                             <label className={`block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('footerSignalText')}</label>
-                             <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
-                               <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: colorSystem.footer.text }}>
-                                 <input 
-                                   type="color" 
-                                   value={colorSystem.footer.text} 
-                                   onChange={e => updateSettings({
-                                     ...settings, 
-                                     colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, text: e.target.value } }
-                                   })} 
-                                   className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
-                                 />
-                               </div>
-                               <input 
-                                 type="text" 
-                                 value={colorSystem.footer.text} 
-                                 onChange={e => updateSettings({
-                                   ...settings, 
-                                   colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, text: e.target.value } }
-                                 })} 
-                                 className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
-                               />
-                             </div>
-                           </div>
+                            {/* Footer Text */}
+                            <div className="space-y-3">
+                              <label className={`block text-[8px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('footerSignalText')}</label>
+                              <div className="flex gap-3 items-center bg-black/40 p-3 rounded-2xl border border-white/[0.05]">
+                                <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/10 shadow-2xl shrink-0" style={{ backgroundColor: colorSystem.footer.text }}>
+                                  <input 
+                                    type="color" 
+                                    value={colorSystem.footer.text} 
+                                    onChange={e => updateSettings({
+                                      ...settings, 
+                                      colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, text: e.target.value } }
+                                    })} 
+                                    className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer opacity-0"
+                                  />
+                                </div>
+                                <input 
+                                  type="text" 
+                                  value={colorSystem.footer.text} 
+                                  onChange={e => updateSettings({
+                                    ...settings, 
+                                    colorSystem: { ...colorSystem, footer: { ...colorSystem.footer, text: e.target.value } }
+                                  })} 
+                                  className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
+                                />
+                                <ResetBtn path="footer.text" />
+                              </div>
+                            </div>
 
                         </div>
                      </div>
@@ -1125,55 +1185,57 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                      </div>
 
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
-                        <div className="space-y-3">
-                           <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('corePriceSignal')}</label>
-                           <div className="relative group/price h-16 bg-black/60 rounded-xl border border-white/[0.1] hover:border-slate-400 transition-all overflow-hidden flex items-center justify-center">
-                              <input 
-                                type="color" 
-                                value={colorSystem.product?.price || '#0f172a'} 
-                                onChange={(e) => {
-                                   updateSettings({
-                                      ...settings,
-                                      colorSystem: {
-                                         ...colorSystem,
-                                         product: { ...colorSystem.product, price: e.target.value }
-                                      }
-                                   });
-                                }}
-                                className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" 
-                              />
-                              <div className="absolute inset-0 z-10 opacity-20 group-hover/price:opacity-40 transition-opacity" style={{backgroundColor: colorSystem.product?.price || '#0f172a'}}></div>
-                              <div className="relative z-20 flex flex-col items-center">
-                                 <span className="text-white font-mono text-lg uppercase font-black tracking-[0.08em]">{colorSystem.product?.price || '#0F172A'}</span>
-                                 <span className={`text-[8px] text-slate-500 uppercase font-black mt-2 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('standardRateColor')}</span>
-                              </div>
-                           </div>
-                        </div>
+                         <div className="space-y-3">
+                            <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('corePriceSignal')}</label>
+                            <div className="relative group/price h-16 bg-black/60 rounded-xl border border-white/[0.1] hover:border-slate-400 transition-all overflow-hidden flex items-center justify-center">
+                               <input 
+                                 type="color" 
+                                 value={colorSystem.product?.price || '#0f172a'} 
+                                 onChange={(e) => {
+                                    updateSettings({
+                                       ...settings,
+                                       colorSystem: {
+                                          ...colorSystem,
+                                          product: { ...colorSystem.product, price: e.target.value }
+                                       }
+                                    });
+                                 }}
+                                 className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" 
+                               />
+                               <div className="absolute inset-0 z-10 opacity-20 group-hover/price:opacity-40 transition-opacity" style={{backgroundColor: colorSystem.product?.price || '#0f172a'}}></div>
+                               <div className="relative z-20 flex flex-col items-center">
+                                  <span className="text-white font-mono text-lg uppercase font-black tracking-[0.08em]">{colorSystem.product?.price || '#0F172A'}</span>
+                                  <span className={`text-[8px] text-slate-500 uppercase font-black mt-2 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('standardRateColor')}</span>
+                               </div>
+                            </div>
+                            <div className="flex justify-end"><ResetBtn path="product.price" /></div>
+                         </div>
 
-                        <div className="space-y-3">
-                           <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('pulseSignalSale')}</label>
-                           <div className="relative group/price h-16 bg-black/60 rounded-xl border border-white/[0.1] hover:border-red-500/50 transition-all overflow-hidden flex items-center justify-center">
-                              <input 
-                                type="color" 
-                                value={colorSystem.product?.salePrice || '#ef4444'} 
-                                onChange={(e) => {
-                                   updateSettings({
-                                      ...settings,
-                                      colorSystem: {
-                                         ...colorSystem,
-                                         product: { ...colorSystem.product, salePrice: e.target.value }
-                                      }
-                                   });
-                                }}
-                                className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" 
-                              />
-                              <div className="absolute inset-0 z-10 opacity-20 group-hover/price:opacity-40 transition-opacity" style={{backgroundColor: colorSystem.product?.salePrice || '#ef4444'}}></div>
-                              <div className="relative z-20 flex flex-col items-center">
-                                 <span className="text-red-500 font-mono text-lg uppercase font-black tracking-[0.08em]">{colorSystem.product?.salePrice || '#EF4444'}</span>
-                                 <span className={`text-[8px] text-slate-500 uppercase font-black mt-2 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('discountPulseColor')}</span>
-                              </div>
-                           </div>
-                        </div>
+                         <div className="space-y-3">
+                            <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('pulseSignalSale')}</label>
+                            <div className="relative group/price h-16 bg-black/60 rounded-xl border border-white/[0.1] hover:border-red-500/50 transition-all overflow-hidden flex items-center justify-center">
+                               <input 
+                                 type="color" 
+                                 value={colorSystem.product?.salePrice || '#ef4444'} 
+                                 onChange={(e) => {
+                                    updateSettings({
+                                       ...settings,
+                                       colorSystem: {
+                                          ...colorSystem,
+                                          product: { ...colorSystem.product, salePrice: e.target.value }
+                                       }
+                                    });
+                                 }}
+                                 className="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-30" 
+                               />
+                               <div className="absolute inset-0 z-10 opacity-20 group-hover/price:opacity-40 transition-opacity" style={{backgroundColor: colorSystem.product?.salePrice || '#ef4444'}}></div>
+                               <div className="relative z-20 flex flex-col items-center">
+                                  <span className="text-red-500 font-mono text-lg uppercase font-black tracking-[0.08em]">{colorSystem.product?.salePrice || '#EF4444'}</span>
+                                  <span className={`text-[8px] text-slate-500 uppercase font-black mt-2 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('discountPulseColor')}</span>
+                               </div>
+                            </div>
+                            <div className="flex justify-end"><ResetBtn path="product.salePrice" /></div>
+                         </div>
                      </div>
                   </div>
                 </div>

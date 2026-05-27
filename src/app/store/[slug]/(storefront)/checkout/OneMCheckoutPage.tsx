@@ -9,12 +9,11 @@ import Link from "next/link";
 import { Minus, Plus, Trash2, Shield, RefreshCcw, Truck, CreditCard } from "lucide-react";
 import StripePaymentForm from "@/components/checkout/StripePaymentForm";
 
-const accent = "#e1205e";
-
 export default function OneMCheckoutPage() {
   const [mounted, setMounted] = useState(false);
   const { items: allItems, getCartTotal, clearCart, updateQuantity, removeItem } = useCartStore();
   const { store, user } = useStore();
+  const accent = store?.settings?.colorSystem?.brand?.primary || store?.primaryColor || "#e1205e";
   const router = useRouter();
 
   const items = allItems.filter(item => item.storeId === store.id);

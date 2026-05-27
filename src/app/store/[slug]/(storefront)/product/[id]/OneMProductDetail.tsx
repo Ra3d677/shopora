@@ -11,9 +11,8 @@ import { recordCartAdd } from "@/app/actions";
 import { useWishlistStore } from "@/store/wishlist";
 import ProductReviews from "@/components/store/ProductReviews";
 
-const accent = "#e1205e";
-
 export default function OneMProductDetail({ product, store }: { product: any, store: any }) {
+  const accent = store?.settings?.colorSystem?.brand?.primary || store?.primaryColor || "#e1205e";
   const router = useRouter();
   const productColors = Array.isArray(product.colors) ? product.colors.map((c: any) => typeof c === 'string' ? { name: c, value: c, imageUrl: null } : c) : [];
 
