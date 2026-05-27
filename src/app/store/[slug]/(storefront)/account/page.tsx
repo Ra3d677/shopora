@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 import { getTranslation } from "@/lib/i18n";
+import OneMAccountPage from "./OneMAccountPage";
 
 export default async function CustomerAccountPage({ 
   params,
@@ -34,7 +35,24 @@ export default async function CustomerAccountPage({
     redirect("/");
   }
 
-  // Get paginated orders (limit to 20) and total count to avoid SELECT * without limit
+  if (store.template === '1m') {
+    const initialOrders = await prisma.order.findMany({
+      where: { userId: user.id, storeId: store.id },
+      include: { items: { include: { product: true } } },
+      orderBy: { createdAt: 'desc' },
+      take: 20
+    });
+    return (
+      <OneMAccountPage
+        slug={slug}
+        user={JSON.parse(JSON.stringify(user))}
+        store={JSON.parse(JSON.stringify(store))}
+        initialOrders={JSON.parse(JSON.stringify(initialOrders))}
+      />
+    );
+  }
+
+  // Get paginated orders
   const orders = await prisma.order.findMany({
     where: {
       userId: user.id,
@@ -168,7 +186,6 @@ export default async function CustomerAccountPage({
               </div>
             ))}
 
-            {/* Storefront Pagination Controls */}
             {(page > 1 || hasMore) && (
               <div className="flex flex-col sm:flex-row justify-between items-center mt-12 p-6 bg-white rounded-3xl border border-slate-100 shadow-sm gap-4">
                 {page > 1 ? (
