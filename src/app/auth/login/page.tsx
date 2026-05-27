@@ -36,6 +36,8 @@ export default function LoginPage() {
       const result = await loginUser(formData);
       if (result?.error) {
         setError(result.error);
+      } else {
+        router.push("/dashboard");
       }
     });
   };

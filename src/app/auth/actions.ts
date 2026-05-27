@@ -39,7 +39,7 @@ export async function loginUser(formData: FormData) {
     return { error: "Database connection error. Please check your Supabase settings." };
   }
 
-  redirect("/dashboard");
+  return { success: true };
 }
 
 export async function registerUser(formData: FormData) {
