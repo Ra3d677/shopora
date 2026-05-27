@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { saveBanners } from "../actions";
 import { Banner, BannerSettings } from "@/lib/types";
 import { Loader2, Plus, Save, Trash2, ArrowUp, ArrowDown, Image as ImageIcon, Settings2, Clock, Play, Zap } from "lucide-react";
 import MediaPicker from "../media/MediaPicker";
@@ -65,22 +64,29 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
   const handleSave = async () => {
     setSaving(true);
     setSaveMessage("Saving...");
-    const timeout = new Promise<{ success: false; error: string }>((_, reject) =>
-      setTimeout(() => reject(new Error("Request timed out after 30s")), 30000)
-    );
     try {
-      const result: any = await Promise.race([
-        saveBanners(slug, banners, sliderSettings),
-        timeout,
-      ]);
-      if (result && !result.success) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+      const res = await fetch(`/api/store/${slug}/banners`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ banners, sliderSettings }),
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+      const result = await res.json();
+      if (!result.success) {
         setSaveMessage("Error: " + (result.error || "Unknown error"));
         setSaving(false);
       } else {
         window.location.reload();
       }
     } catch (e: any) {
-      setSaveMessage("Error: " + (e.message || "An unexpected error occurred"));
+      if (e.name === "AbortError") {
+        setSaveMessage("Error: Request timed out");
+      } else {
+        setSaveMessage("Error: " + (e.message || "An unexpected error occurred"));
+      }
       setSaving(false);
     }
   };
