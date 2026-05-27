@@ -399,7 +399,7 @@ export default function Navbar({
               <img 
                 src={storeSettings.logoUrl} 
                 alt={storeSettings.storeName} 
-                className="h-9 w-auto object-contain brightness-0 invert grayscale"
+                className="h-9 w-auto object-contain"
                 style={{
                   height: storeSettings?.headerSettings?.logoHeight || 36,
                   mixBlendMode: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'multiply' : 'normal'
@@ -487,7 +487,7 @@ export default function Navbar({
           <div className="flex h-[44px] items-center justify-between">
             <Link href={`/store/${slug}`} className="hover:opacity-70 transition-opacity font-semibold tracking-wide text-sm" style={{ color: 'var(--color-primary-accent, inherit)' }}>
               {storeSettings?.logoUrl ? (
-                <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain brightness-0 invert" style={{ height: storeSettings?.headerSettings?.logoHeight || 24, mixBlendMode: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'multiply' : 'normal' }} />
+                <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 24, mixBlendMode: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'multiply' : 'normal' }} />
               ) : (
                 storeSettings?.storeName || 'Store'
               )}
@@ -825,7 +825,7 @@ function ZenithNavbar({ storeName, logoUrl, slug, cartItemCount, storeSettings, 
             <img 
               src={logoUrl} 
               alt={storeName} 
-              className={`mx-auto w-auto object-contain ${!scrolled ? 'brightness-0 invert' : ''}`} 
+              className="mx-auto w-auto object-contain" 
               style={{ 
                 height: storeSettings?.headerSettings?.logoHeight || 40,
                 mixBlendMode: (storeSettings?.headerSettings?.logoBlendMode as any) || 'normal'
