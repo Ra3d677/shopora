@@ -160,10 +160,15 @@ export default function OneMTemplate({ banners, settings, products, slug, catego
 
         if (section.type === 'cta_banners') {
           const ctaBanners = banners.filter((b: any) => b.isActive && b.position === 'middle').slice(0, 2);
+          const defaultBanners = [
+            { id: 'default-1', title: "50% off Women's Clothes!", subtitle: "Use code: #Hurry", buttonText: "Shop now", imageUrl: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80" },
+            { id: 'default-2', title: "Men Collection", subtitle: "New arrivals", buttonText: "Shop now", buttonLink: `/store/${slug}/products?category=men`, imageUrl: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800&q=80" },
+          ];
+          const displayBanners = ctaBanners.length > 0 ? ctaBanners : defaultBanners;
           return (
             <section key={section.id} className="max-w-[1750px] mx-auto" style={{ padding: "0px 15px", marginBottom: "50px" }}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {ctaBanners.map((banner: any, i: number) => {
+                {displayBanners.map((banner: any, i: number) => {
                   const content = (
                     <div className="relative overflow-hidden group flex flex-col justify-center" style={{ minHeight: "435px", backgroundColor: "#261f1a" }}>
                       <div className="absolute inset-0">
