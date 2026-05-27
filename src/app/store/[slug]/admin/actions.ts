@@ -221,20 +221,27 @@ export async function saveStoreSettings(slug: string, settings: any) {
 }
 
 export async function saveBanners(slug: string, banners: any[], sliderSettings?: any) {
+  console.log(`[saveBanners] starting for store: ${slug}`);
   const store = await prisma.store.findUnique({ where: { slug } });
-  if (!store) return { success: false, error: "Store not found" };
+  if (!store) {
+    console.error(`[saveBanners] store not found for slug: ${slug}`);
+    return { success: false, error: "Store not found" };
+  }
 
   try {
-    // Delete existing banners for this store
-    await prisma.banner.deleteMany({
+    console.log(`[saveBanners] deleting existing banners for store: ${store.id}`);
+    const deleteResult = await prisma.banner.deleteMany({
       where: { storeId: store.id }
     });
+    console.log(`[saveBanners] deleted ${deleteResult.count} banners`);
 
     // Create new banners (Using a loop because SQLite doesn't support createMany)
     if (banners && Array.isArray(banners) && banners.length > 0) {
-      for (const banner of banners) {
+      console.log(`[saveBanners] inserting ${banners.length} banners`);
+      for (let i = 0; i < banners.length; i++) {
+        const banner = banners[i];
         if (!banner) continue;
-        await prisma.banner.create({
+        const createdBanner = await prisma.banner.create({
           data: {
             imageUrl: banner.imageUrl || "",
             mobileImageUrl: banner.mobileImageUrl || null,
@@ -247,17 +254,21 @@ export async function saveBanners(slug: string, banners: any[], sliderSettings?:
             buttonShape: banner.buttonShape || "rounded",
             buttonColor: banner.buttonColor || "primary",
             isActive: banner.isActive !== false,
-            order: typeof banner.order === 'number' ? banner.order : 0,
+            order: typeof banner.order === 'number' ? banner.order : i,
             position: banner.position || "top",
             targetPage: banner.targetPage || "home",
             storeId: store.id
           }
         });
+        console.log(`[saveBanners] created banner ${i + 1}/${banners.length}: id=${createdBanner.id}, title="${createdBanner.title}"`);
       }
+    } else {
+      console.log(`[saveBanners] no banners provided to insert`);
     }
 
     // Save slider settings if provided
     if (sliderSettings) {
+      console.log(`[saveBanners] updating slider settings:`, JSON.stringify(sliderSettings));
       let settings = store.settings ? JSON.parse(store.settings) : {};
       settings.bannerSettings = sliderSettings;
       await prisma.store.update({
@@ -266,15 +277,19 @@ export async function saveBanners(slug: string, banners: any[], sliderSettings?:
       });
     }
   } catch (error: any) {
-    console.error("Failed to save banners:", error);
+    console.error("[saveBanners] failed to save banners:", error);
     return { success: false, error: "Failed to save banners: " + (error.message || "Unknown error") };
   }
 
   try {
+    console.log(`[saveBanners] triggering revalidations for store: ${slug}`);
     revalidateStoreCache(slug);
+    revalidatePath(`/store/${slug}/admin/banners`);
+    revalidatePath(`/store/${slug}`);
     revalidatePath(`/`, 'layout');
+    console.log(`[saveBanners] revalidations finished successfully`);
   } catch (e) {
-    console.error("Revalidation error (non-fatal):", e);
+    console.error("[saveBanners] Revalidation error (non-fatal):", e);
   }
   return { success: true };
 }

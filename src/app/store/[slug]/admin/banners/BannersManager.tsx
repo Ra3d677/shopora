@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { saveBanners } from "../actions";
 import { Banner, BannerSettings } from "@/lib/types";
 import { Loader2, Plus, Save, Trash2, ArrowUp, ArrowDown, Image as ImageIcon, Settings2, Clock, Play, Zap } from "lucide-react";
@@ -9,6 +10,7 @@ import SmartImage from "@/components/ui/SmartImage";
 import { useLanguageStore } from "@/store/language";
 
 export default function BannersManager({ initialBanners, slug, initialSettings }: { initialBanners: Banner[], slug: string, initialSettings: BannerSettings }) {
+  const router = useRouter();
   const [banners, setBanners] = useState<Banner[]>(initialBanners.sort((a, b) => a.order - b.order));
   const [sliderSettings, setSliderSettings] = useState<BannerSettings>(initialSettings);
   const [isPending, startTransition] = useTransition();
@@ -72,6 +74,7 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
           setTimeout(() => setSaveMessage(""), 5000);
         } else {
           setSaveMessage("saved");
+          router.refresh();
           setTimeout(() => setSaveMessage(""), 4000);
         }
       } catch (e: any) {
