@@ -221,10 +221,10 @@ export async function saveStoreSettings(slug: string, settings: any) {
 }
 
 export async function saveBanners(slug: string, banners: any[], sliderSettings?: any) {
-  try {
-    const store = await prisma.store.findUnique({ where: { slug } });
-    if (!store) return { success: false, error: "Store not found" };
+  const store = await prisma.store.findUnique({ where: { slug } });
+  if (!store) return { success: false, error: "Store not found" };
 
+  try {
     // Delete existing banners for this store
     await prisma.banner.deleteMany({
       where: { storeId: store.id }
@@ -265,20 +265,17 @@ export async function saveBanners(slug: string, banners: any[], sliderSettings?:
         data: { settings: JSON.stringify(settings) }
       });
     }
-
-    revalidateStoreCache(slug);
-    revalidatePath(`/store/${slug}`, 'layout');
-    revalidatePath(`/store/${slug}/admin/banners`);
-    revalidatePath(`/store/${slug}/(storefront)`, 'layout');
-    revalidatePath(`/`, 'layout');
-    redirect(`/store/${slug}/admin/banners`);
   } catch (error: any) {
-    if (error && error.message === 'NEXT_REDIRECT') {
-      throw error;
-    }
     console.error("Failed to save banners:", error);
     return { success: false, error: "Failed to save banners: " + (error.message || "Unknown error") };
   }
+
+  revalidateStoreCache(slug);
+  revalidatePath(`/store/${slug}`, 'layout');
+  revalidatePath(`/store/${slug}/admin/banners`);
+  revalidatePath(`/store/${slug}/(storefront)`, 'layout');
+  revalidatePath(`/`, 'layout');
+  redirect(`/store/${slug}/admin/banners`);
 }
 
 export async function addMedia(slug: string, mediaData: { url: string, name: string, type: string }) {
