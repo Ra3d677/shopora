@@ -167,18 +167,17 @@ export default function SignatureNavbar({ storeName, logoUrl, slug, storeId, pro
          <div className="flex items-center gap-12">
            <Link href={`/store/${slug}`} className={`text-2xl font-black tracking-tighter uppercase ${scrolled ? 'text-slate-900' : 'text-white'}`}>
               {logoUrl ? (
-                <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
-                  <img 
+                <img 
                     src={logoUrl} 
                     alt={storeName} 
                     className={`${scrolled ? '' : 'invert'}`} 
                     style={{ 
                       height: storeSettings?.headerSettings?.logoHeight || 32, 
                       width: 'auto', 
-                      objectFit: 'contain'
+                      objectFit: 'contain',
+                      mixBlendMode: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'multiply' : 'normal'
                     }}
                   />
-                </div>
               ) : (
                 storeName
               )}

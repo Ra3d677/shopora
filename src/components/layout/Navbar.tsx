@@ -396,16 +396,15 @@ export default function Navbar({
           {/* Center: Elegant Travel Logo */}
           <Link href={`/store/${slug}`} className="flex-1 flex justify-center">
             {storeSettings?.logoUrl ? (
-              <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
-                <img 
-                  src={storeSettings.logoUrl} 
-                  alt={storeSettings.storeName} 
-                  className="h-9 w-auto object-contain brightness-0 invert grayscale"
-                  style={{
-                    height: storeSettings?.headerSettings?.logoHeight || 36
-                  }}
-                />
-              </div>
+              <img 
+                src={storeSettings.logoUrl} 
+                alt={storeSettings.storeName} 
+                className="h-9 w-auto object-contain brightness-0 invert grayscale"
+                style={{
+                  height: storeSettings?.headerSettings?.logoHeight || 36,
+                  mixBlendMode: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'multiply' : 'normal'
+                }}
+              />
             ) : (
               <h1 className="text-2xl font-black tracking-[0.35em] text-white uppercase italic hover:text-cyan-400 transition-colors duration-500">
                 {storeSettings?.storeName || 'Store'}
@@ -448,9 +447,7 @@ export default function Navbar({
           <div className="flex h-24 items-center justify-between">
             <Link href={`/store/${slug}`} className="text-3xl font-bold tracking-tighter uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
               {storeSettings?.logoUrl ? (
-                <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
-                  <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 48 }} />
-                </div>
+                <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 48, mixBlendMode: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'multiply' : 'normal' }} />
               ) : (
                 storeSettings?.storeName || 'Store'
               )}
@@ -490,13 +487,17 @@ export default function Navbar({
           <div className="flex h-[44px] items-center justify-between">
             <Link href={`/store/${slug}`} className="hover:opacity-70 transition-opacity font-semibold tracking-wide text-sm" style={{ color: 'var(--color-primary-accent, inherit)' }}>
               {storeSettings?.logoUrl ? (
-                <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
-                  <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain brightness-0 invert" style={{ height: storeSettings?.headerSettings?.logoHeight || 24 }} />
-                </div>
+                <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain brightness-0 invert" style={{ height: storeSettings?.headerSettings?.logoHeight || 24, mixBlendMode: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'multiply' : 'normal' }} />
               ) : (
                 storeSettings?.storeName || 'Store'
               )}
             </Link>
+            
+            <div className="hidden lg:flex items-center gap-8 text-[10px] font-bold uppercase tracking-widest">
+              {headerLinks.map((link: any) => (
+                <Link key={link.id} href={link.url} className="hover:opacity-50 transition-opacity">{link.label}</Link>
+              ))}
+            </div>
             
             <div className="hidden md:flex items-center space-x-8 font-normal tracking-wide">
               {headerLinks.map((link: any) => (
@@ -567,9 +568,7 @@ export default function Navbar({
           <div className="flex h-20 items-center justify-between">
             <Link href={`/store/${slug}`} className="flex-shrink-0 text-2xl font-black tracking-tighter uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
               {storeSettings?.logoUrl ? (
-                <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
-                  <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 40 }} />
-                </div>
+                <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 40, mixBlendMode: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'multiply' : 'normal' }} />
               ) : (storeSettings?.storeName || t('storeLogoAlt'))}
             </Link>
             <div className="hidden lg:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-600">
@@ -609,7 +608,6 @@ export default function Navbar({
               {storeSettings?.logoUrl ? (
                 <div 
                   style={{ 
-                    filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center'
@@ -620,7 +618,8 @@ export default function Navbar({
                     alt={storeSettings.storeName} 
                     className="w-auto object-contain" 
                     style={{ 
-                      height: storeSettings?.headerSettings?.logoHeight || 48
+                      height: storeSettings?.headerSettings?.logoHeight || 48,
+                      mixBlendMode: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'multiply' : 'normal'
                     }}
                   />
                 </div>
@@ -655,10 +654,8 @@ export default function Navbar({
              </div>
               <Link href={`/store/${slug}`} className="text-4xl font-light tracking-[0.2em] uppercase absolute left-1/2 -translate-x-1/2" style={{ color: 'var(--color-primary-accent, inherit)' }}>
                 {storeSettings?.logoUrl ? (
-                  <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
-                    <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain mx-auto" style={{ height: storeSettings?.headerSettings?.logoHeight || 56 }} />
-                  </div>
-                ) : (storeSettings?.storeName || t('storeLogoAlt'))}
+                <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 40, mixBlendMode: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'multiply' : 'normal' }} />
+              ) : (storeSettings?.storeName || t('storeLogoAlt'))}
               </Link>
              <div className="w-32 flex items-center justify-end gap-4">
                <UserMenuDropdown />
@@ -691,9 +688,7 @@ export default function Navbar({
             </div>
             <Link href={`/store/${slug}`} className="flex-1 flex justify-center text-2xl font-black tracking-widest uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
               {storeSettings?.logoUrl ? (
-                <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
-                  <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 40 }} />
-                </div>
+                <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 40, mixBlendMode: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'multiply' : 'normal' }} />
               ) : (storeSettings?.storeName || t('storeLogoAlt'))}
             </Link>
             <div className="flex-1 flex items-center justify-end gap-6">
@@ -732,9 +727,7 @@ export default function Navbar({
             <div className="max-w-[1240px] mx-auto flex h-20 items-center justify-between">
               <Link href={`/store/${slug}`} className="text-xl font-bold tracking-tight uppercase flex-shrink-0 flex items-center" style={{ color: "#333333" }}>
                 {storeSettings?.logoUrl ? (
-                  <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
-                    <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 40 }} />
-                  </div>
+                  <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 40, mixBlendMode: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'multiply' : 'normal' }} />
                 ) : (
                   storeSettings?.storeName || '1M'
                 )}
@@ -778,9 +771,7 @@ export default function Navbar({
             
             <Link href={`/store/${slug}`} className="flex-1 text-center text-4xl font-light tracking-[0.2em] uppercase" style={{ color: 'var(--color-primary-accent, inherit)' }}>
               {storeSettings?.logoUrl ? (
-                <div style={{ filter: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'url(#remove-white-bg)' : 'none' }}>
-                  <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="mx-auto w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 64 }} />
-                </div>
+                <img src={storeSettings.logoUrl} alt={storeSettings.storeName} className="mx-auto w-auto object-contain" style={{ height: storeSettings?.headerSettings?.logoHeight || 64, mixBlendMode: storeSettings?.headerSettings?.logoBlendMode === 'multiply' ? 'multiply' : 'normal' }} />
               ) : (
                 storeSettings?.storeName || 'Store'
               )}
