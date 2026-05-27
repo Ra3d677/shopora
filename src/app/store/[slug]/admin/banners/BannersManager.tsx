@@ -67,14 +67,17 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
   const handleSave = async () => {
     setSaveMessage("");
     startTransition(async () => {
-      // 1. Save Banners
-      await saveBanners(slug, banners);
-      
-      // 2. Save Slider Settings
-      await updateStoreSettings(slug, { bannerSettings: sliderSettings });
-
+      const bannerResult = await saveBanners(slug, banners);
+      if (!bannerResult.success) {
+        setSaveMessage("Error: " + bannerResult.error);
+        return;
+      }
+      const settingsResult = await updateStoreSettings(slug, { bannerSettings: sliderSettings });
+      if (!settingsResult.success) {
+        setSaveMessage("Error: " + settingsResult.error);
+        return;
+      }
       setSaveMessage("Banners and settings saved successfully!");
-      router.refresh();
       setTimeout(() => setSaveMessage(""), 3000);
     });
   };
