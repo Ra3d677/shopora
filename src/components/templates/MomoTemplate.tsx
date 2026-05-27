@@ -4,6 +4,7 @@ import React from "react";
 import SmartImage from "@/components/ui/SmartImage";
 import Link from "next/link";
 import { ShoppingBag, ArrowRight, Star, Quote, ChevronRight, Play, Globe, Shield, Plus, CheckCircle2, Loader2 } from "lucide-react";
+import BannerButton from "@/components/ui/BannerButton";
 
 interface TemplateProps {
   banners: any[];
@@ -22,10 +23,16 @@ export default function MomoTemplate({ banners, settings, products, slug, catego
   const homepageLayout = settings.homepageLayout || [
     { id: 'momo-hero', type: 'hero' },
     { id: 'momo-featured-products', type: 'featured_products' },
+    { id: 'momo-banners', type: 'banners' },
     { id: 'momo-categories', type: 'categories' },
     { id: 'momo-about', type: 'about_us' },
     { id: 'momo-testimonials', type: 'testimonials' },
     { id: 'momo-footer', type: 'footer' },
+  ];
+
+  const defaultBanners = [
+    { id: 'momo-default-1', title: "Summer Sale", subtitle: "Up to 50% off on selected items", buttonText: "Shop Now", imageUrl: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=80" },
+    { id: 'momo-default-2', title: "New Collection", subtitle: "Explore the latest trends for this season", buttonText: "Discover", imageUrl: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=1200&q=80" },
   ];
 
   return (
@@ -63,6 +70,43 @@ export default function MomoTemplate({ banners, settings, products, slug, catego
                     </Link>
                   ))}
                 </div>
+              </div>
+            </section>
+          );
+        }
+
+        if (section.type === 'banners') {
+          const bannersToShow = middleBanners.length > 0 ? middleBanners : defaultBanners;
+          return (
+            <section key={section.id} className="py-32 bg-slate-50/50">
+              <div className="max-w-7xl mx-auto px-8 space-y-8">
+                {bannersToShow.map((banner: any, i: number) => (
+                  <Link
+                    key={banner.id || i}
+                    href={banner.buttonLink || `/store/${slug}/products`}
+                    className="group relative min-h-[350px] md:min-h-[420px] rounded-3xl overflow-hidden block bg-slate-100"
+                  >
+                    <SmartImage
+                      src={banner.imageUrl}
+                      alt={banner.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="relative z-10 flex flex-col items-center justify-end text-center p-10 md:p-16 min-h-[350px] md:min-h-[420px]">
+                      {banner.subtitle && (
+                        <p className="text-white/70 text-sm font-bold uppercase tracking-[0.3em] mb-4">{banner.subtitle}</p>
+                      )}
+                      {banner.title && (
+                        <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-white mb-6">{banner.title}</h2>
+                      )}
+                      {banner.showButton !== false && banner.buttonText && (
+                        <span className="inline-flex items-center gap-3 px-8 py-4 bg-white text-slate-900 rounded-full text-sm font-bold uppercase tracking-widest transition-all hover:bg-slate-100 shadow-xl group/link">
+                          {banner.buttonText} <ArrowRight size={16} className="transition-transform group-hover/link:translate-x-1" />
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                ))}
               </div>
             </section>
           );
