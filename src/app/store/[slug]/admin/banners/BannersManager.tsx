@@ -65,12 +65,23 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
   const handleSave = async () => {
     setSaving(true);
     setSaveMessage("Saving...");
-    const result = await saveBanners(slug, banners, sliderSettings);
-    if (result && !result.success) {
-      setSaveMessage("Error: " + (result.error || "Unknown error"));
+    const timeout = new Promise<{ success: false; error: string }>((_, reject) =>
+      setTimeout(() => reject(new Error("Request timed out after 30s")), 30000)
+    );
+    try {
+      const result: any = await Promise.race([
+        saveBanners(slug, banners, sliderSettings),
+        timeout,
+      ]);
+      if (result && !result.success) {
+        setSaveMessage("Error: " + (result.error || "Unknown error"));
+        setSaving(false);
+      } else {
+        window.location.reload();
+      }
+    } catch (e: any) {
+      setSaveMessage("Error: " + (e.message || "An unexpected error occurred"));
       setSaving(false);
-    } else {
-      window.location.href = `/store/${slug}/admin/banners`;
     }
   };
 
@@ -474,7 +485,7 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
             className={`px-12 py-5 bg-white text-black rounded-[2rem] font-black text-[12px] uppercase tracking-[0.4em] hover:bg-yellow-400 transition-all flex items-center gap-4 shadow-2xl disabled:opacity-50 ${isRTL ? 'flex-row-reverse' : ''}`}
           >
             {saving ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
-            {t('commitToRegistry')}
+            {t('save')}
           </button>
         </div>
       </div>

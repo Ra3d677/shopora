@@ -247,9 +247,7 @@ export async function saveBanners(slug: string, banners: any[], sliderSettings?:
         targetPage: banner.targetPage || "home",
         storeId: store.id
       }));
-      await prisma.$transaction([
-        prisma.banner.createMany({ data: bannerData }),
-      ]);
+      await prisma.banner.createMany({ data: bannerData });
     }
 
     // Save slider settings if provided
