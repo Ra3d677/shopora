@@ -159,30 +159,36 @@ export default function OneMTemplate({ banners, settings, products, slug, catego
         }
 
         if (section.type === 'cta_banners') {
+          const ctaBanners = banners.filter((b: any) => b.isActive && b.position === 'middle').slice(0, 2);
           return (
             <section key={section.id} className="max-w-[1750px] mx-auto" style={{ padding: "0px 15px", marginBottom: "50px" }}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="relative overflow-hidden group" style={{ minHeight: "435px", backgroundColor: "#261f1a" }}>
-                  <div className="absolute inset-0">
-                    <SmartImage src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80" className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-all duration-[1000ms]" alt="" />
-                  </div>
-                  <div className="absolute inset-0" style={{ backgroundColor: "rgba(38,31,26,0.6)", transitionDuration: "1000ms" }} />
-                  <div className="relative z-10 flex flex-col items-center justify-center text-center p-8 md:p-12" style={{ minHeight: "435px" }}>
-                    <p className="uppercase font-semibold mb-4 text-white/80" style={{ fontSize: "16px", lineHeight: "35px" }}>Use code: #Hurry</p>
-                    <h3 className="font-semibold mb-8 text-white" style={{ fontSize: "36px", lineHeight: "1em" }}>50% off Women's Clothes!</h3>
-                    <button className="font-semibold uppercase transition-colors duration-300 px-10 py-4" style={{ fontWeight: 600, backgroundColor: "var(--color-text-home, #ffffff)", color: "var(--color-bg-home, #333333)", border: "0px", borderRadius: "0px" }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; e.currentTarget.style.color = "#ffffff"; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "var(--color-text-home, #ffffff)"; e.currentTarget.style.color = "var(--color-bg-home, #333333)"; }}>Shop now</button>
-                  </div>
-                </div>
-                <Link href={`/store/${slug}/products?category=men`} className="relative overflow-hidden group block" style={{ minHeight: "435px", backgroundColor: "#261f1a" }}>
-                  <div className="absolute inset-0">
-                    <SmartImage src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800&q=80" className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-all duration-[1000ms]" alt="" />
-                  </div>
-                  <div className="absolute inset-0" style={{ backgroundColor: "rgba(38,31,26,0.6)", transitionDuration: "1000ms" }} />
-                  <div className="relative z-10 flex flex-col items-center justify-center text-center p-8 md:p-12" style={{ minHeight: "435px" }}>
-                    <h3 className="font-semibold mb-4 text-white" style={{ fontSize: "36px", lineHeight: "1em" }}>Men Collection</h3>
-                    <p className="italic text-white/80" style={{ fontSize: "20px", lineHeight: "38px" }}>New arrivals</p>
-                  </div>
-                </Link>
+                {ctaBanners.map((banner: any, i: number) => {
+                  const content = (
+                    <div className="relative overflow-hidden group flex flex-col justify-center" style={{ minHeight: "435px", backgroundColor: "#261f1a" }}>
+                      <div className="absolute inset-0">
+                        <SmartImage src={banner.imageUrl || "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80"} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-all duration-[1000ms]" alt="" />
+                      </div>
+                      <div className="absolute inset-0" style={{ backgroundColor: "rgba(38,31,26,0.6)", transitionDuration: "1000ms" }} />
+                      <div className="relative z-10 flex flex-col items-center justify-center text-center p-8 md:p-12" style={{ minHeight: "435px" }}>
+                        {banner.subtitle && (
+                          <p className="uppercase font-semibold mb-4 text-white/80" style={{ fontSize: "16px", lineHeight: "35px" }}>{banner.subtitle}</p>
+                        )}
+                        {banner.title && (
+                          <h3 className="font-semibold mb-8 text-white" style={{ fontSize: "36px", lineHeight: "1em" }}>{banner.title}</h3>
+                        )}
+                        {banner.showButton !== false && banner.buttonText && (
+                          <button className="font-semibold uppercase transition-colors duration-300 px-10 py-4" style={{ fontWeight: 600, backgroundColor: "var(--color-text-home, #ffffff)", color: "var(--color-bg-home, #333333)", border: "0px", borderRadius: "0px" }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; e.currentTarget.style.color = "#ffffff"; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "var(--color-text-home, #ffffff)"; e.currentTarget.style.color = "var(--color-bg-home, #333333)"; }}>{banner.buttonText}</button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                  return banner.buttonLink ? (
+                    <Link key={banner.id || i} href={banner.buttonLink} className="block">{content}</Link>
+                  ) : (
+                    <div key={banner.id || i}>{content}</div>
+                  );
+                })}
               </div>
             </section>
           );
