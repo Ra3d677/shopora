@@ -495,6 +495,35 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
           </button>
         </div>
       </div>
+
+      <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] p-8 border border-yellow-500/10 shadow-2xl">
+        <div className={`flex items-start gap-4 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
+          <div className="w-1.5 h-16 bg-yellow-400 rounded-full shrink-0"></div>
+          <div>
+            <h3 className="text-[10px] font-black text-yellow-400 uppercase tracking-[0.3em] mb-4">
+              {isRTL ? "المواصفات المثالية للصور" : "OPTIMAL IMAGE SPECIFICATIONS"}
+            </h3>
+            <div className="space-y-3 text-xs font-medium text-slate-400 leading-relaxed">
+              <p>
+                <span className="text-white font-bold uppercase tracking-wider">
+                  {isRTL ? "القطاع العلوي (الرئيسي):" : "TOP SECTOR (HERO):"}
+                </span>{' '}
+                {isRTL
+                  ? "1920 × 800 بكسل — نسبة عرض 12:5. يُفضل استخدام صور عريضة عالية الجودة بخلفيات بسيطة لتناسب شريط التمرير."
+                  : "1920 × 800 px — 12:5 aspect ratio. Use high-quality wide images with clean backgrounds for the hero slider."}
+              </p>
+              <p>
+                <span className="text-white font-bold uppercase tracking-wider">
+                  {isRTL ? "القطاع الأوسط (إعلاني):" : "MIDDLE SECTOR (CTA):"}
+                </span>{' '}
+                {isRTL
+                  ? "1200 × 600 بكسل — نسبة عرض 2:1. يُفضل استخدام صور أفقية متوازنة مع نص واضح للإعلانات الداخلية."
+                  : "1200 × 600 px — 2:1 aspect ratio. Use balanced landscape images with clear text areas for in-page CTAs."}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
