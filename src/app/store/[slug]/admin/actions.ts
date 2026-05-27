@@ -270,11 +270,13 @@ export async function saveBanners(slug: string, banners: any[], sliderSettings?:
     return { success: false, error: "Failed to save banners: " + (error.message || "Unknown error") };
   }
 
-  revalidateStoreCache(slug);
-  revalidatePath(`/store/${slug}`, 'layout');
-  revalidatePath(`/store/${slug}/admin/banners`);
-  revalidatePath(`/`, 'layout');
-  redirect(`/store/${slug}/admin/banners`);
+  try {
+    revalidateStoreCache(slug);
+    revalidatePath(`/`, 'layout');
+  } catch (e) {
+    console.error("Revalidation error (non-fatal):", e);
+  }
+  return { success: true };
 }
 
 export async function addMedia(slug: string, mediaData: { url: string, name: string, type: string }) {

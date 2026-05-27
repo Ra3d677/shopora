@@ -65,9 +65,17 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
   const handleSave = async () => {
     setSaveMessage("");
     startTransition(async () => {
-      const result = await saveBanners(slug, banners, sliderSettings);
-      if (result && !result.success) {
-        setSaveMessage("Error: " + (result.error || "Unknown error"));
+      try {
+        const result = await saveBanners(slug, banners, sliderSettings);
+        if (result && !result.success) {
+          setSaveMessage("Error: " + (result.error || "Unknown error"));
+          setTimeout(() => setSaveMessage(""), 5000);
+        } else {
+          setSaveMessage("saved");
+          setTimeout(() => setSaveMessage(""), 4000);
+        }
+      } catch (e: any) {
+        setSaveMessage("Error: " + (e.message || "An unexpected error occurred"));
         setTimeout(() => setSaveMessage(""), 5000);
       }
     });
