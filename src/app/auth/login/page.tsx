@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useState, useActionState, useCallback, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Lock, Mail, Loader2, ArrowRight, Sparkles } from "lucide-react";
 import { loginUser } from "../actions";
 
 export default function LoginPage() {
-  const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [googleLoading, setGoogleLoading] = useState(false);
   const router = useRouter();
@@ -30,17 +29,16 @@ export default function LoginPage() {
     window.location.href = "/api/auth/google";
   };
 
-  const handleLogin = async (formData: FormData) => {
+  const [formState, formAction, isPending] = useActionState(async (_prev: unknown, formData: FormData) => {
     setError(null);
-    startTransition(async () => {
-      const result = await loginUser(formData);
-      if (result?.error) {
-        setError(result.error);
-      } else {
-        router.push("/dashboard");
-      }
-    });
-  };
+    const result = await loginUser(formData);
+    if (result?.error) {
+      setError(result.error);
+    } else {
+      window.location.href = "/dashboard";
+    }
+    return null;
+  }, null);
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] relative overflow-hidden flex items-center justify-center p-6">
@@ -57,7 +55,7 @@ export default function LoginPage() {
           <p className="text-cyan-200">Access your dashboard and manage your store.</p>
         </div>
 
-        <form action={handleLogin} className="p-12 space-y-6">
+        <form action={formAction} className="p-12 space-y-6">
           {error && (
             <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl text-sm font-bold">
               {error}
