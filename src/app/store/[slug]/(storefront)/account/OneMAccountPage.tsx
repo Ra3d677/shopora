@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useWishlistStore } from "@/store/wishlist";
-import { User, Package, Heart, Truck, MapPin, Trash2, ChevronDown, ChevronUp, LogOut } from "lucide-react";
+import { User, Package, Heart, Truck, MapPin, Trash2, ChevronDown, ChevronUp, LogOut, CheckCircle, AlertCircle } from "lucide-react";
 
 interface OneMAccountPageProps {
   slug: string;
@@ -21,6 +21,62 @@ export default function OneMAccountPage({ slug, user, store, initialOrders }: On
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
   const { items: wishlistItems, removeItem } = useWishlistStore();
   const storeWishlist = wishlistItems.filter(i => i.storeId === store.id);
+
+  const userFirst = user?.name?.split(" ")[0] || "";
+  const userLast = user?.name?.split(" ").slice(1).join(" ") || "";
+  const [formFirstName, setFormFirstName] = useState(userFirst);
+  const [formLastName, setFormLastName] = useState(userLast);
+  const [formEmail, setFormEmail] = useState(user?.email || "");
+  const [formGender, setFormGender] = useState(user?.gender || "");
+  const [formBirthday, setFormBirthday] = useState(user?.birthday || "");
+  const [formCurrentPassword, setFormCurrentPassword] = useState("");
+  const [formNewPassword, setFormNewPassword] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  useEffect(() => {
+    setFormFirstName(user?.name?.split(" ")[0] || "");
+    setFormLastName(user?.name?.split(" ").slice(1).join(" ") || "");
+    setFormEmail(user?.email || "");
+    setFormGender(user?.gender || "");
+    setFormBirthday(user?.birthday || "");
+  }, [user]);
+
+  const handleSaveInfo = useCallback(async () => {
+    setSaving(true);
+    setSaveMessage(null);
+    try {
+      const res = await fetch(`/api/store/${slug}/account`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          firstName: formFirstName,
+          lastName: formLastName,
+          email: formEmail,
+          gender: formGender || null,
+          birthday: formBirthday || null,
+          currentPassword: formCurrentPassword || undefined,
+          newPassword: formNewPassword || undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        setSaveMessage({ type: "error", text: data.error || "Failed to save" });
+      } else {
+        setSaveMessage({ type: "success", text: "Information updated successfully." });
+        setFormCurrentPassword("");
+        setFormNewPassword("");
+        if (data.user?.name) {
+          user.name = data.user.name;
+        }
+      }
+    } catch (err: any) {
+      setSaveMessage({ type: "error", text: err.message || "Network error" });
+    } finally {
+      setSaving(false);
+    }
+  }, [slug, user, formFirstName, formLastName, formEmail, formGender, formBirthday, formCurrentPassword, formNewPassword]);
 
   const sections: { key: Section; label: string; icon: React.ReactNode }[] = [
     { key: "information", label: "Information", icon: <User size={16} /> },
@@ -106,23 +162,151 @@ export default function OneMAccountPage({ slug, user, store, initialOrders }: On
           <div className="flex-1 min-w-0">
             {activeSection === "information" && (
               <div>
-                <h3 className="text-lg font-semibold mb-6" style={{ color: "#333333" }}>Information</h3>
-                <div className="max-w-md space-y-5">
+                <h3 className="text-lg font-semibold mb-2" style={{ color: "#333333" }}>Information</h3>
+                <p className="text-xs mb-6" style={{ color: "#999999" }}>Update your personal information</p>
+
+                <div className="max-w-lg space-y-5">
+                  {/* Social title */}
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#999999" }}>Full Name</label>
-                    <p className="text-sm font-medium" style={{ color: "#333333" }}>{user?.name || "—"}</p>
+                    <label className="block text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#999999" }}>Social Title</label>
+                    <div className="flex items-center gap-6">
+                      <label className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: "#333333" }}>
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="Mr"
+                          checked={formGender === "Mr"}
+                          onChange={() => setFormGender("Mr")}
+                          className="accent-[var(--accent)]"
+                          style={{ accentColor: accent }}
+                        />
+                        Mr.
+                      </label>
+                      <label className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: "#333333" }}>
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="Mrs"
+                          checked={formGender === "Mrs"}
+                          onChange={() => setFormGender("Mrs")}
+                          className="accent-[var(--accent)]"
+                          style={{ accentColor: accent }}
+                        />
+                        Mrs.
+                      </label>
+                    </div>
                   </div>
+
+                  {/* First name */}
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#999999" }}>First Name</label>
+                    <input
+                      type="text"
+                      value={formFirstName}
+                      onChange={(e) => setFormFirstName(e.target.value)}
+                      className="w-full text-sm px-0 py-2 bg-transparent outline-none transition-colors"
+                      style={{ color: "#333333", borderBottom: "1px solid #e5e5e5" }}
+                      onFocus={(e) => { e.currentTarget.style.borderBottomColor = accent; }}
+                      onBlur={(e) => { e.currentTarget.style.borderBottomColor = "#e5e5e5"; }}
+                    />
+                  </div>
+
+                  {/* Last name */}
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#999999" }}>Last Name</label>
+                    <input
+                      type="text"
+                      value={formLastName}
+                      onChange={(e) => setFormLastName(e.target.value)}
+                      className="w-full text-sm px-0 py-2 bg-transparent outline-none transition-colors"
+                      style={{ color: "#333333", borderBottom: "1px solid #e5e5e5" }}
+                      onFocus={(e) => { e.currentTarget.style.borderBottomColor = accent; }}
+                      onBlur={(e) => { e.currentTarget.style.borderBottomColor = "#e5e5e5"; }}
+                    />
+                  </div>
+
+                  {/* Email */}
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#999999" }}>Email</label>
-                    <p className="text-sm font-medium" style={{ color: "#333333" }}>{user?.email || "—"}</p>
+                    <input
+                      type="email"
+                      value={formEmail}
+                      onChange={(e) => setFormEmail(e.target.value)}
+                      className="w-full text-sm px-0 py-2 bg-transparent outline-none transition-colors"
+                      style={{ color: "#333333", borderBottom: "1px solid #e5e5e5" }}
+                      onFocus={(e) => { e.currentTarget.style.borderBottomColor = accent; }}
+                      onBlur={(e) => { e.currentTarget.style.borderBottomColor = "#e5e5e5"; }}
+                    />
                   </div>
+
+                  {/* Birthday */}
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#999999" }}>Password</label>
-                    <p className="text-sm" style={{ color: "#999999" }}>••••••••</p>
+                    <label className="block text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#999999" }}>Birthdate</label>
+                    <input
+                      type="date"
+                      value={formBirthday}
+                      onChange={(e) => setFormBirthday(e.target.value)}
+                      className="w-full text-sm px-0 py-2 bg-transparent outline-none transition-colors"
+                      style={{ color: "#333333", borderBottom: "1px solid #e5e5e5" }}
+                      onFocus={(e) => { e.currentTarget.style.borderBottomColor = accent; }}
+                      onBlur={(e) => { e.currentTarget.style.borderBottomColor = "#e5e5e5"; }}
+                    />
                   </div>
-                  <p className="text-xs mt-4" style={{ color: "#999999" }}>
-                    To update your profile information, please contact the store administrator.
-                  </p>
+
+                  {/* Password section */}
+                  <div className="pt-4" style={{ borderTop: "1px solid #f0f0f0" }}>
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: "#999999" }}>Password</p>
+
+                    {/* Current password */}
+                    <div className="mb-4">
+                      <label className="block text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#999999" }}>Current Password</label>
+                      <input
+                        type="password"
+                        value={formCurrentPassword}
+                        onChange={(e) => setFormCurrentPassword(e.target.value)}
+                        placeholder="Enter your current password"
+                        className="w-full text-sm px-0 py-2 bg-transparent outline-none transition-colors"
+                        style={{ color: "#333333", borderBottom: "1px solid #e5e5e5" }}
+                        onFocus={(e) => { e.currentTarget.style.borderBottomColor = accent; }}
+                        onBlur={(e) => { e.currentTarget.style.borderBottomColor = "#e5e5e5"; }}
+                      />
+                    </div>
+
+                    {/* New password */}
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#999999" }}>New Password</label>
+                      <input
+                        type="password"
+                        value={formNewPassword}
+                        onChange={(e) => setFormNewPassword(e.target.value)}
+                        placeholder="Leave blank to keep current"
+                        className="w-full text-sm px-0 py-2 bg-transparent outline-none transition-colors"
+                        style={{ color: "#333333", borderBottom: "1px solid #e5e5e5" }}
+                        onFocus={(e) => { e.currentTarget.style.borderBottomColor = accent; }}
+                        onBlur={(e) => { e.currentTarget.style.borderBottomColor = "#e5e5e5"; }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Save button */}
+                  <div className="flex items-center gap-4 pt-2">
+                    <button
+                      onClick={handleSaveInfo}
+                      disabled={saving}
+                      className="px-8 py-3 text-sm font-semibold uppercase tracking-wider transition-colors duration-300 disabled:opacity-50"
+                      style={{ backgroundColor: accent, color: "#ffffff" }}
+                      onMouseEnter={(e) => { if (!saving) e.currentTarget.style.backgroundColor = "#ef3444"; }}
+                      onMouseLeave={(e) => { if (!saving) e.currentTarget.style.backgroundColor = accent; }}
+                    >
+                      {saving ? "Saving..." : "Save"}
+                    </button>
+                    {saveMessage && (
+                      <span className={`flex items-center gap-1.5 text-xs ${saveMessage.type === "success" ? "text-green-600" : "text-red-600"}`}>
+                        {saveMessage.type === "success" ? <CheckCircle size={14} /> : <AlertCircle size={14} />}
+                        {saveMessage.text}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
