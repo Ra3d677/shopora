@@ -1,6 +1,6 @@
 "use client";
 
-export default function AdminError({ error, reset }: { error: Error; reset: () => void }) {
+export default function AdminError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <div className="min-h-screen bg-[#000] flex items-center justify-center p-6">
       <div className="max-w-md text-center">
