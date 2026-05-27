@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { saveStoreSettings } from "../actions";
-import { Settings, Loader2, Save, X, Trash2, CheckCircle2, Globe, Plus } from "lucide-react";
+import { Settings, Loader2, Save, X, Trash2, CheckCircle2, Globe, Plus, RotateCcw } from "lucide-react";
 import { StoreSettings } from "@/lib/types";
 import MediaPicker from "../media/MediaPicker";
 import { useLanguageStore } from '@/store/language';
@@ -62,35 +62,11 @@ export default function SettingsManager({
   };
   const templateDefaults = TEMPLATE_DEFAULTS[activeTemplate] || TEMPLATE_DEFAULTS['1m'];
 
-  const resetColor = (path: string) => {
-    const parts = path.split('.');
-    let val: any = templateDefaults;
-    for (const p of parts) {
-      val = val?.[p];
-    }
-    if (!val) return;
-    const newSettings = { ...settings };
-    let target: any = newSettings;
-    for (let i = 0; i < parts.length - 1; i++) {
-      if (!target.colorSystem?.[parts[i]]) {
-        if (!target.colorSystem) target.colorSystem = {};
-        target.colorSystem[parts[i]] = { ...templateDefaults[parts[i]] };
-      }
-      target = target.colorSystem[parts[i]];
-    }
-    const lastKey = parts[parts.length - 1];
-    if (!target.colorSystem) target.colorSystem = {};
-    target.colorSystem[lastKey] = val;
+  const resetAllColors = () => {
+    const defaults = TEMPLATE_DEFAULTS[activeTemplate] || TEMPLATE_DEFAULTS['1m'];
+    const newSettings = { ...settings, colorSystem: JSON.parse(JSON.stringify(defaults)) };
     updateSettings(newSettings);
   };
-
-  const ResetBtn = ({ path }: { path: string }) => (
-    <button type="button" onClick={() => resetColor(path)}
-      className="w-5 h-5 shrink-0 flex items-center justify-center rounded-full text-[10px] font-bold transition-all hover:scale-110"
-      style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: '#94a3b8', border: '1px solid rgba(255,255,255,0.15)' }}
-      title="Reset to template default"
-    >↺</button>
-  );
 
   const [sectionTheme, setSectionTheme] = useState<"dark" | "light">("dark");
   const updateSettings = (newSettings: any) => {
@@ -287,14 +263,24 @@ export default function SettingsManager({
                   </div>
                 )}
               </div>
-              <button 
-                type="submit"
-                disabled={isPending}
-                className={`px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-black text-[9px] uppercase tracking-[0.08em] hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-xl shadow-cyan-500/10 disabled:opacity-50 ${language === 'ar' ? 'font-arabic' : ''}`}
-              >
-                {isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
-                {isPending ? t('saving') : t('saveChanges')}
-              </button>
+              <div className="flex items-center gap-2">
+                <button 
+                  type="button"
+                  onClick={resetAllColors}
+                  className="px-4 py-2 bg-gradient-to-r from-rose-600 to-rose-800 text-white rounded-lg font-black text-[9px] uppercase tracking-[0.08em] hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-xl shadow-rose-500/10"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  Reset
+                </button>
+                <button 
+                  type="submit"
+                  disabled={isPending}
+                  className={`px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-black text-[9px] uppercase tracking-[0.08em] hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-xl shadow-cyan-500/10 disabled:opacity-50 ${language === 'ar' ? 'font-arabic' : ''}`}
+                >
+                  {isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                  {isPending ? t('saving') : t('saveChanges')}
+                </button>
+              </div>
             </div>
           </div>
               <div className="space-y-5">
@@ -1009,7 +995,6 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                 })} 
                                 className="flex-1 bg-transparent text-white focus:outline-none font-mono text-[10px] uppercase font-black" 
                               />
-                              <ResetBtn path={`backgrounds.${page.id}`} />
                             </div>
                           </div>
 
@@ -1043,7 +1028,6 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                 })} 
                                 className="flex-1 bg-transparent text-white focus:outline-none font-mono text-[9px] uppercase font-black" 
                               />
-                              <ResetBtn path={`text.${page.id}`} />
                             </div>
                           </div>
 
@@ -1105,7 +1089,6 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                   })} 
                                   className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
                                 />
-                                <ResetBtn path="brand.primary" />
                               </div>
                             </div>
 
@@ -1133,7 +1116,6 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                   })} 
                                   className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
                                 />
-                                <ResetBtn path="footer.background" />
                               </div>
                             </div>
 
@@ -1161,7 +1143,6 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                   })} 
                                   className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs uppercase font-black" 
                                 />
-                                <ResetBtn path="footer.text" />
                               </div>
                             </div>
 
@@ -1208,11 +1189,10 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                   <span className={`text-[8px] text-slate-500 uppercase font-black mt-2 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('standardRateColor')}</span>
                                </div>
                             </div>
-                            <div className="flex justify-end"><ResetBtn path="product.price" /></div>
-                         </div>
+                          </div>
 
-                         <div className="space-y-3">
-                            <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('pulseSignalSale')}</label>
+                          <div className="space-y-3">
+                             <label className={`block text-[9px] font-black text-slate-500 tracking-[0.08em] ml-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('pulseSignalSale')}</label>
                             <div className="relative group/price h-16 bg-black/60 rounded-xl border border-white/[0.1] hover:border-red-500/50 transition-all overflow-hidden flex items-center justify-center">
                                <input 
                                  type="color" 
@@ -1233,9 +1213,8 @@ updateSettings({...settings, headerSettings: {...(settings.headerSettings || {})
                                   <span className="text-red-500 font-mono text-lg uppercase font-black tracking-[0.08em]">{colorSystem.product?.salePrice || '#EF4444'}</span>
                                   <span className={`text-[8px] text-slate-500 uppercase font-black mt-2 ${language === 'ar' ? 'font-arabic' : ''}`}>{t('discountPulseColor')}</span>
                                </div>
-                            </div>
-                            <div className="flex justify-end"><ResetBtn path="product.salePrice" /></div>
-                         </div>
+                             </div>
+                          </div>
                      </div>
                   </div>
                 </div>

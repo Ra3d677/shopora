@@ -89,7 +89,7 @@ export const getStoreBySlug = async (slug: string) => {
     [`store-slug-${slug}`],
     {
       tags: [`store-${slug}`],
-      revalidate: 600
+      revalidate: 0
     }
   )();
 };
