@@ -70,6 +70,7 @@ export default async function AdminLayout({
 
   const isFitness = store.template === 'fitness';
   const isDDDYOU = store.template === 'dddyou';
+  const is1M = store.template === '1m';
 
   const mainItems = isWebsite ? [
     { label: t('overview'), iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
@@ -98,7 +99,7 @@ export default async function AdminLayout({
   ] : [];
 
   const customItems = [
-    { label: isWebsite ? t('siteBuilder') : t('storeBuilder'), iconName: 'Blocks', path: '/builder', color: 'text-blue-500' },
+    ...(is1M ? [] : [{ label: isWebsite ? t('siteBuilder') : t('storeBuilder'), iconName: 'Blocks' as const, path: '/builder', color: 'text-blue-500' }]),
     { label: isWebsite ? t('siteSettings') : t('generalSettings'), iconName: 'Settings', path: '/settings', color: 'text-slate-500' },
   ];
 

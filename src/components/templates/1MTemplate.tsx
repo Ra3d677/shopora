@@ -106,42 +106,36 @@ export default function OneMTemplate({ banners, settings, products, slug, catego
         }
 
         if (section.type === 'categories') {
-          const catImages = [
-            "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
-            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80",
-            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
-            "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
+          const displayCats = categories.slice(0, Math.min(categories.length, 4));
+          if (displayCats.length === 0) return null;
+          const rowLayouts = [
+            ["60%", "40%"],
+            ["40%", "60%"],
           ];
           return (
             <section key={section.id} className="max-w-[1170px] mx-auto" style={{ padding: "0px 15px", marginBottom: "50px" }}>
-              <div style={{ padding: "15px" }}>
-                <div className="flex flex-col md:flex-row" style={{ gap: "30px" }}>
-                  <div className="w-full md:w-[60%]">
-                    <div className="relative aspect-[4/3] overflow-hidden">
-                      <SmartImage src={catImages[0]} className="w-full h-full object-cover" alt="" />
-                    </div>
-                  </div>
-                  <div className="w-full md:w-[40%]">
-                    <div className="relative aspect-[4/3] overflow-hidden">
-                      <SmartImage src={catImages[1]} className="w-full h-full object-cover" alt="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div style={{ padding: "15px" }}>
-                <div className="flex flex-col md:flex-row" style={{ gap: "30px" }}>
-                  <div className="w-full md:w-[40%]">
-                    <div className="relative aspect-[4/3] overflow-hidden">
-                      <SmartImage src={catImages[2]} className="w-full h-full object-cover" alt="" />
-                    </div>
-                  </div>
-                  <div className="w-full md:w-[60%]">
-                    <div className="relative aspect-[4/3] overflow-hidden">
-                      <SmartImage src={catImages[3]} className="w-full h-full object-cover" alt="" />
-                    </div>
+              {[0, 2].map((start, ri) => (
+                <div key={start} style={{ padding: "15px" }}>
+                  <div className="flex flex-col md:flex-row" style={{ gap: "30px" }}>
+                    {displayCats.slice(start, start + 2).map((cat, ci) => (
+                      <Link
+                        key={cat.id}
+                        href={`/store/${slug}/products?category=${cat.id}`}
+                        className="block group"
+                        style={{ width: "100%", flex: `0 0 ${rowLayouts[ri][ci]}`, maxWidth: rowLayouts[ri][ci] }}
+                      >
+                        <div className="relative aspect-[4/3] overflow-hidden" style={{ backgroundColor: "#f7f7f7" }}>
+                          <SmartImage
+                            src={cat.image || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            alt={cat.name}
+                          />
+                        </div>
+                      </Link>
+                    ))}
                   </div>
                 </div>
-              </div>
+              ))}
             </section>
           );
         }
