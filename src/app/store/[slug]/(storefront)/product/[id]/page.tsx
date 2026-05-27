@@ -1,5 +1,6 @@
 import { getStoreBySlug } from "@/lib/data";
 import ProductDetailClient from "./ProductDetailClient";
+import OneMProductDetail from "./OneMProductDetail";
 import { notFound } from "next/navigation";
 
 export default async function ProductPage({ params }: { params: { slug: string, id: string } }) {
@@ -14,6 +15,16 @@ export default async function ProductPage({ params }: { params: { slug: string, 
   
   if (!product) {
     notFound();
+  }
+
+  if (store.template === '1m') {
+    return (
+      <div className="min-h-screen py-8 font-['Poppins',sans-serif]" style={{ backgroundColor: "#ffffff", color: "#333333" }}>
+        <div className="max-w-[1170px] mx-auto px-4 sm:px-6 lg:px-8">
+          <OneMProductDetail product={product} store={store} />
+        </div>
+      </div>
+    );
   }
 
   return (
