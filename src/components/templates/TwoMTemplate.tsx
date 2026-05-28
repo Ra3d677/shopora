@@ -373,38 +373,37 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         )}
 
         {/* Hero Slider */}
-        <div className="flex-1 relative overflow-hidden" style={{ backgroundColor: "#f8f8f8", marginLeft: realCategories.length > 0 ? "0px" : "0px" }}>
-          <div className="relative" style={{ padding: "15px 0px 15px 0px" }}>
-            <div style={{ minHeight: "400px" }}>
-              {heroSlides.map((slide, index) => (
-                <div
-                  key={index}
-                  className={`transition-all duration-700 ${index === currentSlide ? "block" : "hidden"}`}
-                >
-                  <div className="flex items-center" style={{ minHeight: "400px", backgroundImage: `url(${slide.image})`, backgroundPosition: "right center", backgroundRepeat: "no-repeat", backgroundSize: "contain", backgroundColor: "#f8f8f8" }}>
-                    <div className="max-w-[450px]" style={{ marginRight: "auto", padding: "60px 0 60px 15px" }}>
-                      <p style={{ color: primary, fontSize: "20px", fontWeight: 700, textTransform: "uppercase", lineHeight: "30px", marginBottom: "20px" }}>{slide.heading}</p>
-                      <h2 style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "50px", fontWeight: 700, textTransform: "uppercase", lineHeight: "60px", marginBottom: "30px" }}>
-                        <span dangerouslySetInnerHTML={{ __html: slide.description }} />
-                      </h2>
-                      {slide.buttonText && (
-                        <Link
-                          href={`/store/${slug}/products`}
-                          className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold uppercase tracking-wider transition-colors"
-                          style={{ backgroundColor: primary, color: "#333333", fontSize: "14px", fontWeight: 600, lineHeight: "16px" }}
-                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
-                        >
-                          {slide.buttonText}
-                        </Link>
-                      )}
-                    </div>
+        <div className="flex-1 relative overflow-hidden" style={{ backgroundColor: "#f8f8f8" }}>
+          <div className="relative" style={{ height: "415px" }}>
+            {heroSlides.map((slide, index) => (
+              <div
+                key={index}
+                className="absolute inset-0 transition-opacity duration-700"
+                style={{ opacity: index === currentSlide ? 1 : 0, zIndex: index === currentSlide ? 1 : 0 }}
+              >
+                <div className="flex items-center h-full" style={{ backgroundImage: `url(${slide.image})`, backgroundPosition: "right center", backgroundRepeat: "no-repeat", backgroundSize: "contain", backgroundColor: "#f8f8f8" }}>
+                  <div className="max-w-[450px]" style={{ marginRight: "auto", padding: "60px 0 60px 15px" }}>
+                    <p style={{ color: primary, fontSize: "20px", fontWeight: 700, textTransform: "uppercase", lineHeight: "30px", marginBottom: "20px" }}>{slide.heading}</p>
+                    <h2 style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "50px", fontWeight: 700, textTransform: "uppercase", lineHeight: "60px", marginBottom: "30px" }}>
+                      <span dangerouslySetInnerHTML={{ __html: slide.description }} />
+                    </h2>
+                    {slide.buttonText && (
+                      <Link
+                        href={`/store/${slug}/products`}
+                        className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold uppercase tracking-wider transition-colors"
+                        style={{ backgroundColor: primary, color: "#333333", fontSize: "14px", fontWeight: 600, lineHeight: "16px" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
+                      >
+                        {slide.buttonText}
+                      </Link>
+                    )}
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
             {/* Dots */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
               {heroSlides.map((_, index) => (
                 <button
                   key={index}
@@ -417,14 +416,14 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
             {/* Arrows */}
             <button
               onClick={() => setCurrentSlide((p) => (p - 1 + heroSlides.length) % heroSlides.length)}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center transition-opacity hover:opacity-70"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center transition-opacity hover:opacity-70"
               style={{ backgroundColor: "rgba(0,0,0,0.1)", color: "#333333" }}
             >
               <ChevronLeft size={18} />
             </button>
             <button
               onClick={() => setCurrentSlide((p) => (p + 1) % heroSlides.length)}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center transition-opacity hover:opacity-70"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center transition-opacity hover:opacity-70"
               style={{ backgroundColor: "rgba(0,0,0,0.1)", color: "#333333" }}
             >
               <ChevronRight size={18} />
