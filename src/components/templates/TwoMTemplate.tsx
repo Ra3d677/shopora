@@ -338,92 +338,98 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         </div>
       </div>
 
-      {/* ====== CATEGORIES SIDEBAR (Always open) ====== */}
-      {realCategories.length > 0 && (
-        <div className="hidden lg:block" style={{ backgroundColor: "#ffffff", borderBottom: "1px solid #ebebeb" }}>
-          <div className="max-w-[1200px] mx-auto flex flex-wrap items-center gap-0" style={{ padding: "8px 15px" }}>
-            {visibleCategories.map((cat, i) => (
-              <Link
-                key={cat.id || i}
-                href={`/store/${slug}/categories`}
-                className="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors border-r whitespace-nowrap"
-                style={{ color: "#666666", borderColor: "#ebebeb" }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = hoverAccent; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = "#666666"; }}
-              >
-                {cat.name}
-              </Link>
-            ))}
-            {realCategories.length > 8 && (
-              <button
-                onClick={() => setShowAllCategories(!showAllCategories)}
-                className="px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors"
-                style={{ color: primary }}
-              >
-                {showAllCategories ? "Show Less" : `+${realCategories.length - 8} more`}
-              </button>
-            )}
+      {/* ====== HERO SECTION with Categories Sidebar ====== */}
+      <div className="max-w-[1200px] mx-auto flex" style={{ padding: "0px 15px" }}>
+        {/* Categories Vertical Sidebar (always visible) */}
+        {realCategories.length > 0 && (
+          <div className="hidden lg:block w-[220px] shrink-0" style={{ marginTop: "0px" }}>
+            <div className="flex flex-col" style={{ border: "1px solid #ebebeb" }}>
+              <div className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider" style={{ backgroundColor: primary, color: "#333333", borderBottom: "1px solid #ebebeb" }}>
+                Categories
+              </div>
+              {visibleCategories.map((cat, i) => (
+                <Link
+                  key={cat.id || i}
+                  href={`/store/${slug}/categories`}
+                  className="px-4 py-2 text-xs font-semibold transition-colors"
+                  style={{ color: "#666666", borderBottom: "1px solid #f0f0f0" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = hoverAccent; e.currentTarget.style.paddingLeft = "20px"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#666666"; e.currentTarget.style.paddingLeft = "16px"; }}
+                >
+                  {cat.name}
+                </Link>
+              ))}
+              {realCategories.length > 8 && (
+                <button
+                  onClick={() => setShowAllCategories(!showAllCategories)}
+                  className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-left transition-colors"
+                  style={{ color: primary }}
+                >
+                  {showAllCategories ? "− Show Less" : `+ ${realCategories.length - 8} more`}
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* ====== HERO SLIDER ====== */}
-      <div className="relative overflow-hidden" style={{ backgroundColor: "#f8f8f8" }}>
-        <div className="max-w-[1170px] mx-auto relative overflow-visible" style={{ padding: "0px 30px", marginTop: "-10px", marginBottom: "15px" }}>
-          <div style={{ minHeight: "400px" }}>
-            {heroSlides.map((slide, index) => (
-              <div
-                key={index}
-                className={`transition-all duration-700 ${index === currentSlide ? "block" : "hidden"}`}
-              >
-                <div className="flex items-center" style={{ minHeight: "400px", backgroundImage: `url(${slide.image})`, backgroundPosition: "right center", backgroundRepeat: "no-repeat", backgroundSize: "contain", backgroundColor: "#f8f8f8" }}>
-                  <div className="max-w-[450px]" style={{ marginRight: "auto", padding: "60px 0" }}>
-                    <p style={{ color: primary, fontSize: "20px", fontWeight: 700, textTransform: "uppercase", lineHeight: "30px", marginBottom: "20px" }}>{slide.heading}</p>
-                    <h2 style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "50px", fontWeight: 700, textTransform: "uppercase", lineHeight: "60px", marginBottom: "30px" }}>
-                      <span dangerouslySetInnerHTML={{ __html: slide.description }} />
-                    </h2>
-                    {slide.buttonText && (
-                      <Link
-                        href={`/store/${slug}/products`}
-                        className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold uppercase tracking-wider transition-colors"
-                        style={{ backgroundColor: primary, color: "#333333", fontSize: "14px", fontWeight: 600, lineHeight: "16px" }}
-                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
-                      >
-                        {slide.buttonText}
-                      </Link>
-                    )}
+        {/* Hero Slider */}
+        <div className="flex-1 relative overflow-hidden" style={{ backgroundColor: "#f8f8f8", marginLeft: realCategories.length > 0 ? "0px" : "0px" }}>
+          <div className="relative" style={{ padding: "15px 0px 15px 0px" }}>
+            <div style={{ minHeight: "400px" }}>
+              {heroSlides.map((slide, index) => (
+                <div
+                  key={index}
+                  className={`transition-all duration-700 ${index === currentSlide ? "block" : "hidden"}`}
+                >
+                  <div className="flex items-center" style={{ minHeight: "400px", backgroundImage: `url(${slide.image})`, backgroundPosition: "right center", backgroundRepeat: "no-repeat", backgroundSize: "contain", backgroundColor: "#f8f8f8" }}>
+                    <div className="max-w-[450px]" style={{ marginRight: "auto", padding: "60px 0 60px 15px" }}>
+                      <p style={{ color: primary, fontSize: "20px", fontWeight: 700, textTransform: "uppercase", lineHeight: "30px", marginBottom: "20px" }}>{slide.heading}</p>
+                      <h2 style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "50px", fontWeight: 700, textTransform: "uppercase", lineHeight: "60px", marginBottom: "30px" }}>
+                        <span dangerouslySetInnerHTML={{ __html: slide.description }} />
+                      </h2>
+                      {slide.buttonText && (
+                        <Link
+                          href={`/store/${slug}/products`}
+                          className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold uppercase tracking-wider transition-colors"
+                          style={{ backgroundColor: primary, color: "#333333", fontSize: "14px", fontWeight: 600, lineHeight: "16px" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
+                        >
+                          {slide.buttonText}
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            {/* Dots */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+              {heroSlides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className="w-2.5 h-2.5 transition-all"
+                  style={{ backgroundColor: index === currentSlide ? primary : "rgba(0,0,0,0.15)", borderRadius: "0" }}
+                />
+              ))}
+            </div>
+            {/* Arrows */}
+            <button
+              onClick={() => setCurrentSlide((p) => (p - 1 + heroSlides.length) % heroSlides.length)}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center transition-opacity hover:opacity-70"
+              style={{ backgroundColor: "rgba(0,0,0,0.1)", color: "#333333" }}
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              onClick={() => setCurrentSlide((p) => (p + 1) % heroSlides.length)}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center transition-opacity hover:opacity-70"
+              style={{ backgroundColor: "rgba(0,0,0,0.1)", color: "#333333" }}
+            >
+              <ChevronRight size={18} />
+            </button>
           </div>
-          {/* Dots */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-            {heroSlides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className="w-2.5 h-2.5 transition-all"
-                style={{ backgroundColor: index === currentSlide ? primary : "rgba(0,0,0,0.15)", borderRadius: "0" }}
-              />
-            ))}
-          </div>
-          {/* Arrows */}
-          <button
-            onClick={() => setCurrentSlide((p) => (p - 1 + heroSlides.length) % heroSlides.length)}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center transition-opacity hover:opacity-70"
-            style={{ backgroundColor: "rgba(0,0,0,0.1)", color: "#333333" }}
-          >
-            <ChevronLeft size={18} />
-          </button>
-          <button
-            onClick={() => setCurrentSlide((p) => (p + 1) % heroSlides.length)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center transition-opacity hover:opacity-70"
-            style={{ backgroundColor: "rgba(0,0,0,0.1)", color: "#333333" }}
-          >
-            <ChevronRight size={18} />
-          </button>
         </div>
       </div>
 
