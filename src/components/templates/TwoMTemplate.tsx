@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import {
   ChevronRight, ChevronLeft, Search, Heart, ShoppingCart, User, Menu, MapPin,
@@ -53,33 +53,52 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
   const [activeTab, setActiveTab] = useState("NEW");
   const [showAllCategories, setShowAllCategories] = useState(false);
   const [saleIdx, setSaleIdx] = useState(0);
+  const [notif, setNotif] = useState("");
+
+  useEffect(() => {
+    if (notif) { const t = setTimeout(() => setNotif(""), 2000); return () => clearTimeout(t); }
+  }, [notif]);
   const cartAddItem = useCartStore((s) => s.addItem);
   const cartItems = useCartStore((s) => s.items);
   const { addItem: addWishlist, removeItem: removeWishlist, isWishlisted } = useWishlistStore();
 
   const cartCount = cartItems.filter((i) => i.storeId === slug).reduce((a, i) => a + i.quantity, 0);
 
-  const handleAddToCart = (product: any) => {
-    const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
-    cartAddItem({
-      id: `${slug}-${product.id}-One Size-`,
-      storeId: slug,
-      product: { ...product, images: product.images || img },
-      quantity: 1,
-      selectedSize: "One Size",
-      selectedColor: "",
-      selectedImage: img,
-    });
+  const handleAddToCart = (product: any, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    console.log("🛒 handleAddToCart called for:", product?.name || product?.id);
+    try {
+      const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
+      cartAddItem({
+        id: `${slug}-${product.id}-One Size-`,
+        storeId: slug,
+        product: { ...product, images: product.images || img },
+        quantity: 1,
+        selectedSize: "One Size",
+        selectedColor: "",
+        selectedImage: img,
+      });
+      console.log("✅ cartAddItem succeeded");
+      setNotif(`🛒 "${product?.name || "Product"}" added to cart!`);
+    } catch (err) { console.error("❌ cartAddItem error:", err); }
   };
 
-  const handleToggleWishlist = (product: any) => {
-    const pid = String(product.id);
-    const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
-    if (isWishlisted(pid)) {
-      removeWishlist(pid);
-    } else {
-      addWishlist({ productId: pid, storeId: slug, name: product.name, price: product.price, image: img, slug: `/store/${slug}/product/${product.id}` });
-    }
+  const handleToggleWishlist = (product: any, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    console.log("❤️ handleToggleWishlist called for:", product?.name || product?.id);
+    try {
+      const pid = String(product.id);
+      const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
+      if (isWishlisted(pid)) {
+        removeWishlist(pid);
+        console.log("✅ removed from wishlist");
+        setNotif(`💔 "${product?.name || "Product"}" removed from wishlist`);
+      } else {
+        addWishlist({ productId: pid, storeId: slug, name: product.name, price: product.price, image: img, slug: `/store/${slug}/product/${product.id}` });
+        console.log("✅ added to wishlist");
+        setNotif(`❤️ "${product?.name || "Product"}" added to wishlist!`);
+      }
+    } catch (err) { console.error("❌ wishlist error:", err); }
   };
 
   const topBanners = banners.filter((b: any) => b.isActive && (b.position === 'top' || !b.position));
@@ -196,13 +215,13 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         )}
         {!compact && (
           <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1.5 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-            <button onClick={() => handleAddToCart(product)} className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+            <button onClick={(e) => handleAddToCart(product, e)} className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
             >
               <ShoppingCart size={14} />
             </button>
-            <button onClick={() => handleToggleWishlist(product)} className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+            <button onClick={(e) => handleToggleWishlist(product, e)} className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
             >
@@ -520,11 +539,11 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                       </div>
                       <div className="flex flex-col justify-center flex-1">
                         <div className="flex gap-2 mb-2">
-                          <button onClick={() => handleAddToCart(p)} className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
+                          <button onClick={(e) => handleAddToCart(p, e)} className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
                             onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
                             onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
                           ><ShoppingCart size={13} /></button>
-                          <button onClick={() => handleToggleWishlist(p)} className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
+                          <button onClick={(e) => handleToggleWishlist(p, e)} className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
                             onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
                             onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
                           ><Heart size={13} /></button>
@@ -537,7 +556,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                           <button className="w-8 h-8 flex items-center justify-center text-sm font-bold" style={{ backgroundColor: "#f0f0f0", color: "#333333", border: "1px solid #ebebeb" }}>−</button>
                           <span className="text-sm font-bold px-2">1</span>
                           <button className="w-8 h-8 flex items-center justify-center text-sm font-bold" style={{ backgroundColor: "#f0f0f0", color: "#333333", border: "1px solid #ebebeb" }}>+</button>
-                          <button onClick={() => handleAddToCart(p)} className="flex-1 px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors" style={{ backgroundColor: primary, color: "#333333" }}
+                          <button onClick={(e) => handleAddToCart(p, e)} className="flex-1 px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors" style={{ backgroundColor: primary, color: "#333333" }}
                             onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; }}
                             onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
                           >Add to cart</button>
@@ -607,11 +626,11 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                       </Link>
                       <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 text-[9px] font-bold uppercase" style={{ backgroundColor: hoverAccent, color: "#ffffff" }}>New</span>
                       <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 p-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                        <button onClick={() => handleAddToCart(product)} className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+                        <button onClick={(e) => handleAddToCart(product, e)} className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
                           onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
                           onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
                         ><ShoppingCart size={11} /></button>
-                        <button onClick={() => handleToggleWishlist(product)} className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+                        <button onClick={(e) => handleToggleWishlist(product, e)} className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
                           onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
                           onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
                         ><Heart size={11} /></button>
@@ -883,6 +902,13 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
           </div>
         </div>
       </footer>
+
+      {/* Toast notification */}
+      {notif && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] px-5 py-3 text-sm font-semibold shadow-lg animate-fade-in-up" style={{ backgroundColor: "#333333", color: "#ffffff", borderRadius: "4px", fontFamily: "Lato,sans-serif" }}>
+          {notif}
+        </div>
+      )}
     </div>
   );
 }
