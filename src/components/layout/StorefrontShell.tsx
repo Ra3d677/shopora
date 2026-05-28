@@ -45,14 +45,14 @@ export default function StorefrontShell({
     );
   }
 
-  if (is2M && isCartPage) {
+  if (is2M) {
     return (
       <>
-        <AkiraHeader store={store} slug={slug} categories={store.categories} />
+        {!isHomePage && <AkiraHeader store={store} slug={slug} categories={store.categories} />}
         <main className="flex-grow flex flex-col store-container">
           {children}
         </main>
-        <AkiraFooter slug={slug} store={store} />
+        {!isHomePage && <AkiraFooter slug={slug} store={store} />}
       </>
     );
   }

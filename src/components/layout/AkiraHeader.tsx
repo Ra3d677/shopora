@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Search, Heart, ShoppingCart, User, ChevronDown } from "lucide-react";
 import { useCartStore } from "@/store/cart";
@@ -10,6 +11,21 @@ export default function AkiraHeader({ store, slug, categories }: { store: any; s
   const { items } = useCartStore();
   const { items: wishlistItems } = useWishlistStore();
   const cartCount = items.filter((i: any) => i.storeId === store.id).length;
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="font-['Lato',sans-serif]" style={{ color: "#333333" }}>
@@ -76,9 +92,38 @@ export default function AkiraHeader({ store, slug, categories }: { store: any; s
       {/* Navigation */}
       <div style={{ borderBottom: "1px solid #e5e5e5" }}>
         <div className="mx-auto flex items-center" style={{ maxWidth: "1200px", padding: "0 15px", height: "50px" }}>
-          <div className="flex items-center h-full px-5 mr-8" style={{ backgroundColor: primary }}>
-            <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#333333" }}>All Categories</span>
-            <ChevronDown size={14} className="ml-2" style={{ color: "#333333" }} />
+          <div ref={dropdownRef} className="relative h-full z-50">
+            <button
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className="flex items-center h-full px-5 mr-8 transition-opacity hover:opacity-90 cursor-pointer animate-fade-in"
+              style={{ backgroundColor: primary, border: "none" }}
+            >
+              <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#333333" }}>All Categories</span>
+              <ChevronDown size={14} className={`ml-2 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} style={{ color: "#333333" }} />
+            </button>
+
+            {dropdownOpen && (
+              <div 
+                className="absolute left-0 mt-0 bg-white border border-[#e5e5e5] shadow-lg py-2 transition-all duration-200"
+                style={{ width: "220px", zIndex: 100 }}
+              >
+                {categories.length === 0 ? (
+                  <div className="px-4 py-2 text-xs text-gray-500 font-semibold">No Categories</div>
+                ) : (
+                  categories.map((cat: any) => (
+                    <Link
+                      key={cat.id}
+                      href={`/store/${slug}/products?category=${cat.id}`}
+                      onClick={() => setDropdownOpen(false)}
+                      className="block px-4 py-2.5 text-xs font-bold uppercase tracking-wider hover:bg-[#fafafa] hover:text-[#e1205e] transition-colors"
+                      style={{ color: "#333333", borderBottom: "1px solid #f5f5f5" }}
+                    >
+                      {cat.name}
+                    </Link>
+                  ))
+                )}
+              </div>
+            )}
           </div>
           <nav className="flex items-center gap-6 text-xs font-bold uppercase tracking-wider">
             <Link href={`/store/${slug}`} className="hover:opacity-60 transition-opacity" style={{ color: "#333333" }}>Home</Link>
