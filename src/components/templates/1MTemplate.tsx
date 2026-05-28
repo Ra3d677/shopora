@@ -58,7 +58,6 @@ export default function OneMTemplate({ banners, settings, products, slug, catego
     { id: '1m-cta', type: 'cta_banners' },
     { id: '1m-tabbed-products', type: 'tabbed_products' },
     { id: '1m-blog', type: 'blog' },
-    { id: '1m-footer', type: 'footer' },
   ];
 
   const allCategories = categories.length > 0 ? categories : [{ id: 'all', name: 'All' }];

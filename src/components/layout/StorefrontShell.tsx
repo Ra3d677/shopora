@@ -7,6 +7,7 @@ import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import StoreHeader from "@/components/layout/StoreHeader";
 import AkiraHeader from "@/components/layout/AkiraHeader";
 import AkiraFooter from "@/components/layout/AkiraFooter";
+import AnivioHeader from "@/components/layout/AnivioHeader";
 
 export default function StorefrontShell({
   children,
@@ -28,9 +29,22 @@ export default function StorefrontShell({
   const pathname = usePathname();
   const isHomePage = pathname === `/store/${slug}` || pathname === `/store/${slug}/`;
   const isCartPage = pathname.includes('/cart');
-  const isAkira = store.template === '1m' || store.template === '2m';
+  const is1M = store.template === '1m';
+  const is2M = store.template === '2m';
 
-  if (isAkira && isCartPage) {
+  if (is1M) {
+    return (
+      <>
+        <AnivioHeader store={store} slug={slug} categories={store.categories} />
+        <main className="flex-grow flex flex-col store-container">
+          {children}
+        </main>
+        <AkiraFooter slug={slug} store={store} />
+      </>
+    );
+  }
+
+  if (is2M && isCartPage) {
     return (
       <>
         <AkiraHeader store={store} slug={slug} categories={store.categories} />
