@@ -301,7 +301,7 @@ export default async function StorefrontLayout({
         {headerSection ? (
           <StoreHeader headerConfig={headerSection} slug={slug} storeName={store.name} session={session} categories={store.categories} />
         ) : (
-          store.template !== 'fitness' && (
+          store.template !== 'fitness' && store.template !== '2m' && (
             <Navbar 
               activeTemplate={store.template as any} 
               storeSettings={{

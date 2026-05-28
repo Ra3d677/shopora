@@ -53,11 +53,6 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
   const [activeTab, setActiveTab] = useState("NEW");
   const [showAllCategories, setShowAllCategories] = useState(false);
   const [saleIdx, setSaleIdx] = useState(0);
-  const [notif, setNotif] = useState("");
-
-  useEffect(() => {
-    if (notif) { const t = setTimeout(() => setNotif(""), 2000); return () => clearTimeout(t); }
-  }, [notif]);
   const cartAddItem = useCartStore((s) => s.addItem);
   const cartItems = useCartStore((s) => s.items);
   const { addItem: addWishlist, removeItem: removeWishlist, isWishlisted } = useWishlistStore();
@@ -66,7 +61,6 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
   const handleAddToCart = (product: any, e?: React.MouseEvent) => {
     e?.stopPropagation();
-    console.log("🛒 handleAddToCart called for:", product?.name || product?.id);
     try {
       const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
       cartAddItem({
@@ -78,27 +72,20 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         selectedColor: "",
         selectedImage: img,
       });
-      console.log("✅ cartAddItem succeeded");
-      setNotif(`🛒 "${product?.name || "Product"}" added to cart!`);
-    } catch (err) { console.error("❌ cartAddItem error:", err); }
+    } catch (err) { console.error("cartAddItem error:", err); }
   };
 
   const handleToggleWishlist = (product: any, e?: React.MouseEvent) => {
     e?.stopPropagation();
-    console.log("❤️ handleToggleWishlist called for:", product?.name || product?.id);
     try {
       const pid = String(product.id);
       const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
       if (isWishlisted(pid)) {
         removeWishlist(pid);
-        console.log("✅ removed from wishlist");
-        setNotif(`💔 "${product?.name || "Product"}" removed from wishlist`);
       } else {
         addWishlist({ productId: pid, storeId: slug, name: product.name, price: product.price, image: img, slug: `/store/${slug}/product/${product.id}` });
-        console.log("✅ added to wishlist");
-        setNotif(`❤️ "${product?.name || "Product"}" added to wishlist!`);
       }
-    } catch (err) { console.error("❌ wishlist error:", err); }
+    } catch (err) { console.error("wishlist error:", err); }
   };
 
   const topBanners = banners.filter((b: any) => b.isActive && (b.position === 'top' || !b.position));
@@ -903,12 +890,6 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         </div>
       </footer>
 
-      {/* Toast notification */}
-      {notif && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] px-5 py-3 text-sm font-semibold shadow-lg animate-fade-in-up" style={{ backgroundColor: "#333333", color: "#ffffff", borderRadius: "4px", fontFamily: "Lato,sans-serif" }}>
-          {notif}
-        </div>
-      )}
     </div>
   );
 }
