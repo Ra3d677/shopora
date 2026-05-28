@@ -28,9 +28,9 @@ export default function StorefrontShell({
   const pathname = usePathname();
   const isHomePage = pathname === `/store/${slug}` || pathname === `/store/${slug}/`;
   const isCartPage = pathname.includes('/cart');
-  const is1M = store.template === '1m';
+  const isAkira = store.template === '1m' || store.template === '2m';
 
-  if (is1M && isCartPage) {
+  if (isAkira && isCartPage) {
     return (
       <>
         <AkiraHeader store={store} slug={slug} categories={store.categories} />
