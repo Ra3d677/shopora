@@ -344,12 +344,12 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         {realCategories.length > 0 && (
           <div className="hidden lg:block w-[220px] shrink-0" style={{ marginTop: "0px", height: "380px" }}>
             <div className="flex flex-col h-full bg-white" style={{ border: "1px solid #ebebeb", height: "100%" }}>
-              <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: "thin" }}>
+              <div className="flex-1 overflow-y-auto flex flex-col h-full" style={{ scrollbarWidth: "thin", display: "flex", flexDirection: "column", height: "100%" }}>
                 {visibleCategories.map((cat, i) => (
                   <Link
                     key={cat.id || i}
                     href={`/store/${slug}/categories`}
-                    className="px-4 py-2 text-xs font-semibold transition-colors block"
+                    className="px-4 text-xs font-semibold transition-colors flex items-center flex-1 min-h-[44px]"
                     style={{ color: "#666666", borderBottom: "1px solid #f0f0f0" }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = hoverAccent; e.currentTarget.style.paddingLeft = "20px"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "#666666"; e.currentTarget.style.paddingLeft = "16px"; }}

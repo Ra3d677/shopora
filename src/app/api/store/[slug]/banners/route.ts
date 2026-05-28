@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   try {
@@ -43,6 +44,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
         data: { settings: JSON.stringify(settings) },
       });
     }
+
+    revalidatePath(`/store/${slug}`);
+    revalidatePath(`/store/${slug}/admin/banners`);
+    revalidateTag(`banners-${slug}`, 'max');
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
