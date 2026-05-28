@@ -284,7 +284,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       {/* ====== NAVIGATION BAR ====== */}
       <div className="hidden lg:block max-w-[1200px] mx-auto" style={{ borderTop: "1px solid #ebebeb", borderBottom: "1px solid #ebebeb" }}>
         <div className="flex items-stretch" style={{ padding: "0px 15px" }}>
-          <div className="flex items-center gap-2 px-5 py-3 text-sm font-bold uppercase cursor-pointer shrink-0" style={{ backgroundColor: primary, color: "#333333", minWidth: "190px" }}>
+          <div className="flex items-center gap-2 px-5 py-3 text-sm font-bold uppercase cursor-pointer shrink-0" style={{ backgroundColor: primary, color: "#333333", width: "220px" }}>
             <Menu size={16} />
             <span>All categories</span>
           </div>
@@ -430,7 +430,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       </div>
 
       {/* ====== CTA BANNERS (image only) ====== */}
-      <div className="max-w-[1200px] mx-auto" style={{ padding: "0px 15px", marginBottom: "50px" }}>
+      <div className="max-w-[1200px] mx-auto" style={{ padding: "0px 15px", marginTop: "30px", marginBottom: "50px" }}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px]">
           {ctaBanners.map((banner, i) => (
             <Link key={i} href={`/store/${slug}/products`} className="group block overflow-hidden" style={{ minHeight: "290px" }}>
