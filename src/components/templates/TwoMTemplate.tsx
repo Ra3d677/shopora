@@ -475,14 +475,30 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
             <div style={{ border: "2px solid #fed700", borderRadius: "5px", padding: "20px" }}>
               {productSliders.saleProducts.slice(0, 3).map((product: any, i: number) => (
                 <div key={i} className="flex gap-4 mb-4 pb-4" style={{ borderBottom: i < 2 ? "1px solid #f0f0f0" : "none" }}>
-                  <div className="w-[100px] shrink-0" style={{ backgroundColor: "#f8f8f8" }}>
+                  <div className="w-[100px] shrink-0 relative" style={{ backgroundColor: "#f8f8f8" }}>
                     <img src={Array.isArray(product.images) ? product.images[0] : product.images} alt={product.name} className="w-full aspect-square object-cover" />
+                    <span className="absolute top-1 left-1 px-1.5 py-0.5 text-[9px] font-bold uppercase" style={{ backgroundColor: hoverAccent, color: "#ffffff" }}>New</span>
                   </div>
-                  <div className="flex flex-col justify-center">
-                    <p className="text-[11px] uppercase tracking-wider mb-1" style={{ color: "#999999" }}>{product.category}</p>
-                    <h4 className="text-sm font-semibold mb-1" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{product.name}</h4>
+                  <div className="flex flex-col justify-center flex-1">
+                    <p className="text-[11px] uppercase tracking-wider mb-0.5" style={{ color: "#999999" }}>{product.category || "Category"}</p>
+                    <h4 className="text-sm font-semibold mb-0.5" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{product.name}</h4>
                     {renderStars()}
-                    <p className="text-sm font-bold mt-1" style={{ color: "#333333" }}>${product.price?.toFixed(2)}</p>
+                    <p className="text-xs" style={{ color: "#999999" }}>(0 Reviews)</p>
+                    <p className="text-sm font-bold mt-0.5" style={{ color: "#333333" }}>${product.price?.toFixed(2)}</p>
+                  </div>
+                  <div className="flex flex-col gap-1 justify-center">
+                    <button className="w-7 h-7 flex items-center justify-center text-[10px] font-bold transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
+                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
+                    ><GitCompare size={11} /></button>
+                    <button className="w-7 h-7 flex items-center justify-center text-[10px] font-bold transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
+                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
+                    ><Heart size={11} /></button>
+                    <button className="w-7 h-7 flex items-center justify-center text-[10px] font-bold transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
+                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
+                    ><Eye size={11} /></button>
                   </div>
                 </div>
               ))}
@@ -519,22 +535,38 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                   activeTab === "FEATURED" ? productSliders.featuredProd :
                   productSliders.topRatedProd
                 ).slice(0, 9).map((product: any, i: number) => (
-                  <Link key={i} href={`/store/${slug}/products`} className="group">
+                  <div key={i} className="group">
                     <div className="relative overflow-hidden mb-2" style={{ backgroundColor: "#f8f8f8" }}>
-                      <img src={Array.isArray(product.images) ? product.images[0] : product.images} alt={product.name} className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105" />
-                      <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 p-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                        <button className="w-8 h-8 flex items-center justify-center transition-colors text-[10px] font-bold" style={{ backgroundColor: primary, color: "#333333" }}
+                      <Link href={`/store/${slug}/products`}>
+                        <img src={Array.isArray(product.images) ? product.images[0] : product.images} alt={product.name} className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105" />
+                      </Link>
+                      <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 text-[9px] font-bold uppercase" style={{ backgroundColor: hoverAccent, color: "#ffffff" }}>New</span>
+                      <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1.5 p-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                        <button className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
+                        ><GitCompare size={11} /></button>
+                        <button className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
+                        ><Heart size={11} /></button>
+                        <button className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
+                        ><Eye size={11} /></button>
+                        <button className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: primary, color: "#333333" }}
                           onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = hoverAccent; e.currentTarget.style.color = "#ffffff"; }}
                           onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
-                        >
-                          <ShoppingCart size={12} />
-                        </button>
+                        ><ShoppingCart size={11} /></button>
                       </div>
                     </div>
-                    <p className="text-[11px] uppercase tracking-wider mb-0.5" style={{ color: "#999999" }}>{product.category}</p>
-                    <h4 className="text-xs font-semibold mb-0.5 transition-colors group-hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{product.name}</h4>
-                    <p className="text-xs font-bold" style={{ color: "#333333" }}>${product.price?.toFixed(2)}</p>
-                  </Link>
+                    <p className="text-[11px] uppercase tracking-wider mb-0.5" style={{ color: "#999999" }}>{product.category || "Category"}</p>
+                    <h4 className="text-xs font-semibold mb-0.5 transition-colors group-hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>
+                      <Link href={`/store/${slug}/products`}>{product.name}</Link>
+                    </h4>
+                    {renderStars()}
+                    <p className="text-xs font-bold mt-0.5" style={{ color: "#333333" }}>${product.price?.toFixed(2)}</p>
+                  </div>
                 ))}
               </div>
             </div>
