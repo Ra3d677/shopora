@@ -1,19 +1,16 @@
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 import { getStoreBySlug } from "@/lib/data";
 import { getLang } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 import { ShieldAlert } from "lucide-react";
 import Link from "next/link";
-import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import CustomCursor from "@/components/ui/premium/CustomCursor";
 import AdminEditorBar from "@/components/editor/AdminEditorBar";
 import PreviewWrapper from "@/components/editor/PreviewWrapper";
 import { getSession } from "@/lib/auth";
+import StorefrontShell from "@/components/layout/StorefrontShell";
 import VisitorTracker from "@/components/layout/VisitorTracker";
 import PixelTracker from "@/components/layout/PixelTracker";
 import KineticBackground from "@/components/ui/premium/KineticBackground";
-import StoreHeader from "@/components/layout/StoreHeader";
 import { Suspense } from "react";
 import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
 function hexToRgb(hex: string) {
@@ -112,13 +109,6 @@ export default async function StorefrontLayout({
     testimonial: { background: '#0f172a', text: '#ffffff', ...(rawColorSystem.testimonial || {}) },
     animatedBackgrounds: rawColorSystem.animatedBackgrounds || {}
   };
-
-  // Determine current page type for specific styling
-  const pageType = children?.toString().includes('Shop') ? 'shop' : 
-                   children?.toString().includes('Category') ? 'categories' :
-                   children?.toString().includes('Product') ? 'product' :
-                   children?.toString().includes('Cart') ? 'cart' :
-                   children?.toString().includes('Checkout') ? 'checkout' : 'home';
 
   const customStyles = {
     '--dynamic-primary': colorSystem.brand?.primary || store.primaryColor,
@@ -298,34 +288,16 @@ export default async function StorefrontLayout({
         <AdminEditorBar slug={slug} isOwner={isOwner} store={store} />
       </Suspense>
       <PreviewWrapper isOwner={isOwner}>
-        {headerSection ? (
-          <StoreHeader headerConfig={headerSection} slug={slug} storeName={store.name} session={session} categories={store.categories} />
-        ) : (
-          store.template !== 'fitness' && (store.template !== '2m' || pageType !== 'home') && (
-            <Navbar 
-              activeTemplate={store.template as any} 
-              storeSettings={{
-                  ...store.settings,
-                  type: store.type,
-                  storeName: store.settings.storeName || store.name,
-                  primaryColor: store.settings.colorSystem?.brand?.primary || store.primaryColor,
-              }} 
-              storeId={store.id}
-              categories={store.categories}
-              products={store.products}
-              lang={lang} 
-              slug={slug}
-              session={session}
-            />
-          )
-        )}
-        <main className={`flex-grow flex flex-col store-container ${headerSection ? 'pt-16 md:pt-20' : ''}`}>
+        <StorefrontShell
+          headerSection={headerSection}
+          store={store}
+          session={session}
+          lang={lang}
+          slug={slug}
+          isOwner={isOwner}
+        >
           {children}
-        </main>
-        <div data-page="footer">
-          {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'dddyou' && store.template !== '1m' && (store.template !== '2m' || pageType !== 'home') && <Footer />}
-        </div>
-        {store.template !== 'fitness' && store.template !== 'dddyou' && store.template !== '1m' && store.template !== '2m' && <WhatsAppButton />}
+        </StorefrontShell>
       </PreviewWrapper>
     </div>
   );
