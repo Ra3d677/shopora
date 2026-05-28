@@ -342,25 +342,27 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       <div className="max-w-[1200px] mx-auto flex" style={{ padding: "0px 15px" }}>
         {/* Categories Vertical Sidebar (always visible) */}
         {realCategories.length > 0 && (
-          <div className="hidden lg:block w-[220px] shrink-0" style={{ marginTop: "0px" }}>
-            <div className="flex flex-col" style={{ border: "1px solid #ebebeb" }}>
-              {visibleCategories.map((cat, i) => (
-                <Link
-                  key={cat.id || i}
-                  href={`/store/${slug}/categories`}
-                  className="px-4 py-2 text-xs font-semibold transition-colors"
-                  style={{ color: "#666666", borderBottom: "1px solid #f0f0f0" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = hoverAccent; e.currentTarget.style.paddingLeft = "20px"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "#666666"; e.currentTarget.style.paddingLeft = "16px"; }}
-                >
-                  {cat.name}
-                </Link>
-              ))}
+          <div className="hidden lg:block w-[220px] shrink-0" style={{ marginTop: "0px", height: "380px" }}>
+            <div className="flex flex-col h-full bg-white" style={{ border: "1px solid #ebebeb", height: "100%" }}>
+              <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: "thin" }}>
+                {visibleCategories.map((cat, i) => (
+                  <Link
+                    key={cat.id || i}
+                    href={`/store/${slug}/categories`}
+                    className="px-4 py-2 text-xs font-semibold transition-colors block"
+                    style={{ color: "#666666", borderBottom: "1px solid #f0f0f0" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = hoverAccent; e.currentTarget.style.paddingLeft = "20px"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "#666666"; e.currentTarget.style.paddingLeft = "16px"; }}
+                  >
+                    {cat.name}
+                  </Link>
+                ))}
+              </div>
               {realCategories.length > 8 && (
                 <button
                   onClick={() => setShowAllCategories(!showAllCategories)}
-                  className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-left transition-colors"
-                  style={{ color: primary }}
+                  className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-left transition-colors border-t shrink-0"
+                  style={{ color: primary, borderColor: "#ebebeb", paddingTop: "10px", paddingBottom: "10px" }}
                 >
                   {showAllCategories ? "− Show Less" : `+ ${realCategories.length - 8} more`}
                 </button>
