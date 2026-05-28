@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useCartStore } from "@/store/cart";
 import { useWishlistStore } from "@/store/wishlist";
+import { useLanguageStore } from "@/store/language";
 import SmartImage from "@/components/ui/SmartImage";
 
 interface TwoMProductsProps {
@@ -17,7 +18,6 @@ interface TwoMProductsProps {
   category?: string;
   pageTitle: string;
   pageDescription: string;
-  t: any;
 }
 
 export default function TwoMProducts({
@@ -26,9 +26,9 @@ export default function TwoMProducts({
   products,
   category: activeCategoryId,
   pageTitle,
-  pageDescription,
-  t
+  pageDescription
 }: TwoMProductsProps) {
+  const { t } = useLanguageStore();
   const primary = "#fed700";
   const hoverAccent = "#e1205e";
 

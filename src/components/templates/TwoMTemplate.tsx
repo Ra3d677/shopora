@@ -330,7 +330,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
             >
               Home
             </Link>
-            <div className="relative group px-4 py-3">
+            <Link href={`/store/${slug}/products`} className="relative group px-4 py-3 block">
               <div className="flex items-center gap-1 text-xs font-bold uppercase tracking-wider cursor-pointer transition-colors" style={{ color: "#333333" }}
                 onMouseEnter={(e) => { e.currentTarget.style.color = hoverAccent; }}
                 onMouseLeave={(e) => { e.currentTarget.style.color = "#333333"; }}
@@ -338,7 +338,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                 Shop
                 <span className="ml-1.5 px-1.5 py-0.5 text-[9px] font-bold" style={{ backgroundColor: "#e1205e", color: "#ffffff" }}>Hot</span>
               </div>
-            </div>
+            </Link>
             <Link href={`/store/${slug}/blog`} className="px-4 py-3 text-xs font-bold uppercase tracking-wider transition-colors" style={{ color: "#333333" }}
               onMouseEnter={(e) => { e.currentTarget.style.color = hoverAccent; }}
               onMouseLeave={(e) => { e.currentTarget.style.color = "#333333"; }}

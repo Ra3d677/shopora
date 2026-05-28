@@ -120,7 +120,6 @@ export default async function ProductsPage({
         category={category}
         pageTitle={pageTitle}
         pageDescription={pageDescription}
-        t={t}
       />
     );
   }
