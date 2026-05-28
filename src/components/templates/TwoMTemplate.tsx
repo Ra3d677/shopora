@@ -630,85 +630,38 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         </div>
       </div>
 
-      {/* ====== PRODUCT GRID COLUMNS (4-col) ====== */}
+      {/* ====== PRODUCT GRID COLUMNS (4-col cards) ====== */}
       <div className="max-w-[1200px] mx-auto" style={{ padding: "10px 15px 40px" }}>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-[30px]">
-          {/* Col 1: New Products */}
           <div>
             <h3 className="text-lg font-bold mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>New Products</h3>
             <div style={{ borderTop: "2px solid #ebebeb", paddingTop: "15px" }}>
               {productSliders.newProd.slice(0, 4).map((product: any, i: number) => (
-                <div key={i} className="flex gap-3 mb-3 pb-3" style={{ borderBottom: i < 3 ? "1px solid #f0f0f0" : "none" }}>
-                  <div className="w-[80px] shrink-0" style={{ backgroundColor: "#f8f8f8" }}>
-                    <img src={Array.isArray(product.images) ? product.images[0] : product.images} alt={product.name} className="w-full aspect-square object-cover" />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                    <h4 className="text-xs font-semibold mb-0.5 transition-colors hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>
-                      <Link href={`/store/${slug}/products`}>{product.name}</Link>
-                    </h4>
-                    <p className="text-xs font-bold" style={{ color: "#333333" }}>${product.price?.toFixed(2)}</p>
-                  </div>
-                </div>
+                <div key={i} className="mb-5">{renderProductCard(product)}</div>
               ))}
             </div>
           </div>
-
-          {/* Col 2: Featured products */}
           <div>
             <h3 className="text-lg font-bold mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>Featured products</h3>
             <div style={{ borderTop: "2px solid #ebebeb", paddingTop: "15px" }}>
               {productSliders.featuredProd.slice(0, 4).map((product: any, i: number) => (
-                <div key={i} className="flex gap-3 mb-3 pb-3" style={{ borderBottom: i < 3 ? "1px solid #f0f0f0" : "none" }}>
-                  <div className="w-[80px] shrink-0" style={{ backgroundColor: "#f8f8f8" }}>
-                    <img src={Array.isArray(product.images) ? product.images[0] : product.images} alt={product.name} className="w-full aspect-square object-cover" />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                    <h4 className="text-xs font-semibold mb-0.5 transition-colors hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>
-                      <Link href={`/store/${slug}/products`}>{product.name}</Link>
-                    </h4>
-                    <p className="text-xs font-bold" style={{ color: "#333333" }}>${product.price?.toFixed(2)}</p>
-                  </div>
-                </div>
+                <div key={i} className="mb-5">{renderProductCard(product)}</div>
               ))}
             </div>
           </div>
-
-          {/* Col 3 */}
           <div>
             <h3 className="text-lg font-bold mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>Top Rated</h3>
             <div style={{ borderTop: "2px solid #ebebeb", paddingTop: "15px" }}>
               {productSliders.topRatedProd.slice(0, 4).map((product: any, i: number) => (
-                <div key={i} className="flex gap-3 mb-3 pb-3" style={{ borderBottom: i < 3 ? "1px solid #f0f0f0" : "none" }}>
-                  <div className="w-[80px] shrink-0" style={{ backgroundColor: "#f8f8f8" }}>
-                    <img src={Array.isArray(product.images) ? product.images[0] : product.images} alt={product.name} className="w-full aspect-square object-cover" />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                    <h4 className="text-xs font-semibold mb-0.5 transition-colors hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>
-                      <Link href={`/store/${slug}/products`}>{product.name}</Link>
-                    </h4>
-                    <p className="text-xs font-bold" style={{ color: "#333333" }}>${product.price?.toFixed(2)}</p>
-                  </div>
-                </div>
+                <div key={i} className="mb-5">{renderProductCard(product)}</div>
               ))}
             </div>
           </div>
-
-          {/* Col 4 */}
           <div>
             <h3 className="text-lg font-bold mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>Popular</h3>
             <div style={{ borderTop: "2px solid #ebebeb", paddingTop: "15px" }}>
               {productSliders.prod4.slice(0, 4).map((product: any, i: number) => (
-                <div key={i} className="flex gap-3 mb-3 pb-3" style={{ borderBottom: i < 3 ? "1px solid #f0f0f0" : "none" }}>
-                  <div className="w-[80px] shrink-0" style={{ backgroundColor: "#f8f8f8" }}>
-                    <img src={Array.isArray(product.images) ? product.images[0] : product.images} alt={product.name} className="w-full aspect-square object-cover" />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                    <h4 className="text-xs font-semibold mb-0.5 transition-colors hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>
-                      <Link href={`/store/${slug}/products`}>{product.name}</Link>
-                    </h4>
-                    <p className="text-xs font-bold" style={{ color: "#333333" }}>${product.price?.toFixed(2)}</p>
-                  </div>
-                </div>
+                <div key={i} className="mb-5">{renderProductCard(product)}</div>
               ))}
             </div>
           </div>
