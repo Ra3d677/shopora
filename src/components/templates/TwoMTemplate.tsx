@@ -7,6 +7,8 @@ import {
   Phone, Mail, Clock, Rocket, Undo2, Info, Shield, Star, Eye, GitCompare,
   Gift, ChevronDown
 } from "lucide-react";
+import { useCartStore } from "@/store/cart";
+import { useWishlistStore } from "@/store/wishlist";
 
 interface TemplateProps {
   banners: any[];
@@ -51,6 +53,34 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
   const [activeTab, setActiveTab] = useState("NEW");
   const [showAllCategories, setShowAllCategories] = useState(false);
   const [saleIdx, setSaleIdx] = useState(0);
+  const cartAddItem = useCartStore((s) => s.addItem);
+  const cartItems = useCartStore((s) => s.items);
+  const { addItem: addWishlist, removeItem: removeWishlist, isWishlisted } = useWishlistStore();
+
+  const cartCount = cartItems.filter((i) => i.storeId === slug).reduce((a, i) => a + i.quantity, 0);
+
+  const handleAddToCart = (product: any) => {
+    const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
+    cartAddItem({
+      id: `${slug}-${product.id}-One Size-`,
+      storeId: slug,
+      product: { ...product, images: product.images || img },
+      quantity: 1,
+      selectedSize: "One Size",
+      selectedColor: "",
+      selectedImage: img,
+    });
+  };
+
+  const handleToggleWishlist = (product: any) => {
+    const pid = String(product.id);
+    const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
+    if (isWishlisted(pid)) {
+      removeWishlist(pid);
+    } else {
+      addWishlist({ productId: pid, storeId: slug, name: product.name, price: product.price, image: img, slug: `/store/${slug}/product/${product.id}` });
+    }
+  };
 
   const topBanners = banners.filter((b: any) => b.isActive && (b.position === 'top' || !b.position));
   const midBanners = banners.filter((b: any) => b.isActive && b.position === 'middle');
@@ -166,13 +196,13 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         )}
         {!compact && (
           <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1.5 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-            <button className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+            <button onClick={() => handleAddToCart(product)} className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
             >
               <ShoppingCart size={14} />
             </button>
-            <button className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+            <button onClick={() => handleToggleWishlist(product)} className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
             >
@@ -184,12 +214,12 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
             >
               <GitCompare size={14} />
             </button>
-            <button className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+            <Link href={`/store/${slug}/product/${product.id}`} className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb", display: "inline-flex" }}
               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
             >
               <Eye size={14} />
-            </button>
+            </Link>
           </div>
         )}
       </div>
@@ -276,7 +306,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
             <Link href={`/store/${slug}/cart`} className="flex flex-col items-center cursor-pointer relative">
               <ShoppingCart size={20} style={{ color: "#333333" }} />
               <span className="text-[10px] font-semibold mt-0.5" style={{ color: "#333333" }}>CART</span>
-              <span className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center text-[9px] font-bold" style={{ backgroundColor: primary, color: "#333333", borderRadius: "50%" }}>0</span>
+              <span className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center text-[9px] font-bold" style={{ backgroundColor: primary, color: "#333333", borderRadius: "50%" }}>{cartCount}</span>
             </Link>
           </div>
         </div>
@@ -490,24 +520,24 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                       </div>
                       <div className="flex flex-col justify-center flex-1">
                         <div className="flex gap-2 mb-2">
-                          <button className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
+                          <button onClick={() => handleAddToCart(p)} className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
                             onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
                             onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
-                          ><GitCompare size={13} /></button>
-                          <button className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
+                          ><ShoppingCart size={13} /></button>
+                          <button onClick={() => handleToggleWishlist(p)} className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
                             onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
                             onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
                           ><Heart size={13} /></button>
-                          <button className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
+                          <Link href={`/store/${slug}/product/${p?.id}`} className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb", display: "inline-flex" }}
                             onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
                             onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
-                          ><Eye size={13} /></button>
+                          ><Eye size={13} /></Link>
                         </div>
                         <div className="flex items-center gap-2 mb-3">
                           <button className="w-8 h-8 flex items-center justify-center text-sm font-bold" style={{ backgroundColor: "#f0f0f0", color: "#333333", border: "1px solid #ebebeb" }}>−</button>
                           <span className="text-sm font-bold px-2">1</span>
                           <button className="w-8 h-8 flex items-center justify-center text-sm font-bold" style={{ backgroundColor: "#f0f0f0", color: "#333333", border: "1px solid #ebebeb" }}>+</button>
-                          <button className="flex-1 px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors" style={{ backgroundColor: primary, color: "#333333" }}
+                          <button onClick={() => handleAddToCart(p)} className="flex-1 px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors" style={{ backgroundColor: primary, color: "#333333" }}
                             onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; }}
                             onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
                           >Add to cart</button>
@@ -577,22 +607,18 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                       </Link>
                       <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 text-[9px] font-bold uppercase" style={{ backgroundColor: hoverAccent, color: "#ffffff" }}>New</span>
                       <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 p-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                        <button className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+                        <button onClick={() => handleAddToCart(product)} className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
                           onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
                           onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
-                        ><GitCompare size={11} /></button>
-                        <button className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+                        ><ShoppingCart size={11} /></button>
+                        <button onClick={() => handleToggleWishlist(product)} className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
                           onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
                           onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
                         ><Heart size={11} /></button>
-                        <button className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+                        <Link href={`/store/${slug}/product/${product.id}`} className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb", display: "inline-flex" }}
                           onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
                           onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
-                        ><Eye size={11} /></button>
-                        <button className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: primary, color: "#333333" }}
-                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = hoverAccent; e.currentTarget.style.color = "#ffffff"; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
-                        ><ShoppingCart size={11} /></button>
+                        ><Eye size={11} /></Link>
                       </div>
                     </div>
                     <Link href={`/store/${slug}/product/${product.id}`} className="text-[11px] font-semibold mb-0.5 block transition-colors hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{product.name}</Link>
