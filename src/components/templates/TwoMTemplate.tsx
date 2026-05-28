@@ -137,21 +137,8 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
     })),
   };
 
-  const categoryMenu = [
-    { name: "Furniture", icon: "armchair" },
-    { name: "Cooking", icon: "chef-hat" },
-    { name: "Fashion", icon: "shirt" },
-    { name: "Accessories", icon: "watch" },
-    { name: "Clocks", icon: "clock" },
-    { name: "Lighting", icon: "lamp" },
-    { name: "Toys", icon: "toy" },
-    { name: "Hand Made", icon: "gift" },
-    { name: "Minimalism", icon: "minimal" },
-    { name: "Electronics", icon: "laptop" },
-    { name: "Cars", icon: "car" },
-  ];
-
-  const visibleCategories = showAllCategories ? categoryMenu : categoryMenu.slice(0, 8);
+  const realCategories = Array.isArray(categories) ? categories : [];
+  const visibleCategories = showAllCategories ? realCategories : realCategories.slice(0, 8);
 
   const renderStars = (count = 5) => {
     return (
@@ -384,16 +371,16 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
               >
                 <div className="flex items-center" style={{ minHeight: "400px", backgroundImage: `url(${slide.image})`, backgroundPosition: "right center", backgroundRepeat: "no-repeat", backgroundSize: "contain", backgroundColor: "#f8f8f8" }}>
                   <div className="max-w-[450px]" style={{ marginRight: "auto", padding: "60px 0" }}>
-                    <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: "#999999" }}>{slide.heading}</p>
-                    <h2 className="text-4xl md:text-[50px] font-black leading-tight mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>
+                    <p style={{ color: primary, fontSize: "20px", fontWeight: 700, textTransform: "uppercase", lineHeight: "30px", marginBottom: "20px" }}>{slide.heading}</p>
+                    <h2 style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "50px", fontWeight: 700, textTransform: "uppercase", lineHeight: "60px", marginBottom: "30px" }}>
                       <span dangerouslySetInnerHTML={{ __html: slide.description }} />
                     </h2>
                     {slide.buttonText && (
                       <Link
                         href={`/store/${slug}/products`}
                         className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold uppercase tracking-wider transition-colors"
-                        style={{ backgroundColor: primary, color: "#333333" }}
-                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = hoverAccent; e.currentTarget.style.color = "#ffffff"; }}
+                        style={{ backgroundColor: primary, color: "#333333", fontSize: "14px", fontWeight: 600, lineHeight: "16px" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; }}
                         onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
                       >
                         {slide.buttonText}
@@ -434,20 +421,20 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       </div>
 
       {/* ====== CTA BANNERS ====== */}
-      <div className="max-w-[1170px] mx-auto" style={{ padding: "0px 30px" }}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px]">
+      <div className="max-w-[1200px] mx-auto" style={{ padding: "0px 15px", marginBottom: "50px" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {ctaBanners.map((banner, i) => (
-            <Link key={i} href={`/store/${slug}/products`} className="relative group block overflow-hidden" style={{ minHeight: "280px" }}>
-              <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url(${banner.imageUrl})` }} />
-              <div className="relative flex flex-col items-start justify-center h-full" style={{ padding: "40px", minHeight: "280px", background: "linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.1))" }}>
-                <p className="text-sm font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.8)" }}>{banner.title}</p>
-                <h3 className="text-3xl font-black mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#ffffff" }}>{banner.subtitle}</h3>
-                <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider transition-colors" style={{ color: primary }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#ffffff"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = primary; }}
+            <Link key={i} href={`/store/${slug}/products`} className="relative group block overflow-hidden" style={{ minHeight: "290px" }}>
+              <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style={{ backgroundImage: `url(${banner.imageUrl})` }} />
+              <div className="elementor-cta__bg-overlay absolute inset-0" style={{ backgroundColor: "transparent" }} />
+              <div className="relative flex flex-col items-start justify-center h-full" style={{ padding: "20px", minHeight: "290px" }}>
+                <p className="text-sm font-bold uppercase tracking-widest mb-5" style={{ color: primary, fontSize: "16px", lineHeight: "30px" }}>{banner.title}</p>
+                <h3 className="text-[26px] font-bold mb-[33px]" style={{ fontFamily: "Lato,sans-serif", color: "#333333", lineHeight: "22px" }}>{banner.subtitle}</h3>
+                <span className="inline-block px-6 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors" style={{ backgroundColor: primary, color: "#333333", fontSize: "13px" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = primary; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
                 >
                   SHOP NOW!
-                  <ChevronRight size={14} />
                 </span>
               </div>
             </Link>
@@ -456,12 +443,12 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       </div>
 
       {/* ====== SALE PRODUCTS + SPECIAL OFFERS ====== */}
-      <div className="max-w-[1170px] mx-auto" style={{ padding: "40px 30px" }}>
+      <div className="max-w-[1200px] mx-auto" style={{ padding: "0px 15px", marginBottom: "65px" }}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px]">
           {/* LEFT: Sale Products */}
           <div>
-            <h3 className="text-xl font-bold mb-5" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>Sale Products</h3>
-            <div style={{ borderTop: "2px solid #ebebeb", paddingTop: "20px" }}>
+            <h3 className="mb-5" style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "26px", lineHeight: "1.4em" }}>Sale Products</h3>
+            <div style={{ border: "2px solid #fed700", borderRadius: "5px", padding: "20px" }}>
               {productSliders.saleProducts.slice(0, 3).map((product: any, i: number) => (
                 <div key={i} className="flex gap-4 mb-4 pb-4" style={{ borderBottom: i < 2 ? "1px solid #f0f0f0" : "none" }}>
                   <div className="w-[100px] shrink-0" style={{ backgroundColor: "#f8f8f8" }}>
@@ -480,21 +467,23 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
           {/* RIGHT: SPECIAL OFFERS with Tabs */}
           <div>
-            <h3 className="text-xl font-bold mb-5" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>SPECIAL OFFERS</h3>
-            <div style={{ borderTop: "2px solid #ebebeb", paddingTop: "20px" }}>
+            <h3 className="mb-5" style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "22px", lineHeight: "1.4em" }}>SPECIAL OFFERS</h3>
+            <div style={{ paddingTop: "20px" }}>
               {/* Tabs */}
-              <div className="flex gap-0 mb-5">
+              <div className="flex justify-end gap-0 mb-[30px]">
                 {["NEW", "FEATURED", "TOP RATED"].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className="px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors"
+                    className="text-base font-semibold uppercase tracking-wider transition-colors"
                     style={{
-                      backgroundColor: activeTab === tab ? primary : "#f8f8f8",
-                      color: activeTab === tab ? "#333333" : "#666666",
-                      border: activeTab === tab ? `1px solid ${primary}` : "1px solid #ebebeb",
-                      borderBottom: activeTab === tab ? "none" : "1px solid #ebebeb",
+                      color: activeTab === tab ? "#333333" : "rgba(51,51,51,0.7)",
+                      borderBottom: activeTab === tab ? "2px solid #fed700" : "2px solid transparent",
+                      marginLeft: "30px",
+                      paddingBottom: "4px",
                     }}
+                    onMouseEnter={(e) => { if (activeTab !== tab) e.currentTarget.style.color = "#333333"; }}
+                    onMouseLeave={(e) => { if (activeTab !== tab) e.currentTarget.style.color = "rgba(51,51,51,0.7)"; }}
                   >
                     {tab}
                   </button>
@@ -530,20 +519,25 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       </div>
 
       {/* ====== BRAND LOGOS CAROUSEL ====== */}
-      <div className="max-w-[1170px] mx-auto" style={{ padding: "20px 30px 40px" }}>
+      <div className="max-w-[1200px] mx-auto" style={{ padding: "15px 15px", marginBottom: "60px" }}>
         <div style={{ borderTop: "1px solid #ebebeb", borderBottom: "1px solid #ebebeb", padding: "25px 0" }}>
-          <div className="flex items-center justify-around">
-            {brandLogos.map((logo, i) => (
-              <div key={i} className="px-4 opacity-40 hover:opacity-80 transition-opacity">
-                <img src={logo} alt={`Brand ${i + 1}`} className="h-8 object-contain" />
-              </div>
-            ))}
+          <div className="relative">
+            <div className="flex items-center justify-around overflow-hidden">
+              {brandLogos.map((logo, i) => (
+                <div key={i} className="px-4 transition-opacity duration-300" style={{ opacity: 0.5 }}
+                  onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.5"; }}
+                >
+                  <img src={logo} alt={`Brand ${i + 1}`} className="h-8 w-auto object-contain mx-auto" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* ====== PRODUCT GRID COLUMNS (4-col) ====== */}
-      <div className="max-w-[1170px] mx-auto" style={{ padding: "10px 30px 40px" }}>
+      <div className="max-w-[1200px] mx-auto" style={{ padding: "10px 15px 40px" }}>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-[30px]">
           {/* Col 1: New Products */}
           <div>
@@ -629,7 +623,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
       {/* ====== BLOG SECTION ====== */}
       <div style={{ backgroundColor: "#f8f8f8" }}>
-        <div className="max-w-[1170px] mx-auto" style={{ padding: "50px 30px 60px" }}>
+        <div className="max-w-[1200px] mx-auto" style={{ padding: "50px 15px 60px" }}>
           <div className="flex flex-col items-center mb-2">
             <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#999999" }}>AKIRA ELECTRONICS</p>
             <h2 className="text-[26px] md:text-[30px] font-bold text-center" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>LATEST FROM BLOG</h2>
