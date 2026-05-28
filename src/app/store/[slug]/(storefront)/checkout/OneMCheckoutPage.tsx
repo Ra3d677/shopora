@@ -30,6 +30,12 @@ export default function OneMCheckoutPage() {
   const [error, setError] = useState("");
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
 
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+  const [couponError, setCouponError] = useState("");
+
   const paymentMethods = (store.settings?.businessSettings?.paymentMethods || []).filter((pm: any) => pm.enabled);
   const paymentKeys = store.settings?.businessSettings?.paymentKeys;
 
@@ -42,6 +48,66 @@ export default function OneMCheckoutPage() {
 
   const total = getCartTotal(store.id);
 
+  const handleApplyCoupon = async () => {
+    if (appliedCoupon) {
+      setAppliedCoupon(null);
+      setDiscountAmount(0);
+      setCouponCode("");
+      setCouponError("");
+      return;
+    }
+
+    if (!couponCode.trim()) return;
+
+    setIsApplyingCoupon(true);
+    setCouponError("");
+
+    try {
+      const response = await fetch(`/api/store/${store.slug}/coupon`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: couponCode.trim().toUpperCase(), subtotal: total }),
+      });
+      const data = await response.json();
+
+      if (data.valid) {
+        setDiscountAmount(data.discount);
+        setAppliedCoupon(data.code);
+      } else {
+        setCouponError(data.error || "Invalid coupon code");
+      }
+    } catch (err) {
+      setCouponError("Failed to apply coupon");
+    } finally {
+      setIsApplyingCoupon(false);
+    }
+  };
+
+  useEffect(() => {
+    if (appliedCoupon) {
+      const reapplyCoupon = async () => {
+        try {
+          const response = await fetch(`/api/store/${store.slug}/coupon`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code: appliedCoupon, subtotal: total }),
+          });
+          const data = await response.json();
+          if (data.valid) {
+            setDiscountAmount(data.discount);
+          } else {
+            setAppliedCoupon(null);
+            setDiscountAmount(0);
+            setCouponError(data.error || "Coupon is no longer valid for this subtotal");
+          }
+        } catch (err) {
+          // Keep existing if validation request fails temporarily
+        }
+      };
+      reapplyCoupon();
+    }
+  }, [total, appliedCoupon, store.slug]);
+
   const [stripePaymentId, setStripePaymentId] = useState("");
 
   const completeOrder = async (transactionId?: string) => {
@@ -53,16 +119,19 @@ export default function OneMCheckoutPage() {
       const validItems = items.filter(item => store.products.some((p: any) => p.id === item.product.id));
       if (validItems.length === 0) throw new Error("Cart items are no longer available.");
 
+      const finalTotal = Math.max(0, total - discountAmount);
+
       const result = await createOrder({
         storeId: store.id,
         customerName: formData.name,
         customerEmail: formData.email,
         customerPhone: formData.phone,
         shippingAddress: formData.address,
-        notes: formData.notes,
-        totalAmount: total,
+        notes: formData.notes + (discountAmount > 0 ? `\nCoupon discount: -$${discountAmount.toFixed(2)}` : ""),
+        totalAmount: finalTotal,
         items: validItems,
         userId: user?.id,
+        couponCode: appliedCoupon || undefined,
         paymentMethod: selectedPaymentMethod || undefined,
         transactionId
       });
@@ -73,7 +142,7 @@ export default function OneMCheckoutPage() {
         await fetch('/api/checkout', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderId: result.orderId, customer: formData, items: validItems, total, storeId: store.id })
+          body: JSON.stringify({ orderId: result.orderId, customer: formData, items: validItems, total: finalTotal, storeId: store.id })
         });
       } catch {}
 
@@ -270,7 +339,7 @@ export default function OneMCheckoutPage() {
                       <StripePaymentForm
                         publishableKey={paymentKeys.stripe.publishableKey}
                         slug={store.slug}
-                        amount={total}
+                        amount={Math.max(0, total - discountAmount)}
                         onSuccess={(paymentIntentId: string) => {
                           setStripePaymentId("");
                           completeOrder(paymentIntentId);
@@ -300,9 +369,55 @@ export default function OneMCheckoutPage() {
                     <span style={{ color: "#666666" }}>Shipping</span>
                     <span style={{ color: "#16a34a" }}>Free</span>
                   </div>
+                  
+                  {/* Promo Code Input */}
+                  <div className="py-3" style={{ borderBottom: "1px solid #e5e5e5" }}>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="Promo code"
+                        value={couponCode}
+                        onChange={(e) => {
+                          setCouponCode(e.target.value);
+                          setCouponError("");
+                        }}
+                        disabled={isApplyingCoupon || !!appliedCoupon}
+                        className="flex-1 h-9 px-3 outline-none text-xs"
+                        style={{ border: "1px solid #e5e5e5", color: "#333333", backgroundColor: "#ffffff" }}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleApplyCoupon}
+                        disabled={isApplyingCoupon || (!couponCode.trim() && !appliedCoupon)}
+                        className="h-9 px-4 text-xs font-semibold uppercase tracking-wider transition-colors duration-200"
+                        style={{
+                          backgroundColor: appliedCoupon ? "#dc2626" : accent,
+                          color: appliedCoupon ? "#ffffff" : (is2M ? "#333333" : "#ffffff")
+                        }}
+                      >
+                        {isApplyingCoupon ? "..." : (appliedCoupon ? "Remove" : "Apply")}
+                      </button>
+                    </div>
+                    {couponError && (
+                      <p className="text-xs text-red-600 mt-1.5">{couponError}</p>
+                    )}
+                    {appliedCoupon && (
+                      <p className="text-xs text-green-600 mt-1.5 font-medium">
+                        Promo code "{appliedCoupon}" applied!
+                      </p>
+                    )}
+                  </div>
+
+                  {discountAmount > 0 && (
+                    <div className="flex justify-between py-2 text-green-600 font-semibold" style={{ borderBottom: "1px solid #e5e5e5" }}>
+                      <span>Discount</span>
+                      <span>-${discountAmount.toFixed(2)}</span>
+                    </div>
+                  )}
+
                   <div className="flex justify-between py-2 font-semibold text-base">
                     <span style={{ color: "#333333" }}>Total</span>
-                    <span style={{ color: accent }}>${total.toFixed(2)}</span>
+                    <span style={{ color: accent }}>${Math.max(0, total - discountAmount).toFixed(2)}</span>
                   </div>
                 </div>
 
