@@ -187,56 +187,54 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
     );
   };
 
-  const renderProductCard = (product: any, compact = false) => (
-    <div className="group relative" style={{ backgroundColor: "#ffffff" }}>
-      <div className="relative overflow-hidden" style={{ backgroundColor: "#f8f8f8" }}>
-        <img
-          src={Array.isArray(product.images) ? product.images[0] : product.images}
-          alt={product.name}
-          className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        {!compact && (
-          <div className="absolute top-2 left-2 z-10">
-            <span className="px-2 py-0.5 text-[10px] font-bold uppercase" style={{ backgroundColor: "#e1205e", color: "#ffffff" }}>New</span>
-          </div>
-        )}
-        {!compact && (
+  const renderProductCard = (product: any) => {
+    const imgSrc = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
+    return (
+      <div className="group" style={{ backgroundColor: "#ffffff" }}>
+        {/* Image area */}
+        <div className="relative overflow-hidden" style={{ backgroundColor: "#f8f8f8" }}>
+          <Link href={`/store/${slug}/product/${product.id}`}>
+            <img src={imgSrc} alt={product?.name} className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105" />
+          </Link>
+          <span className="absolute top-2 left-2 z-10 px-2 py-0.5 text-[10px] font-bold uppercase" style={{ backgroundColor: "#e1205e", color: "#ffffff" }}>New</span>
+          {/* Hover overlay: Compare, Wishlist, Quick View */}
           <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1.5 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-            <button onClick={(e) => handleAddToCart(product, e)} className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+            <button className="w-9 h-9 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
-            >
-              <ShoppingCart size={14} />
-            </button>
-            <button onClick={(e) => handleToggleWishlist(product, e)} className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+            ><GitCompare size={14} /></button>
+            <button onClick={(e) => handleToggleWishlist(product, e)} className="w-9 h-9 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
-            >
-              <Heart size={14} />
-            </button>
-            <button className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
+            ><Heart size={14} /></button>
+            <Link href={`/store/${slug}/product/${product.id}`} className="w-9 h-9 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb", display: "inline-flex" }}
               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
-            >
-              <GitCompare size={14} />
-            </button>
-            <Link href={`/store/${slug}/product/${product.id}`} className="w-9 h-9 flex items-center justify-center text-xs transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb", display: "inline-flex" }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
-            >
-              <Eye size={14} />
-            </Link>
+            ><Eye size={14} /></Link>
           </div>
-        )}
+        </div>
+        {/* Always-visible action row */}
+        <div className="flex items-center gap-1" style={{ padding: "10px 0 6px" }}>
+          <div className="flex items-center" style={{ border: "1px solid #ebebeb" }}>
+            <button className="w-7 h-7 flex items-center justify-center text-xs font-bold" style={{ backgroundColor: "#f7f7f7", color: "#333333" }}>−</button>
+            <span className="w-7 h-7 flex items-center justify-center text-xs font-bold" style={{ color: "#333333" }}>1</span>
+            <button className="w-7 h-7 flex items-center justify-center text-xs font-bold" style={{ backgroundColor: "#f7f7f7", color: "#333333" }}>+</button>
+          </div>
+          <button onClick={(e) => handleAddToCart(product, e)} className="flex-1 h-7 text-[10px] font-bold uppercase tracking-wider transition-colors" style={{ backgroundColor: primary, color: "#333333" }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
+          >Add to cart</button>
+        </div>
+        {/* Details */}
+        <Link href={`/store/${slug}/categories`} className="text-[10px] uppercase tracking-wider transition-colors hover:opacity-60" style={{ color: "#999999" }}>{product?.category || "Category"}</Link>
+        <h3 className="text-xs font-semibold my-1 transition-colors group-hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>
+          <Link href={`/store/${slug}/product/${product.id}`}>{product?.name}</Link>
+        </h3>
+        <div className="flex items-center gap-1.5">{renderStars()}<span className="text-[10px]" style={{ color: "#999999" }}>(0 Reviews)</span></div>
+        <p className="text-sm font-bold mt-1" style={{ color: "#333333" }}>${product?.price?.toFixed(2)}</p>
       </div>
-      <div style={{ padding: "12px 0" }}>
-        <p className="text-[11px] uppercase tracking-wider mb-1" style={{ color: "#999999" }}>{product.category || "Electronics"}</p>
-        <h3 className="text-sm font-semibold mb-1 transition-colors group-hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{product.name}</h3>
-        {!compact && <div className="mb-1">{renderStars()}</div>}
-        <p className="text-sm font-bold" style={{ color: "#333333" }}>${product.price?.toFixed(2)}</p>
-      </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="font-['Lato',sans-serif] overflow-x-hidden">
@@ -606,32 +604,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                   activeTab === "FEATURED" ? productSliders.featuredProd :
                   productSliders.topRatedProd
                 ).slice(0, 9).map((product: any, i: number) => (
-                  <div key={i} className="group">
-                    <div className="relative overflow-hidden mb-2" style={{ backgroundColor: "#f8f8f8" }}>
-                      <Link href={`/store/${slug}/product/${product.id}`}>
-                        <img src={Array.isArray(product.images) ? product.images[0] : product.images} alt={product.name} className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105" />
-                      </Link>
-                      <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 text-[9px] font-bold uppercase" style={{ backgroundColor: hoverAccent, color: "#ffffff" }}>New</span>
-                      <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 p-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                        <button onClick={(e) => handleAddToCart(product, e)} className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
-                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
-                        ><ShoppingCart size={11} /></button>
-                        <button onClick={(e) => handleToggleWishlist(product, e)} className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
-                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
-                        ><Heart size={11} /></button>
-                        <Link href={`/store/${slug}/product/${product.id}`} className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb", display: "inline-flex" }}
-                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
-                        ><Eye size={11} /></Link>
-                      </div>
-                    </div>
-                    <Link href={`/store/${slug}/product/${product.id}`} className="text-[11px] font-semibold mb-0.5 block transition-colors hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{product.name}</Link>
-                    <Link href={`/store/${slug}/categories`} className="text-[10px] uppercase tracking-wider mb-0.5 block transition-colors hover:opacity-60" style={{ color: "#999999" }}>{product.category || "Category"}</Link>
-                    {renderStars()}
-                    <p className="text-[11px] font-bold mt-0.5" style={{ color: "#333333" }}>${product.price?.toFixed(2)}</p>
-                  </div>
+                  <div key={i}>{renderProductCard(product)}</div>
                 ))}
               </div>
             </div>
