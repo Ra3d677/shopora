@@ -301,7 +301,7 @@ export default async function StorefrontLayout({
         {headerSection ? (
           <StoreHeader headerConfig={headerSection} slug={slug} storeName={store.name} session={session} categories={store.categories} />
         ) : (
-          store.template !== 'fitness' && store.template !== '2m' && (
+          store.template !== 'fitness' && (store.template !== '2m' || pageType !== 'home') && (
             <Navbar 
               activeTemplate={store.template as any} 
               storeSettings={{
@@ -323,7 +323,7 @@ export default async function StorefrontLayout({
           {children}
         </main>
         <div data-page="footer">
-          {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'dddyou' && store.template !== '1m' && store.template !== '2m' && <Footer />}
+          {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'dddyou' && store.template !== '1m' && (store.template !== '2m' || pageType !== 'home') && <Footer />}
         </div>
         {store.template !== 'fitness' && store.template !== 'dddyou' && store.template !== '1m' && store.template !== '2m' && <WhatsAppButton />}
       </PreviewWrapper>
