@@ -171,6 +171,11 @@ export default async function StorefrontLayout({
           color: var(--current-text) !important;
         }
 
+        html:has(.theme-1m), body:has(.theme-1m) {
+          overflow-y: visible !important;
+          height: auto !important;
+        }
+
         /* Animated Interactive Background Injection (Kinetic Spotlight) */
         ${['home', 'shop', 'categories', 'product', 'cart', 'checkout'].map(p => 
           colorSystem.animatedBackgrounds?.[p] ? `
