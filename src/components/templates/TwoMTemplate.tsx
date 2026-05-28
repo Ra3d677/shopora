@@ -283,10 +283,32 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
       {/* ====== NAVIGATION BAR ====== */}
       <div className="hidden lg:block" style={{ borderTop: "1px solid #ebebeb", borderBottom: "1px solid #ebebeb" }}>
-        <div className="max-w-[1200px] mx-auto flex items-stretch" style={{ padding: "0px 15px" }}>
-          <div className="flex items-center gap-2 px-5 py-3 text-sm font-bold uppercase cursor-pointer shrink-0" style={{ backgroundColor: primary, color: "#333333", minWidth: "190px" }}>
-            <Menu size={16} />
-            <span>All categories</span>
+        <div className="max-w-[1200px] mx-auto flex" style={{ padding: "0px 15px" }}>
+          <div className="relative group">
+            <div className="flex items-center gap-2 px-5 py-3 text-sm font-bold uppercase cursor-pointer" style={{ backgroundColor: primary, color: "#333333", minWidth: "190px" }}>
+              <Menu size={16} />
+              <span>All categories</span>
+              <ChevronDown size={14} className="ml-auto" />
+            </div>
+            <div className="absolute top-full left-0 z-50 min-w-[240px] hidden group-hover:block" style={{ backgroundColor: "#ffffff", boxShadow: "0 10px 30px rgba(0,0,0,0.1)" }}>
+              {visibleCategories.map((cat, i) => (
+                <Link key={i} href={`/store/${slug}/products`} className="flex items-center gap-3 px-5 py-2.5 text-sm transition-colors" style={{ color: "#333333", borderBottom: i < visibleCategories.length - 1 ? "1px solid #f5f5f5" : "none" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = hoverAccent; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#333333"; }}
+                >
+                  {cat.name}
+                </Link>
+              ))}
+              <button
+                onClick={() => setShowAllCategories(!showAllCategories)}
+                className="w-full px-5 py-2.5 text-xs font-bold uppercase text-left transition-colors"
+                style={{ color: "#333333", backgroundColor: "#f8f8f8" }}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#f8f8f8"; }}
+              >
+                {showAllCategories ? "Show Less" : "Show More"}
+              </button>
+            </div>
           </div>
           <nav className="flex items-center ml-6">
             <Link href={`/store/${slug}`} className="px-4 py-3 text-xs font-bold uppercase tracking-wider transition-colors" style={{ color: "#333333" }}
@@ -337,35 +359,6 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
           </nav>
         </div>
       </div>
-
-      {/* ====== CATEGORIES SIDEBAR (Always open) ====== */}
-      {realCategories.length > 0 && (
-        <div className="hidden lg:block" style={{ backgroundColor: "#ffffff", borderBottom: "1px solid #ebebeb" }}>
-          <div className="max-w-[1200px] mx-auto flex flex-wrap items-center gap-0" style={{ padding: "8px 15px" }}>
-            {visibleCategories.map((cat, i) => (
-              <Link
-                key={cat.id || i}
-                href={`/store/${slug}/categories`}
-                className="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors border-r whitespace-nowrap"
-                style={{ color: "#666666", borderColor: "#ebebeb" }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = hoverAccent; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = "#666666"; }}
-              >
-                {cat.name}
-              </Link>
-            ))}
-            {realCategories.length > 8 && (
-              <button
-                onClick={() => setShowAllCategories(!showAllCategories)}
-                className="px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors"
-                style={{ color: primary }}
-              >
-                {showAllCategories ? "Show Less" : `+${realCategories.length - 8} more`}
-              </button>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* ====== HERO SLIDER ====== */}
       <div className="relative overflow-hidden" style={{ backgroundColor: "#f8f8f8" }}>
@@ -427,12 +420,23 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         </div>
       </div>
 
-      {/* ====== CTA BANNERS (image only) ====== */}
+      {/* ====== CTA BANNERS ====== */}
       <div className="max-w-[1200px] mx-auto" style={{ padding: "0px 15px", marginBottom: "50px" }}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {ctaBanners.map((banner, i) => (
-            <Link key={i} href={`/store/${slug}/products`} className="group block overflow-hidden" style={{ minHeight: "290px" }}>
-              <div className="w-full h-full min-h-[290px] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: `url(${banner.imageUrl})` }} />
+            <Link key={i} href={`/store/${slug}/products`} className="relative group block overflow-hidden" style={{ minHeight: "290px" }}>
+              <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style={{ backgroundImage: `url(${banner.imageUrl})` }} />
+              <div className="elementor-cta__bg-overlay absolute inset-0" style={{ backgroundColor: "transparent" }} />
+              <div className="relative flex flex-col items-start justify-center h-full" style={{ padding: "20px", minHeight: "290px" }}>
+                <p className="text-sm font-bold uppercase tracking-widest mb-5" style={{ color: primary, fontSize: "16px", lineHeight: "30px" }}>{banner.title}</p>
+                <h3 className="text-[26px] font-bold mb-[33px]" style={{ fontFamily: "Lato,sans-serif", color: "#333333", lineHeight: "22px" }}>{banner.subtitle}</h3>
+                <span className="inline-block px-6 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors" style={{ backgroundColor: primary, color: "#333333", fontSize: "13px" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = primary; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
+                >
+                  SHOP NOW!
+                </span>
+              </div>
             </Link>
           ))}
         </div>
