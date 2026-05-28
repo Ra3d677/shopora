@@ -282,8 +282,8 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       </div>
 
       {/* ====== NAVIGATION BAR ====== */}
-      <div className="hidden lg:block" style={{ borderTop: "1px solid #ebebeb", borderBottom: "1px solid #ebebeb" }}>
-        <div className="max-w-[1200px] mx-auto flex items-stretch" style={{ padding: "0px 15px" }}>
+      <div className="hidden lg:block max-w-[1200px] mx-auto" style={{ borderTop: "1px solid #ebebeb", borderBottom: "1px solid #ebebeb" }}>
+        <div className="flex items-stretch" style={{ padding: "0px 15px" }}>
           <div className="flex items-center gap-2 px-5 py-3 text-sm font-bold uppercase cursor-pointer shrink-0" style={{ backgroundColor: primary, color: "#333333", minWidth: "190px" }}>
             <Menu size={16} />
             <span>All categories</span>
