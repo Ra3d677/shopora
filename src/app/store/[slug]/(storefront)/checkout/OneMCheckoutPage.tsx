@@ -13,7 +13,8 @@ export default function OneMCheckoutPage() {
   const [mounted, setMounted] = useState(false);
   const { items: allItems, getCartTotal, clearCart, updateQuantity, removeItem } = useCartStore();
   const { store, user } = useStore();
-  const accent = store?.settings?.colorSystem?.brand?.primary || store?.primaryColor || "#e1205e";
+  const is2M = store?.template === '2m';
+  const accent = is2M ? "#fed700" : (store?.settings?.colorSystem?.brand?.primary || store?.primaryColor || "#e1205e");
   const router = useRouter();
 
   const items = allItems.filter(item => item.storeId === store.id);
@@ -102,8 +103,8 @@ export default function OneMCheckoutPage() {
   if (!mounted) return null;
 
   return (
-    <div className="font-['Poppins',sans-serif]" style={{ color: "#333333" }}>
-      <div className="max-w-[1170px] mx-auto" style={{ padding: "0px 15px" }}>
+    <div className={is2M ? "font-['Lato',sans-serif]" : "font-['Poppins',sans-serif]"} style={{ color: "#333333" }}>
+      <div className="mx-auto" style={{ padding: "0px 15px", maxWidth: is2M ? "1200px" : "1170px" }}>
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs uppercase tracking-wider py-4 mb-6" style={{ color: "#999999" }}>
           <Link href={`/store/${store.slug}`} className="hover:opacity-60 transition-opacity">Home</Link>

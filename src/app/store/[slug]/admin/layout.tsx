@@ -71,6 +71,7 @@ export default async function AdminLayout({
   const isFitness = store.template === 'fitness';
   const isDDDYOU = store.template === 'dddyou';
   const is1M = store.template === '1m';
+  const is2M = store.template === '2m';
 
   const mainItems = isWebsite ? [
     { label: t('overview'), iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },

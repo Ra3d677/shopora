@@ -38,6 +38,13 @@ export default function SettingsManager({
   const [isDirty, setIsDirty] = useState(false);
 
   const TEMPLATE_DEFAULTS: Record<string, any> = {
+    '2m': {
+      brand: '#fed700',
+      backgrounds: { home: '#ffffff', shop: '#ffffff', categories: '#ffffff', product: '#ffffff', cart: '#ffffff', checkout: '#ffffff' },
+      text: { home: '#333333', shop: '#333333', categories: '#333333', product: '#333333', cart: '#333333', checkout: '#333333' },
+      footer: { background: '#ffffff', text: '#666666' },
+      product: { price: '#333333', salePrice: '#e1205e' }
+    },
     '1m': {
       brand: '#e1205e',
       backgrounds: { home: '#ffffff', shop: '#ffffff', categories: '#ffffff', product: '#ffffff', cart: '#ffffff', checkout: '#ffffff' },

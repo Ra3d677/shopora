@@ -40,6 +40,7 @@ function CreateStoreForm() {
     { id: 'momo', name: 'MOMO', desc: 'تصميم حديث ومينيمال للمتاجر الصغيرة - بسيط، أنيق، وسهل الاستخدام.', img: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80' },
     { id: 'senno', name: 'Senno Multipurpose', desc: 'تصميم متعدد الاستخدامات مع لمسات وردية مثالي لمتاجر التجميل والبوتيك.', img: 'https://images.unsplash.com/photo-1596462502278-27bfac4033c8?w=400&q=80' },
     { id: '1m', name: '1M', desc: 'أنيق وعصري - مثالي لمتاجر الأزياء والمنتجات الفاخرة مع سلايدر وسيشنز متعددة.', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80' },
+    { id: '2m', name: '2M', desc: 'إلكترونيات - تصميم عصري بألوان صفراء وردية مناسب لمتاجر الإلكترونيات والتكنولوجيا.', img: 'https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=400&q=80' },
     { id: 'amazon', name: 'Amazon Marketplace', desc: 'تصميم عالي التحويل مستوحى من الأسواق الكبرى.', img: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=400&q=80' }
   ];
 

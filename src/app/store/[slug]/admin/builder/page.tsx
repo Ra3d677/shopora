@@ -8,7 +8,7 @@ export default async function BuilderPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const store = await getStoreBySlug(slug);
 
-  if (store?.template === '1m') {
+  if (store?.template === '1m' || store?.template === '2m') {
     redirect(`/store/${slug}/admin/dashboard`);
   }
   

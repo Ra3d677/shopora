@@ -35,7 +35,7 @@ export default async function CustomerAccountPage({
     redirect("/");
   }
 
-  if (store.template === '1m') {
+  if (store.template === '1m' || store.template === '2m') {
     const initialOrders = await prisma.order.findMany({
       where: { userId: user.id, storeId: store.id },
       include: { items: { include: { product: true } } },

@@ -323,9 +323,9 @@ export default async function StorefrontLayout({
           {children}
         </main>
         <div data-page="footer">
-          {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'dddyou' && store.template !== '1m' && <Footer />}
+          {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'dddyou' && store.template !== '1m' && store.template !== '2m' && <Footer />}
         </div>
-        {store.template !== 'fitness' && store.template !== 'dddyou' && store.template !== '1m' && <WhatsAppButton />}
+        {store.template !== 'fitness' && store.template !== 'dddyou' && store.template !== '1m' && store.template !== '2m' && <WhatsAppButton />}
       </PreviewWrapper>
     </div>
   );

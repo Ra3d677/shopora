@@ -31,6 +31,7 @@ export default function PlatformStoresManager({ stores }: { stores: any[] }) {
     { id: 'senno', name: 'Senno Multipurpose' },
     { id: 'momo', name: 'MOMO' },
     { id: '1m', name: '1M' },
+    { id: '2m', name: '2M' },
   ];
 
   const filteredStores = stores.filter(s => 

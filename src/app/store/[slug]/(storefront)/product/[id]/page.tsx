@@ -17,10 +17,12 @@ export default async function ProductPage({ params }: { params: { slug: string, 
     notFound();
   }
 
-  if (store.template === '1m') {
+  if (store.template === '1m' || store.template === '2m') {
+    const font = store.template === '2m' ? 'Lato' : 'Poppins';
+    const maxW = store.template === '2m' ? '1200px' : '1170px';
     return (
-      <div className="min-h-screen py-8 font-['Poppins',sans-serif]" style={{ backgroundColor: "#ffffff", color: "#333333" }}>
-        <div className="max-w-[1170px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={`min-h-screen py-8 font-['${font}',sans-serif]`} style={{ backgroundColor: "#ffffff", color: "#333333" }}>
+        <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: maxW }}>
           <OneMProductDetail product={product} store={store} />
         </div>
       </div>

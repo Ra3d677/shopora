@@ -19,7 +19,7 @@ export default function CheckoutPage() {
   const { store, user } = useStore();
   const router = useRouter();
 
-  if (store.template === '1m') {
+  if (store.template === '1m' || store.template === '2m') {
     return <OneMCheckoutPage />;
   }
 

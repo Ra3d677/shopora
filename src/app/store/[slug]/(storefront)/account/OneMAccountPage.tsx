@@ -15,7 +15,8 @@ interface OneMAccountPageProps {
 type Section = "information" | "orders" | "wishlist" | "tracking";
 
 export default function OneMAccountPage({ slug, user, store, initialOrders }: OneMAccountPageProps) {
-  const accent = store?.settings?.colorSystem?.brand?.primary || store?.primaryColor || "#e1205e";
+  const is2M = store?.template === '2m';
+  const accent = is2M ? "#fed700" : (store?.settings?.colorSystem?.brand?.primary || store?.primaryColor || "#e1205e");
   const [activeSection, setActiveSection] = useState<Section>("information");
   const [orders] = useState(initialOrders);
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
@@ -115,8 +116,8 @@ export default function OneMAccountPage({ slug, user, store, initialOrders }: On
   };
 
   return (
-    <div className="font-['Poppins',sans-serif]" style={{ color: "#333333" }}>
-      <div className="max-w-[1170px] mx-auto" style={{ padding: "0px 15px" }}>
+    <div className={is2M ? "font-['Lato',sans-serif]" : "font-['Poppins',sans-serif]"} style={{ color: "#333333" }}>
+      <div className="mx-auto" style={{ padding: "0px 15px", maxWidth: is2M ? "1200px" : "1170px" }}>
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs uppercase tracking-wider py-4 mb-6" style={{ color: "#999999" }}>
           <Link href={`/store/${slug}`} className="hover:opacity-60 transition-opacity">Home</Link>
