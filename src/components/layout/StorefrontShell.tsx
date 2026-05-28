@@ -8,6 +8,7 @@ import StoreHeader from "@/components/layout/StoreHeader";
 import AkiraHeader from "@/components/layout/AkiraHeader";
 import AkiraFooter from "@/components/layout/AkiraFooter";
 import AnivioHeader from "@/components/layout/AnivioHeader";
+import AnivioFooter from "@/components/layout/AnivioFooter";
 
 export default function StorefrontShell({
   children,
@@ -39,7 +40,7 @@ export default function StorefrontShell({
         <main className="flex-grow flex flex-col store-container">
           {children}
         </main>
-        <AkiraFooter slug={slug} store={store} />
+        <AnivioFooter slug={slug} store={store} />
       </>
     );
   }
