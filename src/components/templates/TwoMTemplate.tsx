@@ -50,6 +50,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("NEW");
   const [showAllCategories, setShowAllCategories] = useState(false);
+  const [saleIdx, setSaleIdx] = useState(0);
 
   const topBanners = banners.filter((b: any) => b.isActive && (b.position === 'top' || !b.position));
   const midBanners = banners.filter((b: any) => b.isActive && b.position === 'middle');
@@ -471,77 +472,111 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px]">
           {/* LEFT: Sale Products */}
           <div>
-            <h3 className="mb-5" style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "26px", lineHeight: "1.4em" }}>Sale Products</h3>
-            <div style={{ border: "2px solid #fed700", borderRadius: "5px", padding: "20px" }}>
-              {productSliders.saleProducts.slice(0, 3).map((product: any, i: number) => (
-                <div key={i} className="flex gap-4 mb-4 pb-4" style={{ borderBottom: i < 2 ? "1px solid #f0f0f0" : "none" }}>
-                  <div className="w-[100px] shrink-0 relative" style={{ backgroundColor: "#f8f8f8" }}>
-                    <img src={Array.isArray(product.images) ? product.images[0] : product.images} alt={product.name} className="w-full aspect-square object-cover" />
-                    <span className="absolute top-1 left-1 px-1.5 py-0.5 text-[9px] font-bold uppercase" style={{ backgroundColor: hoverAccent, color: "#ffffff" }}>New</span>
+            <div style={{ border: "2px solid #fed700", borderRadius: "5px", padding: "15px" }}>
+              <h3 className="mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "20px", fontWeight: 700 }}>Sale Products</h3>
+              {(() => {
+                const saleItems = productSliders.saleProducts.slice(0, 3);
+                const p = saleItems[saleIdx];
+                const imgSrc = Array.isArray(p?.images) ? p.images[0] : (p?.images || "");
+                return (
+                  <div>
+                    {/* Large product card */}
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <div className="relative shrink-0 w-full sm:w-1/2" style={{ backgroundColor: "#f8f8f8" }}>
+                        <Link href={`/store/${slug}/product/${p?.id}`}>
+                          <img src={imgSrc} alt={p?.name} className="w-full aspect-square object-cover" />
+                        </Link>
+                        <span className="absolute top-2 left-2 px-2 py-0.5 text-[10px] font-bold uppercase" style={{ backgroundColor: hoverAccent, color: "#ffffff" }}>New</span>
+                      </div>
+                      <div className="flex flex-col justify-center flex-1">
+                        <div className="flex gap-2 mb-2">
+                          <button className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
+                            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
+                          ><GitCompare size={13} /></button>
+                          <button className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
+                            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
+                          ><Heart size={13} /></button>
+                          <button className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
+                            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
+                          ><Eye size={13} /></button>
+                        </div>
+                        <div className="flex items-center gap-2 mb-3">
+                          <button className="w-8 h-8 flex items-center justify-center text-sm font-bold" style={{ backgroundColor: "#f0f0f0", color: "#333333", border: "1px solid #ebebeb" }}>−</button>
+                          <span className="text-sm font-bold px-2">1</span>
+                          <button className="w-8 h-8 flex items-center justify-center text-sm font-bold" style={{ backgroundColor: "#f0f0f0", color: "#333333", border: "1px solid #ebebeb" }}>+</button>
+                          <button className="flex-1 px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors" style={{ backgroundColor: primary, color: "#333333" }}
+                            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
+                          >Add to cart</button>
+                        </div>
+                        <Link href={`/store/${slug}/product/${p?.id}`} className="text-sm font-bold mb-1 transition-colors hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{p?.name}</Link>
+                        <Link href={`/store/${slug}/categories`} className="text-[11px] uppercase tracking-wider mb-1 transition-colors hover:opacity-60" style={{ color: "#999999" }}>{p?.category || "Category"}</Link>
+                        {renderStars()}
+                        <p className="text-xs" style={{ color: "#999999" }}>(0 Reviews)</p>
+                        <p className="text-sm font-bold mt-1" style={{ color: "#333333" }}>${p?.price?.toFixed(2)}</p>
+                      </div>
+                    </div>
+                    {/* Navigation arrows */}
+                    <div className="flex items-center justify-center gap-2 mt-4">
+                      <button onClick={() => setSaleIdx((saleIdx - 1 + saleItems.length) % saleItems.length)} className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#f0f0f0", color: "#999999" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#f0f0f0"; e.currentTarget.style.color = "#999999"; }}
+                      ><ChevronLeft size={14} /></button>
+                      <div className="flex gap-1.5">
+                        {saleItems.map((_, idx) => (
+                          <span key={idx} className="w-2 h-2 cursor-pointer" style={{ backgroundColor: idx === saleIdx ? primary : "#d4d4d4", borderRadius: "50%" }} onClick={() => setSaleIdx(idx)} />
+                        ))}
+                      </div>
+                      <button onClick={() => setSaleIdx((saleIdx + 1) % saleItems.length)} className="w-8 h-8 flex items-center justify-center transition-colors" style={{ backgroundColor: "#f0f0f0", color: "#999999" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#f0f0f0"; e.currentTarget.style.color = "#999999"; }}
+                      ><ChevronRight size={14} /></button>
+                    </div>
                   </div>
-                  <div className="flex flex-col justify-center flex-1">
-                    <p className="text-[11px] uppercase tracking-wider mb-0.5" style={{ color: "#999999" }}>{product.category || "Category"}</p>
-                    <h4 className="text-sm font-semibold mb-0.5" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{product.name}</h4>
-                    {renderStars()}
-                    <p className="text-xs" style={{ color: "#999999" }}>(0 Reviews)</p>
-                    <p className="text-sm font-bold mt-0.5" style={{ color: "#333333" }}>${product.price?.toFixed(2)}</p>
-                  </div>
-                  <div className="flex flex-col gap-1 justify-center">
-                    <button className="w-7 h-7 flex items-center justify-center text-[10px] font-bold transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
-                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
-                    ><GitCompare size={11} /></button>
-                    <button className="w-7 h-7 flex items-center justify-center text-[10px] font-bold transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
-                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
-                    ><Heart size={11} /></button>
-                    <button className="w-7 h-7 flex items-center justify-center text-[10px] font-bold transition-colors" style={{ backgroundColor: "#ffffff", color: "#999999", border: "1px solid #ebebeb" }}
-                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; e.currentTarget.style.color = "#333333"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; e.currentTarget.style.color = "#999999"; }}
-                    ><Eye size={11} /></button>
-                  </div>
-                </div>
-              ))}
+                );
+              })()}
             </div>
           </div>
 
           {/* RIGHT: SPECIAL OFFERS with Tabs */}
           <div>
-            <h3 className="mb-5" style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "22px", lineHeight: "1.4em" }}>SPECIAL OFFERS</h3>
-            <div style={{ paddingTop: "20px" }}>
-              {/* Tabs */}
-              <div className="flex justify-end gap-0 mb-[30px]">
-                {["NEW", "FEATURED", "TOP RATED"].map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className="text-base font-semibold uppercase tracking-wider transition-colors"
-                    style={{
-                      color: activeTab === tab ? "#333333" : "rgba(51,51,51,0.7)",
-                      borderBottom: activeTab === tab ? "2px solid #fed700" : "2px solid transparent",
-                      marginLeft: "30px",
-                      paddingBottom: "4px",
-                    }}
-                    onMouseEnter={(e) => { if (activeTab !== tab) e.currentTarget.style.color = "#333333"; }}
-                    onMouseLeave={(e) => { if (activeTab !== tab) e.currentTarget.style.color = "rgba(51,51,51,0.7)"; }}
-                  >
-                    {tab}
-                  </button>
-                ))}
+            <div style={{ border: "2px solid #fed700", borderRadius: "5px", padding: "15px" }}>
+              <div className="flex items-center justify-between mb-3">
+                <h3 style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "20px", fontWeight: 700 }}>SPECIAL OFFERS</h3>
+                <div className="flex gap-0">
+                  {["NEW", "FEATURED", "TOP RATED"].map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className="text-xs font-semibold uppercase tracking-wider transition-colors"
+                      style={{
+                        color: activeTab === tab ? "#333333" : "rgba(51,51,51,0.7)",
+                        borderBottom: activeTab === tab ? "2px solid #fed700" : "2px solid transparent",
+                        marginLeft: "20px",
+                        paddingBottom: "3px",
+                      }}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
               </div>
               {/* Tab Content - product cards */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {(activeTab === "NEW" ? productSliders.tabProducts :
                   activeTab === "FEATURED" ? productSliders.featuredProd :
                   productSliders.topRatedProd
                 ).slice(0, 9).map((product: any, i: number) => (
                   <div key={i} className="group">
                     <div className="relative overflow-hidden mb-2" style={{ backgroundColor: "#f8f8f8" }}>
-                      <Link href={`/store/${slug}/products`}>
+                      <Link href={`/store/${slug}/product/${product.id}`}>
                         <img src={Array.isArray(product.images) ? product.images[0] : product.images} alt={product.name} className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105" />
                       </Link>
                       <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 text-[9px] font-bold uppercase" style={{ backgroundColor: hoverAccent, color: "#ffffff" }}>New</span>
-                      <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1.5 p-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                      <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 p-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                         <button className="w-7 h-7 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
                           onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
                           onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
@@ -560,12 +595,10 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                         ><ShoppingCart size={11} /></button>
                       </div>
                     </div>
-                    <p className="text-[11px] uppercase tracking-wider mb-0.5" style={{ color: "#999999" }}>{product.category || "Category"}</p>
-                    <h4 className="text-xs font-semibold mb-0.5 transition-colors group-hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>
-                      <Link href={`/store/${slug}/products`}>{product.name}</Link>
-                    </h4>
+                    <Link href={`/store/${slug}/product/${product.id}`} className="text-[11px] font-semibold mb-0.5 block transition-colors hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{product.name}</Link>
+                    <Link href={`/store/${slug}/categories`} className="text-[10px] uppercase tracking-wider mb-0.5 block transition-colors hover:opacity-60" style={{ color: "#999999" }}>{product.category || "Category"}</Link>
                     {renderStars()}
-                    <p className="text-xs font-bold mt-0.5" style={{ color: "#333333" }}>${product.price?.toFixed(2)}</p>
+                    <p className="text-[11px] font-bold mt-0.5" style={{ color: "#333333" }}>${product.price?.toFixed(2)}</p>
                   </div>
                 ))}
               </div>
