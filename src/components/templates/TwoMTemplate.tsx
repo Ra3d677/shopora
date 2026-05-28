@@ -344,9 +344,6 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         {realCategories.length > 0 && (
           <div className="hidden lg:block w-[220px] shrink-0" style={{ marginTop: "0px" }}>
             <div className="flex flex-col" style={{ border: "1px solid #ebebeb" }}>
-              <div className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider" style={{ backgroundColor: primary, color: "#333333", borderBottom: "1px solid #ebebeb" }}>
-                Categories
-              </div>
               {visibleCategories.map((cat, i) => (
                 <Link
                   key={cat.id || i}
@@ -374,17 +371,17 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
         {/* Hero Slider */}
         <div className="flex-1 relative overflow-hidden" style={{ backgroundColor: "#f8f8f8" }}>
-          <div className="relative" style={{ height: "415px" }}>
+          <div className="relative" style={{ height: "380px" }}>
             {heroSlides.map((slide, index) => (
               <div
                 key={index}
                 className="absolute inset-0 transition-opacity duration-700"
                 style={{ opacity: index === currentSlide ? 1 : 0, zIndex: index === currentSlide ? 1 : 0 }}
               >
-                <div className="flex items-center h-full" style={{ backgroundImage: `url(${slide.image})`, backgroundPosition: "right center", backgroundRepeat: "no-repeat", backgroundSize: "contain", backgroundColor: "#f8f8f8" }}>
-                  <div className="max-w-[450px]" style={{ marginRight: "auto", padding: "60px 0 60px 15px" }}>
-                    <p style={{ color: primary, fontSize: "20px", fontWeight: 700, textTransform: "uppercase", lineHeight: "30px", marginBottom: "20px" }}>{slide.heading}</p>
-                    <h2 style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "50px", fontWeight: 700, textTransform: "uppercase", lineHeight: "60px", marginBottom: "30px" }}>
+                <div className="flex items-center h-full" style={{ backgroundImage: `url(${slide.image})`, backgroundPosition: "center center", backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundColor: "#f8f8f8" }}>
+                  <div className="max-w-[380px]" style={{ marginRight: "auto", padding: "60px 0 60px 30px" }}>
+                    <p style={{ color: primary, fontSize: "14px", fontWeight: 700, textTransform: "uppercase", lineHeight: "20px", marginBottom: "12px", letterSpacing: "1px" }}>{slide.heading}</p>
+                    <h2 style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "32px", fontWeight: 800, textTransform: "uppercase", lineHeight: "38px", marginBottom: "20px" }}>
                       <span dangerouslySetInnerHTML={{ __html: slide.description }} />
                     </h2>
                     {slide.buttonText && (
