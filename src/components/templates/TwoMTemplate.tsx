@@ -381,7 +381,25 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                   key={index}
                   className={`transition-all duration-700 ${index === currentSlide ? "block" : "hidden"}`}
                 >
-                  <div className="flex items-center justify-center" style={{ minHeight: "400px", backgroundImage: `url(${slide.image})`, backgroundPosition: "center center", backgroundRepeat: "no-repeat", backgroundSize: "contain", backgroundColor: "#f8f8f8" }} />
+                  <div className="flex items-center" style={{ minHeight: "400px", backgroundImage: `url(${slide.image})`, backgroundPosition: "right center", backgroundRepeat: "no-repeat", backgroundSize: "contain", backgroundColor: "#f8f8f8" }}>
+                    <div className="max-w-[450px]" style={{ marginRight: "auto", padding: "60px 0 60px 15px" }}>
+                      <p style={{ color: primary, fontSize: "20px", fontWeight: 700, textTransform: "uppercase", lineHeight: "30px", marginBottom: "20px" }}>{slide.heading}</p>
+                      <h2 style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "50px", fontWeight: 700, textTransform: "uppercase", lineHeight: "60px", marginBottom: "30px" }}>
+                        <span dangerouslySetInnerHTML={{ __html: slide.description }} />
+                      </h2>
+                      {slide.buttonText && (
+                        <Link
+                          href={`/store/${slug}/products`}
+                          className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold uppercase tracking-wider transition-colors"
+                          style={{ backgroundColor: primary, color: "#333333", fontSize: "14px", fontWeight: 600, lineHeight: "16px" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
+                        >
+                          {slide.buttonText}
+                        </Link>
+                      )}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
