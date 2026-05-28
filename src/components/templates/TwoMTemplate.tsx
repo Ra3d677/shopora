@@ -431,12 +431,36 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         </div>
       </div>
 
-      {/* ====== CTA BANNERS (image only) ====== */}
+      {/* ====== CTA BANNERS ====== */}
       <div className="max-w-[1200px] mx-auto" style={{ padding: "0px 15px", marginTop: "30px", marginBottom: "50px" }}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px]">
           {ctaBanners.map((banner, i) => (
-            <Link key={i} href={`/store/${slug}/products`} className="group block overflow-hidden" style={{ minHeight: "290px" }}>
-              <div className="w-full h-full min-h-[290px] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: `url(${banner.imageUrl})` }} />
+            <Link key={i} href={banner.buttonLink || `/store/${slug}/products`} className="group block overflow-hidden relative" style={{ minHeight: "290px" }}>
+              <div className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: `url(${banner.imageUrl})` }} />
+              {/* Legibility overlay */}
+              <div className="absolute inset-0 bg-black/25 transition-opacity duration-300 group-hover:bg-black/35" />
+              {/* Text & Button content */}
+              <div className="absolute inset-0 p-8 flex flex-col justify-center items-start text-white">
+                {banner.subtitle && (
+                  <p className="text-[11px] font-bold tracking-widest uppercase mb-1.5" style={{ color: primary }}>
+                    {banner.subtitle}
+                  </p>
+                )}
+                {banner.title && (
+                  <h3 className="text-xl md:text-2xl font-black uppercase mb-5 tracking-tight leading-tight max-w-[280px]">
+                    {banner.title}
+                  </h3>
+                )}
+                {banner.showButton !== false && (
+                  <span className="inline-flex items-center gap-1 px-5 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 rounded-sm" 
+                        style={{ backgroundColor: primary, color: "#333333" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; }}>
+                    {banner.buttonText || "Shop Now"}
+                    <ChevronRight size={10} />
+                  </span>
+                )}
+              </div>
             </Link>
           ))}
         </div>
