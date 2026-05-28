@@ -4,7 +4,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { 
   Grid, List, Star, ChevronRight, Heart, ShoppingCart, Eye, 
-  GitCompare, SlidersHorizontal, Plus, Minus, ArrowUpDown 
+  SlidersHorizontal, Plus, Minus, ArrowUpDown 
 } from "lucide-react";
 import { useCartStore } from "@/store/cart";
 import { useWishlistStore } from "@/store/wishlist";

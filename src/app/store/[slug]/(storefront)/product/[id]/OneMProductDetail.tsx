@@ -251,9 +251,8 @@ export default function OneMProductDetail({ product, store }: { product: any, st
             </div>
           )}
 
-          {/* Compare / Wishlist / Size Guide */}
+          {/* Wishlist / Size Guide */}
           <div className="flex flex-wrap gap-6 mb-6 text-xs uppercase tracking-wider" style={{ color: "#999999" }}>
-            <span className="hover:opacity-60 transition-opacity cursor-pointer">Add to Compare</span>
             <button
               onClick={() => wishlisted ? removeWishlist(product.id) : addWishlist({ productId: product.id, storeId: product.storeId, name: product.name, price: product.price, image: product.images[0] || '', slug: store.slug })}
               className="hover:opacity-60 transition-opacity cursor-pointer"

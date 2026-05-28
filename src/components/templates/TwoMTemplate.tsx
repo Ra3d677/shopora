@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import {
   ChevronRight, ChevronLeft, Search, Heart, ShoppingCart, User, Menu, MapPin,
-  Phone, Mail, Clock, Rocket, Undo2, Info, Shield, Star, Eye, GitCompare,
+  Phone, Mail, Clock, Rocket, Undo2, Info, Shield, Star, Eye,
   Gift, ChevronDown
 } from "lucide-react";
 import { useCartStore } from "@/store/cart";
@@ -197,12 +197,8 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
             <img src={imgSrc} alt={product?.name} className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105" />
           </Link>
           <span className="absolute top-2 left-2 z-10 px-2 py-0.5 text-[10px] font-bold uppercase" style={{ backgroundColor: "#e1205e", color: "#ffffff" }}>New</span>
-          {/* Hover overlay: Compare, Wishlist, Quick View */}
+          {/* Hover overlay: Wishlist, Quick View */}
           <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1.5 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-            <button className="w-9 h-9 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
-            ><GitCompare size={14} /></button>
             <button onClick={(e) => handleToggleWishlist(product, e)} className="w-9 h-9 flex items-center justify-center transition-colors" style={{ backgroundColor: "#ffffff", color: "#333333", border: "1px solid #ebebeb" }}
               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.borderColor = primary; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.borderColor = "#ebebeb"; }}
@@ -295,18 +291,14 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
             </div>
           </div>
           <div className="w-1/3 flex items-center justify-end gap-4">
-            <div className="flex flex-col items-center cursor-pointer">
+            <Link href={`/store/${slug}/account`} className="flex flex-col items-center cursor-pointer">
               <User size={20} style={{ color: "#333333" }} />
               <span className="text-[10px] font-semibold mt-0.5" style={{ color: "#333333" }}>YOUR ACCOUNT</span>
-            </div>
-            <div className="flex flex-col items-center cursor-pointer">
+            </Link>
+            <Link href={`/store/${slug}/wishlist`} className="flex flex-col items-center cursor-pointer">
               <Heart size={20} style={{ color: "#333333" }} />
               <span className="text-[10px] font-semibold mt-0.5" style={{ color: "#333333" }}>WISHLIST</span>
-            </div>
-            <div className="flex flex-col items-center cursor-pointer">
-              <GitCompare size={20} style={{ color: "#333333" }} />
-              <span className="text-[10px] font-semibold mt-0.5" style={{ color: "#333333" }}>COMPARE</span>
-            </div>
+            </Link>
             <Link href={`/store/${slug}/cart`} className="flex flex-col items-center cursor-pointer relative">
               <ShoppingCart size={20} style={{ color: "#333333" }} />
               <span className="text-[10px] font-semibold mt-0.5" style={{ color: "#333333" }}>CART</span>
@@ -317,8 +309,8 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       </div>
 
       {/* ====== NAVIGATION BAR ====== */}
-      <div className="hidden lg:block max-w-[1200px] mx-auto" style={{ borderTop: "1px solid #ebebeb", borderBottom: "1px solid #ebebeb" }}>
-        <div className="flex items-stretch" style={{ padding: "0px 15px" }}>
+      <div className="hidden lg:block max-w-[1200px] mx-auto" style={{ padding: "0px 15px" }}>
+        <div className="flex items-stretch" style={{ borderTop: "1px solid #ebebeb", borderBottom: "1px solid #ebebeb" }}>
           <div className="flex items-center gap-2 px-5 py-3 text-sm font-bold uppercase cursor-pointer shrink-0" style={{ backgroundColor: primary, color: "#333333", width: "220px" }}>
             <Menu size={16} />
             <span>All categories</span>
