@@ -27,7 +27,7 @@ const DEFAULT_HERO_SLIDES = [
 
 const SectionHeading2M = ({ title, subtitle }: { title: string; subtitle?: string }) => (
   <div className="flex flex-col items-center" style={{ padding: "15px 15px 25px" }}>
-    <h2 className="text-[24px] md:text-[28px] font-bold text-center" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{title}</h2>
+    <h2 className="text-[28px] font-bold text-center" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{title}</h2>
     {subtitle && <p className="text-sm text-center mt-2" style={{ fontFamily: "Lato,sans-serif", color: "#666666" }}>{subtitle}</p>}
   </div>
 );
@@ -235,7 +235,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
   return (
     <div className="font-['Lato',sans-serif] overflow-x-hidden">
       {/* ====== TOP BAR ====== */}
-      <div className="hidden lg:block" style={{ backgroundColor: "#fed700", color: "#333333", fontSize: "12px" }}>
+      <div className="block" style={{ backgroundColor: "#fed700", color: "#333333", fontSize: "12px" }}>
         <div className="max-w-[1200px] mx-auto flex items-center justify-between" style={{ padding: "0px 15px", minHeight: "40px" }}>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
@@ -268,7 +268,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       </div>
 
       {/* ====== HEADER MAIN ====== */}
-      <div className="hidden lg:block" style={{ backgroundColor: "#ffffff" }}>
+      <div className="block" style={{ backgroundColor: "#ffffff" }}>
         <div className="max-w-[1200px] mx-auto flex items-center" style={{ padding: "20px 15px" }}>
           <div className="w-1/3 flex items-center">
             <Link href={`/store/${slug}`} className="inline-block">
@@ -309,7 +309,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       </div>
 
       {/* ====== NAVIGATION BAR ====== */}
-      <div className="hidden lg:block max-w-[1200px] mx-auto" style={{ padding: "0px 15px" }}>
+      <div className="block max-w-[1200px] mx-auto" style={{ padding: "0px 15px" }}>
         <div className="flex items-stretch" style={{ borderTop: "1px solid #ebebeb", borderBottom: "1px solid #ebebeb" }}>
           <div className="flex items-center gap-2 px-5 py-3 text-sm font-bold uppercase cursor-pointer shrink-0" style={{ backgroundColor: primary, color: "#333333", width: "220px" }}>
             <Menu size={16} />
@@ -369,7 +369,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       <div className="max-w-[1200px] mx-auto flex" style={{ padding: "0px 15px" }}>
         {/* Categories Vertical Sidebar (always visible) */}
         {realCategories.length > 0 && (
-          <div className="hidden lg:block w-[220px] shrink-0" style={{ marginTop: "0px", height: "380px" }}>
+          <div className="block w-[220px] shrink-0" style={{ marginTop: "0px", height: "380px" }}>
             <div className="flex flex-col h-full bg-white" style={{ border: "1px solid #ebebeb", height: "100%" }}>
               <div className="flex-1 overflow-y-auto flex flex-col h-full" style={{ scrollbarWidth: "thin", display: "flex", flexDirection: "column", height: "100%" }}>
                 {visibleCategories.map((cat, i) => (
@@ -460,7 +460,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
       {/* ====== CTA BANNERS ====== */}
       <div className="max-w-[1200px] mx-auto" style={{ padding: "0px 15px", marginTop: "30px", marginBottom: "50px" }}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px]">
+        <div className="grid grid-cols-1 grid-cols-2 gap-[30px]">
           {ctaBanners.map((banner, i) => (
             <Link key={i} href={banner.buttonLink || `/store/${slug}/products`} className="group block overflow-hidden relative" style={{ minHeight: "290px" }}>
               <div className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: `url(${banner.imageUrl})` }} />
@@ -474,7 +474,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                   </p>
                 )}
                 {banner.title && (
-                  <h3 className="text-xl md:text-2xl font-black uppercase mb-5 tracking-tight leading-tight max-w-[280px]">
+                  <h3 className="text-2xl font-black uppercase mb-5 tracking-tight leading-tight max-w-[280px]">
                     {banner.title}
                   </h3>
                 )}
@@ -495,7 +495,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
       {/* ====== SALE PRODUCTS + SPECIAL OFFERS ====== */}
       <div className="max-w-[1200px] mx-auto" style={{ padding: "0px 15px", marginBottom: "65px" }}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px]">
+        <div className="grid grid-cols-1 grid-cols-2 gap-[30px]">
           {/* LEFT: Sale Products */}
           <div>
             <div style={{ border: "2px solid #fed700", borderRadius: "5px", padding: "15px" }}>
@@ -507,8 +507,8 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                 return (
                   <div>
                     {/* Large product card */}
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <div className="relative shrink-0 w-full sm:w-1/2" style={{ backgroundColor: "#f8f8f8" }}>
+                    <div className="flex-row gap-4">
+                      <div className="relative shrink-0 w-1/2" style={{ backgroundColor: "#f8f8f8" }}>
                         <Link href={`/store/${slug}/product/${p?.id}`}>
                           <img src={imgSrc} alt={p?.name} className="w-full aspect-square object-cover" />
                         </Link>
@@ -591,7 +591,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                 </div>
               </div>
               {/* Tab Content - product cards */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 grid-cols-3 gap-3">
                 {(activeTab === "NEW" ? productSliders.tabProducts :
                   activeTab === "FEATURED" ? productSliders.featuredProd :
                   productSliders.topRatedProd
@@ -624,7 +624,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
       {/* ====== PRODUCT GRID COLUMNS (4-col cards) ====== */}
       <div className="max-w-[1200px] mx-auto" style={{ padding: "10px 15px 40px" }}>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-[30px]">
+        <div className="grid grid-cols-1 grid-cols-4 gap-[30px]">
           <div>
             <h3 className="text-lg font-bold mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>New Products</h3>
             <div style={{ borderTop: "2px solid #ebebeb", paddingTop: "15px" }}>
@@ -665,10 +665,10 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         <div className="max-w-[1200px] mx-auto" style={{ padding: "50px 15px 60px" }}>
           <div className="flex flex-col items-center mb-2">
             <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#999999" }}>AKIRA ELECTRONICS</p>
-            <h2 className="text-[26px] md:text-[30px] font-bold text-center" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>LATEST FROM BLOG</h2>
+            <h2 className="text-[30px] font-bold text-center" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>LATEST FROM BLOG</h2>
             <p className="text-sm text-center mt-2" style={{ fontFamily: "Lato,sans-serif", color: "#666666" }}>Nullam gravida, dolor ac ultrices lobortis, mi dolor justo.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-[30px]" style={{ marginTop: "30px" }}>
+          <div className="grid grid-cols-1 grid-cols-3 gap-[30px]" style={{ marginTop: "30px" }}>
             {blogPosts.slice(0, 3).map((post, i) => (
               <Link key={i} href={`/store/${slug}/blog`} className="group">
                 <div className="overflow-hidden mb-4">
@@ -687,7 +687,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         {/* Features bar */}
         <div className="flex items-center" style={{ backgroundColor: "#f8f8f8", minHeight: "110px" }}>
           <div className="max-w-[1200px] mx-auto w-full" style={{ padding: "15px" }}>
-            <div className="grid grid-cols-2 md:grid-cols-4" style={{ columnGap: "30px" }}>
+            <div className="grid grid-cols-2 grid-cols-4" style={{ columnGap: "30px" }}>
               {features.map((feat, i) => {
                 const Icon = feat.icon;
                 return (
@@ -708,7 +708,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
         {/* Main footer */}
         <div style={{ backgroundColor: "#ffffff" }}>
-          <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8" style={{ padding: "50px 15px" }}>
+          <div className="max-w-[1200px] mx-auto grid grid-cols-1 grid-cols-4 gap-8" style={{ padding: "50px 15px" }}>
             {/* Logo + Contact */}
             <div>
               <Link href={`/store/${slug}`} className="text-xl font-black block mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>
@@ -796,9 +796,9 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
         {/* Bottom bar */}
         <div style={{ backgroundColor: "#f8f8f8" }}>
-          <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between" style={{ padding: "20px 15px", minHeight: "60px" }}>
+          <div className="max-w-[1200px] mx-auto flex flex-row items-center justify-between" style={{ padding: "20px 15px", minHeight: "60px" }}>
             <p className="text-xs" style={{ color: "#666666" }}>Copyright &copy; 2025 Akira Store. All Rights Reserved.</p>
-            <div className="flex gap-2 mt-3 md:mt-0">
+            <div className="flex gap-2 mt-0">
               <img src="https://cdn.jsdelivr.net/gh/multo-pay/icons/paypal.svg" alt="paypal" className="h-6" style={{ opacity: 0.6 }} />
               <img src="https://cdn.jsdelivr.net/gh/multo-pay/icons/visa.svg" alt="visa" className="h-6" style={{ opacity: 0.6 }} />
               <img src="https://cdn.jsdelivr.net/gh/multo-pay/icons/mastercard.svg" alt="mastercard" className="h-6" style={{ opacity: 0.6 }} />
