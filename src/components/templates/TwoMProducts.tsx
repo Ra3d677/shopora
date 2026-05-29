@@ -138,18 +138,18 @@ export default function TwoMProducts({
             <ChevronRight size={10} />
             <span className="text-[#333333]">{pageTitle}</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold uppercase mb-4 tracking-tight" style={{ fontFamily: "Lato,sans-serif" }}>
+          <h1 className="text-5xl font-extrabold uppercase mb-4 tracking-tight" style={{ fontFamily: "Lato,sans-serif" }}>
             {pageTitle}
           </h1>
           <p className="text-[#666666] text-sm max-w-2xl leading-relaxed italic">{pageDescription}</p>
         </div>
       </div>
 
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-[40px]">
+      <div className="max-w-[1200px] mx-auto px-6">
+        <div className="grid grid-cols-4 gap-[40px]">
           
           {/* LEFT SIDEBAR */}
-          <aside className="lg:col-span-1 flex flex-col gap-10">
+          <aside className="col-span-1 flex flex-col gap-10">
             
             {/* Categories Widget */}
             <div className="border border-[#ebebeb] p-6 rounded-sm bg-white">
@@ -278,7 +278,7 @@ export default function TwoMProducts({
 
             {/* Best Sellers Widget */}
             {sidebarFeatured.length > 0 && (
-              <div className="border border-[#ebebeb] p-6 rounded-sm bg-white hidden lg:block">
+              <div className="border border-[#ebebeb] p-6 rounded-sm bg-white block">
                 <h3 className="text-sm font-black uppercase tracking-wider mb-5 pb-3 border-b border-[#ebebeb]">
                   Best Sellers
                 </h3>
@@ -320,17 +320,17 @@ export default function TwoMProducts({
           </aside>
 
           {/* MAIN PRODUCT LIST AREA */}
-          <main className="lg:col-span-3">
+          <main className="col-span-3">
             
             {/* TOOLBAR */}
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border border-[#ebebeb] p-4 rounded-sm bg-white mb-8">
+            <div className="flex flex-row justify-between items-center gap-4 border border-[#ebebeb] p-4 rounded-sm bg-white mb-8">
               
               {/* Product count */}
               <p className="text-xs text-[#666666] font-medium">
                 Showing <span className="font-bold text-[#333333]">{sortedProducts.length}</span> of <span className="font-bold text-[#333333]">{products.length}</span> products
               </p>
 
-              <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap">
+              <div className="flex items-center gap-4 flex-nowrap">
                 
                 {/* Sort dropdown */}
                 <div className="flex items-center gap-2">
@@ -396,7 +396,7 @@ export default function TwoMProducts({
               </div>
             ) : (
               <div className={viewMode === "grid" 
-                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[30px]" 
+                ? "grid grid-cols-3 gap-[30px]" 
                 : "flex flex-col gap-[20px]"
               }>
                 {sortedProducts.map((product) => (
@@ -564,10 +564,10 @@ function ProductListItem({
 
   // LIST ROW VIEW
   return (
-    <div className="group border border-[#ebebeb] bg-white transition-shadow hover:shadow-lg rounded-sm p-5 flex flex-col md:flex-row gap-6 relative">
+    <div className="group border border-[#ebebeb] bg-white transition-shadow hover:shadow-lg rounded-sm p-5 flex flex-row gap-6 relative">
       
       {/* Product Image */}
-      <div className="w-full md:w-48 aspect-square bg-[#fafafa] shrink-0 border border-[#ebebeb] overflow-hidden rounded-sm relative">
+      <div className="w-48 aspect-square bg-[#fafafa] shrink-0 border border-[#ebebeb] overflow-hidden rounded-sm relative">
         <Link href={`/store/${slug}/product/${product.id}`} className="block w-full h-full">
           <SmartImage 
             src={imgSrc} 
@@ -603,13 +603,13 @@ function ProductListItem({
           </Link>
           
           {/* Description */}
-          <p className="text-xs text-[#666666] leading-relaxed mb-4 line-clamp-2 md:line-clamp-3">
+          <p className="text-xs text-[#666666] leading-relaxed mb-4 line-clamp-3">
             {product.description || "No description available for this product."}
           </p>
         </div>
 
         {/* Actions & Price Row */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mt-auto pt-4 border-t border-dashed border-[#ebebeb]">
+        <div className="flex flex-row justify-between items-center gap-4 mt-auto pt-4 border-t border-dashed border-[#ebebeb]">
           
           {/* Prices */}
           <div className="flex items-baseline gap-2">
@@ -623,7 +623,7 @@ function ProductListItem({
             )}
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="flex items-center gap-2 w-auto">
             {/* Quantity Picker */}
             <div className="flex items-center border border-[#ebebeb] rounded-sm bg-slate-50">
               <button 
