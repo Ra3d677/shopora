@@ -1,21 +1,25 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
-import { Home, Phone, Mail, Clock } from "lucide-react";
+import { Home, Phone, Mail, Clock, ChevronDown } from "lucide-react";
 
 export default function AkiraFooter({ slug, store }: { slug: string; store: any }) {
+  const [footerAccountOpen, setFooterAccountOpen] = useState(false);
+  const [footerInfoOpen, setFooterInfoOpen] = useState(false);
+
   return (
-    <footer className="font-['Lato',sans-serif]" style={{ backgroundColor: "#fafafa", color: "#666666" }}>
+    <footer className="font-['Lato',sans-serif] pb-20 md:pb-0" style={{ backgroundColor: "#fafafa", color: "#666666" }}>
       {/* Features Bar */}
       <div style={{ borderBottom: "1px solid #e5e5e5" }}>
-        <div className="mx-auto grid grid-cols-2 md:grid-cols-4" style={{ maxWidth: "1200px", padding: "0 15px" }}>
+        <div className="mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-0" style={{ maxWidth: "1200px", padding: "10px 15px" }}>
           {[
             { icon: "🚀", title: "Free Shipping", desc: "orders $50 or more" },
             { icon: "↩️", title: "Free Returns", desc: "within 30 days" },
             { icon: "ℹ️", title: "Get 20% Off 1 Item", desc: "when you sign up" },
             { icon: "⭐", title: "We Support", desc: "24/7 amazing services" },
           ].map((item, i) => (
-            <div key={i} className="flex items-center gap-3 py-6 px-2" style={{ borderRight: i < 3 ? "1px solid #e5e5e5" : "none" }}>
+            <div key={i} className="flex items-center gap-3 py-4 px-2 border-b border-gray-200/50 last:border-b-0 sm:border-b-0 sm:border-r border-dashed last:sm:border-r-0">
               <div className="w-12 h-12 flex items-center justify-center shrink-0 rounded-full" style={{ backgroundColor: "#fed700", color: "#333333", fontSize: "18px" }}>
                 {item.icon === "🚀" && <span className="text-lg">🚀</span>}
                 {item.icon === "↩️" && <span className="text-lg">↩️</span>}
@@ -32,29 +36,29 @@ export default function AkiraFooter({ slug, store }: { slug: string; store: any 
       </div>
 
       {/* Main Footer */}
-      <div style={{ padding: "60px 0 40px" }}>
+      <div style={{ padding: "40px 0" }}>
         <div className="mx-auto" style={{ maxWidth: "1200px", padding: "0 15px" }}>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             {/* Logo & Contact */}
-            <div>
-              <Link href={`/store/${slug}`} className="inline-block mb-6">
+            <div className="border-b md:border-b-0 border-gray-200/60 pb-6 md:pb-0">
+              <Link href={`/store/${slug}`} className="inline-block mb-4 md:mb-6">
                 {store.settings?.logoUrl ? (
                   <img src={store.settings.logoUrl} alt={store.name} className="h-10 object-contain" />
                 ) : (
                   <span className="text-xl font-bold tracking-tight uppercase" style={{ color: "#333333" }}>{store.name}</span>
                 )}
               </Link>
-              <ul className="space-y-4 text-sm">
+              <ul className="space-y-3.5 text-sm">
                 <li className="flex items-start gap-3">
                   <Home size={14} className="mt-0.5 shrink-0" style={{ color: "#fed700" }} />
                   <span>82 Valley Farms Court Grovetown</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <Phone size={14} className="mt-0.5 shrink-0" style={{ color: "#fed700" }} />
+                <li className="flex items-center gap-3">
+                  <Phone size={14} className="shrink-0" style={{ color: "#fed700" }} />
                   <span>(546) 347-9636</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <Mail size={14} className="mt-0.5 shrink-0" style={{ color: "#fed700" }} />
+                <li className="flex items-center gap-3">
+                  <Mail size={14} className="shrink-0" style={{ color: "#fed700" }} />
                   <span>contact@store.com</span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -65,30 +69,50 @@ export default function AkiraFooter({ slug, store }: { slug: string; store: any 
             </div>
 
             {/* My Account */}
-            <div>
-              <h5 className="text-sm font-bold mb-6 uppercase" style={{ color: "#333333" }}>My Account</h5>
-              <ul className="space-y-3 text-sm">
+            <div className="border-b md:border-b-0 border-gray-200/60 pb-4 md:pb-0">
+              <h5 className="hidden md:block text-sm font-bold mb-6 uppercase" style={{ color: "#333333" }}>My Account</h5>
+              <button 
+                onClick={() => setFooterAccountOpen(!footerAccountOpen)}
+                className="md:hidden flex items-center justify-between w-full text-sm font-bold uppercase py-2 text-left" 
+                style={{ color: "#333333" }}
+              >
+                <span>My Account</span>
+                <span className="text-gray-400">
+                  {footerAccountOpen ? <ChevronDown size={16} className="rotate-180 transition-transform" /> : <ChevronDown size={16} className="transition-transform" />}
+                </span>
+              </button>
+              <ul className={`space-y-3 text-sm mt-3 md:mt-0 transition-all duration-300 md:block ${footerAccountOpen ? "block" : "hidden"}`}>
                 {["About us", "Legal Notice", "Addresses", "Order", "Payment"].map((item) => (
-                  <li key={item}><Link href={`/store/${slug}`} className="hover:opacity-60 transition-opacity">{item}</Link></li>
+                  <li key={item}><Link href={`/store/${slug}`} className="hover:opacity-60 transition-opacity block py-1 md:py-0">{item}</Link></li>
                 ))}
               </ul>
             </div>
 
             {/* Information */}
-            <div>
-              <h5 className="text-sm font-bold mb-6 uppercase" style={{ color: "#333333" }}>Information</h5>
-              <ul className="space-y-3 text-sm">
+            <div className="border-b md:border-b-0 border-gray-200/60 pb-4 md:pb-0">
+              <h5 className="hidden md:block text-sm font-bold mb-6 uppercase" style={{ color: "#333333" }}>Information</h5>
+              <button 
+                onClick={() => setFooterInfoOpen(!footerInfoOpen)}
+                className="md:hidden flex items-center justify-between w-full text-sm font-bold uppercase py-2 text-left" 
+                style={{ color: "#333333" }}
+              >
+                <span>Information</span>
+                <span className="text-gray-400">
+                  {footerInfoOpen ? <ChevronDown size={16} className="rotate-180 transition-transform" /> : <ChevronDown size={16} className="transition-transform" />}
+                </span>
+              </button>
+              <ul className={`space-y-3 text-sm mt-3 md:mt-0 transition-all duration-300 md:block ${footerInfoOpen ? "block" : "hidden"}`}>
                 {["Delivery", "Legal Notice", "About us", "New products", "Prices drop"].map((item) => (
-                  <li key={item}><Link href={`/store/${slug}`} className="hover:opacity-60 transition-opacity">{item}</Link></li>
+                  <li key={item}><Link href={`/store/${slug}`} className="hover:opacity-60 transition-opacity block py-1 md:py-0">{item}</Link></li>
                 ))}
               </ul>
             </div>
 
             {/* Newsletter */}
-            <div>
+            <div className="pt-2 md:pt-0">
               <h5 className="text-sm font-bold mb-3 uppercase" style={{ color: "#333333" }}>Newsletter</h5>
               <p className="text-sm mb-4">Subscribe to our newsletter and get 10% off your first purchase</p>
-              <div className="flex" style={{ maxWidth: "270px" }}>
+              <div className="flex w-full" style={{ maxWidth: "270px" }}>
                 <input type="email" placeholder="Your email address" className="outline-none flex-1 px-4 py-2.5 text-sm" style={{ border: "1px solid #e5e5e5", backgroundColor: "#ffffff", color: "#999999" }} />
                 <button className="px-4 text-sm font-bold transition-colors" style={{ backgroundColor: "#fed700", color: "#333333", border: "1px solid #fed700" }}
                   onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; e.currentTarget.style.borderColor = "#333333"; }}
