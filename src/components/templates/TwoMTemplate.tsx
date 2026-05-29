@@ -632,11 +632,11 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
       {/* ====== SALE PRODUCTS + SPECIAL OFFERS ====== */}
       <div className="max-w-[1200px] mx-auto" style={{ padding: "0px 15px", marginBottom: "65px" }}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-[40px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-[40px]">
           {/* LEFT: Sale Products */}
           <div>
-            <div style={{ border: "2px solid #fed700", borderRadius: "5px", padding: "15px" }}>
-              <h3 className="mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "20px", fontWeight: 700 }}>Sale Products</h3>
+            <div style={{ border: "2px solid #fed700", borderRadius: "5px", padding: "20px" }}>
+              <h3 className="mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "26px", fontWeight: 700 }}>Sale Products</h3>
               {(() => {
                 const saleItems = productSliders.saleProducts.slice(0, 3);
                 const p = saleItems[saleIdx];
@@ -706,9 +706,9 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
           {/* RIGHT: SPECIAL OFFERS with Tabs */}
           <div>
-            <div style={{ border: "2px solid #fed700", borderRadius: "5px", padding: "15px" }}>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-                <h3 style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "20px", fontWeight: 700 }}>SPECIAL OFFERS</h3>
+            <div style={{ padding: "15px 0" }}>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                <h3 style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "22px", fontWeight: 700 }}>SPECIAL OFFERS</h3>
                 <div className="flex gap-0 overflow-x-auto pb-1 hide-scrollbar">
                   {["NEW", "FEATURED", "TOP RATED"].map((tab) => (
                     <button
