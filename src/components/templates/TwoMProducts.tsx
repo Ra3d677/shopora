@@ -38,6 +38,7 @@ export default function TwoMProducts({
   const [maxPrice, setMaxPrice] = useState<string>("");
   const [activePriceRange, setActivePriceRange] = useState<string>("all");
   const [selectedSort, setSelectedSort] = useState<string>("default");
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   // Cart & Wishlist hooks
   const cartAddItem = useCartStore((s) => s.addItem);
@@ -138,7 +139,7 @@ export default function TwoMProducts({
             <ChevronRight size={10} />
             <span className="text-[#333333]">{pageTitle}</span>
           </div>
-          <h1 className="text-5xl font-extrabold uppercase mb-4 tracking-tight" style={{ fontFamily: "Lato,sans-serif" }}>
+          <h1 className="text-3xl md:text-5xl font-extrabold uppercase mb-4 tracking-tight" style={{ fontFamily: "Lato,sans-serif" }}>
             {pageTitle}
           </h1>
           <p className="text-[#666666] text-sm max-w-2xl leading-relaxed italic">{pageDescription}</p>
@@ -146,10 +147,10 @@ export default function TwoMProducts({
       </div>
 
       <div className="max-w-[1200px] mx-auto px-6">
-        <div className="grid grid-cols-4 gap-[40px]">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-[40px]">
           
           {/* LEFT SIDEBAR */}
-          <aside className="col-span-1 flex flex-col gap-10">
+          <aside className="hidden lg:flex col-span-1 flex-col gap-10">
             
             {/* Categories Widget */}
             <div className="border border-[#ebebeb] p-6 rounded-sm bg-white">
@@ -320,17 +321,138 @@ export default function TwoMProducts({
           </aside>
 
           {/* MAIN PRODUCT LIST AREA */}
-          <main className="col-span-3">
+          <main className="col-span-1 lg:col-span-3">
             
-            {/* TOOLBAR */}
-            <div className="flex flex-row justify-between items-center gap-4 border border-[#ebebeb] p-4 rounded-sm bg-white mb-8">
-              
-              {/* Product count */}
-              <p className="text-xs text-[#666666] font-medium">
-                Showing <span className="font-bold text-[#333333]">{sortedProducts.length}</span> of <span className="font-bold text-[#333333]">{products.length}</span> products
-              </p>
+            {/* MOBILE FILTERS COLLAPSIBLE PANEL */}
+            <div className={`lg:hidden transition-all duration-300 overflow-hidden ${mobileFiltersOpen ? "max-h-[1000px] opacity-100 mb-8" : "max-h-0 opacity-0"}`}>
+              <div className="border border-[#ebebeb] p-5 rounded-sm bg-gray-50 flex flex-col gap-6">
+                {/* Categories Widget */}
+                <div>
+                  <h4 className="text-xs font-black uppercase tracking-wider mb-3 pb-2 border-b border-[#ebebeb] flex items-center justify-between text-gray-700">
+                    <span>Categories</span>
+                  </h4>
+                  <ul className="grid grid-cols-2 gap-2">
+                    <li>
+                      <Link 
+                        href={`/store/${slug}/products`}
+                        onClick={() => setMobileFiltersOpen(false)}
+                        className={`text-[11px] font-bold uppercase tracking-wider flex items-center justify-between py-1 transition-all ${!activeCategoryId ? 'text-[#e1205e]' : 'text-[#666666]'}`}
+                      >
+                        <span>All Products ({products.length})</span>
+                      </Link>
+                    </li>
+                    {mainCategories.map((cat: any) => (
+                      <li key={cat.id}>
+                        <Link 
+                          href={`/store/${slug}/products?category=${cat.id}`}
+                          onClick={() => setMobileFiltersOpen(false)}
+                          className={`text-[11px] font-bold uppercase tracking-wider block py-1 transition-all ${activeCategoryId === cat.id ? 'text-[#e1205e]' : 'text-[#666666]'}`}
+                        >
+                          {cat.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-              <div className="flex items-center gap-4 flex-nowrap">
+                {/* Price Filter Widget */}
+                <div className="border-t border-[#ebebeb] pt-4">
+                  <h4 className="text-xs font-black uppercase tracking-wider mb-3 text-gray-700">
+                    Filter By Price
+                  </h4>
+                  <div className="flex gap-2 mb-4">
+                    <div className="flex-1">
+                      <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block mb-1">Min Price</span>
+                      <input 
+                        type="number" 
+                        placeholder="$ Min"
+                        value={minPrice}
+                        onChange={(e) => {
+                          setMinPrice(e.target.value);
+                          setActivePriceRange("custom");
+                        }}
+                        className="w-full text-xs font-bold border border-[#ebebeb] bg-white outline-none px-3 py-1.5 rounded-sm focus:border-[#fed700]"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block mb-1">Max Price</span>
+                      <input 
+                        type="number" 
+                        placeholder="$ Max"
+                        value={maxPrice}
+                        onChange={(e) => {
+                          setMaxPrice(e.target.value);
+                          setActivePriceRange("custom");
+                        }}
+                        className="w-full text-xs font-bold border border-[#ebebeb] bg-white outline-none px-3 py-1.5 rounded-sm focus:border-[#fed700]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Clear price button */}
+                  {(minPrice !== "" || maxPrice !== "" || activePriceRange !== "all") && (
+                    <button
+                      onClick={() => {
+                        setMinPrice("");
+                        setMaxPrice("");
+                        setActivePriceRange("all");
+                      }}
+                      className="w-full py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500 bg-slate-100 hover:bg-[#fed700] hover:text-[#333333] transition-colors mb-3 rounded-sm"
+                    >
+                      Clear Price Filters
+                    </button>
+                  )}
+
+                  {/* Price Ranges Options */}
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { key: "all", label: "All Prices" },
+                      { key: "under50", label: "Under $50" },
+                      { key: "50to100", label: "$50 to $100" },
+                      { key: "100to200", label: "$100 to $200" },
+                      { key: "above200", label: "$200 & Above" }
+                    ].map((range) => (
+                      <button
+                        key={range.key}
+                        onClick={() => {
+                          setMinPrice("");
+                          setMaxPrice("");
+                          setActivePriceRange(range.key);
+                          setMobileFiltersOpen(false);
+                        }}
+                        className={`text-xs font-semibold px-3 py-1 bg-white border border-[#ebebeb] rounded-full transition-all ${
+                          activePriceRange === range.key && minPrice === "" && maxPrice === ""
+                            ? 'border-[#e1205e] text-[#e1205e] font-bold' 
+                            : 'text-[#666666] hover:text-[#e1205e]'
+                        }`}
+                      >
+                        {range.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* TOOLBAR */}
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border border-[#ebebeb] p-4 rounded-sm bg-white mb-8 w-full">
+              
+              {/* Product count & Mobile Filters Button */}
+              <div className="flex items-center justify-between w-full sm:w-auto gap-4">
+                <p className="text-xs text-[#666666] font-medium">
+                  Showing <span className="font-bold text-[#333333]">{sortedProducts.length}</span> of <span className="font-bold text-[#333333]">{products.length}</span> products
+                </p>
+                {/* Mobile Filters Toggle Button */}
+                <button
+                  onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
+                  className="lg:hidden flex items-center gap-1.5 px-3 py-1.5 border border-[#ebebeb] text-xs font-bold uppercase rounded-sm bg-slate-50 hover:bg-[#fed700] hover:border-[#fed700] transition-colors"
+                >
+                  <SlidersHorizontal size={12} />
+                  <span>Filters</span>
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
                 
                 {/* Sort dropdown */}
                 <div className="flex items-center gap-2">
@@ -340,7 +462,7 @@ export default function TwoMProducts({
                   <select
                     value={selectedSort}
                     onChange={(e) => setSelectedSort(e.target.value)}
-                    className="text-xs font-bold border border-[#ebebeb] outline-none bg-white py-1.5 px-3 rounded-sm cursor-pointer focus:border-[#fed700]"
+                    className="text-xs font-bold border border-[#ebebeb] outline-none bg-white py-1.5 px-2 sm:px-3 rounded-sm cursor-pointer focus:border-[#fed700]"
                   >
                     <option value="default">Default Sorting</option>
                     <option value="price_asc">Price: Low to High</option>
@@ -396,7 +518,7 @@ export default function TwoMProducts({
               </div>
             ) : (
               <div className={viewMode === "grid" 
-                ? "grid grid-cols-3 gap-[30px]" 
+                ? "grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-[30px]" 
                 : "flex flex-col gap-[20px]"
               }>
                 {sortedProducts.map((product) => (
@@ -564,10 +686,10 @@ function ProductListItem({
 
   // LIST ROW VIEW
   return (
-    <div className="group border border-[#ebebeb] bg-white transition-shadow hover:shadow-lg rounded-sm p-5 flex flex-row gap-6 relative">
+    <div className="group border border-[#ebebeb] bg-white transition-shadow hover:shadow-lg rounded-sm p-4 sm:p-5 flex flex-col sm:flex-row gap-4 sm:gap-6 relative">
       
       {/* Product Image */}
-      <div className="w-48 aspect-square bg-[#fafafa] shrink-0 border border-[#ebebeb] overflow-hidden rounded-sm relative">
+      <div className="w-full sm:w-48 aspect-square bg-[#fafafa] shrink-0 border border-[#ebebeb] overflow-hidden rounded-sm relative">
         <Link href={`/store/${slug}/product/${product.id}`} className="block w-full h-full">
           <SmartImage 
             src={imgSrc} 
@@ -609,7 +731,7 @@ function ProductListItem({
         </div>
 
         {/* Actions & Price Row */}
-        <div className="flex flex-row justify-between items-center gap-4 mt-auto pt-4 border-t border-dashed border-[#ebebeb]">
+        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mt-auto pt-4 border-t border-dashed border-[#ebebeb] w-full">
           
           {/* Prices */}
           <div className="flex items-baseline gap-2">
@@ -623,7 +745,7 @@ function ProductListItem({
             )}
           </div>
 
-          <div className="flex items-center gap-2 w-auto">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             {/* Quantity Picker */}
             <div className="flex items-center border border-[#ebebeb] rounded-sm bg-slate-50">
               <button 

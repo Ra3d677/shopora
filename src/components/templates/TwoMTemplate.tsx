@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
   ChevronRight, ChevronLeft, Search, Heart, ShoppingCart, User, Menu, MapPin,
   Phone, Mail, Clock, Rocket, Undo2, Info, Shield, Star, Eye,
-  Gift, ChevronDown
+  Gift, ChevronDown, X
 } from "lucide-react";
 import { useCartStore } from "@/store/cart";
 import { useWishlistStore } from "@/store/wishlist";
@@ -234,8 +234,81 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
   return (
     <div className="font-['Lato',sans-serif] overflow-x-hidden">
+      {/* ====== MOBILE DRAWER MENU ====== */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 flex md:hidden" style={{ zIndex: 99999 }}>
+          {/* Backdrop */}
+          <div 
+            onClick={() => setMobileMenuOpen(false)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300"
+          />
+          {/* Drawer container */}
+          <div className="relative w-80 max-w-xs bg-white h-full shadow-2xl flex flex-col justify-between transform transition-transform duration-300 ease-in-out z-10 p-5 overflow-y-auto">
+            <div>
+              {/* Drawer Header */}
+              <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-5">
+                <Link href={`/store/${slug}`} onClick={() => setMobileMenuOpen(false)}>
+                  <span className="text-lg font-black tracking-wider text-[#333333]">ELECTRONICS</span>
+                </Link>
+                <button 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-1 rounded-full bg-gray-100 text-gray-500 hover:text-[#333333] transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Navigation Links */}
+              <div className="flex flex-col gap-4 mb-8">
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Main Menu</p>
+                <Link href={`/store/${slug}`} onClick={() => setMobileMenuOpen(false)} className="text-sm font-bold text-[#333333] hover:text-[#e1205e] transition-colors py-1">Home</Link>
+                <Link href={`/store/${slug}/products`} onClick={() => setMobileMenuOpen(false)} className="text-sm font-bold text-[#333333] hover:text-[#e1205e] transition-colors py-1 flex items-center gap-1.5">
+                  Shop <span className="px-1.5 py-0.5 text-[8px] font-bold text-white bg-[#e1205e]">HOT</span>
+                </Link>
+                <Link href={`/store/${slug}/blog`} onClick={() => setMobileMenuOpen(false)} className="text-sm font-bold text-[#333333] hover:text-[#e1205e] transition-colors py-1">Blog</Link>
+                <Link href={`/store/${slug}/contact`} onClick={() => setMobileMenuOpen(false)} className="text-sm font-bold text-[#333333] hover:text-[#e1205e] transition-colors py-1">Contact Us</Link>
+                <Link href={`/store/${slug}/faqs`} onClick={() => setMobileMenuOpen(false)} className="text-sm font-bold text-[#333333] hover:text-[#e1205e] transition-colors py-1">FAQS</Link>
+              </div>
+
+              {/* Categories Links */}
+              {realCategories.length > 0 && (
+                <div className="flex flex-col gap-3">
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Categories</p>
+                  <div className="flex flex-col gap-2 max-h-[250px] overflow-y-auto pr-1">
+                    {realCategories.map((cat, i) => (
+                      <Link
+                        key={cat.id || i}
+                        href={`/store/${slug}/products?category=${cat.id}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-xs font-semibold text-gray-600 hover:text-[#e1205e] transition-colors py-1.5 border-b border-gray-50 flex items-center justify-between"
+                      >
+                        <span>{cat.name}</span>
+                        <ChevronRight size={12} className="opacity-50" />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Bottom Account Links */}
+            <div className="border-t border-gray-100 pt-4 mt-6">
+              <Link 
+                href={`/store/${slug}/account`} 
+                onClick={() => setMobileMenuOpen(false)} 
+                className="flex items-center gap-2.5 py-2 text-sm font-bold text-gray-700 hover:text-[#e1205e] transition-colors"
+              >
+                <User size={16} />
+                <span>My Account</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ====== TOP BAR ====== */}
-      <div className="block" style={{ backgroundColor: "#fed700", color: "#333333", fontSize: "12px" }}>
+      {/* Desktop Top Bar */}
+      <div className="hidden md:block" style={{ backgroundColor: "#fed700", color: "#333333", fontSize: "12px" }}>
         <div className="max-w-[1200px] mx-auto flex items-center justify-between" style={{ padding: "0px 15px", minHeight: "40px" }}>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
@@ -266,9 +339,14 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
           </div>
         </div>
       </div>
+      {/* Mobile Top Bar (Clean and Simple) */}
+      <div className="md:hidden flex items-center justify-center py-2 text-center text-[10px] font-bold px-4" style={{ backgroundColor: "#fed700", color: "#333333", letterSpacing: "0.5px" }}>
+        <span>FREE SHIPPING FOR ALL ORDERS OF $150</span>
+      </div>
 
       {/* ====== HEADER MAIN ====== */}
-      <div className="block" style={{ backgroundColor: "#ffffff" }}>
+      {/* Desktop Header */}
+      <div className="hidden md:block" style={{ backgroundColor: "#ffffff" }}>
         <div className="max-w-[1200px] mx-auto flex items-center" style={{ padding: "20px 15px" }}>
           <div className="w-1/3 flex items-center">
             <Link href={`/store/${slug}`} className="inline-block">
@@ -307,9 +385,48 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
           </div>
         </div>
       </div>
+      {/* Mobile Header (Sleek and Non-overlapping) */}
+      <div className="md:hidden bg-white border-b border-gray-100 flex flex-col">
+        <div className="flex items-center justify-between px-4 py-3">
+          <button 
+            onClick={() => setMobileMenuOpen(true)} 
+            className="p-1.5 hover:bg-gray-50 rounded-lg transition-colors"
+          >
+            <Menu size={22} style={{ color: "#333333" }} />
+          </button>
+          <Link href={`/store/${slug}`}>
+            <span className="text-lg font-black tracking-wider text-[#333333]" style={{ fontFamily: "Lato,sans-serif" }}>
+              ELECTRONICS
+            </span>
+          </Link>
+          <div className="flex items-center gap-3">
+            <Link href={`/store/${slug}/wishlist`} className="relative p-1">
+              <Heart size={20} style={{ color: "#333333" }} />
+            </Link>
+            <Link href={`/store/${slug}/cart`} className="relative p-1">
+              <ShoppingCart size={20} style={{ color: "#333333" }} />
+              <span className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center text-[9px] font-bold" style={{ backgroundColor: primary, color: "#333333", borderRadius: "50%" }}>{cartCount}</span>
+            </Link>
+          </div>
+        </div>
+        <div className="px-4 pb-3">
+          <div className="flex items-center w-full bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="flex-1 px-3.5 py-2 text-xs outline-none bg-transparent text-gray-700"
+              style={{ fontFamily: "Lato,sans-serif", height: "36px" }}
+            />
+            <button className="px-4 transition-colors flex items-center justify-center" style={{ backgroundColor: primary, color: "#333333", height: "36px" }}>
+              <Search size={14} />
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* ====== NAVIGATION BAR ====== */}
-      <div className="block max-w-[1200px] mx-auto" style={{ padding: "0px 15px" }}>
+      {/* Desktop Navigation */}
+      <div className="hidden md:block max-w-[1200px] mx-auto" style={{ padding: "0px 15px" }}>
         <div className="flex items-stretch" style={{ borderTop: "1px solid #ebebeb", borderBottom: "1px solid #ebebeb" }}>
           <div className="flex items-center gap-2 px-5 py-3 text-sm font-bold uppercase cursor-pointer shrink-0" style={{ backgroundColor: primary, color: "#333333", width: "220px" }}>
             <Menu size={16} />
@@ -366,10 +483,10 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       </div>
 
       {/* ====== HERO SECTION with Categories Sidebar ====== */}
-      <div className="max-w-[1200px] mx-auto flex" style={{ padding: "0px 15px" }}>
-        {/* Categories Vertical Sidebar (always visible) */}
+      <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row" style={{ padding: "0px 15px" }}>
+        {/* Categories Vertical Sidebar (always visible on desktop, hidden on mobile) */}
         {realCategories.length > 0 && (
-          <div className="block w-[220px] shrink-0" style={{ marginTop: "0px", height: "380px" }}>
+          <div className="hidden md:block w-[220px] shrink-0" style={{ marginTop: "0px", height: "380px" }}>
             <div className="flex flex-col h-full bg-white" style={{ border: "1px solid #ebebeb", height: "100%" }}>
               <div className="flex-1 overflow-y-auto flex flex-col h-full" style={{ scrollbarWidth: "thin", display: "flex", flexDirection: "column", height: "100%" }}>
                 {visibleCategories.map((cat, i) => (
@@ -399,8 +516,8 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         )}
 
         {/* Hero Slider */}
-        <div className="flex-1 relative overflow-hidden" style={{ backgroundColor: "#f8f8f8" }}>
-          <div className="relative" style={{ height: "380px" }}>
+        <div className="flex-1 relative overflow-hidden w-full" style={{ backgroundColor: "#f8f8f8" }}>
+          <div className="relative h-[250px] sm:h-[300px] md:h-[380px]">
             {heroSlides.map((slide, index) => (
               <div
                 key={index}
@@ -408,16 +525,16 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                 style={{ opacity: index === currentSlide ? 1 : 0, zIndex: index === currentSlide ? 1 : 0 }}
               >
                 <div className="flex items-center h-full" style={{ backgroundImage: `url(${slide.image})`, backgroundPosition: "center center", backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundColor: "#f8f8f8" }}>
-                  <div className="max-w-[380px]" style={{ marginRight: "auto", padding: "60px 0 60px 30px" }}>
-                    <p style={{ color: primary, fontSize: "14px", fontWeight: 700, textTransform: "uppercase", lineHeight: "20px", marginBottom: "12px", letterSpacing: "1px" }}>{slide.heading}</p>
-                    <h2 style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "32px", fontWeight: 800, textTransform: "uppercase", lineHeight: "38px", marginBottom: "20px" }}>
+                  <div className="max-w-[380px] mr-auto p-6 sm:p-8 md:p-12 flex flex-col justify-center h-full">
+                    <p className="text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-1 sm:mb-2" style={{ color: primary, letterSpacing: "1px" }}>{slide.heading}</p>
+                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-extrabold uppercase leading-tight sm:leading-snug md:leading-normal mb-3 sm:mb-5" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>
                       <span dangerouslySetInnerHTML={{ __html: slide.description }} />
                     </h2>
                     {slide.buttonText && (
                       <Link
                         href={`/store/${slug}/products`}
-                        className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold uppercase tracking-wider transition-colors"
-                        style={{ backgroundColor: primary, color: "#333333", fontSize: "14px", fontWeight: 600, lineHeight: "16px" }}
+                        className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-8 sm:py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors w-max"
+                        style={{ backgroundColor: primary, color: "#333333", lineHeight: "16px" }}
                         onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; }}
                         onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; }}
                       >
@@ -460,9 +577,9 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
       {/* ====== CTA BANNERS ====== */}
       <div className="max-w-[1200px] mx-auto" style={{ padding: "0px 15px", marginTop: "30px", marginBottom: "50px" }}>
-        <div className="grid grid-cols-1 grid-cols-2 gap-[30px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-[30px]">
           {ctaBanners.map((banner, i) => (
-            <Link key={i} href={banner.buttonLink || `/store/${slug}/products`} className="group block overflow-hidden relative" style={{ minHeight: "290px" }}>
+            <Link key={i} href={banner.buttonLink || `/store/${slug}/products`} className="group block overflow-hidden relative min-h-[200px] md:min-h-[290px]">
               <div className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: `url(${banner.imageUrl})` }} />
               {/* Legibility overlay */}
               <div className="absolute inset-0 bg-black/25 transition-opacity duration-300 group-hover:bg-black/35" />
@@ -495,7 +612,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
       {/* ====== SALE PRODUCTS + SPECIAL OFFERS ====== */}
       <div className="max-w-[1200px] mx-auto" style={{ padding: "0px 15px", marginBottom: "65px" }}>
-        <div className="grid grid-cols-1 grid-cols-2 gap-[30px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-[30px]">
           {/* LEFT: Sale Products */}
           <div>
             <div style={{ border: "2px solid #fed700", borderRadius: "5px", padding: "15px" }}>
@@ -507,8 +624,8 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                 return (
                   <div>
                     {/* Large product card */}
-                    <div className="flex-row gap-4">
-                      <div className="relative shrink-0 w-1/2" style={{ backgroundColor: "#f8f8f8" }}>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <div className="relative shrink-0 w-full sm:w-1/2" style={{ backgroundColor: "#f8f8f8" }}>
                         <Link href={`/store/${slug}/product/${p?.id}`}>
                           <img src={imgSrc} alt={p?.name} className="w-full aspect-square object-cover" />
                         </Link>
@@ -570,18 +687,18 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
           {/* RIGHT: SPECIAL OFFERS with Tabs */}
           <div>
             <div style={{ border: "2px solid #fed700", borderRadius: "5px", padding: "15px" }}>
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                 <h3 style={{ fontFamily: "Lato,sans-serif", color: "#333333", fontSize: "20px", fontWeight: 700 }}>SPECIAL OFFERS</h3>
-                <div className="flex gap-0">
+                <div className="flex gap-0 overflow-x-auto pb-1 hide-scrollbar">
                   {["NEW", "FEATURED", "TOP RATED"].map((tab) => (
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
-                      className="text-xs font-semibold uppercase tracking-wider transition-colors"
+                      className="text-xs font-semibold uppercase tracking-wider transition-colors whitespace-nowrap"
                       style={{
                         color: activeTab === tab ? "#333333" : "rgba(51,51,51,0.7)",
                         borderBottom: activeTab === tab ? "2px solid #fed700" : "2px solid transparent",
-                        marginLeft: "20px",
+                        marginLeft: "12px",
                         paddingBottom: "3px",
                       }}
                     >
@@ -591,7 +708,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
                 </div>
               </div>
               {/* Tab Content - product cards */}
-              <div className="grid grid-cols-2 grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {(activeTab === "NEW" ? productSliders.tabProducts :
                   activeTab === "FEATURED" ? productSliders.featuredProd :
                   productSliders.topRatedProd
@@ -608,7 +725,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       <div className="max-w-[1200px] mx-auto" style={{ padding: "15px 15px", marginBottom: "60px" }}>
         <div style={{ borderTop: "1px solid #ebebeb", borderBottom: "1px solid #ebebeb", padding: "25px 0" }}>
           <div className="relative">
-            <div className="flex items-center justify-around overflow-hidden">
+            <div className="flex flex-wrap md:flex-nowrap items-center justify-center md:justify-around gap-6 md:gap-4 overflow-hidden">
               {brandLogos.map((logo, i) => (
                 <div key={i} className="px-4 transition-opacity duration-300" style={{ opacity: 0.5 }}
                   onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; }}
@@ -624,7 +741,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
       {/* ====== PRODUCT GRID COLUMNS (4-col cards) ====== */}
       <div className="max-w-[1200px] mx-auto" style={{ padding: "10px 15px 40px" }}>
-        <div className="grid grid-cols-1 grid-cols-4 gap-[30px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-[30px]">
           <div>
             <h3 className="text-lg font-bold mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>New Products</h3>
             <div style={{ borderTop: "2px solid #ebebeb", paddingTop: "15px" }}>
@@ -668,7 +785,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
             <h2 className="text-[30px] font-bold text-center" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>LATEST FROM BLOG</h2>
             <p className="text-sm text-center mt-2" style={{ fontFamily: "Lato,sans-serif", color: "#666666" }}>Nullam gravida, dolor ac ultrices lobortis, mi dolor justo.</p>
           </div>
-          <div className="grid grid-cols-1 grid-cols-3 gap-[30px]" style={{ marginTop: "30px" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-[30px]" style={{ marginTop: "30px" }}>
             {blogPosts.slice(0, 3).map((post, i) => (
               <Link key={i} href={`/store/${slug}/blog`} className="group">
                 <div className="overflow-hidden mb-4">
@@ -687,11 +804,11 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
         {/* Features bar */}
         <div className="flex items-center" style={{ backgroundColor: "#f8f8f8", minHeight: "110px" }}>
           <div className="max-w-[1200px] mx-auto w-full" style={{ padding: "15px" }}>
-            <div className="grid grid-cols-2 grid-cols-4" style={{ columnGap: "30px" }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" style={{ columnGap: "30px" }}>
               {features.map((feat, i) => {
                 const Icon = feat.icon;
                 return (
-                  <div key={i} className="flex items-center gap-4 px-5">
+                  <div key={i} className="flex items-center gap-4 px-5 py-2 sm:py-0">
                     <div className="w-12 h-12 flex items-center justify-center shrink-0" style={{ backgroundColor: primary }}>
                       <Icon size={22} style={{ color: "#333333" }} />
                     </div>
@@ -708,7 +825,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
         {/* Main footer */}
         <div style={{ backgroundColor: "#ffffff" }}>
-          <div className="max-w-[1200px] mx-auto grid grid-cols-1 grid-cols-4 gap-8" style={{ padding: "50px 15px" }}>
+          <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8" style={{ padding: "50px 15px" }}>
             {/* Logo + Contact */}
             <div>
               <Link href={`/store/${slug}`} className="text-xl font-black block mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>
@@ -796,7 +913,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
         {/* Bottom bar */}
         <div style={{ backgroundColor: "#f8f8f8" }}>
-          <div className="max-w-[1200px] mx-auto flex flex-row items-center justify-between" style={{ padding: "20px 15px", minHeight: "60px" }}>
+          <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left" style={{ padding: "20px 15px", minHeight: "60px" }}>
             <p className="text-xs" style={{ color: "#666666" }}>Copyright &copy; 2025 Akira Store. All Rights Reserved.</p>
             <div className="flex gap-2 mt-0">
               <img src="https://cdn.jsdelivr.net/gh/multo-pay/icons/paypal.svg" alt="paypal" className="h-6" style={{ opacity: 0.6 }} />
