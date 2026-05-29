@@ -17,6 +17,7 @@ interface TemplateProps {
   slug: string;
   categories: any[];
   session?: any;
+  store?: any;
 }
 
 const DEFAULT_HERO_SLIDES = [
@@ -45,7 +46,7 @@ function SwiperArrows({ onPrev, onNext }: { onPrev: () => void; onNext: () => vo
   );
 }
 
-export default function TwoMTemplate({ banners, settings, products, slug, categories, session }: TemplateProps) {
+export default function TwoMTemplate({ store, banners, settings, products, slug, categories, session }: TemplateProps) {
   const primary = "#fed700";
   const hoverAccent = "#e1205e";
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -57,7 +58,8 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
   const cartItems = useCartStore((s) => s.items);
   const { addItem: addWishlist, removeItem: removeWishlist, isWishlisted } = useWishlistStore();
 
-  const cartCount = cartItems.filter((i) => i.storeId === slug).reduce((a, i) => a + i.quantity, 0);
+  const storeId = store?.id || slug;
+  const cartCount = cartItems.filter((i) => i.storeId === storeId).reduce((a, i) => a + i.quantity, 0);
 
   const handleAddToCart = (product: any, e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -65,7 +67,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
       cartAddItem({
         id: `${slug}-${product.id}-One Size-`,
-        storeId: slug,
+        storeId: storeId,
         product: { ...product, images: Array.isArray(product?.images) ? product.images : [img] },
         quantity: 1,
         selectedSize: "One Size",

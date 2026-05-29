@@ -50,7 +50,7 @@ export default function TwoMProducts({
       const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
       cartAddItem({
         id: `${slug}-${product.id}-One Size-`,
-        storeId: slug,
+        storeId: store?.id || slug,
         product: { ...product, images: product.images || img },
         quantity: quantity,
         selectedSize: "One Size",

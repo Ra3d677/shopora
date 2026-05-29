@@ -57,7 +57,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
   
   // Removed the "No products yet" fallback so the template always renders.
 
-  const props = { banners, settings, products, slug, categories: store.categories };
+  const props = { store, banners, settings, products, slug, categories: store.categories };
   
   // FORCE TEMPLATE RENDERING (Step 4)
   const renderTemplate = () => {
