@@ -53,6 +53,10 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("NEW");
   const [showAllCategories, setShowAllCategories] = useState(false);
+  const [newProdIdx, setNewProdIdx] = useState(0);
+  const [featuredProdIdx, setFeaturedProdIdx] = useState(0);
+  const [bestWeekIdx, setBestWeekIdx] = useState(0);
+  const [popularCatIdx, setPopularCatIdx] = useState(0);
   const [saleIdx, setSaleIdx] = useState(0);
   const cartAddItem = useCartStore((s) => s.addItem);
   const cartItems = useCartStore((s) => s.items);
@@ -230,6 +234,91 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
         </h3>
         <div className="flex items-center gap-1.5">{renderStars()}<span className="text-[10px]" style={{ color: "#999999" }}>(0 Reviews)</span></div>
         <p className="text-sm font-bold mt-1" style={{ color: "#333333" }}>${product?.price?.toFixed(2)}</p>
+      </div>
+    );
+  };
+
+  /* ---- product-type-2: horizontal mini card (image left, info right) ---- */
+  const renderHorizontalMiniCard = (product: any) => {
+    const imgSrc = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
+    return (
+      <div className="group flex gap-3 items-start" style={{ marginBottom: "15px", paddingBottom: "15px", borderBottom: "1px solid #f0f0f0" }}>
+        {/* Image */}
+        <div className="shrink-0 relative overflow-hidden" style={{ width: "80px", height: "80px", backgroundColor: "#f8f8f8" }}>
+          <Link href={`/store/${slug}/product/${product.id}`}>
+            <img src={imgSrc} alt={product?.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </Link>
+          <span className="absolute top-1 left-1 px-1 py-0.5 text-[9px] font-bold uppercase" style={{ backgroundColor: "#e1205e", color: "#ffffff" }}>New</span>
+        </div>
+        {/* Info */}
+        <div className="flex-1 min-w-0">
+          <Link href={`/store/${slug}/categories`} className="text-[10px] uppercase tracking-wider block" style={{ color: "#999999" }}>{product?.category || "Category"}</Link>
+          <h3 className="text-[12px] font-semibold leading-tight mt-0.5 mb-1 transition-colors group-hover:opacity-60 line-clamp-2" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>
+            <Link href={`/store/${slug}/product/${product.id}`}>{product?.name}</Link>
+          </h3>
+          <div className="flex items-center gap-1 mb-1">{renderStars()}<span className="text-[10px]" style={{ color: "#999999" }}>(0)</span></div>
+          <p className="text-sm font-bold" style={{ color: "#333333" }}>${product?.price?.toFixed(2)}</p>
+        </div>
+      </div>
+    );
+  };
+
+  /* ---- Column slider with always-visible arrows at top-right ---- */
+  const renderColumnSlider = (
+    title: string,
+    items: any[],
+    currentIdx: number,
+    setIdx: (n: number) => void,
+    itemsPerPage = 3
+  ) => {
+    const pages = Math.ceil(items.length / itemsPerPage);
+    const pageItems = items.slice(currentIdx * itemsPerPage, currentIdx * itemsPerPage + itemsPerPage);
+    return (
+      <div className="flex flex-col">
+        {/* Header row */}
+        <div className="flex items-center justify-between" style={{ marginBottom: "12px" }}>
+          <h3 className="text-[20px] font-bold" style={{ fontFamily: "Lato,sans-serif", color: "#333333", lineHeight: "1.4em" }}>{title}</h3>
+          {pages > 1 && (
+            <div className="flex items-center gap-0.5">
+              <button
+                onClick={() => setIdx(Math.max(0, currentIdx - 1))}
+                className="flex items-center justify-center transition-colors"
+                style={{
+                  width: "25px", height: "30px",
+                  backgroundColor: currentIdx === 0 ? "#f0f0f0" : "#333333",
+                  color: currentIdx === 0 ? "#bbbbbb" : "#ffffff",
+                }}
+                onMouseEnter={(e) => { if (currentIdx > 0) { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; } }}
+                onMouseLeave={(e) => { if (currentIdx > 0) { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; } }}
+              >
+                <ChevronLeft size={14} />
+              </button>
+              <button
+                onClick={() => setIdx(Math.min(pages - 1, currentIdx + 1))}
+                className="flex items-center justify-center transition-colors"
+                style={{
+                  width: "25px", height: "30px",
+                  backgroundColor: currentIdx === pages - 1 ? "#f0f0f0" : "#333333",
+                  color: currentIdx === pages - 1 ? "#bbbbbb" : "#ffffff",
+                }}
+                onMouseEnter={(e) => { if (currentIdx < pages - 1) { e.currentTarget.style.backgroundColor = primary; e.currentTarget.style.color = "#333333"; } }}
+                onMouseLeave={(e) => { if (currentIdx < pages - 1) { e.currentTarget.style.backgroundColor = "#333333"; e.currentTarget.style.color = "#ffffff"; } }}
+              >
+                <ChevronRight size={14} />
+              </button>
+            </div>
+          )}
+        </div>
+        {/* Divider */}
+        <div style={{ borderTop: "2px solid #ebebeb", marginBottom: "15px" }} />
+        {/* Product list */}
+        <div>
+          {pageItems.map((product: any, i: number) => (
+            <div key={`${product.id}-${i}`}>
+              {renderHorizontalMiniCard(product)}
+            </div>
+          ))}
+        </div>
       </div>
     );
   };
@@ -771,40 +860,48 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
         </div>
       </div>
 
-      {/* ====== PRODUCT GRID COLUMNS (4-col cards) ====== */}
-      <div className="max-w-[1200px] mx-auto" style={{ padding: "10px 15px 40px" }}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-[30px]">
-          <div>
-            <h3 className="text-lg font-bold mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>New Products</h3>
-            <div style={{ borderTop: "2px solid #ebebeb", paddingTop: "15px" }}>
-              {productSliders.newProd.slice(0, 4).map((product: any, i: number) => (
-                <div key={i} className="mb-5">{renderProductCard(product)}</div>
-              ))}
-            </div>
+      {/* ====== PRODUCT GRID COLUMNS — New Products / Featured / Best of Week / Popular ====== */}
+      <div className="max-w-[1200px] mx-auto" style={{ padding: "0px 15px 30px" }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "0px" }}>
+          {/* Column 1: New Products */}
+          <div style={{ padding: "15px 15px 15px 15px" }}>
+            {renderColumnSlider(
+              "New Products",
+              productSliders.newProd,
+              newProdIdx,
+              setNewProdIdx,
+              3
+            )}
           </div>
-          <div>
-            <h3 className="text-lg font-bold mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>Featured products</h3>
-            <div style={{ borderTop: "2px solid #ebebeb", paddingTop: "15px" }}>
-              {productSliders.featuredProd.slice(0, 4).map((product: any, i: number) => (
-                <div key={i} className="mb-5">{renderProductCard(product)}</div>
-              ))}
-            </div>
+          {/* Column 2: Featured products */}
+          <div style={{ padding: "15px 15px 15px 15px" }}>
+            {renderColumnSlider(
+              "Featured products",
+              productSliders.featuredProd,
+              featuredProdIdx,
+              setFeaturedProdIdx,
+              3
+            )}
           </div>
-          <div>
-            <h3 className="text-lg font-bold mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>Top Rated</h3>
-            <div style={{ borderTop: "2px solid #ebebeb", paddingTop: "15px" }}>
-              {productSliders.topRatedProd.slice(0, 4).map((product: any, i: number) => (
-                <div key={i} className="mb-5">{renderProductCard(product)}</div>
-              ))}
-            </div>
+          {/* Column 3: Best of the week */}
+          <div style={{ padding: "15px 15px 15px 15px" }}>
+            {renderColumnSlider(
+              "Best of the week",
+              productSliders.topRatedProd,
+              bestWeekIdx,
+              setBestWeekIdx,
+              3
+            )}
           </div>
-          <div>
-            <h3 className="text-lg font-bold mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>Popular</h3>
-            <div style={{ borderTop: "2px solid #ebebeb", paddingTop: "15px" }}>
-              {productSliders.prod4.slice(0, 4).map((product: any, i: number) => (
-                <div key={i} className="mb-5">{renderProductCard(product)}</div>
-              ))}
-            </div>
+          {/* Column 4: Popular Category */}
+          <div style={{ padding: "15px 15px 15px 15px" }}>
+            {renderColumnSlider(
+              "Popular Category",
+              productSliders.prod4,
+              popularCatIdx,
+              setPopularCatIdx,
+              3
+            )}
           </div>
         </div>
       </div>
