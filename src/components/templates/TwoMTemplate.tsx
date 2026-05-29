@@ -356,7 +356,14 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
                 <img
                   src={settings.logoUrl}
                   alt={settings?.storeName || "Logo"}
-                  style={{ height: "65px", width: "auto", maxWidth: "200px", objectFit: "contain", display: "block" }}
+                  style={{
+                    height: `${settings?.headerSettings?.logoHeight || 65}px`,
+                    width: "auto",
+                    maxWidth: "280px",
+                    objectFit: "contain",
+                    display: "block",
+                    mixBlendMode: (settings?.headerSettings?.logoBlendMode || 'normal') as any
+                  }}
                 />
               ) : (
                 <div style={{ fontSize: "28px", fontWeight: 900, fontFamily: "Lato,sans-serif", color: "#333333", letterSpacing: "1px" }}>
@@ -409,7 +416,14 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
               <img
                 src={settings.logoUrl}
                 alt={settings?.storeName || "Logo"}
-                style={{ height: "70px", width: "auto", maxWidth: "180px", objectFit: "contain", display: "block" }}
+                style={{
+                  height: `${Math.round((settings?.headerSettings?.logoHeight || 65) * 0.75)}px`,
+                  width: "auto",
+                  maxWidth: "180px",
+                  objectFit: "contain",
+                  display: "block",
+                  mixBlendMode: (settings?.headerSettings?.logoBlendMode || 'normal') as any
+                }}
               />
             ) : (
               <span className="text-lg font-black tracking-wider text-[#333333]" style={{ fontFamily: "Lato,sans-serif" }}>
