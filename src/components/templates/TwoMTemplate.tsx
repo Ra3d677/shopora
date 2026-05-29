@@ -236,26 +236,6 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
 
   return (
     <div className="font-['Lato',sans-serif] overflow-x-hidden">
-      {/* Mobile Header - visible on small screens */}
-      <div className="md:hidden flex items-center justify-between p-4 bg-white border-b border-gray-200">
-        {/* Hamburger */}
-        <button onClick={() => setMobileMenuOpen(true)} className="p-2 rounded-md hover:bg-gray-100">
-          <Menu size={24} className="text-gray-800" />
-        </button>
-        {/* Logo */}
-        <Link href={`/store/${slug}`} className="text-lg font-bold text-gray-900" onClick={() => setMobileMenuOpen(false)}>
-          ELECTRONICS
-        </Link>
-        {/* Cart Icon */}
-        <Link href={`/store/${slug}/cart`} className="relative p-2 rounded-md hover:bg-gray-100">
-          <ShoppingCart size={24} className="text-gray-800" />
-          {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-              {cartCount}
-            </span>
-          )}
-        </Link>
-      </div>
       {/* ====== MOBILE DRAWER MENU ====== */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 flex md:hidden" style={{ zIndex: 99999 }}>
