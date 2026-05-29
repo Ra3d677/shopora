@@ -349,14 +349,14 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
       {/* ====== HEADER MAIN ====== */}
       {/* Desktop Header */}
       <div className="hidden md:block" style={{ backgroundColor: "#ffffff" }}>
-        <div className="max-w-[1200px] mx-auto flex items-center" style={{ padding: "20px 15px" }}>
+        <div className="max-w-[1200px] mx-auto flex items-center" style={{ padding: "10px 15px" }}>
           <div className="w-1/3 flex items-center">
             <Link href={`/store/${slug}`} className="inline-block">
               {settings?.logoUrl ? (
                 <img
                   src={settings.logoUrl}
                   alt={settings?.storeName || "Logo"}
-                  style={{ height: "90px", width: "auto", maxWidth: "220px", objectFit: "contain", display: "block" }}
+                  style={{ height: "130px", width: "auto", maxWidth: "280px", objectFit: "contain", display: "block" }}
                 />
               ) : (
                 <div style={{ fontSize: "28px", fontWeight: 900, fontFamily: "Lato,sans-serif", color: "#333333", letterSpacing: "1px" }}>
@@ -409,7 +409,7 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
               <img
                 src={settings.logoUrl}
                 alt={settings?.storeName || "Logo"}
-                style={{ height: "60px", width: "auto", maxWidth: "160px", objectFit: "contain", display: "block" }}
+                style={{ height: "70px", width: "auto", maxWidth: "180px", objectFit: "contain", display: "block" }}
               />
             ) : (
               <span className="text-lg font-black tracking-wider text-[#333333]" style={{ fontFamily: "Lato,sans-serif" }}>
