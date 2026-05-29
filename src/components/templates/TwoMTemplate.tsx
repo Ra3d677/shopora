@@ -66,7 +66,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       cartAddItem({
         id: `${slug}-${product.id}-One Size-`,
         storeId: slug,
-        product: { ...product, images: product.images || img },
+        product: { ...product, images: Array.isArray(product?.images) ? product.images : [img] },
         quantity: 1,
         selectedSize: "One Size",
         selectedColor: "",
@@ -234,6 +234,26 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
   return (
     <div className="font-['Lato',sans-serif] overflow-x-hidden">
+      {/* Mobile Header - visible on small screens */}
+      <div className="md:hidden flex items-center justify-between p-4 bg-white border-b border-gray-200">
+        {/* Hamburger */}
+        <button onClick={() => setMobileMenuOpen(true)} className="p-2 rounded-md hover:bg-gray-100">
+          <Menu size={24} className="text-gray-800" />
+        </button>
+        {/* Logo */}
+        <Link href={`/store/${slug}`} className="text-lg font-bold text-gray-900" onClick={() => setMobileMenuOpen(false)}>
+          ELECTRONICS
+        </Link>
+        {/* Cart Icon */}
+        <Link href={`/store/${slug}/cart`} className="relative p-2 rounded-md hover:bg-gray-100">
+          <ShoppingCart size={24} className="text-gray-800" />
+          {cartCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              {cartCount}
+            </span>
+          )}
+        </Link>
+      </div>
       {/* ====== MOBILE DRAWER MENU ====== */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 flex md:hidden" style={{ zIndex: 99999 }}>
@@ -612,7 +632,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
       {/* ====== SALE PRODUCTS + SPECIAL OFFERS ====== */}
       <div className="max-w-[1200px] mx-auto" style={{ padding: "0px 15px", marginBottom: "65px" }}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-[30px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-[40px]">
           {/* LEFT: Sale Products */}
           <div>
             <div style={{ border: "2px solid #fed700", borderRadius: "5px", padding: "15px" }}>
@@ -825,7 +845,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
         {/* Main footer */}
         <div style={{ backgroundColor: "#ffffff" }}>
-          <div className="max-w-[1200px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8" style={{ padding: "50px 15px" }}>
+          <div className="max-w-[1200px] mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8" style={{ padding: "50px 15px" }}>
             {/* Logo + Contact */}
             <div className="col-span-2 md:col-span-1">
               <Link href={`/store/${slug}`} className="block mb-4">
