@@ -349,14 +349,14 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
       {/* ====== HEADER MAIN ====== */}
       {/* Desktop Header */}
       <div className="hidden md:block" style={{ backgroundColor: "#ffffff" }}>
-        <div className="max-w-[1200px] mx-auto flex items-center" style={{ padding: "10px 15px" }}>
+        <div className="max-w-[1200px] mx-auto flex items-center" style={{ padding: "8px 15px" }}>
           <div className="w-1/3 flex items-center">
             <Link href={`/store/${slug}`} className="inline-block">
               {settings?.logoUrl ? (
                 <img
                   src={settings.logoUrl}
                   alt={settings?.storeName || "Logo"}
-                  style={{ height: "130px", width: "auto", maxWidth: "280px", objectFit: "contain", display: "block" }}
+                  style={{ height: "65px", width: "auto", maxWidth: "200px", objectFit: "contain", display: "block" }}
                 />
               ) : (
                 <div style={{ fontSize: "28px", fontWeight: 900, fontFamily: "Lato,sans-serif", color: "#333333", letterSpacing: "1px" }}>
