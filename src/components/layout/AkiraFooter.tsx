@@ -1,13 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { Home, Phone, Mail, Clock, ChevronDown } from "lucide-react";
+import { Home, Phone, Mail, Clock } from "lucide-react";
 
 export default function AkiraFooter({ slug, store }: { slug: string; store: any }) {
-  const [footerAccountOpen, setFooterAccountOpen] = useState(false);
-  const [footerInfoOpen, setFooterInfoOpen] = useState(false);
-
   return (
     <footer className="font-['Lato',sans-serif] pb-20 md:pb-0" style={{ backgroundColor: "#fafafa", color: "#666666" }}>
       {/* Features Bar */}
@@ -38,9 +35,9 @@ export default function AkiraFooter({ slug, store }: { slug: string; store: any 
       {/* Main Footer */}
       <div style={{ padding: "40px 0" }}>
         <div className="mx-auto" style={{ maxWidth: "1200px", padding: "0 15px" }}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {/* Logo & Contact */}
-            <div className="border-b md:border-b-0 border-gray-200/60 pb-6 md:pb-0">
+            <div className="col-span-2 md:col-span-1 border-b md:border-b-0 border-gray-200/60 pb-6 md:pb-0">
               <Link href={`/store/${slug}`} className="inline-block mb-4 md:mb-6">
                 {store.settings?.logoUrl ? (
                   <img src={store.settings.logoUrl} alt={store.name} className="h-10 object-contain" />
@@ -69,47 +66,27 @@ export default function AkiraFooter({ slug, store }: { slug: string; store: any 
             </div>
 
             {/* My Account */}
-            <div className="border-b md:border-b-0 border-gray-200/60 pb-4 md:pb-0">
-              <h5 className="hidden md:block text-sm font-bold mb-6 uppercase" style={{ color: "#333333" }}>My Account</h5>
-              <button 
-                onClick={() => setFooterAccountOpen(!footerAccountOpen)}
-                className="md:hidden flex items-center justify-between w-full text-sm font-bold uppercase py-2 text-left" 
-                style={{ color: "#333333" }}
-              >
-                <span>My Account</span>
-                <span className="text-gray-400">
-                  {footerAccountOpen ? <ChevronDown size={16} className="rotate-180 transition-transform" /> : <ChevronDown size={16} className="transition-transform" />}
-                </span>
-              </button>
-              <ul className={`space-y-3 text-sm mt-3 md:mt-0 transition-all duration-300 md:block ${footerAccountOpen ? "block" : "hidden"}`}>
+            <div className="col-span-1">
+              <h5 className="text-sm font-bold mb-4 md:mb-6 uppercase" style={{ color: "#333333" }}>My Account</h5>
+              <ul className="space-y-3 text-sm">
                 {["About us", "Legal Notice", "Addresses", "Order", "Payment"].map((item) => (
-                  <li key={item}><Link href={`/store/${slug}`} className="hover:opacity-60 transition-opacity block py-1 md:py-0">{item}</Link></li>
+                  <li key={item}><Link href={`/store/${slug}`} className="hover:opacity-60 transition-opacity block">{item}</Link></li>
                 ))}
               </ul>
             </div>
 
             {/* Information */}
-            <div className="border-b md:border-b-0 border-gray-200/60 pb-4 md:pb-0">
-              <h5 className="hidden md:block text-sm font-bold mb-6 uppercase" style={{ color: "#333333" }}>Information</h5>
-              <button 
-                onClick={() => setFooterInfoOpen(!footerInfoOpen)}
-                className="md:hidden flex items-center justify-between w-full text-sm font-bold uppercase py-2 text-left" 
-                style={{ color: "#333333" }}
-              >
-                <span>Information</span>
-                <span className="text-gray-400">
-                  {footerInfoOpen ? <ChevronDown size={16} className="rotate-180 transition-transform" /> : <ChevronDown size={16} className="transition-transform" />}
-                </span>
-              </button>
-              <ul className={`space-y-3 text-sm mt-3 md:mt-0 transition-all duration-300 md:block ${footerInfoOpen ? "block" : "hidden"}`}>
+            <div className="col-span-1">
+              <h5 className="text-sm font-bold mb-4 md:mb-6 uppercase" style={{ color: "#333333" }}>Information</h5>
+              <ul className="space-y-3 text-sm">
                 {["Delivery", "Legal Notice", "About us", "New products", "Prices drop"].map((item) => (
-                  <li key={item}><Link href={`/store/${slug}`} className="hover:opacity-60 transition-opacity block py-1 md:py-0">{item}</Link></li>
+                  <li key={item}><Link href={`/store/${slug}`} className="hover:opacity-60 transition-opacity block">{item}</Link></li>
                 ))}
               </ul>
             </div>
 
             {/* Newsletter */}
-            <div className="pt-2 md:pt-0">
+            <div className="col-span-2 md:col-span-1 pt-2 md:pt-0">
               <h5 className="text-sm font-bold mb-3 uppercase" style={{ color: "#333333" }}>Newsletter</h5>
               <p className="text-sm mb-4">Subscribe to our newsletter and get 10% off your first purchase</p>
               <div className="flex w-full" style={{ maxWidth: "270px" }}>

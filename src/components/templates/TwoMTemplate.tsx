@@ -800,7 +800,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
       </div>
 
       {/* ====== FOOTER ====== */}
-      <footer>
+      <footer className="pb-20 md:pb-0">
         {/* Features bar */}
         <div className="flex items-center" style={{ backgroundColor: "#f8f8f8", minHeight: "110px" }}>
           <div className="max-w-[1200px] mx-auto w-full" style={{ padding: "15px" }}>
@@ -825,11 +825,15 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
 
         {/* Main footer */}
         <div style={{ backgroundColor: "#ffffff" }}>
-          <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8" style={{ padding: "50px 15px" }}>
+          <div className="max-w-[1200px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8" style={{ padding: "50px 15px" }}>
             {/* Logo + Contact */}
-            <div>
-              <Link href={`/store/${slug}`} className="text-xl font-black block mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>
-                ELECTRONICS
+            <div className="col-span-2 md:col-span-1">
+              <Link href={`/store/${slug}`} className="block mb-4">
+                {settings?.logoUrl ? (
+                  <img src={settings.logoUrl} alt={settings.storeName || "Logo"} className="h-10 w-auto object-contain" />
+                ) : (
+                  <span className="text-xl font-black block" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{settings?.storeName || "ELECTRONICS"}</span>
+                )}
               </Link>
               <div className="space-y-3 text-sm" style={{ color: "#666666" }}>
                 <div className="flex items-start gap-3">
@@ -852,12 +856,12 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
             </div>
 
             {/* My Account links */}
-            <div>
+            <div className="col-span-1">
               <h4 className="text-sm font-bold uppercase mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>My Account</h4>
               <ul className="space-y-2 text-sm">
                 {["About us", "Legal Notice", "Addresses", "Order", "Payment"].map((link) => (
                   <li key={link}>
-                    <Link href={`/store/${slug}/account`} className="transition-colors" style={{ color: "#666666" }}
+                    <Link href={`/store/${slug}/account`} className="transition-colors block" style={{ color: "#666666" }}
                       onMouseEnter={(e) => { e.currentTarget.style.color = hoverAccent; }}
                       onMouseLeave={(e) => { e.currentTarget.style.color = "#666666"; }}
                     >
@@ -869,12 +873,12 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
             </div>
 
             {/* Information links */}
-            <div>
+            <div className="col-span-1">
               <h4 className="text-sm font-bold uppercase mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>Information</h4>
               <ul className="space-y-2 text-sm">
                 {["Delivery", "Legal Notice", "About us", "New products", "Prices drop"].map((link) => (
                   <li key={link}>
-                    <Link href={`/store/${slug}/products`} className="transition-colors" style={{ color: "#666666" }}
+                    <Link href={`/store/${slug}/products`} className="transition-colors block" style={{ color: "#666666" }}
                       onMouseEnter={(e) => { e.currentTarget.style.color = hoverAccent; }}
                       onMouseLeave={(e) => { e.currentTarget.style.color = "#666666"; }}
                     >
@@ -886,7 +890,7 @@ export default function TwoMTemplate({ banners, settings, products, slug, catego
             </div>
 
             {/* Newsletter */}
-            <div>
+            <div className="col-span-2 md:col-span-1 pt-2 md:pt-0">
               <h4 className="text-sm font-bold uppercase mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>Newsletter</h4>
               <p className="text-sm mb-4" style={{ color: "#666666" }}>Subscribe to our newsletter and get 10% off your first purchase</p>
               <div className="flex mb-3">
