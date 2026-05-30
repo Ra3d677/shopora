@@ -1,0 +1,299 @@
+[
+  {
+    "id": "cmpiyqxtl0005muql81r72kjd",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "date": "2026-05-23T00:00:00.000Z",
+    "visits": 1,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpjl8rcf0005ajw2wguphq1u",
+    "storeId": "cmpix8a8b0001ut95w9yxifcv",
+    "date": "2026-05-24T00:00:00.000Z",
+    "visits": 50,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpiyljui0002muqlg4z4nda1",
+    "storeId": "cmpix8a8b0001ut95w9yxifcv",
+    "date": "2026-05-23T00:00:00.000Z",
+    "visits": 3,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpk8lnb80002fdp1ynjfvkq3",
+    "storeId": "cmpk8l1yc0001f1ewka32eguc",
+    "date": "2026-05-24T00:00:00.000Z",
+    "visits": 4,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpizdnjk000a8nxwij01cj83",
+    "storeId": "cmpizdf2x00028nxwzlk5t4j3",
+    "date": "2026-05-23T00:00:00.000Z",
+    "visits": 6,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpjgf5r4000awlu08kvgosng",
+    "storeId": "cmpjgewo40002wlu00fddddat",
+    "date": "2026-05-24T00:00:00.000Z",
+    "visits": 1,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmppmkqch0002h6b7npgnxsyy",
+    "storeId": "cmppmkh4p0001l4c1fjo2cnde",
+    "date": "2026-05-28T00:00:00.000Z",
+    "visits": 1,
+    "cartAdds": 1,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmppmn2d50008h6b7w4etbcg1",
+    "storeId": "cmpk8l1yc0001f1ewka32eguc",
+    "date": "2026-05-28T00:00:00.000Z",
+    "visits": 1,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpjgb6yk0002psjixjm6em3d",
+    "storeId": "cmpizdf2x00028nxwzlk5t4j3",
+    "date": "2026-05-24T00:00:00.000Z",
+    "visits": 5,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpp8gwgn0002bfmt8ccduyz8",
+    "storeId": "cmpjw6usr0001llfneswsc5oo",
+    "date": "2026-05-28T00:00:00.000Z",
+    "visits": 7,
+    "cartAdds": 1,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpnba3wr0002dq7oi8isn04r",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "date": "2026-05-27T00:00:00.000Z",
+    "visits": 89,
+    "cartAdds": 1,
+    "orders": 2,
+    "revenue": 319
+  },
+  {
+    "id": "cmpp8hwl50005bmphwwmo2lr0",
+    "storeId": "cmpp8hmqi0004bfmtfhyy6ez0",
+    "date": "2026-05-28T00:00:00.000Z",
+    "visits": 1,
+    "cartAdds": 1,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpql5n2w0002iym5o94vl01d",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "date": "2026-05-29T00:00:00.000Z",
+    "visits": 53,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpmxl56k0002jk2kre5gfgo0",
+    "storeId": "cmpmxku1j0001dveasa70q950",
+    "date": "2026-05-26T00:00:00.000Z",
+    "visits": 1,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpkylcgu00021mikik5o8ugh",
+    "storeId": "cmpix8a8b0001ut95w9yxifcv",
+    "date": "2026-05-25T00:00:00.000Z",
+    "visits": 33,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpmxwd3m0002mmc7vukp6hta",
+    "storeId": "cmpk8l1yc0001f1ewka32eguc",
+    "date": "2026-05-26T00:00:00.000Z",
+    "visits": 2,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmps25u3t0002n6mj37uub890",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "date": "2026-05-30T00:00:00.000Z",
+    "visits": 4,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpjld6ni000bajw2zpago56w",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "date": "2026-05-24T00:00:00.000Z",
+    "visits": 34,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpju5ebz000a40meampugizk",
+    "storeId": "cmpju55wp000240meuodcy0x9",
+    "date": "2026-05-24T00:00:00.000Z",
+    "visits": 1,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpjvuuwn000213iby26jlt2p",
+    "storeId": "cmpjvulc60002n8slvzcgga5p",
+    "date": "2026-05-24T00:00:00.000Z",
+    "visits": 1,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpp8dqh50002bmphs5jw9rrs",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "date": "2026-05-28T00:00:00.000Z",
+    "visits": 94,
+    "cartAdds": 3,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpmhza1o000689br1dbp8gxp",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "date": "2026-05-26T00:00:00.000Z",
+    "visits": 72,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmplqg5dx0009aebquljvetex",
+    "storeId": "cmplqfdna0001aebqbtf5gzju",
+    "date": "2026-05-25T00:00:00.000Z",
+    "visits": 1,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpnbwm7c0002n373lg32drp1",
+    "storeId": "cmpjw6usr0001llfneswsc5oo",
+    "date": "2026-05-27T00:00:00.000Z",
+    "visits": 1,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpql4d2d00023zdckaeeyo9r",
+    "storeId": "cmpjw6usr0001llfneswsc5oo",
+    "date": "2026-05-29T00:00:00.000Z",
+    "visits": 4,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmppcdfm3000dfob3wv21i3u9",
+    "storeId": "cmppccewn0005fob3alrbmg57",
+    "date": "2026-05-28T00:00:00.000Z",
+    "visits": 1,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpnte18y000cips1p8laddop",
+    "storeId": "cmpntdr5l0004ips1uk2uki3p",
+    "date": "2026-05-27T00:00:00.000Z",
+    "visits": 13,
+    "cartAdds": 3,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpkvk27t000210c8nhbosdje",
+    "storeId": "cmpk8l1yc0001f1ewka32eguc",
+    "date": "2026-05-25T00:00:00.000Z",
+    "visits": 6,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpnciyon0002rhup0yudkd7o",
+    "storeId": "cmpncipqf000aoj4ky4oxkx6d",
+    "date": "2026-05-27T00:00:00.000Z",
+    "visits": 1,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpl7a67w00026uj5ht6cscfb",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "date": "2026-05-25T00:00:00.000Z",
+    "visits": 146,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmpjw73za0009llfng1ad3h9l",
+    "storeId": "cmpjw6usr0001llfneswsc5oo",
+    "date": "2026-05-24T00:00:00.000Z",
+    "visits": 11,
+    "cartAdds": 1,
+    "orders": 1,
+    "revenue": 79.99
+  },
+  {
+    "id": "cmplaa8xg00099yaxb2kenz6q",
+    "storeId": "cmpla9ymp00019yaxex72fbl8",
+    "date": "2026-05-25T00:00:00.000Z",
+    "visits": 2,
+    "cartAdds": 0,
+    "orders": 0,
+    "revenue": 0
+  },
+  {
+    "id": "cmppm0uza000augg6k5qnjnfz",
+    "storeId": "cmppm0l9v0002ugg630s3fit7",
+    "date": "2026-05-28T00:00:00.000Z",
+    "visits": 1,
+    "cartAdds": 2,
+    "orders": 0,
+    "revenue": 0
+  }
+]

@@ -18,7 +18,7 @@ import MomoTemplate from "@/components/templates/MomoTemplate";
 import OneMTemplate from "@/components/templates/1MTemplate";
 import TwoMTemplate from "@/components/templates/TwoMTemplate";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 function BaseHomePage({ storeName, slug }: { storeName: string, slug: string }) {
   return (

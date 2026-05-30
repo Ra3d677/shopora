@@ -1,0 +1,15 @@
+[
+  {
+    "id": "cmppxzyji000az9x5p4njpj71",
+    "code": "MOMO20",
+    "discountType": "percentage",
+    "discountValue": 20,
+    "minOrder": null,
+    "expiresAt": "2026-05-29T00:00:00.000Z",
+    "usageLimit": 1,
+    "usedCount": 0,
+    "isActive": true,
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "createdAt": "2026-05-28T20:25:27.897Z"
+  }
+]

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "cmpix5osz0003fm2qnhju26uv",
+    "name": "Outerwear",
+    "description": null,
+    "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "parentId": null
+  },
+  {
+    "id": "cmpix5rbt000hfm2qwmc1r58n",
+    "name": "Essentials",
+    "description": null,
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "parentId": null
+  },
+  {
+    "id": "cmpix5tq3000vfm2qqqpwh0dr",
+    "name": "Footwear",
+    "description": null,
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "parentId": null
+  },
+  {
+    "id": "cmpix5vqb0019fm2qg41r1y1r",
+    "name": "Accessories",
+    "description": null,
+    "image": "https://images.unsplash.com/photo-1523206489230-c012c64b2b48?w=800&q=80",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "parentId": null
+  },
+  {
+    "id": "cmpix5xrp001nfm2qi1nj6bfr",
+    "name": "Knitwear",
+    "description": null,
+    "image": "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&q=80",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "parentId": null
+  },
+  {
+    "id": "cmpix5zut0021fm2qi2618mzj",
+    "name": "Bags & Luggage",
+    "description": null,
+    "image": "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=800&q=80",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "parentId": null
+  },
+  {
+    "id": "cmpix61v7002ffm2qvr0ehco2",
+    "name": "Grooming",
+    "description": null,
+    "image": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&q=80",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "parentId": null
+  },
+  {
+    "id": "cmpphr40100071g7ytuxgop52",
+    "name": "MOM",
+    "description": "MO",
+    "image": "",
+    "storeId": "cmpix5nd50001fm2ql0uoiryx",
+    "parentId": null
+  },
+  {
+    "id": "cmpjw6usr0002llfnevsnkptl",
+    "name": "New Arrivals",
+    "description": "The latest additions to our store",
+    "image": null,
+    "storeId": "cmpjw6usr0001llfneswsc5oo",
+    "parentId": null
+  },
+  {
+    "id": "cmpjw6usr0003llfnxm1tj52x",
+    "name": "Best Sellers",
+    "description": "Our most popular items",
+    "image": null,
+    "storeId": "cmpjw6usr0001llfneswsc5oo",
+    "parentId": null
+  },
+  {
+    "id": "cmpk8l1yc0002f1ewaynxm7s1",
+    "name": "New Arrivals",
+    "description": "The latest additions to our store",
+    "image": null,
+    "storeId": "cmpk8l1yc0001f1ewka32eguc",
+    "parentId": null
+  },
+  {
+    "id": "cmpk8l1yc0003f1ew0fcilz3y",
+    "name": "Best Sellers",
+    "description": "Our most popular items",
+    "image": null,
+    "storeId": "cmpk8l1yc0001f1ewka32eguc",
+    "parentId": null
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "cmpizfh4r000e8nxwygelr7sp",
+    "userId": "cmpiv0j180000a39g5afjcya9",
+    "title": "طلب تفعيل متجر جديد",
+    "message": "PLK طلب تفعيل باقة 6 شهور عبر فودافون كاش",
+    "link": "/admin/stores/requests",
+    "type": "reactivation_request",
+    "read": false,
+    "createdAt": "2026-05-23T23:31:08.283Z"
+  },
+  {
+    "id": "cmpjw94rc000dllfnfb0mvu3h",
+    "userId": "cmpiwir0t0001zea596623i3m",
+    "title": "طلب تفعيل متجر جديد",
+    "message": "MPr طلب تفعيل باقة 6 شهور عبر فودافون كاش",
+    "link": "/admin/stores/requests",
+    "type": "reactivation_request",
+    "read": false,
+    "createdAt": "2026-05-24T14:49:59.640Z"
+  },
+  {
+    "id": "cmpjw9514000fllfntzrxpfla",
+    "userId": "cmpiv0j180000a39g5afjcya9",
+    "title": "طلب تفعيل متجر جديد",
+    "message": "MPr طلب تفعيل باقة 6 شهور عبر فودافون كاش",
+    "link": "/admin/stores/requests",
+    "type": "reactivation_request",
+    "read": false,
+    "createdAt": "2026-05-24T14:49:59.992Z"
+  },
+  {
+    "id": "cmpk8mdx20006fdp1jn6kh4fc",
+    "userId": "cmpiwir0t0001zea596623i3m",
+    "title": "طلب تفعيل متجر جديد",
+    "message": "روح طلب تفعيل باقة 6 شهور عبر فودافون كاش",
+    "link": "/admin/stores/requests",
+    "type": "reactivation_request",
+    "read": false,
+    "createdAt": "2026-05-24T20:36:13.431Z"
+  },
+  {
+    "id": "cmpk8me720008fdp1l91rx2bh",
+    "userId": "cmpiv0j180000a39g5afjcya9",
+    "title": "طلب تفعيل متجر جديد",
+    "message": "روح طلب تفعيل باقة 6 شهور عبر فودافون كاش",
+    "link": "/admin/stores/requests",
+    "type": "reactivation_request",
+    "read": false,
+    "createdAt": "2026-05-24T20:36:13.790Z"
+  },
+  {
+    "id": "cmpntftrm000gips1ih7fjfqv",
+    "userId": "cmpiwir0t0001zea596623i3m",
+    "title": "طلب تفعيل متجر جديد",
+    "message": "Kjha طلب تفعيل باقة سنوي عبر فودافون كاش",
+    "link": "/admin/stores/requests",
+    "type": "reactivation_request",
+    "read": false,
+    "createdAt": "2026-05-27T08:42:17.842Z"
+  },
+  {
+    "id": "cmpntfu1o000iips1gc8uvo39",
+    "userId": "cmpiv0j180000a39g5afjcya9",
+    "title": "طلب تفعيل متجر جديد",
+    "message": "Kjha طلب تفعيل باقة سنوي عبر فودافون كاش",
+    "link": "/admin/stores/requests",
+    "type": "reactivation_request",
+    "read": false,
+    "createdAt": "2026-05-27T08:42:18.205Z"
+  }
+]

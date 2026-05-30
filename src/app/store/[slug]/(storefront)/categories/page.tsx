@@ -8,7 +8,7 @@ import HeroSlider from "@/components/ui/HeroSlider";
 import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
 import { getTranslation } from "@/lib/i18n";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function CollectionsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

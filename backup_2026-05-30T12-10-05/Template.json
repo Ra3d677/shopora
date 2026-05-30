@@ -1,0 +1,98 @@
+[
+  {
+    "id": "apple",
+    "name": "Premium Tech",
+    "description": "Sleek, product-focused design with vast whitespace, clean sans-serif typography, and polished aesthetic.",
+    "preview": "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=800&q=80",
+    "isActive": true,
+    "createdAt": "2026-05-24T17:38:49.576Z"
+  },
+  {
+    "id": "hybrid",
+    "name": "Hybrid Dark",
+    "description": "A perfect blend of luxury branding and high-conversion e-commerce elements.",
+    "preview": "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&q=80",
+    "isActive": true,
+    "createdAt": "2026-05-24T10:18:03.439Z"
+  },
+  {
+    "id": "zenith",
+    "name": "Zenith Luxury",
+    "description": "The pinnacle of minimalist luxury. Features cinematic transitions, elegant serif typography, and a sophisticated cream palette.",
+    "preview": "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&q=80",
+    "isActive": true,
+    "createdAt": "2026-05-24T10:18:03.805Z"
+  },
+  {
+    "id": "obsidian",
+    "name": "Obsidian Brutalist",
+    "description": "High-impact, modern brutalist design. Features asymmetrical layouts, dark mode aesthetics, and bold typography for boundary-pushing brands.",
+    "preview": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&q=80",
+    "isActive": true,
+    "createdAt": "2026-05-24T10:18:04.175Z"
+  },
+  {
+    "id": "modern",
+    "name": "Modern Commerce",
+    "description": "A clean, modern layout with a focus on usability and large product imagery.",
+    "preview": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80",
+    "isActive": true,
+    "createdAt": "2026-05-24T10:18:04.539Z"
+  },
+  {
+    "id": "modern1",
+    "name": "Modern 1",
+    "description": "Bold dark aesthetic, glass UI, and premium motion. Designed for modern brands that want a high-impact storefront.",
+    "preview": "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80",
+    "isActive": true,
+    "createdAt": "2026-05-24T17:38:51.610Z"
+  },
+  {
+    "id": "amazon",
+    "name": "Amazon Marketplace",
+    "description": "High-efficiency, conversion-optimized layout inspired by major marketplaces.",
+    "preview": "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80",
+    "isActive": true,
+    "createdAt": "2026-05-24T17:38:51.975Z"
+  },
+  {
+    "id": "dddyou",
+    "name": "DDDYOU Parfumerie",
+    "description": "عطور فاخرة تجمع بين أصالة الشرق ورقي الغرب. قالب داكن فاخر مع لمسات ذهبية، مثالي لمتاجر العطور والمنتجات الفاخرة.",
+    "preview": "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&q=80",
+    "isActive": true,
+    "createdAt": "2026-05-24T17:38:52.348Z"
+  },
+  {
+    "id": "senno",
+    "name": "Senno Multipurpose",
+    "description": "A high-end, minimalist ecommerce template with a peach-pink aesthetic, serif typography, and interactive hotspots. Perfect for beauty and boutique brands.",
+    "preview": "https://images.unsplash.com/photo-1596462502278-27bfac4033c8?w=800&q=80",
+    "isActive": true,
+    "createdAt": "2026-05-24T17:38:52.713Z"
+  },
+  {
+    "id": "momo",
+    "name": "MOMO",
+    "description": "A modern and minimalist template designed for small businesses selling handcrafted goods, artisanal food, or unique products with storytelling and visual appeal.",
+    "preview": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80",
+    "isActive": true,
+    "createdAt": "2026-05-26T17:31:00.851Z"
+  },
+  {
+    "id": "signature",
+    "name": "Signature Brand",
+    "description": "A high-end, typography-focused template for luxury brands and signature collections.",
+    "preview": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80",
+    "isActive": true,
+    "createdAt": "2026-05-24T10:18:02.299Z"
+  },
+  {
+    "id": "minimal",
+    "name": "Pure Minimal",
+    "description": "Stripped back to the essentials. High contrast, mono-tonal, and bold typography for high-end brands.",
+    "preview": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80",
+    "isActive": true,
+    "createdAt": "2026-05-24T17:38:49.132Z"
+  }
+]

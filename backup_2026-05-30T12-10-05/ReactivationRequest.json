@@ -1,0 +1,32 @@
+[
+  {
+    "id": "cmpjw947q000bllfnc63nukx8",
+    "storeId": "cmpjw6usr0001llfneswsc5oo",
+    "plan": "6-months",
+    "planLabel": "6 شهور",
+    "durationDays": 180,
+    "customerPhone": "01233333333333333",
+    "receiptImage": null,
+    "notes": null,
+    "status": "approved",
+    "reviewedBy": "cmpiv0j180000a39g5afjcya9",
+    "reviewedAt": "2026-05-24T14:51:05.969Z",
+    "createdAt": "2026-05-24T14:49:58.934Z",
+    "updatedAt": "2026-05-24T14:51:05.970Z"
+  },
+  {
+    "id": "cmpk8mddb0004fdp19ksbpfhe",
+    "storeId": "cmpk8l1yc0001f1ewka32eguc",
+    "plan": "6-months",
+    "planLabel": "6 شهور",
+    "durationDays": 180,
+    "customerPhone": "12222222222222222",
+    "receiptImage": null,
+    "notes": null,
+    "status": "approved",
+    "reviewedBy": "cmpiv0j180000a39g5afjcya9",
+    "reviewedAt": "2026-05-24T20:36:54.309Z",
+    "createdAt": "2026-05-24T20:36:12.719Z",
+    "updatedAt": "2026-05-24T20:36:54.310Z"
+  }
+]

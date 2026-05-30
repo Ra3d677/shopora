@@ -3,7 +3,7 @@ import { Check, Sparkles, ShieldCheck, Zap } from "lucide-react";
 import { getMarketingLang } from "@/lib/i18n";
 import ShoporaHeader from "@/components/layout/ShoporaHeader";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 const t = {
   en: {

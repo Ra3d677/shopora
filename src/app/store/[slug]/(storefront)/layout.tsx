@@ -31,7 +31,7 @@ function hexToRgb(hex: string) {
   return '6, 182, 212';
 }
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function StorefrontLayout({
   children,
