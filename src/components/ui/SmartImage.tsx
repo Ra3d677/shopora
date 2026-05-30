@@ -23,8 +23,8 @@ function getOptimizedUrl(url: string | null | undefined, width?: number, height?
       const prefix = url.slice(0, uploadIndex + 8); // includes '/upload/'
       const suffix = url.slice(uploadIndex + 8);
       
-      // Inject q_auto (auto quality) and f_auto (auto format like WebP/AVIF)
-      let transform = 'q_auto,f_auto';
+      // Inject q_auto:eco (auto economy quality) and f_auto (auto format like WebP/AVIF)
+      let transform = 'q_auto:eco,f_auto';
       
       // Inject dimensions for thumbnail resizing
       if (width) {

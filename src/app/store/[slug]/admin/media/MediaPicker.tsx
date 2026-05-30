@@ -91,8 +91,8 @@ export default function MediaPicker({ value, onChange, slug, className }: MediaP
         img.src = base64Url;
         img.onload = async () => {
           const canvas = document.createElement("canvas");
-          const MAX_WIDTH = 1200;
-          const MAX_HEIGHT = 1200;
+          const MAX_WIDTH = 800;
+          const MAX_HEIGHT = 800;
           let width = img.width;
           let height = img.height;
 
@@ -113,7 +113,7 @@ export default function MediaPicker({ value, onChange, slug, className }: MediaP
           const ctx = canvas.getContext("2d");
           ctx?.drawImage(img, 0, 0, width, height);
           
-          const compressedBase64 = canvas.toDataURL("image/png");
+          const compressedBase64 = canvas.toDataURL("image/jpeg", 0.6);
 
           const res = await fetch(`/api/store/${slug}/media`, {
             method: "POST",
