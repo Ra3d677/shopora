@@ -113,7 +113,8 @@ export default function MediaPicker({ value, onChange, slug, className }: MediaP
           const ctx = canvas.getContext("2d");
           ctx?.drawImage(img, 0, 0, width, height);
           
-          const compressedBase64 = canvas.toDataURL("image/jpeg", 0.6);
+          // Use WebP format to preserve transparency (alpha channel) for logos/icons while maintaining excellent compression
+          const compressedBase64 = canvas.toDataURL("image/webp", 0.6);
 
           const res = await fetch(`/api/store/${slug}/media`, {
             method: "POST",
