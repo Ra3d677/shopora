@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { CartItem } from "@/lib/types";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { sendOrderConfirmation, sendNewOrderNotification, sendStatusUpdate } from "@/lib/email";
 
 export async function createOrder(data: {
@@ -139,6 +139,19 @@ export async function createOrder(data: {
     } catch (stockError) {
       console.error('Failed to update stock:', stockError);
       // We don't fail the order if stock update fails, but we log it
+    }
+
+    // Trigger on-demand cache revalidation for the storefront to update stock levels instantly
+    try {
+      const storeSlugInfo = await prisma.store.findUnique({
+        where: { id: data.storeId },
+        select: { slug: true }
+      });
+      if (storeSlugInfo?.slug) {
+        revalidateTag(`store-${storeSlugInfo.slug}`, 'max');
+      }
+    } catch (revalError) {
+      console.error("Failed to revalidate store cache on checkout:", revalError);
     }
 
     // Send email notifications (fire-and-forget, non-blocking)
