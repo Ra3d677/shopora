@@ -49,6 +49,41 @@ function SwiperArrows({ onPrev, onNext }: { onPrev: () => void; onNext: () => vo
 export default function TwoMTemplate({ store, banners, settings, products, slug, categories, session }: TemplateProps) {
   const primary = "#fed700";
   const hoverAccent = "#e1205e";
+
+  const aboutUs = settings?.twoMAboutUs || {
+    showSection: true,
+    layout: 'image-left',
+    tagline: 'AKIRA ELECTRONICS',
+    taglineColor: '#999999',
+    taglineFontSize: 12,
+    taglineFontFamily: 'inherit',
+    taglineUppercase: true,
+    title: 'LATEST ABOUT US',
+    titleColor: '#333333',
+    titleFontSize: 30,
+    titleFontFamily: 'inherit',
+    titleAlign: 'center',
+    desc: 'Nullam gravida, dolor ac ultrices lobortis, mi dolor justo. We are a leading provider of premium electronics, committed to bringing the latest technology and exceptional customer service.',
+    descColor: '#666666',
+    descFontSize: 14,
+    descFontFamily: 'inherit',
+    descAlign: 'center',
+    descLineHeight: '1.6',
+    image: 'https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=800&q=80',
+    imageBorderRadius: 8,
+    imageShadow: 'soft',
+    bgColor: '#ffffff',
+    paddingTop: 50,
+    paddingBottom: 60,
+    showBtn: false,
+    btnText: 'قراءة المزيد',
+    btnLink: '#',
+    btnBgColor: '#fed700',
+    btnTextColor: '#333333',
+    btnFontSize: 12,
+    btnBorderRadius: 4,
+  };
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("NEW");
@@ -906,27 +941,160 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
         </div>
       </div>
 
-      {/* ====== BLOG SECTION ====== */}
-      <div style={{ backgroundColor: "#f8f8f8" }}>
-        <div className="max-w-[1200px] mx-auto" style={{ padding: "50px 15px 60px" }}>
-          <div className="flex flex-col items-center mb-2">
-            <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#999999" }}>AKIRA ELECTRONICS</p>
-            <h2 className="text-[30px] font-bold text-center" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>LATEST FROM BLOG</h2>
-            <p className="text-sm text-center mt-2" style={{ fontFamily: "Lato,sans-serif", color: "#666666" }}>Nullam gravida, dolor ac ultrices lobortis, mi dolor justo.</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-[30px]" style={{ marginTop: "30px" }}>
-            {blogPosts.slice(0, 3).map((post, i) => (
-              <Link key={i} href={`/store/${slug}/blog`} className="group">
-                <div className="overflow-hidden mb-4">
-                  <img src={post.image} alt={post.title} className="w-full aspect-[370/227] object-cover transition-transform duration-500 group-hover:scale-105" />
+      {/* ====== ABOUT US SECTION ====== */}
+      {aboutUs.showSection !== false && (
+        <div style={{ backgroundColor: aboutUs.bgColor || "#ffffff", paddingTop: `${aboutUs.paddingTop ?? 50}px`, paddingBottom: `${aboutUs.paddingBottom ?? 60}px` }}>
+          <div className="max-w-[1200px] mx-auto px-[15px]">
+            {aboutUs.layout === 'centered' ? (
+              // Centered layout
+              <div className="max-w-[800px] mx-auto text-center flex flex-col items-center">
+                {aboutUs.tagline && (
+                  <p 
+                    className="mb-2" 
+                    style={{ 
+                      color: aboutUs.taglineColor || "#999999", 
+                      fontSize: `${aboutUs.taglineFontSize || 12}px`, 
+                      fontFamily: aboutUs.taglineFontFamily === 'inherit' ? 'inherit' : `${aboutUs.taglineFontFamily}, sans-serif`,
+                      textTransform: aboutUs.taglineUppercase !== false ? 'uppercase' : 'none',
+                      fontWeight: 'bold',
+                      letterSpacing: '1px'
+                    }}
+                  >
+                    {aboutUs.tagline}
+                  </p>
+                )}
+                {aboutUs.title && (
+                  <h2 
+                    className="font-bold mb-4" 
+                    style={{ 
+                      color: aboutUs.titleColor || "#333333", 
+                      fontSize: `${aboutUs.titleFontSize || 30}px`, 
+                      fontFamily: aboutUs.titleFontFamily === 'inherit' ? 'inherit' : `${aboutUs.titleFontFamily}, sans-serif`,
+                      textAlign: (aboutUs.titleAlign || 'center') as any
+                    }}
+                  >
+                    {aboutUs.title}
+                  </h2>
+                )}
+                {aboutUs.desc && (
+                  <p 
+                    className="whitespace-pre-line" 
+                    style={{ 
+                      color: aboutUs.descColor || "#666666", 
+                      fontSize: `${aboutUs.descFontSize || 14}px`, 
+                      fontFamily: aboutUs.descFontFamily === 'inherit' ? 'inherit' : `${aboutUs.descFontFamily}, sans-serif`,
+                      textAlign: (aboutUs.descAlign || 'center') as any,
+                      lineHeight: aboutUs.descLineHeight || '1.6'
+                    }}
+                  >
+                    {aboutUs.desc}
+                  </p>
+                )}
+                {aboutUs.showBtn && aboutUs.btnText && (
+                  <Link 
+                    href={aboutUs.btnLink || '#'} 
+                    className="inline-block mt-6 px-6 py-2.5 transition-opacity hover:opacity-90 font-bold"
+                    style={{ 
+                      backgroundColor: aboutUs.btnBgColor || '#fed700', 
+                      color: aboutUs.btnTextColor || '#333333', 
+                      fontSize: `${aboutUs.btnFontSize || 12}px`,
+                      borderRadius: `${aboutUs.btnBorderRadius || 4}px`
+                    }}
+                  >
+                    {aboutUs.btnText}
+                  </Link>
+                )}
+              </div>
+            ) : (
+              // Split layouts (image left or right)
+              <div className={`flex flex-col md:flex-row items-center gap-8 md:gap-12 ${aboutUs.layout === 'image-right' ? 'md:flex-row-reverse' : ''}`}>
+                {/* Image side */}
+                <div className="w-full md:w-1/2">
+                  <div 
+                    className="overflow-hidden w-full aspect-[4/3] md:aspect-[370/227] bg-[#f8f8f8]"
+                    style={{ 
+                      borderRadius: `${aboutUs.imageBorderRadius || 8}px`,
+                      boxShadow: aboutUs.imageShadow === 'soft' 
+                        ? '0 10px 30px rgba(0,0,0,0.08)' 
+                        : aboutUs.imageShadow === 'hard' 
+                          ? '0 15px 35px rgba(0,0,0,0.18)' 
+                          : 'none'
+                    }}
+                  >
+                    <img 
+                      src={aboutUs.image || 'https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=800&q=80'} 
+                      alt={aboutUs.title || "About Us Image"} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
-                <p className="text-xs mb-2" style={{ color: "#999999" }}>{post.date}</p>
-                <h3 className="text-base font-bold transition-colors group-hover:opacity-60" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{post.title}</h3>
-              </Link>
-            ))}
+                
+                {/* Text side */}
+                <div className="w-full md:w-1/2 flex flex-col justify-center">
+                  {aboutUs.tagline && (
+                    <p 
+                      className="mb-2" 
+                      style={{ 
+                        color: aboutUs.taglineColor || "#999999", 
+                        fontSize: `${aboutUs.taglineFontSize || 12}px`, 
+                        fontFamily: aboutUs.taglineFontFamily === 'inherit' ? 'inherit' : `${aboutUs.taglineFontFamily}, sans-serif`,
+                        textTransform: aboutUs.taglineUppercase !== false ? 'uppercase' : 'none',
+                        fontWeight: 'bold',
+                        letterSpacing: '1px'
+                      }}
+                    >
+                      {aboutUs.tagline}
+                    </p>
+                  )}
+                  {aboutUs.title && (
+                    <h2 
+                      className="font-bold mb-4 leading-tight" 
+                      style={{ 
+                        color: aboutUs.titleColor || "#333333", 
+                        fontSize: `${aboutUs.titleFontSize || 30}px`, 
+                        fontFamily: aboutUs.titleFontFamily === 'inherit' ? 'inherit' : `${aboutUs.titleFontFamily}, sans-serif`,
+                        textAlign: (aboutUs.titleAlign || 'right') as any
+                      }}
+                    >
+                      {aboutUs.title}
+                    </h2>
+                  )}
+                  {aboutUs.desc && (
+                    <p 
+                      className="whitespace-pre-line" 
+                      style={{ 
+                        color: aboutUs.descColor || "#666666", 
+                        fontSize: `${aboutUs.descFontSize || 14}px`, 
+                        fontFamily: aboutUs.descFontFamily === 'inherit' ? 'inherit' : `${aboutUs.descFontFamily}, sans-serif`,
+                        textAlign: (aboutUs.descAlign || 'right') as any,
+                        lineHeight: aboutUs.descLineHeight || '1.6'
+                      }}
+                    >
+                      {aboutUs.desc}
+                    </p>
+                  )}
+                  {aboutUs.showBtn && aboutUs.btnText && (
+                    <div className={`mt-6 ${aboutUs.descAlign === 'center' ? 'text-center' : aboutUs.descAlign === 'left' ? 'text-left' : 'text-right'}`}>
+                      <Link 
+                        href={aboutUs.btnLink || '#'} 
+                        className="inline-block px-6 py-2.5 transition-opacity hover:opacity-90 font-bold"
+                        style={{ 
+                          backgroundColor: aboutUs.btnBgColor || '#fed700', 
+                          color: aboutUs.btnTextColor || '#333333', 
+                          fontSize: `${aboutUs.btnFontSize || 12}px`,
+                          borderRadius: `${aboutUs.btnBorderRadius || 4}px`
+                        }}
+                      >
+                        {aboutUs.btnText}
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      </div>
+      )}
 
       {/* ====== FOOTER ====== */}
       <footer className="pb-20 md:pb-0">
