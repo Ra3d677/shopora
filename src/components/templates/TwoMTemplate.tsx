@@ -5,10 +5,23 @@ import Link from "next/link";
 import {
   ChevronRight, ChevronLeft, Search, Heart, ShoppingCart, User, Menu, MapPin,
   Phone, Mail, Clock, Rocket, Undo2, Info, Shield, Star, Eye,
-  Gift, ChevronDown, X
+  Gift, ChevronDown, X, Truck, Headphones, Tag, Percent, Sparkles
 } from "lucide-react";
 import { useCartStore } from "@/store/cart";
 import { useWishlistStore } from "@/store/wishlist";
+
+const ICON_MAP: Record<string, React.ComponentType<any>> = {
+  Rocket,
+  Undo2,
+  Gift,
+  Shield,
+  Truck,
+  Headphones,
+  Clock,
+  Tag,
+  Percent,
+  Sparkles,
+};
 
 interface TemplateProps {
   banners: any[];
@@ -152,12 +165,17 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
     { imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80", title: "APPLE ACCESSORIES", subtitle: "LEATHER CASES", buttonText: "SHOP NOW!" },
   ];
 
-  const features = [
-    { icon: Rocket, title: "Free Shipping", desc: "orders $50 or more" },
-    { icon: Undo2, title: "Free Returns", desc: "within 30 days" },
-    { icon: Gift, title: "Get 20% Off 1 Item", desc: "when you sign up" },
-    { icon: Shield, title: "We Support", desc: "24/7 amazing services" },
-  ];
+  const featuresConfig = settings?.twoMAboutUs?.featuresSection || {
+    showSection: true,
+    items: [
+      { id: "1", iconName: "Rocket", title: "Free Shipping", desc: "orders $50 or more", visible: true },
+      { id: "2", iconName: "Undo2", title: "Free Returns", desc: "within 30 days", visible: true },
+      { id: "3", iconName: "Gift", title: "Get 20% Off 1 Item", desc: "when you sign up", visible: true },
+      { id: "4", iconName: "Shield", title: "We Support", desc: "24/7 amazing services", visible: true }
+    ]
+  };
+
+  const visibleFeatures = (featuresConfig.items || []).filter((item: any) => item.visible !== false);
 
   const brandLogos = [
     "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=150&q=80",
@@ -1099,26 +1117,36 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
       {/* ====== FOOTER ====== */}
       <footer className="pb-20 md:pb-0">
         {/* Features bar */}
-        <div className="flex items-center" style={{ backgroundColor: "#f8f8f8", minHeight: "110px" }}>
-          <div className="max-w-[1200px] mx-auto w-full" style={{ padding: "15px" }}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" style={{ columnGap: "30px" }}>
-              {features.map((feat, i) => {
-                const Icon = feat.icon;
-                return (
-                  <div key={i} className="flex items-center gap-4 px-5 py-2 sm:py-0">
-                    <div className="w-12 h-12 flex items-center justify-center shrink-0" style={{ backgroundColor: primary }}>
-                      <Icon size={22} style={{ color: "#333333" }} />
+        {featuresConfig.showSection !== false && visibleFeatures.length > 0 && (
+          <div className="flex items-center" style={{ backgroundColor: "#f8f8f8", minHeight: "110px" }}>
+            <div className="max-w-[1200px] mx-auto w-full" style={{ padding: "15px" }}>
+              <div 
+                className={`grid gap-6 ${
+                  visibleFeatures.length === 1 ? "grid-cols-1" :
+                  visibleFeatures.length === 2 ? "grid-cols-1 sm:grid-cols-2" :
+                  visibleFeatures.length === 3 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" :
+                  "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+                }`} 
+                style={{ columnGap: "30px" }}
+              >
+                {visibleFeatures.map((feat: any, i: number) => {
+                  const Icon = ICON_MAP[feat.iconName] || Rocket;
+                  return (
+                    <div key={feat.id || i} className="flex items-center gap-4 px-5 py-2 sm:py-0">
+                      <div className="w-12 h-12 flex items-center justify-center shrink-0" style={{ backgroundColor: primary }}>
+                        <Icon size={22} style={{ color: "#333333" }} />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{feat.title}</p>
+                        <p className="text-xs" style={{ color: "#666666" }}>{feat.desc}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm font-bold" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>{feat.title}</p>
-                      <p className="text-xs" style={{ color: "#666666" }}>{feat.desc}</p>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Main footer */}
         <div style={{ backgroundColor: "#ffffff" }}>
