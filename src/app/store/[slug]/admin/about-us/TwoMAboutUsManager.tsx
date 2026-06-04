@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Save, Loader2, AlignLeft, AlignCenter, AlignRight, Rocket, Type, Image as ImageIcon, Paintbrush, Sliders } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { saveStoreSettings } from "../actions";
 import FeaturesBarManager from "../features-bar/FeaturesBarManager";
 
@@ -58,8 +59,12 @@ export default function TwoMAboutUsManager({ slug, initialContent }: { slug: str
     };
   });
 
+  const searchParams = useSearchParams();
+  const initialTab = (searchParams.get('tab') as 'content' | 'style' | 'button' | 'features') || 'content';
+  const [activeTab, setActiveTab] = useState<'content' | 'style' | 'button' | 'features'>(initialTab);
+
   const [saving, setSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<'content' | 'style' | 'button' | 'features'>('content');
+  
 
   function update(field: string, val: any) {
     setContent((prev: any) => ({ ...prev, [field]: val }));

@@ -100,6 +100,7 @@ export default async function AdminLayout({
   ] : [];
 
   const customItems = [
+    { label: 'Features Bar', iconName: 'Rocket' as const, path: '/about-us?tab=features', color: 'text-blue-500' },
     ...(is1M || is2M ? [] : [{ label: isWebsite ? t('siteBuilder') : t('storeBuilder'), iconName: 'Blocks' as const, path: '/builder', color: 'text-blue-500' }]),
     { label: isWebsite ? t('siteSettings') : t('generalSettings'), iconName: 'Settings', path: '/settings', color: 'text-slate-500' },
   ];
