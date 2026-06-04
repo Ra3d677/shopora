@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Save, Loader2, AlignLeft, AlignCenter, AlignRight, Rocket, Type, Image as ImageIcon, Paintbrush, Sliders } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { saveStoreSettings } from "../actions";
+import MediaPicker from "../media/MediaPicker";
 import FeaturesBarManager from "../features-bar/FeaturesBarManager";
 
 const FONTS = [
