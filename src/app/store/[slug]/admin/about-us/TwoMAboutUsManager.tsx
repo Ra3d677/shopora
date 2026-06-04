@@ -5,7 +5,6 @@ import { Save, Loader2, AlignLeft, AlignCenter, AlignRight, Rocket, Type, Image 
 import { useSearchParams } from "next/navigation";
 import { saveStoreSettings } from "../actions";
 import MediaPicker from "../media/MediaPicker";
-import FeaturesBarManager from "../features-bar/FeaturesBarManager";
 
 const FONTS = [
   "Inter", "Roboto", "Playfair Display", "Montserrat", "Outfit", "Lexend", 
@@ -55,14 +54,12 @@ export default function TwoMAboutUsManager({ slug, initialContent }: { slug: str
       btnTextColor: base.btnTextColor || '#333333',
       btnFontSize: base.btnFontSize || 12,
       btnBorderRadius: base.btnBorderRadius || 4,
-      // Features Bar data
-      twoMFeatures: base.twoMFeatures || undefined
     };
   });
 
   const searchParams = useSearchParams();
-  const initialTab = (searchParams.get('tab') as 'content' | 'style' | 'button' | 'features') || 'content';
-  const [activeTab, setActiveTab] = useState<'content' | 'style' | 'button' | 'features'>(initialTab);
+  const initialTab = (searchParams.get('tab') as 'content' | 'style' | 'button') || 'content';
+  const [activeTab, setActiveTab] = useState<'content' | 'style' | 'button'>(initialTab);
 
   const [saving, setSaving] = useState(false);
   
@@ -78,13 +75,6 @@ export default function TwoMAboutUsManager({ slug, initialContent }: { slug: str
       const aboutRes = await saveStoreSettings(slug, { twoMAboutUs: content });
       if (aboutRes?.success === false) {
         alert(aboutRes.error);
-      }
-      // Save Features Bar settings if present
-      if (content.twoMFeatures) {
-        const featuresRes = await saveStoreSettings(slug, { twoMFeatures: content.twoMFeatures });
-        if (featuresRes?.success === false) {
-          alert(featuresRes.error);
-        }
       }
     } catch (e: any) {
       alert(e.message);
@@ -113,8 +103,7 @@ export default function TwoMAboutUsManager({ slug, initialContent }: { slug: str
         {[
           { id: 'content', label: 'المحتوى الأساسي', icon: Type },
           { id: 'style', label: 'التصميم والألوان', icon: Paintbrush },
-          { id: 'button', label: 'إعدادات الزر', icon: Sliders },
-          { id: 'features', label: 'شريط الميزات', icon: Rocket }
+          { id: 'button', label: 'إعدادات الزر', icon: Sliders }
         ].map(tab => {
           const Icon = tab.icon;
           return (
@@ -554,9 +543,7 @@ export default function TwoMAboutUsManager({ slug, initialContent }: { slug: str
           </div>
         )}
 
-        {activeTab === 'features' && (
-          <FeaturesBarManager slug={slug} initialContent={content.twoMFeatures} />
-        )}
+
 
 
 
