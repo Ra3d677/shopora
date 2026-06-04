@@ -961,7 +961,7 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
 
       {/* ====== ABOUT US SECTION ====== */}
       {aboutUs.showSection !== false && (
-        <div style={{ backgroundColor: aboutUs.bgColor || "#ffffff", paddingTop: `${aboutUs.paddingTop ?? 50}px`, paddingBottom: `${aboutUs.paddingBottom ?? 60}px` }}>
+        <div id="about-us" style={{ backgroundColor: aboutUs.bgColor || "#ffffff", paddingTop: `${aboutUs.paddingTop ?? 50}px`, paddingBottom: `${aboutUs.paddingBottom ?? 60}px` }}>
           <div className="max-w-[1200px] mx-auto px-[15px]">
             {aboutUs.layout === 'centered' ? (
               // Centered layout
@@ -1184,13 +1184,19 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
             <div className="col-span-1">
               <h4 className="text-sm font-bold uppercase mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>My Account</h4>
               <ul className="space-y-2 text-sm">
-                {["About us", "Legal Notice", "Addresses", "Order", "Payment"].map((link) => (
-                  <li key={link}>
-                    <Link href={`/store/${slug}/account`} className="transition-colors block" style={{ color: "#666666" }}
+                {[
+                  { name: "About us", href: `/store/${slug}#about-us` },
+                  { name: "Legal Notice", href: `/store/${slug}/terms` },
+                  { name: "Addresses", href: `/store/${slug}/account?section=information` },
+                  { name: "Order", href: `/store/${slug}/account?section=orders` },
+                  { name: "Payment", href: `/store/${slug}/account?section=information` }
+                ].map((link) => (
+                  <li key={link.name}>
+                    <Link href={link.href} className="transition-colors block" style={{ color: "#666666" }}
                       onMouseEnter={(e) => { e.currentTarget.style.color = hoverAccent; }}
                       onMouseLeave={(e) => { e.currentTarget.style.color = "#666666"; }}
                     >
-                      {link}
+                      {link.name}
                     </Link>
                   </li>
                 ))}
@@ -1201,13 +1207,19 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
             <div className="col-span-1">
               <h4 className="text-sm font-bold uppercase mb-4" style={{ fontFamily: "Lato,sans-serif", color: "#333333" }}>Information</h4>
               <ul className="space-y-2 text-sm">
-                {["Delivery", "Legal Notice", "About us", "New products", "Prices drop"].map((link) => (
-                  <li key={link}>
-                    <Link href={`/store/${slug}/products`} className="transition-colors block" style={{ color: "#666666" }}
+                {[
+                  { name: "Delivery", href: `/store/${slug}/shipping` },
+                  { name: "Legal Notice", href: `/store/${slug}/terms` },
+                  { name: "About us", href: `/store/${slug}#about-us` },
+                  { name: "New products", href: `/store/${slug}/products` },
+                  { name: "Prices drop", href: `/store/${slug}/products` }
+                ].map((link) => (
+                  <li key={link.name}>
+                    <Link href={link.href} className="transition-colors block" style={{ color: "#666666" }}
                       onMouseEnter={(e) => { e.currentTarget.style.color = hoverAccent; }}
                       onMouseLeave={(e) => { e.currentTarget.style.color = "#666666"; }}
                     >
-                      {link}
+                      {link.name}
                     </Link>
                   </li>
                 ))}

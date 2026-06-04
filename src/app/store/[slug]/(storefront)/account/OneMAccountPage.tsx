@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useWishlistStore } from "@/store/wishlist";
 import { User, Package, Heart, Truck, MapPin, Trash2, ChevronDown, ChevronUp, LogOut, CheckCircle, AlertCircle } from "lucide-react";
 
@@ -14,10 +15,24 @@ interface OneMAccountPageProps {
 
 type Section = "information" | "orders" | "wishlist" | "tracking";
 
-export default function OneMAccountPage({ slug, user, store, initialOrders }: OneMAccountPageProps) {
+function OneMAccountPageContent({ slug, user, store, initialOrders }: OneMAccountPageProps) {
   const is2M = store?.template === '2m';
   const accent = is2M ? "#fed700" : (store?.settings?.colorSystem?.brand?.primary || store?.primaryColor || "#e1205e");
   const [activeSection, setActiveSection] = useState<Section>("information");
+
+  const searchParams = useSearchParams();
+  const sectionParam = searchParams.get("section");
+
+  useEffect(() => {
+    if (sectionParam) {
+      if (["information", "orders", "wishlist", "tracking"].includes(sectionParam)) {
+        setActiveSection(sectionParam as Section);
+      } else if (sectionParam === "addresses" || sectionParam === "payment") {
+        setActiveSection("information");
+      }
+    }
+  }, [sectionParam]);
+
   const [orders] = useState(initialOrders);
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
   const { items: wishlistItems, removeItem } = useWishlistStore();
@@ -523,5 +538,20 @@ export default function OneMAccountPage({ slug, user, store, initialOrders }: On
         </div>
       </div>
     </div>
+  );
+}
+
+export default function OneMAccountPage(props: OneMAccountPageProps) {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center" style={{ fontFamily: "Lato,sans-serif", color: "#666666" }}>
+        <div className="text-center">
+          <div className="w-10 h-10 border-4 border-t-transparent animate-spin rounded-full mx-auto mb-4" style={{ borderColor: props.store?.template === '2m' ? "#fed700" : "#ef3444" }}></div>
+          <p className="text-sm font-semibold">Loading account...</p>
+        </div>
+      </div>
+    }>
+      <OneMAccountPageContent {...props} />
+    </Suspense>
   );
 }
