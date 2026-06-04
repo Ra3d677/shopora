@@ -165,7 +165,7 @@ export default function TwoMTemplate({ store, banners, settings, products, slug,
     { imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80", title: "APPLE ACCESSORIES", subtitle: "LEATHER CASES", buttonText: "SHOP NOW!" },
   ];
 
-  const featuresConfig = settings?.twoMAboutUs?.featuresSection || {
+  const featuresConfig = settings?.twoMFeatures || {
     showSection: true,
     items: [
       { id: "1", iconName: "Rocket", title: "Free Shipping", desc: "orders $50 or more", visible: true },

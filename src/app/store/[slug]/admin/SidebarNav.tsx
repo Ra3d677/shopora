@@ -25,6 +25,7 @@ import {
   Settings,
   Users,
   Info,
+  Rocket,
 } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -40,6 +41,7 @@ const iconMap: Record<string, LucideIcon> = {
   Settings,
   Users,
   Info,
+  Rocket,
 };
 
 export default function SidebarNav({ 
