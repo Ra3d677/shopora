@@ -552,7 +552,7 @@ export default function TwoMAboutUsManager({ slug, initialContent }: { slug: str
           <FeaturesBarManager slug={slug} initialContent={content.twoMFeatures} />
         )}
 
-        )}
+        }
 
         {/* Save button at bottom */}
         <div className="pt-4 border-t border-slate-200">
