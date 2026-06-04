@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Loader2, AlignLeft, AlignCenter, AlignRight, Type, Image as ImageIcon, Paintbrush, Sliders } from "lucide-react";
+import { Save, Loader2, AlignLeft, AlignCenter, AlignRight, Rocket, Type, Image as ImageIcon, Paintbrush, Sliders } from "lucide-react";
 import { saveStoreSettings } from "../actions";
-import MediaPicker from "../media/MediaPicker";
+import FeaturesBarManager from "../features-bar/FeaturesBarManager";
 
 const FONTS = [
   "Inter", "Roboto", "Playfair Display", "Montserrat", "Outfit", "Lexend", 
@@ -18,54 +18,48 @@ const LAYOUTS = [
 ];
 
 export default function TwoMAboutUsManager({ slug, initialContent }: { slug: string; initialContent: any }) {
-  const [content, setContent] = useState(initialContent || {
-    showSection: true,
-    layout: 'image-left',
-    
-    // Tagline settings
-    tagline: 'AKIRA ELECTRONICS',
-    taglineColor: '#999999',
-    taglineFontSize: 12,
-    taglineFontFamily: 'inherit',
-    taglineUppercase: true,
-
-    // Title settings
-    title: 'LATEST ABOUT US',
-    titleColor: '#333333',
-    titleFontSize: 30,
-    titleFontFamily: 'inherit',
-    titleAlign: 'center',
-
-    // Description settings
-    desc: 'Nullam gravida, dolor ac ultrices lobortis, mi dolor justo. We are a leading provider of premium electronics, committed to bringing the latest technology and exceptional customer service.',
-    descColor: '#666666',
-    descFontSize: 14,
-    descFontFamily: 'inherit',
-    descAlign: 'center',
-    descLineHeight: '1.6',
-
-    // Image settings
-    image: 'https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=800&q=80',
-    imageBorderRadius: 8,
-    imageShadow: 'soft',
-
-    // Background and Spacing
-    bgColor: '#ffffff',
-    paddingTop: 50,
-    paddingBottom: 60,
-
-    // Button settings
-    showBtn: false,
-    btnText: 'قراءة المزيد',
-    btnLink: '#',
-    btnBgColor: '#fed700',
-    btnTextColor: '#333333',
-    btnFontSize: 12,
-    btnBorderRadius: 4,
+  const [content, setContent] = useState(() => {
+    const base = initialContent || {};
+    return {
+      showSection: base.showSection !== undefined ? base.showSection : true,
+      // About Us fields
+      layout: base.layout || 'image-left',
+      tagline: base.tagline || 'AKIRA ELECTRONICS',
+      taglineColor: base.taglineColor || '#999999',
+      taglineFontSize: base.taglineFontSize || 12,
+      taglineFontFamily: base.taglineFontFamily || 'inherit',
+      taglineUppercase: base.taglineUppercase !== undefined ? base.taglineUppercase : true,
+      title: base.title || 'LATEST ABOUT US',
+      titleColor: base.titleColor || '#333333',
+      titleFontSize: base.titleFontSize || 30,
+      titleFontFamily: base.titleFontFamily || 'inherit',
+      titleAlign: base.titleAlign || 'center',
+      desc: base.desc || 'Nullam gravida, dolor ac ultrices lobortis, mi dolor justo. We are a leading provider of premium electronics, committed to bringing the latest technology and exceptional customer service.',
+      descColor: base.descColor || '#666666',
+      descFontSize: base.descFontSize || 14,
+      descFontFamily: base.descFontFamily || 'inherit',
+      descAlign: base.descAlign || 'center',
+      descLineHeight: base.descLineHeight || '1.6',
+      image: base.image || 'https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=800&q=80',
+      imageBorderRadius: base.imageBorderRadius || 8,
+      imageShadow: base.imageShadow || 'soft',
+      bgColor: base.bgColor || '#ffffff',
+      paddingTop: base.paddingTop !== undefined ? base.paddingTop : 50,
+      paddingBottom: base.paddingBottom !== undefined ? base.paddingBottom : 60,
+      showBtn: base.showBtn !== undefined ? base.showBtn : false,
+      btnText: base.btnText || 'قراءة المزيد',
+      btnLink: base.btnLink || '#',
+      btnBgColor: base.btnBgColor || '#fed700',
+      btnTextColor: base.btnTextColor || '#333333',
+      btnFontSize: base.btnFontSize || 12,
+      btnBorderRadius: base.btnBorderRadius || 4,
+      // Features Bar data
+      twoMFeatures: base.twoMFeatures || undefined
+    };
   });
 
   const [saving, setSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<'content' | 'style' | 'button'>('content');
+  const [activeTab, setActiveTab] = useState<'content' | 'style' | 'button' | 'features'>('content');
 
   function update(field: string, val: any) {
     setContent((prev: any) => ({ ...prev, [field]: val }));
@@ -74,9 +68,17 @@ export default function TwoMAboutUsManager({ slug, initialContent }: { slug: str
   async function handleSave() {
     setSaving(true);
     try {
-      const res = await saveStoreSettings(slug, { twoMAboutUs: content });
-      if (res?.success === false) {
-        alert(res.error);
+      // Save About Us settings
+      const aboutRes = await saveStoreSettings(slug, { twoMAboutUs: content });
+      if (aboutRes?.success === false) {
+        alert(aboutRes.error);
+      }
+      // Save Features Bar settings if present
+      if (content.twoMFeatures) {
+        const featuresRes = await saveStoreSettings(slug, { twoMFeatures: content.twoMFeatures });
+        if (featuresRes?.success === false) {
+          alert(featuresRes.error);
+        }
       }
     } catch (e: any) {
       alert(e.message);
@@ -105,7 +107,8 @@ export default function TwoMAboutUsManager({ slug, initialContent }: { slug: str
         {[
           { id: 'content', label: 'المحتوى الأساسي', icon: Type },
           { id: 'style', label: 'التصميم والألوان', icon: Paintbrush },
-          { id: 'button', label: 'إعدادات الزر', icon: Sliders }
+          { id: 'button', label: 'إعدادات الزر', icon: Sliders },
+          { id: 'features', label: 'شريط الميزات', icon: Rocket }
         ].map(tab => {
           const Icon = tab.icon;
           return (
@@ -545,7 +548,9 @@ export default function TwoMAboutUsManager({ slug, initialContent }: { slug: str
           </div>
         )}
 
-        {activeTab === 'button' && (
+        {activeTab === 'features' && (
+          <FeaturesBarManager slug={slug} initialContent={content.twoMFeatures} />
+        )}
           <div className="space-y-6">
             {/* Show Button Toggle */}
             <div className="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border border-slate-100">
