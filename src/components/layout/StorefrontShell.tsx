@@ -9,6 +9,8 @@ import AkiraHeader from "@/components/layout/AkiraHeader";
 import AkiraFooter from "@/components/layout/AkiraFooter";
 import AnivioHeader from "@/components/layout/AnivioHeader";
 import AnivioFooter from "@/components/layout/AnivioFooter";
+import NetroHeader from "@/components/layout/NetroHeader";
+import NetroFooter from "@/components/layout/NetroFooter";
 
 export default function StorefrontShell({
   children,
@@ -32,6 +34,7 @@ export default function StorefrontShell({
   const isCartPage = pathname.includes('/cart');
   const is1M = store.template === '1m';
   const is2M = store.template === '2m';
+  const is3M = store.template === '3m';
 
   if (is1M) {
     return (
@@ -53,6 +56,18 @@ export default function StorefrontShell({
           {children}
         </main>
         {!isHomePage && <AkiraFooter slug={slug} store={store} />}
+      </>
+    );
+  }
+
+  if (is3M) {
+    return (
+      <>
+        {!isHomePage && <NetroHeader store={store} slug={slug} categories={store.categories} />}
+        <main className="flex-grow flex flex-col store-container">
+          {children}
+        </main>
+        {!isHomePage && <NetroFooter slug={slug} store={store} />}
       </>
     );
   }

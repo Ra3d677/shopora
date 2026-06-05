@@ -79,6 +79,12 @@ const TEMPLATES = [
     name: "1M",
     description: "أنيق وعصري مستوحى من تصاميم الأناقة العصرية - مثالي لمتاجر الأزياء والمنتجات الفاخرة.",
     preview: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80"
+  },
+  {
+    id: "3m",
+    name: "3M Netro",
+    description: "مستوحى من متجر Netro العصري - تصميم نظيف مع لمسات برتقالية، مثالي لمتاجر الأزياء والملابس.",
+    preview: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80"
   }
 ];
 

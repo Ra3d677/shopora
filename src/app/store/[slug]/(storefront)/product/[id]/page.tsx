@@ -1,6 +1,7 @@
 import { getStoreBySlug } from "@/lib/data";
 import ProductDetailClient from "./ProductDetailClient";
 import OneMProductDetail from "./OneMProductDetail";
+import ThreeMProductDetail from "./ThreeMProductDetail";
 import { notFound } from "next/navigation";
 
 export default async function ProductPage({ params }: { params: { slug: string, id: string } }) {
@@ -27,6 +28,10 @@ export default async function ProductPage({ params }: { params: { slug: string, 
         </div>
       </div>
     );
+  }
+
+  if (store.template === '3m') {
+    return <ThreeMProductDetail product={product} store={store} />;
   }
 
   return (

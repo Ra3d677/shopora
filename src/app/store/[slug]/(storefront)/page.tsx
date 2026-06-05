@@ -17,6 +17,7 @@ import DDDYOUTemplate from "@/components/templates/DDDYOUTemplate";
 import MomoTemplate from "@/components/templates/MomoTemplate";
 import OneMTemplate from "@/components/templates/1MTemplate";
 import TwoMTemplate from "@/components/templates/TwoMTemplate";
+import ThreeMTemplate from "@/components/templates/3MTemplate";
 
 export const revalidate = 60;
 
@@ -71,6 +72,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
     if (activeTemplate === 'momo') return <MomoTemplate {...props} />;
     if (activeTemplate === '1m') return <OneMTemplate {...props} />;
     if (activeTemplate === '2m') return <TwoMTemplate {...props} />;
+    if (activeTemplate === '3m') return <ThreeMTemplate {...props} />;
     
     // Default fallback (Signature is now the default)
     return (

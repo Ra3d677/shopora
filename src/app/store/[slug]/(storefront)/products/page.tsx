@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { getPremiumBackgroundStyle, getThemeByPath } from "@/lib/utils";
 import { getTranslation } from "@/lib/i18n";
 import TwoMProducts from "@/components/templates/TwoMProducts";
+import ThreeMProducts from "@/components/templates/3MProducts";
 
 export const revalidate = 60;
 
@@ -114,6 +115,19 @@ export default async function ProductsPage({
   if (store.template === '2m') {
     return (
       <TwoMProducts
+        slug={slug}
+        store={store}
+        products={displayedProducts}
+        category={category}
+        pageTitle={pageTitle}
+        pageDescription={pageDescription}
+      />
+    );
+  }
+
+  if (store.template === '3m') {
+    return (
+      <ThreeMProducts
         slug={slug}
         store={store}
         products={displayedProducts}
