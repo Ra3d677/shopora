@@ -28,22 +28,34 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeTab, setActiveTab] = useState("featured");
 
-  const slides = banners.length > 0 ? banners : [
+  const topBanners = banners.filter((b: any) => b.isActive && (b.position === 'top' || !b.position));
+  const midBanners = banners.filter((b: any) => b.isActive && b.position === 'middle');
+
+  const heroSlides = topBanners.length > 0 ? topBanners.map((b: any) => ({
+    subtitle: b.subtitle || "",
+    title: b.title || "",
+    description: b.subtitle || "",
+    buttonText: b.showButton !== false ? (b.buttonText || "Shop now") : "",
+    image: b.imageUrl,
+  })) : [
     { subtitle: "Up to 15% off", title: "Diana diamante<br/>clutch bag", description: "Change up the straps to suit your mood. Wear them two<br/>ways for two different looks", buttonText: "Shop now", image: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=1600&q=80" },
     { subtitle: "New collection", title: "Kipling Cool<br/>organised", description: "The bold fun design features multiple pockets organised with secure zips to keep", buttonText: "Shop now", image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1600&q=80" },
   ];
 
-  const featuredProducts = products.filter(p => p.discount_price).slice(0, 6);
+  const ctaBanners = midBanners.length > 0 ? midBanners : [
+    { imageUrl: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=1080&q=80", title: "Kipling Cool<br/>organised", subtitle: "New arrival", buttonText: "See more", buttonLink: "" },
+    { imageUrl: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1080&q=80", title: "Premium Leather<br/>Collection", subtitle: "Featured", buttonText: "See more", buttonLink: "" },
+  ];
+
+  const featuredProducts = products.filter((p: any) => p.discount_price).slice(0, 6);
   const latestProducts = products.slice(0, 6);
-  const topRated = [...products].sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 6);
+  const topRated = [...products].sort((a: any, b: any) => (b.rating || 0) - (a.rating || 0)).slice(0, 6);
 
   const getTabProducts = () => {
-    if (activeTab === "featured") return featuredProducts;
+    if (activeTab === "featured") return featuredProducts.length > 0 ? featuredProducts : products.slice(0, 6);
     if (activeTab === "latest") return latestProducts;
     return topRated;
   };
-
-  const defaultProducts = getTabProducts();
 
   const navLinks = [
     { label: "Home", href: `/store/${slug}` },
@@ -53,12 +65,12 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
   ];
 
   useEffect(() => {
-    if (slides.length <= 1) return;
+    if (heroSlides.length <= 1) return;
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [heroSlides.length]);
 
   return (
     <div className="min-h-screen bg-white" style={{ fontFamily: "Poppins,sans-serif" }}>
@@ -81,27 +93,15 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
             ))}
           </nav>
           <div className="flex items-center gap-2" style={{ flex: "0 0 auto" }}>
-            <Link href={`/store/${slug}/search`} className="w-10 h-10 flex items-center justify-center hover:opacity-60 transition-opacity">
-              <Search size={20} />
-            </Link>
-            <Link href={`/store/${slug}/account`} className="w-10 h-10 flex items-center justify-center hover:opacity-60 transition-opacity">
-              <User size={20} />
-            </Link>
+            <Link href={`/store/${slug}/search`} className="w-10 h-10 flex items-center justify-center hover:opacity-60 transition-opacity"><Search size={20} /></Link>
+            <Link href={`/store/${slug}/account`} className="w-10 h-10 flex items-center justify-center hover:opacity-60 transition-opacity"><User size={20} /></Link>
             <Link href={`/store/${slug}/wishlist`} className="w-10 h-10 flex items-center justify-center hover:opacity-60 transition-opacity relative">
               <Heart size={20} />
-              {wishlistItems.length > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center text-[9px] font-bold text-white rounded-full" style={{ backgroundColor: accent }}>
-                  {wishlistItems.length}
-                </span>
-              )}
+              {wishlistItems.length > 0 && <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center text-[9px] font-bold text-white rounded-full" style={{ backgroundColor: accent }}>{wishlistItems.length}</span>}
             </Link>
             <Link href={`/store/${slug}/cart`} className="w-10 h-10 flex items-center justify-center hover:opacity-60 transition-opacity relative">
               <ShoppingCart size={20} />
-              {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center text-[9px] font-bold text-white rounded-full" style={{ backgroundColor: accent }}>
-                  {cartCount}
-                </span>
-              )}
+              {cartCount > 0 && <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center text-[9px] font-bold text-white rounded-full" style={{ backgroundColor: accent }}>{cartCount}</span>}
             </Link>
           </div>
         </div>
@@ -127,7 +127,7 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
       {/* SLIDESHOW */}
       <section style={{ position: "relative", overflow: "hidden" }}>
         <div style={{ height: "clamp(400px, 50vw, 900px)", position: "relative", backgroundColor: "#ffffff" }}>
-          {slides.map((slide, idx) => (
+          {heroSlides.map((slide: any, idx: number) => (
             <div key={idx} style={{
               position: "absolute", inset: 0,
               opacity: idx === currentSlide ? 1 : 0,
@@ -143,28 +143,29 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
               }} />
               <div style={{ position: "relative", width: "100%", maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
                 <div style={{ maxWidth: "500px", textAlign: "center", marginLeft: "auto", marginRight: "0" }}>
-                  <p style={{ fontSize: "14px", marginBottom: "10px", color: "#666" }}>{slide.subtitle}</p>
-                  <h2 style={{ fontSize: "clamp(32px, 5vw, 62px)", fontWeight: 500, lineHeight: 1.2, marginBottom: "15px", color: "#000" }} dangerouslySetInnerHTML={{ __html: slide.title }} />
-                  <p style={{ fontSize: "16px", marginBottom: "25px", color: "#666", lineHeight: 1.6 }} dangerouslySetInnerHTML={{ __html: slide.description }} />
-                  <Link href={`/store/${slug}/products`} className="inline-block text-sm font-medium uppercase tracking-wider text-white transition-all" style={{ padding: "12px 30px", borderRadius: "30px", backgroundColor: "#000000" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}>
-                    {slide.buttonText || "Shop now"}
-                  </Link>
+                  {slide.subtitle && <p style={{ fontSize: "14px", marginBottom: "10px", color: "#666" }}>{slide.subtitle}</p>}
+                  {slide.title && <h2 style={{ fontSize: "clamp(32px, 5vw, 62px)", fontWeight: 500, lineHeight: 1.2, marginBottom: "15px", color: "#000" }} dangerouslySetInnerHTML={{ __html: slide.title }} />}
+                  {slide.buttonText && (
+                    <Link href={slide.buttonLink || `/store/${slug}/products`} className="inline-block text-sm font-medium uppercase tracking-wider text-white transition-all" style={{ padding: "12px 30px", borderRadius: "30px", backgroundColor: "#000000" }}
+                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}>
+                      {slide.buttonText}
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
           ))}
-          {slides.length > 1 && (
+          {heroSlides.length > 1 && (
             <>
-              <button onClick={() => setCurrentSlide((p) => (p - 1 + slides.length) % slides.length)} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white/80 hover:bg-white shadow-md transition-all z-10 cursor-pointer rounded-full">
+              <button onClick={() => setCurrentSlide((p) => (p - 1 + heroSlides.length) % heroSlides.length)} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white/80 hover:bg-white shadow-md transition-all z-10 cursor-pointer rounded-full">
                 <ChevronLeft size={20} />
               </button>
-              <button onClick={() => setCurrentSlide((p) => (p + 1) % slides.length)} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white/80 hover:bg-white shadow-md transition-all z-10 cursor-pointer rounded-full">
+              <button onClick={() => setCurrentSlide((p) => (p + 1) % heroSlides.length)} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white/80 hover:bg-white shadow-md transition-all z-10 cursor-pointer rounded-full">
                 <ChevronRight size={20} />
               </button>
               <div style={{ position: "absolute", bottom: "20px", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "8px", zIndex: 10 }}>
-                {slides.map((_, idx) => (
+                {heroSlides.map((_: any, idx: number) => (
                   <button key={idx} onClick={() => setCurrentSlide(idx)} className="cursor-pointer" style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: idx === currentSlide ? "#000" : "#ccc", transition: "background 0.3s" }} />
                 ))}
               </div>
@@ -173,48 +174,52 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
         </div>
       </section>
 
-      {/* BANNER v2 - First */}
+      {/* CTA BANNERS */}
       <section style={{ padding: "50px 0", backgroundColor: "#ffffff" }}>
         <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "30px", alignItems: "center" }}>
-            <div>
-              <div style={{ overflow: "hidden" }}>
-                <img src="https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=1080&q=80" alt="Banner" className="hover:scale-105 transition-transform duration-500" style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover" }} />
-              </div>
-            </div>
-            <div style={{ textAlign: "left" }}>
-              <p style={{ fontSize: "14px", color: "#999", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "1px" }}>New arrival</p>
-              <h3 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 500, color: "#000", marginBottom: "15px", lineHeight: 1.3, fontFamily: "Poppins,sans-serif" }}>Kipling Cool<br />organised</h3>
-              <p style={{ fontSize: "14px", color: "#666", marginBottom: "20px", lineHeight: 1.6 }}>The bold fun design features multiple pockets organised with secure zips to keep</p>
-              <Link href={`/store/${slug}/products`} className="inline-block text-xs font-medium uppercase tracking-wider text-white transition-all" style={{ padding: "10px 28px", borderRadius: "30px", backgroundColor: "#000000" }}
-                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
-                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}>
-                See more
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* BANNER v2 - Second */}
-      <section style={{ padding: "0 0 50px", backgroundColor: "#ffffff" }}>
-        <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "30px", alignItems: "center" }}>
-            <div style={{ textAlign: "left" }}>
-              <p style={{ fontSize: "14px", color: "#999", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "1px" }}>Featured</p>
-              <h3 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 500, color: "#000", marginBottom: "15px", lineHeight: 1.3, fontFamily: "Poppins,sans-serif" }}>Premium Leather<br />Collection</h3>
-              <p style={{ fontSize: "14px", color: "#666", marginBottom: "20px", lineHeight: 1.6 }}>Handcrafted with premium materials for lasting quality and timeless style.</p>
-              <Link href={`/store/${slug}/products`} className="inline-block text-xs font-medium uppercase tracking-wider text-white transition-all" style={{ padding: "10px 28px", borderRadius: "30px", backgroundColor: "#000000" }}
-                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
-                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}>
-                See more
-              </Link>
-            </div>
-            <div>
-              <div style={{ overflow: "hidden" }}>
-                <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1080&q=80" alt="Banner" className="hover:scale-105 transition-transform duration-500" style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover" }} />
-              </div>
-            </div>
+            {ctaBanners.slice(0, 2).map((banner: any, i: number) => (
+              i % 2 === 0 ? (
+                <React.Fragment key={i}>
+                  <div>
+                    <div style={{ overflow: "hidden" }}>
+                      <img src={banner.imageUrl} alt={banner.title || "Banner"} className="hover:scale-105 transition-transform duration-500" style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover" }} />
+                    </div>
+                  </div>
+                  <div style={{ textAlign: "left" }}>
+                    {banner.subtitle && <p style={{ fontSize: "14px", color: "#999", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "1px" }}>{banner.subtitle}</p>}
+                    {banner.title && <h3 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 500, color: "#000", marginBottom: "15px", lineHeight: 1.3, fontFamily: "Poppins,sans-serif" }} dangerouslySetInnerHTML={{ __html: banner.title }} />}
+                    {banner.subtitle && !banner.title && <p style={{ fontSize: "14px", color: "#666", marginBottom: "20px", lineHeight: 1.6 }}>{banner.description || banner.subtitle}</p>}
+                    {banner.showButton !== false && (
+                      <Link href={banner.buttonLink || `/store/${slug}/products`} className="inline-block text-xs font-medium uppercase tracking-wider text-white transition-all" style={{ padding: "10px 28px", borderRadius: "30px", backgroundColor: "#000000" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}>
+                        {banner.buttonText || "See more"}
+                      </Link>
+                    )}
+                  </div>
+                </React.Fragment>
+              ) : (
+                <React.Fragment key={i}>
+                  <div style={{ textAlign: "left" }}>
+                    {banner.subtitle && <p style={{ fontSize: "14px", color: "#999", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "1px" }}>{banner.subtitle}</p>}
+                    {banner.title && <h3 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 500, color: "#000", marginBottom: "15px", lineHeight: 1.3, fontFamily: "Poppins,sans-serif" }} dangerouslySetInnerHTML={{ __html: banner.title }} />}
+                    {banner.showButton !== false && (
+                      <Link href={banner.buttonLink || `/store/${slug}/products`} className="inline-block text-xs font-medium uppercase tracking-wider text-white transition-all" style={{ padding: "10px 28px", borderRadius: "30px", backgroundColor: "#000000" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}>
+                        {banner.buttonText || "See more"}
+                      </Link>
+                    )}
+                  </div>
+                  <div>
+                    <div style={{ overflow: "hidden" }}>
+                      <img src={banner.imageUrl} alt={banner.title || "Banner"} className="hover:scale-105 transition-transform duration-500" style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover" }} />
+                    </div>
+                  </div>
+                </React.Fragment>
+              )
+            ))}
           </div>
         </div>
       </section>
@@ -223,7 +228,6 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
       <section style={{ padding: "80px 0", backgroundColor: bgLight }}>
         <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
           <h2 className="text-center text-[28px] font-medium mb-8" style={{ fontFamily: "Poppins,sans-serif", color: "#000" }}>Best Seller</h2>
-
           <div className="flex justify-center gap-0 mb-10" style={{ borderBottom: "1px solid #ddd" }}>
             {[
               { key: "featured", label: "Featured" },
@@ -237,44 +241,37 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
               </button>
             ))}
           </div>
-
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "30px" }}>
-            {defaultProducts.length > 0 ? defaultProducts.map((product) => (
-              <ProductCard key={product.id} product={product} slug={slug} accent={accent} storeId={store?.id} />
-            )) : products.slice(0, 6).map((product) => (
-              <ProductCard key={product.id} product={product} slug={slug} accent={accent} storeId={store?.id} />
+            {getTabProducts().map((product: any) => (
+              <ProductCard key={product.id} product={product} slug={slug} accent={accent} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* CATEGORY BANNERS - Women / Men */}
+      {/* CATEGORY BANNERS */}
       <section style={{ padding: "80px 0", backgroundColor: "#000000" }}>
         <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "30px" }}>
-            {categories.filter(c => !c.parentId).slice(0, 2).map((cat) => (
+            {categories.filter((c: any) => !c.parentId).slice(0, 2).map((cat: any) => (
               <Link key={cat.id} href={`/store/${slug}/products?category=${cat.id}`} className="group block relative overflow-hidden">
                 <img src={cat.image || "https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=700&q=80"} alt={cat.name}
                   style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover" }}
                   className="group-hover:scale-105 transition-transform duration-500" />
-                <div style={{ position: "absolute", bottom: "0", left: "0", right: "0", padding: "20px", background: "linear-gradient(transparent, rgba(0,0,0,0.6))" }}>
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "20px", background: "linear-gradient(transparent, rgba(0,0,0,0.6))" }}>
                   <h3 className="text-white text-xl font-medium">{cat.name}</h3>
                 </div>
               </Link>
             ))}
-            {categories.filter(c => !c.parentId).length === 0 && (
+            {categories.filter((c: any) => !c.parentId).length === 0 && (
               <>
                 <Link href={`/store/${slug}/products`} className="group block relative overflow-hidden">
                   <img src="https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=700&q=80" alt="Women" className="group-hover:scale-105 transition-transform duration-500" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover" }} />
-                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "20px", background: "linear-gradient(transparent, rgba(0,0,0,0.6))" }}>
-                    <h3 className="text-white text-xl font-medium">Women</h3>
-                  </div>
+                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "20px", background: "linear-gradient(transparent, rgba(0,0,0,0.6))" }}><h3 className="text-white text-xl font-medium">Women</h3></div>
                 </Link>
                 <Link href={`/store/${slug}/products`} className="group block relative overflow-hidden">
                   <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=700&q=80" alt="Men" className="group-hover:scale-105 transition-transform duration-500" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover" }} />
-                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "20px", background: "linear-gradient(transparent, rgba(0,0,0,0.6))" }}>
-                    <h3 className="text-white text-xl font-medium">Men</h3>
-                  </div>
+                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "20px", background: "linear-gradient(transparent, rgba(0,0,0,0.6))" }}><h3 className="text-white text-xl font-medium">Men</h3></div>
                 </Link>
               </>
             )}
@@ -282,13 +279,13 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
         </div>
       </section>
 
-      {/* PRODUCTS v1 */}
+      {/* FEATURED PRODUCTS */}
       <section style={{ padding: "80px 0", backgroundColor: "#ffffff" }}>
         <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
           <h2 className="text-center text-[28px] font-medium mb-10" style={{ fontFamily: "Poppins,sans-serif", color: "#000" }}>Featured Products</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "30px" }}>
-            {products.slice(3, 9).map((product) => (
-              <ProductCard key={product.id} product={product} slug={slug} accent={accent} storeId={store?.id} />
+            {products.slice(3, 9).map((product: any) => (
+              <ProductCard key={product.id} product={product} slug={slug} accent={accent} />
             ))}
           </div>
         </div>
@@ -296,22 +293,18 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
 
       {/* TESTIMONIALS */}
       <section style={{ padding: "80px 0", backgroundColor: "#fdf5f1" }}>
-        <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 20px" }}>
-          <div style={{ textAlign: "center", maxWidth: "700px", margin: "0 auto" }}>
-            <div className="flex justify-center gap-1 mb-6">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <Star key={s} size={20} fill="#ffc107" style={{ color: "#ffc107" }} />
-              ))}
-            </div>
-            <p className="text-base leading-relaxed mb-8" style={{ color: "#555", fontStyle: "italic" }}>
-              "I can't believe how much nicer the materials are compared to other bags I have. Leather is super buttery. The design is practical for daily use, and the finishing details feel premium."
-            </p>
-            <div style={{ width: "70px", height: "70px", borderRadius: "50%", overflow: "hidden", margin: "0 auto 15px" }}>
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=110&q=80" alt="Customer" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-            </div>
-            <p className="text-sm font-bold mb-1" style={{ color: "#000" }}>Mr Parker</p>
-            <p className="text-xs" style={{ color: "#999" }}>UX Designer</p>
+        <div style={{ maxWidth: "700px", margin: "0 auto", padding: "0 20px", textAlign: "center" }}>
+          <div className="flex justify-center gap-1 mb-6">
+            {[1, 2, 3, 4, 5].map((s) => (<Star key={s} size={20} fill="#ffc107" style={{ color: "#ffc107" }} />))}
           </div>
+          <p className="text-base leading-relaxed mb-8" style={{ color: "#555", fontStyle: "italic" }}>
+            "I can't believe how much nicer the materials are compared to other bags I have. Leather is super buttery. The design is practical for daily use, and the finishing details feel premium."
+          </p>
+          <div style={{ width: "70px", height: "70px", borderRadius: "50%", overflow: "hidden", margin: "0 auto 15px" }}>
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=110&q=80" alt="Customer" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          </div>
+          <p className="text-sm font-bold mb-1" style={{ color: "#000" }}>Mr Parker</p>
+          <p className="text-xs" style={{ color: "#999" }}>UX Designer</p>
         </div>
       </section>
 
@@ -320,12 +313,12 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
         <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
           <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "40px", alignItems: "center" }}>
             <div>
-              <h2 className="text-xl font-medium mb-3" style={{ fontFamily: "Poppins,sans-serif", color: "#ffffff" }}>Keep Me Updated</h2>
-              <p className="text-sm" style={{ color: "#aaaaaa" }}>Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
+              <h2 className="text-xl font-medium mb-3" style={{ fontFamily: "Poppins,sans-serif", color: "#fff" }}>Keep Me Updated</h2>
+              <p className="text-sm" style={{ color: "#aaa" }}>Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
             </div>
             <div>
               <div style={{ display: "flex", gap: "0" }}>
-                <input type="email" placeholder="Enter your email..." className="w-full text-sm outline-none" style={{ padding: "12px 18px", border: "none", backgroundColor: "#ffffff" }} />
+                <input type="email" placeholder="Enter your email..." className="w-full text-sm outline-none" style={{ padding: "12px 18px", border: "none", backgroundColor: "#fff" }} />
                 <button className="text-xs font-bold uppercase tracking-wider text-white transition-colors cursor-pointer shrink-0" style={{ padding: "12px 24px", backgroundColor: accent, borderRadius: "0" }}
                   onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#000"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = accent; }}>
@@ -391,7 +384,9 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
               <h4 className="text-sm font-bold mb-4" style={{ color: "#000" }}>Follow Us</h4>
               <div className="flex gap-3">
                 {["FB", "TW", "IG", "YT"].map((s) => (
-                  <span key={s} className="w-9 h-9 flex items-center justify-center text-xs font-bold border transition-colors cursor-pointer" style={{ borderColor: "#ddd", color: "#666" }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#000"; e.currentTarget.style.color = "#fff"; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#666"; }}>{s}</span>
+                  <span key={s} className="w-9 h-9 flex items-center justify-center text-xs font-bold border transition-colors cursor-pointer" style={{ borderColor: "#ddd", color: "#666" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#000"; e.currentTarget.style.color = "#fff"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#666"; }}>{s}</span>
                 ))}
               </div>
             </div>
@@ -405,7 +400,7 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
   );
 }
 
-function ProductCard({ product, slug, accent, storeId }: { product: any; slug: string; accent: string; storeId?: string }) {
+function ProductCard({ product, slug, accent }: { product: any; slug: string; accent: string }) {
   const imgSrc = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
   const isSale = product.discount_price != null;
   const { addItem } = useCartStore();
@@ -417,9 +412,7 @@ function ProductCard({ product, slug, accent, storeId }: { product: any; slug: s
         <Link href={`/store/${slug}/product/${product.id}`}>
           <img src={imgSrc} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
         </Link>
-        {isSale && (
-          <span className="absolute top-3 left-3 z-10 px-2.5 py-0.5 text-[10px] font-bold uppercase text-white" style={{ backgroundColor: accent }}>Sale</span>
-        )}
+        {isSale && <span className="absolute top-3 left-3 z-10 px-2.5 py-0.5 text-[10px] font-bold uppercase text-white" style={{ backgroundColor: accent }}>Sale</span>}
         <div className="absolute top-3 right-3 z-10 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button onClick={(e) => { e.stopPropagation(); const pid = String(product.id); if (isWishlisted(pid)) removeWishlist(pid); else addWishlist({ productId: pid, storeId: slug, name: product.name, price: product.price, image: imgSrc, slug: `/store/${slug}/product/${product.id}` }); }}
             className="w-9 h-9 bg-white shadow-md flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
