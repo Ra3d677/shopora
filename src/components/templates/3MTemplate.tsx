@@ -203,85 +203,81 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
 
       {/* BEST SELLER with tabs */}
       <section style={{ padding: "100px 0 80px", backgroundColor: bgLight }}>
-        <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
-          <div style={{ textAlign: "center", marginBottom: "40px" }}>
-            <h2 style={{ fontSize: "clamp(24px, 2.5vw, 32px)", fontWeight: 600, color: "#000", fontFamily: "Poppins,sans-serif", letterSpacing: "0.5px" }}>Best Seller</h2>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
+          <div style={{ textAlign: "center", marginBottom: "50px" }}>
+            <h2 style={{ fontSize: "clamp(22px, 2.5vw, 30px)", fontWeight: 600, color: "#000", fontFamily: "Poppins,sans-serif", letterSpacing: "0.3px" }}>Best Seller</h2>
           </div>
-          <div style={{ display: "flex", justifyContent: "center", gap: "0", marginBottom: "40px" }}>
+          <div style={{ display: "flex", justifyContent: "center", gap: "35px", marginBottom: "40px", borderBottom: 0 }}>
             {[
               { key: "featured", label: "Featured" },
               { key: "latest", label: "Latest" },
               { key: "topRated", label: "Top Rating" },
-            ].map((tab, idx) => (
+            ].map((tab) => (
               <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                 style={{
-                  padding: "10px 28px",
+                  padding: "0 0 8px",
                   fontSize: "13px",
-                  fontWeight: 500,
+                  fontWeight: activeTab === tab.key ? 600 : 400,
                   textTransform: "uppercase",
-                  letterSpacing: "1px",
+                  letterSpacing: "1.5px",
                   cursor: "pointer",
                   fontFamily: "Poppins,sans-serif",
-                  color: activeTab === tab.key ? "#fff" : "#666",
-                  backgroundColor: activeTab === tab.key ? accent : "transparent",
-                  border: activeTab === tab.key ? "none" : "1px solid #ddd",
-                  borderRadius: idx === 0 ? "30px 0 0 30px" : idx === 2 ? "0 30px 30px 0" : "0",
-                  borderRight: idx < 2 ? (activeTab === tab.key ? "none" : "1px solid #ddd") : undefined,
+                  color: activeTab === tab.key ? "#000" : "#999",
+                  background: "none",
+                  border: "none",
+                  borderBottom: activeTab === tab.key ? `2px solid ${accent}` : "2px solid transparent",
                   transition: "all 0.3s",
                 }}>
                 {tab.label}
               </button>
             ))}
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "30px" }}>
-            {getTabProducts().slice(0, 3).map((product: any) => {
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0", rowGap: "0" }}>
+            {getTabProducts().slice(0, 3).map((product: any, idx: number) => {
               const img = product.images?.[0] || product.image || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80";
               const hasDiscount = product.discount_price && product.compare_price;
               const onSale = product.discount_price || product.compare_at_price;
+              const salePrice = product.discount_price || product.price;
+              const comparePrice = product.compare_price || product.compare_at_price;
               return (
-                <div key={product.id} style={{ backgroundColor: "#fff" }}>
+                <div key={product.id} style={{ backgroundColor: "#fff", borderRight: idx < 2 ? "1px solid #eee" : "none" }}>
                   <div style={{ position: "relative", overflow: "hidden" }}>
                     <Link href={`/store/${slug}/product/${product.id}`}>
-                      <img src={img} alt={product.name || product.title} style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", display: "block" }} />
+                      <img src={img} alt={product.name || product.title} style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", display: "block", transition: "transform 0.4s" }}
+                        className="hover:scale-105" />
                     </Link>
                     {onSale && (
-                      <div style={{ position: "absolute", top: "12px", left: "12px", backgroundColor: accent, color: "#fff", fontSize: "11px", fontWeight: 600, padding: "4px 12px", borderRadius: "3px", textTransform: "uppercase", letterSpacing: "0.5px", fontFamily: "Poppins,sans-serif" }}>
+                      <div style={{ position: "absolute", top: "15px", left: "15px", backgroundColor: accent, color: "#fff", fontSize: "11px", fontWeight: 600, padding: "3px 12px", textTransform: "uppercase", letterSpacing: "0.5px", fontFamily: "Poppins,sans-serif" }}>
                         Sale
                       </div>
                     )}
-                    <div style={{ position: "absolute", bottom: "10px", right: "10px", display: "flex", flexDirection: "column", gap: "6px", opacity: 0, transition: "opacity 0.3s" }}
-                      className="group-hover:opacity-100"
+                    <div style={{ position: "absolute", bottom: "15px", right: "15px", display: "flex", flexDirection: "column", gap: "8px", opacity: 0, transition: "opacity 0.3s" }}
                       onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; }}
                       onMouseLeave={(e) => { e.currentTarget.style.opacity = "0"; }}>
-                      <button style={{ width: "36px", height: "36px", borderRadius: "50%", backgroundColor: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
-                        <ShoppingCart size={15} />
+                      <button style={{ width: "40px", height: "40px", backgroundColor: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", transition: "all 0.2s", color: "#333" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; e.currentTarget.style.color = "#fff"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#fff"; e.currentTarget.style.color = "#333"; }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
                       </button>
-                      <button style={{ width: "36px", height: "36px", borderRadius: "50%", backgroundColor: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                      <button style={{ width: "40px", height: "40px", backgroundColor: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", transition: "all 0.2s", color: "#333" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; e.currentTarget.style.color = "#fff"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#fff"; e.currentTarget.style.color = "#333"; }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
                       </button>
-                      <button style={{ width: "36px", height: "36px", borderRadius: "50%", backgroundColor: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
+                      <button style={{ width: "40px", height: "40px", backgroundColor: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", transition: "all 0.2s", color: "#333" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; e.currentTarget.style.color = "#fff"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#fff"; e.currentTarget.style.color = "#333"; }}>
                         <Heart size={15} />
                       </button>
                     </div>
                   </div>
-                  <div style={{ padding: "15px 15px 20px", textAlign: "center" }}>
+                  <div style={{ padding: "18px 20px 25px", textAlign: "center" }}>
                     <Link href={`/store/${slug}/product/${product.id}`} style={{ textDecoration: "none" }}>
-                      <h3 style={{ fontSize: "14px", fontWeight: 500, color: "#333", marginBottom: "8px", fontFamily: "Poppins,sans-serif", lineHeight: 1.4 }}>{product.name || product.title}</h3>
+                      <h3 style={{ fontSize: "14px", fontWeight: 400, color: "#000", marginBottom: "10px", fontFamily: "Poppins,sans-serif", lineHeight: 1.4 }}>{product.name || product.title}</h3>
                     </Link>
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "8px" }}>
-                      {hasDiscount ? (
-                        <>
-                          <span style={{ fontSize: "15px", fontWeight: 600, color: accent, fontFamily: "Poppins,sans-serif" }}>${product.discount_price}</span>
-                          <span style={{ fontSize: "13px", color: "#999", textDecoration: "line-through", fontFamily: "Poppins,sans-serif" }}>${product.compare_price}</span>
-                        </>
-                      ) : product.compare_at_price ? (
-                        <>
-                          <span style={{ fontSize: "15px", fontWeight: 600, color: accent, fontFamily: "Poppins,sans-serif" }}>${product.price}</span>
-                          <span style={{ fontSize: "13px", color: "#999", textDecoration: "line-through", fontFamily: "Poppins,sans-serif" }}>${product.compare_at_price}</span>
-                        </>
-                      ) : (
-                        <span style={{ fontSize: "15px", fontWeight: 500, color: "#000", fontFamily: "Poppins,sans-serif" }}>${product.price}</span>
-                      )}
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "6px" }}>
+                      <span style={{ fontSize: "14px", fontWeight: onSale ? 600 : 400, color: onSale ? accent : "#000", fontFamily: "Poppins,sans-serif" }}>${salePrice}</span>
+                      {comparePrice && <span style={{ fontSize: "13px", color: "#bbb", textDecoration: "line-through", fontFamily: "Poppins,sans-serif" }}>${comparePrice}</span>}
                     </div>
                   </div>
                 </div>
