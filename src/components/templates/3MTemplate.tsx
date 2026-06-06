@@ -19,7 +19,7 @@ interface TemplateProps {
 const accent = "#ff7245";
 const bgLight = "#eff6f6";
 
-export default function ThreeMTemplate({ store, banners, settings, products, slug, categories }: TemplateProps) {
+export default function ThreeMTemplate({ store, products, slug, categories }: TemplateProps) {
   const storeName = store?.name || "Premium Store";
   const { items } = useCartStore();
   const { items: wishlistItems } = useWishlistStore();
@@ -29,23 +29,14 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
   const [activeTab, setActiveTab] = useState("featured");
   const [featuredIdx, setFeaturedIdx] = useState(0);
 
-  const topBanners = banners.filter((b: any) => b.isActive && (b.position === 'top' || !b.position));
-  const midBanners = banners.filter((b: any) => b.isActive && b.position === 'middle');
-
-  const heroSlides = topBanners.length > 0 ? topBanners.map((b: any) => ({
-    subtitle: b.subtitle || "",
-    title: b.title || "",
-    description: b.subtitle || "",
-    buttonText: b.showButton !== false ? (b.buttonText || "Shop now") : "",
-    image: b.imageUrl,
-  })) : [
-    { subtitle: "Up to 15% off", title: "Diana diamante<br/>clutch bag", description: "Change up the straps to suit your mood. Wear them two<br/>ways for two different looks", buttonText: "Shop now", image: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=1600&q=80" },
-    { subtitle: "New collection", title: "Kipling Cool<br/>organised", description: "The bold fun design features multiple pockets organised with secure zips to keep", buttonText: "Shop now", image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1600&q=80" },
+  const heroSlides = [
+    { subtitle: "Up to 15% off", title: "Diana diamante<br/>clutch bag", description: "Change up the straps to suit your mood. Wear them two<br/>ways for two different looks", buttonText: "Shop now", image: "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/slide_h1_1.webp?v=1768875495", align: "right" },
+    { subtitle: "Up to 15% off", title: "Diana diamante<br/>clutch bag", description: "Change up the straps to suit your mood. Wear them two<br/>ways for two different looks", buttonText: "Shop now", image: "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/slide_h1_2.webp?v=1768875500", align: "left" },
   ];
 
-  const ctaBanners = midBanners.length > 0 ? midBanners : [
-    { imageUrl: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=1080&q=80", title: "Kipling Cool<br/>organised", subtitle: "New arrival", buttonText: "See more", buttonLink: "", showButton: true },
-    { imageUrl: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1080&q=80", title: "Premium Leather<br/>Collection", subtitle: "Featured", buttonText: "See more", buttonLink: "", showButton: true },
+  const ctaBanners = [
+    { imageUrl: "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/banner_h1_1.jpg?v=1768881903", title: "Kipling Cool organised", subtitle: "New arrival", description: "The bold fun design features multiple pockets organised with secure zips to keep", buttonText: "see more" },
+    { imageUrl: "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/banner_h1_2.jpg?v=1768884212", title: "Urbana Bag shoulder", subtitle: "New arrival", description: "The bold fun design features multiple organised with secure zips", buttonText: "see more" },
   ];
 
   const getTabProducts = () => {
@@ -151,7 +142,7 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
                 backgroundPosition: "center",
               }} />
               <div style={{ position: "relative", width: "100%", maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
-                <div style={{ maxWidth: "500px", textAlign: "center", marginLeft: "auto", marginRight: "0" }}>
+                <div style={{ maxWidth: "500px", textAlign: "center", ...(slide.align === "left" ? { marginLeft: "0", marginRight: "auto" } : { marginLeft: "auto", marginRight: "0" }) }}>
                   {slide.subtitle && <p style={{ fontSize: "14px", marginBottom: "10px", color: "#666" }}>{slide.subtitle}</p>}
                   {slide.title && <h2 style={{ fontSize: "clamp(32px, 5vw, 62px)", fontWeight: 500, lineHeight: 1.2, marginBottom: "15px", color: "#000" }} dangerouslySetInnerHTML={{ __html: slide.title }} />}
                   {slide.buttonText && (
@@ -190,20 +181,18 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
             <div style={{ display: "flex", flexDirection: i % 2 === 0 ? "row" : "row-reverse", alignItems: "center", gap: "40px", flexWrap: "wrap" }}>
               <div style={{ flex: "1 1 45%", minWidth: "300px" }}>
                 <div style={{ overflow: "hidden", backgroundColor: "#f5f5f5" }}>
-                  <img src={banner.imageUrl || "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=1080&q=80"} alt={banner.title || "Banner"} className="hover:scale-105 transition-transform duration-500" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", display: "block" }} />
+                  <img src={banner.imageUrl} alt={banner.title || "Banner"} className="hover:scale-105 transition-transform duration-500" style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", display: "block" }} />
                 </div>
               </div>
               <div style={{ flex: "1 1 45%", minWidth: "300px", padding: i % 2 === 0 ? "0 0 0 40px" : "0 40px 0 0", textAlign: "left" }}>
                 {banner.subtitle && <p style={{ fontSize: "14px", color: "#999", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "1px", fontFamily: "Poppins,sans-serif" }}>{banner.subtitle}</p>}
-                {banner.title && <h3 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 500, color: "#000", marginBottom: "15px", lineHeight: 1.3, fontFamily: "Poppins,sans-serif" }} dangerouslySetInnerHTML={{ __html: banner.title }} />}
-                {banner.subtitle && !banner.title && <p style={{ fontSize: "14px", color: "#666", marginBottom: "20px", lineHeight: 1.6, fontFamily: "Poppins,sans-serif" }}>{banner.description || banner.subtitle}</p>}
-                {banner.showButton !== false && (
-                  <Link href={banner.buttonLink || `/store/${slug}/products`} className="inline-block text-xs font-medium uppercase tracking-wider text-white transition-all" style={{ padding: "10px 28px", borderRadius: "30px", backgroundColor: "#000000", fontFamily: "Poppins,sans-serif" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}>
-                    {banner.buttonText || "See more"}
-                  </Link>
-                )}
+                {banner.title && <h3 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 500, color: "#000", marginBottom: "15px", lineHeight: 1.3, fontFamily: "Poppins,sans-serif" }}>{banner.title}</h3>}
+                {banner.description && <p style={{ fontSize: "14px", color: "#666", marginBottom: "20px", lineHeight: 1.6, fontFamily: "Poppins,sans-serif" }}>{banner.description}</p>}
+                <Link href={`/store/${slug}/products`} className="inline-block text-xs font-medium uppercase tracking-wider text-white transition-all" style={{ padding: "10px 28px", borderRadius: "30px", backgroundColor: "#000000", fontFamily: "Poppins,sans-serif" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}>
+                  {banner.buttonText || "see more"}
+                </Link>
               </div>
             </div>
           </div>
