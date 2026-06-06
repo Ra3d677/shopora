@@ -27,6 +27,7 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeTab, setActiveTab] = useState("featured");
+  const [featuredIdx, setFeaturedIdx] = useState(0);
 
   const topBanners = banners.filter((b: any) => b.isActive && (b.position === 'top' || !b.position));
   const midBanners = banners.filter((b: any) => b.isActive && b.position === 'middle');
@@ -325,14 +326,71 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
         </div>
       </section>
 
-      {/* FEATURED PRODUCTS */}
-      <section style={{ padding: "80px 0", backgroundColor: "#ffffff" }}>
-        <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
-          <h2 className="text-center text-[28px] font-medium mb-10" style={{ fontFamily: "Poppins,sans-serif", color: "#000" }}>Featured Products</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "30px" }}>
-            {products.slice(3, 9).map((product: any) => (
-              <ProductCard key={product.id} product={product} slug={slug} accent={accent} />
-            ))}
+      {/* FEATURED PRODUCTS - carousel matching Netro product-v1 */}
+      <section style={{ padding: "100px 0", backgroundColor: "#ffffff" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
+          <div style={{ textAlign: "center", marginBottom: "50px" }}>
+            <h2 style={{ fontSize: "clamp(26px, 2.5vw, 34px)", fontWeight: 500, color: "#000", fontFamily: "Poppins,sans-serif", marginBottom: "8px" }}>Iconic Products</h2>
+            <p style={{ fontSize: "14px", color: "#999", fontFamily: "Poppins,sans-serif", letterSpacing: "0.3px" }}>Discover our collections</p>
+          </div>
+          <div style={{ position: "relative" }}>
+            <div style={{ overflow: "hidden", margin: "0 -10px" }}>
+              <div style={{ display: "flex", gap: "30px", transition: "transform 0.5s ease", transform: `translateX(-${featuredIdx * 310}px)` }}>
+                {products.slice(3, 9).map((product: any) => {
+                  const img = product.images?.[0] || product.image || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80";
+                  const hasDiscount = product.discount_price && product.price;
+                  return (
+                    <div key={product.id} style={{ flex: "0 0 280px", backgroundColor: "#fff" }}>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <Link href={`/store/${slug}/product/${product.id}`} style={{ display: "block", overflow: "hidden", backgroundColor: "#fafafa" }}>
+                          <img src={img} alt={product.name || product.title}
+                            style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover", display: "block", transition: "transform 0.4s" }}
+                            className="hover:scale-105" />
+                        </Link>
+                        <div style={{ padding: "15px 0 0", textAlign: "center" }}>
+                          <Link href={`/store/${slug}/product/${product.id}`} style={{ textDecoration: "none" }}>
+                            <h3 style={{ fontSize: "14px", fontWeight: 400, color: "#000", fontFamily: "Poppins,sans-serif", marginBottom: "8px", lineHeight: 1.4 }}>{product.name || product.title}</h3>
+                          </Link>
+                          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "6px", marginBottom: "15px" }}>
+                            {hasDiscount ? (
+                              <>
+                                <span style={{ fontSize: "14px", fontWeight: 600, color: accent, fontFamily: "Poppins,sans-serif" }}>${product.discount_price}</span>
+                                <span style={{ fontSize: "13px", color: "#bbb", textDecoration: "line-through", fontFamily: "Poppins,sans-serif" }}>${product.price}</span>
+                              </>
+                            ) : (
+                              <span style={{ fontSize: "14px", fontWeight: 400, color: "#000", fontFamily: "Poppins,sans-serif" }}>${product.price}</span>
+                            )}
+                          </div>
+                          <Link href={`/store/${slug}/product/${product.id}`}
+                            style={{ display: "inline-block", fontSize: "12px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", color: "#000", padding: "10px 0", borderTop: "1px solid #eee", fontFamily: "Poppins,sans-serif", textDecoration: "none", transition: "color 0.3s" }}
+                            className="hover:opacity-60">
+                            Shop Now
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <button onClick={() => setFeaturedIdx((p) => Math.max(0, p - 1))}
+              style={{ position: "absolute", left: "-15px", top: "35%", transform: "translateY(-50%)", width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#fff", border: "none", boxShadow: "0 2px 12px rgba(0,0,0,0.08)", cursor: "pointer", zIndex: 2, borderRadius: "50%", transition: "all 0.2s", color: "#333" }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = accent; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "#333"; }}>
+              <ChevronLeft size={18} />
+            </button>
+            <button onClick={() => setFeaturedIdx((p) => Math.min(products.slice(3, 9).length - 3, p + 1))}
+              style={{ position: "absolute", right: "-15px", top: "35%", transform: "translateY(-50%)", width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#fff", border: "none", boxShadow: "0 2px 12px rgba(0,0,0,0.08)", cursor: "pointer", zIndex: 2, borderRadius: "50%", transition: "all 0.2s", color: "#333" }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = accent; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "#333"; }}>
+              <ChevronRight size={18} />
+            </button>
+            <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "30px" }}>
+              {products.slice(3, 9).slice(0, Math.max(1, products.slice(3, 9).length - 2)).map((_: any, idx: number) => (
+                <button key={idx} onClick={() => setFeaturedIdx(idx)}
+                  style={{ width: "8px", height: "8px", borderRadius: "50%", border: "none", cursor: "pointer", backgroundColor: idx === featuredIdx ? "#000" : "#d0d0d0", transition: "background 0.3s" }} />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -446,52 +504,4 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
   );
 }
 
-function ProductCard({ product, slug, accent }: { product: any; slug: string; accent: string }) {
-  const imgSrc = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
-  const isSale = product.discount_price != null;
-  const { addItem } = useCartStore();
-  const { addItem: addWishlist, removeItem: removeWishlist, isWishlisted } = useWishlistStore();
-
-  return (
-    <div className="group bg-white relative text-center" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
-      <div className="relative overflow-hidden" style={{ backgroundColor: "#fafafa", aspectRatio: "1/1" }}>
-        <Link href={`/store/${slug}/product/${product.id}`}>
-          <img src={imgSrc} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-        </Link>
-        {isSale && <span className="absolute top-3 left-3 z-10 px-2.5 py-0.5 text-[10px] font-bold uppercase text-white" style={{ backgroundColor: accent }}>Sale</span>}
-        <div className="absolute top-3 right-3 z-10 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button onClick={(e) => { e.stopPropagation(); const pid = String(product.id); if (isWishlisted(pid)) removeWishlist(pid); else addWishlist({ productId: pid, storeId: slug, name: product.name, price: product.price, image: imgSrc, slug: `/store/${slug}/product/${product.id}` }); }}
-            className="w-9 h-9 bg-white shadow-md flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
-            <Heart size={14} className={isWishlisted(String(product.id)) ? "fill-current" : ""} style={{ color: isWishlisted(String(product.id)) ? accent : "#333" }} />
-          </button>
-          <Link href={`/store/${slug}/product/${product.id}`} className="w-9 h-9 bg-white shadow-md flex items-center justify-center hover:scale-110 transition-transform">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </Link>
-        </div>
-      </div>
-      <div style={{ padding: "15px" }}>
-        <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#aaa" }}>{product.category || "General"}</p>
-        <Link href={`/store/${slug}/product/${product.id}`} className="hover:opacity-60 transition-opacity">
-          <h3 className="text-sm font-medium leading-tight my-1.5 truncate" style={{ fontFamily: "Poppins,sans-serif" }}>{product.name}</h3>
-        </Link>
-        <div className="flex justify-center gap-0.5 mb-2">
-          {[1, 2, 3, 4, 5].map((s) => (<Star key={s} size={12} fill="#ffc107" style={{ color: "#ffc107" }} />))}
-        </div>
-        <div className="flex items-center justify-center gap-2 mb-3">
-          {isSale ? (
-            <><span className="text-sm font-bold" style={{ color: accent }}>${product.discount_price.toFixed(2)}</span><span className="text-xs line-through" style={{ color: "#999" }}>${product.price.toFixed(2)}</span></>
-          ) : (
-            <span className="text-sm font-bold">${product.price.toFixed(2)}</span>
-          )}
-        </div>
-        <button onClick={(e) => { e.stopPropagation(); addItem({ id: `${slug}-${product.id}-One Size-`, storeId: slug, product, quantity: 1, selectedSize: "One Size", selectedColor: "", selectedImage: imgSrc }); }}
-          className="w-full py-2.5 text-xs font-bold uppercase tracking-wider text-white transition-colors cursor-pointer rounded-full"
-          style={{ backgroundColor: "#000000" }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}>
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  );
-}
+// ProductCard removed — now inline in Featured Products carousel
