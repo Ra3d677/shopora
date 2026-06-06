@@ -43,8 +43,8 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
   ];
 
   const ctaBanners = midBanners.length > 0 ? midBanners : [
-    { imageUrl: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=1080&q=80", title: "Kipling Cool<br/>organised", subtitle: "New arrival", buttonText: "See more", buttonLink: "" },
-    { imageUrl: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1080&q=80", title: "Premium Leather<br/>Collection", subtitle: "Featured", buttonText: "See more", buttonLink: "" },
+    { imageUrl: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=1080&q=80", title: "Kipling Cool<br/>organised", subtitle: "New arrival", buttonText: "See more", buttonLink: "", showButton: true },
+    { imageUrl: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1080&q=80", title: "Premium Leather<br/>Collection", subtitle: "Featured", buttonText: "See more", buttonLink: "", showButton: true },
   ];
 
   const featuredProducts = products.filter((p: any) => p.discount_price).slice(0, 6);
@@ -175,54 +175,31 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
       </section>
 
       {/* CTA BANNERS */}
-      <section style={{ padding: "50px 0", backgroundColor: "#ffffff" }}>
-        <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "30px", alignItems: "center" }}>
-            {ctaBanners.slice(0, 2).map((banner: any, i: number) => (
-              i % 2 === 0 ? (
-                <React.Fragment key={i}>
-                  <div>
-                    <div style={{ overflow: "hidden" }}>
-                      <img src={banner.imageUrl} alt={banner.title || "Banner"} className="hover:scale-105 transition-transform duration-500" style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover" }} />
-                    </div>
-                  </div>
-                  <div style={{ textAlign: "left" }}>
-                    {banner.subtitle && <p style={{ fontSize: "14px", color: "#999", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "1px" }}>{banner.subtitle}</p>}
-                    {banner.title && <h3 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 500, color: "#000", marginBottom: "15px", lineHeight: 1.3, fontFamily: "Poppins,sans-serif" }} dangerouslySetInnerHTML={{ __html: banner.title }} />}
-                    {banner.subtitle && !banner.title && <p style={{ fontSize: "14px", color: "#666", marginBottom: "20px", lineHeight: 1.6 }}>{banner.description || banner.subtitle}</p>}
-                    {banner.showButton !== false && (
-                      <Link href={banner.buttonLink || `/store/${slug}/products`} className="inline-block text-xs font-medium uppercase tracking-wider text-white transition-all" style={{ padding: "10px 28px", borderRadius: "30px", backgroundColor: "#000000" }}
-                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}>
-                        {banner.buttonText || "See more"}
-                      </Link>
-                    )}
-                  </div>
-                </React.Fragment>
-              ) : (
-                <React.Fragment key={i}>
-                  <div style={{ textAlign: "left" }}>
-                    {banner.subtitle && <p style={{ fontSize: "14px", color: "#999", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "1px" }}>{banner.subtitle}</p>}
-                    {banner.title && <h3 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 500, color: "#000", marginBottom: "15px", lineHeight: 1.3, fontFamily: "Poppins,sans-serif" }} dangerouslySetInnerHTML={{ __html: banner.title }} />}
-                    {banner.showButton !== false && (
-                      <Link href={banner.buttonLink || `/store/${slug}/products`} className="inline-block text-xs font-medium uppercase tracking-wider text-white transition-all" style={{ padding: "10px 28px", borderRadius: "30px", backgroundColor: "#000000" }}
-                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}>
-                        {banner.buttonText || "See more"}
-                      </Link>
-                    )}
-                  </div>
-                  <div>
-                    <div style={{ overflow: "hidden" }}>
-                      <img src={banner.imageUrl} alt={banner.title || "Banner"} className="hover:scale-105 transition-transform duration-500" style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover" }} />
-                    </div>
-                  </div>
-                </React.Fragment>
-              )
-            ))}
+      {ctaBanners.slice(0, 2).map((banner: any, i: number) => (
+        <section key={i} style={{ padding: "40px 0", backgroundColor: "#ffffff" }}>
+          <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
+            <div style={{ display: "flex", flexDirection: i % 2 === 0 ? "row" : "row-reverse", alignItems: "center", gap: "40px", flexWrap: "wrap" }}>
+              <div style={{ flex: "1 1 45%", minWidth: "300px" }}>
+                <div style={{ overflow: "hidden", backgroundColor: "#f5f5f5" }}>
+                  <img src={banner.imageUrl || "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=1080&q=80"} alt={banner.title || "Banner"} className="hover:scale-105 transition-transform duration-500" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", display: "block" }} />
+                </div>
+              </div>
+              <div style={{ flex: "1 1 45%", minWidth: "300px", padding: i % 2 === 0 ? "0 0 0 40px" : "0 40px 0 0", textAlign: "left" }}>
+                {banner.subtitle && <p style={{ fontSize: "14px", color: "#999", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "1px", fontFamily: "Poppins,sans-serif" }}>{banner.subtitle}</p>}
+                {banner.title && <h3 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 500, color: "#000", marginBottom: "15px", lineHeight: 1.3, fontFamily: "Poppins,sans-serif" }} dangerouslySetInnerHTML={{ __html: banner.title }} />}
+                {banner.subtitle && !banner.title && <p style={{ fontSize: "14px", color: "#666", marginBottom: "20px", lineHeight: 1.6, fontFamily: "Poppins,sans-serif" }}>{banner.description || banner.subtitle}</p>}
+                {banner.showButton !== false && (
+                  <Link href={banner.buttonLink || `/store/${slug}/products`} className="inline-block text-xs font-medium uppercase tracking-wider text-white transition-all" style={{ padding: "10px 28px", borderRadius: "30px", backgroundColor: "#000000", fontFamily: "Poppins,sans-serif" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}>
+                    {banner.buttonText || "See more"}
+                  </Link>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ))}
 
       {/* BEST SELLER with tabs */}
       <section style={{ padding: "80px 0", backgroundColor: bgLight }}>
