@@ -47,14 +47,22 @@ export default function ThreeMTemplate({ store, banners, settings, products, slu
     { imageUrl: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1080&q=80", title: "Premium Leather<br/>Collection", subtitle: "Featured", buttonText: "See more", buttonLink: "", showButton: true },
   ];
 
-  const featuredProducts = products.filter((p: any) => p.discount_price || p.compare_at_price);
-  const latestProducts = products;
-  const topRated = [...products].sort((a: any, b: any) => (b.rating || 0) - (a.rating || 0));
-
   const getTabProducts = () => {
-    if (activeTab === "featured") return featuredProducts.length > 0 ? featuredProducts : products.slice(3, 9);
-    if (activeTab === "latest") return latestProducts;
-    return topRated;
+    if (activeTab === "featured") {
+      const sale = products.filter((p: any) => p.discount_price);
+      return sale.length > 0 ? sale : products.slice(3, 9);
+    }
+    if (activeTab === "latest") {
+      return [...products].sort((a: any, b: any) => {
+        const da = a.createdAt || a.created_at;
+        const db = b.createdAt || b.created_at;
+        if (!da && !db) return 0;
+        if (!da) return 1;
+        if (!db) return -1;
+        return new Date(db).getTime() - new Date(da).getTime();
+      });
+    }
+    return [...products].reverse();
   };
 
   const navLinks = [
