@@ -2,356 +2,395 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import { Grid, List, Star, ChevronRight, Heart, ShoppingCart, Eye, SlidersHorizontal, Plus, Minus, ArrowUpDown } from "lucide-react";
+import { Heart, ShoppingCart, Eye, ChevronRight, ChevronDown } from "lucide-react";
 import { useCartStore } from "@/store/cart";
 import { useWishlistStore } from "@/store/wishlist";
-import SmartImage from "@/components/ui/SmartImage";
 
 interface ThreeMProductsProps {
   slug: string;
   store: any;
   products: any[];
   category?: string;
-  pageTitle: string;
-  pageDescription: string;
+  pageTitle?: string;
+  pageDescription?: string;
 }
 
-export default function ThreeMProducts({ slug, store, products, category: activeCategoryId, pageTitle, pageDescription }: ThreeMProductsProps) {
-  const accent = "#ff7245";
-  const bgLight = "#eff6f6";
-  const { t } = { t: (s: string) => s };
+const accent = "#ff7245";
 
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [minPrice, setMinPrice] = useState<string>("");
-  const [maxPrice, setMaxPrice] = useState<string>("");
-  const [activePriceRange, setActivePriceRange] = useState<string>("all");
-  const [selectedSort, setSelectedSort] = useState<string>("default");
+export default function ThreeMProducts({ slug, store, products, category: activeCategoryId }: ThreeMProductsProps) {
+  const { addItem: cartAdd } = useCartStore();
+  const { addItem: wishlistAdd, removeItem: wishlistRemove, isWishlisted } = useWishlistStore();
 
-  const cartAddItem = useCartStore((s) => s.addItem);
-  const { addItem: addWishlist, removeItem: removeWishlist, isWishlisted } = useWishlistStore();
+  const [sortBy, setSortBy] = useState("manual");
+  const [columns, setColumns] = useState(3);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
+  const [priceMin, setPriceMin] = useState(0);
+  const [priceMax, setPriceMax] = useState(100);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [showVendors, setShowVendors] = useState<Record<string, boolean>>({});
+  const [showColors, setShowColors] = useState<Record<string, boolean>>({});
 
-  const handleAddToCart = (product: any, e?: React.MouseEvent, quantity = 1) => {
-    e?.stopPropagation();
-    try {
-      const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
-      cartAddItem({
-        id: `${slug}-${product.id}-One Size-`,
-        storeId: slug,
-        product: { ...product, images: product.images || img },
-        quantity,
-        selectedSize: "One Size",
-        selectedColor: "",
-        selectedImage: img,
-      });
-    } catch (err) { console.error("cartAddItem error:", err); }
-  };
-
-  const handleToggleWishlist = (product: any, e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    try {
-      const pid = String(product.id);
-      const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
-      if (isWishlisted(pid)) removeWishlist(pid);
-      else addWishlist({ productId: pid, storeId: slug, name: product.name, price: product.price, image: img, slug: `/store/${slug}/product/${product.id}` });
-    } catch (err) { console.error("wishlist error:", err); }
-  };
-
-  const priceFilteredProducts = useMemo(() => products.filter((product) => {
-    const fp = product.discount_price || product.price;
-    if (minPrice !== "" && fp < parseFloat(minPrice)) return false;
-    if (maxPrice !== "" && fp > parseFloat(maxPrice)) return false;
-    if (minPrice === "" && maxPrice === "") {
-      if (activePriceRange === "under50") return fp < 50;
-      if (activePriceRange === "50to100") return fp >= 50 && fp <= 100;
-      if (activePriceRange === "100to200") return fp >= 100 && fp <= 200;
-      if (activePriceRange === "above200") return fp > 200;
-    }
-    return true;
-  }), [products, minPrice, maxPrice, activePriceRange]);
+  const mainCategories = useMemo(() => store.categories?.filter((c: any) => !c.parentId) || [], [store.categories]);
 
   const sortedProducts = useMemo(() => {
-    const items = [...priceFilteredProducts];
-    if (selectedSort === "price_asc") items.sort((a, b) => (a.discount_price || a.price) - (b.discount_price || b.price));
-    else if (selectedSort === "price_desc") items.sort((a, b) => (b.discount_price || b.price) - (a.discount_price || a.price));
-    else if (selectedSort === "newest") items.reverse();
+    const items = [...products];
+    if (sortBy === "price-ascending") items.sort((a, b) => (a.discount_price || a.price) - (b.discount_price || b.price));
+    else if (sortBy === "price-descending") items.sort((a, b) => (b.discount_price || b.price) - (a.discount_price || a.price));
+    else if (sortBy === "title-ascending") items.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+    else if (sortBy === "title-descending") items.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
+    else if (sortBy === "created-descending") items.sort((a, b) => { const da = a.createdAt || a.created_at; const db = b.createdAt || b.created_at; if (!da && !db) return 0; if (!da) return 1; if (!db) return -1; return new Date(db).getTime() - new Date(da).getTime(); });
+    else if (sortBy === "created-ascending") items.sort((a, b) => { const da = a.createdAt || a.created_at; const db = b.createdAt || b.created_at; if (!da && !db) return 0; if (!da) return 1; if (!db) return -1; return new Date(da).getTime() - new Date(db).getTime(); });
     return items;
-  }, [priceFilteredProducts, selectedSort]);
+  }, [products, sortBy]);
 
-  const getSubcategories = (catId: string) => store.categories.filter((c: any) => c.parentId === catId);
-  const mainCategories = useMemo(() => store.categories.filter((c: any) => !c.parentId), [store.categories]);
-  const sidebarFeatured = useMemo(() => products.slice(0, 3), [products]);
+  const priceFiltered = useMemo(() => sortedProducts.filter((p: any) => {
+    const fp = p.discount_price || p.price;
+    return fp >= priceMin && fp <= priceMax;
+  }), [sortedProducts, priceMin, priceMax]);
 
-  return (
-    <div className="min-h-screen bg-white pb-24" style={{ fontFamily: "Poppins,sans-serif", color: "#333333" }}>
-      {/* Banner */}
-      <div style={{ backgroundColor: bgLight, padding: "60px 20px", marginBottom: "40px" }}>
-        <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest mb-4" style={{ color: "#999999" }}>
-            <Link href={`/store/${slug}`} className="hover:opacity-60 transition-opacity" style={{ color: "#999999" }}>Home</Link>
-            <ChevronRight size={10} />
-            <span style={{ color: "#333333" }}>{pageTitle}</span>
+  const vendorFiltered = useMemo(() => {
+    const activeVendors = Object.keys(showVendors).filter((k) => showVendors[k]);
+    if (activeVendors.length === 0) return priceFiltered;
+    return priceFiltered.filter((p: any) => activeVendors.includes(p.vendor || p.brand || ""));
+  }, [priceFiltered, showVendors]);
+
+  const displayProducts = vendorFiltered;
+
+  const vendors = useMemo(() => {
+    const v = new Set<string>();
+    products.forEach((p: any) => { const name = p.vendor || p.brand; if (name) v.add(name); });
+    return Array.from(v).sort();
+  }, [products]);
+
+  const colors = ["#b8ad9d", "#000000", "#ffffff", "#c4a47c", "#8b4513", "#4169e1", "#808080", "#ff6347", "#2e8b57", "#ffd700"];
+
+  const handleAddToCart = (product: any, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
+    cartAdd({ id: `${slug}-${product.id}-One Size-`, storeId: slug, product: { ...product, images: product.images || img }, quantity: 1, selectedSize: "One Size", selectedColor: "", selectedImage: img });
+  };
+
+  const handleWishlist = (product: any, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    const pid = String(product.id);
+    const img = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
+    if (isWishlisted(pid)) wishlistRemove(pid);
+    else wishlistAdd({ productId: pid, storeId: slug, name: product.name, price: product.price, image: img, slug: `/store/${slug}/product/${product.id}` });
+  };
+
+  const SidebarContent = () => (
+    <>
+      <div className="collection-sidebar__header">
+        <h2 className="collection-sidebar__title">CATEGORIES</h2>
+      </div>
+      <div className="collection-sidebar__menu">
+        <div className="collection-sidebar__item">
+          <span className="collection-sidebar__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" height="11" viewBox="0 0 320 512"><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" fill="currentColor"/></svg>
+          </span>
+          <Link href={`/store/${slug}/products`}>All Products</Link>
+        </div>
+        {mainCategories.map((cat: any) => (
+          <div key={cat.id} className="collection-sidebar__item">
+            <span className="collection-sidebar__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" height="11" viewBox="0 0 320 512"><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" fill="currentColor"/></svg>
+            </span>
+            <Link href={`/store/${slug}/products?category=${cat.id}`}>{cat.name}</Link>
           </div>
-          <h1 className="text-4xl font-medium mb-2 tracking-tight" style={{ fontFamily: "Poppins,sans-serif" }}>{pageTitle}</h1>
-          <p className="text-sm max-w-2xl leading-relaxed" style={{ color: "#666666" }}>{pageDescription}</p>
+        ))}
+      </div>
+
+      <div className="fieldset-block__header">
+        <h2 className="fieldset-block__title">PRICE</h2>
+      </div>
+      <div className="fieldset-block__content">
+        <div style={{ padding: "0 0.1rem", width: "100%" }}>
+          <input type="range" min={0} max={200} step={1} value={priceMax}
+            onChange={(e) => { setPriceMax(Number(e.target.value)); setPriceRange([priceMin, Number(e.target.value)]); }}
+            style={{ width: "100%", accentColor: "#000" }} />
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", color: "#666", marginTop: "5px" }}>
+            <span>${priceMin}.00</span>
+            <span>-</span>
+            <span>${priceMax}.00</span>
+          </div>
         </div>
       </div>
 
-      <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 3fr", gap: "40px" }}>
-          {/* SIDEBAR */}
-          <aside className="flex flex-col gap-8">
-            {/* Categories */}
-            <div className="border border-gray-200 p-6 bg-white">
-              <h3 className="text-sm font-semibold uppercase tracking-wider mb-5 pb-3 border-b border-gray-200 flex items-center justify-between">
-                <span>Categories</span>
-                <SlidersHorizontal size={14} style={{ color: "#999999" }} />
-              </h3>
-              <ul className="space-y-3">
-                <li>
-                  <Link href={`/store/${slug}/products`} className={`text-xs font-medium uppercase tracking-wider flex items-center justify-between transition-all hover:opacity-60 ${!activeCategoryId ? 'font-bold' : ''}`} style={{ color: !activeCategoryId ? accent : "#666666" }}>
-                    <span>All Products</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ backgroundColor: bgLight, color: "#999999" }}>{products.length}</span>
-                  </Link>
-                </li>
-                {mainCategories.map((cat: any) => {
-                  const subCats = getSubcategories(cat.id);
-                  const isActive = activeCategoryId === cat.id || subCats.some((s: any) => s.id === activeCategoryId);
-                  return (
-                    <li key={cat.id}>
-                      <Link href={`/store/${slug}/products?category=${cat.id}`} className={`text-xs font-medium uppercase tracking-wider transition-all hover:opacity-60 ${activeCategoryId === cat.id ? 'font-bold' : ''}`} style={{ color: activeCategoryId === cat.id ? accent : "#666666" }}>
-                        {cat.name}
-                      </Link>
-                      {subCats.length > 0 && isActive && (
-                        <ul className="mt-2 ml-4 space-y-1.5">
-                          {subCats.map((sub: any) => (
-                            <li key={sub.id}>
-                              <Link href={`/store/${slug}/products?category=${sub.id}`} className="text-[11px] font-medium uppercase tracking-wider block transition-colors hover:opacity-60" style={{ color: activeCategoryId === sub.id ? accent : "#999999" }}>
-                                {sub.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
+      <div className="fieldset-block__header">
+        <h2 className="fieldset-block__title">COLOR</h2>
+      </div>
+      <div className="fieldset-block__content fieldset-block__content--color">
+        {colors.map((c, i) => (
+          <label key={i} className="field-checkbox-color">
+            <input type="checkbox" className="field-checkbox-color__input" checked={!!showColors[c]} onChange={() => setShowColors((prev) => ({ ...prev, [c]: !prev[c] }))} />
+            <div className="field-checkbox-color__item">
+              <span className="field-checkbox-color__content" style={{ "--color": c } as React.CSSProperties}></span>
             </div>
+          </label>
+        ))}
+      </div>
 
-            {/* Price Filter */}
-            <div className="border border-gray-200 p-6 bg-white">
-              <h3 className="text-sm font-semibold uppercase tracking-wider mb-5 pb-3 border-b border-gray-200">Filter By Price</h3>
-              <div className="flex gap-2 mb-4">
-                <div className="flex-1">
-                  <span className="text-[10px] font-semibold uppercase tracking-wider block mb-1" style={{ color: "#999999" }}>Min</span>
-                  <input type="number" placeholder="$ Min" value={minPrice} onChange={(e) => { setMinPrice(e.target.value); setActivePriceRange("custom"); }} className="w-full text-xs font-medium border border-gray-200 outline-none px-3 py-2 focus:border-black" />
+      {vendors.length > 0 && (
+        <>
+          <div className="fieldset-block__header">
+            <h2 className="fieldset-block__title">BRAND</h2>
+          </div>
+          <div className="fieldset-block__content">
+            {vendors.map((v) => (
+              <label key={v} className="field-checkbox-text">
+                <input type="checkbox" className="field-checkbox-text__input" checked={!!showVendors[v]} onChange={() => setShowVendors((prev) => ({ ...prev, [v]: !prev[v] }))} />
+                <div className="field-checkbox-text__item">
+                  <span className="field-checkbox-text__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 320 512"><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" fill="currentColor"/></svg>
+                  </span>
+                  <span className="field-checkbox-text__content">{v}</span>
                 </div>
-                <div className="flex-1">
-                  <span className="text-[10px] font-semibold uppercase tracking-wider block mb-1" style={{ color: "#999999" }}>Max</span>
-                  <input type="number" placeholder="$ Max" value={maxPrice} onChange={(e) => { setMaxPrice(e.target.value); setActivePriceRange("custom"); }} className="w-full text-xs font-medium border border-gray-200 outline-none px-3 py-2 focus:border-black" />
+              </label>
+            ))}
+          </div>
+        </>
+      )}
+
+      <div className="collection-sidebar__banner">
+        <a href={`/store/${slug}/products`}>
+          <img src="https://landing.shopilaunch.com/starter/sidebar_banner.jpg" width="768" height="1024" alt="Banner" />
+        </a>
+      </div>
+    </>
+  );
+
+  return (
+    <div className="min-h-screen bg-white" style={{ fontFamily: "Poppins, sans-serif" }}>
+      <div className="main-collection">
+        <div className="xo-section color-background-1" style={{ padding: "50px 0" }}>
+          <div className="xo-container--box" style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
+            <div className="main-collection-grid">
+              {/* Sidebar */}
+              <div className="main-collection-style1__sidebar">
+                <div className="sidebar-desktop">
+                  <SidebarContent />
                 </div>
               </div>
-              {(minPrice !== "" || maxPrice !== "" || activePriceRange !== "all") && (
-                <button onClick={() => { setMinPrice(""); setMaxPrice(""); setActivePriceRange("all"); }} className="w-full py-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors mb-4" style={{ color: "#666666", backgroundColor: bgLight }}>
-                  Clear Filters
-                </button>
-              )}
-              <div className="flex flex-col gap-2">
-                {[
-                  { key: "all", label: "All Prices" },
-                  { key: "under50", label: "Under $50" },
-                  { key: "50to100", label: "$50 to $100" },
-                  { key: "100to200", label: "$100 to $200" },
-                  { key: "above200", label: "$200 & Above" }
-                ].map((range) => (
-                  <button key={range.key} onClick={() => { setMinPrice(""); setMaxPrice(""); setActivePriceRange(range.key); }} className="text-left text-xs font-medium py-1 transition-all" style={{ color: activePriceRange === range.key && minPrice === "" && maxPrice === "" ? accent : "#666666" }}>
-                    {range.label}
+
+              {/* Main content */}
+              <div className="main-collection-style1__content">
+                {/* Header toolbar */}
+                <div className="main-collection-style1__header">
+                  <button className="main-collection-mobile__trigger" onClick={() => setMobileFilterOpen(!mobileFilterOpen)}>
+                    <svg version="1.1" viewBox="0 0 320.42 225" width="18">
+                      <path d="M303.92,33H16.5C7.39,33,0,25.61,0,16.5v0C0,7.39,7.39,0,16.5,0h287.42c9.11,0,16.5,7.39,16.5,16.5v0C320.42,25.61,313.04,33,303.92,33z" fill="currentColor"/>
+                      <path d="M256.55,129H63.87c-9.11,0-16.5-7.39-16.5-16.5v0c0-9.11,7.39-16.5,16.5-16.5h192.68c9.11,0,16.5,7.39,16.5,16.5v0C273.05,121.61,265.66,129,256.55,129z" fill="currentColor"/>
+                      <path d="M208.05,225h-95.67c-9.11,0-16.5-7.39-16.5-16.5v0c0-9.11,7.39-16.5,16.5-16.5h95.67c9.11,0,16.5,7.39,16.5,16.5v0C224.55,217.61,217.16,225,208.05,225z" fill="currentColor"/>
+                    </svg>
+                    <span className="main-collection-mobile__trigger-text">Filter</span>
                   </button>
-                ))}
-              </div>
-            </div>
 
-            {/* Best Sellers */}
-            {sidebarFeatured.length > 0 && (
-              <div className="border border-gray-200 p-6 bg-white">
-                <h3 className="text-sm font-semibold uppercase tracking-wider mb-5 pb-3 border-b border-gray-200">Best Sellers</h3>
-                <div className="flex flex-col gap-4">
-                  {sidebarFeatured.map((p: any) => {
-                    const imgSrc = Array.isArray(p.images) ? p.images[0] : (p.images || "");
+                  <div className="xo-facets">
+                    <div className="xo-facets__toggle">
+                      <button style={{ border: "none", background: "none", cursor: "pointer" }}>
+                        <svg viewBox="0 0 10 10" width="12">
+                          <rect fill="#231f20" width="4.5" height="4.5"/>
+                          <rect fill="#231f20" x="5.5" width="4.5" height="4.5"/>
+                          <rect fill="#231f20" y="5.5" width="4.5" height="4.5"/>
+                          <rect fill="#231f20" x="5.5" y="5.5" width="4.5" height="4.5"/>
+                        </svg>
+                      </button>
+                      <div style={{ display: "flex", gap: "4px", marginLeft: "6px" }}>
+                        {[2, 3, 4, 5, 6].map((n) => (
+                          <button key={n}
+                            onClick={() => setColumns(n)}
+                            style={{
+                              width: "28px", height: "28px", border: `1px solid ${columns === n ? "#000" : "#ddd"}`,
+                              background: columns === n ? "#000" : "transparent",
+                              color: columns === n ? "#fff" : "#999",
+                              fontSize: "11px", fontWeight: 600, cursor: "pointer",
+                            }}>
+                            {n}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="xo-facets__item">
+                      <div className="xo-field-select-custom-filter">
+                        <div className="xo-field-select-custom-filter__trigger" style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer", fontSize: "13px", fontWeight: 500, color: "#333" }}>
+                          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}
+                            style={{ border: "1px solid #ddd", padding: "6px 10px", fontSize: "12px", fontWeight: 500, background: "#fff", cursor: "pointer", outline: "none" }}>
+                            <option value="manual">Featured</option>
+                            <option value="best-selling">Best selling</option>
+                            <option value="title-ascending">Alphabetically, A-Z</option>
+                            <option value="title-descending">Alphabetically, Z-A</option>
+                            <option value="price-ascending">Price, low to high</option>
+                            <option value="price-descending">Price, high to low</option>
+                            <option value="created-ascending">Date, old to new</option>
+                            <option value="created-descending">Date, new to old</option>
+                          </select>
+                          <ChevronDown size={14} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Product grid */}
+                <div className="filters-content__grid" style={{
+                  display: "grid",
+                  gridTemplateColumns: `repeat(${Math.min(columns, 4)}, 1fr)`,
+                  gap: "30px",
+                  marginTop: "30px",
+                }}>
+                  {displayProducts.map((product: any) => {
+                    const img = product.images?.[0] || product.image || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80";
+                    const isSale = product.discount_price != null;
+                    const pid = String(product.id);
+
                     return (
-                      <Link href={`/store/${slug}/product/${p.id}`} key={p.id} className="flex gap-3 group items-center">
-                        <div className="w-16 h-16 shrink-0 overflow-hidden" style={{ backgroundColor: bgLight }}>
-                          <img src={imgSrc} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                        </div>
-                        <div className="flex flex-col justify-center min-w-0">
-                          <h4 className="text-xs font-medium truncate leading-tight mb-1">{p.name}</h4>
-                          <div className="flex gap-0.5 mb-1">
-                            {[1, 2, 3, 4, 5].map((s) => (<Star key={s} size={10} fill="#ff7245" style={{ color: "#ff7245" }} />))}
+                      <div key={product.id} className="xo-product-card xo-product-card--style9">
+                        {/* Image header */}
+                        <div className="xo-product-card__header">
+                          <Link href={`/store/${slug}/product/${product.id}`}>
+                            <div className="xo-product-image">
+                              <div className="xo-image" style={{ aspectRatio: "1/1", overflow: "hidden" }}>
+                                <img src={img} alt={product.name || product.title}
+                                  style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.4s" }}
+                                  className="hover-scale" />
+                              </div>
+                            </div>
+                          </Link>
+                          {isSale && (
+                            <div className="xo-product-card__badge">
+                              <div className="xo-badge-sale">Sale</div>
+                            </div>
+                          )}
+                          {/* Hover actions */}
+                          <div className="xo-product-card__actions">
+                            <button onClick={(e) => handleAddToCart(product, e)}
+                              className="xo-btn xo-btn--circle">
+                              <svg width="18" height="18" viewBox="0 0 24 24">
+                                <path d="M12,0C9.1,0,6.7,2.4,6.7,5.3v1h10.5v-1C17.2,2.4,14.9,0,12,0z M12,1.8c1.6,0,3,1.1,3.4,2.7H8.6C9,2.9,10.4,1.8,12,1.8" fill="currentColor"/>
+                                <path d="M17.6,6.2c0.9,0,1.6,0.7,1.6,1.6v12.9c0,0.9-0.7,1.6-1.6,1.6H6.4c-0.9,0-1.6-0.7-1.6-1.6V7.8c0-0.9,0.7-1.6,1.6-1.6H17.6 M17.6,4.5H6.4C4.5,4.5,3,6,3,7.8v12.9C3,22.5,4.5,24,6.4,24h11.3c1.8,0,3.3-1.5,3.3-3.3V7.8C21,6,19.5,4.5,17.6,4.5L17.6,4.5z" fill="currentColor"/>
+                                <path d="M14.8,8.8H9.2c-0.4,0-0.7-0.3-0.7-0.7v0c0-0.4,0.3-0.7,0.7-0.7h5.7c0.4,0,0.7,0.3,0.7,0.7v0C15.5,8.5,15.2,8.8,14.8,8.8z" fill="currentColor"/>
+                              </svg>
+                            </button>
+                            <Link href={`/store/${slug}/product/${product.id}`} className="xo-btn xo-btn--circle">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </Link>
+                            <button onClick={(e) => handleWishlist(product, e)} className="xo-btn xo-btn--circle">
+                              <Heart size={15} className={isWishlisted(pid) ? "fill-current" : ""} />
+                            </button>
                           </div>
-                          <p className="text-xs font-bold">${(p.discount_price || p.price).toFixed(2)}</p>
                         </div>
-                      </Link>
+
+                        {/* Info */}
+                        <div className="xo-product-card__information">
+                          <h2 className="xo-product-card__title">
+                            <Link href={`/store/${slug}/product/${product.id}`}>{product.name || product.title}</Link>
+                          </h2>
+                          <div className="xo-product-card__price">
+                            <div className="xo-product-card__price-inner">
+                              {isSale ? (
+                                <><span className="price-sale">${product.discount_price}</span> <del className="price-compare">${product.price}</del></>
+                              ) : (
+                                <span>${product.price}</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
               </div>
-            )}
-          </aside>
-
-          {/* MAIN PRODUCT AREA */}
-          <main>
-            {/* Toolbar */}
-            <div className="flex justify-between items-center gap-4 border border-gray-200 p-4 bg-white mb-8">
-              <p className="text-xs font-medium" style={{ color: "#666666" }}>
-                Showing <span className="font-bold" style={{ color: "#333333" }}>{sortedProducts.length}</span> of <span className="font-bold" style={{ color: "#333333" }}>{products.length}</span> products
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-semibold uppercase tracking-wider shrink-0 flex items-center gap-1" style={{ color: "#999999" }}>
-                    <ArrowUpDown size={12} /> Sort
-                  </span>
-                  <select value={selectedSort} onChange={(e) => setSelectedSort(e.target.value)} className="text-xs font-medium border border-gray-200 outline-none bg-white py-1.5 px-3 cursor-pointer focus:border-black">
-                    <option value="default">Default</option>
-                    <option value="price_asc">Price: Low to High</option>
-                    <option value="price_desc">Price: High to Low</option>
-                    <option value="newest">Newest</option>
-                  </select>
-                </div>
-                <div className="flex items-center gap-1 border-l border-gray-200 pl-4">
-                  <button onClick={() => setViewMode("grid")} className="w-9 h-9 border flex items-center justify-center transition-all cursor-pointer" style={{ backgroundColor: viewMode === "grid" ? "#000000" : "transparent", borderColor: viewMode === "grid" ? "#000000" : "#ebebeb", color: viewMode === "grid" ? "#ffffff" : "#333333" }}>
-                    <Grid size={15} />
-                  </button>
-                  <button onClick={() => setViewMode("list")} className="w-9 h-9 border flex items-center justify-center transition-all cursor-pointer" style={{ backgroundColor: viewMode === "list" ? "#000000" : "transparent", borderColor: viewMode === "list" ? "#000000" : "#ebebeb", color: viewMode === "list" ? "#ffffff" : "#333333" }}>
-                    <List size={15} />
-                  </button>
-                </div>
-              </div>
             </div>
-
-            {/* Products */}
-            {sortedProducts.length === 0 ? (
-              <div className="text-center py-20 border border-gray-200" style={{ backgroundColor: bgLight }}>
-                <SlidersHorizontal size={40} className="mx-auto mb-4" style={{ color: "#cccccc" }} />
-                <h3 className="text-xl font-medium mb-1">No products found</h3>
-                <p className="text-xs mb-5" style={{ color: "#666666" }}>Try adjusting your filters.</p>
-                <button onClick={() => { setMinPrice(""); setMaxPrice(""); setActivePriceRange("all"); }} className="px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition-colors" style={{ backgroundColor: "#000000" }}>
-                  Reset Filters
-                </button>
-              </div>
-            ) : (
-              <div style={viewMode === "grid"
-                ? { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "30px" }
-                : { display: "flex", flexDirection: "column", gap: "20px" }
-              }>
-                {sortedProducts.map((product) => (
-                  <ProductItem key={product.id} product={product} slug={slug} viewMode={viewMode} accent={accent} isWishlisted={isWishlisted(String(product.id))} onAddToCart={handleAddToCart} onToggleWishlist={handleToggleWishlist} />
-                ))}
-              </div>
-            )}
-          </main>
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
 
-function ProductItem({ product, slug, viewMode, accent, isWishlisted, onAddToCart, onToggleWishlist }: {
-  product: any; slug: string; viewMode: "grid" | "list"; accent: string;
-  isWishlisted: boolean; onAddToCart: (p: any, e?: React.MouseEvent, q?: number) => void; onToggleWishlist: (p: any, e?: React.MouseEvent) => void;
-}) {
-  const [quantity, setQuantity] = useState(1);
-  const imgSrc = Array.isArray(product?.images) ? product.images[0] : (product?.images || "");
-  const isSale = product.discount_price != null;
-
-  if (viewMode === "grid") {
-    return (
-      <div className="group border border-gray-200 bg-white transition-shadow hover:shadow-lg p-4 relative flex flex-col justify-between text-center">
-        <div>
-          <div className="relative overflow-hidden mb-4 -mx-4 -mt-4" style={{ backgroundColor: "#fafafa", aspectRatio: "1/1" }}>
-            <Link href={`/store/${slug}/product/${product.id}`}>
-              <SmartImage src={imgSrc} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-            </Link>
-            {isSale && <span className="absolute top-3 left-3 z-10 px-2 py-0.5 text-[9px] font-bold uppercase text-white" style={{ backgroundColor: accent }}>Sale</span>}
-            <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
-              <button onClick={(e) => onToggleWishlist(product, e)} className="w-9 h-9 flex items-center justify-center border shadow-md transition-colors cursor-pointer rounded-full bg-white" style={{ borderColor: "#ebebeb" }}>
-                <Heart size={14} className={isWishlisted ? "fill-current" : ""} />
+      {/* Mobile filter modal */}
+      {mobileFilterOpen && (
+        <div className="main-collection-mobile__modal-overlay" onClick={() => setMobileFilterOpen(false)}>
+          <div className="main-collection-mobile__modal-wrap" onClick={(e) => e.stopPropagation()}>
+            <div className="main-collection-style2__modal-close">
+              <button onClick={() => setMobileFilterOpen(false)} aria-label="Close">
+                <svg width="15" viewBox="0 0 320 512">
+                  <path d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12-3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z" fill="currentColor"/>
+                </svg>
               </button>
-              <Link href={`/store/${slug}/product/${product.id}`} className="w-9 h-9 flex items-center justify-center border shadow-md bg-white border-gray-200 transition-colors rounded-full">
-                <Eye size={14} />
-              </Link>
+            </div>
+            <div className="main-collection-mobile__modal">
+              <SidebarContent />
             </div>
           </div>
-          <p className="text-[9px] font-semibold uppercase tracking-widest mb-1" style={{ color: "#aaaaaa" }}>{product.category || "General"}</p>
-          <Link href={`/store/${slug}/product/${product.id}`} className="hover:opacity-60 transition-opacity">
-            <h3 className="text-xs font-medium leading-tight mb-1.5" style={{ fontFamily: "Poppins,sans-serif" }}>{product.name}</h3>
-          </Link>
-          <div className="flex justify-center gap-0.5 mb-2">
-            {[1, 2, 3, 4, 5].map((s) => (<Star key={s} size={11} fill="#ff7245" style={{ color: "#ff7245" }} />))}
-          </div>
-          <div className="flex items-center justify-center gap-2 mb-4">
-            {isSale ? (
-              <><span className="text-sm font-bold">${product.discount_price.toFixed(2)}</span><span className="text-[11px] line-through font-medium" style={{ color: "#999999" }}>${product.price.toFixed(2)}</span></>
-            ) : (
-              <span className="text-sm font-bold">${product.price.toFixed(2)}</span>
-            )}
-          </div>
         </div>
-        <div className="flex items-center gap-1.5 pt-3 border-t border-gray-200">
-          <div className="flex items-center border border-gray-200 bg-gray-50 shrink-0">
-            <button onClick={(e) => { e.stopPropagation(); setQuantity((q) => Math.max(1, q - 1)); }} className="w-7 h-7 flex items-center justify-center text-xs font-bold text-gray-500 hover:bg-black hover:text-white transition-colors cursor-pointer"><Minus size={10} /></button>
-            <span className="w-7 text-center text-xs font-bold">{quantity}</span>
-            <button onClick={(e) => { e.stopPropagation(); setQuantity((q) => q + 1); }} className="w-7 h-7 flex items-center justify-center text-xs font-bold text-gray-500 hover:bg-black hover:text-white transition-colors cursor-pointer"><Plus size={10} /></button>
-          </div>
-          <button onClick={(e) => onAddToCart(product, e, quantity)} className="flex-1 h-7 text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer flex items-center justify-center gap-1 rounded-full" style={{ backgroundColor: "#000000", color: "#ffffff" }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}
-          ><ShoppingCart size={11} /> Add</button>
-        </div>
-      </div>
-    );
-  }
+      )}
 
-  return (
-    <div className="group border border-gray-200 bg-white transition-shadow hover:shadow-lg p-5 flex gap-6 relative">
-      <div className="w-48 aspect-square shrink-0 overflow-hidden relative" style={{ backgroundColor: "#fafafa" }}>
-        <Link href={`/store/${slug}/product/${product.id}`} className="block w-full h-full">
-          <SmartImage src={imgSrc} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-        </Link>
-        {isSale && <span className="absolute top-3 left-3 z-10 px-2.5 py-0.5 text-[9px] font-bold uppercase text-white" style={{ backgroundColor: accent }}>Sale</span>}
-      </div>
-      <div className="flex-1 flex flex-col justify-between py-1">
-        <div>
-          <div className="flex items-center justify-between mb-1.5 flex-wrap gap-2">
-            <span className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#999999" }}>{product.category || "General"}</span>
-            <div className="flex gap-0.5">{[1, 2, 3, 4, 5].map((s) => (<Star key={s} size={11} fill="#ff7245" style={{ color: "#ff7245" }} />))}</div>
-          </div>
-          <Link href={`/store/${slug}/product/${product.id}`} className="hover:opacity-60 transition-opacity inline-block mb-2">
-            <h3 className="text-lg font-medium leading-tight" style={{ fontFamily: "Poppins,sans-serif" }}>{product.name}</h3>
-          </Link>
-          <p className="text-xs leading-relaxed mb-4" style={{ color: "#666666" }}>{product.description || "No description available."}</p>
-        </div>
-        <div className="flex justify-between items-center gap-4 mt-auto pt-4 border-t border-dashed border-gray-200">
-          <div className="flex items-baseline gap-2">
-            {isSale ? (
-              <><span className="text-xl font-bold">${product.discount_price.toFixed(2)}</span><span className="text-xs line-through font-medium" style={{ color: "#999999" }}>${product.price.toFixed(2)}</span></>
-            ) : (<span className="text-xl font-bold">${product.price.toFixed(2)}</span>)}
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center border border-gray-200 bg-gray-50">
-              <button onClick={(e) => { e.stopPropagation(); setQuantity((q) => Math.max(1, q - 1)); }} className="w-8 h-8 flex items-center justify-center text-xs font-bold text-gray-500 hover:bg-black hover:text-white transition-colors cursor-pointer"><Minus size={11} /></button>
-              <span className="w-8 text-center text-xs font-bold">{quantity}</span>
-              <button onClick={(e) => { e.stopPropagation(); setQuantity((q) => q + 1); }} className="w-8 h-8 flex items-center justify-center text-xs font-bold text-gray-500 hover:bg-black hover:text-white transition-colors cursor-pointer"><Plus size={11} /></button>
-            </div>
-            <button onClick={(e) => onToggleWishlist(product, e)} className="w-8 h-8 flex items-center justify-center border transition-colors cursor-pointer" style={{ backgroundColor: isWishlisted ? "#000000" : "#ffffff", borderColor: "#ebebeb", color: isWishlisted ? "#ffffff" : "#333333" }}>
-              <Heart size={14} className={isWishlisted ? "fill-current" : ""} />
-            </button>
-            <button onClick={(e) => onAddToCart(product, e, quantity)} className="px-5 h-8 text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer flex items-center gap-2 rounded-full" style={{ backgroundColor: "#000000", color: "#ffffff" }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#000000"; }}
-            ><ShoppingCart size={12} /> Add to Cart</button>
-          </div>
-        </div>
-      </div>
+      <style>{`
+        .main-collection { font-family: Poppins, sans-serif; }
+        .main-collection-grid { display: grid; grid-template-columns: 1fr 3fr; gap: 30px; }
+        @media (max-width: 768px) { .main-collection-grid { grid-template-columns: 1fr; } }
+        .main-collection-style1__sidebar { overflow: hidden; }
+        .sidebar-desktop { display: block; }
+        @media (max-width: 768px) { .sidebar-desktop { display: none; } }
+        .collection-sidebar__header { padding: 12px 16px; background: #f8f8f8; margin-bottom: 0; }
+        .collection-sidebar__title { font-size: 13px; font-weight: 700; letter-spacing: 1px; color: #000; }
+        .collection-sidebar__menu { padding: 8px 0; border-bottom: 1px solid #eee; margin-bottom: 20px; }
+        .collection-sidebar__item { display: flex; align-items: center; gap: 8px; padding: 8px 16px; }
+        .collection-sidebar__item a { font-size: 13px; color: #666; text-decoration: none; transition: opacity 0.2s; }
+        .collection-sidebar__item a:hover { opacity: 0.6; }
+        .collection-sidebar__icon { display: flex; align-items: center; color: #ccc; flex-shrink: 0; }
+        .fieldset-block__header { padding: 12px 16px; background: #f8f8f8; margin-bottom: 0; margin-top: 20px; }
+        .fieldset-block__title { font-size: 13px; font-weight: 700; letter-spacing: 1px; color: #000; }
+        .fieldset-block__content { padding: 16px; border-bottom: 1px solid #eee; }
+        .fieldset-block__content--color { display: flex; flex-wrap: wrap; gap: 8px; }
+        .field-checkbox-color { position: relative; cursor: pointer; }
+        .field-checkbox-color__input { position: absolute; opacity: 0; width: 0; height: 0; }
+        .field-checkbox-color__item { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid transparent; transition: border-color 0.2s; }
+        .field-checkbox-color__input:checked + .field-checkbox-color__item { border-color: #000; }
+        .field-checkbox-color__content { width: 20px; height: 20px; border-radius: 50%; display: block; background-color: var(--color); border: 1px solid rgba(0,0,0,0.1); }
+        .field-checkbox-text { display: flex; align-items: center; padding: 5px 0; cursor: pointer; }
+        .field-checkbox-text__input { position: absolute; opacity: 0; width: 0; height: 0; }
+        .field-checkbox-text__item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #666; }
+        .field-checkbox-text__icon { color: #ccc; display: flex; align-items: center; opacity: 0; transition: opacity 0.2s; }
+        .field-checkbox-text__input:checked + .field-checkbox-text__item .field-checkbox-text__icon { opacity: 1; color: #000; }
+        .collection-sidebar__banner { margin-top: 20px; }
+        .collection-sidebar__banner img { width: 100%; height: auto; display: block; }
+        .main-collection-style1__content { min-width: 0; }
+        .main-collection-style1__header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+        .main-collection-mobile__trigger { display: none; align-items: center; gap: 6px; cursor: pointer; background: none; border: 1px solid #ddd; padding: 8px 14px; font-size: 13px; font-weight: 500; }
+        @media (max-width: 768px) { .main-collection-mobile__trigger { display: flex; } }
+        .main-collection-mobile__trigger-text { font-size: 13px; font-weight: 500; color: #333; }
+        .xo-facets { display: flex; align-items: center; gap: 16px; }
+        .xo-facets__toggle { display: flex; align-items: center; gap: 4px; }
+        .xo-facets__item { margin-left: auto; }
+        .xo-field-select-custom-filter__trigger { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .xo-product-card { text-align: center; background: #fff; }
+        .xo-product-card__header { position: relative; overflow: hidden; }
+        .xo-product-card__header .xo-image { background: #fafafa; }
+        .xo-product-card__header .hover-scale:hover img { transform: scale(1.05); }
+        .xo-product-card__badge { position: absolute; top: 12px; left: 12px; z-index: 2; }
+        .xo-badge-sale { background: ${accent}; color: #fff; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 3px 10px; letter-spacing: 0.5px; }
+        .xo-product-card__actions { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; opacity: 0; transition: opacity 0.3s; z-index: 2; }
+        .xo-product-card__header:hover .xo-product-card__actions { opacity: 1; }
+        .xo-btn--circle { width: 38px; height: 38px; border-radius: 50%; border: none; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; color: #333; text-decoration: none; }
+        .xo-btn--circle:hover { background: #000; color: #fff; }
+        .xo-product-card__information { padding: 16px 0 20px; }
+        .xo-product-card__title { font-size: 14px; font-weight: 400; color: #000; margin: 0 0 8px; line-height: 1.4; }
+        .xo-product-card__title a { color: inherit; text-decoration: none; }
+        .xo-product-card__title a:hover { opacity: 0.6; }
+        .xo-product-card__price { font-size: 14px; color: #000; }
+        .xo-product-card__price-inner { display: flex; justify-content: center; align-items: center; gap: 6px; }
+        .price-sale { font-weight: 600; color: ${accent}; }
+        .price-compare { color: #bbb; text-decoration: line-through; font-size: 13px; }
+        .main-collection-mobile__modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 9999; }
+        .main-collection-mobile__modal-wrap { position: absolute; left: 0; top: 0; bottom: 0; width: 300px; background: #fff; overflow-y: auto; padding: 20px; }
+        .main-collection-style2__modal-close { display: flex; justify-content: flex-end; margin-bottom: 16px; }
+        .main-collection-style2__modal-close button { background: none; border: none; cursor: pointer; padding: 4px; }
+        .xo-container--box { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        .color-background-1 { background: #fff; }
+        .filters-content__grid { margin-top: 30px; }
+        @media (max-width: 768px) {
+          .filters-content__grid { grid-template-columns: repeat(2, 1fr) !important; gap: 15px; }
+        }
+      `}</style>
     </div>
   );
 }
