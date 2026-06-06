@@ -337,38 +337,18 @@ export default function ThreeMTemplate({ store, products, slug, categories }: Te
                 transition: "transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                 transform: `translateX(-${featuredIdx * (280 + 40)}px)`,
               }}>
-                {products.slice(3, 9).map((product: any, idx: number) => {
+                {products.slice(0, 6).map((product: any) => {
                   const img = product.images?.[0] || product.image || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80";
                   const hasDiscount = product.discount_price && product.price;
-
-                  const videoUrls = [
-                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/db11272eadaf4feea868f6fa23520ccc/db11272eadaf4feea868f6fa23520ccc.SD-480p-1.5Mbps-67402175.mp4",
-                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/583572d6eaa545078cc2d38d00fdd824/583572d6eaa545078cc2d38d00fdd824.SD-480p-1.5Mbps-67402643.mp4",
-                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/30c47ed425b44de2a2a16219cc741603/30c47ed425b44de2a2a16219cc741603.SD-480p-1.0Mbps-67403120.mp4",
-                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/6d6e78a6d0a240a0a7199bd6b697aaaa/6d6e78a6d0a240a0a7199bd6b697aaaa.SD-480p-1.5Mbps-67403327.mp4",
-                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/0469c782ad6144eb8f9303480523b1be/0469c782ad6144eb8f9303480523b1be.SD-480p-1.5Mbps-67402918.mp4",
-                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/6e83e16e86a6497da15b58465a643d16/6e83e16e86a6497da15b58465a643d16.SD-480p-1.0Mbps-67402801.mp4"
-                  ];
-                  const posterUrls = [
-                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/db11272eadaf4feea868f6fa23520ccc.thumbnail.0000000000_1100x.jpg?v=1768963506",
-                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/583572d6eaa545078cc2d38d00fdd824.thumbnail.0000000000_1100x.jpg?v=1768964221",
-                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/30c47ed425b44de2a2a16219cc741603.thumbnail.0000000000_1100x.jpg?v=1768965003",
-                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/6d6e78a6d0a240a0a7199bd6b697aaaa.thumbnail.0000000000_1100x.jpg?v=1768965215",
-                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/0469c782ad6144eb8f9303480523b1be.thumbnail.0000000000_1100x.jpg?v=1768964693",
-                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/6e83e16e86a6497da15b58465a643d16.thumbnail.0000000000_1100x.jpg?v=1768964485"
-                  ];
-
-                  const videoUrl = videoUrls[idx % videoUrls.length];
-                  const posterUrl = posterUrls[idx % posterUrls.length];
 
                   return (
                     <div key={product.id} style={{ width: "280px", flexShrink: 0 }}>
                       <div className="product-v18__item">
-                        {/* Video always visible */}
-                        <div className="product-v18__video" style={{ aspectRatio: "3/4", backgroundColor: "#000", borderRadius: "4px", overflow: "hidden" }}>
-                          <video src={videoUrl} poster={posterUrl} autoPlay loop muted playsInline
-                            style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                        </div>
+                        <Link href={`/store/${slug}/product/${product.id}`}
+                          className="product-v18__video" style={{ aspectRatio: "3/4", backgroundColor: "#f5f5f5", borderRadius: "4px", overflow: "hidden", display: "block" }}>
+                          <img src={img} alt={product.name || product.title}
+                            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                        </Link>
 
                         {/* Content */}
                         <div className="product-v18__content">
@@ -407,15 +387,15 @@ export default function ThreeMTemplate({ store, products, slug, categories }: Te
               style={{ display: featuredIdx === 0 ? "none" : "flex" }}>
               <ChevronLeft size={20} />
             </button>
-            <button onClick={() => setFeaturedIdx((prev) => Math.min(products.slice(3, 9).length - 1, prev + 1))}
+            <button onClick={() => setFeaturedIdx((prev) => Math.min(products.slice(0, 6).length - 1, prev + 1))}
               className="product-v18__arrow product-v18__arrow--right" aria-label="Slide right"
-              style={{ display: featuredIdx >= products.slice(3, 9).length - 1 ? "none" : "flex" }}>
+              style={{ display: featuredIdx >= products.slice(0, 6).length - 1 ? "none" : "flex" }}>
               <ChevronRight size={20} />
             </button>
 
             {/* Pagination */}
             <div className="product-v18__pagination">
-              {products.slice(3, 9).map((_: any, idx: number) => (
+              {products.slice(0, 6).map((_: any, idx: number) => (
                 <button key={idx} onClick={() => setFeaturedIdx(idx)}
                   className={`product-v18__dot ${idx === featuredIdx ? "active" : ""}`} />
               ))}
