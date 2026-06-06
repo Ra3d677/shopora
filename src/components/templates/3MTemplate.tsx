@@ -315,272 +315,215 @@ export default function ThreeMTemplate({ store, products, slug, categories }: Te
         </div>
       </section>
 
-      {/* FEATURED PRODUCTS - carousel matching Netro product-v1 */}
+      {/* ICONIC PRODUCTS - matching Netro product-v18 */}
       <section style={{ padding: "100px 0", backgroundColor: "#ffffff" }}>
         <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
-          {/* Header */}
           <div style={{ textAlign: "center", marginBottom: "50px" }}>
             <h2 style={{ fontSize: "clamp(30px, 1.25cqw + 2.5rem, 40px)", fontWeight: 500, color: "#000", fontFamily: "Poppins,sans-serif", marginBottom: "8px" }}>Iconic products</h2>
             <p style={{ fontSize: "16px", color: "#666", fontFamily: "Poppins,sans-serif" }}>Discover our Bags collection: How to use & style</p>
           </div>
 
-          {/* Centered Carousel Wrapper */}
-          <div style={{ position: "relative", width: "100%", overflow: "hidden", padding: "20px 0" }}>
-            {/* Nav Arrows */}
-            <div className="hidden md:flex" style={{ position: "absolute", top: "50%", transform: "translateY(-50%)", width: "100%", justifyContent: "space-between", pointerEvents: "none", zIndex: 10, left: 0, right: 0 }}>
-              <button 
-                onClick={() => setFeaturedIdx((prev) => Math.max(0, prev - 1))}
-                className="custom-nav-btn prev"
-                style={{ pointerEvents: "auto", marginLeft: "20px" }}
-                aria-label="Slide left"
-              >
-                <div className="icon-before"><ChevronLeft size={20} /></div>
-                <div className="icon-after"><ChevronLeft size={20} /></div>
-              </button>
-              <button 
-                onClick={() => setFeaturedIdx((prev) => Math.min(Math.max(0, products.slice(3, 9).length - 1), prev + 1))}
-                className="custom-nav-btn next"
-                style={{ pointerEvents: "auto", marginRight: "20px" }}
-                aria-label="Slide right"
-              >
-                <div className="icon-before"><ChevronRight size={20} /></div>
-                <div className="icon-after"><ChevronRight size={20} /></div>
-              </button>
-            </div>
+          <div style={{ position: "relative", width: "100%", padding: "20px 0" }}>
+            {/* Track */}
+            <div style={{
+              display: "flex",
+              gap: "40px",
+              overflow: "hidden",
+              scrollBehavior: "smooth",
+            }}>
+              <div style={{
+                display: "flex",
+                gap: "40px",
+                transition: "transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                transform: `translateX(-${featuredIdx * (280 + 40)}px)`,
+              }}>
+                {products.slice(3, 9).map((product: any, idx: number) => {
+                  const img = product.images?.[0] || product.image || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80";
+                  const hasDiscount = product.discount_price && product.price;
 
-            {/* Slider track container */}
-            <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-              <div style={{ width: "280px", position: "relative" }}>
-                <div style={{
-                  display: "flex",
-                  gap: "40px",
-                  transition: "transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                  transform: `translateX(calc(50% - ${(featuredIdx * (280 + 40)) + 280 / 2}px))`,
-                  width: "max-content",
-                }}>
-                  {products.slice(3, 9).map((product: any, idx: number) => {
-                    const isActive = idx === featuredIdx;
-                    const img = product.images?.[0] || product.image || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80";
-                    const hasDiscount = product.discount_price && product.price;
+                  const videoUrls = [
+                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/db11272eadaf4feea868f6fa23520ccc/db11272eadaf4feea868f6fa23520ccc.SD-480p-1.5Mbps-67402175.mp4",
+                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/583572d6eaa545078cc2d38d00fdd824/583572d6eaa545078cc2d38d00fdd824.SD-480p-1.5Mbps-67402643.mp4",
+                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/30c47ed425b44de2a2a16219cc741603/30c47ed425b44de2a2a16219cc741603.SD-480p-1.0Mbps-67403120.mp4",
+                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/6d6e78a6d0a240a0a7199bd6b697aaaa/6d6e78a6d0a240a0a7199bd6b697aaaa.SD-480p-1.5Mbps-67403327.mp4",
+                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/0469c782ad6144eb8f9303480523b1be/0469c782ad6144eb8f9303480523b1be.SD-480p-1.5Mbps-67402918.mp4",
+                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/6e83e16e86a6497da15b58465a643d16/6e83e16e86a6497da15b58465a643d16.SD-480p-1.0Mbps-67402801.mp4"
+                  ];
+                  const posterUrls = [
+                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/db11272eadaf4feea868f6fa23520ccc.thumbnail.0000000000_1100x.jpg?v=1768963506",
+                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/583572d6eaa545078cc2d38d00fdd824.thumbnail.0000000000_1100x.jpg?v=1768964221",
+                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/30c47ed425b44de2a2a16219cc741603.thumbnail.0000000000_1100x.jpg?v=1768965003",
+                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/6d6e78a6d0a240a0a7199bd6b697aaaa.thumbnail.0000000000_1100x.jpg?v=1768965215",
+                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/0469c782ad6144eb8f9303480523b1be.thumbnail.0000000000_1100x.jpg?v=1768964693",
+                    "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/6e83e16e86a6497da15b58465a643d16.thumbnail.0000000000_1100x.jpg?v=1768964485"
+                  ];
 
-                    // Hardcoded Netro video loops for the 6 items
-                    const videoUrls = [
-                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/db11272eadaf4feea868f6fa23520ccc/db11272eadaf4feea868f6fa23520ccc.SD-480p-1.5Mbps-67402175.mp4",
-                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/583572d6eaa545078cc2d38d00fdd824/583572d6eaa545078cc2d38d00fdd824.SD-480p-1.5Mbps-67402643.mp4",
-                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/30c47ed425b44de2a2a16219cc741603/30c47ed425b44de2a2a16219cc741603.SD-480p-1.0Mbps-67403120.mp4",
-                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/6d6e78a6d0a240a0a7199bd6b697aaaa/6d6e78a6d0a240a0a7199bd6b697aaaa.SD-480p-1.5Mbps-67403327.mp4",
-                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/0469c782ad6144eb8f9303480523b1be/0469c782ad6144eb8f9303480523b1be.SD-480p-1.5Mbps-67402918.mp4",
-                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/6e83e16e86a6497da15b58465a643d16/6e83e16e86a6497da15b58465a643d16.SD-480p-1.0Mbps-67402801.mp4"
-                    ];
-                    const posterUrls = [
-                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/db11272eadaf4feea868f6fa23520ccc.thumbnail.0000000000_1100x.jpg?v=1768963506",
-                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/583572d6eaa545078cc2d38d00fdd824.thumbnail.0000000000_1100x.jpg?v=1768964221",
-                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/30c47ed425b44de2a2a16219cc741603.thumbnail.0000000000_1100x.jpg?v=1768965003",
-                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/6d6e78a6d0a240a0a7199bd6b697aaaa.thumbnail.0000000000_1100x.jpg?v=1768965215",
-                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/0469c782ad6144eb8f9303480523b1be.thumbnail.0000000000_1100x.jpg?v=1768964693",
-                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/6e83e16e86a6497da15b58465a643d16.thumbnail.0000000000_1100x.jpg?v=1768964485"
-                    ];
+                  const videoUrl = videoUrls[idx % videoUrls.length];
+                  const posterUrl = posterUrls[idx % posterUrls.length];
 
-                    const videoUrl = videoUrls[idx % videoUrls.length];
-                    const posterUrl = posterUrls[idx % posterUrls.length];
+                  return (
+                    <div key={product.id} style={{ width: "280px", flexShrink: 0 }}>
+                      <div className="product-v18__item">
+                        {/* Video always visible */}
+                        <div className="product-v18__video" style={{ aspectRatio: "3/4", backgroundColor: "#000", borderRadius: "4px", overflow: "hidden" }}>
+                          <video src={videoUrl} poster={posterUrl} autoPlay loop muted playsInline
+                            style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        </div>
 
-                    return (
-                      <div key={product.id} style={{
-                        width: "280px",
-                        flexShrink: 0,
-                        opacity: isActive ? 1 : 0.4,
-                        transition: "all 0.5s ease",
-                        transform: isActive ? "scale(1)" : "scale(0.9)",
-                      }}>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                          
-                          {/* Video loop container */}
-                          <div style={{
-                            height: isActive ? "373px" : "0px", // 3:4 aspect ratio of 280px is 373.33px!
-                            overflow: "hidden",
-                            transition: "height 0.5s ease-in-out",
-                            position: "relative",
-                            borderRadius: "4px",
-                            backgroundColor: "#000",
-                          }}>
-                            {isActive && (
-                              <video 
-                                src={videoUrl}
-                                poster={posterUrl}
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                              />
-                            )}
-                          </div>
-
-                          {/* Content card */}
-                          <div style={{
-                            border: "1px solid rgba(0, 0, 0, 0.1)",
-                            padding: "16px",
-                            backgroundColor: "#fff",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "16px",
-                          }}>
-                            <div style={{ display: "flex", gap: "10px" }}>
-                              <Link href={`/store/${slug}/product/${product.id}`} style={{ flex: 3, display: "block", aspectRatio: "3/4", overflow: "hidden", backgroundColor: "#fafafa" }}>
-                                <img src={img} alt={product.name || product.title}
-                                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                        {/* Content */}
+                        <div className="product-v18__content">
+                          <div className="product-v18__info">
+                            <Link href={`/store/${slug}/product/${product.id}`} className="product-v18__image" style={{ flexShrink: 0, width: "80px", aspectRatio: "3/4", overflow: "hidden", backgroundColor: "#fafafa", display: "block" }}>
+                              <img src={img} alt={product.name || product.title}
+                                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                            </Link>
+                            <div className="product-v18__wrap" style={{ flex: 1, minWidth: 0 }}>
+                              <Link href={`/store/${slug}/product/${product.id}`} style={{ textDecoration: "none" }}>
+                                <h3 className="product-v18__title">{product.name || product.title}</h3>
                               </Link>
-                              <div style={{ flex: 7, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                                <Link href={`/store/${slug}/product/${product.id}`} style={{ textDecoration: "none" }}>
-                                  <h3 style={{
-                                    fontSize: "14px",
-                                    fontWeight: 400,
-                                    color: "#000",
-                                    fontFamily: "Poppins,sans-serif",
-                                    marginBottom: "8px",
-                                    lineHeight: 1.4,
-                                    display: "-webkit-box",
-                                    WebkitLineClamp: 2,
-                                    WebkitBoxOrient: "vertical",
-                                    overflow: "hidden",
-                                  }}>{product.name || product.title}</h3>
-                                </Link>
-                                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                                  {hasDiscount ? (
-                                    <>
-                                      <span style={{ fontSize: "14px", fontWeight: 600, color: accent, fontFamily: "Poppins,sans-serif" }}>${product.discount_price}</span>
-                                      <span style={{ fontSize: "12px", color: "#bbb", textDecoration: "line-through", fontFamily: "Poppins,sans-serif" }}>${product.price}</span>
-                                    </>
-                                  ) : (
-                                    <span style={{ fontSize: "14px", fontWeight: 400, color: "#000", fontFamily: "Poppins,sans-serif" }}>${product.price}</span>
-                                  )}
-                                </div>
+                              <div className="product-v18__price">
+                                {hasDiscount ? (
+                                  <><span className="product-v18__price-current" style={{ fontWeight: 600, color: accent }}>${product.discount_price}</span><del className="product-v18__price-old">${product.price}</del></>
+                                ) : (
+                                  <span className="product-v18__price-current">${product.price}</span>
+                                )}
                               </div>
                             </div>
-
-                            <Link href={`/store/${slug}/product/${product.id}`} className="custom-btn-shopnow"
-                              style={{
-                                display: "block",
-                                textAlign: "center",
-                                fontWeight: 500,
-                                position: "relative",
-                                zIndex: 1,
-                                borderRadius: "4px",
-                                backgroundColor: "#000",
-                                color: "#fff",
-                                fontSize: "12px",
-                                padding: "10px",
-                                cursor: "pointer",
-                                transition: "all 0.4s cubic-bezier(0.77, 0, 0.175, 1)",
-                                textDecoration: "none",
-                              }}>
-                              SHOP NOW
-                            </Link>
                           </div>
-
+                          <Link href={`/store/${slug}/product/${product.id}`} className="product-v18__btn">
+                            SHOP NOW
+                          </Link>
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Pagination Dots */}
-            <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "30px" }}>
+            {/* Arrows */}
+            <button onClick={() => setFeaturedIdx((prev) => Math.max(0, prev - 1))}
+              className="product-v18__arrow product-v18__arrow--left" aria-label="Slide left"
+              style={{ display: featuredIdx === 0 ? "none" : "flex" }}>
+              <ChevronLeft size={20} />
+            </button>
+            <button onClick={() => setFeaturedIdx((prev) => Math.min(products.slice(3, 9).length - 1, prev + 1))}
+              className="product-v18__arrow product-v18__arrow--right" aria-label="Slide right"
+              style={{ display: featuredIdx >= products.slice(3, 9).length - 1 ? "none" : "flex" }}>
+              <ChevronRight size={20} />
+            </button>
+
+            {/* Pagination */}
+            <div className="product-v18__pagination">
               {products.slice(3, 9).map((_: any, idx: number) => (
                 <button key={idx} onClick={() => setFeaturedIdx(idx)}
-                  style={{
-                    width: "8px",
-                    height: "8px",
-                    borderRadius: "50%",
-                    border: "none",
-                    cursor: "pointer",
-                    backgroundColor: idx === featuredIdx ? "#000" : "rgba(0,0,0,0.2)",
-                    transition: "all 0.3s ease",
-                  }} />
+                  className={`product-v18__dot ${idx === featuredIdx ? "active" : ""}`} />
               ))}
             </div>
-
           </div>
         </div>
 
-        {/* Global Styles for custom effects */}
         <style>{`
-          .custom-nav-btn {
-            position: relative;
-            width: 50px;
-            height: 50px;
-            border: none;
-            border-radius: 50%;
-            background-color: rgba(0, 0, 0, 0.4);
+          .product-v18__item {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+          }
+          .product-v18__content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+          }
+          .product-v18__info {
+            display: flex;
+            gap: 10px;
+          }
+          .product-v18__title {
+            font-size: 14px;
+            font-weight: 400;
+            color: #000;
+            font-family: Poppins, sans-serif;
+            margin: 0 0 6px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
             overflow: hidden;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+          }
+          .product-v18__price {
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 6px;
           }
-          .custom-nav-btn:hover {
-            background-color: rgba(0, 0, 0, 0.9);
+          .product-v18__price-current {
+            font-size: 14px;
+            font-weight: 400;
+            color: #000;
+            font-family: Poppins, sans-serif;
           }
-          .custom-nav-btn svg {
-            color: rgba(255, 255, 255, 0.6);
-            transition: color 0.3s ease;
+          .product-v18__price-old {
+            font-size: 12px;
+            color: #bbb;
+            text-decoration: line-through;
+            font-family: Poppins, sans-serif;
           }
-          .custom-nav-btn:hover svg {
-            color: rgba(255, 255, 255, 1);
-          }
-          /* Slide transition for arrow */
-          .custom-nav-btn .icon-before {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transition: transform 0.3s ease;
-          }
-          .custom-nav-btn .icon-after {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transition: transform 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-          .custom-nav-btn.prev .icon-after {
-            transform: translate(50px, -50%);
-          }
-          .custom-nav-btn.next .icon-after {
-            transform: translate(-50px, -50%);
-          }
-          .custom-nav-btn.prev:hover .icon-before {
-            transform: translate(-50px, -50%);
-          }
-          .custom-nav-btn.next:hover .icon-before {
-            transform: translate(50px, -50%);
-          }
-          .custom-nav-btn:hover .icon-after {
-            transform: translate(-50%, -50%);
-          }
-
-          /* Shop Now Button hover slide-in background color effect */
-          .custom-btn-shopnow::before {
-            content: "";
+          .product-v18__btn {
             display: block;
-            position: absolute;
-            z-index: -1;
-            top: 0;
-            left: 100%;
-            width: 0;
-            height: 100%;
-            background-color: ${accent};
-            transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1);
-            border-radius: 4px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 12px;
+            padding: 10px;
+            color: #fff;
+            background: #000;
+            text-decoration: none;
+            border-radius: 0.2rem;
+            transition: all 0.3s;
+            font-family: Poppins, sans-serif;
+            letter-spacing: 0.5px;
           }
-          .custom-btn-shopnow:hover::before {
-            width: 100%;
-            left: 0;
+          .product-v18__btn:hover {
+            background: ${accent};
+          }
+          .product-v18__arrow {
+            position: absolute;
+            top: 40%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0,0,0,0.5);
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10;
+          }
+          .product-v18__arrow:hover {
+            background: rgba(0,0,0,0.9);
+            color: #fff;
+          }
+          .product-v18__arrow--left { left: 10px; }
+          .product-v18__arrow--right { right: 10px; }
+          .product-v18__pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 30px;
+          }
+          .product-v18__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            background: rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            padding: 0;
+          }
+          .product-v18__dot.active {
+            background: #000;
           }
         `}</style>
       </section>
