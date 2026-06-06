@@ -317,71 +317,272 @@ export default function ThreeMTemplate({ store, products, slug, categories }: Te
 
       {/* FEATURED PRODUCTS - carousel matching Netro product-v1 */}
       <section style={{ padding: "100px 0", backgroundColor: "#ffffff" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
+        <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
+          {/* Header */}
           <div style={{ textAlign: "center", marginBottom: "50px" }}>
-            <h2 style={{ fontSize: "clamp(26px, 2.5vw, 34px)", fontWeight: 500, color: "#000", fontFamily: "Poppins,sans-serif", marginBottom: "8px" }}>Iconic Products</h2>
-            <p style={{ fontSize: "14px", color: "#999", fontFamily: "Poppins,sans-serif", letterSpacing: "0.3px" }}>Discover our collections</p>
+            <h2 style={{ fontSize: "clamp(30px, 1.25cqw + 2.5rem, 40px)", fontWeight: 500, color: "#000", fontFamily: "Poppins,sans-serif", marginBottom: "8px" }}>Iconic products</h2>
+            <p style={{ fontSize: "16px", color: "#666", fontFamily: "Poppins,sans-serif" }}>Discover our Bags collection: How to use & style</p>
           </div>
-          <div style={{ position: "relative" }}>
-            <div style={{ overflow: "hidden", margin: "0 -10px" }}>
-              <div style={{ display: "flex", gap: "30px", transition: "transform 0.5s ease", transform: `translateX(-${featuredIdx * 310}px)` }}>
-                {products.slice(3, 9).map((product: any) => {
-                  const img = product.images?.[0] || product.image || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80";
-                  const hasDiscount = product.discount_price && product.price;
-                  return (
-                    <div key={product.id} style={{ flex: "0 0 280px", backgroundColor: "#fff" }}>
-                      <div style={{ display: "flex", flexDirection: "column" }}>
-                        <Link href={`/store/${slug}/product/${product.id}`} style={{ display: "block", overflow: "hidden", backgroundColor: "#fafafa" }}>
-                          <img src={img} alt={product.name || product.title}
-                            style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover", display: "block", transition: "transform 0.4s" }}
-                            className="hover:scale-105" />
-                        </Link>
-                        <div style={{ padding: "15px 0 0", textAlign: "center" }}>
-                          <Link href={`/store/${slug}/product/${product.id}`} style={{ textDecoration: "none" }}>
-                            <h3 style={{ fontSize: "14px", fontWeight: 400, color: "#000", fontFamily: "Poppins,sans-serif", marginBottom: "8px", lineHeight: 1.4 }}>{product.name || product.title}</h3>
-                          </Link>
-                          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "6px", marginBottom: "15px" }}>
-                            {hasDiscount ? (
-                              <>
-                                <span style={{ fontSize: "14px", fontWeight: 600, color: accent, fontFamily: "Poppins,sans-serif" }}>${product.discount_price}</span>
-                                <span style={{ fontSize: "13px", color: "#bbb", textDecoration: "line-through", fontFamily: "Poppins,sans-serif" }}>${product.price}</span>
-                              </>
-                            ) : (
-                              <span style={{ fontSize: "14px", fontWeight: 400, color: "#000", fontFamily: "Poppins,sans-serif" }}>${product.price}</span>
+
+          {/* Centered Carousel Wrapper */}
+          <div style={{ position: "relative", width: "100%", overflow: "hidden", padding: "20px 0" }}>
+            {/* Nav Arrows */}
+            <div className="hidden md:flex" style={{ position: "absolute", top: "50%", transform: "translateY(-50%)", width: "100%", justifyContent: "space-between", pointerEvents: "none", zIndex: 10, left: 0, right: 0 }}>
+              <button 
+                onClick={() => setFeaturedIdx((prev) => Math.max(0, prev - 1))}
+                className="custom-nav-btn prev"
+                style={{ pointerEvents: "auto", marginLeft: "20px" }}
+                aria-label="Slide left"
+              >
+                <div className="icon-before"><ChevronLeft size={20} /></div>
+                <div className="icon-after"><ChevronLeft size={20} /></div>
+              </button>
+              <button 
+                onClick={() => setFeaturedIdx((prev) => Math.min(Math.max(0, products.slice(3, 9).length - 1), prev + 1))}
+                className="custom-nav-btn next"
+                style={{ pointerEvents: "auto", marginRight: "20px" }}
+                aria-label="Slide right"
+              >
+                <div className="icon-before"><ChevronRight size={20} /></div>
+                <div className="icon-after"><ChevronRight size={20} /></div>
+              </button>
+            </div>
+
+            {/* Slider track container */}
+            <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+              <div style={{ width: "280px", position: "relative" }}>
+                <div style={{
+                  display: "flex",
+                  gap: "40px",
+                  transition: "transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                  transform: `translateX(calc(50% - ${(featuredIdx * (280 + 40)) + 280 / 2}px))`,
+                  width: "max-content",
+                }}>
+                  {products.slice(3, 9).map((product: any, idx: number) => {
+                    const isActive = idx === featuredIdx;
+                    const img = product.images?.[0] || product.image || "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80";
+                    const hasDiscount = product.discount_price && product.price;
+
+                    // Hardcoded Netro video loops for the 6 items
+                    const videoUrls = [
+                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/db11272eadaf4feea868f6fa23520ccc/db11272eadaf4feea868f6fa23520ccc.SD-480p-1.5Mbps-67402175.mp4",
+                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/583572d6eaa545078cc2d38d00fdd824/583572d6eaa545078cc2d38d00fdd824.SD-480p-1.5Mbps-67402643.mp4",
+                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/30c47ed425b44de2a2a16219cc741603/30c47ed425b44de2a2a16219cc741603.SD-480p-1.0Mbps-67403120.mp4",
+                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/6d6e78a6d0a240a0a7199bd6b697aaaa/6d6e78a6d0a240a0a7199bd6b697aaaa.SD-480p-1.5Mbps-67403327.mp4",
+                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/0469c782ad6144eb8f9303480523b1be/0469c782ad6144eb8f9303480523b1be.SD-480p-1.5Mbps-67402918.mp4",
+                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/videos/c/vp/6e83e16e86a6497da15b58465a643d16/6e83e16e86a6497da15b58465a643d16.SD-480p-1.0Mbps-67402801.mp4"
+                    ];
+                    const posterUrls = [
+                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/db11272eadaf4feea868f6fa23520ccc.thumbnail.0000000000_1100x.jpg?v=1768963506",
+                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/583572d6eaa545078cc2d38d00fdd824.thumbnail.0000000000_1100x.jpg?v=1768964221",
+                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/30c47ed425b44de2a2a16219cc741603.thumbnail.0000000000_1100x.jpg?v=1768965003",
+                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/6d6e78a6d0a240a0a7199bd6b697aaaa.thumbnail.0000000000_1100x.jpg?v=1768965215",
+                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/0469c782ad6144eb8f9303480523b1be.thumbnail.0000000000_1100x.jpg?v=1768964693",
+                      "https://netro-store-newdemo71.myshopify.com/cdn/shop/files/preview_images/6e83e16e86a6497da15b58465a643d16.thumbnail.0000000000_1100x.jpg?v=1768964485"
+                    ];
+
+                    const videoUrl = videoUrls[idx % videoUrls.length];
+                    const posterUrl = posterUrls[idx % posterUrls.length];
+
+                    return (
+                      <div key={product.id} style={{
+                        width: "280px",
+                        flexShrink: 0,
+                        opacity: isActive ? 1 : 0.4,
+                        transition: "all 0.5s ease",
+                        transform: isActive ? "scale(1)" : "scale(0.9)",
+                      }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                          
+                          {/* Video loop container */}
+                          <div style={{
+                            height: isActive ? "373px" : "0px", // 3:4 aspect ratio of 280px is 373.33px!
+                            overflow: "hidden",
+                            transition: "height 0.5s ease-in-out",
+                            position: "relative",
+                            borderRadius: "4px",
+                            backgroundColor: "#000",
+                          }}>
+                            {isActive && (
+                              <video 
+                                src={videoUrl}
+                                poster={posterUrl}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                              />
                             )}
                           </div>
-                          <Link href={`/store/${slug}/product/${product.id}`}
-                            style={{ display: "inline-block", fontSize: "12px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", color: "#000", padding: "10px 0", borderTop: "1px solid #eee", fontFamily: "Poppins,sans-serif", textDecoration: "none", transition: "color 0.3s" }}
-                            className="hover:opacity-60">
-                            Shop Now
-                          </Link>
+
+                          {/* Content card */}
+                          <div style={{
+                            border: "1px solid rgba(0, 0, 0, 0.1)",
+                            padding: "16px",
+                            backgroundColor: "#fff",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "16px",
+                          }}>
+                            <div style={{ display: "flex", gap: "10px" }}>
+                              <Link href={`/store/${slug}/product/${product.id}`} style={{ flex: 3, display: "block", aspectRatio: "3/4", overflow: "hidden", backgroundColor: "#fafafa" }}>
+                                <img src={img} alt={product.name || product.title}
+                                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                              </Link>
+                              <div style={{ flex: 7, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                                <Link href={`/store/${slug}/product/${product.id}`} style={{ textDecoration: "none" }}>
+                                  <h3 style={{
+                                    fontSize: "14px",
+                                    fontWeight: 400,
+                                    color: "#000",
+                                    fontFamily: "Poppins,sans-serif",
+                                    marginBottom: "8px",
+                                    lineHeight: 1.4,
+                                    display: "-webkit-box",
+                                    WebkitLineClamp: 2,
+                                    WebkitBoxOrient: "vertical",
+                                    overflow: "hidden",
+                                  }}>{product.name || product.title}</h3>
+                                </Link>
+                                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                                  {hasDiscount ? (
+                                    <>
+                                      <span style={{ fontSize: "14px", fontWeight: 600, color: accent, fontFamily: "Poppins,sans-serif" }}>${product.discount_price}</span>
+                                      <span style={{ fontSize: "12px", color: "#bbb", textDecoration: "line-through", fontFamily: "Poppins,sans-serif" }}>${product.price}</span>
+                                    </>
+                                  ) : (
+                                    <span style={{ fontSize: "14px", fontWeight: 400, color: "#000", fontFamily: "Poppins,sans-serif" }}>${product.price}</span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+
+                            <Link href={`/store/${slug}/product/${product.id}`} className="custom-btn-shopnow"
+                              style={{
+                                display: "block",
+                                textAlign: "center",
+                                fontWeight: 500,
+                                position: "relative",
+                                zIndex: 1,
+                                borderRadius: "4px",
+                                backgroundColor: "#000",
+                                color: "#fff",
+                                fontSize: "12px",
+                                padding: "10px",
+                                cursor: "pointer",
+                                transition: "all 0.4s cubic-bezier(0.77, 0, 0.175, 1)",
+                                textDecoration: "none",
+                              }}>
+                              SHOP NOW
+                            </Link>
+                          </div>
+
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
-            <button onClick={() => setFeaturedIdx((p) => Math.max(0, p - 1))}
-              style={{ position: "absolute", left: "-15px", top: "35%", transform: "translateY(-50%)", width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#fff", border: "none", boxShadow: "0 2px 12px rgba(0,0,0,0.08)", cursor: "pointer", zIndex: 2, borderRadius: "50%", transition: "all 0.2s", color: "#333" }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = accent; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = "#333"; }}>
-              <ChevronLeft size={18} />
-            </button>
-            <button onClick={() => setFeaturedIdx((p) => Math.min(products.slice(3, 9).length - 3, p + 1))}
-              style={{ position: "absolute", right: "-15px", top: "35%", transform: "translateY(-50%)", width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#fff", border: "none", boxShadow: "0 2px 12px rgba(0,0,0,0.08)", cursor: "pointer", zIndex: 2, borderRadius: "50%", transition: "all 0.2s", color: "#333" }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = accent; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = "#333"; }}>
-              <ChevronRight size={18} />
-            </button>
+
+            {/* Pagination Dots */}
             <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "30px" }}>
-              {products.slice(3, 9).slice(0, Math.max(1, products.slice(3, 9).length - 2)).map((_: any, idx: number) => (
+              {products.slice(3, 9).map((_: any, idx: number) => (
                 <button key={idx} onClick={() => setFeaturedIdx(idx)}
-                  style={{ width: "8px", height: "8px", borderRadius: "50%", border: "none", cursor: "pointer", backgroundColor: idx === featuredIdx ? "#000" : "#d0d0d0", transition: "background 0.3s" }} />
+                  style={{
+                    width: "8px",
+                    height: "8px",
+                    borderRadius: "50%",
+                    border: "none",
+                    cursor: "pointer",
+                    backgroundColor: idx === featuredIdx ? "#000" : "rgba(0,0,0,0.2)",
+                    transition: "all 0.3s ease",
+                  }} />
               ))}
             </div>
+
           </div>
         </div>
+
+        {/* Global Styles for custom effects */}
+        <style>{`
+          .custom-nav-btn {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .custom-nav-btn:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+          }
+          .custom-nav-btn svg {
+            color: rgba(255, 255, 255, 0.6);
+            transition: color 0.3s ease;
+          }
+          .custom-nav-btn:hover svg {
+            color: rgba(255, 255, 255, 1);
+          }
+          /* Slide transition for arrow */
+          .custom-nav-btn .icon-before {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.3s ease;
+          }
+          .custom-nav-btn .icon-after {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .custom-nav-btn.prev .icon-after {
+            transform: translate(50px, -50%);
+          }
+          .custom-nav-btn.next .icon-after {
+            transform: translate(-50px, -50%);
+          }
+          .custom-nav-btn.prev:hover .icon-before {
+            transform: translate(-50px, -50%);
+          }
+          .custom-nav-btn.next:hover .icon-before {
+            transform: translate(50px, -50%);
+          }
+          .custom-nav-btn:hover .icon-after {
+            transform: translate(-50%, -50%);
+          }
+
+          /* Shop Now Button hover slide-in background color effect */
+          .custom-btn-shopnow::before {
+            content: "";
+            display: block;
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 100%;
+            width: 0;
+            height: 100%;
+            background-color: ${accent};
+            transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            border-radius: 4px;
+          }
+          .custom-btn-shopnow:hover::before {
+            width: 100%;
+            left: 0;
+          }
+        `}</style>
       </section>
 
       {/* TESTIMONIALS */}
