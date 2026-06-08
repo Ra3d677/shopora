@@ -177,12 +177,60 @@ const SLIDES = [
   { bg: IMAGES.banner, subtitle: "Perfect Shape  Perfect Life", title: "Get Fit Now!" },
 ];
 
+const NAV_ITEMS = [
+  {
+    name: "Home",
+    href: "#home",
+    submenu: [
+      { name: "Home 01 Slider", href: "#home" },
+      { name: "Home 02 Video bg", href: "#home" },
+      { name: "Home 03 one page", href: "#home" },
+      { name: "Home 04 one page", href: "#home" },
+    ]
+  },
+  { name: "About", href: "#about" },
+  { name: "Gallery", href: "#gallery" },
+  {
+    name: "Classes",
+    href: "#classes",
+    submenu: [
+      { name: "Classes", href: "#classes" },
+      { name: "Singal Classes", href: "#classes" },
+    ]
+  },
+  {
+    name: "Pages",
+    href: "#",
+    submenu: [
+      { name: "About", href: "#about" },
+      { name: "Our Experts", href: "#trainers" },
+      { name: "Our Pricing", href: "#prices" },
+      { name: "Testimonials", href: "#" },
+      { name: "FAQs", href: "#" },
+      { name: "Typoghrapy", href: "#" },
+      { name: "404", href: "#" },
+    ]
+  },
+  { name: "Trainers", href: "#trainers" },
+  { name: "Shop", href: "#shop" },
+  {
+    name: "Blog",
+    href: "#blog",
+    submenu: [
+      { name: "Blog with Sidebar", href: "#blog" },
+      { name: "Blog Details", href: "#blog" },
+    ]
+  },
+  { name: "Contact", href: "#contact-us" },
+];
+
 export default function OneGTemplate(props: OneGProps) {
   const [sticky, setSticky] = useState(false);
   const [activeFilter, setActiveFilter] = useState("all");
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [activeColor, setActiveColor] = useState("orange");
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
   const observerRef = useRef<IntersectionObserver | null>(null);
   const slideTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -259,6 +307,7 @@ export default function OneGTemplate(props: OneGProps) {
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&family=Roboto+Condensed:wght@300;400;700&display=swap');
 
+        html { scroll-behavior: smooth; }
         .oneg *{margin:0; padding:0;}
         .oneg body{font-family:'Open Sans',sans-serif;}
         .oneg a{transition:all .3s ease;}
@@ -281,6 +330,53 @@ export default function OneGTemplate(props: OneGProps) {
         .oneg .navbar-dark .navbar-nav .nav-link:hover{color:${currentColor};}
         .oneg .navbar{margin-top:18px;}
         .oneg .navbar-toggler{display:none;}
+
+        .oneg .navbar-nav > li {position:relative;}
+        .oneg .submenu {
+          position: absolute;
+          left:0;
+          top: 200%;
+          width: 200px;
+          padding: 0px;
+          border: 1px solid rgba(255,255,255,0.50);
+          z-index: 100;
+          background: ${currentColor};
+          visibility: hidden;
+          opacity: 0;
+          border-radius: 0px 2px 2px 2px;
+          transition: all 500ms ease;
+        }
+        .oneg .navbar-nav > li:hover > .submenu {
+          top: 100%;
+          opacity: 1;
+          visibility: visible;
+        }
+        .oneg .submenu > li {
+          position: relative;
+          float: none;
+          width: 100%;
+          border-bottom: 1px solid rgba(255,255,255,0.50);
+        }
+        .oneg .submenu > li:last-child {
+          border-bottom: none;
+        }
+        .oneg .submenu > li > a {
+          text-decoration:none;
+          position: relative;
+          display: block;
+          padding: 8px 20px;
+          font-weight: normal;
+          font-size: 14px;
+          color: #ffffff;
+          word-wrap: break-word;
+          transition: all 500ms ease;
+        }
+        .oneg .submenu > li:hover > a {
+          padding-left: 25px;
+        }
+        .oneg .toggle-caret {
+          display: none;
+        }
 
         .oneg .logo2{display:none;}
         .oneg .sticky{top:0;background:${currentColor};position:fixed;width:100%;z-index:10000;height:70px;border-bottom:1px solid #eee;box-shadow:0 2px 4px rgba(3,3,3,.11);}
@@ -514,6 +610,39 @@ export default function OneGTemplate(props: OneGProps) {
           .oneg .join-wrap .readmore{margin-top:28px;}
           .oneg .header-wrap{position:static;background:#000;}
           .oneg .navbar{margin-top:10px;}
+          .oneg .toggle-caret {
+            display: block;
+            position: absolute;
+            right: 15px;
+            top: 7px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #fff;
+            background: ${currentColor};
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            z-index: 10;
+          }
+          .oneg .submenu {
+            position: static;
+            width: 100%;
+            border: none;
+            background: rgba(0,0,0,0.5);
+            visibility: visible;
+            opacity: 1;
+            display: none;
+            transition: none;
+          }
+          .oneg .navbar-nav > li.expanded > .submenu {
+            display: block;
+          }
+          .oneg .navbar-nav > li:hover > .submenu {
+            top: auto;
+            opacity: 1;
+            visibility: visible;
+          }
         }
         @media(max-width:767px){
           .oneg .title h1{font-size:36px;}
@@ -587,16 +716,53 @@ export default function OneGTemplate(props: OneGProps) {
                     <a className="navbar-brand" href="#">Menu</a>
                     <div className="collapse navbar-collapse" id="navbarColor01">
                       <ul className="navbar-nav mr-auto">
-                        {["Home", "About", "Gallery", "Classes", "Shop", "Trainers", "Blog", "Contact"].map((item) => (
-                          <li key={item} className="nav-item">
-                            <a
-                              className="nav-link smoothScroll"
-                              href={`#${item === "Home" ? "home" : item === "Shop" ? "shop" : item === "Trainers" ? "trainers" : item === "Contact" ? "contact-us" : item.toLowerCase()}`}
-                            >
-                              {item}
-                            </a>
-                          </li>
-                        ))}
+                        {NAV_ITEMS.map((item) => {
+                          const hasSub = !!item.submenu;
+                          const isExpanded = !!expandedMenus[item.name];
+                          return (
+                            <li key={item.name} className={`nav-item${hasSub ? " has-submenu" : ""}${isExpanded ? " expanded" : ""}`}>
+                              <a
+                                className="nav-link smoothScroll"
+                                href={item.href}
+                                onClick={(e) => {
+                                  if (item.href.startsWith("#")) {
+                                    const el = document.getElementById("navbarColor01");
+                                    if (el) el.classList.remove("show");
+                                  }
+                                }}
+                              >
+                                {item.name}
+                              </a>
+                              {hasSub && (
+                                <>
+                                  <i
+                                    className="fa fa-caret-down toggle-caret"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      setExpandedMenus(prev => ({ ...prev, [item.name]: !prev[item.name] }));
+                                    }}
+                                  />
+                                  <ul className="submenu">
+                                    {item.submenu.map((sub, idx) => (
+                                      <li key={idx}>
+                                        <a
+                                          href={sub.href}
+                                          onClick={() => {
+                                            const el = document.getElementById("navbarColor01");
+                                            if (el) el.classList.remove("show");
+                                          }}
+                                        >
+                                          {sub.name}
+                                        </a>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </>
+                              )}
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
                   </div>
@@ -949,8 +1115,8 @@ export default function OneGTemplate(props: OneGProps) {
           <div className="container footer-container">
             <div className="footoer-logo"><img src={IMAGES.logo} alt="" /></div>
             <ul className="footerLinks" style={{ listStyle: "none", padding: 0 }}>
-              {["Home", "About", "Gallery", "Classes", "Shop", "Trainers", "Blog", "Contact"].map((item) => (
-                <li key={item}><a href="#">{item.toUpperCase()}</a></li>
+              {NAV_ITEMS.map((item) => (
+                <li key={item.name}><a href={item.href}>{item.name.toUpperCase()}</a></li>
               ))}
             </ul>
             <div className="newsletter">
