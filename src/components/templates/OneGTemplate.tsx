@@ -158,21 +158,21 @@ export default function OneGTemplate(props: OneGProps) {
         .oneg .readmore i{padding-left:5px;}
         .oneg .readmore a:hover{background:#000;color:#fff;}
 
-        .oneg .header-wrap{position:absolute;top:0;left:0;z-index:1000;width:100%;padding:20px 0;}
+        .oneg .header-wrap{position:absolute;top:40px;left:0;z-index:1000;width:100%;}
         .oneg .navbar-brand{display:none;}
         .oneg .bg-dark{background:none!important;}
         .oneg .navbar-dark .navbar-nav .nav-link{color:#fff;font-size:14px;font-weight:bold;text-transform:uppercase;padding:8px 16px;}
         .oneg .navbar-dark .navbar-nav .nav-link:hover{color:${currentColor};}
-        .oneg .navbar{margin-top:0;}
+        .oneg .navbar{margin-top:18px;}
         .oneg .navbar-toggler{display:none;}
 
         .oneg .logo2{display:none;}
-        .oneg .sticky-header{top:0;background:${currentColor};position:fixed;width:100%;z-index:10000;height:70px;border-bottom:1px solid #eee;box-shadow:0 2px 4px rgba(3,3,3,.11);}
-        .oneg .sticky-header .logo2{display:block;margin-top:7px;}
-        .oneg .sticky-header .logo2 img{width:200px;}
-        .oneg .sticky-header .logo{display:none;}
-        .oneg .sticky-header .navbar{margin-top:8px;}
-        .oneg .sticky-header .navbar-dark .navbar-nav .nav-link:hover{color:#ff0;}
+        .oneg .sticky{top:0;background:${currentColor};position:fixed;width:100%;z-index:10000;height:70px;border-bottom:1px solid #eee;box-shadow:0 2px 4px rgba(3,3,3,.11);}
+        .oneg .sticky .logo2{display:block;margin-top:7px;}
+        .oneg .sticky .logo2 img{width:200px;}
+        .oneg .sticky .logo{display:none;}
+        .oneg .sticky .navbar{margin-top:8px;}
+        .oneg .sticky .navbar-dark .navbar-nav .nav-link:hover{color:#ff0;}
 
         .oneg .sliderWraper{position:relative;z-index:1;padding:0;width:100%;height:600px;overflow:hidden;}
         .oneg .tp-banner{position:relative;width:100%;height:600px;}
@@ -372,6 +372,9 @@ export default function OneGTemplate(props: OneGProps) {
         @media(max-width:767px){
           .oneg .title h1{font-size:36px;}
           .oneg .header-wrap .logo img{width:160px;}
+          .oneg .header-wrap{position:static;background:#000;padding:20px 0;}
+          .oneg .navbar{margin:0;}
+          .oneg .sticky{position:fixed!important;top:0!important;}
           .oneg .playbtn:before{width:400px;margin-left:-200px;}
           .oneg .slidertext01{font-size:60px;line-height:70px;}
           .oneg .slidertext02{font-size:22px;}
@@ -417,7 +420,7 @@ export default function OneGTemplate(props: OneGProps) {
         </div>
 
         {/* Header */}
-        <div className={`header-wrap header custom-navbar wow fadeInDown${sticky ? " sticky-header" : ""}`} role="navigation">
+        <div className={`header-wrap header custom-navbar wow fadeInDown${sticky ? " sticky" : ""}`} role="navigation">
           <div className="container">
             <div className="row">
               <div className="col-lg-4">
