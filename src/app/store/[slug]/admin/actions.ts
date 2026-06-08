@@ -362,3 +362,21 @@ export async function toggleTemplateStatusAction(templateId: string, currentStat
   return { success: true };
 }
 
+const SEED_TEMPLATES = [
+  { id: "1g", name: "1G Fitness Center", description: "قالب مركز لياقة بدنية متكامل مع فيديو هيرو, معرض صور, أسعار, مدربين, ومدونة.", preview: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" },
+  { id: "2m", name: "2M", description: "إلكترونيات - تصميم عصري بألوان صفراء وردية مناسب لمتاجر الإلكترونيات والتكنولوجيا.", preview: "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=800&q=80" },
+];
+
+export async function seedMissingTemplatesAction() {
+  let count = 0;
+  for (const t of SEED_TEMPLATES) {
+    const existing = await prisma.template.findUnique({ where: { id: t.id } });
+    if (!existing) {
+      await prisma.template.create({ data: t });
+      count++;
+    }
+  }
+  revalidatePath("/", "layout");
+  return { success: true, count };
+}
+

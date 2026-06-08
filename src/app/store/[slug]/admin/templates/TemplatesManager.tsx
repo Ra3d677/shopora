@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { updateActiveTemplateAction, deleteTemplateAction, toggleTemplateStatusAction } from "../actions";
-import { Check, LayoutTemplate, Loader2, Trash2, Eye, EyeOff } from "lucide-react";
+import { updateActiveTemplateAction, deleteTemplateAction, toggleTemplateStatusAction, seedMissingTemplatesAction } from "../actions";
+import { Check, LayoutTemplate, Loader2, Trash2, Eye, EyeOff, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useLanguageStore } from "@/store/language";
@@ -74,9 +74,23 @@ export default function TemplatesManager({
         </div>
         
         {isSuperAdmin && (
-           <div className={`bg-blue-50 text-blue-700 px-4 py-2 rounded-xl border border-blue-100 flex items-center gap-2 text-xs font-bold uppercase tracking-widest ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-              {isRTL ? 'وضع المدير المتميز' : 'Super Admin Mode'}
+           <div className="flex items-center gap-3">
+             <button
+               onClick={async () => {
+                 const res = await seedMissingTemplatesAction();
+                 if (res.success && res.count > 0) {
+                   router.refresh();
+                 }
+               }}
+               className="bg-green-50 text-green-700 px-4 py-2 rounded-xl border border-green-100 flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:bg-green-100 transition-colors"
+             >
+               <RefreshCw className="w-3.5 h-3.5" />
+               {isRTL ? 'تحديث القوالب' : 'Seed Missing Templates'}
+             </button>
+             <div className={`bg-blue-50 text-blue-700 px-4 py-2 rounded-xl border border-blue-100 flex items-center gap-2 text-xs font-bold uppercase tracking-widest ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                {isRTL ? 'وضع المدير المتميز' : 'Super Admin Mode'}
+             </div>
            </div>
         )}
       </div>
