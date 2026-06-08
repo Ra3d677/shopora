@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import Link from "next/link";
 import { useCartStore } from "@/store/cart";
 import { useWishlistStore } from "@/store/wishlist";
@@ -299,95 +300,12 @@ export default function OneGTemplate(props: OneGProps) {
         @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&family=Roboto+Condensed:wght@300;400;700&display=swap');
 
         html { scroll-behavior: smooth; }
-        .oneg *{margin:0; padding:0;}
         .oneg body{font-family:'Open Sans',sans-serif;}
         .oneg a{transition:all .3s ease;}
         .oneg img{max-width:100%;}
         .oneg h1,.oneg h2,.oneg h3,.oneg h4,.oneg h5,.oneg h6{font-family:'Roboto Condensed',sans-serif;}
         .oneg p{font-size:14px;line-height:24px;color:#333;}
         .oneg ul,.oneg ol{list-style:none;margin:0;}
-
-        /* Grid Polyfill */
-        .oneg .container {
-          width: 100%;
-          padding-right: 15px;
-          padding-left: 15px;
-          margin-right: auto;
-          margin-left: auto;
-          max-width: 1140px;
-          box-sizing: border-box;
-        }
-        @media (max-width: 1199px) {
-          .oneg .container {
-            max-width: 960px;
-          }
-        }
-        @media (max-width: 991px) {
-          .oneg .container {
-            max-width: 720px;
-          }
-        }
-        @media (max-width: 767px) {
-          .oneg .container {
-            max-width: 540px;
-          }
-        }
-        @media (max-width: 575px) {
-          .oneg .container {
-            max-width: 100%;
-          }
-        }
-
-        .oneg .row {
-          display: flex;
-          flex-wrap: wrap;
-          margin-right: -15px;
-          margin-left: -15px;
-          box-sizing: border-box;
-        }
-
-        .oneg .col-lg-4, .oneg .col-lg-8 {
-          position: relative;
-          width: 100%;
-          padding-right: 15px;
-          padding-left: 15px;
-          box-sizing: border-box;
-        }
-
-        @media (min-width: 992px) {
-          .oneg .col-lg-4 {
-            flex: 0 0 33.333333%;
-            max-width: 33.333333%;
-          }
-          .oneg .col-lg-8 {
-            flex: 0 0 66.666667%;
-            max-width: 66.666667%;
-          }
-        }
-
-        /* Header Layout Styling */
-        .oneg .header-wrap .row {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width: 100%;
-        }
-        .oneg .navbar {
-          margin-top: 18px;
-          display: flex;
-          justify-content: flex-end;
-          width: 100%;
-        }
-        .oneg .navbar-collapse {
-          display: flex;
-          justify-content: flex-end;
-          width: 100%;
-        }
-        .oneg .navbar-nav {
-          display: flex;
-          flex-direction: row;
-          gap: 5px;
-        }
 
         .oneg .title h1{font-size:48px;color:#000;font-weight:bold;position:relative;margin-bottom:50px;}
         .oneg .title h1 span{font-size:30px;color:${currentColor};display:block;font-weight:normal;}

@@ -20,6 +20,7 @@
     "@stripe/stripe-js": "^9.6.0",
     "@upstash/ratelimit": "^2.0.8",
     "bcryptjs": "^3.0.3",
+    "bootstrap": "^4.6.2",
     "cloudinary": "^2.10.0",
     "clsx": "^2.1.1",
     "firebase": "^12.12.1",
