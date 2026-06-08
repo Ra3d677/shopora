@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useCartStore } from "@/store/cart";
 import { useWishlistStore } from "@/store/wishlist";
@@ -233,14 +233,6 @@ export default function OneGTemplate(props: OneGProps) {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const slideTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const goToSlide = useCallback((idx: number) => {
-    setCurrentSlide(idx);
-    if (slideTimerRef.current) clearInterval(slideTimerRef.current);
-    slideTimerRef.current = setInterval(() => {
-      setCurrentSlide(prev => (prev + 1) % SLIDES.length);
-    }, 5000);
-  }, []);
-
   useEffect(() => {
     slideTimerRef.current = setInterval(() => {
       setCurrentSlide(prev => (prev + 1) % SLIDES.length);
@@ -352,28 +344,30 @@ export default function OneGTemplate(props: OneGProps) {
         .oneg .logo2{display:none;}
         .oneg .toggle-caret{display:none;}
 
-        .oneg .sliderWraper{position:relative;z-index:1;padding:0;width:100%;height:600px;overflow:hidden;}
-        .oneg .tp-banner{position:relative;width:100%;height:600px;}
-        .oneg .tp-banner ul{position:relative;width:100%;height:100%;margin:0;padding:0;list-style:none;}
-        .oneg .tp-banner ul li{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:opacity .8s ease,transform 1.2s ease;transform:perspective(1200px) rotateY(10deg) scale(.95);z-index:1;}
-        .oneg .tp-banner ul li.active{opacity:1;transform:perspective(1200px) rotateY(0) scale(1);z-index:2;}
-        .oneg .tp-banner ul li.prev{opacity:0;transform:perspective(1200px) rotateY(-10deg) scale(.95);z-index:1;}
-        .oneg .tp-banner ul li .slide-bg{position:absolute;top:0;left:0;width:100%;height:100%;background-size:cover;background-position:center;}
+        .oneg .tp-banner-container{position:relative;z-index:1;padding:0;width:100%;}
+        .oneg .tp-banner{position:relative;width:100%;}
+        .oneg .tp-banner ul{position:relative;width:100%;margin:0;padding:0;list-style:none;}
+        .oneg .tp-banner ul li{position:absolute;top:0;left:0;width:100%;height:600px;opacity:0;transition:opacity .8s ease;z-index:1;}
+        .oneg .tp-banner ul li.active{opacity:1;z-index:2;}
+        .oneg .tp-banner ul li img{width:100%;height:100%;object-fit:cover;}
         .oneg .tp-banner ul li:after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1;}
-        .oneg .tp-caption{position:absolute;z-index:2;width:100%;text-align:center;opacity:0;transition:all .8s ease;}
-        .oneg .tp-banner ul li.active .tp-caption{opacity:1;}
-        .oneg .tp-banner ul li.active .tp-caption.c01{transition-delay:.3s;}
-        .oneg .tp-banner ul li.active .tp-caption.c02{transition-delay:.8s;}
-        .oneg .tp-banner ul li.active .tp-caption.c03{transition-delay:1.3s;}
-        .oneg .tp-banner ul li.active .tp-caption.c04{transition-delay:1.8s;}
-        .oneg .slider-nav{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:12px;}
-        .oneg .slider-nav button{width:14px;height:14px;border-radius:50%;border:2px solid #fff;background:transparent;cursor:pointer;padding:0;transition:all .3s;}
-        .oneg .slider-nav button.active{background:${currentColor};border-color:${currentColor};}
-        .oneg .slidertext01{color:#fff;font-size:100px;font-weight:700;text-shadow:0 0 10px rgba(0,0,0,.41);text-transform:uppercase;text-align:center;font-family:'Roboto Condensed',sans-serif;line-height:100px;}
-        .oneg .slidertext02{color:#fff;font-size:30px;font-weight:300;font-style:italic;text-transform:uppercase;font-family:'Roboto Condensed',sans-serif;text-align:center;}
-        .oneg .slidertext03{color:#fff;font-size:16px;font-weight:normal;text-align:center;line-height:30px;}
-        .oneg .slidertext04{text-align:center;}
-        .oneg .slidertext04 a{background:${currentColor};color:#fff!important;font-size:20px;border-radius:30px;padding:16px 40px;font-weight:700;text-transform:uppercase;display:inline-block;font-family:'Roboto Condensed',sans-serif;text-decoration:none;}
+        .oneg .caption{position:absolute;z-index:2;opacity:0;transition:all .8s ease;}
+        .oneg .tp-banner ul li.active .caption{opacity:1;}
+        .oneg .tp-banner ul li.active .slidertext2{transition-delay:.3s;}
+        .oneg .tp-banner ul li.active .slidertext1{transition-delay:.6s;}
+        .oneg .tp-banner ul li.active .slidertext3{transition-delay:1.2s;}
+        .oneg .tp-banner ul li.active .slidertext4{transition-delay:1.8s;}
+        .oneg .lft{left:0;text-align:left;}
+        .oneg .lfl{left:0;text-align:left;}
+        .oneg .lfb{left:0;text-align:left;}
+        .oneg .large-title{font-weight:700;}
+        .oneg .tp-resizeme{white-space:nowrap;}
+        .oneg .slidertext1{color:#fff;font-size:100px;font-weight:700;text-shadow:0 0 10px rgba(0,0,0,.41);text-transform:uppercase;text-align:center;font-family:'Roboto Condensed',sans-serif;line-height:100px;}
+        .oneg .slidertext2{color:#fff;font-size:30px;font-weight:300;font-style:italic;text-transform:uppercase;font-family:'Roboto Condensed',sans-serif;text-align:center;}
+        .oneg .slidertext3{color:#fff;font-size:16px;font-weight:normal;line-height:30px;text-align:center;}
+        .oneg .slidertext4{color:#fff;font-size:18px;font-weight:600;text-align:center;font-family:'Open Sans',sans-serif;line-height:24px;margin-top:20px;}
+        .oneg .slidertext4 a{background:${currentColor};color:#fff!important;font-size:20px;border-radius:30px;padding:16px 40px;font-weight:700;text-transform:uppercase;display:inline-block;font-family:'Roboto Condensed',sans-serif;text-decoration:none;}
+        .oneg .slidebtn{background:${currentColor};color:#fff!important;font-size:20px;border-radius:30px;padding:16px 40px;font-weight:700;text-transform:uppercase;display:inline-block;font-family:'Roboto Condensed',sans-serif;text-decoration:none;}
 
         .oneg .what_we-do_wrap{background:var(--whatwe-bg) no-repeat top;background-size:cover;padding:70px 0 38px 0;text-align:center;}
         .oneg .what_we-do_wrap .what_we_img{border:6px solid ${currentColor};}
@@ -691,48 +685,39 @@ export default function OneGTemplate(props: OneGProps) {
           </div>
         </div>
 
-        {/* Revolution Slider */}
-        <div className="sliderWraper" id="home">
+        {/* Revolution Slider - exact match to reference */}
+        <div className="tp-banner-container sliderWraper" id="home">
           <div className="tp-banner">
             <ul>
               {SLIDES.map((slide, i) => (
                 <li
                   key={i}
+                  data-slotamount="7"
+                  data-transition={i === 0 ? "3dcurtain-horizontal" : "slotzoom-horizontal"}
+                  data-masterspeed="1000"
+                  data-saveperformance="on"
                   className={
                     i === currentSlide ? "active" :
                     i === (currentSlide - 1 + SLIDES.length) % SLIDES.length ? "prev" : ""
                   }
                 >
-                  <div className="slide-bg" style={{ backgroundImage: `url(${slide.bg})` }} />
-                  <div className="tp-caption c01" style={{ top: "235px" }}>
-                    <div className="slidertext02">{slide.subtitle}</div>
+                  <img alt="" src="images/dummy.png" data-lazyload={slide.bg} />
+                  <div className="caption lft large-title tp-resizeme slidertext2" data-x="center" data-y="235" data-speed="600" data-start="1000">
+                    {slide.subtitle}
                   </div>
-                  <div className="tp-caption c02" style={{ top: "270px" }}>
-                    <div className="slidertext01">{slide.title}</div>
+                  <div className="caption lfl large-title tp-resizeme slidertext1" data-x="center" data-y="270" data-speed="600" data-start="1600">
+                    {slide.title}
                   </div>
-                  <div className="tp-caption c03" style={{ top: "380px" }}>
-                    <div className="slidertext03" style={{ color: "#fff" }}>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna nec mauris mattis<br />
-                      semper. In cursus purus arcu, vitae auctor enim blandit vel.
-                    </div>
+                  <div className="caption lft large-title tp-resizeme slidertext3" data-x="center" data-y="380" data-speed="600" data-start="2200">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna nec mauris mattis<br />
+                    semper. In cursus purus arcu, vitae auctor enim blandit vel.
                   </div>
-                  <div className="tp-caption c04" style={{ top: "440px" }}>
-                    <div className="slidertext04">
-                      <a href="#">Join Us <i className="fa fa-arrow-right" aria-hidden="true"></i></a>
-                    </div>
+                  <div className="caption lfb large-title tp-resizeme slidertext4" data-x="center" data-y="440" data-speed="600" data-start="2800">
+                    <a href="#" className="slidebtn">Join Us <i className="fa fa-arrow-right" aria-hidden="true"></i></a>
                   </div>
                 </li>
               ))}
             </ul>
-            <div className="slider-nav">
-              {SLIDES.map((_, i) => (
-                <button
-                  key={i}
-                  className={i === currentSlide ? "active" : ""}
-                  onClick={() => goToSlide(i)}
-                />
-              ))}
-            </div>
           </div>
         </div>
 
