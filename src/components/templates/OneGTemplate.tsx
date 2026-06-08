@@ -174,9 +174,9 @@ const GALLERY_IMAGES = [
 
 export default function OneGTemplate(props: OneGProps) {
   const [activeFilter, setActiveFilter] = useState("all");
-  const [switcherOpen, setSwitcherOpen] = useState(false);
-  const [activeColor, setActiveColor] = useState("orange");
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  const currentColor = "#f36f21";
 
   useEffect(() => {
     const counters = document.querySelectorAll(".counter-number");
@@ -209,19 +209,6 @@ export default function OneGTemplate(props: OneGProps) {
     observerRef.current = observer;
     return () => observer.disconnect();
   }, []);
-
-  const colorMap: Record<string, string> = {
-    orange: "#f36f21",
-    red: "#e61111",
-    blue: "#2abbf5",
-    purple: "#ba6bda",
-    yellow: "#e5c51a",
-    nvblue: "#343db9",
-    green: "#12d43c",
-    pink: "#d814d2",
-  };
-
-  const currentColor = colorMap[activeColor] || "#f36f21";
 
   return (
     <>
@@ -473,29 +460,6 @@ export default function OneGTemplate(props: OneGProps) {
           "--whatwe-bg": `url(${IMAGES.whatweBg})`,
         } as React.CSSProperties}
       >
-        {/* Color Switcher */}
-        <div id="style-switcher" style={{ left: switcherOpen ? "0" : "-220px" }}>
-          <h2>
-            Choose Your Color
-            <a href="#" onClick={(e) => { e.preventDefault(); setSwitcherOpen(!switcherOpen); }}>
-              <i className="fa fa-cog fa-spin"></i>
-            </a>
-          </h2>
-          <div>
-            <ul className="colors">
-              {Object.entries(colorMap).map(([name]) => (
-                <li key={name}>
-                  <a
-                    href="#"
-                    className={`${name}${activeColor === name ? " active" : ""}`}
-                    style={{ background: colorMap[name] }}
-                    onClick={(e) => { e.preventDefault(); setActiveColor(name); }}
-                  />
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
 
         {/* What We Do */}
         <div className="what_we-do_wrap">
