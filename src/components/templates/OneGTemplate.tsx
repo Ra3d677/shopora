@@ -316,6 +316,88 @@ export default function OneGTemplate(props: OneGProps) {
         .oneg p{font-size:14px;line-height:24px;color:#333;}
         .oneg ul,.oneg ol{list-style:none;margin:0;}
 
+        /* Grid Polyfill */
+        .oneg .container {
+          width: 100%;
+          padding-right: 15px;
+          padding-left: 15px;
+          margin-right: auto;
+          margin-left: auto;
+          max-width: 1140px;
+          box-sizing: border-box;
+        }
+        @media (max-width: 1199px) {
+          .oneg .container {
+            max-width: 960px;
+          }
+        }
+        @media (max-width: 991px) {
+          .oneg .container {
+            max-width: 720px;
+          }
+        }
+        @media (max-width: 767px) {
+          .oneg .container {
+            max-width: 540px;
+          }
+        }
+        @media (max-width: 575px) {
+          .oneg .container {
+            max-width: 100%;
+          }
+        }
+
+        .oneg .row {
+          display: flex;
+          flex-wrap: wrap;
+          margin-right: -15px;
+          margin-left: -15px;
+          box-sizing: border-box;
+        }
+
+        .oneg .col-lg-4, .oneg .col-lg-8 {
+          position: relative;
+          width: 100%;
+          padding-right: 15px;
+          padding-left: 15px;
+          box-sizing: border-box;
+        }
+
+        @media (min-width: 992px) {
+          .oneg .col-lg-4 {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+          }
+          .oneg .col-lg-8 {
+            flex: 0 0 66.666667%;
+            max-width: 66.666667%;
+          }
+        }
+
+        /* Header Layout Styling */
+        .oneg .header-wrap .row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+        }
+        .oneg .navbar {
+          margin-top: 18px;
+          display: flex;
+          justify-content: flex-end;
+          width: 100%;
+        }
+        .oneg .navbar-collapse {
+          display: flex;
+          justify-content: flex-end;
+          width: 100%;
+        }
+        .oneg .navbar-nav {
+          display: flex;
+          flex-direction: row;
+          gap: 5px;
+        }
+
         .oneg .title h1{font-size:48px;color:#000;font-weight:bold;position:relative;margin-bottom:50px;}
         .oneg .title h1 span{font-size:30px;color:${currentColor};display:block;font-weight:normal;}
         .oneg .title h1:before{content:"";background:url(https://res.cloudinary.com/dno6yitvw/image/upload/v1780928210/shopora/1g/adm1z2e88qybyhz7whqc.png) no-repeat;width:70px;height:12px;position:absolute;bottom:-20px;left:0;}
@@ -608,7 +690,7 @@ export default function OneGTemplate(props: OneGProps) {
           .oneg .expert-wrap ul li{max-width:370px;margin:15px auto;}
           .oneg .blog-wrap ul li{max-width:370px;margin:10px auto;}
           .oneg .join-wrap .readmore{margin-top:28px;}
-          .oneg .header-wrap{position:static;background:#000;}
+          .oneg .header-wrap{position:relative;background:#000;}
           .oneg .navbar{margin-top:10px;}
           .oneg .toggle-caret {
             display: block;
@@ -642,6 +724,27 @@ export default function OneGTemplate(props: OneGProps) {
             top: auto;
             opacity: 1;
             visibility: visible;
+          }
+          .oneg .navbar-collapse {
+            display: none !important;
+            width: 100%;
+          }
+          .oneg .navbar-collapse.show {
+            display: block !important;
+          }
+          .oneg .navbar-nav {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 0px;
+          }
+          .oneg .navbar {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+          }
+          .oneg .col-lg-4 {
+            position: relative;
           }
         }
         @media(max-width:767px){
