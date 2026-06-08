@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
+import Link from "next/link";
+import { useCartStore } from "@/store/cart";
+import { useWishlistStore } from "@/store/wishlist";
 
 interface OneGProps {
   store: any;
@@ -9,6 +12,119 @@ interface OneGProps {
   products: any[];
   slug: string;
   categories: any[];
+}
+
+function OneGProductCard({ product, slug, currentColor }: { product: any; slug: string; currentColor: string }) {
+  const { addItem: cartAdd } = useCartStore();
+  const { addItem: wishlistAdd, removeItem: wishlistRemove, isWishlisted } = useWishlistStore();
+  const [hovered, setHovered] = useState(false);
+  const [added, setAdded] = useState(false);
+
+  const img = product.images?.[0] || product.image || "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80";
+  const isSale = product.discount_price != null;
+  const pid = String(product.id);
+  const wishlisted = isWishlisted(pid);
+
+  const handleCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    cartAdd({ id: `${slug}-${product.id}-One Size-`, storeId: slug, product: { ...product, images: product.images || img }, quantity: 1, selectedSize: "One Size", selectedColor: "", selectedImage: img });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
+
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (wishlisted) wishlistRemove(pid);
+    else wishlistAdd({ productId: pid, storeId: slug, name: product.name, price: product.price, image: img, slug: `/store/${slug}/product/${product.id}` });
+  };
+
+  return (
+    <div
+      className="oneg-product-card"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <Link href={`/store/${slug}/product/${product.id}`} className="oneg-product-img-wrap">
+        <img src={img} alt={product.name} style={{ transform: hovered ? "scale(1.07)" : "scale(1)", transition: "transform .4s ease" }} />
+        {isSale && <span className="oneg-badge-sale" style={{ background: currentColor }}>SALE</span>}
+        <div className="oneg-product-overlay" style={{ opacity: hovered ? 1 : 0 }}>
+          <button className="oneg-cart-btn" style={{ background: currentColor }} onClick={handleCart}>
+            {added ? "✓ Added!" : "Add to Cart"}
+          </button>
+        </div>
+      </Link>
+      <div className="oneg-product-info">
+        <Link href={`/store/${slug}/product/${product.id}`} className="oneg-product-name">{product.name || product.title}</Link>
+        <div className="oneg-product-price-row">
+          {isSale ? (
+            <>
+              <span className="oneg-price-sale" style={{ color: currentColor }}>${product.discount_price}</span>
+              <span className="oneg-price-original">${product.price}</span>
+            </>
+          ) : (
+            <span className="oneg-price-regular">${product.price}</span>
+          )}
+          <button className="oneg-wishlist-btn" onClick={handleWishlist} style={{ color: wishlisted ? currentColor : "#bbb" }} title={wishlisted ? "Remove from wishlist" : "Add to wishlist"}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill={wishlisted ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ShopSection({ products, slug, categories, currentColor }: { products: any[]; slug: string; categories: any[]; currentColor: string }) {
+  const [activeCat, setActiveCat] = useState<string>("all");
+  const [showCount, setShowCount] = useState(8);
+
+  const filtered = activeCat === "all"
+    ? products
+    : products.filter((p: any) => String(p.category_id) === String(activeCat));
+
+  const visible = filtered.slice(0, showCount);
+  const hasMore = filtered.length > showCount;
+
+  return (
+    <div className="shop-wrap" id="shop">
+      <div className="container">
+        <div className="title">
+          <h1><span>Our</span> Shop</h1>
+        </div>
+        {categories && categories.length > 0 && (
+          <div className="oneg-shop-cats">
+            <button className={activeCat === "all" ? "active" : ""} onClick={() => { setActiveCat("all"); setShowCount(8); }}>All</button>
+            {categories.map((cat: any) => (
+              <button
+                key={cat.id}
+                className={String(activeCat) === String(cat.id) ? "active" : ""}
+                onClick={() => { setActiveCat(String(cat.id)); setShowCount(8); }}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+        )}
+        <div className="oneg-shop-grid">
+          {visible.map((product: any) => (
+            <OneGProductCard key={product.id} product={product} slug={slug} currentColor={currentColor} />
+          ))}
+        </div>
+        {hasMore && (
+          <div className="shop-view-all">
+            <a href="#" onClick={(e) => { e.preventDefault(); setShowCount(c => c + 8); }}>Load More</a>
+          </div>
+        )}
+        {!hasMore && products.length > 8 && (
+          <div className="shop-view-all">
+            <Link href={`/store/${slug}/products`}>View All Products →</Link>
+          </div>
+        )}
+        {filtered.length === 0 && (
+          <div style={{ textAlign: "center", padding: "40px 0", color: "#888" }}>No products in this category yet.</div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 const IMAGES = {
@@ -220,6 +336,36 @@ export default function OneGTemplate(props: OneGProps) {
         .oneg .gallery-wrap .filters{text-align:center;}
         .oneg .gallery-wrap .filters li{display:inline-block;cursor:pointer;padding:12px 30px;border-radius:30px;font-weight:bold;font-size:14px;color:#333;margin:0 5px 5px 0;border:1px solid ${currentColor};transition:all .5s;}
         .oneg .gallery-wrap .filters li:hover,.oneg .gallery-wrap .filters li.active{color:#fff;background:${currentColor};}
+
+        /* Shop Section */
+        .oneg .shop-wrap{padding:60px 0;background:#f9f9f9;}
+        .oneg .shop-wrap .title{text-align:center;}
+        .oneg .shop-wrap .title h1{display:inline-block;}
+        .oneg .shop-wrap .title h1:before{left:50%;margin-left:-35px;}
+        .oneg .shop-wrap .shop-view-all{text-align:center;margin-top:40px;}
+        .oneg .shop-wrap .shop-view-all a{display:inline-block;border:2px solid ${currentColor};color:#333;font-weight:bold;font-size:14px;padding:12px 35px;border-radius:30px;text-decoration:none;text-transform:uppercase;transition:all .3s;}
+        .oneg .shop-wrap .shop-view-all a:hover{background:${currentColor};color:#fff;}
+        .oneg-shop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:40px;}
+        @media(max-width:990px){.oneg-shop-grid{grid-template-columns:repeat(2,1fr);}}
+        @media(max-width:480px){.oneg-shop-grid{grid-template-columns:1fr;}}
+        .oneg-product-card{background:#fff;border-radius:4px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);transition:box-shadow .3s;}
+        .oneg-product-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.12);}
+        .oneg-product-img-wrap{display:block;position:relative;overflow:hidden;aspect-ratio:1/1;text-decoration:none;}
+        .oneg-product-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+        .oneg-badge-sale{position:absolute;top:12px;left:12px;font-size:11px;font-weight:bold;color:#fff;padding:4px 10px;border-radius:2px;text-transform:uppercase;letter-spacing:.5px;z-index:1;}
+        .oneg-product-overlay{position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center;padding-bottom:20px;transition:opacity .3s;}
+        .oneg-cart-btn{color:#fff;font-weight:bold;font-size:13px;text-transform:uppercase;letter-spacing:.5px;padding:10px 24px;border:2px solid #fff;background:transparent;cursor:pointer;border-radius:2px;transition:all .3s;}
+        .oneg-cart-btn:hover{background:#fff;color:#333;}
+        .oneg-product-info{padding:16px;}
+        .oneg-product-name{display:block;font-size:15px;font-weight:600;color:#222;text-decoration:none;margin-bottom:8px;font-family:'Open Sans',sans-serif;transition:color .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+        .oneg-product-name:hover{color:${currentColor};}
+        .oneg-product-price-row{display:flex;align-items:center;gap:10px;justify-content:space-between;}
+        .oneg-price-regular,.oneg-price-sale{font-size:16px;font-weight:700;color:${currentColor};}
+        .oneg-price-original{font-size:13px;color:#aaa;text-decoration:line-through;}
+        .oneg-wishlist-btn{background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;transition:color .2s;}
+        .oneg-shop-cats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:20px;}
+        .oneg-shop-cats button{background:none;border:1px solid #ccc;padding:7px 20px;border-radius:30px;font-size:13px;font-weight:bold;color:#555;cursor:pointer;transition:all .3s;}
+        .oneg-shop-cats button.active,.oneg-shop-cats button:hover{border-color:${currentColor};background:${currentColor};color:#fff;}
         .oneg .sortable-masonry .items-container{margin:0 -15px;}
         .oneg .default-portfolio-item .inner-box{position:relative;overflow:hidden;margin:15px 0;}
         .oneg .default-portfolio-item .image-box img{width:100%;display:block;}
@@ -441,11 +587,11 @@ export default function OneGTemplate(props: OneGProps) {
                     <a className="navbar-brand" href="#">Menu</a>
                     <div className="collapse navbar-collapse" id="navbarColor01">
                       <ul className="navbar-nav mr-auto">
-                        {["Home", "About", "Gallery", "Classes", "Prices", "Trainers", "Blog", "Contact"].map((item) => (
+                        {["Home", "About", "Gallery", "Classes", "Shop", "Trainers", "Blog", "Contact"].map((item) => (
                           <li key={item} className="nav-item">
                             <a
                               className="nav-link smoothScroll"
-                              href={`#${item === "Home" ? "home" : item === "Prices" ? "prices" : item === "Trainers" ? "trainers" : item === "Contact" ? "contact-us" : item.toLowerCase()}`}
+                              href={`#${item === "Home" ? "home" : item === "Shop" ? "shop" : item === "Trainers" ? "trainers" : item === "Contact" ? "contact-us" : item.toLowerCase()}`}
                             >
                               {item}
                             </a>
@@ -710,6 +856,11 @@ export default function OneGTemplate(props: OneGProps) {
           </div>
         </div>
 
+        {/* Shop / Products */}
+        {props.products && props.products.length > 0 && (
+          <ShopSection products={props.products} slug={props.slug} categories={props.categories} currentColor={currentColor} />
+        )}
+
         {/* Counter */}
         <div id="counter">
           <div className="container">
@@ -798,7 +949,7 @@ export default function OneGTemplate(props: OneGProps) {
           <div className="container footer-container">
             <div className="footoer-logo"><img src={IMAGES.logo} alt="" /></div>
             <ul className="footerLinks" style={{ listStyle: "none", padding: 0 }}>
-              {["Home", "About", "Gallery", "Classes", "Prices", "Trainers", "Blog", "Contact"].map((item) => (
+              {["Home", "About", "Gallery", "Classes", "Shop", "Trainers", "Blog", "Contact"].map((item) => (
                 <li key={item}><a href="#">{item.toUpperCase()}</a></li>
               ))}
             </ul>
