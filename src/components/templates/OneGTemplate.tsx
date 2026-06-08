@@ -417,35 +417,32 @@ export default function OneGTemplate(props: OneGProps) {
         </div>
 
         {/* Header */}
-        <div className={`header-wrap${sticky ? " sticky-header" : ""}`}>
+        <div className={`header-wrap header custom-navbar wow fadeInDown${sticky ? " sticky-header" : ""}`} role="navigation">
           <div className="container">
-            <div className="row align-items-center" style={{ display: "flex", flexWrap: "wrap" }}>
-              <div className="col-lg-4" style={{ flex: "0 0 33.333%", maxWidth: "33.333%", position: "relative" }}>
-                <div className="logo">
-                  <a href="#home"><img src={IMAGES.logo} alt="" style={{ maxWidth: "100%" }} /></a>
+            <div className="row">
+              <div className="col-lg-4">
+                <div className="logo"><a href="#home"><img src={IMAGES.logo} alt="" /></a></div>
+                <div className="logo2"><a href="#home"><img src={IMAGES.logo2} alt="" /></a></div>
+                <div className="navbar-dark">
+                  <button className="navbar-toggler" type="button" onClick={() => {
+                    const el = document.getElementById("navbarColor01");
+                    if (el) el.classList.toggle("show");
+                  }} aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                  </button>
                 </div>
-                <div className="logo2">
-                  <a href="#home"><img src={IMAGES.logo2} alt="" /></a>
-                </div>
-                <button className="navbar-toggler" type="button" onClick={() => {
-                  const el = document.getElementById("navbarColor01");
-                  if (el) el.classList.toggle("show");
-                }} aria-label="Toggle navigation">
-                  <span className="navbar-toggler-icon"></span>
-                </button>
               </div>
-              <div className="col-lg-8" style={{ flex: "0 0 66.667%", maxWidth: "66.667%" }}>
+              <div className="col-lg-8">
                 <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                   <div className="container">
                     <a className="navbar-brand" href="#">Menu</a>
                     <div className="collapse navbar-collapse" id="navbarColor01">
-                      <ul className="navbar-nav mr-auto" style={{ display: "flex", listStyle: "none", margin: 0, padding: 0 }}>
+                      <ul className="navbar-nav mr-auto">
                         {["Home", "About", "Gallery", "Classes", "Prices", "Trainers", "Blog", "Contact"].map((item) => (
-                          <li key={item} className="nav-item" style={{ position: "relative" }}>
+                          <li key={item} className="nav-item">
                             <a
                               className="nav-link smoothScroll"
                               href={`#${item === "Home" ? "home" : item === "Prices" ? "prices" : item === "Trainers" ? "trainers" : item === "Contact" ? "contact-us" : item.toLowerCase()}`}
-                              style={{ color: "#fff", fontSize: "14px", fontWeight: "bold", textTransform: "uppercase", padding: "8px 16px", textDecoration: "none", display: "inline-block" }}
                             >
                               {item}
                             </a>
