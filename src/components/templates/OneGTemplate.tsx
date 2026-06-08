@@ -172,73 +172,11 @@ const GALLERY_IMAGES = [
   { src: IMAGES.gallery06, filter: "all gym yoga", title: "Fiteness Center" },
 ];
 
-const SLIDES = [
-  { bg: IMAGES.banner1, subtitle: "Perfect Shape  Perfect Life", title: "Get Fit Now!" },
-  { bg: IMAGES.banner, subtitle: "Perfect Shape  Perfect Life", title: "Get Fit Now!" },
-];
-
-const NAV_ITEMS = [
-  {
-    name: "Home",
-    href: "#home",
-    submenu: [
-      { name: "Home 01 Slider", href: "#home" },
-      { name: "Home 02 Video bg", href: "#home" },
-      { name: "Home 03 one page", href: "#home" },
-      { name: "Home 04 one page", href: "#home" },
-    ]
-  },
-  { name: "About", href: "#about" },
-  { name: "Gallery", href: "#gallery" },
-  {
-    name: "Classes",
-    href: "#classes",
-    submenu: [
-      { name: "Classes", href: "#classes" },
-      { name: "Singal Classes", href: "#classes" },
-    ]
-  },
-  {
-    name: "Pages",
-    href: "#",
-    submenu: [
-      { name: "About", href: "#about" },
-      { name: "Our Experts", href: "#trainers" },
-      { name: "Our Pricing", href: "#prices" },
-      { name: "Testimonials", href: "#" },
-      { name: "FAQs", href: "#" },
-      { name: "Typoghrapy", href: "#" },
-      { name: "404", href: "#" },
-    ]
-  },
-  { name: "Trainers", href: "#trainers" },
-  { name: "Shop", href: "#shop" },
-  {
-    name: "Blog",
-    href: "#blog",
-    submenu: [
-      { name: "Blog with Sidebar", href: "#blog" },
-      { name: "Blog Details", href: "#blog" },
-    ]
-  },
-  { name: "Contact", href: "#contact-us" },
-];
-
 export default function OneGTemplate(props: OneGProps) {
   const [activeFilter, setActiveFilter] = useState("all");
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [activeColor, setActiveColor] = useState("orange");
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const slideTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    slideTimerRef.current = setInterval(() => {
-      setCurrentSlide(prev => (prev + 1) % SLIDES.length);
-    }, 5000);
-    return () => { if (slideTimerRef.current) clearInterval(slideTimerRef.current); };
-  }, []);
 
   useEffect(() => {
     const counters = document.querySelectorAll(".counter-number");
@@ -322,52 +260,6 @@ export default function OneGTemplate(props: OneGProps) {
         .oneg .readmore a{text-decoration:none;font-size:16px;color:#fff;background:${currentColor};padding:16px 35px;border-radius:30px;display:inline-block;text-transform:uppercase;font-weight:bold;}
         .oneg .readmore i{padding-left:5px;}
         .oneg .readmore a:hover{background:#000;color:#fff;}
-
-        .oneg .header-wrap{position:absolute;top:40px;left:0;z-index:1000;width:100%;}
-        .oneg .logo img{max-width:100%;}
-        .oneg .navbar-dark .navbar-nav .nav-link{color:#fff;font-size:14px;font-weight:bold;text-transform:uppercase;padding:8px 16px;}
-        .oneg .navbar-dark .navbar-nav .nav-link:hover{color:${currentColor};}
-        .oneg .navbar{margin-top:18px;}
-        .oneg .navbar-toggler{display:none;}
-        .oneg .navbar-brand{display:none;}
-        .oneg .bg-dark{background:none!important;}
-
-        .oneg .navbar-nav{display:flex;flex-wrap:wrap;}
-        .oneg .navbar-nav>li{position:relative;}
-        .oneg .navbar-nav>li>ul{position:absolute;left:0;top:200%;width:200px;padding:0;border:1px solid rgba(255,255,255,.5);z-index:100;background:${currentColor};visibility:hidden;opacity:0;border-radius:0 2px 2px 2px;transition:all 500ms ease;}
-        .oneg .navbar-nav>li:hover>ul{top:100%;opacity:1;visibility:visible;}
-        .oneg .navbar-nav>li>ul>li{position:relative;float:none;width:100%;border-bottom:1px solid rgba(255,255,255,.5);}
-        .oneg .navbar-nav>li>ul>li:last-child{border-bottom:none;}
-        .oneg .navbar-nav>li>ul>li>a{text-decoration:none;display:block;padding:5px 20px;font-weight:normal;font-size:14px;color:#fff;transition:all 500ms ease;}
-        .oneg .navbar-nav>li>ul>li:hover>a{padding-left:25px;}
-
-        .oneg .logo2{display:none;}
-        .oneg .toggle-caret{display:none;}
-
-        .oneg .tp-banner-container{position:relative;z-index:1;padding:0;width:100%;}
-        .oneg .tp-banner{position:relative;width:100%;}
-        .oneg .tp-banner ul{position:relative;width:100%;margin:0;padding:0;list-style:none;}
-        .oneg .tp-banner ul li{position:absolute;top:0;left:0;width:100%;height:600px;opacity:0;transition:opacity .8s ease;z-index:1;}
-        .oneg .tp-banner ul li.active{opacity:1;z-index:2;}
-        .oneg .tp-banner ul li img{width:100%;height:100%;object-fit:cover;}
-        .oneg .tp-banner ul li:after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1;}
-        .oneg .caption{position:absolute;z-index:2;opacity:0;transition:all .8s ease;}
-        .oneg .tp-banner ul li.active .caption{opacity:1;}
-        .oneg .tp-banner ul li.active .slidertext2{transition-delay:.3s;}
-        .oneg .tp-banner ul li.active .slidertext1{transition-delay:.6s;}
-        .oneg .tp-banner ul li.active .slidertext3{transition-delay:1.2s;}
-        .oneg .tp-banner ul li.active .slidertext4{transition-delay:1.8s;}
-        .oneg .lft{left:0;text-align:left;}
-        .oneg .lfl{left:0;text-align:left;}
-        .oneg .lfb{left:0;text-align:left;}
-        .oneg .large-title{font-weight:700;}
-        .oneg .tp-resizeme{white-space:nowrap;}
-        .oneg .slidertext1{color:#fff;font-size:100px;font-weight:700;text-shadow:0 0 10px rgba(0,0,0,.41);text-transform:uppercase;text-align:center;font-family:'Roboto Condensed',sans-serif;line-height:100px;}
-        .oneg .slidertext2{color:#fff;font-size:30px;font-weight:300;font-style:italic;text-transform:uppercase;font-family:'Roboto Condensed',sans-serif;text-align:center;}
-        .oneg .slidertext3{color:#fff;font-size:16px;font-weight:normal;line-height:30px;text-align:center;}
-        .oneg .slidertext4{color:#fff;font-size:18px;font-weight:600;text-align:center;font-family:'Open Sans',sans-serif;line-height:24px;margin-top:20px;}
-        .oneg .slidertext4 a{background:${currentColor};color:#fff!important;font-size:20px;border-radius:30px;padding:16px 40px;font-weight:700;text-transform:uppercase;display:inline-block;font-family:'Roboto Condensed',sans-serif;text-decoration:none;}
-        .oneg .slidebtn{background:${currentColor};color:#fff!important;font-size:20px;border-radius:30px;padding:16px 40px;font-weight:700;text-transform:uppercase;display:inline-block;font-family:'Roboto Condensed',sans-serif;text-decoration:none;}
 
         .oneg .what_we-do_wrap{background:var(--whatwe-bg) no-repeat top;background-size:cover;padding:70px 0 38px 0;text-align:center;}
         .oneg .what_we-do_wrap .what_we_img{border:6px solid ${currentColor};}
@@ -555,19 +447,6 @@ export default function OneGTemplate(props: OneGProps) {
         .oneg .colors li a.active{box-shadow:0 0 0 2px #fff;}
 
         @media(max-width:990px){
-          .oneg .navbar-toggler{display:block;position:absolute;top:10px;right:20px;background:transparent;border:1px solid rgba(255,255,255,.79);padding:4px 12px;}
-          .oneg .bg-dark{background:rgba(0,0,0,.9)!important;}
-          .oneg .navbar-dark .navbar-nav .nav-link{padding:10px;}
-          .oneg .navbar-dark .navbar-nav .nav-link:hover{background:${currentColor};color:#fff;}
-          .oneg .navbar{padding:0;}
-          .oneg .collapse{display:none;width:100%;}
-          .oneg .collapse.show{display:block;}
-          .oneg .navbar-nav{display:flex;flex-direction:column;width:100%;}
-          .oneg .navbar{display:block;width:100%;}
-          .oneg .header-wrap{position:relative;background:#000;}
-          .oneg .toggle-caret{display:block;position:absolute;right:15px;top:7px;font-size:20px;cursor:pointer;color:#fff;background:${currentColor};width:30px;height:30px;text-align:center;line-height:30px;z-index:10;}
-          .oneg .navbar-nav>li>ul{position:static;width:100%;border:none;background:rgba(0,0,0,.5);visibility:visible;opacity:1;display:none;transition:none;}
-          .oneg .navbar-nav>li.expanded>ul{display:block;}
           .oneg .pricingWrp{max-width:350px;margin:15px auto;}
           .oneg .video-wrap p{padding:0;}
           .oneg .expert-wrap ul li{max-width:370px;margin:15px auto;}
@@ -576,12 +455,7 @@ export default function OneGTemplate(props: OneGProps) {
         }
         @media(max-width:767px){
           .oneg .title h1{font-size:36px;}
-          .oneg .header-wrap .logo img{width:160px;}
-          .oneg .header-wrap{position:static;background:#000;padding:20px 0;}
-          .oneg .navbar{margin:0;}
           .oneg .playbtn:before{width:400px;margin-left:-200px;}
-          .oneg .slidertext01{font-size:60px;line-height:70px;}
-          .oneg .slidertext02{font-size:22px;}
           .oneg .pricing-table>li{flex:0 0 100%;}
           .oneg .expert-wrap ul li{flex:0 0 100%;}
           .oneg .blog-wrap ul li{flex:0 0 100%;}
@@ -617,104 +491,6 @@ export default function OneGTemplate(props: OneGProps) {
                     style={{ background: colorMap[name] }}
                     onClick={(e) => { e.preventDefault(); setActiveColor(name); }}
                   />
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Header */}
-        <div className="header-wrap">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-4">
-                <div className="logo">
-                  <a href="#home"><img src={IMAGES.logo} alt="" /></a>
-                </div>
-                <div className="navbar-dark">
-                  <button className="navbar-toggler" type="button" onClick={() => {
-                    const el = document.getElementById("navbarColor01");
-                    if (el) el.classList.toggle("show");
-                  }} aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                  </button>
-                </div>
-              </div>
-              <div className="col-lg-8">
-                <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                  <div className="container">
-                    <a className="navbar-brand" href="#">Menu</a>
-                    <div className="collapse navbar-collapse" id="navbarColor01">
-                      <ul className="navbar-nav mr-auto">
-                        {NAV_ITEMS.map((item) => {
-                          const hasSub = !!item.submenu;
-                          const isExpanded = !!expandedMenus[item.name];
-                          return (
-                            <li key={item.name} className="nav-item">
-                              <a className="nav-link" href={item.href}>
-                                {item.name}
-                              </a>
-                              {hasSub && (
-                                <i
-                                  className="fa fa-caret-down toggle-caret"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    setExpandedMenus(prev => ({ ...prev, [item.name]: !prev[item.name] }));
-                                  }}
-                                />
-                              )}
-                              {hasSub && (
-                                <ul className="submenu">
-                                  {item.submenu.map((sub, idx) => (
-                                    <li key={idx}>
-                                      <a href={sub.href}>{sub.name}</a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Revolution Slider - exact match to reference */}
-        <div className="tp-banner-container sliderWraper" id="home">
-          <div className="tp-banner">
-            <ul>
-              {SLIDES.map((slide, i) => (
-                <li
-                  key={i}
-                  data-slotamount="7"
-                  data-transition={i === 0 ? "3dcurtain-horizontal" : "slotzoom-horizontal"}
-                  data-masterspeed="1000"
-                  data-saveperformance="on"
-                  className={
-                    i === currentSlide ? "active" :
-                    i === (currentSlide - 1 + SLIDES.length) % SLIDES.length ? "prev" : ""
-                  }
-                >
-                  <img alt="" src="images/dummy.png" data-lazyload={slide.bg} />
-                  <div className="caption lft large-title tp-resizeme slidertext2" data-x="center" data-y="235" data-speed="600" data-start="1000">
-                    {slide.subtitle}
-                  </div>
-                  <div className="caption lfl large-title tp-resizeme slidertext1" data-x="center" data-y="270" data-speed="600" data-start="1600">
-                    {slide.title}
-                  </div>
-                  <div className="caption lft large-title tp-resizeme slidertext3" data-x="center" data-y="380" data-speed="600" data-start="2200">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna nec mauris mattis<br />
-                    semper. In cursus purus arcu, vitae auctor enim blandit vel.
-                  </div>
-                  <div className="caption lfb large-title tp-resizeme slidertext4" data-x="center" data-y="440" data-speed="600" data-start="2800">
-                    <a href="#" className="slidebtn">Join Us <i className="fa fa-arrow-right" aria-hidden="true"></i></a>
-                  </div>
                 </li>
               ))}
             </ul>
@@ -1019,8 +795,8 @@ export default function OneGTemplate(props: OneGProps) {
           <div className="container footer-container">
             <div className="footoer-logo"><img src={IMAGES.logo} alt="" /></div>
             <ul className="footerLinks" style={{ listStyle: "none", padding: 0 }}>
-              {NAV_ITEMS.map((item) => (
-                <li key={item.name}><a href={item.href}>{item.name.toUpperCase()}</a></li>
+              {["HOME", "ABOUT", "GALLERY", "CLASSES", "PRICES", "TRAINERS", "BLOG", "CONTACT"].map((name) => (
+                <li key={name}><a href={`#${name.toLowerCase()}`}>{name}</a></li>
               ))}
             </ul>
             <div className="newsletter">
