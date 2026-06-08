@@ -44,6 +44,7 @@ const IMAGES = {
   headingLine: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780928210/shopora/1g/adm1z2e88qybyhz7whqc.png",
   headingLineWhite: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780928211/shopora/1g/skv5jabwgyqifjjxhssj.png",
   gymVideo: "https://res.cloudinary.com/dno6yitvw/video/upload/v1780928233/shopora/1g/gqmxomy0kmlt76baxugw.mp4",
+  banner1: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780931475/shopora/1g/ibvlu855dxi3aqxiewjh.jpg",
 };
 
 const GALLERY_IMAGES = [
@@ -55,12 +56,34 @@ const GALLERY_IMAGES = [
   { src: IMAGES.gallery06, filter: "all gym yoga", title: "Fiteness Center" },
 ];
 
+const SLIDES = [
+  { bg: IMAGES.banner1, subtitle: "Perfect Shape  Perfect Life", title: "Get Fit Now!" },
+  { bg: IMAGES.banner, subtitle: "Perfect Shape  Perfect Life", title: "Get Fit Now!" },
+];
+
 export default function OneGTemplate(props: OneGProps) {
   const [sticky, setSticky] = useState(false);
   const [activeFilter, setActiveFilter] = useState("all");
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [activeColor, setActiveColor] = useState("orange");
+  const [currentSlide, setCurrentSlide] = useState(0);
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const slideTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const goToSlide = useCallback((idx: number) => {
+    setCurrentSlide(idx);
+    if (slideTimerRef.current) clearInterval(slideTimerRef.current);
+    slideTimerRef.current = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % SLIDES.length);
+    }, 5000);
+  }, []);
+
+  useEffect(() => {
+    slideTimerRef.current = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % SLIDES.length);
+    }, 5000);
+    return () => { if (slideTimerRef.current) clearInterval(slideTimerRef.current); };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -151,18 +174,28 @@ export default function OneGTemplate(props: OneGProps) {
         .oneg .sticky-header .navbar{margin-top:8px;}
         .oneg .sticky-header .navbar-dark .navbar-nav .nav-link:hover{color:#ff0;}
 
-        .oneg .videoWrp{position:relative;padding:0;height:600px;}
-        .oneg .hero-wrapper{height:600px;min-width:100%;position:absolute;top:0;left:0;width:100%;}
-        .oneg .hero-wrapper:before{content:'';position:absolute;top:0;z-index:1;width:100%;height:100%;background:rgba(0,0,0,0.5);}
-        .oneg .hero-image{width:100%;height:100%;overflow:hidden;z-index:0;top:0;background-position:center center;background-size:cover;}
-        .oneg .hero-image #bgvid{display:block;min-height:100%;min-width:100%;max-width:inherit;}
-        .oneg .videohover{position:absolute;top:0;left:0;width:100%;z-index:99;}
-        .oneg .videoText{margin-top:180px;}
+        .oneg .sliderWraper{position:relative;z-index:1;padding:0;width:100%;height:600px;overflow:hidden;}
+        .oneg .tp-banner{position:relative;width:100%;height:600px;}
+        .oneg .tp-banner ul{position:relative;width:100%;height:100%;margin:0;padding:0;list-style:none;}
+        .oneg .tp-banner ul li{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:opacity .8s ease,transform 1.2s ease;transform:perspective(1200px) rotateY(10deg) scale(.95);z-index:1;}
+        .oneg .tp-banner ul li.active{opacity:1;transform:perspective(1200px) rotateY(0) scale(1);z-index:2;}
+        .oneg .tp-banner ul li.prev{opacity:0;transform:perspective(1200px) rotateY(-10deg) scale(.95);z-index:1;}
+        .oneg .tp-banner ul li .slide-bg{position:absolute;top:0;left:0;width:100%;height:100%;background-size:cover;background-position:center;}
+        .oneg .tp-banner ul li:after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1;}
+        .oneg .tp-caption{position:absolute;z-index:2;width:100%;text-align:center;opacity:0;transition:all .8s ease;}
+        .oneg .tp-banner ul li.active .tp-caption{opacity:1;}
+        .oneg .tp-banner ul li.active .tp-caption.c01{transition-delay:.3s;}
+        .oneg .tp-banner ul li.active .tp-caption.c02{transition-delay:.8s;}
+        .oneg .tp-banner ul li.active .tp-caption.c03{transition-delay:1.3s;}
+        .oneg .tp-banner ul li.active .tp-caption.c04{transition-delay:1.8s;}
+        .oneg .slider-nav{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:12px;}
+        .oneg .slider-nav button{width:14px;height:14px;border-radius:50%;border:2px solid #fff;background:transparent;cursor:pointer;padding:0;transition:all .3s;}
+        .oneg .slider-nav button.active{background:${currentColor};border-color:${currentColor};}
         .oneg .slidertext01{color:#fff;font-size:100px;font-weight:700;text-shadow:0 0 10px rgba(0,0,0,.41);text-transform:uppercase;text-align:center;font-family:'Roboto Condensed',sans-serif;line-height:100px;}
         .oneg .slidertext02{color:#fff;font-size:30px;font-weight:300;font-style:italic;text-transform:uppercase;font-family:'Roboto Condensed',sans-serif;text-align:center;}
         .oneg .slidertext03{color:#fff;font-size:16px;font-weight:normal;text-align:center;line-height:30px;}
-        .oneg .slidertext04{text-align:center;margin-top:20px;}
-        .oneg .slidertext04 a{background:${currentColor};color:#fff!important;font-size:20px;border-radius:30px;padding:16px 40px;font-weight:700;text-transform:uppercase;display:inline-block;font-family:'Roboto Condensed',sans-serif;}
+        .oneg .slidertext04{text-align:center;}
+        .oneg .slidertext04 a{background:${currentColor};color:#fff!important;font-size:20px;border-radius:30px;padding:16px 40px;font-weight:700;text-transform:uppercase;display:inline-block;font-family:'Roboto Condensed',sans-serif;text-decoration:none;}
 
         .oneg .what_we-do_wrap{background:var(--whatwe-bg) no-repeat top;background-size:cover;padding:70px 0 38px 0;text-align:center;}
         .oneg .what_we-do_wrap .what_we_img{border:6px solid ${currentColor};}
@@ -427,27 +460,48 @@ export default function OneGTemplate(props: OneGProps) {
           </div>
         </div>
 
-        {/* Video Hero */}
-        <div className="videoWrp" id="home">
-          <div className="hero-wrapper videohover">
-            <div className="videoText">
-              <div className="container">
-                <div className="slidertext02">Perfect Shape Perfect Life</div>
-                <div className="slidertext01">Get Fit Now!</div>
-                <div className="slidertext03" style={{ color: "#fff" }}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna nec mauris mattis<br />
-                  semper. In cursus purus arcu, vitae auctor enim blandit vel.
-                </div>
-                <div className="slidertext04">
-                  <a href="#">Join Us <i className="fa fa-arrow-right" aria-hidden="true"></i></a>
-                </div>
-              </div>
+        {/* Revolution Slider */}
+        <div className="sliderWraper" id="home">
+          <div className="tp-banner">
+            <ul>
+              {SLIDES.map((slide, i) => (
+                <li
+                  key={i}
+                  className={
+                    i === currentSlide ? "active" :
+                    i === (currentSlide - 1 + SLIDES.length) % SLIDES.length ? "prev" : ""
+                  }
+                >
+                  <div className="slide-bg" style={{ backgroundImage: `url(${slide.bg})` }} />
+                  <div className="tp-caption c01" style={{ top: "235px" }}>
+                    <div className="slidertext02">{slide.subtitle}</div>
+                  </div>
+                  <div className="tp-caption c02" style={{ top: "270px" }}>
+                    <div className="slidertext01">{slide.title}</div>
+                  </div>
+                  <div className="tp-caption c03" style={{ top: "380px" }}>
+                    <div className="slidertext03" style={{ color: "#fff" }}>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna nec mauris mattis<br />
+                      semper. In cursus purus arcu, vitae auctor enim blandit vel.
+                    </div>
+                  </div>
+                  <div className="tp-caption c04" style={{ top: "440px" }}>
+                    <div className="slidertext04">
+                      <a href="#">Join Us <i className="fa fa-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div className="slider-nav">
+              {SLIDES.map((_, i) => (
+                <button
+                  key={i}
+                  className={i === currentSlide ? "active" : ""}
+                  onClick={() => goToSlide(i)}
+                />
+              ))}
             </div>
-          </div>
-          <div className="hero-image" style={{ backgroundImage: `url(${IMAGES.banner})` }}>
-            <video autoPlay muted loop playsInline id="bgvid" style={{ width: "100%", height: "100%", objectFit: "cover" }}>
-              <source src="{IMAGES.gymVideo}" type="video/mp4" />
-            </video>
           </div>
         </div>
 
