@@ -225,7 +225,6 @@ const NAV_ITEMS = [
 ];
 
 export default function OneGTemplate(props: OneGProps) {
-  const [sticky, setSticky] = useState(false);
   const [activeFilter, setActiveFilter] = useState("all");
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [activeColor, setActiveColor] = useState("orange");
@@ -247,14 +246,6 @@ export default function OneGTemplate(props: OneGProps) {
       setCurrentSlide(prev => (prev + 1) % SLIDES.length);
     }, 5000);
     return () => { if (slideTimerRef.current) clearInterval(slideTimerRef.current); };
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setSticky(window.scrollY > 40);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -461,12 +452,6 @@ export default function OneGTemplate(props: OneGProps) {
         }
 
         .oneg .logo2{display:none;}
-        .oneg .sticky{top:0;background:${currentColor};position:fixed;width:100%;z-index:10000;height:70px;border-bottom:1px solid #eee;box-shadow:0 2px 4px rgba(3,3,3,.11);}
-        .oneg .sticky .logo2{display:block;margin-top:7px;}
-        .oneg .sticky .logo2 img{width:200px;}
-        .oneg .sticky .logo{display:none;}
-        .oneg .sticky .navbar{margin-top:8px;}
-        .oneg .sticky .navbar-dark .navbar-nav .nav-link:hover{color:#ff0;}
 
         .oneg .sliderWraper{position:relative;z-index:1;padding:0;width:100%;height:600px;overflow:hidden;}
         .oneg .tp-banner{position:relative;width:100%;height:600px;}
@@ -752,7 +737,6 @@ export default function OneGTemplate(props: OneGProps) {
           .oneg .header-wrap .logo img{width:160px;}
           .oneg .header-wrap{position:static;background:#000;padding:20px 0;}
           .oneg .navbar{margin:0;}
-          .oneg .sticky{position:fixed!important;top:0!important;}
           .oneg .playbtn:before{width:400px;margin-left:-200px;}
           .oneg .slidertext01{font-size:60px;line-height:70px;}
           .oneg .slidertext02{font-size:22px;}
@@ -798,12 +782,11 @@ export default function OneGTemplate(props: OneGProps) {
         </div>
 
         {/* Header */}
-        <div className={`header-wrap header custom-navbar wow fadeInDown${sticky ? " sticky" : ""}`} role="navigation">
+        <div className="header-wrap">
           <div className="container">
             <div className="row">
               <div className="col-lg-4">
                 <div className="logo"><a href="#home"><img src={IMAGES.logo} alt="" /></a></div>
-                <div className="logo2"><a href="#home"><img src={IMAGES.logo2} alt="" /></a></div>
                 <div className="navbar-dark">
                   <button className="navbar-toggler" type="button" onClick={() => {
                     const el = document.getElementById("navbarColor01");
