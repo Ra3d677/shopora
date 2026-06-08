@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Link from "next/link";
 import { useCartStore } from "@/store/cart";
 import { useWishlistStore } from "@/store/wishlist";
@@ -300,12 +299,30 @@ export default function OneGTemplate(props: OneGProps) {
         @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&family=Roboto+Condensed:wght@300;400;700&display=swap');
 
         html { scroll-behavior: smooth; }
+        .oneg *{margin:0;padding:0;box-sizing:border-box;}
         .oneg body{font-family:'Open Sans',sans-serif;}
         .oneg a{transition:all .3s ease;}
         .oneg img{max-width:100%;}
         .oneg h1,.oneg h2,.oneg h3,.oneg h4,.oneg h5,.oneg h6{font-family:'Roboto Condensed',sans-serif;}
         .oneg p{font-size:14px;line-height:24px;color:#333;}
         .oneg ul,.oneg ol{list-style:none;margin:0;}
+
+        .oneg .container{width:100%;max-width:1140px;margin:0 auto;padding:0 15px;}
+        .oneg .row{display:flex;flex-wrap:wrap;margin:0 -15px;}
+        .oneg .col-lg-4{position:relative;width:100%;padding:0 15px;}
+        .oneg .col-lg-8{position:relative;width:100%;padding:0 15px;}
+        .oneg .col-md-3{position:relative;width:25%;padding:0 15px;}
+        .oneg .col-md-6{position:relative;width:50%;padding:0 15px;}
+        .oneg .col-md-12{position:relative;width:100%;padding:0 15px;}
+        .oneg .col-sm-3{position:relative;width:25%;padding:0 15px;}
+        .oneg .col-sm-6{position:relative;width:50%;padding:0 15px;}
+        .oneg .col-xs-12{position:relative;width:100%;padding:0 15px;}
+        @media(min-width:992px){
+          .oneg .col-lg-4{flex:0 0 33.333%;max-width:33.333%;}
+          .oneg .col-lg-8{flex:0 0 66.667%;max-width:66.667%;}
+          .oneg .col-lg-9{flex:0 0 75%;max-width:75%;}
+          .oneg .col-lg-3{flex:0 0 25%;max-width:25%;}
+        }
 
         .oneg .title h1{font-size:48px;color:#000;font-weight:bold;position:relative;margin-bottom:50px;}
         .oneg .title h1 span{font-size:30px;color:${currentColor};display:block;font-weight:normal;}
@@ -315,61 +332,25 @@ export default function OneGTemplate(props: OneGProps) {
         .oneg .readmore a:hover{background:#000;color:#fff;}
 
         .oneg .header-wrap{position:absolute;top:40px;left:0;z-index:1000;width:100%;}
-        .oneg .navbar-brand{display:none;}
-        .oneg .bg-dark{background:none!important;}
+        .oneg .logo img{max-width:100%;}
         .oneg .navbar-dark .navbar-nav .nav-link{color:#fff;font-size:14px;font-weight:bold;text-transform:uppercase;padding:8px 16px;}
         .oneg .navbar-dark .navbar-nav .nav-link:hover{color:${currentColor};}
         .oneg .navbar{margin-top:18px;}
         .oneg .navbar-toggler{display:none;}
+        .oneg .navbar-brand{display:none;}
+        .oneg .bg-dark{background:none!important;}
 
-        .oneg .navbar-nav > li {position:relative;}
-        .oneg .submenu {
-          position: absolute;
-          left:0;
-          top: 200%;
-          width: 200px;
-          padding: 0px;
-          border: 1px solid rgba(255,255,255,0.50);
-          z-index: 100;
-          background: ${currentColor};
-          visibility: hidden;
-          opacity: 0;
-          border-radius: 0px 2px 2px 2px;
-          transition: all 500ms ease;
-        }
-        .oneg .navbar-nav > li:hover > .submenu {
-          top: 100%;
-          opacity: 1;
-          visibility: visible;
-        }
-        .oneg .submenu > li {
-          position: relative;
-          float: none;
-          width: 100%;
-          border-bottom: 1px solid rgba(255,255,255,0.50);
-        }
-        .oneg .submenu > li:last-child {
-          border-bottom: none;
-        }
-        .oneg .submenu > li > a {
-          text-decoration:none;
-          position: relative;
-          display: block;
-          padding: 8px 20px;
-          font-weight: normal;
-          font-size: 14px;
-          color: #ffffff;
-          word-wrap: break-word;
-          transition: all 500ms ease;
-        }
-        .oneg .submenu > li:hover > a {
-          padding-left: 25px;
-        }
-        .oneg .toggle-caret {
-          display: none;
-        }
+        .oneg .navbar-nav{display:flex;flex-wrap:wrap;}
+        .oneg .navbar-nav>li{position:relative;}
+        .oneg .navbar-nav>li>ul{position:absolute;left:0;top:200%;width:200px;padding:0;border:1px solid rgba(255,255,255,.5);z-index:100;background:${currentColor};visibility:hidden;opacity:0;border-radius:0 2px 2px 2px;transition:all 500ms ease;}
+        .oneg .navbar-nav>li:hover>ul{top:100%;opacity:1;visibility:visible;}
+        .oneg .navbar-nav>li>ul>li{position:relative;float:none;width:100%;border-bottom:1px solid rgba(255,255,255,.5);}
+        .oneg .navbar-nav>li>ul>li:last-child{border-bottom:none;}
+        .oneg .navbar-nav>li>ul>li>a{text-decoration:none;display:block;padding:5px 20px;font-weight:normal;font-size:14px;color:#fff;transition:all 500ms ease;}
+        .oneg .navbar-nav>li>ul>li:hover>a{padding-left:25px;}
 
         .oneg .logo2{display:none;}
+        .oneg .toggle-caret{display:none;}
 
         .oneg .sliderWraper{position:relative;z-index:1;padding:0;width:100%;height:600px;overflow:hidden;}
         .oneg .tp-banner{position:relative;width:100%;height:600px;}
@@ -580,75 +561,24 @@ export default function OneGTemplate(props: OneGProps) {
         .oneg .colors li a.active{box-shadow:0 0 0 2px #fff;}
 
         @media(max-width:990px){
-          .oneg .navbar-toggler{display:block;background:transparent;border:1px solid rgba(255,255,255,.79);padding:4px 12px;position:absolute;top:10px;right:20px;}
-          .oneg .navbar-dark .navbar-toggler-icon{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");display:inline-block;width:1.5em;height:1.5em;vertical-align:middle;content:"";}
+          .oneg .navbar-toggler{display:block;position:absolute;top:10px;right:20px;background:transparent;border:1px solid rgba(255,255,255,.79);padding:4px 12px;}
           .oneg .bg-dark{background:rgba(0,0,0,.9)!important;}
           .oneg .navbar-dark .navbar-nav .nav-link{padding:10px;}
           .oneg .navbar-dark .navbar-nav .nav-link:hover{background:${currentColor};color:#fff;}
           .oneg .navbar{padding:0;}
-          .oneg .collapse:not(.show){display:none;}
+          .oneg .collapse{display:none;width:100%;}
           .oneg .collapse.show{display:block;}
+          .oneg .navbar-nav{display:flex;flex-direction:column;width:100%;}
+          .oneg .navbar{display:block;width:100%;}
+          .oneg .header-wrap{position:relative;background:#000;}
+          .oneg .toggle-caret{display:block;position:absolute;right:15px;top:7px;font-size:20px;cursor:pointer;color:#fff;background:${currentColor};width:30px;height:30px;text-align:center;line-height:30px;z-index:10;}
+          .oneg .navbar-nav>li>ul{position:static;width:100%;border:none;background:rgba(0,0,0,.5);visibility:visible;opacity:1;display:none;transition:none;}
+          .oneg .navbar-nav>li.expanded>ul{display:block;}
           .oneg .pricingWrp{max-width:350px;margin:15px auto;}
           .oneg .video-wrap p{padding:0;}
           .oneg .expert-wrap ul li{max-width:370px;margin:15px auto;}
           .oneg .blog-wrap ul li{max-width:370px;margin:10px auto;}
           .oneg .join-wrap .readmore{margin-top:28px;}
-          .oneg .header-wrap{position:relative;background:#000;}
-          .oneg .navbar{margin-top:10px;}
-          .oneg .toggle-caret {
-            display: block;
-            position: absolute;
-            right: 15px;
-            top: 7px;
-            font-size: 20px;
-            cursor: pointer;
-            color: #fff;
-            background: ${currentColor};
-            width: 30px;
-            height: 30px;
-            text-align: center;
-            line-height: 30px;
-            z-index: 10;
-          }
-          .oneg .submenu {
-            position: static;
-            width: 100%;
-            border: none;
-            background: rgba(0,0,0,0.5);
-            visibility: visible;
-            opacity: 1;
-            display: none;
-            transition: none;
-          }
-          .oneg .navbar-nav > li.expanded > .submenu {
-            display: block;
-          }
-          .oneg .navbar-nav > li:hover > .submenu {
-            top: auto;
-            opacity: 1;
-            visibility: visible;
-          }
-          .oneg .navbar-collapse {
-            display: none !important;
-            width: 100%;
-          }
-          .oneg .navbar-collapse.show {
-            display: block !important;
-          }
-          .oneg .navbar-nav {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            gap: 0px;
-          }
-          .oneg .navbar {
-            display: block;
-            width: 100%;
-            margin-top: 10px;
-          }
-          .oneg .col-lg-4 {
-            position: relative;
-          }
         }
         @media(max-width:767px){
           .oneg .title h1{font-size:36px;}
@@ -704,7 +634,9 @@ export default function OneGTemplate(props: OneGProps) {
           <div className="container">
             <div className="row">
               <div className="col-lg-4">
-                <div className="logo"><a href="#home"><img src={IMAGES.logo} alt="" /></a></div>
+                <div className="logo">
+                  <a href="#home"><img src={IMAGES.logo} alt="" /></a>
+                </div>
                 <div className="navbar-dark">
                   <button className="navbar-toggler" type="button" onClick={() => {
                     const el = document.getElementById("navbarColor01");
@@ -724,45 +656,28 @@ export default function OneGTemplate(props: OneGProps) {
                           const hasSub = !!item.submenu;
                           const isExpanded = !!expandedMenus[item.name];
                           return (
-                            <li key={item.name} className={`nav-item${hasSub ? " has-submenu" : ""}${isExpanded ? " expanded" : ""}`}>
-                              <a
-                                className="nav-link smoothScroll"
-                                href={item.href}
-                                onClick={(e) => {
-                                  if (item.href.startsWith("#")) {
-                                    const el = document.getElementById("navbarColor01");
-                                    if (el) el.classList.remove("show");
-                                  }
-                                }}
-                              >
+                            <li key={item.name} className="nav-item">
+                              <a className="nav-link" href={item.href}>
                                 {item.name}
                               </a>
                               {hasSub && (
-                                <>
-                                  <i
-                                    className="fa fa-caret-down toggle-caret"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                      setExpandedMenus(prev => ({ ...prev, [item.name]: !prev[item.name] }));
-                                    }}
-                                  />
-                                  <ul className="submenu">
-                                    {item.submenu.map((sub, idx) => (
-                                      <li key={idx}>
-                                        <a
-                                          href={sub.href}
-                                          onClick={() => {
-                                            const el = document.getElementById("navbarColor01");
-                                            if (el) el.classList.remove("show");
-                                          }}
-                                        >
-                                          {sub.name}
-                                        </a>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </>
+                                <i
+                                  className="fa fa-caret-down toggle-caret"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    setExpandedMenus(prev => ({ ...prev, [item.name]: !prev[item.name] }));
+                                  }}
+                                />
+                              )}
+                              {hasSub && (
+                                <ul className="submenu">
+                                  {item.submenu.map((sub, idx) => (
+                                    <li key={idx}>
+                                      <a href={sub.href}>{sub.name}</a>
+                                    </li>
+                                  ))}
+                                </ul>
                               )}
                             </li>
                           );
