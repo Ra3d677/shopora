@@ -363,7 +363,6 @@ export async function toggleTemplateStatusAction(templateId: string, currentStat
 }
 
 const SEED_TEMPLATES = [
-  { id: "1g", name: "1G Fitness Center", description: "قالب مركز لياقة بدنية متكامل مع فيديو هيرو, معرض صور, أسعار, مدربين, ومدونة.", preview: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" },
   { id: "2m", name: "2M", description: "إلكترونيات - تصميم عصري بألوان صفراء وردية مناسب لمتاجر الإلكترونيات والتكنولوجيا.", preview: "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=800&q=80" },
 ];
 
