@@ -18,6 +18,7 @@ import MomoTemplate from "@/components/templates/MomoTemplate";
 import OneMTemplate from "@/components/templates/1MTemplate";
 import TwoMTemplate from "@/components/templates/TwoMTemplate";
 import ThreeMTemplate from "@/components/templates/3MTemplate";
+import IronPeakTemplate from "@/components/templates/IronPeakTemplate";
 
 export const revalidate = 60;
 
@@ -63,6 +64,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
   // FORCE TEMPLATE RENDERING (Step 4)
   const renderTemplate = () => {
     if (activeTemplate === 'fitness') return <FitnessTemplate {...props} />;
+    if (activeTemplate === 'ironpeak') return <IronPeakTemplate {...props} />;
     if (store.type === 'WEBSITE') return <TourismTemplate {...props} />;
     
     if (activeTemplate === 'zenith') return <ZenithTemplate {...props} />;
