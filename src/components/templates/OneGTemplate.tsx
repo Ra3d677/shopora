@@ -194,6 +194,18 @@ export default function OneGTemplate(props: OneGProps) {
     return () => clearInterval(interval);
   }, []);
 
+  // Sticky navbar state
+  const [isSticky, setIsSticky] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 80);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     const counters = document.querySelectorAll(".counter-number");
     const observer = new IntersectionObserver(
@@ -240,7 +252,103 @@ export default function OneGTemplate(props: OneGProps) {
         .oneg p{font-size:14px;line-height:24px;color:#333;}
         .oneg ul,.oneg ol{list-style:none;margin:0;}
 
-
+        /* Navbar Styles */
+        .oneg-navbar {
+          position: absolute;
+          top: 40px;
+          left: 0;
+          width: 100%;
+          z-index: 1000;
+          transition: all 0.3s ease;
+        }
+        .oneg-navbar.sticky {
+          position: fixed;
+          top: 0;
+          background: #f36f21;
+          height: 70px;
+          box-shadow: 0 2px 4px rgba(3,3,3,.11);
+          display: flex;
+          align-items: center;
+        }
+        .oneg-navbar-inner {
+          max-width: 1140px;
+          margin: 0 auto;
+          padding: 0 15px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 100%;
+        }
+        .oneg-navbar-logo img {
+          height: 55px;
+          width: auto;
+        }
+        .oneg-navbar.sticky .oneg-logo-white { display: none; }
+        .oneg-navbar:not(.sticky) .oneg-logo-color { display: none; }
+        .oneg-navbar-nav {
+          display: flex;
+          align-items: center;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          gap: 0;
+        }
+        .oneg-navbar-nav li a {
+          color: #fff;
+          font-size: 13px;
+          font-weight: bold;
+          text-transform: uppercase;
+          padding: 8px 14px;
+          text-decoration: none;
+          display: block;
+          transition: color 0.3s;
+        }
+        .oneg-navbar-nav li a:hover {
+          color: #f36f21;
+        }
+        .oneg-navbar.sticky .oneg-navbar-nav li a:hover {
+          color: #ffff00;
+        }
+        .oneg-navbar-toggle {
+          display: none;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 4px 8px;
+        }
+        .oneg-navbar-toggle span {
+          display: block;
+          width: 24px;
+          height: 2px;
+          background: #fff;
+          margin: 5px 0;
+          transition: all 0.3s;
+        }
+        @media (max-width: 768px) {
+          .oneg-navbar {
+            top: 0;
+          }
+          .oneg-navbar-toggle {
+            display: block;
+          }
+          .oneg-navbar-nav {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.9);
+            padding: 10px 0;
+          }
+          .oneg-navbar-nav.open {
+            display: flex;
+          }
+          .oneg-navbar-nav li a {
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+          }
+        }
         .oneg .row{display:flex;flex-wrap:wrap;margin:0 -15px;}
         .oneg .col-lg-4{position:relative;width:100%;padding:0 15px;}
         .oneg .col-lg-8{position:relative;width:100%;padding:0 15px;}
@@ -683,6 +791,43 @@ export default function OneGTemplate(props: OneGProps) {
           "--whatwe-bg": `url(${IMAGES.whatweBg})`,
         } as React.CSSProperties}
       >
+
+        {/* Navbar */}
+        <nav className={`oneg-navbar${isSticky ? " sticky" : ""}`}>
+          <div className="oneg-navbar-inner">
+            <div className="oneg-navbar-logo">
+              <a href="#">
+                <img src={IMAGES.logo} alt="Logo" className="oneg-logo-white" />
+                <img src={IMAGES.logo2} alt="Logo" className="oneg-logo-color" />
+              </a>
+            </div>
+            <button
+              className="oneg-navbar-toggle"
+              onClick={() => setMobileMenuOpen((v) => !v)}
+              aria-label="Toggle menu"
+            >
+              <span /><span /><span />
+            </button>
+            <ul className={`oneg-navbar-nav${mobileMenuOpen ? " open" : ""}`}>
+              {[
+                { label: "Home", href: "#" },
+                { label: "About", href: "#about" },
+                { label: "Gallery", href: "#gallery" },
+                { label: "Classes", href: "#classes" },
+                { label: "Shop", href: "#shop" },
+                { label: "Trainers", href: "#trainers" },
+                { label: "Blog", href: "#blog" },
+                { label: "Contact", href: "#contact-us" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <a href={item.href} onClick={() => setMobileMenuOpen(false)}>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
 
         {/* Revolution Slider - exact match to reference index.html */}
         <div className="tp-banner-container sliderWraper" id="home">
