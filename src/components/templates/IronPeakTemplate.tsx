@@ -225,7 +225,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         .ip-mobile-menu.active span:nth-child(3){transform:rotate(-45deg) translate(7px,-6px)}
 
         /* Hero */
-        .ip-hero{height:100vh;background:linear-gradient(135deg,rgba(15,15,15,.8),rgba(30,30,30,.9)) center/cover fixed,url(${IMG.heroBg}) center/cover fixed;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+        .ip-hero{padding:0;transform:translateY(0);height:100vh;background:linear-gradient(135deg,rgba(15,15,15,.8),rgba(30,30,30,.9)) center/cover fixed,url(${IMG.heroBg}) center/cover fixed;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
         .ip-hero::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 30% 50%,rgba(255,107,53,.1),transparent 50%),radial-gradient(circle at 70% 50%,rgba(247,147,30,.1),transparent 50%);animation:8s ease-in-out infinite ipPulse}
         @keyframes ipPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
         .ip-hero-content{position:relative;z-index:1;max-width:900px;padding:2rem;animation:1s ipFadeInUp}
