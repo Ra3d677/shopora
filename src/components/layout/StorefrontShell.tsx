@@ -75,9 +75,9 @@ export default function StorefrontShell({
   return (
     <>
       {headerSection ? (
-        <StoreHeader headerConfig={headerSection} slug={slug} storeName={store.name} session={session} categories={store.categories} />
+        store.template !== '1g' && <StoreHeader headerConfig={headerSection} slug={slug} storeName={store.name} session={session} categories={store.categories} />
       ) : (
-        store.template !== 'fitness' && (store.template !== '2m' || !isHomePage) && (
+        store.template !== 'fitness' && (store.template !== '1g' || !isHomePage) && (store.template !== '2m' || !isHomePage) && (
           <Navbar
             activeTemplate={store.template}
             storeSettings={{
@@ -95,11 +95,11 @@ export default function StorefrontShell({
           />
         )
       )}
-      <main className={`flex-grow flex flex-col store-container ${headerSection ? 'pt-16 md:pt-20' : ''}`}>
+      <main className={`flex-grow flex flex-col store-container ${headerSection && store.template !== '1g' ? 'pt-16 md:pt-20' : ''}`}>
         {children}
       </main>
       <div data-page="footer">
-        {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'dddyou' && store.template !== '1m' && (store.template !== '2m' || !isHomePage) && <Footer />}
+        {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== '1g' && store.template !== 'dddyou' && store.template !== '1m' && (store.template !== '2m' || !isHomePage) && (store.template !== '1g' || !isHomePage) && <Footer />}
       </div>
       {store.template !== 'fitness' && store.template !== 'dddyou' && store.template !== '1m' && store.template !== '2m' && <WhatsAppButton />}
     </>

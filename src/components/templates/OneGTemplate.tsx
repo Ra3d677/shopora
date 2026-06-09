@@ -131,6 +131,7 @@ const IMAGES = {
   logo: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780927978/shopora/1g/bipx926qzyn1bconuvap.png",
   logo2: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780927978/shopora/1g/l33yl5yligdpzzrtohu9.png",
   banner: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780927960/shopora/1g/qqwpx2iketrcj4twc1v1.jpg",
+  banner1: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780931475/shopora/1g/ibvlu855dxi3aqxiewjh.jpg",
   fitness: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780927969/shopora/1g/hqidtm1iq19acxmw3rny.jpg",
   training: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780927981/shopora/1g/tlue8fsew4zeqypabmpa.jpg",
   yoga: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780927986/shopora/1g/iupqltutnn5ofniecwc2.jpg",
@@ -160,8 +161,12 @@ const IMAGES = {
   headingLine: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780928210/shopora/1g/adm1z2e88qybyhz7whqc.png",
   headingLineWhite: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780928211/shopora/1g/skv5jabwgyqifjjxhssj.png",
   gymVideo: "https://res.cloudinary.com/dno6yitvw/video/upload/v1780928233/shopora/1g/gqmxomy0kmlt76baxugw.mp4",
-  banner1: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780931475/shopora/1g/ibvlu855dxi3aqxiewjh.jpg",
 };
+
+const SLIDES = [
+  { bg: IMAGES.banner1, subtitle: "Perfect Shape  Perfect Life", title: "Get Fit Now!" },
+  { bg: IMAGES.banner, subtitle: "Perfect Shape  Perfect Life", title: "Get Fit Now!" },
+];
 
 const GALLERY_IMAGES = [
   { src: IMAGES.gallery01, filter: "all fitness", title: "Fiteness Center" },
@@ -177,6 +182,70 @@ export default function OneGTemplate(props: OneGProps) {
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   const currentColor = "#f36f21";
+
+  // Slider State & Data
+  const topBanners = props.banners ? props.banners.filter((b: any) => b.position === 'top' || !b.position) : [];
+  const sliderBanners = topBanners.length > 0
+    ? topBanners.map((b: any) => ({
+        image: b.imageUrl || IMAGES.banner,
+        mobileImage: b.mobileImageUrl || b.imageUrl || IMAGES.banner,
+        title: b.subtitle || "Perfect Shape Perfect Life",
+        heading: b.title || "Get Fit Now!",
+        description: b.description || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna nec mauris mattis semper. In cursus purus arcu, vitae auctor enim blandit vel.",
+        buttonText: b.buttonText || "Join Us",
+        link: b.link || "#about"
+      }))
+    : [
+        {
+          image: IMAGES.banner,
+          mobileImage: IMAGES.banner,
+          title: "Perfect Shape Perfect Life",
+          heading: "Get Fit Now!",
+          description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna nec mauris mattis semper. In cursus purus arcu, vitae auctor enim blandit vel.",
+          buttonText: "Join Us",
+          link: "#about"
+        },
+        {
+          image: IMAGES.banner1,
+          mobileImage: IMAGES.banner1,
+          title: "Perfect Shape Perfect Life",
+          heading: "Get Fit Now!",
+          description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna nec mauris mattis semper. In cursus purus arcu, vitae auctor enim blandit vel.",
+          buttonText: "Join Us",
+          link: "#about"
+        }
+      ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    if (sliderBanners.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % sliderBanners.length);
+    }, 6500);
+    return () => clearInterval(interval);
+  }, [sliderBanners.length]);
+
+  const handlePrev = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setCurrentSlide((prev) => (prev - 1 + sliderBanners.length) % sliderBanners.length);
+  };
+  const handleNext = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setCurrentSlide((prev) => (prev + 1) % sliderBanners.length);
+  };
+
+  // Sticky navbar state
+  const [isSticky, setIsSticky] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 80);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const counters = document.querySelectorAll(".counter-number");
@@ -224,7 +293,103 @@ export default function OneGTemplate(props: OneGProps) {
         .oneg p{font-size:14px;line-height:24px;color:#333;}
         .oneg ul,.oneg ol{list-style:none;margin:0;}
 
-        .oneg .container{width:100%;max-width:1140px;margin:0 auto;padding:0 15px;}
+        /* Navbar Styles */
+        .oneg-navbar {
+          position: absolute;
+          top: 40px;
+          left: 0;
+          width: 100%;
+          z-index: 1000;
+          transition: all 0.3s ease;
+        }
+        .oneg-navbar.sticky {
+          position: fixed;
+          top: 0;
+          background: #f36f21;
+          height: 70px;
+          box-shadow: 0 2px 4px rgba(3,3,3,.11);
+          display: flex;
+          align-items: center;
+        }
+        .oneg-navbar-inner {
+          max-width: 1140px;
+          margin: 0 auto;
+          padding: 0 15px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 100%;
+        }
+        .oneg-navbar-logo img {
+          height: 55px;
+          width: auto;
+        }
+        .oneg-navbar.sticky .oneg-logo-white { display: none; }
+        .oneg-navbar:not(.sticky) .oneg-logo-color { display: none; }
+        .oneg-navbar-nav {
+          display: flex;
+          align-items: center;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          gap: 0;
+        }
+        .oneg-navbar-nav li a {
+          color: #fff;
+          font-size: 13px;
+          font-weight: bold;
+          text-transform: uppercase;
+          padding: 8px 14px;
+          text-decoration: none;
+          display: block;
+          transition: color 0.3s;
+        }
+        .oneg-navbar-nav li a:hover {
+          color: #f36f21;
+        }
+        .oneg-navbar.sticky .oneg-navbar-nav li a:hover {
+          color: #ffff00;
+        }
+        .oneg-navbar-toggle {
+          display: none;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 4px 8px;
+        }
+        .oneg-navbar-toggle span {
+          display: block;
+          width: 24px;
+          height: 2px;
+          background: #fff;
+          margin: 5px 0;
+          transition: all 0.3s;
+        }
+        @media (max-width: 768px) {
+          .oneg-navbar {
+            top: 0;
+          }
+          .oneg-navbar-toggle {
+            display: block;
+          }
+          .oneg-navbar-nav {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.9);
+            padding: 10px 0;
+          }
+          .oneg-navbar-nav.open {
+            display: flex;
+          }
+          .oneg-navbar-nav li a {
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+          }
+        }
         .oneg .row{display:flex;flex-wrap:wrap;margin:0 -15px;}
         .oneg .col-lg-4{position:relative;width:100%;padding:0 15px;}
         .oneg .col-lg-8{position:relative;width:100%;padding:0 15px;}
@@ -452,6 +617,213 @@ export default function OneGTemplate(props: OneGProps) {
           .oneg .playbtn:before{display:none;}
           .oneg .slidertext01{font-size:40px;line-height:50px;}
         }
+
+        /* Slider Revolution Simulation Styles */
+        .oneg-slider-container {
+          position: relative;
+          height: 650px;
+          overflow: hidden;
+          background: #000;
+          width: 100%;
+        }
+        @media (max-width: 991px) {
+          .oneg-slider-container {
+            height: 550px;
+          }
+        }
+        @media (max-width: 767px) {
+          .oneg-slider-container {
+            height: 480px;
+          }
+        }
+        @media (max-width: 480px) {
+          .oneg-slider-container {
+            height: 400px;
+          }
+        }
+
+        .oneg-slide {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+          z-index: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .oneg-slide.active {
+          opacity: 1;
+          z-index: 2;
+        }
+
+        .oneg-slide-bg {
+          position: absolute;
+          inset: 0;
+          background-size: cover;
+          background-position: center;
+          transform: scale(1.12);
+          transition: transform 6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .oneg-slide.active .oneg-slide-bg {
+          transform: scale(1.02);
+        }
+
+        .oneg-slide-overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.45);
+          z-index: 2;
+        }
+
+        .oneg-slide-content {
+          position: relative;
+          z-index: 3;
+          color: #fff;
+          text-align: center;
+          max-width: 860px;
+          padding: 0 20px;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .oneg .tp-banner-container{position:relative;z-index:1;padding:0;width:100%;}
+        .oneg .tp-banner{position:relative;width:100%;}
+        .oneg .tp-banner ul{position:relative;width:100%;margin:0;padding:0;list-style:none;}
+        .oneg .tp-banner ul li{position:absolute;top:0;left:0;width:100%;height:600px;opacity:0;transition:opacity .8s ease;z-index:1;}
+        .oneg .tp-banner ul li.active{opacity:1;z-index:2;}
+        .oneg .tp-banner ul li img{width:100%;height:100%;object-fit:cover;}
+        .oneg .tp-banner ul li:after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1;}
+        .oneg .caption{position:absolute;z-index:2;opacity:0;transition:all .8s ease;}
+        .oneg .tp-banner ul li.active .caption{opacity:1;}
+        .oneg .tp-banner ul li.active .slidertext2{transition-delay:.3s;}
+        .oneg .tp-banner ul li.active .slidertext1{transition-delay:.8s;}
+        .oneg .tp-banner ul li.active .slidertext3{transition-delay:1.3s;}
+        .oneg .tp-banner ul li.active .slidertext4{transition-delay:1.8s;}
+        .oneg .lft{left:0;text-align:left;}
+        .oneg .lfl{left:0;text-align:left;}
+        .oneg .lfb{left:0;text-align:left;}
+        .oneg .large-title{font-weight:700;}
+        .oneg .tp-resizeme{white-space:nowrap;}
+        .oneg .slidertext1{color:#fff;font-size:100px;font-weight:700;text-shadow:0 0 10px rgba(0,0,0,.41);text-transform:uppercase;text-align:center;font-family:'Roboto Condensed',sans-serif;line-height:100px;}
+        .oneg .slidertext2{color:#fff;font-size:30px;font-weight:300;font-style:italic;text-transform:uppercase;font-family:'Roboto Condensed',sans-serif;text-align:center;}
+        .oneg .slidertext3{color:#fff;font-size:16px;font-weight:normal;line-height:30px;text-align:center;}
+        .oneg .slidertext4{color:#fff;font-size:18px;font-weight:600;text-align:center;font-family:'Open Sans',sans-serif;line-height:24px;margin-top:20px;}
+        .oneg .slidertext4 a{background:${currentColor};color:#fff!important;font-size:20px;border-radius:30px;padding:16px 40px;font-weight:700;text-transform:uppercase;display:inline-block;font-family:'Roboto Condensed',sans-serif;text-decoration:none;}
+        .oneg .slidebtn{background:${currentColor};color:#fff!important;font-size:20px;border-radius:30px;padding:16px 40px;font-weight:700;text-transform:uppercase;display:inline-block;font-family:'Roboto Condensed',sans-serif;text-decoration:none;}
+          padding: 14px 38px;
+          font-weight: 700;
+          text-transform: uppercase;
+          display: inline-block;
+          font-family: 'Roboto Condensed', sans-serif;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(243, 111, 33, 0.3);
+        }
+        .oneg-slidertext4 a:hover {
+          background: #fff;
+          color: #000 !important;
+          box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+          transform: translateY(-2px);
+        }
+
+        @keyframes slideFromTop {
+          from {
+            transform: translateY(-50px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+
+        @keyframes slideFromLeft {
+          from {
+            transform: translateX(-80px);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+
+        @keyframes slideFromBottom {
+          from {
+            transform: translateY(50px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+
+        /* Arrows */
+        .oneg-slider-arrows {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          padding: 0 15px;
+          z-index: 10;
+          pointer-events: none;
+        }
+        .oneg-slider-arrow {
+          width: 50px;
+          height: 60px;
+          background: rgba(255, 255, 255, 0.15);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          color: #000;
+          transition: all 0.3s;
+          pointer-events: auto;
+          border: none;
+          outline: none;
+        }
+        .oneg-slider-arrow:hover {
+          background: #f36f21;
+          color: #fff;
+        }
+        .oneg-slider-arrow svg {
+          width: 24px;
+          height: 24px;
+        }
+
+        /* Bullets */
+        .oneg-slider-bullets {
+          position: absolute;
+          bottom: 25px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 10px;
+          z-index: 10;
+        }
+        .oneg-slider-bullet {
+          width: 12px;
+          height: 12px;
+          border: 3px #fff solid;
+          border-radius: 50%;
+          background: transparent;
+          cursor: pointer;
+          transition: all 0.3s;
+          padding: 0;
+          box-sizing: border-box;
+          outline: none;
+        }
+        .oneg-slider-bullet.active {
+          background: #f36f21;
+          border-color: #f36f21;
+        }
       `}</style>
 
       <div
@@ -460,6 +832,137 @@ export default function OneGTemplate(props: OneGProps) {
           "--whatwe-bg": `url(${IMAGES.whatweBg})`,
         } as React.CSSProperties}
       >
+
+        {/* Navbar */}
+        <nav className={`oneg-navbar${isSticky ? " sticky" : ""}`}>
+          <div className="oneg-navbar-inner">
+            <div className="oneg-navbar-logo">
+              <a href="#">
+                <img src={IMAGES.logo} alt="Logo" className="oneg-logo-white" />
+                <img src={IMAGES.logo2} alt="Logo" className="oneg-logo-color" />
+              </a>
+            </div>
+            <button
+              className="oneg-navbar-toggle"
+              onClick={() => setMobileMenuOpen((v) => !v)}
+              aria-label="Toggle menu"
+            >
+              <span /><span /><span />
+            </button>
+            <ul className={`oneg-navbar-nav${mobileMenuOpen ? " open" : ""}`}>
+              {[
+                { label: "Home", href: "#" },
+                { label: "About", href: "#about" },
+                { label: "Gallery", href: "#gallery" },
+                { label: "Classes", href: "#classes" },
+                { label: "Shop", href: "#shop" },
+                { label: "Trainers", href: "#trainers" },
+                { label: "Blog", href: "#blog" },
+                { label: "Contact", href: "#contact-us" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <a href={item.href} onClick={() => setMobileMenuOpen(false)}>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
+
+        {/* Slider Section */}
+        <div className="oneg-slider-container">
+          {sliderBanners.map((slide, idx) => (
+            <div
+              key={idx}
+              className={`oneg-slide ${idx === currentSlide ? "active" : ""}`}
+            >
+              <div
+                className="oneg-slide-bg"
+                style={{ backgroundImage: `url(${slide.image})` }}
+              />
+              <div className="oneg-slide-overlay" />
+              <div className="oneg-slide-content">
+                <div className="oneg-slidertext2">{slide.title}</div>
+                <div className="oneg-slidertext1">{slide.heading}</div>
+                <div className="oneg-slidertext3">{slide.description}</div>
+                <div className="oneg-slidertext4">
+                  <Link href={slide.link}>{slide.buttonText}</Link>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* Controls */}
+          {sliderBanners.length > 1 && (
+            <>
+              <div className="oneg-slider-arrows">
+                <button
+                  className="oneg-slider-arrow oneg-leftarrow"
+                  onClick={handlePrev}
+                  aria-label="Previous Slide"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
+                <button
+                  className="oneg-slider-arrow oneg-rightarrow"
+                  onClick={handleNext}
+                  aria-label="Next Slide"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="oneg-slider-bullets">
+                {sliderBanners.map((_, idx) => (
+                  <button
+                    key={idx}
+                    className={`oneg-slider-bullet ${idx === currentSlide ? "active" : ""}`}
+                    onClick={() => setCurrentSlide(idx)}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Revolution Slider - exact match to reference index.html */}
+        <div className="tp-banner-container sliderWraper" id="home">
+          <div className="tp-banner">
+            <ul>
+              {SLIDES.map((slide, i) => (
+                <li
+                  key={i}
+                  data-slotamount="7"
+                  data-transition={i === 0 ? "3dcurtain-horizontal" : "slotzoom-horizontal"}
+                  data-masterspeed="1000"
+                  data-saveperformance="on"
+                  className={i === currentSlide ? "active" : ""}
+                >
+                  <img alt="" src="images/dummy.png" data-lazyload={slide.bg} />
+                  <div className="caption lft large-title tp-resizeme slidertext2" data-x="center" data-y="235" data-speed="600" data-start="1000">
+                    {slide.subtitle}
+                  </div>
+                  <div className="caption lfl large-title tp-resizeme slidertext1" data-x="center" data-y="270" data-speed="600" data-start="1600">
+                    {slide.title}
+                  </div>
+                  <div className="caption lft large-title tp-resizeme slidertext3" data-x="center" data-y="380" data-speed="600" data-start="2200">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna nec mauris mattis<br />
+                    semper. In cursus purus arcu, vitae auctor enim blandit vel.
+                  </div>
+                  <div className="caption lfb large-title tp-resizeme slidertext4" data-x="center" data-y="440" data-speed="600" data-start="2800">
+                    <a href="#" className="slidebtn">Join Us <i className="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
 
         {/* What We Do */}
         <div className="what_we-do_wrap">
