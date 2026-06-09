@@ -842,7 +842,7 @@ export default function OneGTemplate(props: OneGProps) {
                   data-saveperformance="on"
                   className={i === currentSlide ? "active" : ""}
                 >
-                  <img alt="" src="images/dummy.png" data-lazyload={slide.bg} />
+                  <img alt="" src={slide.bg} />
                   <div className="caption lft large-title tp-resizeme slidertext2" data-x="center" data-y="235" data-speed="600" data-start="1000">
                     {slide.subtitle}
                   </div>
