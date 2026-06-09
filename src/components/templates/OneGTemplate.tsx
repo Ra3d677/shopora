@@ -183,57 +183,16 @@ export default function OneGTemplate(props: OneGProps) {
 
   const currentColor = "#f36f21";
 
-  // Slider State & Data
-  const topBanners = props.banners ? props.banners.filter((b: any) => b.position === 'top' || !b.position) : [];
-  const sliderBanners = topBanners.length > 0
-    ? topBanners.map((b: any) => ({
-        image: b.imageUrl || IMAGES.banner,
-        mobileImage: b.mobileImageUrl || b.imageUrl || IMAGES.banner,
-        title: b.subtitle || "Perfect Shape Perfect Life",
-        heading: b.title || "Get Fit Now!",
-        description: b.description || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna nec mauris mattis semper. In cursus purus arcu, vitae auctor enim blandit vel.",
-        buttonText: b.buttonText || "Join Us",
-        link: b.link || "#about"
-      }))
-    : [
-        {
-          image: IMAGES.banner,
-          mobileImage: IMAGES.banner,
-          title: "Perfect Shape Perfect Life",
-          heading: "Get Fit Now!",
-          description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna nec mauris mattis semper. In cursus purus arcu, vitae auctor enim blandit vel.",
-          buttonText: "Join Us",
-          link: "#about"
-        },
-        {
-          image: IMAGES.banner1,
-          mobileImage: IMAGES.banner1,
-          title: "Perfect Shape Perfect Life",
-          heading: "Get Fit Now!",
-          description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna nec mauris mattis semper. In cursus purus arcu, vitae auctor enim blandit vel.",
-          buttonText: "Join Us",
-          link: "#about"
-        }
-      ];
-
+  // Revolution Slider state
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
-    if (sliderBanners.length <= 1) return;
+    if (SLIDES.length <= 1) return;
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % sliderBanners.length);
+      setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
     }, 6500);
     return () => clearInterval(interval);
-  }, [sliderBanners.length]);
-
-  const handlePrev = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setCurrentSlide((prev) => (prev - 1 + sliderBanners.length) % sliderBanners.length);
-  };
-  const handleNext = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setCurrentSlide((prev) => (prev + 1) % sliderBanners.length);
-  };
+  }, []);
 
   // Sticky navbar state
   const [isSticky, setIsSticky] = useState(false);
@@ -869,67 +828,6 @@ export default function OneGTemplate(props: OneGProps) {
             </ul>
           </div>
         </nav>
-
-        {/* Slider Section */}
-        <div className="oneg-slider-container">
-          {sliderBanners.map((slide, idx) => (
-            <div
-              key={idx}
-              className={`oneg-slide ${idx === currentSlide ? "active" : ""}`}
-            >
-              <div
-                className="oneg-slide-bg"
-                style={{ backgroundImage: `url(${slide.image})` }}
-              />
-              <div className="oneg-slide-overlay" />
-              <div className="oneg-slide-content">
-                <div className="oneg-slidertext2">{slide.title}</div>
-                <div className="oneg-slidertext1">{slide.heading}</div>
-                <div className="oneg-slidertext3">{slide.description}</div>
-                <div className="oneg-slidertext4">
-                  <Link href={slide.link}>{slide.buttonText}</Link>
-                </div>
-              </div>
-            </div>
-          ))}
-
-          {/* Controls */}
-          {sliderBanners.length > 1 && (
-            <>
-              <div className="oneg-slider-arrows">
-                <button
-                  className="oneg-slider-arrow oneg-leftarrow"
-                  onClick={handlePrev}
-                  aria-label="Previous Slide"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="15 18 9 12 15 6" />
-                  </svg>
-                </button>
-                <button
-                  className="oneg-slider-arrow oneg-rightarrow"
-                  onClick={handleNext}
-                  aria-label="Next Slide"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="9 18 15 12 9 6" />
-                  </svg>
-                </button>
-              </div>
-
-              <div className="oneg-slider-bullets">
-                {sliderBanners.map((_, idx) => (
-                  <button
-                    key={idx}
-                    className={`oneg-slider-bullet ${idx === currentSlide ? "active" : ""}`}
-                    onClick={() => setCurrentSlide(idx)}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </div>
 
         {/* Revolution Slider - exact match to reference index.html */}
         <div className="tp-banner-container sliderWraper" id="home">
