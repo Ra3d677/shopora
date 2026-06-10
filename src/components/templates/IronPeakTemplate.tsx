@@ -404,9 +404,9 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         #ip-scroll-top i{font-size:24px;color:#fff;position:relative;z-index:1}
 
         /* Navigation */
-        #ip-navbar{position:fixed;top:0;left:0;width:100%;z-index:1000;background:rgba(15,15,15,.95);backdrop-filter:blur(10px);box-shadow:0 2px 20px rgba(0,0,0,.3);transform:translateY(-100%);animation:.8s .5s forwards ipSlideDown}
+        #ip-navbar{position:fixed;top:0;left:0;width:100%;z-index:1000;background:transparent;transform:translateY(-100%);animation:.8s .5s forwards ipSlideDown}
         @keyframes ipSlideDown{to{transform:translateY(0)}}
-        #ip-navbar.scrolled{background:#0f0f0f}
+        #ip-navbar.scrolled{background:rgba(15,15,15,.95);backdrop-filter:blur(10px);box-shadow:0 2px 20px rgba(0,0,0,.3)}
         .ip-nav-container{max-width:1400px;margin:0 auto;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center}
         .ip-logo{color:#fff;font-size:2rem;font-weight:800;letter-spacing:2px;background:linear-gradient(135deg,#ff6b35,#f7931e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;animation:2s infinite alternate ipLogoGlow}
         @keyframes ipLogoGlow{0%{filter:drop-shadow(0 0 5px rgba(255,107,53,.3))}100%{filter:drop-shadow(0 0 15px rgba(255,107,53,.6))}}
