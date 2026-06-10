@@ -19,6 +19,7 @@ import OneMTemplate from "@/components/templates/1MTemplate";
 import TwoMTemplate from "@/components/templates/TwoMTemplate";
 import ThreeMTemplate from "@/components/templates/3MTemplate";
 import IronPeakTemplate from "@/components/templates/IronPeakTemplate";
+import TwoHTemplate from "@/components/templates/TwoHTemplate";
 
 export const revalidate = 60;
 
@@ -63,6 +64,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
   
   // FORCE TEMPLATE RENDERING (Step 4)
   const renderTemplate = () => {
+    if (activeTemplate === '2h') return <TwoHTemplate {...props} />;
     if (activeTemplate === 'fitness') return <FitnessTemplate {...props} />;
     if (activeTemplate === 'ironpeak') return <IronPeakTemplate {...props} />;
     if (store.type === 'WEBSITE') return <TourismTemplate {...props} />;

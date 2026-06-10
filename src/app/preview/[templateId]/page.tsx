@@ -7,6 +7,7 @@ import DDDYOUTemplate from '@/components/templates/DDDYOUTemplate';
 import MomoTemplate from '@/components/templates/MomoTemplate';
 import OneMTemplate from '@/components/templates/1MTemplate';
 import TwoMTemplate from '@/components/templates/TwoMTemplate';
+import TwoHTemplate from '@/components/templates/TwoHTemplate';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Link from 'next/link';
@@ -80,6 +81,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
     };
 
     switch (templateId) {
+      case '2h': return <TwoHTemplate {...commonProps} />;
       case 'fitness': return <FitnessTemplate {...commonProps} />;
       case 'modern': return <ModernTemplate {...commonProps} />;
       case 'modern1': return <Modern1Template {...commonProps} />;

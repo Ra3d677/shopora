@@ -73,11 +73,13 @@ export default async function AdminLayout({
   const is1M = store.template === '1m';
   const is2M = store.template === '2m';
   const isIronPeak = store.template === 'ironpeak';
+  const is2H = store.template === '2h';
+  const hasTemplateSections = isIronPeak || is2H;
 
   const mainItems = isWebsite ? [
     { label: t('overview'), iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
     ...(isFitness ? [{ label: isRTL ? 'لوحة تحكم برعي' : 'برعي Dashboard', iconName: 'LayoutDashboard' as const, path: '/fitness', color: 'text-emerald-500' }] : []),
-    ...(isIronPeak
+    ...(hasTemplateSections
       ? [{ label: isRTL ? 'الباقات' : 'Pricing', iconName: 'ShoppingBag' as const, path: '/pricing', color: 'text-purple-500' }]
       : [{ label: t('toursPackages'), iconName: 'ShoppingBag' as const, path: '/products', color: 'text-purple-500' }]
     ),
@@ -105,7 +107,7 @@ export default async function AdminLayout({
 
   const customItems = [
     ...(is2M ? [{ label: isRTL ? 'شريط الميزات' : 'Features Bar', iconName: 'Rocket' as const, path: '/features-bar', color: 'text-blue-500' }] : []),
-    ...(isIronPeak ? [{ label: isRTL ? 'شريط الإعلانات' : 'Announcement Bar', iconName: 'Rocket' as const, path: '/announcement-bar', color: 'text-amber-500' }] : []),
+    ...(hasTemplateSections ? [{ label: isRTL ? 'شريط الإعلانات' : 'Announcement Bar', iconName: 'Rocket' as const, path: '/announcement-bar', color: 'text-amber-500' }] : []),
     ...(is1M || is2M ? [] : [{ label: isWebsite ? t('siteBuilder') : t('storeBuilder'), iconName: 'Blocks' as const, path: '/builder', color: 'text-blue-500' }]),
     { label: isWebsite ? t('siteSettings') : t('generalSettings'), iconName: 'Settings', path: '/settings', color: 'text-slate-500' },
   ];

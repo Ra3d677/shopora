@@ -1,6 +1,7 @@
 import { getStoreBySlug } from "@/lib/data";
 import BannersManager from "./BannersManager";
 import IronPeakBannersManager from "./IronPeakBannersManager";
+import TwoHBannersManager from "./TwoHBannersManager";
 import { notFound } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
@@ -11,6 +12,11 @@ export default async function AdminBannersPage({ params }: { params: Promise<{ s
   
   if (!store) {
     notFound();
+  }
+
+  if (store.template === '2h') {
+    const twohSettings = store.settings?.twohSettings || {};
+    return <TwoHBannersManager slug={slug} initialSettings={twohSettings} />;
   }
 
   if (store.template === 'ironpeak') {
