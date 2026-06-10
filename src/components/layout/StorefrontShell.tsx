@@ -35,6 +35,7 @@ export default function StorefrontShell({
   const is1M = store.template === '1m';
   const is2M = store.template === '2m';
   const is3M = store.template === '3m';
+  const is11G = store.template === '11g';
 
   if (is1M) {
     return (
@@ -72,6 +73,14 @@ export default function StorefrontShell({
     );
   }
 
+  if (is11G) {
+    return (
+      <main className="flex-grow flex flex-col store-container">
+        {children}
+      </main>
+    );
+  }
+
   return (
     <>
       {headerSection ? (
@@ -99,9 +108,9 @@ export default function StorefrontShell({
         {children}
       </main>
       <div data-page="footer">
-        {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'ironpeak' && store.template !== 'dddyou' && store.template !== '1m' && (store.template !== '2m' || !isHomePage) && <Footer />}
+        {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'ironpeak' && store.template !== 'dddyou' && store.template !== '1m' && (store.template !== '2m' || !isHomePage) && !is11G && <Footer />}
       </div>
-      {store.template !== 'fitness' && store.template !== 'ironpeak' && store.template !== 'dddyou' && store.template !== '1m' && store.template !== '2m' && <WhatsAppButton />}
+      {store.template !== 'fitness' && store.template !== 'ironpeak' && store.template !== 'dddyou' && store.template !== '1m' && store.template !== '2m' && !is11G && <WhatsAppButton />}
     </>
   );
 }

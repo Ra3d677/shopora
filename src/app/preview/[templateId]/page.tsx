@@ -7,6 +7,7 @@ import DDDYOUTemplate from '@/components/templates/DDDYOUTemplate';
 import MomoTemplate from '@/components/templates/MomoTemplate';
 import OneMTemplate from '@/components/templates/1MTemplate';
 import TwoMTemplate from '@/components/templates/TwoMTemplate';
+import ElevenGTemplate from '@/components/templates/11GTemplate';
 
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -91,6 +92,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
       case 'momo': return <MomoTemplate {...commonProps} />;
       case '1m': return <OneMTemplate {...commonProps} />;
       case '2m': return <TwoMTemplate {...commonProps} />;
+      case '11g': return <ElevenGTemplate {...commonProps} />;
       default: return <SignatureTemplate {...commonProps} />;
     }
   };

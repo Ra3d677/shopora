@@ -1,0 +1,26 @@
+// Auto-generated Cloudinary URLs for the 11G template
+export const IMG = {
+  "logo": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117103/11g/logo.png",
+  "favicon": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117104/11g/favicon.png",
+  "bg-hand-ia": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117105/11g/bg-hand-ia.png",
+  "about-computer": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117107/11g/about-computer.jpg",
+  "process-center": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117108/11g/process-center.jpg",
+  "bg-geometry": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117110/11g/bg-geometry.jpg",
+  "bg-line": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117112/11g/bg-line.png",
+  "portfolio-1": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117115/11g/portfolio-1.jpg",
+  "portfolio-2": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117117/11g/portfolio-2.jpg",
+  "portfolio-3": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117118/11g/portfolio-3.jpg",
+  "portfolio-4": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117120/11g/portfolio-4.jpg",
+  "portfolio-5": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117122/11g/portfolio-5.jpg",
+  "portfolio-6": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117124/11g/portfolio-6.jpg",
+  "company-1": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117125/11g/company-1.jpg",
+  "company-2": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117126/11g/company-2.jpg",
+  "company-3": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117128/11g/company-3.jpg",
+  "company-4": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117129/11g/company-4.jpg",
+  "company-5": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117129/11g/company-5.jpg",
+  "company-6": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117131/11g/company-6.jpg",
+  "testimonial-1": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117131/11g/testimonial-1.jpg",
+  "testimonial-2": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117132/11g/testimonial-2.jpg",
+  "testimonial-3": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117133/11g/testimonial-3.jpg",
+  "testimonial-4": "https://res.cloudinary.com/dno6yitvw/image/upload/v1781117134/11g/testimonial-4.jpg"
+};
