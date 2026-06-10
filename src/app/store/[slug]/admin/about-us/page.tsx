@@ -1,8 +1,6 @@
 import { getStoreBySlug } from "@/lib/data";
 import TwoMAboutUsManager from "./TwoMAboutUsManager";
 import IronPeakAboutUsManager from "./IronPeakAboutUsManager";
-import TwoHAboutUsManager from "./TwoHAboutUsManager";
-import HaylerAboutUsManager from "./HaylerAboutUsManager";
 import { notFound } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
@@ -11,16 +9,6 @@ export default async function AdminAboutUsPage({ params }: { params: Promise<{ s
   const { slug } = await params;
   const store = await getStoreBySlug(slug);
   if (!store) notFound();
-
-  if (store.template === 'hayler') {
-    const haylerSettings = store.settings?.haylerSettings || {};
-    return <HaylerAboutUsManager slug={slug} initialSettings={haylerSettings} />;
-  }
-
-  if (store.template === '2h') {
-    const twohSettings = store.settings?.twohSettings || {};
-    return <TwoHAboutUsManager slug={slug} initialSettings={twohSettings} />;
-  }
 
   if (store.template === '2m') {
     const twoMAboutUs = store.settings?.twoMAboutUs || null;
