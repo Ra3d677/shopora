@@ -72,11 +72,15 @@ export default async function AdminLayout({
   const isDDDYOU = store.template === 'dddyou';
   const is1M = store.template === '1m';
   const is2M = store.template === '2m';
+  const isIronPeak = store.template === 'ironpeak';
 
   const mainItems = isWebsite ? [
     { label: t('overview'), iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
     ...(isFitness ? [{ label: isRTL ? 'لوحة تحكم برعي' : 'برعي Dashboard', iconName: 'LayoutDashboard' as const, path: '/fitness', color: 'text-emerald-500' }] : []),
-    { label: t('toursPackages'), iconName: 'ShoppingBag', path: '/products', color: 'text-purple-500' },
+    ...(isIronPeak
+      ? [{ label: isRTL ? 'الباقات' : 'Pricing', iconName: 'ShoppingBag' as const, path: '/pricing', color: 'text-purple-500' }]
+      : [{ label: t('toursPackages'), iconName: 'ShoppingBag' as const, path: '/products', color: 'text-purple-500' }]
+    ),
     { label: t('bookingInquiries'), iconName: 'Package', path: '/orders', color: 'text-pink-500' },
     { label: t('mediaHub'), iconName: 'Library', path: '/media', color: 'text-amber-500' },
     { label: t('bannersSliders'), iconName: 'ImageIcon', path: '/banners', color: 'text-red-500' },
