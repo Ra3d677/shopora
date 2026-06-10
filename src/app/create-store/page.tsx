@@ -48,6 +48,7 @@ function CreateStoreForm() {
     { id: 'ironpeak', name: 'Iron Peak Fitness', desc: 'قوي ومثير - قالب مركز لياقة بدنية متكامل مع هيرو, خدمات, تسعير, مدربين, آراء, مدونة.', img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80' },
     { id: 'fitness', name: 'برعي - Sama Fit', desc: 'قالب احترافي لمدربي اللياقة - هيرو, خدمات, تحولات, خطط أسعار, آراء عملاء, التحكم الكامل من لوحة الإعدادات.', img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80' },
     { id: 'tourism', name: 'Tourism & Travel Showcase', desc: 'High-definition destination banners, detailed itineraries, and a seamless booking inquiry system.', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80' },
+    { id: 'itsolution', name: 'ITSolution - IT Agency', desc: 'قالب متكامل لشركات التكنولوجيا وحلول الأعمال - 18 صفحة كاملة مع دعم الوضع المظلم.', img: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=400&q=80' },
   ];
 
   const templates = type === 'STORE' ? storeTemplates : websiteTemplates;

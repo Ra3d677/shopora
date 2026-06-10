@@ -35,6 +35,7 @@ export default function StorefrontShell({
   const is1M = store.template === '1m';
   const is2M = store.template === '2m';
   const is3M = store.template === '3m';
+  const isITSolution = store.template === 'itsolution';
 
   if (is1M) {
     return (
@@ -77,7 +78,7 @@ export default function StorefrontShell({
       {headerSection ? (
         <StoreHeader headerConfig={headerSection} slug={slug} storeName={store.name} session={session} categories={store.categories} />
       ) : (
-        store.template !== 'fitness' && store.template !== 'ironpeak' && (store.template !== '2m' || !isHomePage) && (
+        store.template !== 'fitness' && store.template !== 'ironpeak' && store.template !== 'itsolution' && (store.template !== '2m' || !isHomePage) && (
           <Navbar
             activeTemplate={store.template}
             storeSettings={{
@@ -95,7 +96,7 @@ export default function StorefrontShell({
           />
         )
       )}
-      <main className={`flex-grow flex flex-col store-container ${headerSection ? 'pt-16 md:pt-20' : ''} ${store.template === 'ironpeak' ? '!p-0 !m-0' : ''}`}>
+      <main className={`flex-grow flex flex-col store-container ${headerSection ? 'pt-16 md:pt-20' : ''} ${store.template === 'ironpeak' || store.template === 'itsolution' ? '!p-0 !m-0' : ''}`}>
         {children}
       </main>
       <div data-page="footer">

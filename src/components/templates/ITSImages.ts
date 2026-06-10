@@ -1,0 +1,27 @@
+const BASE = "https://res.cloudinary.com/dno6yitvw/image/upload/v1781119247/itsolution";
+
+export const ITSImages = {
+  logo: `${BASE}/logo-transparent-01.png`,
+  favicon: `${BASE}/ico-01.png`,
+  handIa: `${BASE}/backgrounds-hand-ia-bgremove.png`,
+  computerCode: `${BASE}/backgrounds-computer-code.png`,
+  process: `${BASE}/backgrounds-process.jpg`,
+  geometry: `${BASE}/backgrounds-geometry-tech.jpg`,
+  lineTech: `${BASE}/backgrounds-line-tech.png`,
+  portfolio1: `${BASE}/portfolio-project-1.jpg`,
+  portfolio2: `${BASE}/portfolio-project-2.jpg`,
+  portfolio3: `${BASE}/portfolio-project-3.jpg`,
+  portfolio4: `${BASE}/portfolio-project-4.jpg`,
+  portfolio5: `${BASE}/portfolio-project-5.jpg`,
+  portfolio6: `${BASE}/portfolio-project-6.jpg`,
+  company1: `${BASE}/companies-company-01.jpg`,
+  company2: `${BASE}/companies-company-02.jpg`,
+  company3: `${BASE}/companies-company-03.jpg`,
+  company4: `${BASE}/companies-company-04.jpg`,
+  company5: `${BASE}/companies-company-05.jpg`,
+  company6: `${BASE}/companies-company-06.jpg`,
+  testimonial1: `${BASE}/testimonials-face-01.jpg`,
+  testimonial2: `${BASE}/testimonials-face-02.jpg`,
+  testimonial3: `${BASE}/testimonials-face-03.jpg`,
+  testimonial4: `${BASE}/testimonials-face-04.jpg`,
+};
