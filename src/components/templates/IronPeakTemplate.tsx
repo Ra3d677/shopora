@@ -404,9 +404,9 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         #ip-scroll-top i{font-size:24px;color:#fff;position:relative;z-index:1}
 
         /* Navigation */
-        #ip-navbar{position:fixed;top:0;left:0;width:100%;z-index:1000;background:transparent;transform:translateY(-100%);animation:.8s .5s forwards ipSlideDown}
+        #ip-navbar{position:fixed;top:0;left:0;width:100%;z-index:1000;background:rgba(15,15,15,.95);backdrop-filter:blur(10px);box-shadow:0 2px 20px rgba(0,0,0,.3);transform:translateY(-100%);animation:.8s .5s forwards ipSlideDown}
         @keyframes ipSlideDown{to{transform:translateY(0)}}
-        #ip-navbar.scrolled{background:rgba(15,15,15,.95);backdrop-filter:blur(10px);box-shadow:0 2px 20px rgba(0,0,0,.3)}
+        #ip-navbar.scrolled{background:#0f0f0f}
         .ip-nav-container{max-width:1400px;margin:0 auto;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center}
         .ip-logo{color:#fff;font-size:2rem;font-weight:800;letter-spacing:2px;background:linear-gradient(135deg,#ff6b35,#f7931e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;animation:2s infinite alternate ipLogoGlow}
         @keyframes ipLogoGlow{0%{filter:drop-shadow(0 0 5px rgba(255,107,53,.3))}100%{filter:drop-shadow(0 0 15px rgba(255,107,53,.6))}}
@@ -432,8 +432,8 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         .ip-mobile-menu.active span:nth-child(3){transform:rotate(-45deg) translate(7px,-6px)}
 
         /* Hero */
-        .ip-hero{padding:0!important;margin:0!important;transform:translateY(0);height:100vh;background:url(${hero.backgroundImage}) center/cover;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
-        .ip-hero-content{position:relative;z-index:2;max-width:900px;padding:1rem 2rem;animation:1s ipFadeInUp}
+        .ip-hero{padding:0;transform:translateY(0);height:100vh;background:url(${hero.backgroundImage}) center/cover;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+        .ip-hero-content{position:relative;z-index:2;max-width:900px;padding:2rem;animation:1s ipFadeInUp}
         @keyframes ipFadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
         .ip-hero h1{font-size:4rem;color:#fff;margin-bottom:1.5rem;font-weight:800;line-height:1.2;text-shadow:2px 2px 20px rgba(0,0,0,.5);animation:3s infinite alternate ipTextGlow}
         @keyframes ipTextGlow{0%{text-shadow:2px 2px 20px rgba(0,0,0,.5)}100%{text-shadow:0 0 30px rgba(255,107,53,.8),2px 2px 20px rgba(0,0,0,.5)}}
@@ -464,7 +464,6 @@ export default function IronPeakTemplate(props: IronPeakProps) {
 
         /* Sections base */
         section{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s;padding:90px 0;animation:.6s ipFadeIn}
-        .ip-hero{opacity:1;transform:translateY(0);padding:0!important;margin:0!important}
         section.visible{opacity:1;transform:translateY(0)}
         .ip-container{max-width:93%;margin:0 auto}
         .ip-section-header{text-align:center;margin-bottom:4rem}
