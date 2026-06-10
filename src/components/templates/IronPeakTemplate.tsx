@@ -25,9 +25,207 @@ const IMG = {
   pattern: "https://res.cloudinary.com/dno6yitvw/image/upload/v1780997928/shopora/ironpeak/pattern.jpg",
 };
 
+const DEFAULT = {
+  nav: {
+    logo: "IRON",
+    logoSuffix: "PEAK",
+    links: [
+      { label: "Home", href: "#home" },
+      { label: "About", href: "#about" },
+      { label: "Services", href: "#services" },
+      { label: "Pricing", href: "#pricing" },
+      { label: "Trainers", href: "#trainers" },
+      { label: "Testimonials", href: "#testimonials" },
+      { label: "Blog", href: "#blog" },
+      { label: "Contact", href: "#contact" },
+    ],
+  },
+  preloader: {
+    logo: "IRONPEAK",
+    text: "Loading Your Fitness Journey...",
+    enabled: true,
+  },
+  hero: {
+    enabled: true,
+    title: "TRANSFORM YOUR BODY, TRANSFORM YOUR LIFE",
+    subtitle: "Join Iron Peak Fitness and experience world-class training with state-of-the-art equipment and expert trainers. Start your fitness journey today and achieve the results you've always wanted.",
+    primaryCta: { text: "Join Now", href: "#pricing" },
+    secondaryCta: { text: "Learn More", href: "#about" },
+    backgroundImage: IMG.heroBg,
+  },
+  about: {
+    enabled: true,
+    sectionTitle: "About Us",
+    sectionSubtitle: "We're More Than Just A Gym",
+    heading: "Your Fitness Journey Starts Here",
+    paragraph1: "At Iron Peak Fitness, we believe fitness is a journey, not a destination. Our mission is to provide a supportive environment where everyone, from beginners to athletes, can achieve their fitness goals.",
+    paragraph2: "With over 10 years of experience in the fitness industry, our certified trainers are dedicated to helping you transform your body and improve your overall health.",
+    image: IMG.about,
+    features: [
+      { icon: "🏋️", text: "State-of-the-art equipment" },
+      { icon: "👨‍🏫", text: "Certified personal trainers" },
+      { icon: "🥗", text: "Nutrition planning services" },
+      { icon: "🕐", text: "24/7 access for premium members" },
+    ],
+  },
+  services: {
+    enabled: true,
+    sectionTitle: "Our Services",
+    sectionSubtitle: "Everything you need to achieve your fitness goals",
+    items: [
+      { icon: "🏃", title: "Cardio Training", description: "Improve your cardiovascular health with our state-of-the-art cardio equipment including treadmills, ellipticals, and stationary bikes." },
+      { icon: "💪", title: "Weight Lifting", description: "Build strength and muscle with our extensive free weights area, power racks, and resistance machines for all fitness levels." },
+      { icon: "👤", title: "Personal Training", description: "Get personalized workout plans and one-on-one coaching from our certified trainers to maximize your results." },
+      { icon: "🥗", title: "Nutrition Plans", description: "Our nutrition experts will create customized meal plans to complement your fitness routine and help you reach your goals faster." },
+      { icon: "👥", title: "Group Classes", description: "Join our energetic group classes including yoga, HIIT, spin, and Zumba for motivation and community support." },
+      { icon: "🧘", title: "Recovery Services", description: "Enhance your recovery with our sauna, massage therapy, and physiotherapy services to keep you performing at your best." },
+    ],
+  },
+  pricing: {
+    enabled: true,
+    sectionTitle: "Fitness Plans",
+    sectionSubtitle: "Choose the perfect plan for your fitness journey",
+    plans: [
+      {
+        name: "Basic", price: "$29", period: "/month", description: "Perfect for beginners", popular: false, badge: "", ctaText: "Get Started", ctaVariant: "secondary",
+        features: [
+          { text: "Gym Access", enabled: true },
+          { text: "Basic Equipment", enabled: true },
+          { text: "Locker Room", enabled: true },
+          { text: "Personal Trainer", enabled: false },
+          { text: "Group Classes", enabled: false },
+          { text: "Nutrition Plan", enabled: false },
+        ],
+      },
+      {
+        name: "Pro", price: "$59", period: "/month", description: "Best value for regulars", popular: true, badge: "Most Popular", ctaText: "Get Started", ctaVariant: "primary",
+        features: [
+          { text: "Gym Access 24/7", enabled: true },
+          { text: "All Equipment", enabled: true },
+          { text: "Locker Room + Towel", enabled: true },
+          { text: "4 Personal Training Sessions", enabled: true },
+          { text: "All Group Classes", enabled: true },
+          { text: "Nutrition Plan", enabled: true },
+        ],
+      },
+      {
+        name: "Elite", price: "$99", period: "/month", description: "Ultimate fitness experience", popular: false, badge: "", ctaText: "Get Started", ctaVariant: "secondary",
+        features: [
+          { text: "Everything in Pro", enabled: true },
+          { text: "Unlimited Personal Training", enabled: true },
+          { text: "Custom Nutrition Plan", enabled: true },
+          { text: "Recovery Services", enabled: true },
+          { text: "Guest Passes", enabled: true },
+          { text: "Priority Booking", enabled: true },
+        ],
+      },
+    ],
+  },
+  trainers: {
+    enabled: true,
+    sectionTitle: "Meet Our Trainers",
+    sectionSubtitle: "Expert coaches dedicated to your success",
+    items: [
+      { image: IMG.trainer1, name: "Alex Johnson", role: "Strength & Conditioning", bio: "10+ years experience in strength training and bodybuilding coaching." },
+      { image: IMG.trainer2, name: "Maria Rodriguez", role: "Yoga & Mobility", bio: "Certified yoga instructor with specialization in mobility and injury prevention." },
+      { image: IMG.trainer3, name: "James Wilson", role: "HIIT & Cardio", bio: "HIIT specialist with 8 years experience transforming clients through high-intensity workouts." },
+      { image: IMG.trainer4, name: "Sarah Chen", role: "Nutrition & Wellness", bio: "Registered dietitian helping clients achieve their goals through proper nutrition." },
+    ],
+  },
+  testimonials: {
+    enabled: true,
+    sectionTitle: "What Our Members Say",
+    sectionSubtitle: "Real stories from real people",
+    items: [
+      { quote: "I've been a member at Iron Peak for 2 years now and it's completely transformed my life. The trainers are incredibly supportive and the community is amazing. I've lost 40 pounds and gained so much confidence!", author: "Michael Thompson", meta: "Member for 2 years", initials: "MT" },
+      { quote: "The personal training program at Iron Peak is worth every penny. My trainer James created a customized plan that helped me build muscle and increase my strength beyond what I thought was possible. Highly recommend!", author: "Jessica Lee", meta: "Member for 1 year", initials: "JL" },
+      { quote: "As a beginner, I was nervous about joining a gym, but the staff at Iron Peak made me feel welcome from day one. The group classes are fun and challenging, and I've made great friends along the way!", author: "David Park", meta: "Member for 6 months", initials: "DP" },
+    ],
+  },
+  blog: {
+    enabled: true,
+    sectionTitle: "Latest From Our Blog",
+    sectionSubtitle: "Tips, guides, and insights for your fitness journey",
+    items: [
+      { image: IMG.blog1, date: "Dec 8, 2025", category: "Nutrition", title: "10 Protein-Rich Foods to Fuel Your Workouts", description: "Discover the best protein sources to support muscle growth and recovery after intense training sessions." },
+      { image: IMG.blog2, date: "Dec 5, 2025", category: "Training", title: "How to Build a Sustainable Workout Routine", description: "Learn the secrets to creating a fitness routine that fits your lifestyle and keeps you motivated long-term." },
+      { image: IMG.blog3, date: "Dec 1, 2025", category: "Wellness", title: "The Importance of Rest Days in Your Training", description: "Why recovery is just as important as your workouts and how to optimize your rest days for maximum results." },
+    ],
+  },
+  contact: {
+    enabled: true,
+    sectionTitle: "Get In Touch",
+    sectionSubtitle: "Ready to start your fitness journey? Contact us today!",
+    form: {
+      namePlaceholder: "John Doe",
+      emailPlaceholder: "john@example.com",
+      phonePlaceholder: "(555) 123-4567",
+      messagePlaceholder: "Tell us about your fitness goals...",
+      buttonText: "Send Message",
+      successMessage: "Thank you for your message! We will get back to you soon.",
+    },
+    items: [
+      { icon: "📍", title: "Our Location", text: "123 Fitness Street<br />New York, NY 10001" },
+      { icon: "🕐", title: "Opening Hours", text: "Mon-Fri: 5:00 AM - 11:00 PM<br />Sat-Sun: 7:00 AM - 9:00 PM" },
+      { icon: "📞", title: "Phone", text: "(555) 123-4567" },
+      { icon: "✉️", title: "Email", text: "info@ironpeakfitness.com" },
+    ],
+  },
+  footer: {
+    enabled: true,
+    description: "Iron Peak Fitness helps you push limits, build strength, and stay motivated. Train harder, live stronger, and become your best self.",
+    socialLinks: [
+      { icon: "bi bi-facebook", url: "#" },
+      { icon: "bi bi-instagram", url: "#" },
+      { icon: "bi bi-youtube", url: "#" },
+      { icon: "bi bi-twitter-x", url: "#" },
+    ],
+    quickLinks: [
+      { label: "Home", href: "#home" },
+      { label: "About", href: "#about" },
+      { label: "Services", href: "#services" },
+      { label: "Pricing", href: "#pricing" },
+      { label: "Trainers", href: "#trainers" },
+      { label: "Contact", href: "#contact" },
+    ],
+    programs: [
+      { label: "Personal Training", href: "#" },
+      { label: "Group Classes", href: "#" },
+      { label: "Weight Lifting", href: "#" },
+      { label: "Cardio Training", href: "#" },
+      { label: "Nutrition Plans", href: "#" },
+      { label: "Recovery Services", href: "#" },
+    ],
+    contactInfo: [
+      { icon: "bi bi-geo-alt", text: "123 Fitness Street, New York" },
+      { icon: "bi bi-telephone", text: "(555) 123-4567" },
+      { icon: "bi bi-envelope", text: "info@ironpeakfitness.com" },
+      { icon: "bi bi-clock", text: "Mon-Fri: 5AM-11PM" },
+      { icon: "bi bi-clock", text: "Sat-Sun: 7AM-9PM" },
+    ],
+    copyright: "© 2025 Iron Peak Fitness. All rights reserved.",
+    logo: "IRON",
+    logoSuffix: "PEAK",
+  },
+};
+
 export default function IronPeakTemplate(props: IronPeakProps) {
   const { store, banners, settings, products, slug } = props;
   const sectionRef = useRef<HTMLElement | null>(null);
+
+  const ip = settings.ironpeakSettings || {};
+
+  const nav = { ...DEFAULT.nav, ...ip.nav };
+  const preloader = { ...DEFAULT.preloader, ...ip.preloader };
+  const hero = { ...DEFAULT.hero, ...ip.hero };
+  const about = { ...DEFAULT.about, ...ip.about };
+  const services = { ...DEFAULT.services, ...ip.services };
+  const pricing = { ...DEFAULT.pricing, ...ip.pricing };
+  const trainers = { ...DEFAULT.trainers, ...ip.trainers };
+  const testimonials = { ...DEFAULT.testimonials, ...ip.testimonials };
+  const blog = { ...DEFAULT.blog, ...ip.blog };
+  const contact = { ...DEFAULT.contact, ...ip.contact };
+  const footer = { ...DEFAULT.footer, ...ip.footer };
 
   useEffect(() => {
     const style = document.createElement("style");
@@ -45,17 +243,17 @@ export default function IronPeakTemplate(props: IronPeakProps) {
     `;
     document.head.appendChild(style);
 
-    const preloader = document.getElementById("ip-preloader");
+    const preloaderEl = document.getElementById("ip-preloader");
     const scrollBtn = document.getElementById("ip-scroll-top");
     const scrollProgress = document.querySelector(".ip-scroll-progress") as HTMLElement;
     const navbar = document.getElementById("ip-navbar");
     const mobileMenu = document.querySelector(".ip-mobile-menu") as HTMLElement;
     const navLinks = document.querySelector(".ip-nav-links") as HTMLElement;
 
-    if (preloader) {
+    if (preloaderEl) {
       setTimeout(() => {
-        preloader.style.opacity = "0";
-        preloader.style.visibility = "hidden";
+        preloaderEl.style.opacity = "0";
+        preloaderEl.style.visibility = "hidden";
       }, 1500);
     }
 
@@ -91,12 +289,11 @@ export default function IronPeakTemplate(props: IronPeakProps) {
     if (contactForm) {
       contactForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        alert("Thank you for your message! We will get back to you soon.");
+        alert(contact.form?.successMessage || "Thank you for your message! We will get back to you soon.");
         contactForm.reset();
       });
     }
 
-    // Scroll animations
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -116,7 +313,6 @@ export default function IronPeakTemplate(props: IronPeakProps) {
 
     document.querySelectorAll("section").forEach((section) => observer.observe(section));
 
-    // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       anchor.addEventListener("click", (e) => {
         e.preventDefault();
@@ -130,7 +326,6 @@ export default function IronPeakTemplate(props: IronPeakProps) {
       });
     });
 
-    // Ripple effect on buttons
     document.querySelectorAll(".ip-btn").forEach((btn) => {
       btn.addEventListener("click", (e: any) => {
         const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
@@ -145,7 +340,6 @@ export default function IronPeakTemplate(props: IronPeakProps) {
       });
     });
 
-    // Close mobile menu on link click
     document.querySelectorAll(".ip-nav-links a").forEach((link) => {
       link.addEventListener("click", () => {
         if (window.innerWidth <= 768 && navLinks) {
@@ -225,7 +419,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         .ip-mobile-menu.active span:nth-child(3){transform:rotate(-45deg) translate(7px,-6px)}
 
         /* Hero */
-        .ip-hero{padding:0;transform:translateY(0);height:100vh;background:linear-gradient(135deg,rgba(15,15,15,.8),rgba(30,30,30,.9)) center/cover fixed,url(${IMG.heroBg}) center/cover fixed;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+        .ip-hero{padding:0;transform:translateY(0);height:100vh;background:linear-gradient(135deg,rgba(15,15,15,.8),rgba(30,30,30,.9)) center/cover fixed,url(${hero.backgroundImage}) center/cover fixed;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
         .ip-hero::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 30% 50%,rgba(255,107,53,.1),transparent 50%),radial-gradient(circle at 70% 50%,rgba(247,147,30,.1),transparent 50%);animation:8s ease-in-out infinite ipPulse}
         @keyframes ipPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
         .ip-hero-content{position:relative;z-index:1;max-width:900px;padding:2rem;animation:1s ipFadeInUp}
@@ -436,7 +630,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
       `}</style>
 
       <div className="ip-root">
-        {/* Preloader */}
+        {preloader.enabled !== false && (
         <div id="ip-preloader">
           <div className="ip-preloader-content">
             <div className="ip-dumbbell-loader">
@@ -444,13 +638,14 @@ export default function IronPeakTemplate(props: IronPeakProps) {
               <div className="ip-dumbbell-weight ip-left-weight"></div>
               <div className="ip-dumbbell-weight ip-right-weight"></div>
             </div>
-            <div className="ip-preloader-logo">IRONPEAK</div>
+            <div className="ip-preloader-logo">{preloader.logo}</div>
             <div className="ip-loading-bar">
               <div className="ip-loading-progress"></div>
             </div>
-            <div className="ip-preloader-text">Loading Your Fitness Journey...</div>
+            <div className="ip-preloader-text">{preloader.text}</div>
           </div>
         </div>
+        )}
 
         {/* Scroll Progress Bar */}
         <div className="ip-scroll-progress"></div>
@@ -463,16 +658,11 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         {/* Navigation */}
         <nav id="ip-navbar">
           <div className="ip-nav-container">
-            <a href="#home" className="ip-logo">IRON<span>PEAK</span></a>
+            <a href="#home" className="ip-logo">{nav.logo}<span>{nav.logoSuffix}</span></a>
             <ul className="ip-nav-links">
-              <li><a href="#home" className="active">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#services">Services</a></li>
-              <li><a href="#pricing">Pricing</a></li>
-              <li><a href="#trainers">Trainers</a></li>
-              <li><a href="#testimonials">Testimonials</a></li>
-              <li><a href="#blog">Blog</a></li>
-              <li><a href="#contact">Contact</a></li>
+              {nav.links.map((link: any, i: number) => (
+                <li key={i}><a href={link.href || "#"}>{link.label}</a></li>
+              ))}
             </ul>
             <div className="ip-mobile-menu">
               <span></span>
@@ -483,153 +673,111 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         </nav>
 
         {/* Hero */}
+        {hero.enabled !== false && (
         <section id="home" className="ip-hero">
           <div className="ip-hero-content">
-            <h1>TRANSFORM YOUR BODY, TRANSFORM YOUR LIFE</h1>
-            <p>Join Iron Peak Fitness and experience world-class training with state-of-the-art equipment and expert trainers. Start your fitness journey today and achieve the results you've always wanted.</p>
+            <h1>{hero.title}</h1>
+            <p>{hero.subtitle}</p>
             <div className="ip-cta-buttons">
-              <a href="#pricing" className="ip-btn ip-btn-primary">Join Now</a>
-              <a href="#about" className="ip-btn ip-btn-secondary">Learn More</a>
+              <a href={hero.primaryCta?.href || "#pricing"} className="ip-btn ip-btn-primary">{hero.primaryCta?.text || "Join Now"}</a>
+              <a href={hero.secondaryCta?.href || "#about"} className="ip-btn ip-btn-secondary">{hero.secondaryCta?.text || "Learn More"}</a>
             </div>
           </div>
         </section>
+        )}
 
         {/* About */}
+        {about.enabled !== false && (
         <section id="about" className="ip-about">
           <div className="ip-container">
             <div className="ip-section-header">
-              <h2>About Us</h2>
-              <p>We're More Than Just A Gym</p>
+              <h2>{about.sectionTitle}</h2>
+              <p>{about.sectionSubtitle}</p>
             </div>
             <div className="ip-about-content">
               <div className="ip-about-text">
-                <h3>Your Fitness Journey Starts Here</h3>
-                <p>At Iron Peak Fitness, we believe fitness is a journey, not a destination. Our mission is to provide a supportive environment where everyone, from beginners to athletes, can achieve their fitness goals.</p>
-                <p>With over 10 years of experience in the fitness industry, our certified trainers are dedicated to helping you transform your body and improve your overall health.</p>
+                <h3>{about.heading}</h3>
+                <p>{about.paragraph1}</p>
+                <p>{about.paragraph2}</p>
                 <div className="ip-features-grid">
-                  <div className="ip-feature-item">
-                    <div className="ip-feature-icon">🏋️</div>
-                    <div><strong>State-of-the-art equipment</strong></div>
-                  </div>
-                  <div className="ip-feature-item">
-                    <div className="ip-feature-icon">👨‍🏫</div>
-                    <div><strong>Certified personal trainers</strong></div>
-                  </div>
-                  <div className="ip-feature-item">
-                    <div className="ip-feature-icon">🥗</div>
-                    <div><strong>Nutrition planning services</strong></div>
-                  </div>
-                  <div className="ip-feature-item">
-                    <div className="ip-feature-icon">🕐</div>
-                    <div><strong>24/7 access for premium members</strong></div>
-                  </div>
+                  {about.features.map((f: any, i: number) => (
+                    <div key={i} className="ip-feature-item">
+                      <div className="ip-feature-icon">{f.icon}</div>
+                      <div><strong>{f.text}</strong></div>
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className="ip-about-image">
-                <img src={IMG.about} alt="About" />
+                <img src={about.image} alt="About" />
               </div>
             </div>
           </div>
         </section>
+        )}
 
         {/* Services */}
+        {services.enabled !== false && (
         <section id="services" className="ip-services">
           <div className="ip-container">
             <div className="ip-section-header">
-              <h2>Our Services</h2>
-              <p>Everything you need to achieve your fitness goals</p>
+              <h2>{services.sectionTitle}</h2>
+              <p>{services.sectionSubtitle}</p>
             </div>
             <div className="ip-services-grid">
-              {[
-                { icon: "🏃", title: "Cardio Training", desc: "Improve your cardiovascular health with our state-of-the-art cardio equipment including treadmills, ellipticals, and stationary bikes." },
-                { icon: "💪", title: "Weight Lifting", desc: "Build strength and muscle with our extensive free weights area, power racks, and resistance machines for all fitness levels." },
-                { icon: "👤", title: "Personal Training", desc: "Get personalized workout plans and one-on-one coaching from our certified trainers to maximize your results." },
-                { icon: "🥗", title: "Nutrition Plans", desc: "Our nutrition experts will create customized meal plans to complement your fitness routine and help you reach your goals faster." },
-                { icon: "👥", title: "Group Classes", desc: "Join our energetic group classes including yoga, HIIT, spin, and Zumba for motivation and community support." },
-                { icon: "🧘", title: "Recovery Services", desc: "Enhance your recovery with our sauna, massage therapy, and physiotherapy services to keep you performing at your best." },
-              ].map((s, i) => (
+              {services.items.map((s: any, i: number) => (
                 <div key={i} className="ip-service-card">
                   <div className="ip-service-icon">{s.icon}</div>
                   <h3>{s.title}</h3>
-                  <p>{s.desc}</p>
+                  <p>{s.description}</p>
                   <a href="#contact" className="ip-btn ip-btn-primary ip-joinnow">Join Now</a>
                 </div>
               ))}
             </div>
           </div>
         </section>
+        )}
 
         {/* Pricing */}
+        {pricing.enabled !== false && (
         <section id="pricing" className="ip-pricing">
           <div className="ip-container">
             <div className="ip-section-header">
-              <h2>Fitness Plans</h2>
-              <p>Choose the perfect plan for your fitness journey</p>
+              <h2>{pricing.sectionTitle}</h2>
+              <p>{pricing.sectionSubtitle}</p>
             </div>
             <div className="ip-pricing-grid">
-              <div className="ip-pricing-card">
-                <h3>Basic</h3>
-                <div className="ip-price">$29<span>/month</span></div>
-                <p>Perfect for beginners</p>
-                <ul className="ip-features-list">
-                  <li>Gym Access</li>
-                  <li>Basic Equipment</li>
-                  <li>Locker Room</li>
-                  <li className="disabled">Personal Trainer</li>
-                  <li className="disabled">Group Classes</li>
-                  <li className="disabled">Nutrition Plan</li>
-                </ul>
-                <a href="#contact" className="ip-btn ip-btn-secondary">Get Started</a>
-              </div>
-              <div className="ip-pricing-card featured">
-                <div className="ip-pricing-badge">Most Popular</div>
-                <h3>Pro</h3>
-                <div className="ip-price">$59<span>/month</span></div>
-                <p>Best value for regulars</p>
-                <ul className="ip-features-list">
-                  <li>Gym Access 24/7</li>
-                  <li>All Equipment</li>
-                  <li>Locker Room + Towel</li>
-                  <li>4 Personal Training Sessions</li>
-                  <li>All Group Classes</li>
-                  <li>Nutrition Plan</li>
-                </ul>
-                <a href="#contact" className="ip-btn ip-btn-primary">Get Started</a>
-              </div>
-              <div className="ip-pricing-card">
-                <h3>Elite</h3>
-                <div className="ip-price">$99<span>/month</span></div>
-                <p>Ultimate fitness experience</p>
-                <ul className="ip-features-list">
-                  <li>Everything in Pro</li>
-                  <li>Unlimited Personal Training</li>
-                  <li>Custom Nutrition Plan</li>
-                  <li>Recovery Services</li>
-                  <li>Guest Passes</li>
-                  <li>Priority Booking</li>
-                </ul>
-                <a href="#contact" className="ip-btn ip-btn-secondary">Get Started</a>
-              </div>
+              {pricing.plans.map((plan: any, idx: number) => (
+                <div key={idx} className={`ip-pricing-card ${plan.popular ? "featured" : ""}`}>
+                  {plan.badge && <div className="ip-pricing-badge">{plan.badge}</div>}
+                  <h3>{plan.name}</h3>
+                  <div className="ip-price">{plan.price}<span>{plan.period || "/month"}</span></div>
+                  <p>{plan.description}</p>
+                  <ul className="ip-features-list">
+                    {plan.features.map((f: any, fi: number) => (
+                      <li key={fi} className={f.enabled === false ? "disabled" : ""}>{f.text}</li>
+                    ))}
+                  </ul>
+                  <a href="#contact" className={`ip-btn ${plan.ctaVariant === "primary" ? "ip-btn-primary" : "ip-btn-secondary"}`}>{plan.ctaText || "Get Started"}</a>
+                </div>
+              ))}
             </div>
           </div>
         </section>
+        )}
 
         {/* Trainers */}
+        {trainers.enabled !== false && (
         <section id="trainers" className="ip-trainers">
           <div className="ip-container">
             <div className="ip-section-header">
-              <h2>Meet Our Trainers</h2>
-              <p>Expert coaches dedicated to your success</p>
+              <h2>{trainers.sectionTitle}</h2>
+              <p>{trainers.sectionSubtitle}</p>
             </div>
             <div className="ip-trainers-grid">
-              {[
-                { img: IMG.trainer1, name: "Alex Johnson", role: "Strength & Conditioning", bio: "10+ years experience in strength training and bodybuilding coaching." },
-                { img: IMG.trainer2, name: "Maria Rodriguez", role: "Yoga & Mobility", bio: "Certified yoga instructor with specialization in mobility and injury prevention." },
-                { img: IMG.trainer3, name: "James Wilson", role: "HIIT & Cardio", bio: "HIIT specialist with 8 years experience transforming clients through high-intensity workouts." },
-                { img: IMG.trainer4, name: "Sarah Chen", role: "Nutrition & Wellness", bio: "Registered dietitian helping clients achieve their goals through proper nutrition." },
-              ].map((t, i) => (
+              {trainers.items.map((t: any, i: number) => (
                 <div key={i} className="ip-trainer-card">
-                  <div className="ip-trainer-image"><img src={t.img} alt={t.name} /></div>
+                  <div className="ip-trainer-image"><img src={t.image} alt={t.name} /></div>
                   <div className="ip-trainer-info">
                     <h3>{t.name}</h3>
                     <div className="ip-trainer-role">{t.role}</div>
@@ -640,20 +788,18 @@ export default function IronPeakTemplate(props: IronPeakProps) {
             </div>
           </div>
         </section>
+        )}
 
         {/* Testimonials */}
+        {testimonials.enabled !== false && (
         <section id="testimonials" className="ip-testimonials">
           <div className="ip-container">
             <div className="ip-section-header">
-              <h2>What Our Members Say</h2>
-              <p>Real stories from real people</p>
+              <h2>{testimonials.sectionTitle}</h2>
+              <p>{testimonials.sectionSubtitle}</p>
             </div>
             <div className="ip-testimonials-grid">
-              {[
-                { quote: "I've been a member at Iron Peak for 2 years now and it's completely transformed my life. The trainers are incredibly supportive and the community is amazing. I've lost 40 pounds and gained so much confidence!", author: "Michael Thompson", meta: "Member for 2 years", initials: "MT" },
-                { quote: "The personal training program at Iron Peak is worth every penny. My trainer James created a customized plan that helped me build muscle and increase my strength beyond what I thought was possible. Highly recommend!", author: "Jessica Lee", meta: "Member for 1 year", initials: "JL" },
-                { quote: "As a beginner, I was nervous about joining a gym, but the staff at Iron Peak made me feel welcome from day one. The group classes are fun and challenging, and I've made great friends along the way!", author: "David Park", meta: "Member for 6 months", initials: "DP" },
-              ].map((t, i) => (
+              {testimonials.items.map((t: any, i: number) => (
                 <div key={i} className="ip-testimonial-card">
                   <div className="ip-quote-icon">"</div>
                   <p className="ip-testimonial-text">{t.quote}</p>
@@ -669,29 +815,27 @@ export default function IronPeakTemplate(props: IronPeakProps) {
             </div>
           </div>
         </section>
+        )}
 
         {/* Blog */}
+        {blog.enabled !== false && (
         <section id="blog" className="ip-blog">
           <div className="ip-container">
             <div className="ip-section-header">
-              <h2>Latest From Our Blog</h2>
-              <p>Tips, guides, and insights for your fitness journey</p>
+              <h2>{blog.sectionTitle}</h2>
+              <p>{blog.sectionSubtitle}</p>
             </div>
             <div className="ip-blog-grid">
-              {[
-                { img: IMG.blog1, date: "Dec 8, 2025", cat: "Nutrition", title: "10 Protein-Rich Foods to Fuel Your Workouts", desc: "Discover the best protein sources to support muscle growth and recovery after intense training sessions." },
-                { img: IMG.blog2, date: "Dec 5, 2025", cat: "Training", title: "How to Build a Sustainable Workout Routine", desc: "Learn the secrets to creating a fitness routine that fits your lifestyle and keeps you motivated long-term." },
-                { img: IMG.blog3, date: "Dec 1, 2025", cat: "Wellness", title: "The Importance of Rest Days in Your Training", desc: "Why recovery is just as important as your workouts and how to optimize your rest days for maximum results." },
-              ].map((b, i) => (
+              {blog.items.map((b: any, i: number) => (
                 <div key={i} className="ip-blog-card">
-                  <div className="ip-blog-image"><img src={b.img} alt={b.title} /></div>
+                  <div className="ip-blog-image"><img src={b.image} alt={b.title} /></div>
                   <div className="ip-blog-content">
                     <div className="ip-blog-meta">
                       <span className="ip-blog-date">{b.date}</span>
-                      <span className="ip-blog-category">{b.cat}</span>
+                      <span className="ip-blog-category">{b.category}</span>
                     </div>
                     <h3>{b.title}</h3>
-                    <p>{b.desc}</p>
+                    <p>{b.description}</p>
                     <a href="#" className="ip-read-more">Read More</a>
                   </div>
                 </div>
@@ -699,116 +843,92 @@ export default function IronPeakTemplate(props: IronPeakProps) {
             </div>
           </div>
         </section>
+        )}
 
         {/* Contact */}
+        {contact.enabled !== false && (
         <section id="contact" className="ip-contact">
           <div className="ip-container">
             <div className="ip-section-header">
-              <h2>Get In Touch</h2>
-              <p>Ready to start your fitness journey? Contact us today!</p>
+              <h2>{contact.sectionTitle}</h2>
+              <p>{contact.sectionSubtitle}</p>
             </div>
             <div className="ip-contact-content">
               <form className="ip-contact-form" onSubmit={(e) => e.preventDefault()}>
                 <div className="ip-form-group">
                   <label>Your Name</label>
-                  <input type="text" placeholder="John Doe" required />
+                  <input type="text" placeholder={contact.form?.namePlaceholder || "John Doe"} required />
                 </div>
                 <div className="ip-form-group">
                   <label>Email Address</label>
-                  <input type="email" placeholder="john@example.com" required />
+                  <input type="email" placeholder={contact.form?.emailPlaceholder || "john@example.com"} required />
                 </div>
                 <div className="ip-form-group">
                   <label>Phone Number</label>
-                  <input type="tel" placeholder="(555) 123-4567" />
+                  <input type="tel" placeholder={contact.form?.phonePlaceholder || "(555) 123-4567"} />
                 </div>
                 <div className="ip-form-group">
                   <label>Message</label>
-                  <textarea placeholder="Tell us about your fitness goals..."></textarea>
+                  <textarea placeholder={contact.form?.messagePlaceholder || "Tell us about your fitness goals..."}></textarea>
                 </div>
-                <button type="submit" className="ip-btn ip-btn-primary">Send Message</button>
+                <button type="submit" className="ip-btn ip-btn-primary">{contact.form?.buttonText || "Send Message"}</button>
               </form>
               <div className="ip-contact-info">
-                <div className="ip-info-item">
-                  <div className="ip-info-icon">📍</div>
-                  <div className="ip-info-content">
-                    <h3>Our Location</h3>
-                    <p>123 Fitness Street<br />New York, NY 10001</p>
+                {contact.items.map((item: any, i: number) => (
+                  <div key={i} className="ip-info-item">
+                    <div className="ip-info-icon">{item.icon}</div>
+                    <div className="ip-info-content">
+                      <h3>{item.title}</h3>
+                      <p dangerouslySetInnerHTML={{ __html: item.text }} />
+                    </div>
                   </div>
-                </div>
-                <div className="ip-info-item">
-                  <div className="ip-info-icon">🕐</div>
-                  <div className="ip-info-content">
-                    <h3>Opening Hours</h3>
-                    <p>Mon-Fri: 5:00 AM - 11:00 PM<br />Sat-Sun: 7:00 AM - 9:00 PM</p>
-                  </div>
-                </div>
-                <div className="ip-info-item">
-                  <div className="ip-info-icon">📞</div>
-                  <div className="ip-info-content">
-                    <h3>Phone</h3>
-                    <p>(555) 123-4567</p>
-                  </div>
-                </div>
-                <div className="ip-info-item">
-                  <div className="ip-info-icon">✉️</div>
-                  <div className="ip-info-content">
-                    <h3>Email</h3>
-                    <p>info@ironpeakfitness.com</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
+        )}
 
         {/* Footer */}
+        {footer.enabled !== false && (
         <footer className="ip-footer">
           <div className="ip-footer-content">
             <div className="ip-footer-section brand">
-              <h3 className="ip-logo" style={{ fontSize: "1.8rem", display: "inline-block", marginBottom: "1rem" }}>IRON<span>PEAK</span></h3>
-              <p>Iron Peak Fitness helps you push limits, build strength, and stay motivated. Train harder, live stronger, and become your best self.</p>
+              <h3 className="ip-logo" style={{ fontSize: "1.8rem", display: "inline-block", marginBottom: "1rem" }}>{footer.logo}<span>{footer.logoSuffix}</span></h3>
+              <p>{footer.description}</p>
               <div className="ip-social-links">
-                <a href="#"><i className="bi bi-facebook"></i></a>
-                <a href="#"><i className="bi bi-instagram"></i></a>
-                <a href="#"><i className="bi bi-youtube"></i></a>
-                <a href="#"><i className="bi bi-twitter-x"></i></a>
+                {footer.socialLinks.map((s: any, i: number) => (
+                  <a key={i} href={s.url}><i className={s.icon}></i></a>
+                ))}
               </div>
             </div>
             <div className="ip-footer-section">
               <h3>Quick Links</h3>
               <ul className="ip-footer-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#pricing">Pricing</a></li>
-                <li><a href="#trainers">Trainers</a></li>
-                <li><a href="#contact">Contact</a></li>
+                {footer.quickLinks.map((l: any, i: number) => (
+                  <li key={i}><a href={l.href}>{l.label}</a></li>
+                ))}
               </ul>
             </div>
             <div className="ip-footer-section">
               <h3>Programs</h3>
               <ul className="ip-footer-links">
-                <li><a href="#">Personal Training</a></li>
-                <li><a href="#">Group Classes</a></li>
-                <li><a href="#">Weight Lifting</a></li>
-                <li><a href="#">Cardio Training</a></li>
-                <li><a href="#">Nutrition Plans</a></li>
-                <li><a href="#">Recovery Services</a></li>
+                {footer.programs.map((p: any, i: number) => (
+                  <li key={i}><a href={p.href}>{p.label}</a></li>
+                ))}
               </ul>
             </div>
             <div className="ip-footer-section">
               <h3>Contact Info</h3>
               <ul className="ip-footer-links">
-                <li><i className="bi bi-geo-alt"></i> 123 Fitness Street, New York</li>
-                <li><i className="bi bi-telephone"></i> (555) 123-4567</li>
-                <li><i className="bi bi-envelope"></i> info@ironpeakfitness.com</li>
-                <li><i className="bi bi-clock"></i> Mon-Fri: 5AM-11PM</li>
-                <li><i className="bi bi-clock"></i> Sat-Sun: 7AM-9PM</li>
+                {footer.contactInfo.map((c: any, i: number) => (
+                  <li key={i}><i className={c.icon}></i> {c.text}</li>
+                ))}
               </ul>
             </div>
           </div>
           <div className="ip-footer-bottom">
-            <p>&copy; 2025 Iron Peak Fitness. All rights reserved.</p>
+            <p>{footer.copyright}</p>
             <p className="ip-legal-links">
               <a href="#">Terms</a>
               <span>&bull;</span>
@@ -818,6 +938,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
             </p>
           </div>
         </footer>
+        )}
       </div>
     </>
   );
