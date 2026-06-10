@@ -74,7 +74,8 @@ export default async function AdminLayout({
   const is2M = store.template === '2m';
   const isIronPeak = store.template === 'ironpeak';
   const is2H = store.template === '2h';
-  const hasTemplateSections = isIronPeak || is2H;
+  const isHayler = store.template === 'hayler';
+  const hasTemplateSections = isIronPeak || is2H || isHayler;
 
   const mainItems = isWebsite ? [
     { label: t('overview'), iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },

@@ -8,6 +8,7 @@ import MomoTemplate from '@/components/templates/MomoTemplate';
 import OneMTemplate from '@/components/templates/1MTemplate';
 import TwoMTemplate from '@/components/templates/TwoMTemplate';
 import TwoHTemplate from '@/components/templates/TwoHTemplate';
+import HaylerTemplate from '@/components/templates/HaylerTemplate';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Link from 'next/link';
@@ -81,6 +82,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
     };
 
     switch (templateId) {
+      case 'hayler': return <HaylerTemplate {...commonProps} />;
       case '2h': return <TwoHTemplate {...commonProps} />;
       case 'fitness': return <FitnessTemplate {...commonProps} />;
       case 'modern': return <ModernTemplate {...commonProps} />;

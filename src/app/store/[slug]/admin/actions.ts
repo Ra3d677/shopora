@@ -365,6 +365,7 @@ export async function toggleTemplateStatusAction(templateId: string, currentStat
 const SEED_TEMPLATES = [
   { id: "2h", name: "2H Theme", description: "Fitness Center – نموذج متكامل لمراكز اللياقة البدنية مع سلايدر، معرض صور، فئات تدريب، تسعير، مدربين، مدونة وقسم فيديو", preview: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" },
   { id: "ironpeak", name: "Iron Peak Fitness", description: "Iron Peak – Health, Gym & Fitness Center - Personal Trainer HTML5 Template", preview: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" },
+  { id: "hayler", name: "Hayler", description: "Hayler – Creative Portfolio & Agency HTML Template with showcase slider, portfolio grid, clients marquee, services & AJAX navigation", preview: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80" },
   { id: "2m", name: "2M", description: "إلكترونيات - تصميم عصري بألوان صفراء وردية مناسب لمتاجر الإلكترونيات والتكنولوجيا.", preview: "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=800&q=80" },
 ];
 
