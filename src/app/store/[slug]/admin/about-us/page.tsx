@@ -1,6 +1,6 @@
 import { getStoreBySlug } from "@/lib/data";
-import AboutUsManager from "./AboutUsManager";
 import TwoMAboutUsManager from "./TwoMAboutUsManager";
+import IronPeakAboutUsManager from "./IronPeakAboutUsManager";
 import { notFound } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
@@ -9,12 +9,16 @@ export default async function AdminAboutUsPage({ params }: { params: Promise<{ s
   const { slug } = await params;
   const store = await getStoreBySlug(slug);
   if (!store) notFound();
-  
+
   if (store.template === '2m') {
     const twoMAboutUs = store.settings?.twoMAboutUs || null;
     return <TwoMAboutUsManager slug={slug} initialContent={twoMAboutUs} />;
   }
 
-  const aboutUsContent = store.settings?.aboutUsContent || null;
-  return <AboutUsManager slug={slug} initialContent={aboutUsContent} />;
+  if (store.template === 'ironpeak') {
+    const ipSettings = store.settings?.ironpeakSettings || {};
+    return <IronPeakAboutUsManager slug={slug} initialSettings={ipSettings} />;
+  }
+
+  return <div className="max-w-4xl mx-auto p-8 text-center text-slate-400 text-sm">This template does not support a dedicated About Us editor.</div>;
 }
