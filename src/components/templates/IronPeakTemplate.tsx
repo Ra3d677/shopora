@@ -432,10 +432,10 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         .ip-mobile-menu.active span:nth-child(3){transform:rotate(-45deg) translate(7px,-6px)}
 
         /* Hero */
-        .ip-hero{padding:0;transform:translateY(0);height:100vh;background:linear-gradient(135deg,rgba(15,15,15,.8),rgba(30,30,30,.9)) center/cover fixed,url(${hero.backgroundImage}) center/cover fixed;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
-        .ip-hero::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 30% 50%,rgba(255,107,53,.1),transparent 50%),radial-gradient(circle at 70% 50%,rgba(247,147,30,.1),transparent 50%);animation:8s ease-in-out infinite ipPulse}
+        .ip-hero{padding:0;transform:translateY(0);height:100vh;background:url(${hero.backgroundImage}) center/cover;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+        .ip-hero::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 30% 50%,rgba(255,107,53,.15),transparent 60%),radial-gradient(circle at 70% 50%,rgba(247,147,30,.1),transparent 60%);animation:8s ease-in-out infinite ipPulse}
         @keyframes ipPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
-        .ip-hero-content{position:relative;z-index:1;max-width:900px;padding:2rem;animation:1s ipFadeInUp}
+        .ip-hero-content{position:relative;z-index:2;max-width:900px;padding:2rem;animation:1s ipFadeInUp}
         @keyframes ipFadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
         .ip-hero h1{font-size:4rem;color:#fff;margin-bottom:1.5rem;font-weight:800;line-height:1.2;text-shadow:2px 2px 20px rgba(0,0,0,.5);animation:3s infinite alternate ipTextGlow}
         @keyframes ipTextGlow{0%{text-shadow:2px 2px 20px rgba(0,0,0,.5)}100%{text-shadow:0 0 30px rgba(255,107,53,.8),2px 2px 20px rgba(0,0,0,.5)}}
@@ -452,15 +452,16 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         .ip-hero-slider{position:absolute;inset:0}
         .ip-hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s;display:flex;align-items:center;justify-content:center}
         .ip-hero-slide.active{opacity:1}
-        .ip-hero-bg-desktop,.ip-hero-bg-mobile{position:absolute;inset:0;background-size:cover;background-position:center}
-        .ip-hero-bg-mobile{display:none}
-        .ip-slider-dots{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:.75rem;z-index:2}
+        .ip-hero-slide-img,.ip-hero-slide-img-mobile{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+        .ip-hero-slide-img-mobile{display:none}
+        .ip-hero-slide-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.4),rgba(0,0,0,.2));z-index:1}
+        .ip-slider-dots{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:.75rem;z-index:3}
         .ip-slider-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.6);background:transparent;cursor:pointer;transition:.3s}
         .ip-slider-dot:hover{border-color:#fff;background:rgba(255,255,255,.3)}
         .ip-slider-dot.active{background:#ff6b35;border-color:#ff6b35}
         @media(max-width:768px){
-          .ip-hero-bg-desktop{display:none}
-          .ip-hero-bg-mobile{display:block}
+          .ip-hero-slide-img{display:none}
+          .ip-hero-slide-img-mobile{display:block}
         }
 
         /* Sections base */
@@ -733,8 +734,9 @@ export default function IronPeakTemplate(props: IronPeakProps) {
             <div className="ip-hero-slider">
               {bannerSlides.map((b: any, i: number) => (
                 <div key={i} className={`ip-hero-slide ${i === currentSlide ? 'active' : ''}`}>
-                  <div className="ip-hero-bg-desktop" style={{ backgroundImage: `url(${b.desktopImage})` }} />
-                  <div className="ip-hero-bg-mobile" style={{ backgroundImage: `url(${b.mobileImage || b.desktopImage})` }} />
+                  <img className="ip-hero-slide-img" src={b.desktopImage} alt="" />
+                  <img className="ip-hero-slide-img-mobile" src={b.mobileImage || b.desktopImage} alt="" />
+                  <div className="ip-hero-slide-overlay" />
                   <div className="ip-hero-content">
                     <h1>{b.title}</h1>
                     <p>{b.subtitle}</p>
