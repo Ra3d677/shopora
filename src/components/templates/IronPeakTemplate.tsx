@@ -449,12 +449,12 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         .ip-btn-secondary:hover{background:#fff;color:#333;transform:translateY(-3px)}
 
         /* Hero slider */
-        .ip-hero-slider{position:absolute;inset:0}
+        .ip-hero-slider{position:absolute;inset:0;z-index:1}
         .ip-hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s;display:flex;align-items:center;justify-content:center}
         .ip-hero-slide.active{opacity:1}
         .ip-hero-slide-img,.ip-hero-slide-img-mobile{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
         .ip-hero-slide-img-mobile{display:none}
-        .ip-hero-slide-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.4),rgba(0,0,0,.2));z-index:1}
+
         .ip-slider-dots{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:.75rem;z-index:3}
         .ip-slider-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.6);background:transparent;cursor:pointer;transition:.3s}
         .ip-slider-dot:hover{border-color:#fff;background:rgba(255,255,255,.3)}
@@ -736,7 +736,6 @@ export default function IronPeakTemplate(props: IronPeakProps) {
                 <div key={i} className={`ip-hero-slide ${i === currentSlide ? 'active' : ''}`}>
                   <img className="ip-hero-slide-img" src={b.desktopImage} alt="" />
                   <img className="ip-hero-slide-img-mobile" src={b.mobileImage || b.desktopImage} alt="" />
-                  <div className="ip-hero-slide-overlay" />
                   <div className="ip-hero-content">
                     <h1>{b.title}</h1>
                     <p>{b.subtitle}</p>
