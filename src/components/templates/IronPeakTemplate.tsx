@@ -463,7 +463,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         }
 
         /* Sections base */
-        section{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s;padding:0;animation:.6s ipFadeIn}
+        section{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s;padding:90px 0;animation:.6s ipFadeIn}
         .ip-hero{opacity:1;transform:translateY(0);padding:0!important;margin:0!important}
         section.visible{opacity:1;transform:translateY(0)}
         .ip-container{max-width:93%;margin:0 auto}
