@@ -1,5 +1,6 @@
 import { getStoreBySlug } from "@/lib/data";
 import BannersManager from "./BannersManager";
+import IronPeakBannersManager from "./IronPeakBannersManager";
 import { notFound } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
@@ -10,6 +11,11 @@ export default async function AdminBannersPage({ params }: { params: Promise<{ s
   
   if (!store) {
     notFound();
+  }
+
+  if (store.template === 'ironpeak') {
+    const ipSettings = store.settings?.ironpeakSettings || {};
+    return <IronPeakBannersManager slug={slug} initialSettings={ipSettings} />;
   }
   
   return (

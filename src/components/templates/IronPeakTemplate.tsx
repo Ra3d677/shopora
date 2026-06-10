@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 interface IronPeakProps {
   store: any;
@@ -226,6 +226,18 @@ export default function IronPeakTemplate(props: IronPeakProps) {
   const blog = { ...DEFAULT.blog, ...ip.blog };
   const contact = { ...DEFAULT.contact, ...ip.contact };
   const footer = { ...DEFAULT.footer, ...ip.footer };
+  const bannerData = ip.banners || [];
+  const bannerSlides = Array.isArray(bannerData) && bannerData.length > 0 ? bannerData : null;
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const goNext = useCallback(() => {
+    if (!bannerSlides) return;
+    setCurrentSlide((prev) => (prev + 1) % bannerSlides.length);
+  }, [bannerSlides]);
+  useEffect(() => {
+    if (!bannerSlides || bannerSlides.length < 2) return;
+    const timer = setInterval(goNext, 5000);
+    return () => clearInterval(timer);
+  }, [bannerSlides, goNext]);
 
   useEffect(() => {
     const style = document.createElement("style");
@@ -434,6 +446,21 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         .ip-btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(255,107,53,.6)}
         .ip-btn-secondary{background:transparent;color:#fff;border:2px solid #fff}
         .ip-btn-secondary:hover{background:#fff;color:#333;transform:translateY(-3px)}
+
+        /* Hero slider */
+        .ip-hero-slider{position:absolute;inset:0}
+        .ip-hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s;display:flex;align-items:center;justify-content:center}
+        .ip-hero-slide.active{opacity:1}
+        .ip-hero-bg-desktop,.ip-hero-bg-mobile{position:absolute;inset:0;background-size:cover;background-position:center}
+        .ip-hero-bg-mobile{display:none}
+        .ip-slider-dots{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:.75rem;z-index:2}
+        .ip-slider-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.6);background:transparent;cursor:pointer;transition:.3s}
+        .ip-slider-dot:hover{border-color:#fff;background:rgba(255,255,255,.3)}
+        .ip-slider-dot.active{background:#ff6b35;border-color:#ff6b35}
+        @media(max-width:768px){
+          .ip-hero-bg-desktop{display:none}
+          .ip-hero-bg-mobile{display:block}
+        }
 
         /* Sections base */
         section{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s;padding:90px 0;animation:.6s ipFadeIn}
@@ -675,14 +702,42 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         {/* Hero */}
         {hero.enabled !== false && (
         <section id="home" className="ip-hero">
-          <div className="ip-hero-content">
-            <h1>{hero.title}</h1>
-            <p>{hero.subtitle}</p>
-            <div className="ip-cta-buttons">
-              <a href={hero.primaryCta?.href || "#pricing"} className="ip-btn ip-btn-primary">{hero.primaryCta?.text || "Join Now"}</a>
-              <a href={hero.secondaryCta?.href || "#about"} className="ip-btn ip-btn-secondary">{hero.secondaryCta?.text || "Learn More"}</a>
+          {bannerSlides ? (
+            <div className="ip-hero-slider">
+              {bannerSlides.map((b: any, i: number) => (
+                <div key={i} className={`ip-hero-slide ${i === currentSlide ? 'active' : ''}`}>
+                  <div className="ip-hero-bg-desktop" style={{ backgroundImage: `url(${b.desktopImage})` }} />
+                  <div className="ip-hero-bg-mobile" style={{ backgroundImage: `url(${b.mobileImage || b.desktopImage})` }} />
+                  <div className="ip-hero-content">
+                    <h1>{b.title}</h1>
+                    <p>{b.subtitle}</p>
+                    {b.ctaText && (
+                      <div className="ip-cta-buttons">
+                        <a href={b.ctaLink || "#"} className="ip-btn ip-btn-primary">{b.ctaText}</a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {bannerSlides.length > 1 && (
+                <div className="ip-slider-dots">
+                  {bannerSlides.map((_: any, i: number) => (
+                    <button key={i} className={`ip-slider-dot ${i === currentSlide ? 'active' : ''}`}
+                      onClick={() => setCurrentSlide(i)} />
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
+          ) : (
+            <div className="ip-hero-content">
+              <h1>{hero.title}</h1>
+              <p>{hero.subtitle}</p>
+              <div className="ip-cta-buttons">
+                <a href={hero.primaryCta?.href || "#pricing"} className="ip-btn ip-btn-primary">{hero.primaryCta?.text || "Join Now"}</a>
+                <a href={hero.secondaryCta?.href || "#about"} className="ip-btn ip-btn-secondary">{hero.secondaryCta?.text || "Learn More"}</a>
+              </div>
+            </div>
+          )}
         </section>
         )}
 
