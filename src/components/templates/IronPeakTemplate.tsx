@@ -432,8 +432,10 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         .ip-mobile-menu.active span:nth-child(3){transform:rotate(-45deg) translate(7px,-6px)}
 
         /* Hero */
-        .ip-hero{padding:0;transform:translateY(0);height:100vh;background:url(${hero.backgroundImage}) center/cover;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
-        .ip-hero-content{position:relative;z-index:2;max-width:900px;padding:2rem;animation:1s ipFadeInUp}
+        .ip-hero{transform:translateY(0);height:100vh;background:url(${hero.backgroundImage}) center/cover;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+        .ip-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(15,15,15,.95) 0,transparent 180px),radial-gradient(circle at 30% 50%,rgba(255,107,53,.12),transparent 50%),radial-gradient(circle at 70% 50%,rgba(247,147,30,.12),transparent 50%);z-index:2;pointer-events:none;animation:8s ease-in-out infinite ipHeroPulse}
+        @keyframes ipHeroPulse{0%,100%{opacity:.6}50%{opacity:1}}
+        .ip-hero-content{position:relative;z-index:3;max-width:900px;padding:2rem;animation:1s ipFadeInUp}
         @keyframes ipFadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
         .ip-hero h1{font-size:4rem;color:#fff;margin-bottom:1.5rem;font-weight:800;line-height:1.2;text-shadow:2px 2px 20px rgba(0,0,0,.5);animation:3s infinite alternate ipTextGlow}
         @keyframes ipTextGlow{0%{text-shadow:2px 2px 20px rgba(0,0,0,.5)}100%{text-shadow:0 0 30px rgba(255,107,53,.8),2px 2px 20px rgba(0,0,0,.5)}}
