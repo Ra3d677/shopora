@@ -76,7 +76,6 @@ export default async function AdminLayout({
   const mainItems = isWebsite ? [
     { label: t('overview'), iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
     ...(isFitness ? [{ label: isRTL ? 'لوحة تحكم برعي' : 'برعي Dashboard', iconName: 'LayoutDashboard' as const, path: '/fitness', color: 'text-emerald-500' }] : []),
-    ...(store.template === 'ironpeak' ? [{ label: isRTL ? 'لوحة تحكم آيرون بيك' : 'IronPeak Dashboard', iconName: 'LayoutDashboard' as const, path: '/ironpeak', color: 'text-orange-500' }] : []),
     { label: t('toursPackages'), iconName: 'ShoppingBag', path: '/products', color: 'text-purple-500' },
     { label: t('bookingInquiries'), iconName: 'Package', path: '/orders', color: 'text-pink-500' },
     { label: t('mediaHub'), iconName: 'Library', path: '/media', color: 'text-amber-500' },
