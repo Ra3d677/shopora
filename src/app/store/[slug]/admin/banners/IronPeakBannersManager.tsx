@@ -203,7 +203,10 @@ export default function IronPeakBannersManager({ slug, initialSettings }: { slug
                   <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3">
                     <MediaPicker slug={slug} value={slide.desktopImage}
                       onChange={url => updateSlide(idx, 'desktopImage', url)}
-                      className="bg-white" />
+                      className="bg-white"
+                      maxWidth={2560}
+                      maxHeight={2560}
+                      quality={0.9} />
                   </div>
                 </div>
 
@@ -217,7 +220,10 @@ export default function IronPeakBannersManager({ slug, initialSettings }: { slug
                   <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3">
                     <MediaPicker slug={slug} value={slide.mobileImage}
                       onChange={url => updateSlide(idx, 'mobileImage', url)}
-                      className="bg-white" />
+                      className="bg-white"
+                      maxWidth={1200}
+                      maxHeight={1600}
+                      quality={0.9} />
                   </div>
                 </div>
 

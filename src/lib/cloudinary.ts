@@ -32,7 +32,7 @@ export async function uploadToCloudinary(fileUri: string, folder: string = "shop
 
     if (isImage) {
       uploadOptions.transformation = [
-        { width: 800, height: 800, crop: "limit", fetch_format: "auto", quality: "auto" }
+        { width: 2500, height: 2500, crop: "limit", fetch_format: "auto", quality: "auto" }
       ];
     }
 

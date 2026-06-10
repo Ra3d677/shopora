@@ -433,8 +433,6 @@ export default function IronPeakTemplate(props: IronPeakProps) {
 
         /* Hero */
         .ip-hero{padding:0;transform:translateY(0);height:100vh;background:url(${hero.backgroundImage}) center/cover;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
-        .ip-hero::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 30% 50%,rgba(255,107,53,.15),transparent 60%),radial-gradient(circle at 70% 50%,rgba(247,147,30,.1),transparent 60%);animation:8s ease-in-out infinite ipPulse}
-        @keyframes ipPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
         .ip-hero-content{position:relative;z-index:2;max-width:900px;padding:2rem;animation:1s ipFadeInUp}
         @keyframes ipFadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
         .ip-hero h1{font-size:4rem;color:#fff;margin-bottom:1.5rem;font-weight:800;line-height:1.2;text-shadow:2px 2px 20px rgba(0,0,0,.5);animation:3s infinite alternate ipTextGlow}
@@ -734,8 +732,8 @@ export default function IronPeakTemplate(props: IronPeakProps) {
             <div className="ip-hero-slider">
               {bannerSlides.map((b: any, i: number) => (
                 <div key={i} className={`ip-hero-slide ${i === currentSlide ? 'active' : ''}`}>
-                  <img className="ip-hero-slide-img" src={b.desktopImage} alt="" />
-                  <img className="ip-hero-slide-img-mobile" src={b.mobileImage || b.desktopImage} alt="" />
+                  <img className="ip-hero-slide-img" src={b.desktopImage} alt="" loading="eager" />
+                  <img className="ip-hero-slide-img-mobile" src={b.mobileImage || b.desktopImage} alt="" loading="eager" />
                   <div className="ip-hero-content">
                     <h1>{b.title}</h1>
                     <p>{b.subtitle}</p>

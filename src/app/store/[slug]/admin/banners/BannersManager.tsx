@@ -321,6 +321,9 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                             slug={slug}
                             value={banner.imageUrl} 
                             onChange={url => updateBanner(index, 'imageUrl', url)} 
+                            maxWidth={2560}
+                            maxHeight={2560}
+                            quality={0.9}
                           />
                         </div>
                       </div>
@@ -334,6 +337,9 @@ export default function BannersManager({ initialBanners, slug, initialSettings }
                             slug={slug}
                             value={banner.mobileImageUrl || ""} 
                             onChange={url => updateBanner(index, 'mobileImageUrl', url)} 
+                            maxWidth={1200}
+                            maxHeight={1600}
+                            quality={0.9}
                           />
                         </div>
                       </div>

@@ -11,9 +11,20 @@ interface MediaPickerProps {
   onChange: (url: string) => void;
   slug: string;
   className?: string;
+  maxWidth?: number;
+  maxHeight?: number;
+  quality?: number;
 }
 
-export default function MediaPicker({ value, onChange, slug, className }: MediaPickerProps) {
+export default function MediaPicker({ 
+  value, 
+  onChange, 
+  slug, 
+  className,
+  maxWidth = 800,
+  maxHeight = 800,
+  quality = 0.6
+}: MediaPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [media, setMedia] = useState<Media[]>([]);
   const [loading, setLoading] = useState(false);
@@ -91,8 +102,8 @@ export default function MediaPicker({ value, onChange, slug, className }: MediaP
         img.src = base64Url;
         img.onload = async () => {
           const canvas = document.createElement("canvas");
-          const MAX_WIDTH = 800;
-          const MAX_HEIGHT = 800;
+          const MAX_WIDTH = maxWidth;
+          const MAX_HEIGHT = maxHeight;
           let width = img.width;
           let height = img.height;
 
@@ -114,7 +125,7 @@ export default function MediaPicker({ value, onChange, slug, className }: MediaP
           ctx?.drawImage(img, 0, 0, width, height);
           
           // Use WebP format to preserve transparency (alpha channel) for logos/icons while maintaining excellent compression
-          const compressedBase64 = canvas.toDataURL("image/webp", 0.6);
+          const compressedBase64 = canvas.toDataURL("image/webp", quality);
 
           const res = await fetch(`/api/store/${slug}/media`, {
             method: "POST",
