@@ -433,7 +433,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
 
         /* Hero */
         .ip-hero{padding:0;transform:translateY(0);height:100vh;background:url(${hero.backgroundImage}) center/cover;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
-        .ip-hero-content{position:relative;z-index:2;max-width:900px;padding:2rem;animation:1s ipFadeInUp}
+        .ip-hero-content{position:relative;z-index:2;max-width:900px;padding:1rem 2rem;animation:1s ipFadeInUp}
         @keyframes ipFadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
         .ip-hero h1{font-size:4rem;color:#fff;margin-bottom:1.5rem;font-weight:800;line-height:1.2;text-shadow:2px 2px 20px rgba(0,0,0,.5);animation:3s infinite alternate ipTextGlow}
         @keyframes ipTextGlow{0%{text-shadow:2px 2px 20px rgba(0,0,0,.5)}100%{text-shadow:0 0 30px rgba(255,107,53,.8),2px 2px 20px rgba(0,0,0,.5)}}
