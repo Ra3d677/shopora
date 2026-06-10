@@ -226,6 +226,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
   const blog = { ...DEFAULT.blog, ...ip.blog };
   const contact = { ...DEFAULT.contact, ...ip.contact };
   const footer = { ...DEFAULT.footer, ...ip.footer };
+  const announcement = { ...{ enabled: false, text: '', textColor: '#fff', bgColor: '#ff6b35', link: '', linkText: '', position: 'below-nav' }, ...(ip.announcement || {}) };
   const bannerData = ip.banners || [];
   const bannerSlides = Array.isArray(bannerData) && bannerData.length > 0 ? bannerData : null;
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -630,6 +631,16 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         .ip-legal-links a:hover{color:#ff6b35}
         .ip-legal-links span{margin:0 4px}
 
+        /* Announcement Bar */
+        .ip-announcement-bar{position:relative;z-index:999;display:flex;align-items:center;justify-content:center;gap:.75rem;padding:.65rem 1.5rem;font-size:.95rem;font-weight:600;text-align:center;flex-wrap:wrap;transition:opacity .3s,transform .3s}
+        .ip-announcement-bar a{font-weight:700;text-decoration:underline;text-underline-offset:3px;transition:opacity .2s}
+        .ip-announcement-bar a:hover{opacity:.8}
+        .ip-announcement-bar.below-nav{margin-top:70px}
+        @media(max-width:768px){
+          .ip-announcement-bar{font-size:.85rem;padding:.5rem 1rem}
+          .ip-announcement-bar.below-nav{margin-top:60px}
+        }
+
         /* Mobile */
         @media(max-width:768px){
           .ip-hero h1{font-size:2.5rem}
@@ -682,6 +693,14 @@ export default function IronPeakTemplate(props: IronPeakProps) {
           <i className="fas fa-chevron-up"></i>
         </button>
 
+        {/* Announcement Bar - Above Nav */}
+        {announcement.enabled && announcement.position === 'above-nav' && (
+        <div className="ip-announcement-bar" style={{background:announcement.bgColor,color:announcement.textColor}}>
+          <span>{announcement.text}</span>
+          {announcement.link && announcement.linkText && <a href={announcement.link} style={{color:announcement.textColor}}>{announcement.linkText}</a>}
+        </div>
+        )}
+
         {/* Navigation */}
         <nav id="ip-navbar">
           <div className="ip-nav-container">
@@ -698,6 +717,14 @@ export default function IronPeakTemplate(props: IronPeakProps) {
             </div>
           </div>
         </nav>
+
+        {/* Announcement Bar - Below Nav */}
+        {announcement.enabled && announcement.position === 'below-nav' && (
+        <div className="ip-announcement-bar below-nav" style={{background:announcement.bgColor,color:announcement.textColor}}>
+          <span>{announcement.text}</span>
+          {announcement.link && announcement.linkText && <a href={announcement.link} style={{color:announcement.textColor}}>{announcement.linkText}</a>}
+        </div>
+        )}
 
         {/* Hero */}
         {hero.enabled !== false && (
@@ -739,6 +766,14 @@ export default function IronPeakTemplate(props: IronPeakProps) {
             </div>
           )}
         </section>
+        )}
+
+        {/* Announcement Bar - Below Hero */}
+        {announcement.enabled && announcement.position === 'below-hero' && (
+        <div className="ip-announcement-bar" style={{background:announcement.bgColor,color:announcement.textColor}}>
+          <span>{announcement.text}</span>
+          {announcement.link && announcement.linkText && <a href={announcement.link} style={{color:announcement.textColor}}>{announcement.linkText}</a>}
+        </div>
         )}
 
         {/* About */}

@@ -105,6 +105,7 @@ export default async function AdminLayout({
 
   const customItems = [
     ...(is2M ? [{ label: isRTL ? 'شريط الميزات' : 'Features Bar', iconName: 'Rocket' as const, path: '/features-bar', color: 'text-blue-500' }] : []),
+    ...(isIronPeak ? [{ label: isRTL ? 'شريط الإعلانات' : 'Announcement Bar', iconName: 'Rocket' as const, path: '/announcement-bar', color: 'text-amber-500' }] : []),
     ...(is1M || is2M ? [] : [{ label: isWebsite ? t('siteBuilder') : t('storeBuilder'), iconName: 'Blocks' as const, path: '/builder', color: 'text-blue-500' }]),
     { label: isWebsite ? t('siteSettings') : t('generalSettings'), iconName: 'Settings', path: '/settings', color: 'text-slate-500' },
   ];
