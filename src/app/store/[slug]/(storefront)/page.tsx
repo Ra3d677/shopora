@@ -20,6 +20,7 @@ import TwoMTemplate from "@/components/templates/TwoMTemplate";
 import ThreeMTemplate from "@/components/templates/3MTemplate";
 import IronPeakTemplate from "@/components/templates/IronPeakTemplate";
 import ElevenGTemplate from "@/components/templates/11GTemplate";
+import MOTemplate from "@/components/templates/MOTemplate";
 
 export const revalidate = 60;
 
@@ -77,6 +78,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
     if (activeTemplate === '2m') return <TwoMTemplate {...props} />;
     if (activeTemplate === '3m') return <ThreeMTemplate {...props} />;
     if (activeTemplate === '11g') return <ElevenGTemplate {...props} />;
+    if (activeTemplate === 'mo') return <MOTemplate {...props} />;
     
     // Default fallback (Signature is now the default)
     return (
