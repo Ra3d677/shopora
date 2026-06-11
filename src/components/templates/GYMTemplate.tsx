@@ -218,6 +218,13 @@ export default function GYMTemplate(props: GYMProps) {
         .fg-about-text{max-width:750px;margin:0 auto 2rem;color:var(--gray);line-height:1.8}
         .fg-splash-callout{background:linear-gradient(135deg,#f0f4ff,#e8f0fe);border-radius:20px;position:relative}
         .fg-splash-decor{position:absolute;top:-10px;right:-10px;width:60px;height:60px;border:4px solid var(--primary);border-radius:50%;opacity:.15}
+        .fg-about-feature{background:var(--light);border-radius:12px;padding:1.5rem;transition:.3s;height:100%}
+        .fg-about-feature:hover{transform:translateY(-4px);box-shadow:0 8px 25px rgba(0,0,0,.06)}
+        .fg-about-feature .fg-about-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;margin-bottom:.75rem;flex-shrink:0}
+        .fg-about-feature .fg-about-icon.blue{background:var(--primary)}
+        .fg-about-feature .fg-about-icon.green{background:var(--accent-green)}
+        .fg-about-feature h4{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;margin-bottom:.25rem}
+        .fg-about-feature p{color:var(--gray);font-size:.8rem;margin:0}
         .fg-accent-stripes{display:flex;gap:4px;margin-bottom:1rem}
         .fg-accent-stripes span{width:30px;height:4px;border-radius:2px;background:var(--primary)}
         .fg-splash-callout h3{font-family:'Bebas Neue',sans-serif;font-size:2rem}
@@ -663,23 +670,47 @@ export default function GYMTemplate(props: GYMProps) {
       <Navbar />
       <HeroSection />
 
-      <section className="fg-splash">
+      <section>
         <div className="fg-container">
-          <div className="text-center mb-5">
-            <h2 className="fg-section-title">About FitGym</h2>
-            <p className="fg-about-text">FitGym is your neighborhood training club with expert coaches, strength and conditioning zones, and daily classes for all levels. Train during flexible open‑gym hours, book personal training, and track progress with simple check‑ins. Friendly, clean, and focused on technique, we help you build sustainable results that last, together every week.</p>
-          </div>
           <div className="row align-items-center g-5">
-            <div className="col-12 col-lg-7">
-              <div className="fg-splash-callout" style={{ padding: "2rem" }}>
-                <div className="fg-accent-stripes"><span></span><span></span><span></span></div>
-                <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "2rem", marginBottom: ".5rem" }}>OUR FITNESS PROGRAMS</h3>
-                <p style={{ color: "var(--gray)", marginBottom: "1.5rem", lineHeight: 1.8 }}>Our AI-powered system designs and adjusts your workouts based on your progress, ensuring you&apos;re always challenged and never bored. We track your performance and provide real-time feedback to help you achieve your goals faster.</p>
-                <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); navigate("classes"); }}>SEE PROGRAMS</a>
+            <div className="col-12 col-lg-6">
+              <div className="fg-accent-stripes"><span></span><span></span><span></span></div>
+              <h2 className="fg-section-title" style={{ textAlign: "left", marginBottom: "1rem" }}>Welcome to Our Fitgym Fitness Center</h2>
+              <p style={{ color: "var(--gray)", lineHeight: 1.8, marginBottom: "2rem" }}>Donec aliquam commodo lorem. Suspendisse et urna auctor us ultricies dictum vel et erat. Vestibulum pretium efficitur velit, nec imperdiet ante rutrum ut. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+              <div className="row g-3" style={{ marginBottom: "2rem" }}>
+                <div className="col-6">
+                  <div className="fg-about-feature">
+                    <div className="fg-about-icon blue">{renderIcon("user")}</div>
+                    <h4>Personal Trainer</h4>
+                    <p>Etiam vulputate amet</p>
+                  </div>
+                </div>
+                <div className="col-6">
+                  <div className="fg-about-feature">
+                    <div className="fg-about-icon green">{renderIcon("running")}</div>
+                    <h4>Cardio Programs</h4>
+                    <p>Etiam vulputate amet</p>
+                  </div>
+                </div>
+                <div className="col-6">
+                  <div className="fg-about-feature">
+                    <div className="fg-about-icon green">{renderIcon("dumbbell")}</div>
+                    <h4>Quality Equipments</h4>
+                    <p>Etiam vulputate amet</p>
+                  </div>
+                </div>
+                <div className="col-6">
+                  <div className="fg-about-feature">
+                    <div className="fg-about-icon blue">{renderIcon("utensils")}</div>
+                    <h4>Healthy Nutrition</h4>
+                    <p>Etiam vulputate amet</p>
+                  </div>
+                </div>
               </div>
+              <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); navigate("about"); }}>Learn More About Fitgym</a>
             </div>
-            <div className="col-12 col-lg-5">
-              <img src={GYMImages.hero2} alt="Member reviewing workout" className="fg-splash-img" />
+            <div className="col-12 col-lg-6">
+              <img src={GYMImages.gym6} alt="FitGym Fitness Center" className="fg-splash-img" />
             </div>
           </div>
         </div>
