@@ -113,35 +113,43 @@ export default function GYMTemplate(props: GYMProps) {
  .fg-preloader.hidden{opacity:0;visibility:hidden}
  .fg-spinner{width:3rem;height:3rem;border:4px solid #e5e7eb;border-top-color:var(--primary);border-radius:50%;animation:fgSpin .8s linear infinite}
  @keyframes fgSpin{to{transform:rotate(360deg)}}
- .fg-navbar{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:.6rem 0;transition:.3s;background:transparent}
- .fg-navbar.scrolled{background:rgba(15,15,35,.97);backdrop-filter:blur(12px);box-shadow:0 2px 20px rgba(0,0,0,.3)}
- .fg-nav-inner{max-width:1400px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between}
- .fg-logo{height:40px;width:auto}
- .fg-nav-links{display:flex;align-items:center;gap:.25rem;list-style:none}
- .fg-nav-links a,.fg-nav-links .fg-drop-btn{padding:.5rem 1rem;color:rgba(255,255,255,.85);font-size:.85rem;font-weight:600;text-transform:uppercase;transition:.3s;cursor:pointer;background:none;border:none;display:inline-block}
- .fg-nav-links a:hover,.fg-nav-links a.active,.fg-nav-links .fg-drop-btn:hover{color:#fff}
- .fg-nav-links .fg-dropdown{position:relative}
- .fg-nav-links .fg-drop-menu{display:none;position:absolute;top:100%;left:0;background:var(--dark);min-width:160px;flex-direction:column;padding:.5rem 0;border-radius:0}
- .fg-nav-links .fg-dropdown:hover .fg-drop-menu{display:flex}
- .fg-nav-links .fg-drop-menu a{padding:.6rem 1.2rem;font-size:.8rem}
- .fg-nav-links .fg-drop-menu a:hover{background:rgba(255,255,255,.1)}
- .fg-nav-cta{background:var(--primary);color:#fff!important;border-radius:50px;padding:.5rem 1.5rem!important;font-size:.8rem!important}
- .fg-nav-cta:hover{background:var(--primary-dark)!important}
- .fg-mobile-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:5px;background:none;border:none}
- .fg-mobile-toggle span{width:26px;height:2.5px;background:#fff;border-radius:3px;transition:.3s;display:block}
- .fg-mobile-toggle.active span:nth-child(1){transform:rotate(45deg) translate(5px,6px)}
- .fg-mobile-toggle.active span:nth-child(2){opacity:0}
- .fg-mobile-toggle.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-6px)}
- @media(max-width:992px){
- .fg-mobile-toggle{display:flex}
- .fg-nav-links{display:none;position:absolute;top:100%;left:0;width:100%;background:rgba(15,15,35,.98);flex-direction:column;padding:1rem 0;gap:0}
- .fg-nav-links.open{display:flex}
- .fg-nav-links a,.fg-nav-links .fg-drop-btn{padding:.9rem 2rem;border-bottom:1px solid rgba(255,255,255,.06)}
- .fg-nav-links .fg-drop-menu{position:static;background:transparent;padding-left:1.5rem}
- .fg-nav-links .fg-dropdown:hover .fg-drop-menu{display:none}
- .fg-nav-links .fg-drop-menu.open{display:flex!important}
- .fg-nav-cta{margin:.9rem 2rem!important;text-align:center}
- }
+        .fg-navbar{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:1rem 0;transition:all .4s;background:transparent}
+        .fg-navbar.scrolled{background:rgba(10,10,30,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 4px 30px rgba(0,0,0,.35);border-bottom:1px solid rgba(255,255,255,.06)}
+        .fg-nav-inner{max-width:1400px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between}
+        .fg-logo{height:44px;width:auto;transition:.3s}
+        .fg-navbar.scrolled .fg-logo{height:40px}
+        .fg-nav-links{display:flex;align-items:center;gap:0;list-style:none}
+        .fg-nav-links a,.fg-nav-links .fg-drop-btn{padding:.6rem 1.2rem;color:rgba(255,255,255,.88);font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;transition:color .3s;cursor:pointer;background:none;border:none;display:inline-block;position:relative}
+        .fg-nav-links a::after,.fg-nav-links .fg-drop-btn::after{content:'';position:absolute;bottom:2px;left:1.2rem;width:0;height:2px;background:var(--primary);transition:width .3s}
+        .fg-nav-links a:hover::after,.fg-nav-links a.active::after,.fg-nav-links .fg-drop-btn:hover::after{width:calc(100% - 2.4rem)}
+        .fg-nav-links a:hover,.fg-nav-links a.active,.fg-nav-links .fg-drop-btn:hover{color:#fff}
+        .fg-nav-links .fg-dropdown{position:relative}
+        .fg-nav-links .fg-drop-menu{display:none;position:absolute;top:100%;left:0;background:rgba(15,15,35,.96);backdrop-filter:blur(12px);min-width:180px;flex-direction:column;padding:.6rem 0;border-radius:12px;border:1px solid rgba(255,255,255,.08);box-shadow:0 10px 40px rgba(0,0,0,.4)}
+        .fg-nav-links .fg-dropdown:hover .fg-drop-menu{display:flex}
+        .fg-nav-links .fg-drop-menu a{padding:.7rem 1.4rem;font-size:.78rem;letter-spacing:1px}
+        .fg-nav-links .fg-drop-menu a::after{display:none}
+        .fg-nav-links .fg-drop-menu a:hover{background:rgba(255,255,255,.06)}
+        .fg-nav-cta{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff!important;border-radius:50px;padding:.55rem 1.8rem!important;font-size:.78rem!important;letter-spacing:1px;box-shadow:0 4px 15px rgba(0,102,255,.25);transition:all .3s!important}
+        .fg-nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 25px rgba(0,102,255,.4)!important}
+        .fg-nav-cta::after{display:none!important}
+        .fg-mobile-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none}
+        .fg-mobile-toggle span{width:28px;height:2.5px;background:#fff;border-radius:3px;transition:all .35s;display:block}
+        .fg-mobile-toggle.active span:nth-child(1){transform:rotate(45deg) translate(5px,6px)}
+        .fg-mobile-toggle.active span:nth-child(2){opacity:0;transform:translateX(-6px)}
+        .fg-mobile-toggle.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-6px)}
+        @media(max-width:992px){
+          .fg-mobile-toggle{display:flex}
+          .fg-nav-links{display:none;position:absolute;top:100%;left:0;width:100%;background:rgba(10,10,30,.98);backdrop-filter:blur(16px);flex-direction:column;padding:1rem 0;gap:0;border-top:1px solid rgba(255,255,255,.06);max-height:80vh;overflow-y:auto}
+          .fg-nav-links.open{display:flex}
+          .fg-nav-links a,.fg-nav-links .fg-drop-btn{padding:.9rem 2rem;border-bottom:1px solid rgba(255,255,255,.05);letter-spacing:1.5px}
+          .fg-nav-links a::after,.fg-nav-links .fg-drop-btn::after{display:none}
+          .fg-nav-links .fg-drop-menu{position:static;background:transparent;padding-left:2rem;border:none;box-shadow:none;border-radius:0}
+          .fg-nav-links .fg-dropdown:hover .fg-drop-menu{display:none}
+          .fg-nav-links .fg-drop-menu.open{display:flex!important}
+          .fg-nav-cta{margin:.9rem 2rem!important;text-align:center;display:block}
+          .fg-navbar{padding:.7rem 0}
+          .fg-navbar.scrolled{padding:.5rem 0}
+        }
  .fg-hero{height:100vh;position:relative;overflow:hidden;background:var(--dark)}
  .fg-hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s}
  .fg-hero-slide.active{opacity:1}
@@ -624,9 +632,10 @@ export default function GYMTemplate(props: GYMProps) {
  </footer>
  );
 
- const HeroSection = () => (
- <section className="fg-hero" style={{ padding: 0 }}>
- {heroSlides.map((s, i) => (
+const HeroSection = () => (
+  <section className="fg-hero" style={{ padding: 0 }}>
+  <Navbar />
+  {heroSlides.map((s, i) => (
  <div key={i} className={`fg-hero-slide${i === slideIdx ?" active" :""}`}>
  <img src={s.img} alt="" />
  <div className="fg-hero-overlay"></div>
@@ -665,10 +674,9 @@ export default function GYMTemplate(props: GYMProps) {
  </section>
  );
 
- const renderHome = () => (
- <>
- <Navbar />
- <HeroSection />
+const renderHome = () => (
+<>
+  <HeroSection />
 
  <section className="fg-splash">
  <div className="fg-container">
@@ -923,11 +931,11 @@ export default function GYMTemplate(props: GYMProps) {
  </>
  );
 
- const renderAbout = () => (
- <>
- <Navbar />
- <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
- <img src={GYMImages.hero2} alt="About FitGym" />
+const renderAbout = () => (
+<>
+  <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
+  <Navbar />
+  <img src={GYMImages.hero2} alt="About FitGym" />
  <div className="fg-hero-overlay"></div>
  <div className="fg-container" style={{ position:"relative", zIndex: 2, paddingBottom:"2rem" }}>
  <h1 className="fg-page-title">About Us</h1>
@@ -1055,11 +1063,11 @@ export default function GYMTemplate(props: GYMProps) {
  </>
  );
 
- const renderClasses = () => (
- <>
- <Navbar />
- <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
- <img src={GYMImages.gym6} alt="Programs" />
+const renderClasses = () => (
+<>
+  <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
+  <Navbar />
+  <img src={GYMImages.gym6} alt="Programs" />
  <div className="fg-hero-overlay"></div>
  <div className="fg-container" style={{ position:"relative", zIndex: 2, paddingBottom:"2rem" }}>
  <h1 className="fg-page-title">Programs</h1>
@@ -1222,11 +1230,11 @@ export default function GYMTemplate(props: GYMProps) {
  </>
  );
 
- const renderMembership = () => (
- <>
- <Navbar />
- <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
- <img src={GYMImages.gym7} alt="Membership" />
+const renderMembership = () => (
+<>
+  <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
+  <Navbar />
+  <img src={GYMImages.gym7} alt="Membership" />
  <div className="fg-hero-overlay"></div>
  <div className="fg-container" style={{ position:"relative", zIndex: 2, paddingBottom:"2rem" }}>
  <h1 className="fg-page-title">Membership</h1>
@@ -1335,11 +1343,11 @@ export default function GYMTemplate(props: GYMProps) {
  </>
  );
 
- const renderBlog = () => (
- <>
- <Navbar />
- <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
- <img src={GYMImages.gallery3} alt="Blog" />
+const renderBlog = () => (
+<>
+  <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
+  <Navbar />
+  <img src={GYMImages.gallery3} alt="Blog" />
  <div className="fg-hero-overlay"></div>
  <div className="fg-container" style={{ position:"relative", zIndex: 2, paddingBottom:"2rem" }}>
  <h1 className="fg-page-title">Blog</h1>
@@ -1385,11 +1393,11 @@ export default function GYMTemplate(props: GYMProps) {
  </>
  );
 
- const renderContact = () => (
- <>
- <Navbar />
- <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
- <img src={GYMImages.gym6} alt="Contact" />
+const renderContact = () => (
+<>
+  <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
+  <Navbar />
+  <img src={GYMImages.gym6} alt="Contact" />
  <div className="fg-hero-overlay"></div>
  <div className="fg-container" style={{ position:"relative", zIndex: 2, paddingBottom:"2rem" }}>
  <h1 className="fg-page-title">Contact us</h1>
