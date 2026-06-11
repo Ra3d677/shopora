@@ -103,10 +103,11 @@ export default function GYMTemplate(props: GYMProps) {
  style.id ="fg-style";
  style.textContent = `
  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap');
- :root{--primary:#0066FF;--primary-dark:#004dcf;--accent-green:#10b981;--dark:#0f0f23;--darker:#0a0a18;--gray:#6b7280;--light:#f3f4f6;--white:#fff}
- *{margin:0;padding:0;box-sizing:border-box}
- body{font-family:Poppins,sans-serif;color:#333;overflow-x:hidden;background:#fff}
- h1,h2,h3,h4,h5,.fg-hero-title,.fg-section-title,.fg-page-title,.fg-panel-title{font-family:'Bebas Neue',sans-serif;letter-spacing:1px}
+  :root{--primary:#0066FF;--primary-dark:#004dcf;--accent-green:#10b981;--dark:#0f0f23;--darker:#0a0a18;--gray:#6b7280;--light:#f3f4f6;--white:#fff}
+  html,body,.theme-gym,.theme-gym main,.theme-gym>[data-page]{margin:0!important;padding:0!important;background:transparent!important}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:Poppins,sans-serif;color:#333;overflow-x:hidden}
+  h1,h2,h3,h4,h5,.fg-hero-title,.fg-section-title,.fg-page-title,.fg-panel-title{font-family:'Bebas Neue',sans-serif;letter-spacing:1px}
  .fg-nav-links a,.fg-btn,.fg-coach-name{font-family:Montserrat,sans-serif}
  a{text-decoration:none}
  .fg-preloader{position:fixed;inset:0;background:var(--white);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s,visibility .6s}
@@ -150,7 +151,7 @@ export default function GYMTemplate(props: GYMProps) {
           .fg-navbar{padding:.7rem 0}
           .fg-navbar.scrolled{padding:.5rem 0}
         }
- .fg-hero{height:100vh;position:relative;overflow:hidden;background:var(--dark)}
+  .fg-hero{height:100vh;position:relative;overflow:hidden;background:var(--dark);margin-top:0!important;padding-top:0!important}
  .fg-hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s}
  .fg-hero-slide.active{opacity:1}
  .fg-hero-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -318,7 +319,7 @@ export default function GYMTemplate(props: GYMProps) {
  .fg-cta-section ul{list-style:none;margin-bottom:1.5rem}
  .fg-cta-section ul li{padding:.3rem 0;color:var(--gray);font-size:.9rem;display:flex;align-items:center;gap:.5rem}
  .fg-cta-section img{border-radius:12px;width:100%;max-width:300px}
- .fg-page-hero{height:50vh;min-height:320px;position:relative;overflow:hidden;display:flex;align-items:flex-end}
+  .fg-page-hero{height:50vh;min-height:320px;position:relative;overflow:hidden;display:flex;align-items:flex-end;margin-top:0!important;padding-top:0!important}
  .fg-page-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
  .fg-page-hero .fg-hero-overlay{background:linear-gradient(135deg,rgba(15,15,35,.85),rgba(15,15,35,.3))}
  .fg-page-title{font-size:5rem;color:#fff;font-family:'Bebas Neue',sans-serif;line-height:1.1;position:relative;z-index:2}
