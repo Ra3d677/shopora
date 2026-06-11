@@ -700,8 +700,6 @@ export default function KitchenTemplate(props: any) {
 
   return (
     <div id="kitchen-root" className="kitchen-main">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
       {preloader && (
         <div id="preloader">
           <div className="spinner"><div></div><div></div></div>

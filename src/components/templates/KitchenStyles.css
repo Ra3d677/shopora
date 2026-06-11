@@ -1,6 +1,8 @@
 /* Kitchen Template - Combined Styles */
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css");
 
 img { max-width: 100%; height: auto; vertical-align: middle; }
 ul.list-style, ol.list-style { padding: 0; }
@@ -58,6 +60,20 @@ body:not(.is-mobile).ui-smooth-scroll { overflow: hidden; }
 body:not(.is-mobile).ui-smooth-scroll #scroll-container { width: auto; height: 100vh; overflow: auto; margin: 0; }
 #main-wrapper { position: relative; }
 #scroll-container { width: auto; height: 100vh; overflow: auto; margin: 0; }
+
+/* Critical Bootstrap navbar/collapse rules (fallback if CDN delayed) */
+.collapse:not(.show) { display: none; }
+.collapsing { position: relative; height: 0; overflow: hidden; transition: height .35s ease; }
+.navbar-collapse { flex-basis: 100%; flex-grow: 1; align-items: center; }
+.navbar-expand-xl { flex-wrap: nowrap; justify-content: flex-start; }
+.navbar-expand-xl .navbar-nav { flex-direction: row; }
+.navbar-expand-xl .navbar-nav .nav-link { padding-right: .5rem; padding-left: .5rem; }
+.navbar-expand-xl .navbar-collapse { display: flex !important; flex-basis: auto; }
+.navbar-expand-xl .navbar-toggler { display: none; }
+@media (max-width: 1199.98px) {
+  .navbar-expand-xl .navbar-collapse { display: none !important; }
+  .navbar-expand-xl .navbar-toggler { display: block; }
+}
 .scrollbar-track { background: transparent !important; z-index: 99999 !important; }
 .scrollbar-thumb { background: #DDD !important; opacity: 0.8; transition: opacity 0.2s ease-in-out; }
 .scrollbar-track:hover .scrollbar-thumb { opacity: 0.5; }
