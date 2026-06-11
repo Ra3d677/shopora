@@ -379,7 +379,7 @@ export default function GYMTemplate(props: GYMProps) {
  .fg-cta-section ul li{padding:.3rem 0;color:var(--gray);font-size:.9rem;display:flex;align-items:center;gap:.5rem}
  .fg-cta-section img{border-radius:12px;width:100%;max-width:300px}
   .fg-page-hero{height:50vh;min-height:320px;position:relative;overflow:hidden;margin-top:0!important;padding-top:0!important}
-  .fg-page-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .fg-page-hero .fg-hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
   .fg-page-hero .fg-hero-overlay{background:linear-gradient(135deg,rgba(15,15,35,.85),rgba(15,15,35,.3))}
   .fg-page-hero-content{position:absolute;bottom:2rem;left:0;right:0;z-index:2;padding:0 2rem}
 
