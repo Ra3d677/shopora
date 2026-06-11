@@ -369,6 +369,7 @@ const SEED_TEMPLATES = [
   { id: "gym", name: "FitGym", description: "FitGym - Modern Fitness & Gym Center HTML Template", preview: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" },
   { id: "fitness", name: "برعي - Sama Fit", description: "قالب احترافي لمدربي اللياقة البدنية - هيرو, خدمات, تحولات, خطط أسعار, آراء عملاء", preview: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" },
   { id: "tourism", name: "Tourism & Travel Showcase", description: "High-definition destination banners, detailed itineraries, and a seamless booking inquiry system.", preview: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80" },
+  { id: "kitchen", name: "The Kitchen", description: "The Kitchen – Premium Restaurant Template with 6 pages: Home, About, Menu, Blog, Blog Detail, Contact.", preview: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80" },
 ];
 
 export async function seedMissingTemplatesAction() {

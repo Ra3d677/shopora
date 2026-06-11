@@ -9,6 +9,7 @@ import OneMTemplate from '@/components/templates/1MTemplate';
 import TwoMTemplate from '@/components/templates/TwoMTemplate';
 import ITSolutionTemplate from '@/components/templates/ITSolutionTemplate';
 import GYMTemplate from '@/components/templates/GYMTemplate';
+import KitchenTemplate from '@/components/templates/KitchenTemplate';
 
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -95,6 +96,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
       case '2m': return <TwoMTemplate {...commonProps} />;
       case 'itsolution': return <ITSolutionTemplate {...commonProps} />;
       case 'gym': return <GYMTemplate {...commonProps} />;
+      case 'kitchen': return <KitchenTemplate {...commonProps} />;
       default: return <SignatureTemplate {...commonProps} />;
     }
   };
