@@ -38,7 +38,6 @@ export default function PlatformStoresManager({ stores }: { stores: any[] }) {
     { id: 'ironpeak', name: 'Iron Peak Fitness' },
     { id: 'itsolution', name: 'ITSolution Agency' },
     { id: 'gym', name: 'FitGym' },
-    { id: 'hotel2', name: 'Hotel 2 - Luxe' },
   ];
 
   const filteredStores = stores.filter(s => 

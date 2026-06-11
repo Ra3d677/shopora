@@ -50,7 +50,6 @@ function CreateStoreForm() {
     { id: 'tourism', name: 'Tourism & Travel Showcase', desc: 'High-definition destination banners, detailed itineraries, and a seamless booking inquiry system.', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80' },
     { id: 'itsolution', name: 'ITSolution - IT Agency', desc: 'قالب متكامل لشركات التكنولوجيا وحلول الأعمال - 18 صفحة كاملة مع دعم الوضع المظلم.', img: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=400&q=80' },
     { id: 'gym', name: 'FitGym', desc: 'قالب نادي رياضي متكامل - 6 صفحات مع هيرو كاروسيل، برامج تدريب، تسعير، جدول، وكل شيء.', img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80' },
-    { id: 'hotel2', name: 'Hotel 2 - Luxe', desc: 'Luxury hotel booking template with 16 pages - hero carousel, rooms, suites, restaurant, spa, gallery, blog and more.', img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80' },
   ];
 
   const templates = type === 'STORE' ? storeTemplates : websiteTemplates;
