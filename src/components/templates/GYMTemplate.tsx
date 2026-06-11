@@ -378,11 +378,13 @@ export default function GYMTemplate(props: GYMProps) {
  .fg-cta-section ul{list-style:none;margin-bottom:1.5rem}
  .fg-cta-section ul li{padding:.3rem 0;color:var(--gray);font-size:.9rem;display:flex;align-items:center;gap:.5rem}
  .fg-cta-section img{border-radius:12px;width:100%;max-width:300px}
-  .fg-page-hero{height:50vh;min-height:320px;position:relative;overflow:hidden;display:flex;align-items:flex-end;margin-top:0!important;padding-top:0!important}
- .fg-page-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
- .fg-page-hero .fg-hero-overlay{background:linear-gradient(135deg,rgba(15,15,35,.85),rgba(15,15,35,.3))}
- .fg-page-title{font-size:5rem;color:#fff;font-family:'Bebas Neue',sans-serif;line-height:1.1;position:relative;z-index:2}
- .fg-page-subtitle{color:rgba(255,255,255,.7);position:relative;z-index:2;font-size:1.1rem;margin-bottom:2rem}
+  .fg-page-hero{height:50vh;min-height:320px;position:relative;overflow:hidden;margin-top:0!important;padding-top:0!important}
+  .fg-page-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .fg-page-hero .fg-hero-overlay{background:linear-gradient(135deg,rgba(15,15,35,.85),rgba(15,15,35,.3))}
+  .fg-page-hero-content{position:absolute;bottom:2rem;left:0;right:0;z-index:2;padding:0 2rem}
+
+  .fg-page-title{font-size:5rem;color:#fff;font-family:'Bebas Neue',sans-serif;line-height:1.1;position:relative;z-index:2}
+  .fg-page-subtitle{color:rgba(255,255,255,.7);position:relative;z-index:2;font-size:1.1rem;margin-bottom:2rem}
  .fg-methodology .fg-method-card{background:var(--light);border-radius:16px;padding:2rem;text-align:center;height:100%;transition:.4s}
  .fg-methodology .fg-method-card:hover{transform:translateY(-4px);box-shadow:0 8px 25px rgba(0,0,0,.06)}
  .fg-methodology .fg-method-card svg{color:var(--primary);margin-bottom:1rem}
@@ -996,17 +998,13 @@ const renderHome = () => (
 
 const renderAbout = () => (
   <>
-  <section className="fg-page-hero position-relative mb-5 about-hero-section" style={{ padding:0, marginBottom:"3rem" }}>
+  <section className="fg-page-hero about-hero-section" style={{ padding:0, marginBottom:"3rem" }}>
       <Navbar />
       <img className="fg-hero-bg about-hero" src={GYMImages.hero2} alt="About FitGym" />
       <div className="fg-hero-overlay"></div>
-      <div className="container h-100">
-        <div className="row h-100 align-items-end">
-          <div className="col-12">
-            <h1 className="fg-page-title mb-3">About Us</h1>
-            <p className="fg-page-subtitle">Our mission, coaches and community</p>
-          </div>
-        </div>
+      <div className="fg-page-hero-content">
+        <h1 className="fg-page-title mb-3">About Us</h1>
+        <p className="fg-page-subtitle">Our mission, coaches and community</p>
       </div>
     </section>
 
@@ -1174,15 +1172,15 @@ const renderAbout = () => (
 
 const renderClasses = () => (
 <>
-  <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
-  <Navbar />
-  <img src={GYMImages.gym6} alt="Programs" />
- <div className="fg-hero-overlay"></div>
- <div className="fg-container" style={{ position:"relative", zIndex: 2, paddingBottom:"2rem" }}>
- <h1 className="fg-page-title">Programs</h1>
- <p className="fg-page-subtitle">Coached sessions and open gym for every level</p>
- </div>
- </section>
+  <section className="fg-page-hero" style={{ padding:0, marginBottom:"3rem" }}>
+      <Navbar />
+      <img className="fg-hero-bg" src={GYMImages.gym6} alt="Programs" />
+      <div className="fg-hero-overlay"></div>
+      <div className="fg-page-hero-content">
+        <h1 className="fg-page-title mb-3">Programs</h1>
+        <p className="fg-page-subtitle">Coached sessions and open gym for every level</p>
+      </div>
+    </section>
 
  <section className="classes-section" style={{ background:"var(--dark)" }}>
  <div className="fg-container">
@@ -1341,20 +1339,20 @@ const renderClasses = () => (
 
 const renderMembership = () => (
 <>
-  <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
-  <Navbar />
-  <img src={GYMImages.gym7} alt="Membership" />
- <div className="fg-hero-overlay"></div>
- <div className="fg-container" style={{ position:"relative", zIndex: 2, paddingBottom:"2rem" }}>
- <h1 className="fg-page-title">Membership</h1>
- <p className="fg-page-subtitle">Flexible plans for every goal</p>
- </div>
- </section>
+  <section className="fg-page-hero" style={{ padding:0, marginBottom:"3rem" }}>
+      <Navbar />
+      <img className="fg-hero-bg" src={GYMImages.gym7} alt="Membership" />
+      <div className="fg-hero-overlay"></div>
+      <div className="fg-page-hero-content">
+        <h1 className="fg-page-title mb-3">Membership</h1>
+        <p className="fg-page-subtitle">Flexible plans for every goal</p>
+      </div>
+    </section>
 
- <section>
- <div className="fg-container">
- <div className="text-center mb-5">
- <h2 className="fg-section-title">Gym Membership Pricing</h2>
+  <section>
+  <div className="fg-container">
+  <div className="text-center mb-5">
+  <h2 className="fg-section-title">Gym Membership Pricing</h2>
  </div>
  <div className="text-center mb-4">
  <div className="fg-billing-toggle d-inline-flex">
@@ -1454,19 +1452,19 @@ const renderMembership = () => (
 
 const renderBlog = () => (
 <>
-  <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
-  <Navbar />
-  <img src={GYMImages.gallery3} alt="Blog" />
- <div className="fg-hero-overlay"></div>
- <div className="fg-container" style={{ position:"relative", zIndex: 2, paddingBottom:"2rem" }}>
- <h1 className="fg-page-title">Blog</h1>
- <p className="fg-page-subtitle">Training tips, nutrition and community stories</p>
- </div>
- </section>
+  <section className="fg-page-hero" style={{ padding:0, marginBottom:"3rem" }}>
+      <Navbar />
+      <img className="fg-hero-bg" src={GYMImages.gallery3} alt="Blog" />
+      <div className="fg-hero-overlay"></div>
+      <div className="fg-page-hero-content">
+        <h1 className="fg-page-title mb-3">Blog</h1>
+        <p className="fg-page-subtitle">Training tips, nutrition and community stories</p>
+      </div>
+    </section>
 
- <section>
- <div className="fg-container">
- <div className="row align-items-end" style={{ marginBottom:"3rem" }}>
+  <section>
+  <div className="fg-container">
+  <div className="row align-items-end" style={{ marginBottom:"3rem" }}>
  <div className="col-12 col-lg-7">
  <small style={{ color:"var(--gray)", textTransform:"uppercase", fontWeight: 600 }}>Latest Articles</small>
  <h1 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"2.8rem", marginTop:".5rem" }}>
@@ -1504,21 +1502,21 @@ const renderBlog = () => (
 
 const renderContact = () => (
 <>
-  <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
-  <Navbar />
-  <img src={GYMImages.gym6} alt="Contact" />
- <div className="fg-hero-overlay"></div>
- <div className="fg-container" style={{ position:"relative", zIndex: 2, paddingBottom:"2rem" }}>
- <h1 className="fg-page-title">Contact us</h1>
- <p className="fg-page-subtitle">We respond within one business day</p>
- </div>
- </section>
+  <section className="fg-page-hero" style={{ padding:0, marginBottom:"3rem" }}>
+      <Navbar />
+      <img className="fg-hero-bg" src={GYMImages.gym6} alt="Contact" />
+      <div className="fg-hero-overlay"></div>
+      <div className="fg-page-hero-content">
+        <h1 className="fg-page-title mb-3">Contact us</h1>
+        <p className="fg-page-subtitle">We respond within one business day</p>
+      </div>
+    </section>
 
- <section>
- <div className="fg-container">
- <div className="row align-items-end" style={{ marginBottom:"2rem" }}>
- <div className="col-12 col-lg-7">
- <h1 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"2.8rem" }}>We&apos;d love to <span style={{ color:"var(--primary)" }}>hear from you</span></h1>
+  <section>
+  <div className="fg-container">
+  <div className="row align-items-end" style={{ marginBottom:"2rem" }}>
+  <div className="col-12 col-lg-7">
+  <h1 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"2.8rem" }}>We&apos;d love to <span style={{ color:"var(--primary)" }}>hear from you</span></h1>
  </div>
  <div className="col-12 col-lg-5">
  <p style={{ color:"var(--gray)" }}>Reach out with questions, availability, or to schedule a tour. We respond within one business day.</p>
