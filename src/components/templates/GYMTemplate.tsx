@@ -180,7 +180,41 @@ export default function GYMTemplate(props: GYMProps) {
         .fg-container{max-width:1200px;margin:0 auto;padding:0 2rem}
         .fg-section-title{font-size:3rem;margin-bottom:.5rem;color:var(--dark);font-family:'Bebas Neue',sans-serif}
         .fg-section-sub{color:var(--gray);max-width:600px;margin:0 auto 3rem;text-align:center;font-size:.95rem}
-        .text-center{text-align:center}
+        .text-center{text-align:center!important}
+        .text-end{text-align:right!important}
+        .h-100{height:100%!important}
+        .row{display:flex;flex-wrap:wrap}
+        .col-6{flex:0 0 50%;max-width:50%}
+        .col-12{flex:0 0 100%;max-width:100%}
+        @media(min-width:992px){
+          .col-lg-4{flex:0 0 33.333%;max-width:33.333%}
+          .col-lg-5{flex:0 0 41.666%;max-width:41.666%}
+          .col-lg-6{flex:0 0 50%;max-width:50%}
+          .col-lg-7{flex:0 0 58.333%;max-width:58.333%}
+          .col-lg-8{flex:0 0 66.666%;max-width:66.666%}
+          .d-lg-block{display:block!important}
+        }
+        .d-flex{display:flex!important}
+        .d-inline-flex{display:inline-flex!important}
+        .w-100{width:100%!important}
+        .align-items-center{align-items:center!important}
+        .justify-content-center{justify-content:center!important}
+        .justify-content-between{justify-content:space-between!important}
+        .flex-wrap{flex-wrap:wrap!important}
+        .flex-column{flex-direction:column!important}
+        .mx-auto{margin-left:auto!important;margin-right:auto!important}
+        .me-3{margin-right:1rem!important}
+        .mt-3{margin-top:1rem!important}
+        .mt-4{margin-top:1.5rem!important}
+        .mb-0{margin-bottom:0!important}
+        .mb-3{margin-bottom:1rem!important}
+        .mb-4{margin-bottom:1.5rem!important}
+        .mb-5{margin-bottom:3rem!important}
+        .p-0{padding:0!important}
+        .py-sm-3{padding-top:1rem!important;padding-bottom:1rem!important}
+        .px-sm-5{padding-left:3rem!important;padding-right:3rem!important}
+        .gap-3{gap:1rem!important}
+        .g-5{gap:3rem!important}
         .fg-about-text{max-width:750px;margin:0 auto 2rem;color:var(--gray);line-height:1.8}
         .fg-splash-callout{background:linear-gradient(135deg,#f0f4ff,#e8f0fe);border-radius:20px;position:relative}
         .fg-splash-decor{position:absolute;top:-10px;right:-10px;width:60px;height:60px;border:4px solid var(--primary);border-radius:50%;opacity:.15}
@@ -539,9 +573,9 @@ export default function GYMTemplate(props: GYMProps) {
       <div className="fg-footer-inner">
         <div>
           <h3>Get In Touch</h3>
-          <p className="mb-2" style={{ display: "flex", alignItems: "center", gap: ".6rem" }}>{renderIcon("map-pin")}123 Street, New York, USA</p>
-          <p className="mb-2" style={{ display: "flex", alignItems: "center", gap: ".6rem" }}>{renderIcon("phone")}+012 345 67890</p>
-          <p className="mb-2" style={{ display: "flex", alignItems: "center", gap: ".6rem" }}>{renderIcon("envelope")}info@fitgym.com</p>
+          <p className="mb-3 d-flex align-items-center" style={{ gap: ".6rem" }}>{renderIcon("map-pin")}123 Street, New York, USA</p>
+          <p className="mb-3 d-flex align-items-center" style={{ gap: ".6rem" }}>{renderIcon("phone")}+012 345 67890</p>
+          <p className="mb-3 d-flex align-items-center" style={{ gap: ".6rem" }}>{renderIcon("envelope")}info@fitgym.com</p>
           <div className="fg-social-links">
             <a href="#">{renderIcon("facebook")}</a>
             <a href="#">{renderIcon("youtube")}</a>
@@ -630,18 +664,20 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section className="fg-splash">
         <div className="fg-container">
-          <div className="text-center">
+          <div className="text-center mb-5">
             <h2 className="fg-section-title">About FitGym</h2>
             <p className="fg-about-text">FitGym is your neighborhood training club with expert coaches, strength and conditioning zones, and daily classes for all levels. Train during flexible open‑gym hours, book personal training, and track progress with simple check‑ins. Friendly, clean, and focused on technique, we help you build sustainable results that last, together every week.</p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(450px,1fr))", gap: "2rem", alignItems: "center", marginTop: "3rem" }}>
-            <div className="fg-splash-callout" style={{ padding: "2rem" }}>
-              <div className="fg-accent-stripes"><span></span><span></span><span></span></div>
-              <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "2rem", marginBottom: ".5rem" }}>OUR FITNESS PROGRAMS</h3>
-              <p style={{ color: "var(--gray)", marginBottom: "1.5rem", lineHeight: 1.8 }}>Our AI-powered system designs and adjusts your workouts based on your progress, ensuring you&apos;re always challenged and never bored. We track your performance and provide real-time feedback to help you achieve your goals faster.</p>
-              <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); navigate("classes"); }}>SEE PROGRAMS</a>
+          <div className="row align-items-center g-5">
+            <div className="col-12 col-lg-7">
+              <div className="fg-splash-callout" style={{ padding: "2rem" }}>
+                <div className="fg-accent-stripes"><span></span><span></span><span></span></div>
+                <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "2rem", marginBottom: ".5rem" }}>OUR FITNESS PROGRAMS</h3>
+                <p style={{ color: "var(--gray)", marginBottom: "1.5rem", lineHeight: 1.8 }}>Our AI-powered system designs and adjusts your workouts based on your progress, ensuring you&apos;re always challenged and never bored. We track your performance and provide real-time feedback to help you achieve your goals faster.</p>
+                <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); navigate("classes"); }}>SEE PROGRAMS</a>
+              </div>
             </div>
-            <div>
+            <div className="col-12 col-lg-5">
               <img src={GYMImages.hero2} alt="Member reviewing workout" className="fg-splash-img" />
             </div>
           </div>
@@ -650,17 +686,19 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section>
         <div className="fg-container">
-          <div className="text-center">
+          <div className="text-center mb-5">
             <h2 className="fg-section-title">Train With Coaches, Classes & Community</h2>
             <p className="fg-section-sub">Top‑tier equipment, expert coaching, and a friendly, motivating gym.</p>
           </div>
-          <div className="fg-grid-3">
+          <div className="row g-5">
             {features.map((f, i) => (
-              <div key={i} className="fg-card fg-animate-on-scroll">
-                <div className="fg-icon-wrap green">{renderIcon(f.icon)}</div>
-                <h3>{f.title}</h3>
-                <p>{f.desc}</p>
-                <a href="#" className="fg-learn-link" onClick={(e) => { e.preventDefault(); navigate("classes"); }}>Learn More {renderIcon("arrow-right")}</a>
+              <div key={i} className="col-12 col-lg-4">
+                <div className="fg-card fg-animate-on-scroll h-100">
+                  <div className="fg-icon-wrap green">{renderIcon(f.icon)}</div>
+                  <h3>{f.title}</h3>
+                  <p>{f.desc}</p>
+                  <a href="#" className="fg-learn-link" onClick={(e) => { e.preventDefault(); navigate("classes"); }}>Learn More {renderIcon("arrow-right")}</a>
+                </div>
               </div>
             ))}
           </div>
@@ -669,15 +707,17 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section style={{ background: "var(--light)" }}>
         <div className="fg-container">
-          <div className="text-center">
+          <div className="text-center mb-5">
             <h2 className="fg-section-title">Other Workout Programs</h2>
           </div>
-          <div className="fg-grid-3">
+          <div className="row g-5">
             {programs.map((p, i) => (
-              <div key={i} className="fg-showcase-card fg-animate-on-scroll">
-                <div className="fg-media-wrap"><img src={p.img} alt={p.title} /></div>
-                <h3>{p.title}</h3>
-                <a href="#" className="fg-btn fg-btn-primary" style={{ marginTop: ".75rem" }} onClick={(e) => { e.preventDefault(); navigate("classes"); }}>Explore</a>
+              <div key={i} className="col-12 col-lg-4">
+                <div className="fg-showcase-card fg-animate-on-scroll">
+                  <div className="fg-media-wrap"><img src={p.img} alt={p.title} /></div>
+                  <h3>{p.title}</h3>
+                  <a href="#" className="fg-btn fg-btn-primary mt-3" onClick={(e) => { e.preventDefault(); navigate("classes"); }}>Explore</a>
+                </div>
               </div>
             ))}
           </div>
@@ -686,18 +726,20 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section id="pricing">
         <div className="fg-container">
-          <div className="text-center">
+          <div className="text-center mb-5">
             <h2 className="fg-section-title">Gym Membership Pricing</h2>
           </div>
-          <div className="fg-grid-3" style={{ maxWidth: "1000px", margin: "0 auto" }}>
+          <div className="row g-5 mx-auto" style={{ maxWidth: "1000px" }}>
             {pricingPlans.map((pl, i) => (
-              <div key={i} className={`fg-pricing-card fg-animate-on-scroll${pl.featured ? " featured" : ""}`}>
-                <h3>{pl.name}</h3>
-                <div className="fg-price">${billing === "monthly" ? pl.monthly.toFixed(2) : pl.annual.toFixed(2)}<span>{billing === "monthly" ? "/mo" : "/yr"}</span></div>
-                <ul>
-                  {pl.features.map((f, j) => <li key={j}>{renderCheck()} {f}</li>)}
-                </ul>
-                <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); navigate("membership"); }}>Select</a>
+              <div key={i} className="col-12 col-lg-4">
+                <div className={`fg-pricing-card fg-animate-on-scroll${pl.featured ? " featured" : ""}`}>
+                  <h3>{pl.name}</h3>
+                  <div className="fg-price">${billing === "monthly" ? pl.monthly.toFixed(2) : pl.annual.toFixed(2)}<span>{billing === "monthly" ? "/mo" : "/yr"}</span></div>
+                  <ul>
+                    {pl.features.map((f, j) => <li key={j}>{renderCheck()} {f}</li>)}
+                  </ul>
+                  <a href="#" className="fg-btn fg-btn-primary w-100" onClick={(e) => { e.preventDefault(); navigate("membership"); }}>Select</a>
+                </div>
               </div>
             ))}
           </div>
@@ -706,19 +748,21 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section style={{ background: "var(--light)" }}>
         <div className="fg-container">
-          <div className="text-center" style={{ maxWidth: "700px", margin: "0 auto 3rem" }}>
+          <div className="text-center mb-5 mx-auto" style={{ maxWidth: "700px" }}>
             <h2 className="fg-section-title">Real People, Real Results</h2>
           </div>
-          <div className="fg-grid-3">
+          <div className="row g-5">
             {testimonials.map((t, i) => (
-              <div key={i} className="fg-testimonial-card fg-animate-on-scroll">
-                {renderStars()}
-                <p>&ldquo;{t.text}&rdquo;</p>
-                <div className="fg-test-author">
-                  <img src={t.img} alt={t.name} />
-                  <div>
-                    <h4>{t.name}</h4>
-                    <small>Member</small>
+              <div key={i} className="col-12 col-lg-4">
+                <div className="fg-testimonial-card fg-animate-on-scroll">
+                  {renderStars()}
+                  <p>&ldquo;{t.text}&rdquo;</p>
+                  <div className="fg-test-author">
+                    <img src={t.img} alt={t.name} />
+                    <div>
+                      <h4>{t.name}</h4>
+                      <small>Member</small>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -729,17 +773,19 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section>
         <div className="fg-container">
-          <div className="text-center">
+          <div className="text-center mb-5">
             <h2 className="fg-section-title">Facilities & Amenities</h2>
             <p className="fg-section-sub">Clean, modern and ready when you are.</p>
           </div>
-          <div className="fg-grid-3">
+          <div className="row g-5">
             {facilities.map((f, i) => (
-              <div key={i} className="fg-facility-card fg-animate-on-scroll">
-                <div className="fg-facility-media"><img src={f.img} alt={f.title} /></div>
-                <div className="fg-icon-wrap green" style={{ margin: "-28px auto 1rem" }}>{renderIcon(f.icon)}</div>
-                <h3>{f.title}</h3>
-                <p>{f.desc}</p>
+              <div key={i} className="col-12 col-lg-4">
+                <div className="fg-facility-card fg-animate-on-scroll">
+                  <div className="fg-facility-media"><img src={f.img} alt={f.title} /></div>
+                  <div className="fg-icon-wrap green mx-auto" style={{ margin: "-28px auto 1rem" }}>{renderIcon(f.icon)}</div>
+                  <h3>{f.title}</h3>
+                  <p>{f.desc}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -771,15 +817,17 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section>
         <div className="fg-container">
-          <div className="text-center">
+          <div className="text-center mb-5">
             <h2 className="fg-section-title">Meet our trainers</h2>
           </div>
-          <div className="fg-grid-3" style={{ maxWidth: "900px", margin: "0 auto" }}>
+          <div className="row g-5 mx-auto" style={{ maxWidth: "900px" }}>
             {coaches.map((c, i) => (
-              <div key={i} className="fg-coach-card fg-animate-on-scroll">
-                <img src={c.img} alt={c.name} />
-                <h3>{c.name}</h3>
-                <p>{c.role}</p>
+              <div key={i} className="col-12 col-lg-4">
+                <div className="fg-coach-card fg-animate-on-scroll">
+                  <img src={c.img} alt={c.name} />
+                  <h3>{c.name}</h3>
+                  <p>{c.role}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -820,19 +868,23 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section style={{ background: "var(--light)" }}>
         <div className="fg-container">
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(400px,1fr))", gap: "2rem", alignItems: "stretch" }}>
-            <div className="fg-location">
-              <iframe src="https://www.google.com/maps?q=123+Street,+New+York,+USA&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="FitGym Location"></iframe>
+          <div className="row g-5 align-items-stretch">
+            <div className="col-12 col-lg-7">
+              <div className="fg-location">
+                <iframe src="https://www.google.com/maps?q=123+Street,+New+York,+USA&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="FitGym Location"></iframe>
+              </div>
             </div>
-            <div className="fg-location-card">
-              <h3>Location & Hours</h3>
-              <p style={{ color: "var(--gray)", marginBottom: "1rem" }}>123 Street, New York, USA</p>
-              <ul className="fg-hours">
-                <li><span>Mon–Fri</span><span>6:00 AM – 9:00 PM</span></li>
-                <li><span>Sat</span><span>8:00 AM – 6:00 PM</span></li>
-                <li><span>Sun</span><span>8:00 AM – 4:00 PM</span></li>
-              </ul>
-              <a href="https://www.google.com/maps/search/?api=1&query=123+Street,+New+York,+USA" className="fg-btn fg-btn-primary" target="_blank" rel="noopener noreferrer">Get Directions</a>
+            <div className="col-12 col-lg-5">
+              <div className="fg-location-card">
+                <h3>Location & Hours</h3>
+                <p style={{ color: "var(--gray)", marginBottom: "1rem" }}>123 Street, New York, USA</p>
+                <ul className="fg-hours">
+                  <li><span>Mon–Fri</span><span>6:00 AM – 9:00 PM</span></li>
+                  <li><span>Sat</span><span>8:00 AM – 6:00 PM</span></li>
+                  <li><span>Sun</span><span>8:00 AM – 4:00 PM</span></li>
+                </ul>
+                <a href="https://www.google.com/maps/search/?api=1&query=123+Street,+New+York,+USA" className="fg-btn fg-btn-primary" target="_blank" rel="noopener noreferrer">Get Directions</a>
+              </div>
             </div>
           </div>
         </div>
@@ -840,7 +892,7 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section>
         <div className="fg-container">
-          <div className="fg-cta-section" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "2rem", flexWrap: "wrap" }}>
+          <div className="fg-cta-section d-flex align-items-center justify-content-between flex-wrap" style={{ gap: "2rem" }}>
             <div>
               <h3>Book a Free Tour</h3>
               <p>See the space, meet a coach and plan your start. Get a quick walkthrough of equipment, classes and membership options that fit your goals.</p>
@@ -849,7 +901,7 @@ export default function GYMTemplate(props: GYMProps) {
                 <li>{renderCheck()} Flexible hours</li>
                 <li>{renderCheck()} Coach meet‑and‑greet</li>
               </ul>
-              <div style={{ display: "flex", gap: ".75rem", flexWrap: "wrap" }}>
+              <div className="d-flex" style={{ gap: ".75rem", flexWrap: "wrap" }}>
                 <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); navigate("contact"); }}>Contact Us</a>
                 <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); navigate("membership"); }}>See Pricing</a>
               </div>
@@ -876,14 +928,14 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section>
         <div className="fg-container">
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(450px,1fr))", gap: "3rem", alignItems: "center" }}>
-            <div>
+          <div className="row align-items-center g-5">
+            <div className="col-12 col-lg-7">
               <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "3rem", marginBottom: "1.5rem" }}>Our Philosophy</h1>
               <p style={{ color: "var(--gray)", lineHeight: 1.8, marginBottom: "1rem" }}>FitGym is a community-driven fitness club focused on building strong, healthy bodies through proven strength training, smart conditioning, and mobility work. Our certified coaches tailor programs to every level so you can train safely, confidently, and consistently.</p>
               <p style={{ color: "var(--gray)", lineHeight: 1.8, marginBottom: "2rem" }}>Whether you&apos;re getting started or chasing new PRs, you&apos;ll find small‑group sessions, 1:1 coaching, and flexible memberships that fit your life. Expect clean facilities, supportive coaches, and progress you can measure—week after week.</p>
-              <div style={{ display: "flex", gap: "1.5rem", alignItems: "center", flexWrap: "wrap" }}>
+              <div className="d-flex align-items-center flex-wrap" style={{ gap: "1.5rem" }}>
                 <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); navigate("classes"); }}>See Programs</a>
-                <div style={{ display: "flex", alignItems: "center", gap: ".75rem" }}>
+                <div className="d-flex align-items-center" style={{ gap: ".75rem" }}>
                   <img src={GYMImages.testimonial1} alt="" style={{ width: 45, height: 45, borderRadius: "50%", objectFit: "cover" }} />
                   <div>
                     <div style={{ color: "var(--primary)", fontWeight: 600, fontSize: ".9rem" }}>Alex Morgan</div>
@@ -892,7 +944,7 @@ export default function GYMTemplate(props: GYMProps) {
                 </div>
               </div>
             </div>
-            <div style={{ textAlign: "right" }}>
+            <div className="col-12 col-lg-5 text-end">
               <img src={GYMImages.gallery3} alt="" style={{ width: "75%", borderRadius: "16px", boxShadow: "0 20px 60px rgba(0,0,0,.12)" }} />
             </div>
           </div>
@@ -901,20 +953,22 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section className="fg-methodology" style={{ background: "var(--light)" }}>
         <div className="fg-container">
-          <div className="text-center">
+          <div className="text-center mb-5">
             <h2 className="fg-section-title">Our Training Methodology</h2>
             <p className="fg-section-sub">Three pillars we coach every day</p>
           </div>
-          <div className="fg-grid-3">
+          <div className="row g-5">
             {[
               { icon: "dumbbell", title: "Strength", desc: "Compound lifts with progressive overload for safe, measurable gains." },
               { icon: "running", title: "Conditioning", desc: "Intervals and circuits to build engine without burning out." },
               { icon: "heartbeat", title: "Mobility", desc: "Movement quality, activation and recovery to keep you training." },
             ].map((m, i) => (
-              <div key={i} className="fg-method-card fg-animate-on-scroll">
-                <div className="fg-icon-wrap blue" style={{ margin: "0 auto 1rem" }}>{renderIcon(m.icon)}</div>
-                <h5>{m.title}</h5>
-                <p>{m.desc}</p>
+              <div key={i} className="col-12 col-lg-4">
+                <div className="fg-method-card fg-animate-on-scroll">
+                  <div className="fg-icon-wrap blue mx-auto mb-3">{renderIcon(m.icon)}</div>
+                  <h5>{m.title}</h5>
+                  <p>{m.desc}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -942,25 +996,25 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section style={{ background: "var(--light)" }}>
         <div className="fg-container">
-          <div className="text-center">
+          <div className="text-center mb-5">
             <h2 className="fg-section-title">Member Results</h2>
             <p className="fg-section-sub">Real progress from real people</p>
           </div>
-          <div className="fg-grid-3">
-            <div className="fg-stat-card fg-animate-on-scroll"><div className="fg-stat-num">+18%</div><p>Avg strength increase in 12 weeks</p></div>
-            <div className="fg-stat-card fg-animate-on-scroll"><div className="fg-stat-num">-7.4kg</div><p>Avg bodyweight change with coaching</p></div>
-            <div className="fg-stat-card fg-animate-on-scroll"><div className="fg-stat-num">92%</div><p>Members training 3x/week by month 2</p></div>
+          <div className="row g-5">
+            <div className="col-12 col-lg-4"><div className="fg-stat-card fg-animate-on-scroll"><div className="fg-stat-num">+18%</div><p>Avg strength increase in 12 weeks</p></div></div>
+            <div className="col-12 col-lg-4"><div className="fg-stat-card fg-animate-on-scroll"><div className="fg-stat-num">-7.4kg</div><p>Avg bodyweight change with coaching</p></div></div>
+            <div className="col-12 col-lg-4"><div className="fg-stat-card fg-animate-on-scroll"><div className="fg-stat-num">92%</div><p>Members training 3x/week by month 2</p></div></div>
           </div>
         </div>
       </section>
 
       <section>
         <div className="fg-container">
-          <div style={{ background: "var(--light)", borderRadius: "16px", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(350px,1fr))", gap: 0, overflow: "hidden" }}>
-            <div style={{ minHeight: 350 }}>
+          <div className="row g-0" style={{ background: "var(--light)", borderRadius: "16px", overflow: "hidden" }}>
+            <div className="col-12 col-lg-6" style={{ minHeight: 350 }}>
               <img src={GYMImages.hero1} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             </div>
-            <div style={{ padding: "3rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div className="col-12 col-lg-6 d-flex flex-column justify-content-center" style={{ padding: "3rem" }}>
               <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "2.5rem", marginBottom: "1rem" }}>Start Your Fitness Journey</h1>
               <p style={{ color: "var(--gray)", marginBottom: "1.5rem", lineHeight: 1.8 }}>Book a free intro session. Meet a coach, tour the gym, and leave with a personalized plan for your goals.</p>
               <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); navigate("contact"); }}>Book Free Trial {renderIcon("arrow-right")}</a>
@@ -971,15 +1025,17 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section style={{ background: "var(--light)" }}>
         <div className="fg-container">
-          <div className="text-center">
+          <div className="text-center mb-5">
             <h2 className="fg-section-title">Meet our trainers</h2>
           </div>
-          <div className="fg-grid-3" style={{ maxWidth: "900px", margin: "0 auto" }}>
+          <div className="row g-5 mx-auto" style={{ maxWidth: "900px" }}>
             {coaches.map((c, i) => (
-              <div key={i} className="fg-coach-card fg-animate-on-scroll">
-                <img src={c.img} alt={c.name} />
-                <h3>{c.name}</h3>
-                <p>{c.role}</p>
+              <div key={i} className="col-12 col-lg-4">
+                <div className="fg-coach-card fg-animate-on-scroll">
+                  <img src={c.img} alt={c.name} />
+                  <h3>{c.name}</h3>
+                  <p>{c.role}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -1007,17 +1063,19 @@ export default function GYMTemplate(props: GYMProps) {
             <small style={{ color: "rgba(255,255,255,.5)" }}>Our Programs</small>
             <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "3rem", color: "#fff" }}>Progress-driven training</h1>
           </div>
-          <div className="fg-grid-3">
+          <div className="row g-5">
             {classPrograms.map((cp, i) => (
-              <div key={i} className={`fg-class-card fg-animate-on-scroll${cp.featured ? " featured" : ""}`}>
-                <div className="fg-class-image">
-                  <img src={cp.img} alt={cp.title} />
-                  <span className="fg-date-badge">{renderIcon("clock")}{cp.time}</span>
-                </div>
-                <div className="fg-class-body">
-                  <h4>{cp.title}</h4>
-                  <p>{cp.desc}</p>
-                  <a href="#" className="fg-btn fg-btn-primary" style={{ padding: ".5rem 1.5rem", fontSize: ".8rem" }} onClick={(e) => { e.preventDefault(); }}>Join Now {renderIcon("arrow-right")}</a>
+              <div key={i} className="col-12 col-lg-4">
+                <div className={`fg-class-card fg-animate-on-scroll${cp.featured ? " featured" : ""}`}>
+                  <div className="fg-class-image">
+                    <img src={cp.img} alt={cp.title} />
+                    <span className="fg-date-badge">{renderIcon("clock")}{cp.time}</span>
+                  </div>
+                  <div className="fg-class-body">
+                    <h4>{cp.title}</h4>
+                    <p>{cp.desc}</p>
+                    <a href="#" className="fg-btn fg-btn-primary" style={{ padding: ".5rem 1.5rem", fontSize: ".8rem" }} onClick={(e) => { e.preventDefault(); }}>Join Now {renderIcon("arrow-right")}</a>
+                  </div>
                 </div>
               </div>
             ))}
@@ -1027,25 +1085,27 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section>
         <div className="fg-container">
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(450px,1fr))", gap: "2rem", alignItems: "end", marginBottom: "3rem" }}>
-            <div>
+          <div className="row align-items-end g-5" style={{ marginBottom: "3rem" }}>
+            <div className="col-12 col-lg-7">
               <small style={{ color: "var(--gray)", textTransform: "uppercase", fontWeight: 600 }}>Our Coaching Team</small>
               <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "2.8rem", marginTop: ".5rem" }}>Meet <span style={{ color: "var(--primary)" }}>Your Coaches</span></h1>
             </div>
-            <div>
+            <div className="col-12 col-lg-5">
               <p style={{ color: "var(--gray)" }}>Experienced coaches who guide technique, tailor progressions, and support your goals.</p>
             </div>
           </div>
-          <div className="fg-grid-3" style={{ maxWidth: "900px", margin: "0 auto" }}>
+          <div className="row g-5 mx-auto" style={{ maxWidth: "900px" }}>
             {[
               { img: GYMImages.trainer1, name: "Jordan", role: "Strength & Conditioning" },
               { img: GYMImages.trainer2, name: "Riley", role: "Powerlifting" },
               { img: GYMImages.trainer3, name: "Morgan", role: "Mobility & Recovery" },
             ].map((t, i) => (
-              <div key={i} className="fg-teacher-card fg-animate-on-scroll">
-                <div className="fg-teacher-blob"><img src={t.img} alt={t.name} /></div>
-                <h4>{t.name}</h4>
-                <div className="fg-role">{t.role}</div>
+              <div key={i} className="col-12 col-lg-4">
+                <div className="fg-teacher-card fg-animate-on-scroll">
+                  <div className="fg-teacher-blob"><img src={t.img} alt={t.name} /></div>
+                  <h4>{t.name}</h4>
+                  <div className="fg-role">{t.role}</div>
+                </div>
               </div>
             ))}
           </div>
@@ -1125,19 +1185,21 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section>
         <div className="fg-container">
-          <div className="text-center" style={{ maxWidth: "600px", margin: "0 auto 3rem" }}>
+          <div className="text-center mx-auto mb-5" style={{ maxWidth: "600px" }}>
             <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "2.5rem" }}>Testimonials</h1>
             <p style={{ color: "var(--gray)" }}>Eirmod sed ipsum dolor sit rebum labore magna erat. Tempor ut dolore lorem kasd vero ipsum sit eirmod sit.</p>
           </div>
-          <div className="fg-grid-3">
+          <div className="row g-5">
             {testimonials.map((t, i) => (
-              <div key={i} className="fg-testimonial-card fg-animate-on-scroll" style={{ padding: "2.5rem" }}>
-                <p style={{ fontSize: "1rem", lineHeight: 1.8 }}>{t.text}</p>
-                <div className="fg-test-author">
-                  <img src={t.img} alt={t.name} />
-                  <div>
-                    <h4>{t.name}</h4>
-                    <small>Member</small>
+              <div key={i} className="col-12 col-lg-4">
+                <div className="fg-testimonial-card fg-animate-on-scroll" style={{ padding: "2.5rem" }}>
+                  <p style={{ fontSize: "1rem", lineHeight: 1.8 }}>{t.text}</p>
+                  <div className="fg-test-author">
+                    <img src={t.img} alt={t.name} />
+                    <div>
+                      <h4>{t.name}</h4>
+                      <small>Member</small>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1163,25 +1225,27 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section>
         <div className="fg-container">
-          <div className="text-center">
+          <div className="text-center mb-5">
             <h2 className="fg-section-title">Gym Membership Pricing</h2>
           </div>
-          <div className="text-center" style={{ marginBottom: "2rem" }}>
-            <div className="fg-billing-toggle" style={{ display: "inline-flex" }}>
+          <div className="text-center mb-4">
+            <div className="fg-billing-toggle d-inline-flex">
               <button className={`fg-toggle-btn${billing === "monthly" ? " active" : ""}`} onClick={() => setBilling("monthly")}>Monthly</button>
               <button className={`fg-toggle-btn${billing === "annual" ? " active" : ""}`} onClick={() => setBilling("annual")}>Annual</button>
             </div>
             <span style={{ marginLeft: "1rem", color: "var(--gray)", fontSize: ".85rem" }}>2 months free on annual</span>
           </div>
-          <div className="fg-grid-3" style={{ maxWidth: "1000px", margin: "0 auto" }}>
+          <div className="row g-5 mx-auto" style={{ maxWidth: "1000px" }}>
             {pricingPlans.map((pl, i) => (
-              <div key={i} className={`fg-pricing-card fg-animate-on-scroll${pl.featured ? " featured" : ""}`}>
-                <h5 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "1.5rem", marginBottom: ".5rem" }}>{pl.name}</h5>
-                <div className="fg-price">${billing === "monthly" ? pl.monthly.toFixed(2) : pl.annual.toFixed(2)}<span>{billing === "monthly" ? "/mo" : "/yr"}</span></div>
-                <ul>
-                  {pl.features.map((f, j) => <li key={j}>{renderCheck()} {f}</li>)}
-                </ul>
-                <a href="#" className="fg-btn fg-btn-primary" style={{ width: "100%" }} onClick={(e) => { e.preventDefault(); navigate("contact"); }}>Select</a>
+              <div key={i} className="col-12 col-lg-4">
+                <div className={`fg-pricing-card fg-animate-on-scroll${pl.featured ? " featured" : ""}`}>
+                  <h5 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "1.5rem", marginBottom: ".5rem" }}>{pl.name}</h5>
+                  <div className="fg-price">${billing === "monthly" ? pl.monthly.toFixed(2) : pl.annual.toFixed(2)}<span>{billing === "monthly" ? "/mo" : "/yr"}</span></div>
+                  <ul>
+                    {pl.features.map((f, j) => <li key={j}>{renderCheck()} {f}</li>)}
+                  </ul>
+                  <a href="#" className="fg-btn fg-btn-primary w-100" onClick={(e) => { e.preventDefault(); navigate("contact"); }}>Select</a>
+                </div>
               </div>
             ))}
           </div>
@@ -1215,22 +1279,22 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section>
         <div className="fg-container">
-          <div className="text-center">
+          <div className="text-center mb-5">
             <h2 className="fg-section-title">What&apos;s Included</h2>
             <p className="fg-section-sub">Facilities, classes and support that make your membership worth it.</p>
           </div>
-          <div className="fg-grid-3" style={{ marginBottom: "3rem" }}>
-            <div className="fg-card fg-animate-on-scroll"><div className="fg-icon-wrap green">{renderIcon("dumbbell")}</div><h3>Modern Equipment</h3><p>Strength and conditioning zones with maintained, clean gear.</p></div>
-            <div className="fg-card fg-animate-on-scroll"><div className="fg-icon-wrap green">{renderIcon("users")}</div><h3>Group Classes</h3><p>Daily strength, conditioning and mobility for all levels.</p></div>
-            <div className="fg-card fg-animate-on-scroll"><div className="fg-icon-wrap green">{renderIcon("shower")}</div><h3>Locker & Showers</h3><p>Fresh towels, secure storage and clean facilities.</p></div>
+          <div className="row g-5" style={{ marginBottom: "3rem" }}>
+            <div className="col-12 col-lg-4"><div className="fg-card fg-animate-on-scroll h-100"><div className="fg-icon-wrap green">{renderIcon("dumbbell")}</div><h3>Modern Equipment</h3><p>Strength and conditioning zones with maintained, clean gear.</p></div></div>
+            <div className="col-12 col-lg-4"><div className="fg-card fg-animate-on-scroll h-100"><div className="fg-icon-wrap green">{renderIcon("users")}</div><h3>Group Classes</h3><p>Daily strength, conditioning and mobility for all levels.</p></div></div>
+            <div className="col-12 col-lg-4"><div className="fg-card fg-animate-on-scroll h-100"><div className="fg-icon-wrap green">{renderIcon("shower")}</div><h3>Locker & Showers</h3><p>Fresh towels, secure storage and clean facilities.</p></div></div>
           </div>
-          <div className="text-center">
+          <div className="text-center mb-5">
             <h2 className="fg-section-title">How It Works</h2>
           </div>
-          <div className="fg-grid-3">
-            <div className="fg-card fg-animate-on-scroll"><div className="fg-icon-wrap blue">{renderIcon("calendar")}</div><h3>Choose a Plan</h3><p>Pick monthly or annual, then select the plan that fits.</p></div>
-            <div className="fg-card fg-animate-on-scroll"><div className="fg-icon-wrap blue">{renderIcon("user")}</div><h3>Create Account</h3><p>Complete quick signup and activate your membership.</p></div>
-            <div className="fg-card fg-animate-on-scroll"><div className="fg-icon-wrap blue">{renderIcon("clock")}</div><h3>Book & Train</h3><p>Reserve classes or drop in during access hours.</p></div>
+          <div className="row g-5">
+            <div className="col-12 col-lg-4"><div className="fg-card fg-animate-on-scroll h-100"><div className="fg-icon-wrap blue">{renderIcon("calendar")}</div><h3>Choose a Plan</h3><p>Pick monthly or annual, then select the plan that fits.</p></div></div>
+            <div className="col-12 col-lg-4"><div className="fg-card fg-animate-on-scroll h-100"><div className="fg-icon-wrap blue">{renderIcon("user")}</div><h3>Create Account</h3><p>Complete quick signup and activate your membership.</p></div></div>
+            <div className="col-12 col-lg-4"><div className="fg-card fg-animate-on-scroll h-100"><div className="fg-icon-wrap blue">{renderIcon("clock")}</div><h3>Book & Train</h3><p>Reserve classes or drop in during access hours.</p></div></div>
           </div>
         </div>
       </section>
@@ -1273,29 +1337,31 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section>
         <div className="fg-container">
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(450px,1fr))", gap: "2rem", alignItems: "end", marginBottom: "3rem" }}>
-            <div>
+          <div className="row align-items-end g-5" style={{ marginBottom: "3rem" }}>
+            <div className="col-12 col-lg-7">
               <small style={{ color: "var(--gray)", textTransform: "uppercase", fontWeight: 600 }}>Latest Articles</small>
               <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "2.8rem", marginTop: ".5rem" }}>
                 <span style={{ color: "var(--primary)" }}>Articles</span>
               </h1>
             </div>
-            <div>
+            <div className="col-12 col-lg-5">
               <p style={{ color: "var(--gray)" }}>Practical resources on routines, nutrition, play ideas, and what&apos;s happening at our daycare.</p>
             </div>
           </div>
-          <div className="fg-grid-3">
+          <div className="row g-5">
             {blogArticles.map((b, i) => (
-              <div key={i} className="fg-blog-card fg-animate-on-scroll">
-                <div className="fg-blog-image">
-                  <img src={b.img} alt={b.title} />
-                  <span className="fg-date-badge">{renderIcon("calendar")}{b.date}</span>
-                </div>
-                <div className="fg-blog-body">
-                  <div className="fg-blog-meta">{renderIcon("user")} Admin &bull; {b.read}</div>
-                  <h4>{b.title}</h4>
-                  <p>{b.desc}</p>
-                  <a href="#" className="fg-learn-link">Read More {renderIcon("arrow-right")}</a>
+              <div key={i} className="col-12 col-lg-4">
+                <div className="fg-blog-card fg-animate-on-scroll">
+                  <div className="fg-blog-image">
+                    <img src={b.img} alt={b.title} />
+                    <span className="fg-date-badge">{renderIcon("calendar")}{b.date}</span>
+                  </div>
+                  <div className="fg-blog-body">
+                    <div className="fg-blog-meta">{renderIcon("user")} Admin &bull; {b.read}</div>
+                    <h4>{b.title}</h4>
+                    <p>{b.desc}</p>
+                    <a href="#" className="fg-learn-link">Read More {renderIcon("arrow-right")}</a>
+                  </div>
                 </div>
               </div>
             ))}
@@ -1320,75 +1386,83 @@ export default function GYMTemplate(props: GYMProps) {
 
       <section>
         <div className="fg-container">
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(450px,1fr))", gap: "2rem", alignItems: "end", marginBottom: "2rem" }}>
-            <div>
+          <div className="row align-items-end g-5" style={{ marginBottom: "2rem" }}>
+            <div className="col-12 col-lg-7">
               <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "2.8rem" }}>We&apos;d love to <span style={{ color: "var(--primary)" }}>hear from you</span></h1>
             </div>
-            <div>
+            <div className="col-12 col-lg-5">
               <p style={{ color: "var(--gray)" }}>Reach out with questions, availability, or to schedule a tour. We respond within one business day.</p>
             </div>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(350px,1fr))", gap: "2rem" }}>
-            <div className="fg-contact-card soft-blue">
-              <h3>Contact Info</h3>
-              <div className="fg-info-item">
-                <div className="fg-icon-pill blue">{renderIcon("map-pin")}</div>
-                <div>123 Street, New York, USA</div>
-              </div>
-              <div className="fg-info-item">
-                <div className="fg-icon-pill blue">{renderIcon("envelope")}</div>
-                <div>info@fitgym.com</div>
-              </div>
-              <div className="fg-info-item">
-                <div className="fg-icon-pill blue">{renderIcon("phone")}</div>
-                <div>+012 345 6789</div>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".75rem", margin: "1.5rem 0" }}>
-                <div className="fg-mini-card">
-                  <div className="fg-label">Office Hours</div>
-                  <div className="fg-val">Mon–Fri</div>
-                  <div style={{ fontSize: ".8rem", color: "var(--gray)" }}>8:00am – 5:00pm</div>
+          <div className="row g-5">
+            <div className="col-12 col-lg-6">
+              <div className="fg-contact-card soft-blue">
+                <h3>Contact Info</h3>
+                <div className="fg-info-item">
+                  <div className="fg-icon-pill blue">{renderIcon("map-pin")}</div>
+                  <div>123 Street, New York, USA</div>
                 </div>
-                <div className="fg-mini-card">
-                  <div className="fg-label">Tours</div>
-                  <div className="fg-val">By appointment</div>
-                  <div style={{ fontSize: ".8rem", color: "var(--gray)" }}>Mon–Thu</div>
+                <div className="fg-info-item">
+                  <div className="fg-icon-pill blue">{renderIcon("envelope")}</div>
+                  <div>info@fitgym.com</div>
                 </div>
+                <div className="fg-info-item">
+                  <div className="fg-icon-pill blue">{renderIcon("phone")}</div>
+                  <div>+012 345 6789</div>
+                </div>
+                <div className="row g-3" style={{ margin: "1.5rem 0" }}>
+                  <div className="col-6">
+                    <div className="fg-mini-card">
+                      <div className="fg-label">Office Hours</div>
+                      <div className="fg-val">Mon–Fri</div>
+                      <div style={{ fontSize: ".8rem", color: "var(--gray)" }}>8:00am – 5:00pm</div>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="fg-mini-card">
+                      <div className="fg-label">Tours</div>
+                      <div className="fg-val">By appointment</div>
+                      <div style={{ fontSize: ".8rem", color: "var(--gray)" }}>Mon–Thu</div>
+                    </div>
+                  </div>
+                </div>
+                <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); }}>Schedule a Tour {renderIcon("arrow-right")}</a>
               </div>
-              <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); }}>Schedule a Tour {renderIcon("arrow-right")}</a>
             </div>
-            <div className="fg-contact-card">
-              <h3>Send a Message</h3>
-              <form onSubmit={(e) => e.preventDefault()}>
-                <div className="fg-form-floating">
-                  <input type="text" id="fg-c-name" placeholder="Your Name" />
-                  <label htmlFor="fg-c-name">Your Name</label>
-                </div>
-                <div className="fg-form-floating">
-                  <input type="email" id="fg-c-email" placeholder="Your Email" />
-                  <label htmlFor="fg-c-email">Your Email</label>
-                </div>
-                <div className="fg-form-floating">
-                  <input type="tel" id="fg-c-phone" placeholder="Phone" />
-                  <label htmlFor="fg-c-phone">Phone</label>
-                </div>
-                <div className="fg-form-floating">
-                  <input type="text" id="fg-c-goal" placeholder="Fitness Goal (optional)" />
-                  <label htmlFor="fg-c-goal">Fitness Goal (optional)</label>
-                </div>
-                <div className="fg-form-floating">
-                  <input type="text" id="fg-c-subject" placeholder="Subject" />
-                  <label htmlFor="fg-c-subject">Subject</label>
-                </div>
-                <div className="fg-form-floating">
-                  <textarea id="fg-c-message" placeholder="Message" style={{ minHeight: "120px" }}></textarea>
-                  <label htmlFor="fg-c-message">Message</label>
-                </div>
-                <button className="fg-btn fg-btn-primary" style={{ width: "100%" }} type="submit">Send Message</button>
-              </form>
+            <div className="col-12 col-lg-6">
+              <div className="fg-contact-card">
+                <h3>Send a Message</h3>
+                <form onSubmit={(e) => e.preventDefault()}>
+                  <div className="fg-form-floating">
+                    <input type="text" id="fg-c-name" placeholder="Your Name" />
+                    <label htmlFor="fg-c-name">Your Name</label>
+                  </div>
+                  <div className="fg-form-floating">
+                    <input type="email" id="fg-c-email" placeholder="Your Email" />
+                    <label htmlFor="fg-c-email">Your Email</label>
+                  </div>
+                  <div className="fg-form-floating">
+                    <input type="tel" id="fg-c-phone" placeholder="Phone" />
+                    <label htmlFor="fg-c-phone">Phone</label>
+                  </div>
+                  <div className="fg-form-floating">
+                    <input type="text" id="fg-c-goal" placeholder="Fitness Goal (optional)" />
+                    <label htmlFor="fg-c-goal">Fitness Goal (optional)</label>
+                  </div>
+                  <div className="fg-form-floating">
+                    <input type="text" id="fg-c-subject" placeholder="Subject" />
+                    <label htmlFor="fg-c-subject">Subject</label>
+                  </div>
+                  <div className="fg-form-floating">
+                    <textarea id="fg-c-message" placeholder="Message" style={{ minHeight: "120px" }}></textarea>
+                    <label htmlFor="fg-c-message">Message</label>
+                  </div>
+                  <button className="fg-btn fg-btn-primary w-100" type="submit">Send Message</button>
+                </form>
+              </div>
             </div>
           </div>
-          <div style={{ marginTop: "2rem" }}>
+          <div className="mt-4">
             <div className="fg-map-embed">
               <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew+York%2C+USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd" loading="lazy" title="FitGym Map Location"></iframe>
             </div>
