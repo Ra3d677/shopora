@@ -61,9 +61,10 @@ export default function Navbar({
   if (hs.fontStyle === 'italic') headerStyle.fontStyle = 'italic';
   if (hs.fontStyle === 'uppercase') headerStyle.textTransform = 'uppercase';
   const headerLinks = storeSettings?.headerSettings?.links || (isWebsite ? [
-    { id: 'home', label: t('homeLink'), url: `/store/${slug}` },
-    { id: 'packages', label: t('packagesLink'), url: `/store/${slug}#packages` },
-    { id: 'about', label: t('aboutUsLink'), url: `/store/${slug}#about` }
+    { id: 'home', label: t('home'), url: `/store/${slug}` },
+    { id: 'shop', label: t('shop'), url: `/store/${slug}/categories` },
+    { id: 'about', label: t('aboutUsLink'), url: `/store/${slug}#about` },
+    { id: 'contact', label: t('contact'), url: `/store/${slug}#contact` }
   ] : [
     { id: 'home', label: t('home') || 'Home', url: `/store/${slug}` },
     { id: 'shop', label: t('shop') || 'Shop', url: `/store/${slug}/categories` }
@@ -236,8 +237,7 @@ export default function Navbar({
   };
 
   // Common User Menu Dropdown
-  const UserMenuDropdown = () => {
-    if (storeSettings?.type === 'WEBSITE') return null;
+    const UserMenuDropdown = () => {
     return (
       <div className="relative" ref={userMenuRef}>
         <button 
@@ -358,7 +358,6 @@ export default function Navbar({
   );
 
   const CartButton = () => {
-    if (storeSettings?.type === 'WEBSITE') return null;
     return (
       <Link href={`/store/${slug}/cart`} className="relative p-2 transition-all hover:scale-110 group">
         <ShoppingCart className="h-5 w-5" />
@@ -425,7 +424,7 @@ export default function Navbar({
     );
   };
 
-  if (storeSettings?.type === 'WEBSITE') {
+  if (storeSettings?.type === 'WEBSITE' && effectiveLayout === 'tourism') {
     return (
       <>
         <LogoTransparencyFilter />

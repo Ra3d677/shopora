@@ -102,7 +102,7 @@ export default function StorefrontShell({
         {children}
       </main>
       <div data-page="footer">
-        {store.type !== 'WEBSITE' && store.template !== 'fitness' && store.template !== 'ironpeak' && store.template !== 'dddyou' && store.template !== '1m' && store.template !== 'kitchen' && (store.template !== '2m' || !isHomePage) && <Footer />}
+        {store.template !== 'fitness' && store.template !== 'ironpeak' && store.template !== 'dddyou' && store.template !== '1m' && store.template !== 'kitchen' && (store.template !== '2m' || !isHomePage) && <Footer />}
       </div>
       {store.template !== 'fitness' && store.template !== 'ironpeak' && store.template !== 'dddyou' && store.template !== '1m' && store.template !== '2m' && store.template !== 'gym' && store.template !== 'kitchen' && <WhatsAppButton />}
     </>

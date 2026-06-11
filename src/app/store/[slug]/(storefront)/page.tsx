@@ -40,6 +40,17 @@ function BaseHomePage({ storeName, slug }: { storeName: string, slug: string }) 
   );
 }
 
+function WebsiteHomePage({ storeName }: { storeName: string }) {
+  return (
+    <div className="min-h-[60vh] flex flex-col items-center justify-center px-6 py-24 text-center">
+      <div className="max-w-2xl">
+        <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-6">{storeName}</h1>
+        <p className="text-lg md:text-xl text-slate-500 leading-relaxed">Welcome to our official website.</p>
+      </div>
+    </div>
+  );
+}
+
 export default async function HomePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const store = await getStoreBySlug(slug);
@@ -71,7 +82,8 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
     if (activeTemplate === 'itsolution') return <ITSolutionTemplate {...props} />;
     if (activeTemplate === 'gym') return <GYMTemplate {...props} />;
     if (activeTemplate === 'kitchen') return <KitchenTemplate {...props} />;
-    if (store.type === 'WEBSITE') return <TourismTemplate {...props} />;
+    if (activeTemplate === 'tourism') return <TourismTemplate {...props} />;
+    if (store.type === 'WEBSITE') return <WebsiteHomePage storeName={store.name} />;
     
     if (activeTemplate === 'zenith') return <ZenithTemplate {...props} />;
     if (activeTemplate === 'modern') return <ModernTemplate {...props} />;
