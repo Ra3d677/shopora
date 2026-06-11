@@ -33,6 +33,12 @@ export default function PlatformStoresManager({ stores }: { stores: any[] }) {
     { id: '1m', name: '1M' },
     { id: '2m', name: '2M' },
     { id: '3m', name: '3M Netro' },
+    { id: 'fitness', name: 'برعي - Sama Fit' },
+    { id: 'tourism', name: 'Tourism & Travel Showcase' },
+    { id: 'ironpeak', name: 'Iron Peak Fitness' },
+    { id: 'itsolution', name: 'ITSolution Agency' },
+    { id: 'gym', name: 'FitGym' },
+    { id: 'hotel1', name: 'Luxe Hotel' },
   ];
 
   const filteredStores = stores.filter(s => 
