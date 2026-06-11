@@ -35,43 +35,128 @@ export default function KitchenTemplate(props: any) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const renderHeader = () => (
-    <header className="header">
-      <nav className="navbar navbar-expand-xl">
-        <div className="d-xl-none d-block">
-          <a className="navbar-brand show-on-mobile" href="#" onClick={() => nav("/")}>
-            <img alt="" src={I.logo} />
+  const renderHeader = () => {
+    const linkStyle = (path: string) => ({
+      cursor: "pointer",
+      color: isActive(path) ? "#9B6C27" : "#000000",
+      fontWeight: isActive(path) ? 700 : 500,
+      fontSize: "16px",
+      borderBottom: isActive(path) ? "2px solid #9B6C27" : "2px solid transparent",
+      paddingBottom: "4px",
+      transition: "all 0.3s ease",
+    });
+    return (
+      <header style={{
+        width: "100%",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: 9999,
+        background: "#ffffff",
+        borderBottom: "1px solid #e5e5e5",
+        boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+      }}>
+        <div style={{
+          maxWidth: "1240px",
+          margin: "0 auto",
+          padding: "0 24px",
+          height: "72px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}>
+          {/* Logo */}
+          <a href="#" onClick={(e) => { e.preventDefault(); nav("/"); }} style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: 0 }}>
+            <img alt="" src={I.logo} style={{ height: "48px", width: "auto" }} />
+          </a>
+
+          {/* Desktop Nav */}
+          <div style={{ display: "none", alignItems: "center", gap: "32px" }} className="kitchen-desktop-nav">
+            <a href="#" onClick={(e) => { e.preventDefault(); nav("/"); }} style={linkStyle("/")}>Home</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); nav("/about"); }} style={linkStyle("/about")}>About</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); nav("/menu"); }} style={linkStyle("/menu")}>Menu</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); nav("/blogs"); }} style={linkStyle("/blogs")}>Blog</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); nav("/contact"); }} style={linkStyle("/contact")}>Contact</a>
+          </div>
+
+          {/* Right side */}
+          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+            <a href="tel:001239999" style={{ color: "#000000", fontSize: "15px", fontWeight: 500, textDecoration: "none", display: "none", alignItems: "center", gap: "6px" }} className="kitchen-phone">
+              <i className="fas fa-phone-alt" style={{ color: "#9B6C27" }}></i>
+              +1 233 898 0897
+            </a>
+            <button
+              onClick={() => setShowBooking(true)}
+              style={{
+                background: "#9B6C27",
+                color: "#ffffff",
+                border: "none",
+                padding: "10px 24px",
+                borderRadius: "6px",
+                fontWeight: 600,
+                fontSize: "14px",
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                transition: "background 0.3s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#7a541f")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "#9B6C27")}
+            >
+              Book Table
+            </button>
+            {/* Mobile hamburger */}
+            <button
+              className="kitchen-mobile-toggle"
+              onClick={() => {
+                const menu = document.getElementById("kitchen-mobile-nav");
+                if (menu) menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+              }}
+              style={{
+                display: "none",
+                background: "none",
+                border: "none",
+                fontSize: "24px",
+                cursor: "pointer",
+                color: "#000000",
+                padding: "4px",
+              }}
+            >
+              <i className="fas fa-bars"></i>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Nav */}
+        <div
+          id="kitchen-mobile-nav"
+          style={{
+            display: "none",
+            flexDirection: "column",
+            background: "#ffffff",
+            borderTop: "1px solid #e5e5e5",
+            padding: "16px 24px",
+            gap: "12px",
+            position: "absolute",
+            top: "72px",
+            left: 0,
+            width: "100%",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+            zIndex: 9998,
+          }}
+        >
+          <a href="#" onClick={(e) => { e.preventDefault(); nav("/"); const m = document.getElementById("kitchen-mobile-nav"); if (m) m.style.display = "none"; }} style={{ ...linkStyle("/"), fontSize: "15px" }}>Home</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); nav("/about"); const m = document.getElementById("kitchen-mobile-nav"); if (m) m.style.display = "none"; }} style={{ ...linkStyle("/about"), fontSize: "15px" }}>About</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); nav("/menu"); const m = document.getElementById("kitchen-mobile-nav"); if (m) m.style.display = "none"; }} style={{ ...linkStyle("/menu"), fontSize: "15px" }}>Menu</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); nav("/blogs"); const m = document.getElementById("kitchen-mobile-nav"); if (m) m.style.display = "none"; }} style={{ ...linkStyle("/blogs"), fontSize: "15px" }}>Blog</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); nav("/contact"); const m = document.getElementById("kitchen-mobile-nav"); if (m) m.style.display = "none"; }} style={{ ...linkStyle("/contact"), fontSize: "15px" }}>Contact</a>
+          <a href="tel:001239999" style={{ color: "#000000", fontSize: "15px", fontWeight: 500, textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+            <i className="fas fa-phone-alt" style={{ color: "#9B6C27" }}></i>
+            +1 233 898 0897
           </a>
         </div>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar-3">
-          <i className="fas fa-bars"></i>
-        </button>
-        <div className="collapse navbar-collapse justify-content-between" id="mynavbar-3">
-          <div className="col-lg-5">
-            <ul className="navbar-nav mainmenu">
-              <li className="d-xl-block d-none"><a href="tel:001239999" className="phone"><i className="fal fa-phone-alt"></i> +1 233 898 0897</a></li>
-              <li className="menu-item"><a href="#" onClick={() => nav("/")} className={isActive("/") ? "active" : ""}>Home</a></li>
-              <li className="menu-item"><a href="#" onClick={() => nav("/about")} className={isActive("/about") ? "active" : ""}>About</a></li>
-              <li className="menu-item"><a href="#" onClick={() => nav("/blogs")} className={isActive("/blogs") ? "active" : ""}>Blog</a></li>
-            </ul>
-          </div>
-          <div className="col-lg-2">
-            <div className="d-xl-block d-none text-center">
-              <a className="navbar-brand" href="#" onClick={() => nav("/")}><img alt="" src={I.logo} /></a>
-            </div>
-          </div>
-          <div className="col-lg-5">
-            <ul className="navbar-nav mainmenu justify-content-end">
-              <li className="menu-item"><a href="#" onClick={() => nav("/menu")} className={isActive("/menu") ? "active" : ""}>Menu</a></li>
-              <li className="menu-item"><a href="#" onClick={() => nav("/contact")} className={isActive("/contact") ? "active" : ""}>Contact</a></li>
-              <li className="d-xl-none d-block"><a href="tel:001239999" className="phone"><i className="fal fa-phone-alt"></i> +1 233 898 0897</a></li>
-              <li><button className="cus-btn light modal-popup" onClick={() => setShowBooking(true)}>Book Table</button></li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
-  );
+      </header>
+    );
+  };
 
   const renderFooter = () => (
     <footer>
