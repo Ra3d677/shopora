@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from"react";
+import { useEffect, useInsertionEffect, useRef, useState, useCallback } from"react";
 import { GYMImages } from"./GYMImages";
 
 interface GYMProps {
@@ -96,11 +96,11 @@ export default function GYMTemplate(props: GYMProps) {
  return () => { window.removeEventListener("scroll", handleScroll); clearTimeout(timer); };
  }, []);
 
- useEffect(() => {
- const s = document.getElementById("fg-style");
- if (!s) {
- const style = document.createElement("style");
- style.id ="fg-style";
+  useInsertionEffect(() => {
+  const s = document.getElementById("fg-style");
+  if (!s) {
+  const style = document.createElement("style");
+  style.id ="fg-style";
  style.textContent = `
  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap');
   :root{--primary:#0066FF;--primary-dark:#004dcf;--accent-green:#10b981;--dark:#0f0f23;--darker:#0a0a18;--gray:#6b7280;--light:#f3f4f6;--white:#fff}
