@@ -77,7 +77,7 @@ export default function StorefrontShell({
 
   return (
     <>
-      {headerSection && store.template !== 'gym' ? (
+      {headerSection && store.template !== 'gym' && store.template !== 'kitchen' ? (
         <StoreHeader headerConfig={headerSection} slug={slug} storeName={store.name} session={session} categories={store.categories} />
       ) : (
         store.template !== 'fitness' && store.template !== 'ironpeak' && store.template !== 'itsolution' && store.template !== 'gym' && store.template !== 'kitchen' && (store.template !== '2m' || !isHomePage) && (
@@ -98,7 +98,7 @@ export default function StorefrontShell({
           />
         )
       )}
-      <main className={`flex-grow flex flex-col store-container ${headerSection && store.template !== 'gym' ? 'pt-16 md:pt-20' : ''} ${store.template === 'ironpeak' || store.template === 'itsolution' || store.template === 'gym' || store.template === 'kitchen' ? '!p-0 !m-0' : ''}`}>
+      <main className={`flex-grow flex flex-col store-container ${headerSection && store.template !== 'gym' && store.template !== 'kitchen' ? 'pt-16 md:pt-20' : ''} ${store.template === 'ironpeak' || store.template === 'itsolution' || store.template === 'gym' || store.template === 'kitchen' ? '!p-0 !m-0' : ''}`}>
         {children}
       </main>
       <div data-page="footer">
