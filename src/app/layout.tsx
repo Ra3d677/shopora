@@ -41,7 +41,9 @@ export default async function RootLayout({
   return (
     <html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       <body className={`${inter.variable} ${cairo.variable} antialiased min-h-screen flex flex-col ${lang === 'ar' ? 'font-arabic' : ''}`}>
-        <Toaster position="top-right" richColors />
+        <div style={{ position: 'fixed', inset: 0, width: 0, height: 0, pointerEvents: 'none', zIndex: 9999 }}>
+          <Toaster position="top-right" richColors />
+        </div>
         <script
           dangerouslySetInnerHTML={{
             __html: `
