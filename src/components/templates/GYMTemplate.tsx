@@ -284,8 +284,10 @@ export default function GYMTemplate(props: GYMProps) {
  .fg-facility-card .fg-facility-media img{width:100%;height:100%;object-fit:cover;transition:.5s}
  .fg-facility-card:hover .fg-facility-media img{transform:scale(1.08)}
  .fg-facility-card .fg-icon-wrap{position:relative;margin:-28px auto 1rem;z-index:2}
- .fg-facility-card h3{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;text-align:center;padding:0 1rem}
- .fg-facility-card p{text-align:center;padding:0 1rem;color:var(--gray);font-size:.85rem}
+  .fg-facility-card h3{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;text-align:center;padding:0 1rem}
+  .fg-facility-card p{text-align:center;padding:0 1rem;color:var(--gray);font-size:.85rem}
+  .fg-facility-pill{display:inline-block;padding:.6rem 1.5rem;border-radius:50px;background:#fff;border:1px solid rgba(0,0,0,.06);font-size:.85rem;font-weight:600;color:var(--dark);box-shadow:0 2px 8px rgba(0,0,0,.04);transition:.3s}
+  .fg-facility-pill:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);border-color:var(--primary);color:var(--primary)}
  .fg-schedule-wrapper{overflow-x:auto;border-radius:12px;border:1px solid rgba(0,0,0,.06)}
  .fg-schedule-table{width:100%;border-collapse:collapse;min-width:500px}
  .fg-schedule-table th{background:var(--dark);color:#fff;padding:1rem;font-family:Montserrat,sans-serif;font-size:.85rem;text-transform:uppercase;text-align:left}
@@ -993,24 +995,19 @@ const renderAbout = () => (
  </div>
  </section>
 
- <section>
- <div className="fg-container">
- <div className="text-center">
- <h2 className="fg-section-title">Facilities Highlights</h2>
- <p className="fg-section-sub">A quick look inside</p>
- </div>
- <div className="fg-gallery-grid">
- {galleryImgs.map((g, i) => (
- <div key={i} className="fg-gallery-item fg-animate-on-scroll">
- <img src={g} alt={`Facility ${i + 1}`} />
- <div style={{ textAlign:"center", padding:".5rem", fontSize:".85rem", color:"var(--gray)" }}>
- {["Free Weights","Power Racks","Cardio Zone","Turf & Sleds","Mobility Area","Locker Rooms"][i]}
- </div>
- </div>
- ))}
- </div>
- </div>
- </section>
+  <section>
+  <div className="fg-container">
+  <div className="text-center">
+  <h2 className="fg-section-title">Facilities Highlights</h2>
+  <p className="fg-section-sub">A quick look inside</p>
+  </div>
+  <div className="d-flex flex-wrap justify-content-center" style={{ gap:".75rem", maxWidth:"700px", margin:"2rem auto 0" }}>
+  {["Free Weights","Power Racks","Cardio Zone","Turf & Sleds","Mobility Area","Locker Rooms"].map((f, i) => (
+  <span key={i} className="fg-facility-pill">{f}</span>
+  ))}
+  </div>
+  </div>
+  </section>
 
  <section style={{ background:"var(--light)" }}>
  <div className="fg-container">
