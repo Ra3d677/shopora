@@ -92,7 +92,7 @@ export default function GYMTemplate(props: GYMProps) {
  useEffect(() => {
  const handleScroll = () => setScrolled(window.scrollY > 50);
  window.addEventListener("scroll", handleScroll);
- const timer = setTimeout(() => setLoaded(true), 1200);
+  const timer = setTimeout(() => setLoaded(true), 400);
  return () => { window.removeEventListener("scroll", handleScroll); clearTimeout(timer); };
  }, []);
 
@@ -104,15 +104,14 @@ export default function GYMTemplate(props: GYMProps) {
  style.textContent = `
  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap');
   :root{--primary:#0066FF;--primary-dark:#004dcf;--accent-green:#10b981;--dark:#0f0f23;--darker:#0a0a18;--gray:#6b7280;--light:#f3f4f6;--white:#fff}
-  html,body,.theme-gym,.theme-gym main,.theme-gym>[data-page]{margin:0!important;padding:0!important;background:transparent!important}
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:Poppins,sans-serif;color:#333;overflow-x:hidden}
   h1,h2,h3,h4,h5,.fg-hero-title,.fg-section-title,.fg-page-title,.fg-panel-title{font-family:'Bebas Neue',sans-serif;letter-spacing:1px}
  .fg-nav-links a,.fg-btn,.fg-coach-name{font-family:Montserrat,sans-serif}
  a{text-decoration:none}
- .fg-preloader{position:fixed;inset:0;background:var(--white);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s,visibility .6s}
+  .fg-preloader{position:fixed;inset:0;background:var(--dark);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s,visibility .4s}
  .fg-preloader.hidden{opacity:0;visibility:hidden}
- .fg-spinner{width:3rem;height:3rem;border:4px solid #e5e7eb;border-top-color:var(--primary);border-radius:50%;animation:fgSpin .8s linear infinite}
+  .fg-spinner{width:3rem;height:3rem;border:4px solid rgba(255,255,255,.15);border-top-color:var(--primary);border-radius:50%;animation:fgSpin .8s linear infinite}
  @keyframes fgSpin{to{transform:rotate(360deg)}}
         .fg-navbar{position:absolute;top:0;left:0;width:100%;z-index:1000;padding:1rem 0;transition:all .4s;background:transparent}
         .fg-navbar.scrolled{position:fixed;background:rgba(10,10,30,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 4px 30px rgba(0,0,0,.35);border-bottom:1px solid rgba(255,255,255,.06)}
