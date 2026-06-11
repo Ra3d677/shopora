@@ -104,8 +104,9 @@ export default function GYMTemplate(props: GYMProps) {
  style.textContent = `
  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap');
   :root{--primary:#0066FF;--primary-dark:#004dcf;--accent-green:#10b981;--dark:#0f0f23;--darker:#0a0a18;--gray:#6b7280;--light:#f3f4f6;--white:#fff}
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:Poppins,sans-serif;color:#333;overflow-x:hidden}
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{background:var(--dark)}
+  body{font-family:Poppins,sans-serif;color:#333;overflow-x:hidden;background:var(--dark)}
   .store-container{background:transparent!important}
   h1,h2,h3,h4,h5,.fg-hero-title,.fg-section-title,.fg-page-title,.fg-panel-title{font-family:'Bebas Neue',sans-serif;letter-spacing:1px}
  .fg-nav-links a,.fg-btn,.fg-coach-name{font-family:Montserrat,sans-serif}

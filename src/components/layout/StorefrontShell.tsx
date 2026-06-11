@@ -76,7 +76,7 @@ export default function StorefrontShell({
 
   return (
     <>
-      {headerSection ? (
+      {headerSection && store.template !== 'gym' ? (
         <StoreHeader headerConfig={headerSection} slug={slug} storeName={store.name} session={session} categories={store.categories} />
       ) : (
         store.template !== 'fitness' && store.template !== 'ironpeak' && store.template !== 'itsolution' && store.template !== 'gym' && (store.template !== '2m' || !isHomePage) && (
