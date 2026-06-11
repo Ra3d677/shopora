@@ -373,14 +373,10 @@ export default function GYMTemplate(props: GYMProps) {
  .fg-mini-card{background:#fff;border-radius:10px;padding:.8rem 1rem;font-size:.8rem}
  .fg-mini-card .fg-label{color:var(--gray);font-size:.75rem}
  .fg-mini-card .fg-val{font-weight:600;font-size:.9rem}
-        .fg-form-floating{position:relative;margin-bottom:1rem}
-        .fg-form-floating input,.fg-form-floating select,.fg-form-floating textarea{width:100%;padding:1.5rem 1rem .5rem;border:1px solid rgba(0,0,0,.08);border-radius:10px;font-size:.9rem;background:#fff;transition:.3s;font-family:Poppins,sans-serif}
-        .fg-form-floating input::placeholder,.fg-form-floating select::placeholder,.fg-form-floating textarea::placeholder{color:transparent}
+        .fg-form-floating{margin-bottom:1rem}
+        .fg-form-floating label{display:block;margin-bottom:.3rem;font-size:.85rem;font-weight:500;color:#555}
+        .fg-form-floating input,.fg-form-floating select,.fg-form-floating textarea{width:100%;padding:.8rem 1rem;border:1px solid rgba(0,0,0,.08);border-radius:10px;font-size:.9rem;background:#fff;transition:.3s;font-family:Poppins,sans-serif;box-sizing:border-box}
         .fg-form-floating input:focus,.fg-form-floating select:focus,.fg-form-floating textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,102,255,.08)}
-        .fg-form-floating label{position:absolute;top:1.1rem;left:1rem;font-size:.9rem;color:var(--gray);pointer-events:none;transition:.3s;transform-origin:0 0}
-        .fg-form-floating input:focus~label,.fg-form-floating input:not(:placeholder-shown)~label,
-        .fg-form-floating select:focus~label,.fg-form-floating select:not(:placeholder-shown)~label,
-        .fg-form-floating textarea:focus~label,.fg-form-floating textarea:not(:placeholder-shown)~label{transform:scale(.85) translateY(-.55rem);color:var(--primary)}
         .fg-form-floating textarea{min-height:100px;resize:vertical}
  .fg-map-embed iframe{width:100%;height:420px;border-radius:16px;border:0}
  .fg-footer{background:var(--darker);color:rgba(255,255,255,.6);padding:5rem 0 0;font-size:.85rem}
@@ -1132,61 +1128,61 @@ export default function GYMTemplate(props: GYMProps) {
  <h1 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"2.5rem", marginBottom:"2rem", textAlign:"center" }}>Book a Free Trial Session</h1>
  <form onSubmit={(e) => e.preventDefault()}>
  <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1rem" }}>
- <div className="fg-form-floating">
- <input type="text" id="fg-fullName" placeholder="Full Name" />
- <label htmlFor="fg-fullName">Full Name</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-fullName">Full Name</label>
+  <input type="text" id="fg-fullName" placeholder="Full Name" />
  </div>
- <div className="fg-form-floating">
- <input type="email" id="fg-email" placeholder="Email" />
- <label htmlFor="fg-email">Email</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-email">Email</label>
+  <input type="email" id="fg-email" placeholder="Email" />
  </div>
- <div className="fg-form-floating">
- <input type="tel" id="fg-phone" placeholder="Phone" />
- <label htmlFor="fg-phone">Phone</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-phone">Phone</label>
+  <input type="tel" id="fg-phone" placeholder="Phone" />
  </div>
- <div className="fg-form-floating">
- <select id="fg-contactMethod">
- <option value="email">Email</option>
- <option value="phone">Phone</option>
- </select>
- <label htmlFor="fg-contactMethod">Preferred Contact Method</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-contactMethod">Preferred Contact Method</label>
+  <select id="fg-contactMethod">
+  <option value="email">Email</option>
+  <option value="phone">Phone</option>
+  </select>
  </div>
- <div className="fg-form-floating">
- <select id="fg-programInterest">
- <option value="strength">Strength Foundations</option>
- <option value="hiit">HIIT Conditioning</option>
- <option value="mobility">Mobility & Recovery</option>
- <option value="powerlifting">Powerlifting Club</option>
- <option value="hypertrophy">Functional Hypertrophy</option>
- <option value="yoga">Yoga Flow</option>
- </select>
- <label htmlFor="fg-programInterest">Program Interest</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-programInterest">Program Interest</label>
+  <select id="fg-programInterest">
+  <option value="strength">Strength Foundations</option>
+  <option value="hiit">HIIT Conditioning</option>
+  <option value="mobility">Mobility & Recovery</option>
+  <option value="powerlifting">Powerlifting Club</option>
+  <option value="hypertrophy">Functional Hypertrophy</option>
+  <option value="yoga">Yoga Flow</option>
+  </select>
  </div>
- <div className="fg-form-floating">
- <input type="date" id="fg-preferredDate" placeholder="Preferred Date" />
- <label htmlFor="fg-preferredDate">Preferred Date</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-preferredDate">Preferred Date</label>
+  <input type="date" id="fg-preferredDate" placeholder="Preferred Date" />
  </div>
- <div className="fg-form-floating">
- <input type="time" id="fg-preferredTime" placeholder="Preferred Time" />
- <label htmlFor="fg-preferredTime">Preferred Time</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-preferredTime">Preferred Time</label>
+  <input type="time" id="fg-preferredTime" placeholder="Preferred Time" />
  </div>
- <div className="fg-form-floating">
- <textarea id="fg-goals" placeholder="Goals / Notes" style={{ minHeight:"80px" }}></textarea>
- <label htmlFor="fg-goals">Goals / Notes</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-goals">Goals / Notes</label>
+  <textarea id="fg-goals" placeholder="Goals / Notes" style={{ minHeight:"80px" }}></textarea>
  </div>
- <div className="fg-form-floating" style={{ gridColumn:"1/-1" }}>
- <select id="fg-hearAbout">
- <option value="friend">Friend/Family</option>
- <option value="search">Online Search</option>
- <option value="social">Social Media</option>
- <option value="flyer">Flyer</option>
- <option value="other">Other</option>
- </select>
- <label htmlFor="fg-hearAbout">How did you hear about FitGym?</label>
+  <div className="fg-form-floating" style={{ gridColumn:"1/-1" }}>
+  <label htmlFor="fg-hearAbout">How did you hear about FitGym?</label>
+  <select id="fg-hearAbout">
+  <option value="friend">Friend/Family</option>
+  <option value="search">Online Search</option>
+  <option value="social">Social Media</option>
+  <option value="flyer">Flyer</option>
+  <option value="other">Other</option>
+  </select>
  </div>
- <div className="fg-form-floating" style={{ gridColumn:"1/-1" }}>
- <textarea id="fg-extra" placeholder="Anything else we should know?" style={{ minHeight:"80px" }}></textarea>
- <label htmlFor="fg-extra">Anything else we should know?</label>
+  <div className="fg-form-floating" style={{ gridColumn:"1/-1" }}>
+  <label htmlFor="fg-extra">Anything else we should know?</label>
+  <textarea id="fg-extra" placeholder="Anything else we should know?" style={{ minHeight:"80px" }}></textarea>
  </div>
  <div style={{ gridColumn:"1/-1" }}>
  <button className="fg-btn fg-btn-primary" style={{ width:"100%", padding:"1rem" }} type="submit">Submit</button>
@@ -1450,29 +1446,29 @@ export default function GYMTemplate(props: GYMProps) {
  <div className="fg-contact-card">
  <h3>Send a Message</h3>
  <form onSubmit={(e) => e.preventDefault()}>
- <div className="fg-form-floating">
- <input type="text" id="fg-c-name" placeholder="Your Name" />
- <label htmlFor="fg-c-name">Your Name</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-c-name">Your Name</label>
+  <input type="text" id="fg-c-name" placeholder="Your Name" />
  </div>
- <div className="fg-form-floating">
- <input type="email" id="fg-c-email" placeholder="Your Email" />
- <label htmlFor="fg-c-email">Your Email</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-c-email">Your Email</label>
+  <input type="email" id="fg-c-email" placeholder="Your Email" />
  </div>
- <div className="fg-form-floating">
- <input type="tel" id="fg-c-phone" placeholder="Phone" />
- <label htmlFor="fg-c-phone">Phone</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-c-phone">Phone</label>
+  <input type="tel" id="fg-c-phone" placeholder="Phone" />
  </div>
- <div className="fg-form-floating">
- <input type="text" id="fg-c-goal" placeholder="Fitness Goal (optional)" />
- <label htmlFor="fg-c-goal">Fitness Goal (optional)</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-c-goal">Fitness Goal (optional)</label>
+  <input type="text" id="fg-c-goal" placeholder="Fitness Goal (optional)" />
  </div>
- <div className="fg-form-floating">
- <input type="text" id="fg-c-subject" placeholder="Subject" />
- <label htmlFor="fg-c-subject">Subject</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-c-subject">Subject</label>
+  <input type="text" id="fg-c-subject" placeholder="Subject" />
  </div>
- <div className="fg-form-floating">
- <textarea id="fg-c-message" placeholder="Message" style={{ minHeight:"120px" }}></textarea>
- <label htmlFor="fg-c-message">Message</label>
+  <div className="fg-form-floating">
+  <label htmlFor="fg-c-message">Message</label>
+  <textarea id="fg-c-message" placeholder="Message" style={{ minHeight:"120px" }}></textarea>
  </div>
  <button className="fg-btn fg-btn-primary w-100" type="submit">Send Message</button>
  </form>
@@ -1510,3 +1506,4 @@ export default function GYMTemplate(props: GYMProps) {
  </>
  );
 }
+
