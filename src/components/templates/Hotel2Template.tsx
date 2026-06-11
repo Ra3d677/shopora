@@ -279,37 +279,43 @@ export default function Hotel2Template(props: any) {
       <header className={"home-header" + (scrolled ? " scrolled" : "")}>
         <div className="d-flex align-items-center justify-content-between">
           <div className="logo"><a><img src={I.logo} alt="" /></a></div>
-          {renderNavLinks()}
-          {renderMobileNav()}
-          {renderSearch()}
+          {renderNavLinks()}{renderMobileNav()}{renderSearch()}
         </div>
       </header>
       <section className="hero-banner" id="hero">
         <div className="container-fluid wd-100">
           <div className="banner__slider">
-            {heroSlides.map((s, i) => (
-              <div key={i} className={"slide" + (i === slideIdx ? " active" : "")}>
-                <div className="slide__img">
-                  <img src={s.bg} alt="" className="full-image animated d-sm-block d-none" />
-                  <img src={s.bgMob} alt="" className="full-image animated d-sm-none d-block" />
-                </div>
-                <div className={"slide__content" + (s.align === "right" ? " slide__content__right" : s.align === "left" ? " slide__content__left" : "")}>
-                  <div className="slide__content--headings">
-                    <h1>{s.title}</h1>
-                    <h4>{s.sub}</h4>
+            <div className="slider stick-dots">
+              {heroSlides.map((s, i) => (
+                <div key={i} className={i === slideIdx ? "slide" : "slide"} style={{ display: i === slideIdx ? "block" : "none" }}>
+                  <div className="slide__img">
+                    <img src={s.bg} alt="" className="full-image animated d-sm-block d-none" />
+                    <img src={s.bgMob} alt="" className="full-image animated d-sm-none d-block" />
+                  </div>
+                  <div className={"slide__content" + (s.align === "right" ? " slide__content__right" : s.align === "left" ? " slide__content__left" : "")}>
+                    <div className="slide__content--headings">
+                      <h1 className="h-111 light-black mb-1">{s.title}</h1>
+                      <h4 className="h-56 light-black">{s.sub}</h4>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
             <div className="hero-dots">
               {heroSlides.map((_, i) => (
                 <button key={i} className={i === slideIdx ? "active" : ""} onClick={() => setSlideIdx(i)} />
               ))}
             </div>
             <div className="videoplayer animate-block d-sm-block d-none">
+              <button className="close-videoPlayer"><i className="fal fa-times"></i></button>
+              <video src={I.video} loop muted autoPlay id="stream-player"></video>
               <div className="videoplay">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                  <g clipPath="url(#a)"><path d="M27.3137 4.68625C24.2917 1.66433 20.2737 0 16 0c-4.2737 0-8.29169 1.66433-11.31375 4.68625C1.66433 7.70831 0 11.7263 0 16c0 4.2737 1.66433 8.2917 4.68625 11.3137C7.70831 30.3357 11.7263 32 16 32c4.2737 0 8.2917-1.6643 11.3137-4.6863C30.3357 24.2917 32 20.2737 32 16c0-4.2737-1.6643-8.29169-4.6863-11.31375ZM16 30.0206C8.269 30.0206 1.97938 23.731 1.97938 16 1.97938 8.269 8.269 1.97938 16 1.97938 23.731 1.97938 30.0206 8.269 30.0206 16 30.0206C23.731 30.0206 30.0206 23.731 30.0206 16 30.0206 8.269 23.731 1.97938 16 1.97938Z" fill="#FFFBFA"/><path d="M11.9464 22.207 22.6928 16 11.9464 9.79299V22.207Z" fill="#FFFBFA"/></g><defs><clipPath id="a"><rect width="32" height="32" fill="#fff"/></clipPath></defs>
+                  <g clipPath="url(#clip0_565_644)">
+                    <path d="M27.3137 4.68625C24.2917 1.66433 20.2737 0 16 0C11.7263 0 7.70831 1.66433 4.68625 4.68625C1.66433 7.70831 0 11.7263 0 16C0 20.2737 1.66433 24.2917 4.68625 27.3137C7.70831 30.3357 11.7263 32 16 32C20.2737 32 24.2917 30.3357 27.3137 27.3137C30.3357 24.2917 32 20.2737 32 16C32 11.7263 30.3357 7.70831 27.3137 4.68625ZM16 30.0206C8.269 30.0206 1.97938 23.731 1.97938 16C1.97938 8.269 8.269 1.97938 16 1.97938C23.731 1.97938 30.0206 8.269 30.0206 16C30.0206 23.731 23.731 30.0206 16 30.0206Z" fill="#FFFBFA"/>
+                    <path d="M11.9464 22.207L22.6928 16L11.9464 9.79299V22.207Z" fill="#FFFBFA"/>
+                  </g>
+                  <defs><clipPath id="clip0_565_644"><rect width="32" height="32" fill="white" /></clipPath></defs>
                 </svg>
               </div>
             </div>
@@ -367,9 +373,9 @@ export default function Hotel2Template(props: any) {
                           </div>
                         </div>
                       </div>
-                      <CusBtn label="Book Now" />
+                      <button className="cus-btn w-100 d-sm-none d-block"><span><samp className="text">Book Now</samp><samp className="effect">Book Now</samp></span></button>
                     </div>
-                    <CusBtn label="Book Now" />
+                    <button className="cus-btn d-sm-block d-none"><span><samp className="text">Book Now</samp><samp className="effect">Book Now</samp></span></button>
                   </div>
                 </form>
               </div>
@@ -377,247 +383,346 @@ export default function Hotel2Template(props: any) {
           </div>
         </div>
       </section>
-      <section className="rooms">
-        <div className="container-fluid">
-          <div className="content">
-            <div className="sec-heading text-sm-center mb-48">
-              <p className="h-18 bold light-black text-uppercase sec-text">Luxury Experience</p>
-              <h2 className="h-69 light-black sec-title">Our Luxury Rooms</h2>
-            </div>
-            <div className="card-block">
-              <div className="cards">
-                {rooms.map((r, i) => (
-                  <a key={i} className="card-item" onClick={() => { setRoomId(r.id); navigate("room-detail"); }}>
-                    <div className="card-image mb-24">
-                      <div className="card-price"><p><span className="color-primary price h-31">${r.price}</span><span className="light-bold">/Night</span></p></div>
-                      <img src={r.img} className="card-image" alt="" />
-                      <img src={I.iconArrowDark} className="icon" alt="" />
-                      <img src={I.vecBottomShape} className="corner-shape" alt="" />
-                    </div>
-                    <div className="text-block">
-                      <div className="name-rating d-flex align-items-center justify-content-between mb-16">
-                        <h4 className="h-31 light-black">{r.name}</h4>
-                        <div className="rating"><p className="light-bold"><i className="fa-solid fa-star color-primary"></i> 4.9</p></div>
+      <div className="page-content">
+        <section className="rooms">
+          <div className="container-fluid">
+            <div className="content">
+              <div className="sec-heading text-sm-center mb-48">
+                <p className="h-18 bold light-black text-uppercase sec-text">Luxury Experience</p>
+                <h2 className="h-69 light-black sec-title">Our Luxury Rooms</h2>
+              </div>
+              <div className="card-block">
+                <div className="cards">
+                  {rooms.map((r, i) => (
+                    <a key={i} className="card-item" onClick={() => { setRoomId(r.id); navigate("room-detail"); }}>
+                      <div className="card-image mb-24">
+                        <div className="card-price"><p><span className="color-primary price h-31">${r.price}</span><span className="light-bold">/Night</span></p></div>
+                        <img src={r.img} className="card-image" alt="" />
+                        <img src={I.iconArrowDark} className="icon" alt="" />
+                        <img src={I.vecBottomShape} className="corner-shape" alt="" />
                       </div>
-                      <p className="sample-text mb-32">At quis nullam duis sed aliquet faucibus. Sed diam pretium cum eget.</p>
-                      <ul className="services unstyled">
-                        <li><img src={I.iconKingBed} alt="" /><p className="h-18 bold light-black">King Size Bed</p></li>
-                        <li><img src={I.iconTv} alt="" /><p className="h-18 bold light-black">32 Inc TV</p></li>
-                        <li><img src={I.iconBreakfast} alt="" /><p className="h-18 bold light-black">Breakfast</p></li>
+                      <div className="text-block">
+                        <div className="name-rating d-flex align-items-center justify-content-between mb-16">
+                          <h4 className="h-31">{r.name}</h4>
+                          <div className="rating"><p className="light-bold"><i className="fa-solid fa-star color-primary"></i> 4.9</p></div>
+                        </div>
+                        <p className="sample-text mb-32">At quis nullam duis sed aliquet faucibus. Sed diam pretium cum eget.</p>
+                        <ul className="services unstyled">
+                          <li><img src={I.iconDoubleBed} alt="" /><p className="h-18 bold light-black"> King Size Bed</p></li>
+                          <li><img src={I.iconTv} alt="" /><p className="h-18 bold light-black"> 32 Inc TV</p></li>
+                          <li><img src={I.iconFood} alt="" /><p className="h-18 bold light-black"> Breakfast</p></li>
+                        </ul>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="btn-block text-end">
+              <a className="cus-btn dark" onClick={() => navigate("rooms")}><span><samp className="text">See All Rooms</samp><samp className="effect">See All Rooms</samp></span></a>
+            </div>
+          </div>
+        </section>
+        <div className="resturent-video">
+          <div className="container-fluid">
+            <div className="content">
+              <img src={I.vecTopRight} className="top-cornner" alt="" />
+              <div className="bg-video">
+                <video src={I.video} loop muted autoPlay playsInline></video>
+              </div>
+              <img src={I.vecRightBottom} className="bottom-cornner" alt="" />
+            </div>
+          </div>
+        </div>
+        <section className="suite-room">
+          <div className="container-fluid">
+            <div className="sec-heading sec right text-end">
+              <div className="heading-content">
+                <p className="h-18 bold light-black text-uppercase">SUITES</p>
+                <h2 className="h-69 light-black">Luxury Honeymoon Suites</h2>
+              </div>
+              <div className="slider-arrow">
+                <button className="arrow prev-btn" onClick={() => setSuiteIdx(i => (i - 1 + suites.length) % suites.length)}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none"><path d="M12.8057 23C12.8057 20 10.0057 16 6.80566 16M6.80566 16C8.639 16 12.8057 15 12.8057 9M6.80566 16H25.8057" stroke="#1B1918" strokeWidth="2"/></svg>
+                </button>
+                <button className="arrow next-btn" onClick={() => setSuiteIdx(i => (i + 1) % suites.length)}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M19.3545 23C19.3545 20 22.1545 16 25.3545 16M25.3545 16C23.5212 16 19.3545 15 19.3545 9M25.3545 16H6.35449" stroke="#1B1918" strokeWidth="2"/></svg>
+                </button>
+              </div>
+            </div>
+            <div className="content">
+              <div className="room-slider sliders" data-parent="suite-room">
+                <div className="slide">
+                  <div className="slide__img">
+                    <img className="room_image" src={suites[suiteIdx].img} alt="" />
+                    <img src={I.vecLuxuryRoom} alt="" className="side_vector d-sm-block d-none" />
+                    <img src={I.vecMobileRoom} alt="" className="side_vector_mobile d-sm-none d-block" />
+                  </div>
+                  <div className="slide__content">
+                    <div className="content-block animated faster">
+                      <h2 className="h-53 light-black mb-16"><a onClick={() => navigate("room-detail")}>{suites[suiteIdx].name}</a></h2>
+                      <div className="price-rating mb-32">
+                        <p><span className="color-primary h-40">${suites[suiteIdx].price}</span><span className="light-bold light-black">/Night</span></p>
+                        <p className="light-bold reviews-text"><i className="fa-solid fa-star color-primary"></i> 4.9 (93) REVIEWS</p>
+                      </div>
+                      <p className="mb-32 reviews-text">Explore the intricacies of our journey, commitment to hospitality, and the unique features that make Explore the intricacies of our journey, commitment to hospitality, and the unique features.</p>
+                      <ul className="services unstyled mb-32">
+                        <li><img src={I.iconDoubleBed} alt="" /><p className="h-18 bold light-black"> King Size Bed</p></li>
+                        <li><img src={I.iconTv} alt="" /><p className="h-18 bold light-black"> 32 Inc TV</p></li>
+                        <li><img src={I.iconFood} alt="" /><p className="h-18 bold light-black"> Breakfast</p></li>
                       </ul>
+                      <a className="cus-btn" onClick={() => navigate("booking")}><span><samp className="text">Book Now</samp><samp className="effect">Book Now</samp></span></a>
+                    </div>
+                  </div>
+                </div>
+                <div className="slide">
+                  <div className="slide__img">
+                    <img className="room_image" src={suites[(suiteIdx + 1) % suites.length].img} alt="" />
+                    <img src={I.vecLuxuryRoom} alt="" className="side_vector d-sm-block d-none" />
+                    <img src={I.vecMobileRoom} alt="" className="side_vector_mobile d-sm-none d-block" />
+                  </div>
+                  <div className="slide__content">
+                    <div className="content-block animated faster">
+                      <h2 className="h-53 light-black mb-16"><a onClick={() => navigate("room-detail")}>{suites[(suiteIdx + 1) % suites.length].name}</a></h2>
+                      <div className="price-rating mb-32">
+                        <p><span className="color-primary h-40">${suites[(suiteIdx + 1) % suites.length].price}</span><span className="light-bold light-black">/Night</span></p>
+                        <p className="light-bold reviews-text"><i className="fa-solid fa-star color-primary"></i> 4.9 (93) REVIEWS</p>
+                      </div>
+                      <p className="mb-32 reviews-text">Explore the intricacies of our journey, commitment to hospitality, and the unique features that make Explore the intricacies of our journey, commitment to hospitality, and the unique features.</p>
+                      <ul className="services unstyled mb-32">
+                        <li><img src={I.iconDoubleBed} alt="" /><p className="h-18 bold light-black"> King Size Bed</p></li>
+                        <li><img src={I.iconTv} alt="" /><p className="h-18 bold light-black"> 32 Inc TV</p></li>
+                        <li><img src={I.iconFood} alt="" /><p className="h-18 bold light-black"> Breakfast</p></li>
+                      </ul>
+                      <a className="cus-btn" onClick={() => navigate("booking")}><span><samp className="text">Book Now</samp><samp className="effect">Book Now</samp></span></a>
+                    </div>
+                  </div>
+                </div>
+                <div className="slide">
+                  <div className="slide__img">
+                    <img className="room_image" src={suites[(suiteIdx + 2) % suites.length].img} alt="" />
+                    <img src={I.vecLuxuryRoom} alt="" className="side_vector d-sm-block d-none" />
+                    <img src={I.vecMobileRoom} alt="" className="side_vector_mobile d-sm-none d-block" />
+                  </div>
+                  <div className="slide__content">
+                    <div className="content-block animated faster">
+                      <h2 className="h-53 light-black mb-16"><a onClick={() => navigate("room-detail")}>{suites[(suiteIdx + 2) % suites.length].name}</a></h2>
+                      <div className="price-rating mb-32">
+                        <p><span className="color-primary h-40">${suites[(suiteIdx + 2) % suites.length].price}</span><span className="light-bold light-black">/Night</span></p>
+                        <p className="light-bold reviews-text"><i className="fa-solid fa-star color-primary"></i> 4.9 (93) REVIEWS</p>
+                      </div>
+                      <p className="mb-32 reviews-text">Explore the intricacies of our journey, commitment to hospitality, and the unique features that make Explore the intricacies of our journey, commitment to hospitality, and the unique features.</p>
+                      <ul className="services unstyled mb-32">
+                        <li><img src={I.iconDoubleBed} alt="" /><p className="h-18 bold light-black"> King Size Bed</p></li>
+                        <li><img src={I.iconTv} alt="" /><p className="h-18 bold light-black"> 32 Inc TV</p></li>
+                        <li><img src={I.iconFood} alt="" /><p className="h-18 bold light-black"> Breakfast</p></li>
+                      </ul>
+                      <a className="cus-btn" onClick={() => navigate("booking")}><span><samp className="text">Book Now</samp><samp className="effect">Book Now</samp></span></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bottom-shape text-end">
+              <img src={I.bgShapeRightCorner} alt="" />
+            </div>
+          </div>
+        </section>
+        <section className="activities">
+          <div className="container-fluid">
+            <div className="sec-heading sec-2 text-start">
+              <div className="heading-content">
+                <p className="h-18 bold light-black justify-content-start text-uppercase sec-text">Facilities</p>
+                <h2 className="h-69 light-black local-activities">Local Activities</h2>
+              </div>
+            </div>
+            <div className="content">
+              <div className="row mb-48">
+                <div className="col-md-4">
+                  <a className="activitie-card" onClick={() => navigate("restaurant")}>
+                    <div className="intersect"><img src={I.vecCenterShape} alt="" /></div>
+                    <div className="card-image"><img src={I.card14} alt="" /></div>
+                    <div className="card-content">
+                      <h5 className="h-31 mb-32 card-title">Restaurant</h5>
+                      <p>Consistency is key, and this place nails it every time. Whether it&apos;s a quick lunch or a late-night snack, the quality is consistently.</p>
                     </div>
                   </a>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="btn-block text-end">
-            <CusBtn label="See All Rooms" dark onClick={() => navigate("rooms")} />
-          </div>
-        </div>
-      </section>
-      <div className="resturent-video">
-        <div className="container-fluid">
-          <div className="content">
-            <img src={I.vecTopRight} className="top-cornner" alt="" />
-            <div className="bg-video">
-              <video src={I.video} loop muted autoPlay playsInline></video>
-            </div>
-            <img src={I.vecRightBottom} className="bottom-cornner" alt="" />
-          </div>
-        </div>
-      </div>
-      <section className="suite-room">
-        <div className="container-fluid">
-          <div className="sec-heading sec right text-end">
-            <div className="heading-content">
-              <p className="h-18 bold light-black text-uppercase">SUITES</p>
-              <h2 className="h-69 light-black">Luxury Honeymoon Suites</h2>
-            </div>
-            <div className="slider-arrow">
-              <button className="arrow prev-btn" onClick={() => setSuiteIdx(i => (i - 1 + suites.length) % suites.length)}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none"><path d="M12.8057 23C12.8057 20 10.0057 16 6.80566 16M6.80566 16C8.639 16 12.8057 15 12.8057 9M6.80566 16H25.8057" stroke="#1B1918" strokeWidth="2"/></svg>
-              </button>
-              <button className="arrow next-btn" onClick={() => setSuiteIdx(i => (i + 1) % suites.length)}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M19.3545 23C19.3545 20 22.1545 16 25.3545 16M25.3545 16C23.5212 16 19.3545 15 19.3545 9M25.3545 16H6.35449" stroke="#1B1918" strokeWidth="2"/></svg>
-              </button>
-            </div>
-          </div>
-          <div className="content">
-            <div className="room-slider sliders" data-parent="suite-room">
-              <div className="slide">
-                <div className="slide__img">
-                  <img className="room_image" src={suites[suiteIdx].img} alt="" />
-                  <img src={I.vecLuxuryRoom} alt="" className="side_vector d-sm-block d-none" />
-                  <img src={I.vecMobileRoom} alt="" className="side_vector_mobile d-sm-none d-block" />
                 </div>
-                <div className="slide__content">
-                  <div className="content-block animated faster">
-                    <h2 className="h-53 light-black mb-16"><a onClick={() => navigate("room-detail")}>{suites[suiteIdx].name}</a></h2>
-                    <div className="price-rating mb-32">
-                      <p><span className="color-primary h-40">${suites[suiteIdx].price}</span><span className="light-bold light-black">/Night</span></p>
-                      <p className="light-bold reviews-text"><i className="fa-solid fa-star color-primary"></i> 4.9 (93) REVIEWS</p>
+                <div className="col-md-4">
+                  <a className="activitie-card sec" onClick={() => navigate("spa")}>
+                    <div className="intersect"><img src={I.vecCenterShape} alt="" /></div>
+                    <div className="card-content d-sm-block d-none">
+                      <h5 className="h-31 mb-32 card-title">Swimming Pool &amp; SPA</h5>
+                      <p>Lorem ipsum dolor sit amet consectetur. Nec vel arcu mi pulvinar egestas. Libero ut nisi mauris sed.</p>
                     </div>
-                    <p className="mb-32 reviews-text">{suites[suiteIdx].desc}</p>
-                    <ul className="services unstyled mb-32">
-                      <li><img src={I.iconKingBed} alt="" /><p className="h-18 bold light-black">King Size Bed</p></li>
-                      <li><img src={I.iconTv} alt="" /><p className="h-18 bold light-black">32 Inc TV</p></li>
-                      <li><img src={I.iconBreakfast} alt="" /><p className="h-18 bold light-black">Breakfast</p></li>
-                    </ul>
-                    <CusBtn label="Book Now" onClick={() => navigate("booking")} />
-                  </div>
+                    <div className="card-image"><img src={I.card15} alt="" /><img src={I.card16} alt="" /></div>
+                    <div className="card-content d-sm-none d-block">
+                      <h5 className="h-31 mb-32 card-title">Swimming Pool &amp; SPA</h5>
+                      <p>Lorem ipsum dolor sit amet consectetur. Nec vel arcu mi pulvinar egestas. Libero ut nisi mauris sed.</p>
+                    </div>
+                  </a>
+                </div>
+                <div className="col-md-4">
+                  <a className="activitie-card right" onClick={() => navigate("coming-soon")}>
+                    <div className="card-content d-sm-block d-none">
+                      <h5 className="h-31 mb-32 card-title">Horse Ride</h5>
+                      <p>Consistency is key, and this place nails it every time. Whether it&apos;s a quick lunch or a late-night snack, the quality is consistently.</p>
+                    </div>
+                    <div className="card-image"><img src={I.card17} alt="" /></div>
+                    <div className="card-content d-sm-none d-block">
+                      <h5 className="h-31 mb-32 card-title">Horse Ride</h5>
+                      <p>Consistency is key, and this place nails it every time. Whether it&apos;s a quick lunch or a late-night snack, the quality is consistently.</p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div className="amenities">
+                <div className="amenities-slider slider-slides">
+                  {amenities.map((a, i) => (
+                    <div key={i} className={"slider-slide " + (i % 2 === 0 ? "top" : "bottom")}>
+                      {i % 2 === 0 ? (
+                        <><img src={I.vecTopLeft} className="shape left-shape" alt="" /><img src={I.vecTopRight} className="shape right-shape" alt="" /></>
+                      ) : (
+                        <><img src={I.vecBottomLeft} className="shape left-shape" alt="" /><img src={I.vecBottomRight} className="shape right-shape" alt="" /></>
+                      )}
+                      <img src={a.icon} className="icon mb-16" alt="" />
+                      <h6 className={i % 2 === 0 ? "h-24 light-black" : "h-24 white"}>{a.label}</h6>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
-          </div>
-          <div className="bottom-shape text-end">
-            <img src={I.bgShapeRightCorner} alt="" />
-          </div>
-        </div>
-      </section>
-      <section className="activities">
-        <div className="container-fluid">
-          <div className="sec-heading sec-2 text-start">
-            <div className="heading-content">
-              <p className="h-18 bold light-black justify-content-start text-uppercase sec-text">Facilities</p>
-              <h2 className="h-69 light-black local-activities">Local Activities</h2>
+            <div className="amenities-shape text-end">
+              <img src={I.vecActivities} alt="" />
             </div>
           </div>
-          <div className="content">
-            <div className="row mb-48">
-              <div className="col-md-4">
-                <a className="activitie-card" onClick={() => navigate("restaurant")}>
-                  <div className="intersect"><img src={I.vecCenterShape} alt="" /></div>
-                  <div className="card-image"><img src={I.card14} alt="" /></div>
-                  <div className="card-content">
-                    <h5 className="h-31 mb-32 card-title">Restaurant</h5>
-                    <p>Consistency is key, and this place nails it every time. Whether it&apos;s a quick lunch or a late-night snack, the quality is consistently.</p>
-                  </div>
-                </a>
+        </section>
+        <section className="testimonial">
+          <div className="container-fluid">
+            <div className="sec-heading right-2 text-start">
+              <div className="heading-content">
+                <p className="h-18 bold light-black justify-content-start sec-text">TESTIMONIALS</p>
+                <h2 className="h-69 light-black satisfied-customer">Satisfied Customers</h2>
               </div>
-              <div className="col-md-4">
-                <a className="activitie-card sec" onClick={() => navigate("spa")}>
-                  <div className="intersect"><img src={I.vecCenterShape} alt="" /></div>
-                  <div className="card-content d-sm-block d-none">
-                    <h5 className="h-31 mb-32 card-title">Swimming Pool &amp; SPA</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur. Nec vel arcu mi pulvinar egestas. Libero ut nisi mauris sed.</p>
-                  </div>
-                  <div className="card-image"><img src={I.card15} alt="" /><img src={I.card16} alt="" /></div>
-                  <div className="card-content d-sm-none d-block">
-                    <h5 className="h-31 mb-32 card-title">Swimming Pool &amp; SPA</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur. Nec vel arcu mi pulvinar egestas. Libero ut nisi mauris sed.</p>
-                  </div>
-                </a>
-              </div>
-              <div className="col-md-4">
-                <a className="activitie-card right">
-                  <div className="card-content d-sm-block d-none">
-                    <h5 className="h-31 mb-32 card-title">Horse Ride</h5>
-                    <p>Consistency is key, and this place nails it every time. Whether it&apos;s a quick lunch or a late-night snack, the quality is consistently.</p>
-                  </div>
-                  <div className="card-image"><img src={I.card17} alt="" /></div>
-                  <div className="card-content d-sm-none d-block">
-                    <h5 className="h-31 mb-32 card-title">Horse Ride</h5>
-                    <p>Consistency is key, and this place nails it every time. Whether it&apos;s a quick lunch or a late-night snack, the quality is consistently.</p>
-                  </div>
-                </a>
+              <div className="slider-arrow">
+                <button className="arrow prev-btn" onClick={() => setTestiIdx(i => (i - 1 + testimonials.length) % testimonials.length)}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none"><path d="M12.8057 23C12.8057 20 10.0057 16 6.80566 16M6.80566 16C8.639 16 12.8057 15 12.8057 9M6.80566 16H25.8057" stroke="#1B1918" strokeWidth="2"/></svg>
+                </button>
+                <button className="arrow next-btn" onClick={() => setTestiIdx(i => (i + 1) % testimonials.length)}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M19.3545 23C19.3545 20 22.1545 16 25.3545 16M25.3545 16C23.5212 16 19.3545 15 19.3545 9M25.3545 16H6.35449" stroke="#1B1918" strokeWidth="2"/></svg>
+                </button>
               </div>
             </div>
-            <div className="amenities">
-              <div className="amenities-slider">
-                {amenities.map((a, i) => (
-                  <div key={i} className={"slider-slide " + (i % 2 === 0 ? "top" : "bottom")}>
-                    {i % 2 === 0 ? (
-                      <><img src={I.vecTopLeft} className="shape left-shape" alt="" /><img src={I.vecTopRight} className="shape right-shape" alt="" /></>
-                    ) : (
-                      <><img src={I.vecBottomLeft} className="shape left-shape" alt="" /><img src={I.vecBottomRight} className="shape right-shape" alt="" /></>
-                    )}
-                    <img src={a.icon} className="icon mb-16" alt="" />
-                    <h6 className={i % 2 === 0 ? "h-24 light-black" : "h-24 white"}>{a.label}</h6>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="amenities-shape text-end">
-            <img src={I.vecActivities} alt="" />
-          </div>
-        </div>
-      </section>
-      <section className="testimonial">
-        <div className="container-fluid">
-          <div className="sec-heading right-2 text-start">
-            <div className="heading-content">
-              <p className="h-18 bold light-black justify-content-start sec-text">TESTIMONIALS</p>
-              <h2 className="h-69 light-black satisfied-customer">Satisfied Customers</h2>
-            </div>
-            <div className="slider-arrow">
-              <button className="arrow prev-btn" onClick={() => setTestiIdx(i => (i - 1 + testimonials.length) % testimonials.length)}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none"><path d="M12.8057 23C12.8057 20 10.0057 16 6.80566 16M6.80566 16C8.639 16 12.8057 15 12.8057 9M6.80566 16H25.8057" stroke="#1B1918" strokeWidth="2"/></svg>
-              </button>
-              <button className="arrow next-btn" onClick={() => setTestiIdx(i => (i + 1) % testimonials.length)}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M19.3545 23C19.3545 20 22.1545 16 25.3545 16M25.3545 16C23.5212 16 19.3545 15 19.3545 9M25.3545 16H6.35449" stroke="#1B1918" strokeWidth="2"/></svg>
-              </button>
-            </div>
-          </div>
-          <div className="content">
-            <div className="testimonial-slider sliders" data-parent="testimonial">
-              {testimonials.map((t, i) => (
-                <div key={i} className="slider-slide">
-                  <p className="h-16 mb-32">&ldquo;{t.text}&rdquo;</p>
-                  <div className="user-detail mb-32">
-                    <img src={t.img} alt="" />
-                    <div className="name">
-                      <h6 className="h-24 mb-8 light-black">{t.name}</h6>
-                      <p className="h-16 light-black">{t.country}</p>
+            <div className="content">
+              <div className="testimonial-slider sliders" data-parent="testimonial">
+                {testimonials.map((t, i) => (
+                  <div key={i} className="slider-slide">
+                    <p className="h-16 mb-32">&ldquo;{t.text}&rdquo;</p>
+                    <div className="user-detail mb-32">
+                      <img src={t.img} alt="" />
+                      <div className="name">
+                        <h6 className="h-24 mb-8 light-black">{t.name}</h6>
+                        <p className="h-16 light-black">{t.country}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="room">
-                    <img src={t.roomImg} alt="" />
-                    <div className="info">
-                      <div className="text">
-                        <h6 className="h-24 white mb-8">{t.roomName}</h6>
-                        <p className="h-16 white"><span><i className="fa-solid fa-star-sharp color-primary"></i></span><span><i className="fa-solid fa-star-sharp color-primary"></i></span><span><i className="fa-solid fa-star-sharp color-primary"></i></span><span><i className="fa-solid fa-star-sharp color-primary"></i></span><span><i className="fa-solid fa-star-sharp color-primary"></i></span><span>(93) REVIEWS</span></p>
+                    <div className="room">
+                      <img src={t.roomImg} alt="" />
+                      <div className="info">
+                        <div className="text">
+                          <h6 className="h-24 white mb-8">{t.roomName}</h6>
+                          <p className="h-16 white">
+                            <span><i className={"fa-solid fa-star-sharp " + (i % 2 === 0 ? "color-primary" : "white")}></i></span>
+                            <span><i className={"fa-solid fa-star-sharp " + (i % 2 === 0 ? "color-primary" : "white")}></i></span>
+                            <span><i className={"fa-solid fa-star-sharp " + (i % 2 === 0 ? "color-primary" : "white")}></i></span>
+                            <span><i className={"fa-solid fa-star-sharp " + (i % 2 === 0 ? "color-primary" : "white")}></i></span>
+                            <span><i className={"fa-solid fa-star-sharp " + (i % 2 === 0 ? "color-primary" : "white")}></i></span>
+                            <span>(93) REVIEWS</span>
+                          </p>
+                        </div>
+                        <a>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 33" fill="none">
+                            <path d="M21.2334 18.3228C19.7334 16.8228 19.1334 13.4228 20.7334 11.8228M20.7334 11.8228C19.8167 12.7394 17.2334 14.3228 14.2334 11.3228M20.7334 11.8228L11.2334 21.3228" stroke="#FCFDFD" strokeWidth="1.41421" />
+                          </svg>
+                        </a>
                       </div>
                     </div>
                   </div>
+                ))}
+              </div>
+            </div>
+            <div className="bottom-shape text-end">
+              <img src={I.bgShapeRightCorner} alt="" />
+            </div>
+          </div>
+        </section>
+        <section className="gallery">
+          <div className="container-fluid">
+            <div className="sec-heading sec-2 text-start">
+              <div className="heading-content">
+                <p className="h-18 bold light-black justify-content-start text-uppercase sec-text">Gallery</p>
+                <h2 className="h-69 light-black local-activities">Interior Gallery</h2>
+              </div>
+            </div>
+            <div className="content">
+              <div className="image-container mb-40"><img src={I.gallery1} alt="" /></div>
+              <div className="imag-card">
+                <div className="images">
+                  <div className="gallery-img"><img src={I.gallery2} alt="" /></div>
+                  <div className="gallery-img"><img src={I.gallery3} alt="" /></div>
+                  <div className="gallery-img"><img src={I.gallery4} alt="" /></div>
                 </div>
-              ))}
+                <div className="images">
+                  <div className="gallery-img"><img src={I.gallery5} alt="" /></div>
+                  <div className="gallery-img"><img src={I.gallery6} alt="" /></div>
+                  <div className="gallery-img"><img src={I.gallery7} alt="" /></div>
+                </div>
+              </div>
+            </div>
+            <div className="bottom-shape center text-end">
+              <img src={I.bgShapeFooter} alt="" />
             </div>
           </div>
-          <div className="bottom-shape text-end">
-            <img src={I.bgShapeRightCorner} alt="" />
-          </div>
-        </div>
-      </section>
-      <section className="gallery">
+        </section>
+      </div>
+      <footer className="footer">
         <div className="container-fluid">
-          <div className="sec-heading sec-2 text-start">
-            <div className="heading-content">
-              <p className="h-18 bold light-black justify-content-start text-uppercase sec-text">Gallery</p>
-              <h2 className="h-69 light-black local-activities">Interior Gallery</h2>
-            </div>
-          </div>
-          <div className="content">
-            <div className="image-container mb-40"><img src={I.gallery1} alt="" /></div>
-            <div className="imag-card">
-              <div className="images">
-                <div className="gallery-img"><img src={I.gallery2} alt="" /></div>
-                <div className="gallery-img"><img src={I.gallery3} alt="" /></div>
-                <div className="gallery-img"><img src={I.gallery4} alt="" /></div>
+          <div className="content text-center">
+            <a className="footer-logo"><img src={I.footerLogo} alt="" /></a>
+            <div className="content-detail">
+              <ul className="category category-1 unstyled d-sm-flex d-none">
+                <li><a className="h-24 fw-400 light-black" onClick={() => navigate("home")}><span>Home Page</span></a></li>
+                <li><a className="h-24 fw-400 light-black" onClick={() => navigate("about")}><span>About Us</span></a></li>
+                <li><a className="h-24 fw-400 light-black" onClick={() => navigate("contact")}><span>Contact Us</span></a></li>
+                <li><a className="h-24 fw-400 light-black" onClick={() => navigate("blog")}><span>Our Blogs</span></a></li>
+              </ul>
+              <div className="center-content">
+                <ul className="contact-list unstyled mb-32">
+                  <li><div className="icon-detail"><i className="fa-regular fa-phone"></i><a href="tel:123456789" className="tooltip-text">+1 123 456 789</a></div></li>
+                  <li><div className="icon-detail"><i className="fa-regular fa-envelope"></i><a href="mailto:info@example.com" className="tooltip-text">example@gmail.com</a></div></li>
+                  <li><div className="icon-detail"><i className="fa-regular fa-location-dot"></i><a className="tooltip-text">123 Main Street, Cityville, State</a></div></li>
+                </ul>
+                <div className="vr-line d-sm-block d-none"></div>
+                <form onSubmit={e => e.preventDefault()}>
+                  <p className="h-31 light-black mb-24">Weekly Newsletter.</p>
+                  <div className="subscribe-block">
+                    <input type="email" name="email" id="email" placeholder="example@gmail.com" />
+                    <button type="submit" className="cus-btn">Subscribe</button>
+                  </div>
+                </form>
               </div>
-              <div className="images">
-                <div className="gallery-img"><img src={I.gallery5} alt="" /></div>
-                <div className="gallery-img"><img src={I.gallery6} alt="" /></div>
-                <div className="gallery-img"><img src={I.gallery7} alt="" /></div>
-              </div>
+              <ul className="category unstyled d-sm-flex d-none">
+                <li><a className="h-24 fw-400 light-black" onClick={() => navigate("rooms")}><span>Accommodation</span></a></li>
+                <li><a className="h-24 fw-400 light-black" onClick={() => navigate("restaurant")}><span>Restaurant</span></a></li>
+                <li><a className="h-24 fw-400 light-black" onClick={() => navigate("spa")}><span>Spa and Wellness</span></a></li>
+                <li><a className="h-24 fw-400 light-black" onClick={() => navigate("rooms")}><span>Our Rooms</span></a></li>
+              </ul>
             </div>
-          </div>
-          <div className="bottom-shape center text-end">
-            <img src={I.bgShapeFooter} alt="" />
+            <div className="bottom-text">
+              <p className="h-18 dark-gray">&copy; 2025. All rights reserved by LUXE</p>
+            </div>
           </div>
         </div>
-      </section>
+      </footer>
     </div>
   );
 
