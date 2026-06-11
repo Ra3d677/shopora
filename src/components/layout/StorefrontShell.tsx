@@ -97,7 +97,7 @@ export default function StorefrontShell({
           />
         )
       )}
-      <main className={`flex-grow flex flex-col store-container ${headerSection ? 'pt-16 md:pt-20' : ''} ${store.template === 'ironpeak' || store.template === 'itsolution' || store.template === 'gym' ? '!p-0 !m-0' : ''}`}>
+      <main className={`flex-grow flex flex-col store-container ${headerSection && store.template !== 'gym' ? 'pt-16 md:pt-20' : ''} ${store.template === 'ironpeak' || store.template === 'itsolution' || store.template === 'gym' ? '!p-0 !m-0' : ''}`}>
         {children}
       </main>
       <div data-page="footer">
