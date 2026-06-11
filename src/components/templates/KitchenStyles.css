@@ -306,12 +306,12 @@ body:not(.is-mobile).ui-smooth-scroll #scroll-container { width: auto; height: 1
 .header nav { padding: 24px 64px 23px; }
 @media (max-width: 575px) { .header nav { padding: 24px 24px 23px; } }
 .header nav .navbar-brand { width: 183px; }
-.header nav .navbar-nav .menu-item a { font-size: 21px; line-height: 140%; color: #2C2D2F; padding: 12px 0; margin-right: 32px; }
+.header nav .navbar-nav .menu-item a { font-size: 21px; line-height: 140%; color: #2C2D2F !important; padding: 12px 0; margin-right: 32px; }
 @media (max-width: 991px) { .header nav .navbar-nav .menu-item a { padding: 8px 0px; color: #1B1C1E; } }
-.header nav .navbar-nav .menu-item a:hover { color: #9B6C27; }
-.header nav .navbar-nav .menu-item a.active { color: #9B6C27; }
-.header nav .navbar-nav .phone { font-size: 21px; line-height: 140%; color: #2C2D2F; padding: 12px 0; margin-right: 32px; }
-.header nav .navbar-nav .phone:hover { color: #9B6C27; }
+.header nav .navbar-nav .menu-item a:hover { color: #9B6C27 !important; }
+.header nav .navbar-nav .menu-item a.active { color: #9B6C27 !important; }
+.header nav .navbar-nav .phone { font-size: 21px; line-height: 140%; color: #2C2D2F !important; padding: 12px 0; margin-right: 32px; }
+.header nav .navbar-nav .phone:hover { color: #9B6C27 !important; }
 .header nav .navbar-nav .phone i { font-size: 21px; line-height: 140%; color: #9B6C27; margin-right: 8px; }
 .header .navbar-toggler { color: #9B6C27; border: none; outline: 0; padding: 10px; font-size: 24px; }
 .header .navbar-toggler:focus { box-shadow: none; color: #9B6C27; }
