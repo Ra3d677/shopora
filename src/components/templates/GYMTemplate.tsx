@@ -223,8 +223,65 @@ export default function GYMTemplate(props: GYMProps) {
  .p-0{padding:0!important}
  .py-sm-3{padding-top:1rem!important;padding-bottom:1rem!important}
  .px-sm-5{padding-left:3rem!important;padding-right:3rem!important}
- .gap-3{gap:1rem!important}
- .fg-about-text{max-width:750px;margin:0 auto 2rem;color:var(--gray);line-height:1.8}
+  .gap-3{gap:1rem!important}
+  .container-xxl{max-width:1400px;margin:0 auto;padding:0 2rem}
+  .container{max-width:1200px;margin:0 auto}
+  .btn{display:inline-block;font-family:'Bebas Neue',sans-serif;font-weight:700;letter-spacing:.5px;transition:.3s;cursor:pointer;border:none;font-size:.9rem;padding:.75rem 2rem;color:#000;background:transparent;border-radius:0}
+  .btn-primary{background:var(--primary);color:#000;box-shadow:0 4px 15px rgba(0,102,255,.3)}
+  .btn-primary:hover{background:var(--primary);color:#000;transform:translateY(-2px)}
+  .rounded-pill{border-radius:50rem!important}
+  .text-primary{color:var(--primary)!important}
+  .text-muted{color:var(--gray)!important}
+  .small{font-size:.85rem!important}
+  .rounded{border-radius:16px!important}
+  .bg-light{background:var(--light)!important}
+  .display-5{font-size:3rem;font-weight:800;font-family:Montserrat,sans-serif}
+  .fw-bold{font-weight:700!important}
+  .flex-shrink-0{flex-shrink:0!important}
+  .ms-3{margin-left:1rem!important}
+  .ms-auto{margin-left:auto!important}
+  .img-fluid{max-width:100%;height:auto}
+  .w-75{width:75%!important}
+  .fs-1{font-size:2.5rem}
+  .position-relative{position:relative!important}
+  .position-absolute{position:absolute!important}
+  .mb-2{margin-bottom:.5rem!important}
+  .mt-2{margin-top:.5rem!important}
+  .py-5{padding-top:3rem!important;padding-bottom:3rem!important}
+  .py-3{padding-top:1rem!important;padding-bottom:1rem!important}
+  .px-5{padding-left:3rem!important;padding-right:3rem!important}
+  .px-3{padding-left:1rem!important;padding-right:1rem!important}
+  .p-4{padding:1.5rem!important}
+  .p-5{padding:3rem!important}
+  .g-4{margin-left:-.75rem;margin-right:-.75rem}
+  .g-4>[class*="col-"]{padding-left:.75rem;padding-right:.75rem}
+  .g-5{margin-left:-1.5rem;margin-right:-1.5rem}
+  .g-5>[class*="col-"]{padding-left:1.5rem;padding-right:1.5rem}
+  .g-0{margin-left:0;margin-right:0}
+  .g-0>[class*="col-"]{padding-left:0;padding-right:0}
+  @media(min-width:768px){
+  .col-md-4{flex:0 0 33.333%;max-width:33.333%}
+  }
+  @media(min-width:576px){
+  .col-sm-6{flex:0 0 50%;max-width:50%}
+  }
+  .about-hero{object-position:top}
+  .about-img img{transition:.5s}
+  .about-img img:hover{background:var(--primary)!important}
+  .coach-card{background:#fff;border-radius:18px;box-shadow:0 8px 24px rgba(16,16,16,0.08);padding:16px}
+  .coach-photo{width:100%;height:220px;object-fit:cover;object-position:top;border-radius:12px}
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .gallery-item{border-radius:16px;overflow:hidden}
+  .gallery-img{width:100%;height:180px;object-fit:cover;display:block;transition:transform .3s ease}
+  .gallery-item:hover .gallery-img{transform:scale(1.04)}
+  @media(max-width:992px){.gallery-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:576px){.gallery-grid{grid-template-columns:1fr}}
+  .fg-text-muted{color:var(--gray)!important}
+  .fg-text-primary{color:var(--primary)!important}
+  .fg-flex-column{flex-direction:column!important}
+  .rounded-circle{border-radius:50%!important;overflow:hidden}
+  .method-icon{color:#103741}
+  .fg-about-text{max-width:750px;margin:0 auto 2rem;color:var(--gray);line-height:1.8}
  .fg-splash-callout{background:linear-gradient(135deg,#f0f4ff,#e8f0fe);border-radius:20px;position:relative}
  .fg-splash-decor{position:absolute;top:-10px;right:-10px;width:60px;height:60px;border:4px solid var(--primary);border-radius:50%;opacity:.15}
  .fg-about-feature{background:var(--light);border-radius:12px;padding:1.5rem;transition:.3s;height:100%}
@@ -501,8 +558,11 @@ export default function GYMTemplate(props: GYMProps) {
  case"instagram": return <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>;
  case"youtube": return <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>;
  case"linkedin": return <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
- case"arrow-up": return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>;
- default: return null;
+  case"arrow-up": return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>;
+  case"chart": return <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>;
+  case"gauge": return <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a10 10 0 1010 10"/><path d="M12 12l4-4"/><circle cx="12" cy="12" r="2"/></svg>;
+  case"repeat": return <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>;
+  default: return null;
  }
  };
 
@@ -935,131 +995,182 @@ const renderHome = () => (
  );
 
 const renderAbout = () => (
-<>
-  <section className="fg-page-hero" style={{ padding: 0, marginBottom:"3rem" }}>
-  <Navbar />
-  <img src={GYMImages.hero2} alt="About FitGym" />
- <div className="fg-hero-overlay"></div>
- <div className="fg-container" style={{ position:"relative", zIndex: 2, paddingBottom:"2rem" }}>
- <h1 className="fg-page-title">About Us</h1>
- <p className="fg-page-subtitle">Our mission, coaches and community</p>
- </div>
- </section>
+  <>
+  <section className="fg-page-hero position-relative mb-5 about-hero-section" style={{ padding:0, marginBottom:"3rem" }}>
+      <Navbar />
+      <img className="fg-hero-bg about-hero" src={GYMImages.hero2} alt="About FitGym" />
+      <div className="fg-hero-overlay"></div>
+      <div className="container h-100">
+        <div className="row h-100 align-items-end">
+          <div className="col-12">
+            <h1 className="fg-page-title mb-3">About Us</h1>
+            <p className="fg-page-subtitle">Our mission, coaches and community</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
- <section>
- <div className="fg-container">
- <div className="row align-items-center">
- <div className="col-12 col-lg-7">
- <h1 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"3rem", marginBottom:"1.5rem" }}>Our Philosophy</h1>
- <p style={{ color:"var(--gray)", lineHeight: 1.8, marginBottom:"1rem" }}>FitGym is a community-driven fitness club focused on building strong, healthy bodies through proven strength training, smart conditioning, and mobility work. Our certified coaches tailor programs to every level so you can train safely, confidently, and consistently.</p>
- <p style={{ color:"var(--gray)", lineHeight: 1.8, marginBottom:"2rem" }}>Whether you&apos;re getting started or chasing new PRs, you&apos;ll find small‑group sessions, 1:1 coaching, and flexible memberships that fit your life. Expect clean facilities, supportive coaches, and progress you can measure—week after week.</p>
- <div className="d-flex align-items-center flex-wrap" style={{ gap:"1.5rem" }}>
- <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); navigate("classes"); }}>See Programs</a>
- <div className="d-flex align-items-center" style={{ gap:".75rem" }}>
- <img src={GYMImages.testimonial1} alt="" style={{ width: 45, height: 45, borderRadius:"50%", objectFit:"cover" }} />
- <div>
- <div style={{ color:"var(--primary)", fontWeight: 600, fontSize:".9rem" }}>Alex Morgan</div>
- <small style={{ color:"var(--gray)" }}>Head Coach</small>
- </div>
- </div>
- </div>
- </div>
- <div className="col-12 col-lg-5 text-end">
- <img src={GYMImages.gallery3} alt="" style={{ width:"75%", borderRadius:"16px", boxShadow:"0 20px 60px rgba(0,0,0,.12)" }} />
- </div>
- </div>
- </div>
- </section>
+  <div className="container-xxl py-5">
+      <div className="container">
+        <div className="row g-5 align-items-center">
+          <div className="col-lg-6">
+            <h1 className="mb-4">Our Philosophy</h1>
+            <p>FitGym is a community-driven fitness club focused on building strong, healthy bodies through proven strength training, smart conditioning, and mobility work. Our certified coaches tailor programs to every level so you can train safely, confidently, and consistently.</p>
+            <p className="mb-4">Whether you&apos;re getting started or chasing new PRs, you&apos;ll find small‑group sessions, 1:1 coaching, and flexible memberships that fit your life. Expect clean facilities, supportive coaches, and progress you can measure—week after week.</p>
+            <div className="row g-4 align-items-center">
+              <div className="col-sm-6">
+                <a className="btn btn-primary rounded-pill py-3 px-5" href="#" onClick={(e) => { e.preventDefault(); navigate("classes"); }}>See Programs</a>
+              </div>
+              <div className="col-sm-6">
+                <div className="d-flex align-items-center">
+                  <img className="rounded-circle flex-shrink-0" src={GYMImages.testimonial1} alt="" style={{ width:45, height:45 }} />
+                  <div className="ms-3">
+                    <h6 className="text-primary mb-1">Alex Morgan</h6>
+                    <small>Head Coach</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-6 about-img">
+            <div className="row">
+              <div className="col-12 text-end">
+                <img className="img-fluid w-75 fg-square-img d-block ms-auto" src={GYMImages.gallery3} alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
- <section className="fg-methodology" style={{ background:"var(--light)" }}>
- <div className="fg-container">
- <div className="text-center mb-5">
- <h2 className="fg-section-title">Our Training Methodology</h2>
- <p className="fg-section-sub">Three pillars we coach every day</p>
- </div>
- <div className="row">
- {[
- { icon:"dumbbell", title:"Strength", desc:"Compound lifts with progressive overload for safe, measurable gains." },
- { icon:"running", title:"Conditioning", desc:"Intervals and circuits to build engine without burning out." },
- { icon:"heartbeat", title:"Mobility", desc:"Movement quality, activation and recovery to keep you training." },
- ].map((m, i) => (
- <div key={i} className="col-12 col-lg-4">
- <div className="fg-method-card fg-animate-on-scroll">
- <div className="fg-icon-wrap blue mx-auto mb-3">{renderIcon(m.icon)}</div>
- <h5>{m.title}</h5>
- <p>{m.desc}</p>
- </div>
- </div>
- ))}
- </div>
- </div>
- </section>
+  <div className="container-xxl py-5 fg-methodology">
+      <div className="container">
+        <div className="text-center mb-5">
+          <h2 className="fg-section-title">Our Training Methodology</h2>
+          <p className="text-muted">Three pillars we coach every day</p>
+        </div>
+        <div className="row g-4">
+          <div className="col-md-4">
+            <div className="h-100 text-center p-4 bg-light rounded">
+              <div className="fs-1 mb-2 method-icon">{renderIcon("chart")}</div>
+              <h5 className="mb-2">Strength</h5>
+              <p className="text-muted small mb-0">Compound lifts with progressive overload for safe, measurable gains.</p>
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="h-100 text-center p-4 bg-light rounded">
+              <div className="fs-1 mb-2 method-icon">{renderIcon("gauge")}</div>
+              <h5 className="mb-2">Conditioning</h5>
+              <p className="text-muted small mb-0">Intervals and circuits to build engine without burning out.</p>
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="h-100 text-center p-4 bg-light rounded">
+              <div className="fs-1 mb-2 method-icon">{renderIcon("repeat")}</div>
+              <h5 className="mb-2">Mobility</h5>
+              <p className="text-muted small mb-0">Movement quality, activation and recovery to keep you training.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <section>
-  <div className="fg-container">
-  <div className="text-center">
-  <h2 className="fg-section-title">Facilities Highlights</h2>
-  <p className="fg-section-sub">A quick look inside</p>
-  </div>
-  <div className="d-flex flex-wrap justify-content-center" style={{ gap:".75rem", maxWidth:"700px", margin:"2rem auto 0" }}>
-  {["Free Weights","Power Racks","Cardio Zone","Turf & Sleds","Mobility Area","Locker Rooms"].map((f, i) => (
-  <span key={i} className="fg-facility-pill">{f}</span>
-  ))}
-  </div>
-  </div>
-  </section>
+  <div className="container-xxl py-5">
+      <div className="container">
+        <div className="text-center mb-4">
+          <h2 className="fg-section-title">Facilities Highlights</h2>
+          <p className="text-muted">A quick look inside</p>
+        </div>
+        <div className="gallery-grid">
+          {[
+            { src: GYMImages.gallery1, label: "Free Weights" },
+            { src: GYMImages.gallery2, label: "Power Racks" },
+            { src: GYMImages.gallery3, label: "Cardio Zone" },
+            { src: GYMImages.gallery4, label: "Turf & Sleds" },
+            { src: GYMImages.gallery5, label: "Mobility Area" },
+            { src: GYMImages.gallery6, label: "Locker Rooms" },
+          ].map((f, i) => (
+            <div key={i} className="gallery-item">
+              <img src={f.src} alt={f.label} className="gallery-img" />
+              <div className="small text-center mt-2">{f.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
 
- <section style={{ background:"var(--light)" }}>
- <div className="fg-container">
- <div className="text-center mb-5">
- <h2 className="fg-section-title">Member Results</h2>
- <p className="fg-section-sub">Real progress from real people</p>
- </div>
- <div className="row">
- <div className="col-12 col-lg-4"><div className="fg-stat-card fg-animate-on-scroll"><div className="fg-stat-num">+18%</div><p>Avg strength increase in 12 weeks</p></div></div>
- <div className="col-12 col-lg-4"><div className="fg-stat-card fg-animate-on-scroll"><div className="fg-stat-num">-7.4kg</div><p>Avg bodyweight change with coaching</p></div></div>
- <div className="col-12 col-lg-4"><div className="fg-stat-card fg-animate-on-scroll"><div className="fg-stat-num">92%</div><p>Members training 3x/week by month 2</p></div></div>
- </div>
- </div>
- </section>
+  <div className="container-xxl py-5">
+      <div className="container">
+        <div className="text-center mb-4">
+          <h2 className="fg-section-title">Member Results</h2>
+          <p className="text-muted">Real progress from real people</p>
+        </div>
+        <div className="row g-4">
+          <div className="col-md-4">
+            <div className="h-100 text-center p-4 bg-light rounded">
+              <div className="display-5 fw-bold">+18%</div>
+              <div className="text-muted small">Avg strength increase in 12 weeks</div>
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="h-100 text-center p-4 bg-light rounded">
+              <div className="display-5 fw-bold">-7.4kg</div>
+              <div className="text-muted small">Avg bodyweight change with coaching</div>
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="h-100 text-center p-4 bg-light rounded">
+              <div className="display-5 fw-bold">92%</div>
+              <div className="text-muted small">Members training 3x/week by month 2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
- <section>
- <div className="fg-container">
- <div className="row g-0" style={{ background:"var(--light)", borderRadius:"16px", overflow:"hidden" }}>
- <div className="col-12 col-lg-6" style={{ minHeight: 350 }}>
- <img src={GYMImages.hero1} alt="" style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }} />
- </div>
- <div className="col-12 col-lg-6 d-flex flex-column justify-content-center" style={{ padding:"3rem" }}>
- <h1 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:"2.5rem", marginBottom:"1rem" }}>Start Your Fitness Journey</h1>
- <p style={{ color:"var(--gray)", marginBottom:"1.5rem", lineHeight: 1.8 }}>Book a free intro session. Meet a coach, tour the gym, and leave with a personalized plan for your goals.</p>
- <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); navigate("contact"); }}>Book Free Trial {renderIcon("arrow-right")}</a>
- </div>
- </div>
- </div>
- </section>
+  <div className="container-xxl py-5">
+      <div className="container">
+        <div className="bg-light rounded">
+          <div className="row g-0">
+            <div className="col-lg-6" style={{ minHeight:400 }}>
+              <div className="position-relative h-100">
+                <img className="position-absolute w-100 h-100 rounded" src={GYMImages.hero3} style={{ objectFit:"cover" }} alt="" />
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="h-100 d-flex flex-column justify-content-center p-5">
+                <h1 className="mb-4">Start Your Fitness Journey</h1>
+                <p className="mb-4">Book a free intro session. Meet a coach, tour the gym, and leave with a personalized plan for your goals.</p>
+                <a className="btn btn-primary py-3 px-5" href="#" onClick={(e) => { e.preventDefault(); navigate("contact"); }}>Book Free Trial {renderIcon("arrow-right")}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
- <section style={{ background:"var(--light)" }}>
- <div className="fg-container">
- <div className="text-center mb-5">
- <h2 className="fg-section-title">Meet our trainers</h2>
- </div>
- <div className="row mx-auto" style={{ maxWidth:"900px" }}>
- {coaches.map((c, i) => (
- <div key={i} className="col-12 col-lg-4">
- <div className="fg-coach-card fg-animate-on-scroll">
- <img src={c.img} alt={c.name} />
- <h3>{c.name}</h3>
- <p>{c.role}</p>
- </div>
- </div>
- ))}
- </div>
- </div>
- </section>
+    <div className="container-xxl py-5">
+      <div className="container">
+        <div className="text-center mb-5">
+          <h2 className="fg-section-title">Meet our trainers</h2>
+        </div>
+        <div className="row g-4">
+          {coaches.map((c, i) => (
+            <div key={i} className="col-lg-4 col-md-6">
+              <div className="coach-card h-100 text-center">
+                <img src={c.img} alt={c.name} className="coach-photo" />
+                <h5 className="mt-3 mb-1">{c.name}</h5>
+                <p className="text-muted small mb-0">{c.role}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
 
- <Footer />
- </>
- );
+    <Footer />
+  </>
+  );
 
 const renderClasses = () => (
 <>
