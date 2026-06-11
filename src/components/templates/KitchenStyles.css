@@ -56,6 +56,8 @@ select::-webkit-scrollbar { width: 10px; }
 select::-webkit-scrollbar-thumb { background-color: #666; border-radius: 50px; }
 body:not(.is-mobile).ui-smooth-scroll { overflow: hidden; }
 body:not(.is-mobile).ui-smooth-scroll #scroll-container { width: auto; height: 100vh; overflow: auto; margin: 0; }
+#main-wrapper { position: relative; }
+#scroll-container { width: auto; height: 100vh; overflow: auto; margin: 0; }
 .scrollbar-track { background: transparent !important; z-index: 99999 !important; }
 .scrollbar-thumb { background: #DDD !important; opacity: 0.8; transition: opacity 0.2s ease-in-out; }
 .scrollbar-track:hover .scrollbar-thumb { opacity: 0.5; }
