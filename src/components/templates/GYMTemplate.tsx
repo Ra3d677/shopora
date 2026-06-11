@@ -660,6 +660,7 @@ export default function GYMTemplate(props: GYMProps) {
 
   const renderHome = () => (
     <>
+      <Navbar />
       <HeroSection />
 
       <section className="fg-splash">
@@ -917,6 +918,7 @@ export default function GYMTemplate(props: GYMProps) {
 
   const renderAbout = () => (
     <>
+      <Navbar />
       <section className="fg-page-hero" style={{ padding: 0, marginBottom: "3rem" }}>
         <img src={GYMImages.hero2} alt="About FitGym" />
         <div className="fg-hero-overlay"></div>
@@ -1048,6 +1050,7 @@ export default function GYMTemplate(props: GYMProps) {
 
   const renderClasses = () => (
     <>
+      <Navbar />
       <section className="fg-page-hero" style={{ padding: 0, marginBottom: "3rem" }}>
         <img src={GYMImages.gym6} alt="Programs" />
         <div className="fg-hero-overlay"></div>
@@ -1214,6 +1217,7 @@ export default function GYMTemplate(props: GYMProps) {
 
   const renderMembership = () => (
     <>
+      <Navbar />
       <section className="fg-page-hero" style={{ padding: 0, marginBottom: "3rem" }}>
         <img src={GYMImages.gym7} alt="Membership" />
         <div className="fg-hero-overlay"></div>
@@ -1326,6 +1330,7 @@ export default function GYMTemplate(props: GYMProps) {
 
   const renderBlog = () => (
     <>
+      <Navbar />
       <section className="fg-page-hero" style={{ padding: 0, marginBottom: "3rem" }}>
         <img src={GYMImages.gallery3} alt="Blog" />
         <div className="fg-hero-overlay"></div>
@@ -1375,6 +1380,7 @@ export default function GYMTemplate(props: GYMProps) {
 
   const renderContact = () => (
     <>
+      <Navbar />
       <section className="fg-page-hero" style={{ padding: 0, marginBottom: "3rem" }}>
         <img src={GYMImages.gym6} alt="Contact" />
         <div className="fg-hero-overlay"></div>
@@ -1479,8 +1485,6 @@ export default function GYMTemplate(props: GYMProps) {
       <div className="fg-preloader" style={loaded ? { opacity: 0, visibility: "hidden" } : {}}>
         <div className="fg-spinner"></div>
       </div>
-
-      <Navbar />
 
       <button id="fg-scroll-top" className="fg-scroll-top" onClick={scrollToTop} aria-label="Scroll to top">
         {renderIcon("chevron-up")}
