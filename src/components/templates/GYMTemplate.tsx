@@ -676,8 +676,8 @@ export default function GYMTemplate(props: GYMProps) {
             <h2 className="fg-section-title">About FitGym</h2>
             <p className="fg-about-text">FitGym is your neighborhood training club with expert coaches, strength and conditioning zones, and daily classes for all levels. Train during flexible open‑gym hours, book personal training, and track progress with simple check‑ins. Friendly, clean, and focused on technique, we help you build sustainable results that last, together every week.</p>
           </div>
-          <div className="row align-items-center g-5">
-            <div className="col-12 col-lg-7">
+          <div className="row align-items-center">
+            <div className="col-12 col-lg-7" style={{ paddingRight: "1.5rem" }}>
               <div className="fg-splash-callout" style={{ padding: "2rem" }}>
                 <div className="fg-accent-stripes"><span></span><span></span><span></span></div>
                 <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "2rem", marginBottom: ".5rem" }}>OUR FITNESS PROGRAMS</h3>
@@ -685,7 +685,7 @@ export default function GYMTemplate(props: GYMProps) {
                 <a href="#" className="fg-btn fg-btn-primary" onClick={(e) => { e.preventDefault(); navigate("classes"); }}>SEE PROGRAMS</a>
               </div>
             </div>
-            <div className="col-12 col-lg-5">
+            <div className="col-12 col-lg-5" style={{ paddingLeft: "1.5rem" }}>
               <img src={GYMImages.hero2} alt="Member reviewing workout" className="fg-splash-img" />
             </div>
           </div>
