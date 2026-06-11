@@ -373,11 +373,15 @@ export default function GYMTemplate(props: GYMProps) {
  .fg-mini-card{background:#fff;border-radius:10px;padding:.8rem 1rem;font-size:.8rem}
  .fg-mini-card .fg-label{color:var(--gray);font-size:.75rem}
  .fg-mini-card .fg-val{font-weight:600;font-size:.9rem}
- .fg-form-floating{position:relative;margin-bottom:1rem}
- .fg-form-floating input,.fg-form-floating select,.fg-form-floating textarea{width:100%;padding:1rem 1rem .6rem;border:1px solid rgba(0,0,0,.08);border-radius:10px;font-size:.9rem;background:#fff;transition:.3s;font-family:Poppins,sans-serif}
- .fg-form-floating input:focus,.fg-form-floating select:focus,.fg-form-floating textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,102,255,.08)}
- .fg-form-floating label{position:absolute;top:.7rem;left:1rem;font-size:.8rem;color:var(--gray);pointer-events:none;transition:.3s}
- .fg-form-floating textarea{min-height:100px;resize:vertical}
+        .fg-form-floating{position:relative;margin-bottom:1rem}
+        .fg-form-floating input,.fg-form-floating select,.fg-form-floating textarea{width:100%;padding:1.5rem 1rem .5rem;border:1px solid rgba(0,0,0,.08);border-radius:10px;font-size:.9rem;background:#fff;transition:.3s;font-family:Poppins,sans-serif}
+        .fg-form-floating input::placeholder,.fg-form-floating select::placeholder,.fg-form-floating textarea::placeholder{color:transparent}
+        .fg-form-floating input:focus,.fg-form-floating select:focus,.fg-form-floating textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,102,255,.08)}
+        .fg-form-floating label{position:absolute;top:1.1rem;left:1rem;font-size:.9rem;color:var(--gray);pointer-events:none;transition:.3s;transform-origin:0 0}
+        .fg-form-floating input:focus~label,.fg-form-floating input:not(:placeholder-shown)~label,
+        .fg-form-floating select:focus~label,.fg-form-floating select:not(:placeholder-shown)~label,
+        .fg-form-floating textarea:focus~label,.fg-form-floating textarea:not(:placeholder-shown)~label{transform:scale(.85) translateY(-.55rem);color:var(--primary)}
+        .fg-form-floating textarea{min-height:100px;resize:vertical}
  .fg-map-embed iframe{width:100%;height:420px;border-radius:16px;border:0}
  .fg-footer{background:var(--darker);color:rgba(255,255,255,.6);padding:5rem 0 0;font-size:.85rem}
  .fg-footer-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:3rem}
