@@ -114,8 +114,8 @@ export default function GYMTemplate(props: GYMProps) {
  .fg-preloader.hidden{opacity:0;visibility:hidden}
  .fg-spinner{width:3rem;height:3rem;border:4px solid #e5e7eb;border-top-color:var(--primary);border-radius:50%;animation:fgSpin .8s linear infinite}
  @keyframes fgSpin{to{transform:rotate(360deg)}}
-        .fg-navbar{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:1rem 0;transition:all .4s;background:transparent}
-        .fg-navbar.scrolled{background:rgba(10,10,30,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 4px 30px rgba(0,0,0,.35);border-bottom:1px solid rgba(255,255,255,.06)}
+        .fg-navbar{position:absolute;top:0;left:0;width:100%;z-index:1000;padding:1rem 0;transition:all .4s;background:transparent}
+        .fg-navbar.scrolled{position:fixed;background:rgba(10,10,30,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 4px 30px rgba(0,0,0,.35);border-bottom:1px solid rgba(255,255,255,.06)}
         .fg-nav-inner{max-width:1400px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between}
         .fg-logo{height:44px;width:auto;transition:.3s}
         .fg-navbar.scrolled .fg-logo{height:40px}
