@@ -23,32 +23,7 @@ STYLE SHEET INDEXING
 /*-------------------------
     Fonts
 -------------------------*/
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap");
-@font-face {
-  font-family: "Lato";
-  src: url("./webfonts/lato/Lato-Regular.ttf") format("truetype");
-  font-weight: 400;
-}
-@font-face {
-  font-family: "Lato";
-  src: url("./webfonts/lato/Lato-Medium.ttf") format("truetype");
-  font-weight: 500;
-}
-@font-face {
-  font-family: "Lato";
-  src: url("./webfonts/lato/Lato-Semibold.ttf") format("truetype");
-  font-weight: 600;
-}
-@font-face {
-  font-family: "Lato";
-  src: url("./webfonts/lato/Lato-Bold.ttf") format("truetype");
-  font-weight: 700;
-}
-@font-face {
-  font-family: "Lato";
-  src: url("./webfonts/lato/Lato-Heavy.ttf") format("truetype");
-  font-weight: 800;
-}
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Lato:wght@400;500;600;700;800&display=swap");
 /*-------------------------
     Variables
 -------------------------*/
