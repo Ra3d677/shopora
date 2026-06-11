@@ -366,6 +366,7 @@ const SEED_TEMPLATES = [
   { id: "ironpeak", name: "Iron Peak Fitness", description: "Iron Peak – Health, Gym & Fitness Center - Personal Trainer HTML5 Template", preview: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" },
   { id: "2m", name: "2M", description: "إلكترونيات - تصميم عصري بألوان صفراء وردية مناسب لمتاجر الإلكترونيات والتكنولوجيا.", preview: "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=800&q=80" },
   { id: "itsolution", name: "ITSolution Agency", description: "ITAgency - Multipurpose IT Solutions & Business Services Website Template", preview: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" },
+  { id: "gym", name: "FitGym", description: "FitGym - Modern Fitness & Gym Center HTML Template", preview: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" },
 ];
 
 export async function seedMissingTemplatesAction() {

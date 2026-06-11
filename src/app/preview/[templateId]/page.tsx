@@ -8,6 +8,7 @@ import MomoTemplate from '@/components/templates/MomoTemplate';
 import OneMTemplate from '@/components/templates/1MTemplate';
 import TwoMTemplate from '@/components/templates/TwoMTemplate';
 import ITSolutionTemplate from '@/components/templates/ITSolutionTemplate';
+import GYMTemplate from '@/components/templates/GYMTemplate';
 
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -93,6 +94,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
       case '1m': return <OneMTemplate {...commonProps} />;
       case '2m': return <TwoMTemplate {...commonProps} />;
       case 'itsolution': return <ITSolutionTemplate {...commonProps} />;
+      case 'gym': return <GYMTemplate {...commonProps} />;
       default: return <SignatureTemplate {...commonProps} />;
     }
   };

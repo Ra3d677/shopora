@@ -20,6 +20,7 @@ import TwoMTemplate from "@/components/templates/TwoMTemplate";
 import ThreeMTemplate from "@/components/templates/3MTemplate";
 import IronPeakTemplate from "@/components/templates/IronPeakTemplate";
 import ITSolutionTemplate from "@/components/templates/ITSolutionTemplate";
+import GYMTemplate from "@/components/templates/GYMTemplate";
 
 export const revalidate = 60;
 
@@ -67,6 +68,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
     if (activeTemplate === 'fitness') return <FitnessTemplate {...props} />;
     if (activeTemplate === 'ironpeak') return <IronPeakTemplate {...props} />;
     if (activeTemplate === 'itsolution') return <ITSolutionTemplate {...props} />;
+    if (activeTemplate === 'gym') return <GYMTemplate {...props} />;
     if (store.type === 'WEBSITE') return <TourismTemplate {...props} />;
     
     if (activeTemplate === 'zenith') return <ZenithTemplate {...props} />;
