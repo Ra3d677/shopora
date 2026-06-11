@@ -21,7 +21,6 @@ import ThreeMTemplate from "@/components/templates/3MTemplate";
 import IronPeakTemplate from "@/components/templates/IronPeakTemplate";
 import ITSolutionTemplate from "@/components/templates/ITSolutionTemplate";
 import GYMTemplate from "@/components/templates/GYMTemplate";
-import Hotel1Template from "@/components/templates/Hotel1Template";
 
 export const revalidate = 60;
 
@@ -70,7 +69,6 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
     if (activeTemplate === 'ironpeak') return <IronPeakTemplate {...props} />;
     if (activeTemplate === 'itsolution') return <ITSolutionTemplate {...props} />;
     if (activeTemplate === 'gym') return <GYMTemplate {...props} />;
-    if (activeTemplate === 'hotel1') return <Hotel1Template {...props} />;
     if (store.type === 'WEBSITE') return <TourismTemplate {...props} />;
     
     if (activeTemplate === 'zenith') return <ZenithTemplate {...props} />;

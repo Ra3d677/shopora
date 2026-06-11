@@ -367,7 +367,6 @@ const SEED_TEMPLATES = [
   { id: "2m", name: "2M", description: "إلكترونيات - تصميم عصري بألوان صفراء وردية مناسب لمتاجر الإلكترونيات والتكنولوجيا.", preview: "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=800&q=80" },
   { id: "itsolution", name: "ITSolution Agency", description: "ITAgency - Multipurpose IT Solutions & Business Services Website Template", preview: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" },
   { id: "gym", name: "FitGym", description: "FitGym - Modern Fitness & Gym Center HTML Template", preview: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" },
-  { id: "hotel1", name: "Luxe Hotel", description: "Luxe Hotel - Premium Luxury Hotel Booking Bootstrap HTML Website Template", preview: "https://s.tmimgcdn.com/scr/800x500/400600/luxe-premium-luxury-hotel-booking-bootstrap-html-website-template_400677-original.png" },
   { id: "fitness", name: "برعي - Sama Fit", description: "قالب احترافي لمدربي اللياقة البدنية - هيرو, خدمات, تحولات, خطط أسعار, آراء عملاء", preview: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" },
   { id: "tourism", name: "Tourism & Travel Showcase", description: "High-definition destination banners, detailed itineraries, and a seamless booking inquiry system.", preview: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80" },
 ];
