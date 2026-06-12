@@ -40,10 +40,12 @@ export default function KitchenTemplate(props: any) {
       cursor: "pointer",
       color: isActive(path) ? "#9B6C27" : "#000000",
       fontWeight: isActive(path) ? 700 : 500,
-      fontSize: "16px",
+      fontSize: "15px",
       borderBottom: isActive(path) ? "2px solid #9B6C27" : "2px solid transparent",
       paddingBottom: "4px",
       transition: "all 0.3s ease",
+      textTransform: "uppercase" as const,
+      letterSpacing: "0.05em",
     });
     return (
       <header style={{
@@ -56,35 +58,29 @@ export default function KitchenTemplate(props: any) {
         borderBottom: "1px solid #e5e5e5",
         boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
       }}>
-        <div style={{
-          maxWidth: "1240px",
-          margin: "0 auto",
-          padding: "0 24px",
-          height: "72px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}>
-          {/* Logo */}
-          <a href="#" onClick={(e) => { e.preventDefault(); nav("/"); }} style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: 0 }}>
-            <img alt="" src={I.logo} style={{ height: "48px", width: "auto" }} />
-          </a>
-
-          {/* Desktop Nav */}
-          <div style={{ display: "none", alignItems: "center", gap: "32px" }} className="kitchen-desktop-nav">
+        <div className="kitchen-header-container">
+          {/* Left side desktop links */}
+          <div className="kitchen-nav-left">
+            <a href="tel:001239999" style={{ display: "flex", alignItems: "center", gap: "8px", color: "#000000", fontSize: "14px", fontWeight: 600, textDecoration: "none", marginRight: "12px" }}>
+              <i className="fas fa-phone-alt" style={{ color: "#9B6C27", fontSize: "14px" }}></i>
+              <span style={{ fontSize: "15px", fontFamily: '"Lato", sans-serif' }}>+1 233 898 0897</span>
+            </a>
             <a href="#" onClick={(e) => { e.preventDefault(); nav("/"); }} style={linkStyle("/")}>Home</a>
             <a href="#" onClick={(e) => { e.preventDefault(); nav("/about"); }} style={linkStyle("/about")}>About</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); nav("/menu"); }} style={linkStyle("/menu")}>Menu</a>
             <a href="#" onClick={(e) => { e.preventDefault(); nav("/blogs"); }} style={linkStyle("/blogs")}>Blog</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); nav("/contact"); }} style={linkStyle("/contact")}>Contact</a>
           </div>
 
-          {/* Right side */}
-          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-            <a href="tel:001239999" style={{ color: "#000000", fontSize: "15px", fontWeight: 500, textDecoration: "none", display: "none", alignItems: "center", gap: "6px" }} className="kitchen-phone">
-              <i className="fas fa-phone-alt" style={{ color: "#9B6C27" }}></i>
-              +1 233 898 0897
+          {/* Centered Logo */}
+          <div className="kitchen-logo-center">
+            <a href="#" onClick={(e) => { e.preventDefault(); nav("/"); }} style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+              <img alt="The Kitchen" src={I.logo} style={{ height: "48px", width: "auto" }} />
             </a>
+          </div>
+
+          {/* Right side desktop links */}
+          <div className="kitchen-nav-right">
+            <a href="#" onClick={(e) => { e.preventDefault(); nav("/menu"); }} style={linkStyle("/menu")}>Menu</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); nav("/contact"); }} style={linkStyle("/contact")}>Contact</a>
             <button
               onClick={() => setShowBooking(true)}
               style={{
@@ -92,33 +88,61 @@ export default function KitchenTemplate(props: any) {
                 color: "#ffffff",
                 border: "none",
                 padding: "10px 24px",
-                borderRadius: "6px",
+                borderRadius: "0px",
                 fontWeight: 600,
                 fontSize: "14px",
                 cursor: "pointer",
                 whiteSpace: "nowrap",
                 transition: "background 0.3s ease",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+                marginLeft: "12px",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#7a541f")}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#2c2d2f")}
               onMouseLeave={(e) => (e.currentTarget.style.background = "#9B6C27")}
             >
               Book Table
             </button>
-            {/* Mobile hamburger */}
+          </div>
+
+          {/* Mobile responsive actions */}
+          <div className="kitchen-mobile-actions">
             <button
-              className="kitchen-mobile-toggle"
+              onClick={() => setShowBooking(true)}
+              style={{
+                background: "#9B6C27",
+                color: "#ffffff",
+                border: "none",
+                padding: "8px 18px",
+                borderRadius: "0px",
+                fontWeight: 600,
+                fontSize: "13px",
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                transition: "background 0.3s ease",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#2c2d2f")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "#9B6C27")}
+            >
+              Book Table
+            </button>
+            <button
               onClick={() => {
                 const menu = document.getElementById("kitchen-mobile-nav");
                 if (menu) menu.style.display = menu.style.display === "flex" ? "none" : "flex";
               }}
               style={{
-                display: "none",
                 background: "none",
                 border: "none",
                 fontSize: "24px",
                 cursor: "pointer",
                 color: "#000000",
                 padding: "4px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <i className="fas fa-bars"></i>
@@ -126,7 +150,7 @@ export default function KitchenTemplate(props: any) {
           </div>
         </div>
 
-        {/* Mobile Nav */}
+        {/* Mobile Nav Dropdown */}
         <div
           id="kitchen-mobile-nav"
           style={{
@@ -137,7 +161,7 @@ export default function KitchenTemplate(props: any) {
             padding: "16px 24px",
             gap: "12px",
             position: "absolute",
-            top: "72px",
+            top: "80px",
             left: 0,
             width: "100%",
             boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
@@ -149,7 +173,7 @@ export default function KitchenTemplate(props: any) {
           <a href="#" onClick={(e) => { e.preventDefault(); nav("/menu"); const m = document.getElementById("kitchen-mobile-nav"); if (m) m.style.display = "none"; }} style={{ ...linkStyle("/menu"), fontSize: "15px" }}>Menu</a>
           <a href="#" onClick={(e) => { e.preventDefault(); nav("/blogs"); const m = document.getElementById("kitchen-mobile-nav"); if (m) m.style.display = "none"; }} style={{ ...linkStyle("/blogs"), fontSize: "15px" }}>Blog</a>
           <a href="#" onClick={(e) => { e.preventDefault(); nav("/contact"); const m = document.getElementById("kitchen-mobile-nav"); if (m) m.style.display = "none"; }} style={{ ...linkStyle("/contact"), fontSize: "15px" }}>Contact</a>
-          <a href="tel:001239999" style={{ color: "#000000", fontSize: "15px", fontWeight: 500, textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+          <a href="tel:001239999" style={{ color: "#000000", fontSize: "15px", fontWeight: 500, textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", marginTop: "4px" }}>
             <i className="fas fa-phone-alt" style={{ color: "#9B6C27" }}></i>
             +1 233 898 0897
           </a>
