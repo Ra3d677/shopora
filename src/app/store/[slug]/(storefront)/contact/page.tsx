@@ -1,7 +1,22 @@
 import React from 'react';
 import { Mail, MapPin, Phone, MessageCircle } from 'lucide-react';
+import { getStoreBySlug } from "@/lib/data";
+import { notFound } from "next/navigation";
+import KitchenTemplate from "@/components/templates/KitchenTemplate";
 
-export default function ContactPage() {
+export default async function ContactPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const store = await getStoreBySlug(slug);
+
+  if (!store) {
+    notFound();
+  }
+
+  if (store.template === 'kitchen') {
+    const props = { store, slug, categories: store.categories };
+    return <KitchenTemplate {...props} />;
+  }
+
   const whatsappNumber = "201025574570";
   const whatsappLink = `https://wa.me/${whatsappNumber}`;
 

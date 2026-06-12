@@ -8,7 +8,7 @@ export default function KitchenTemplate(props: any) {
   const { store, slug } = props;
   const router = useRouter();
   const pathname = usePathname();
-  const basePath = `/${slug}`;
+  const basePath = pathname?.includes("/store/") ? `/store/${slug}` : `/${slug}`;
   const nav = (p: string) => router.push(`${basePath}${p}`);
 
   const page = pathname?.replace(basePath, "") || "/";
