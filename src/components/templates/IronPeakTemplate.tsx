@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { usePathname } from "next/navigation";
 
 interface IronPeakProps {
   store: any;
@@ -211,6 +212,12 @@ const DEFAULT = {
 
 export default function IronPeakTemplate(props: IronPeakProps) {
   const { store, banners, settings, products, slug } = props;
+  const pathname = usePathname();
+  const basePath = pathname?.includes("/store/") ? `/store/${slug}` : `/${slug}`;
+  const page = pathname?.replace(basePath, "") || "/";
+  const isHome = page === '/';
+  const sec = isHome ? '' : page.slice(1);
+  const showSection = (name: string) => isHome || sec === name;
   const sectionRef = useRef<HTMLElement | null>(null);
 
   const ip = settings.ironpeakSettings || {};
@@ -703,11 +710,13 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         {/* Navigation */}
         <nav id="ip-navbar">
           <div className="ip-nav-container">
-            <a href="#home" className="ip-logo">{nav.logo}<span>{nav.logoSuffix}</span></a>
+            <a href={basePath} className="ip-logo">{nav.logo}<span>{nav.logoSuffix}</span></a>
             <ul className="ip-nav-links">
-              {nav.links.map((link: any, i: number) => (
-                <li key={i}><a href={link.href || "#"}>{link.label}</a></li>
-              ))}
+              {nav.links.map((link: any, i: number) => {
+                const s = link.href?.startsWith('#') ? link.href.slice(1) : '';
+                const href = s === 'home' ? basePath : s ? `${basePath}/${s}` : link.href;
+                return <li key={i}><a href={href}>{link.label}</a></li>;
+              })}
             </ul>
             <div className="ip-mobile-menu">
               <span></span>
@@ -726,7 +735,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         )}
 
         {/* Hero */}
-        {hero.enabled !== false && (
+        {isHome && hero.enabled !== false && (
         <section id="home" className="ip-hero">
           {bannerSlides ? (
             <div className="ip-hero-slider">
@@ -759,8 +768,8 @@ export default function IronPeakTemplate(props: IronPeakProps) {
               <h1>{hero.title}</h1>
               <p>{hero.subtitle}</p>
               <div className="ip-cta-buttons">
-                <a href={hero.primaryCta?.href || "#pricing"} className="ip-btn ip-btn-primary">{hero.primaryCta?.text || "Join Now"}</a>
-                <a href={hero.secondaryCta?.href || "#about"} className="ip-btn ip-btn-secondary">{hero.secondaryCta?.text || "Learn More"}</a>
+                <a href={`${basePath}${(hero.primaryCta?.href || '#pricing').replace('#', '/')}`} className="ip-btn ip-btn-primary">{hero.primaryCta?.text || "Join Now"}</a>
+                <a href={`${basePath}${(hero.secondaryCta?.href || '#about').replace('#', '/')}`} className="ip-btn ip-btn-secondary">{hero.secondaryCta?.text || "Learn More"}</a>
               </div>
             </div>
           )}
@@ -776,7 +785,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         )}
 
         {/* About */}
-        {about.enabled !== false && (
+        {showSection('about') && about.enabled !== false && (
         <section id="about" className="ip-about">
           <div className="ip-container">
             <div className="ip-section-header">
@@ -806,7 +815,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         )}
 
         {/* Services */}
-        {services.enabled !== false && (
+        {showSection('services') && services.enabled !== false && (
         <section id="services" className="ip-services">
           <div className="ip-container">
             <div className="ip-section-header">
@@ -819,7 +828,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
                   <div className="ip-service-icon">{s.icon}</div>
                   <h3>{s.title}</h3>
                   <p>{s.description}</p>
-                  <a href="#contact" className="ip-btn ip-btn-primary ip-joinnow">Join Now</a>
+                  <a href={`${basePath}/contact`} className="ip-btn ip-btn-primary ip-joinnow">Join Now</a>
                 </div>
               ))}
             </div>
@@ -828,7 +837,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         )}
 
         {/* Pricing */}
-        {pricing.enabled !== false && (
+        {showSection('pricing') && pricing.enabled !== false && (
         <section id="pricing" className="ip-pricing">
           <div className="ip-container">
             <div className="ip-section-header">
@@ -847,7 +856,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
                       <li key={fi} className={f.enabled === false ? "disabled" : ""}>{f.text}</li>
                     ))}
                   </ul>
-                  <a href="#contact" className={`ip-btn ${plan.ctaVariant === "primary" ? "ip-btn-primary" : "ip-btn-secondary"}`}>{plan.ctaText || "Get Started"}</a>
+                  <a href={`${basePath}/contact`} className={`ip-btn ${plan.ctaVariant === "primary" ? "ip-btn-primary" : "ip-btn-secondary"}`}>{plan.ctaText || "Get Started"}</a>
                 </div>
               ))}
             </div>
@@ -856,7 +865,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         )}
 
         {/* Trainers */}
-        {trainers.enabled !== false && (
+        {showSection('trainers') && trainers.enabled !== false && (
         <section id="trainers" className="ip-trainers">
           <div className="ip-container">
             <div className="ip-section-header">
@@ -880,7 +889,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         )}
 
         {/* Testimonials */}
-        {testimonials.enabled !== false && (
+        {showSection('testimonials') && testimonials.enabled !== false && (
         <section id="testimonials" className="ip-testimonials">
           <div className="ip-container">
             <div className="ip-section-header">
@@ -907,7 +916,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         )}
 
         {/* Blog */}
-        {blog.enabled !== false && (
+        {showSection('blog') && blog.enabled !== false && (
         <section id="blog" className="ip-blog">
           <div className="ip-container">
             <div className="ip-section-header">
@@ -935,7 +944,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
         )}
 
         {/* Contact */}
-        {contact.enabled !== false && (
+        {showSection('contact') && contact.enabled !== false && (
         <section id="contact" className="ip-contact">
           <div className="ip-container">
             <div className="ip-section-header">
@@ -994,9 +1003,11 @@ export default function IronPeakTemplate(props: IronPeakProps) {
             <div className="ip-footer-section">
               <h3>Quick Links</h3>
               <ul className="ip-footer-links">
-                {footer.quickLinks.map((l: any, i: number) => (
-                  <li key={i}><a href={l.href}>{l.label}</a></li>
-                ))}
+                {footer.quickLinks.map((l: any, i: number) => {
+                  const s = l.href?.startsWith('#') ? l.href.slice(1) : '';
+                  const href = s === 'home' ? basePath : s ? `${basePath}/${s}` : l.href;
+                  return <li key={i}><a href={href}>{l.label}</a></li>;
+                })}
               </ul>
             </div>
             <div className="ip-footer-section">

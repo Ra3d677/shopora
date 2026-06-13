@@ -3,6 +3,7 @@ import { Mail, MapPin, Phone, MessageCircle } from 'lucide-react';
 import { getStoreBySlug } from "@/lib/data";
 import { notFound } from "next/navigation";
 import KitchenTemplate from "@/components/templates/KitchenTemplate";
+import IronPeakTemplate from "@/components/templates/IronPeakTemplate";
 
 export default async function ContactPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -12,9 +13,17 @@ export default async function ContactPage({ params }: { params: Promise<{ slug: 
     notFound();
   }
 
+  const settings = { ...store.settings, storeName: store.name };
+  const banners = (store.banners || []).filter((b: any) => b && b.isActive).sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
+  const props = { store, slug, banners, settings, products: store.products || [], categories: store.categories };
+
   if (store.template === 'kitchen') {
-    const props = { store, slug, categories: store.categories };
-    return <KitchenTemplate {...props} />;
+    const kProps = { store, slug, categories: store.categories };
+    return <KitchenTemplate {...kProps} />;
+  }
+
+  if (store.template === 'ironpeak') {
+    return <IronPeakTemplate {...props} />;
   }
 
   const whatsappNumber = "201025574570";
