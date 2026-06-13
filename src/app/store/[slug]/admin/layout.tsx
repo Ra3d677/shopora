@@ -81,6 +81,7 @@ export default async function AdminLayout({
     ...(hasTemplateSections
       ? [
           { label: isRTL ? 'خدماتنا' : 'Our Services', iconName: 'Rocket' as const, path: '/services', color: 'text-green-500' },
+          { label: isRTL ? 'المدربون' : 'Trainers', iconName: 'Users' as const, path: '/trainers', color: 'text-cyan-500' },
           { label: isRTL ? 'الباقات' : 'Pricing', iconName: 'ShoppingBag' as const, path: '/pricing', color: 'text-purple-500' },
         ]
       : [{ label: t('toursPackages'), iconName: 'ShoppingBag' as const, path: '/products', color: 'text-purple-500' }]
