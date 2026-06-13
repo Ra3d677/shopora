@@ -79,7 +79,10 @@ export default async function AdminLayout({
     { label: t('overview'), iconName: 'LayoutDashboard', path: '/dashboard', color: 'text-cyan-500' },
     ...(isFitness ? [{ label: isRTL ? 'لوحة تحكم برعي' : 'برعي Dashboard', iconName: 'LayoutDashboard' as const, path: '/fitness', color: 'text-emerald-500' }] : []),
     ...(hasTemplateSections
-      ? [{ label: isRTL ? 'الباقات' : 'Pricing', iconName: 'ShoppingBag' as const, path: '/pricing', color: 'text-purple-500' }]
+      ? [
+          { label: isRTL ? 'خدماتنا' : 'Our Services', iconName: 'Rocket' as const, path: '/services', color: 'text-green-500' },
+          { label: isRTL ? 'الباقات' : 'Pricing', iconName: 'ShoppingBag' as const, path: '/pricing', color: 'text-purple-500' },
+        ]
       : [{ label: t('toursPackages'), iconName: 'ShoppingBag' as const, path: '/products', color: 'text-purple-500' }]
     ),
     { label: t('bookingInquiries'), iconName: 'Package', path: '/orders', color: 'text-pink-500' },
