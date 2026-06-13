@@ -142,6 +142,7 @@ const DEFAULT = {
       { quote: "The personal training program at Iron Peak is worth every penny. My trainer James created a customized plan that helped me build muscle and increase my strength beyond what I thought was possible. Highly recommend!", author: "Jessica Lee", meta: "Member for 1 year", initials: "JL" },
       { quote: "As a beginner, I was nervous about joining a gym, but the staff at Iron Peak made me feel welcome from day one. The group classes are fun and challenging, and I've made great friends along the way!", author: "David Park", meta: "Member for 6 months", initials: "DP" },
     ],
+    customerItems: [],
   },
   blog: {
     enabled: true,
@@ -897,7 +898,7 @@ export default function IronPeakTemplate(props: IronPeakProps) {
               <p>{testimonials.sectionSubtitle}</p>
             </div>
             <div className="ip-testimonials-grid">
-              {testimonials.items.map((t: any, i: number) => (
+              {[...(testimonials.items || []), ...(testimonials.customerItems || [])].map((t: any, i: number) => (
                 <div key={i} className="ip-testimonial-card">
                   <div className="ip-quote-icon">"</div>
                   <p className="ip-testimonial-text">{t.quote}</p>
@@ -911,6 +912,37 @@ export default function IronPeakTemplate(props: IronPeakProps) {
                 </div>
               ))}
             </div>
+            {/* Review Form — only on standalone testimonials page */}
+            {!isHome && (
+              <div style={{marginTop:"4rem",maxWidth:"600px",marginLeft:"auto",marginRight:"auto",background:"#fff",padding:"2.5rem",borderRadius:"20px",boxShadow:"0 10px 40px rgba(0,0,0,.08)"}}>
+                <h3 style={{textAlign:"center",fontSize:"1.5rem",marginBottom:"0.5rem",color:"#222"}}>Share Your Experience</h3>
+                <p style={{textAlign:"center",color:"#666",marginBottom:"2rem",fontSize:"0.95rem"}}>Tell us about your journey at our gym</p>
+                <form onSubmit={async (e) => {
+                  e.preventDefault();
+                  const form = e.currentTarget;
+                  const data = { name: (form.elements as any).name.value, meta: (form.elements as any).meta.value, quote: (form.elements as any).quote.value };
+                  if (!data.name || !data.quote) return;
+                  try {
+                    const res = await fetch(`/api/store/${slug}/testimonials`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
+                    if (res.ok) { form.reset(); alert('Thank you for your review!'); } else alert('Failed to submit. Try again.');
+                  } catch { alert('Something went wrong.'); }
+                }}>
+                  <div className="ip-form-group" style={{margin:"0 0 1rem"}}>
+                    <label style={{display:"block",marginBottom:"0.5rem",fontWeight:600,color:"#333",fontSize:"0.9rem"}}>Your Name *</label>
+                    <input type="text" name="name" required placeholder="John Doe" style={{width:"100%",padding:"0.85rem 1rem",border:"2px solid #e9ecef",borderRadius:"10px",fontSize:"1rem",outline:"none",transition:".3s",background:"#f8f9fa"}} onFocus={e => { e.target.style.borderColor = "#ff6b35"; e.target.style.background = "#fff" }} onBlur={e => { e.target.style.borderColor = "#e9ecef"; e.target.style.background = "#f8f9fa" }} />
+                  </div>
+                  <div className="ip-form-group" style={{margin:"0 0 1rem"}}>
+                    <label style={{display:"block",marginBottom:"0.5rem",fontWeight:600,color:"#333",fontSize:"0.9rem"}}>Your Status (optional)</label>
+                    <input type="text" name="meta" placeholder="Member for 2 years" style={{width:"100%",padding:"0.85rem 1rem",border:"2px solid #e9ecef",borderRadius:"10px",fontSize:"1rem",outline:"none",transition:".3s",background:"#f8f9fa"}} onFocus={e => { e.target.style.borderColor = "#ff6b35"; e.target.style.background = "#fff" }} onBlur={e => { e.target.style.borderColor = "#e9ecef"; e.target.style.background = "#f8f9fa" }} />
+                  </div>
+                  <div className="ip-form-group" style={{margin:"0 0 1.5rem"}}>
+                    <label style={{display:"block",marginBottom:"0.5rem",fontWeight:600,color:"#333",fontSize:"0.9rem"}}>Your Review *</label>
+                    <textarea name="quote" required rows={4} placeholder="Share your experience..." style={{width:"100%",padding:"0.85rem 1rem",border:"2px solid #e9ecef",borderRadius:"10px",fontSize:"1rem",outline:"none",transition:".3s",resize:"vertical",background:"#f8f9fa",fontFamily:"inherit"}} onFocus={e => { e.target.style.borderColor = "#ff6b35"; e.target.style.background = "#fff" }} onBlur={e => { e.target.style.borderColor = "#e9ecef"; e.target.style.background = "#f8f9fa" }} />
+                  </div>
+                  <button type="submit" className="ip-btn ip-btn-primary" style={{width:"100%",textAlign:"center"}}>Submit Review</button>
+                </form>
+              </div>
+            )}
           </div>
         </section>
         )}
