@@ -927,17 +927,17 @@ export default function IronPeakTemplate(props: IronPeakProps) {
                     if (res.ok) { form.reset(); alert('Thank you for your review!'); } else alert('Failed to submit. Try again.');
                   } catch { alert('Something went wrong.'); }
                 }}>
-                  <div className="ip-form-group" style={{margin:"0 0 1rem"}}>
+                  <div style={{margin:"0 0 1rem"}}>
                     <label style={{display:"block",marginBottom:"0.5rem",fontWeight:600,color:"#333",fontSize:"0.9rem"}}>Your Name *</label>
-                    <input type="text" name="name" required placeholder="John Doe" style={{width:"100%",padding:"0.85rem 1rem",border:"2px solid #e9ecef",borderRadius:"10px",fontSize:"1rem",outline:"none",transition:".3s",background:"#f8f9fa"}} onFocus={e => { e.target.style.borderColor = "#ff6b35"; e.target.style.background = "#fff" }} onBlur={e => { e.target.style.borderColor = "#e9ecef"; e.target.style.background = "#f8f9fa" }} />
+                    <input type="text" name="name" required placeholder="John Doe" style={{width:"100%",padding:"0.85rem 1rem",border:"2px solid #e9ecef",borderRadius:"10px",fontSize:"1rem",outline:"none",transition:".3s",background:"#f8f9fa",color:"#333"}} onFocus={e => { e.target.style.borderColor = "#ff6b35"; e.target.style.background = "#fff" }} onBlur={e => { e.target.style.borderColor = "#e9ecef"; e.target.style.background = "#f8f9fa" }} />
                   </div>
-                  <div className="ip-form-group" style={{margin:"0 0 1rem"}}>
+                  <div style={{margin:"0 0 1rem"}}>
                     <label style={{display:"block",marginBottom:"0.5rem",fontWeight:600,color:"#333",fontSize:"0.9rem"}}>Your Status (optional)</label>
-                    <input type="text" name="meta" placeholder="Member for 2 years" style={{width:"100%",padding:"0.85rem 1rem",border:"2px solid #e9ecef",borderRadius:"10px",fontSize:"1rem",outline:"none",transition:".3s",background:"#f8f9fa"}} onFocus={e => { e.target.style.borderColor = "#ff6b35"; e.target.style.background = "#fff" }} onBlur={e => { e.target.style.borderColor = "#e9ecef"; e.target.style.background = "#f8f9fa" }} />
+                    <input type="text" name="meta" placeholder="Member for 2 years" style={{width:"100%",padding:"0.85rem 1rem",border:"2px solid #e9ecef",borderRadius:"10px",fontSize:"1rem",outline:"none",transition:".3s",background:"#f8f9fa",color:"#333"}} onFocus={e => { e.target.style.borderColor = "#ff6b35"; e.target.style.background = "#fff" }} onBlur={e => { e.target.style.borderColor = "#e9ecef"; e.target.style.background = "#f8f9fa" }} />
                   </div>
-                  <div className="ip-form-group" style={{margin:"0 0 1.5rem"}}>
+                  <div style={{margin:"0 0 1.5rem"}}>
                     <label style={{display:"block",marginBottom:"0.5rem",fontWeight:600,color:"#333",fontSize:"0.9rem"}}>Your Review *</label>
-                    <textarea name="quote" required rows={4} placeholder="Share your experience..." style={{width:"100%",padding:"0.85rem 1rem",border:"2px solid #e9ecef",borderRadius:"10px",fontSize:"1rem",outline:"none",transition:".3s",resize:"vertical",background:"#f8f9fa",fontFamily:"inherit"}} onFocus={e => { e.target.style.borderColor = "#ff6b35"; e.target.style.background = "#fff" }} onBlur={e => { e.target.style.borderColor = "#e9ecef"; e.target.style.background = "#f8f9fa" }} />
+                    <textarea name="quote" required rows={4} placeholder="Share your experience..." style={{width:"100%",padding:"0.85rem 1rem",border:"2px solid #e9ecef",borderRadius:"10px",fontSize:"1rem",outline:"none",transition:".3s",resize:"vertical",background:"#f8f9fa",fontFamily:"inherit",color:"#333"}} onFocus={e => { e.target.style.borderColor = "#ff6b35"; e.target.style.background = "#fff" }} onBlur={e => { e.target.style.borderColor = "#e9ecef"; e.target.style.background = "#f8f9fa" }} />
                   </div>
                   <button type="submit" className="ip-btn ip-btn-primary" style={{width:"100%",textAlign:"center"}}>Submit Review</button>
                 </form>
