@@ -83,6 +83,7 @@ export default async function AdminLayout({
           { label: isRTL ? 'خدماتنا' : 'Our Services', iconName: 'Rocket' as const, path: '/services', color: 'text-green-500' },
           { label: isRTL ? 'المدربون' : 'Trainers', iconName: 'Users' as const, path: '/trainers', color: 'text-cyan-500' },
           { label: isRTL ? 'الآراء' : 'Testimonials', iconName: 'MessageSquare' as const, path: '/testimonials', color: 'text-pink-500' },
+          { label: isRTL ? 'المدونة' : 'Blog', iconName: 'Library' as const, path: '/blog', color: 'text-amber-500' },
           { label: isRTL ? 'الباقات' : 'Pricing', iconName: 'ShoppingBag' as const, path: '/pricing', color: 'text-purple-500' },
         ]
       : [{ label: t('toursPackages'), iconName: 'ShoppingBag' as const, path: '/products', color: 'text-purple-500' }]
